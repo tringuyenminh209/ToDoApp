@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - DOL LEAF</title>
+    <link rel="icon" type="image/png" href="../assets/TodoappLogo.png">
+    <style>
+        /* Design System Variables */
+        :root {
+            --c-primary: #0FA968;
+            --c-primary-hover: #0B8C57;
+            --c-primary-press: #09764B;
+            --c-accent: #1F6FEB;
+            --c-text: #0B1220;
+            --c-muted: #475569;
+            --c-line: #E2E8F0;
+            --c-bg: #F8FAFC;
+            --c-panel: #FFFFFF;
+            --c-success: #22C55E;
+            --c-warn: #F59E0B;
+            --c-danger: #DC2626;
+            --r-card: 16px;
+            --r-cta: 24px;
+            --space: 4px;
+            --focus: #A7F3D0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --c-bg: #0A0F1A;
+                --c-panel: #111827;
+                --c-line: #1F2937;
+                --c-text: #E5E7EB;
+                --c-primary: #34D399;
+                --c-accent: #69A2FF;
+                --focus: #99F6E4;
+            }
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--c-panel);
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            padding: 16px;
+            border-bottom: 1px solid var(--c-line);
+            background: var(--c-panel);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(15, 169, 104, 0.2);
+        }
+
+        .app-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.33;
+            margin-bottom: 4px;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            color: var(--c-muted);
+            line-height: 1.42;
+        }
+
+        /* Settings Sections */
+        .settings-section {
+            padding: 24px 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.44;
+            margin-bottom: 16px;
+            color: var(--c-text);
+        }
+
+        .settings-group {
+            background: var(--c-panel);
+            border: 1px solid var(--c-line);
+            border-radius: var(--r-card);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid var(--c-line);
+            transition: background 0.2s ease;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-item:hover {
+            background: var(--c-bg);
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--c-text);
+            margin-bottom: 2px;
+        }
+
+        .setting-description {
+            font-size: 14px;
+            color: var(--c-muted);
+            line-height: 1.42;
+        }
+
+        .setting-icon {
+            font-size: 20px;
+            margin-right: 12px;
+            width: 24px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 28px;
+            background: var(--c-line);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--c-primary);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+
+        /* Select Dropdown */
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-dropdown {
+            appearance: none;
+            background: var(--c-panel);
+            border: 1px solid var(--c-line);
+            border-radius: 8px;
+            padding: 8px 32px 8px 12px;
+            font-size: 14px;
+            color: var(--c-text);
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .select-dropdown:focus {
+            outline: none;
+            border-color: var(--c-primary);
+            box-shadow: 0 0 0 2px var(--focus);
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--c-muted);
+        }
+
+        /* Button */
+        .btn {
+            padding: 12px 16px;
+            border: 1px solid var(--c-line);
+            border-radius: 8px;
+            background: var(--c-panel);
+            color: var(--c-text);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            border-color: var(--c-primary);
+            background: #E6F8F1;
+        }
+
+        .btn.primary {
+            background: var(--c-primary);
+            color: white;
+            border-color: var(--c-primary);
+        }
+
+        .btn.primary:hover {
+            background: var(--c-primary-hover);
+        }
+
+        .btn.danger {
+            background: var(--c-danger);
+            color: white;
+            border-color: var(--c-danger);
+        }
+
+        .btn.danger:hover {
+            background: #B91C1C;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            text-align: center;
+            padding: 24px 16px;
+            background: linear-gradient(135deg, #E6F8F1 0%, #EEF5FF 100%);
+            border-radius: var(--r-card);
+            margin-bottom: 24px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--c-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+            margin: 0 auto 16px;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 4px;
+        }
+
+        .profile-email {
+            font-size: 14px;
+            color: var(--c-muted);
+            margin-bottom: 16px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .profile-stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--c-primary);
+        }
+
+        .profile-stat-label {
+            font-size: 12px;
+            color: var(--c-muted);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--c-panel);
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--c-text);
+        }
+
+        .modal-message {
+            font-size: 14px;
+            color: var(--c-muted);
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-modal {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--c-line);
+            border-radius: 8px;
+            background: var(--c-panel);
+            color: var(--c-text);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-modal.primary {
+            background: var(--c-primary);
+            color: white;
+            border-color: var(--c-primary);
+        }
+
+        .btn-modal.primary:hover {
+            background: var(--c-primary-hover);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: var(--c-panel);
+            border-top: 1px solid var(--c-line);
+            display: flex;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            text-decoration: none;
+            color: #64748B;
+            transition: color 0.2s ease;
+        }
+
+        .nav-item.active {
+            color: var(--c-primary);
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+        }
+
+        .nav-item .label {
+            font-size: 12px;
+            line-height: 1.33;
+        }
+
+        /* SVG Icon Styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: currentColor;
+            stroke: currentColor;
+        }
+
+        .icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .icon-xl {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Setting Icon Color */
+        .setting-icon .icon {
+            color: var(--c-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 375px) {
+            .container {
+                max-width: 100%;
+            }
+        }
+
+        /* Hidden SVG Icons */
+        .hidden-svg {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="app-logo">
+                    <img src="../assets/TodoappLogo.png" alt="DOL LEAF Logo">
+                </div>
+                <div>
+                    <h1>Cài đặt</h1>
+                    <div class="subtitle">Tùy chỉnh ứng dụng theo nhu cầu</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Settings Section -->
+        <section class="settings-section">
+            <!-- Profile -->
+            <div class="profile-section">
+                <div class="profile-avatar">
+                    <svg class="icon icon-xl"><use href="../assets/icons.svg#icon-user"></use></svg>
+                </div>
+                <div class="profile-name">NGUYEN MINH TRI</div>
+                <div class="profile-email">tringuyenminh207@gmail.com</div>
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <div class="profile-stat-value">7</div>
+                        <div class="profile-stat-label">Ngày streak</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="profile-stat-value">45</div>
+                        <div class="profile-stat-label">Phút hôm nay</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="profile-stat-value">12</div>
+                        <div class="profile-stat-label">Task hoàn thành</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <h2 class="section-title">Thông báo</h2>
+            <div class="settings-group">
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-bell"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Thông báo push</div>
+                        <div class="setting-description">Nhận thông báo về task và nhắc nhở</div>
+                    </div>
+                    <div class="toggle-switch active" data-setting="push-notifications"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-alarm"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Nhắc nhở hàng ngày</div>
+                        <div class="setting-description">Thông báo vào 7:30 sáng mỗi ngày</div>
+                    </div>
+                    <div class="toggle-switch active" data-setting="daily-reminders"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-target"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Nhắc nhở mục tiêu</div>
+                        <div class="setting-description">Thông báo khi gần đến deadline</div>
+                    </div>
+                    <div class="toggle-switch" data-setting="goal-reminders"></div>
+                </div>
+            </div>
+
+            <!-- Appearance -->
+            <h2 class="section-title">Giao diện</h2>
+            <div class="settings-group">
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-moon"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Chế độ tối</div>
+                        <div class="setting-description">Tự động theo hệ thống</div>
+                    </div>
+                    <div class="select-wrapper">
+                        <select class="select-dropdown" data-setting="theme" title="Chọn chế độ giao diện">
+                            <option value="auto">Tự động</option>
+                            <option value="light">Sáng</option>
+                            <option value="dark">Tối</option>
+                        </select>
+                        <div class="select-arrow">▼</div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-globe"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Ngôn ngữ</div>
+                        <div class="setting-description">Tiếng Việt</div>
+                    </div>
+                    <div class="select-wrapper">
+                        <select class="select-dropdown" data-setting="language" title="Chọn ngôn ngữ">
+                            <option value="vi">Tiếng Việt</option>
+                            <option value="en">English</option>
+                            <option value="ja">日本語</option>
+                        </select>
+                        <div class="select-arrow">▼</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Mode -->
+            <h2 class="section-title">Chế độ tập trung</h2>
+            <div class="settings-group">
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-clock"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Thời gian Pomodoro</div>
+                        <div class="setting-description">25 phút làm việc, 5 phút nghỉ</div>
+                    </div>
+                    <div class="select-wrapper">
+                        <select class="select-dropdown" data-setting="pomodoro-time" title="Chọn thời gian Pomodoro">
+                            <option value="25">25 phút</option>
+                            <option value="30">30 phút</option>
+                            <option value="45">45 phút</option>
+                        </select>
+                        <div class="select-arrow">▼</div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-volume-x"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Chặn thông báo</div>
+                        <div class="setting-description">Tự động chặn khi đang focus</div>
+                    </div>
+                    <div class="toggle-switch active" data-setting="block-notifications"></div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-music"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Âm thanh nền</div>
+                        <div class="setting-description">White noise khi focus</div>
+                    </div>
+                    <div class="toggle-switch" data-setting="background-sound"></div>
+                </div>
+            </div>
+
+            <!-- Data & Privacy -->
+            <h2 class="section-title">Dữ liệu & Quyền riêng tư</h2>
+            <div class="settings-group">
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-bar-chart"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Xuất dữ liệu</div>
+                        <div class="setting-description">Tải xuống tất cả dữ liệu của bạn</div>
+                    </div>
+                    <button class="btn" onclick="exportData()">Xuất</button>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-trash"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Xóa dữ liệu</div>
+                        <div class="setting-description">Xóa tất cả dữ liệu và tài khoản</div>
+                    </div>
+                    <button class="btn danger" onclick="deleteData()">Xóa</button>
+                </div>
+            </div>
+
+            <!-- Account -->
+            <h2 class="section-title">Tài khoản</h2>
+            <div class="settings-group">
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-user"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Thông tin cá nhân</div>
+                        <div class="setting-description">Cập nhật hồ sơ của bạn</div>
+                    </div>
+                    <button class="btn" onclick="editProfile()">Chỉnh sửa</button>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-lock"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Đổi mật khẩu</div>
+                        <div class="setting-description">Cập nhật mật khẩu tài khoản</div>
+                    </div>
+                    <button class="btn" onclick="changePassword()">Đổi mật khẩu</button>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-logout"></use></svg>
+                    </div>
+                    <div class="setting-info">
+                        <div class="setting-title">Đăng xuất</div>
+                        <div class="setting-description">Đăng xuất khỏi tài khoản hiện tại</div>
+                    </div>
+                    <button class="btn danger" onclick="logout()">Đăng xuất</button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn primary" onclick="saveSettings()">Lưu cài đặt</button>
+                <button class="btn" onclick="resetSettings()">Đặt lại mặc định</button>
+            </div>
+        </section>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal" id="deleteModal">
+            <div class="modal-content">
+                <h3 class="modal-title">Xác nhận xóa</h3>
+                <p class="modal-message">
+                    Bạn có chắc chắn muốn xóa tất cả dữ liệu? Hành động này không thể hoàn tác.
+                </p>
+                <div class="modal-actions">
+                    <button class="btn-modal" onclick="closeDeleteModal()">Hủy</button>
+                    <button class="btn-modal primary" onclick="confirmDelete()">Xóa</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-home"></use></svg>
+                <div class="label">Home</div>
+            </a>
+            <a href="calendar.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-calendar"></use></svg>
+                <div class="label">Calendar</div>
+            </a>
+            <a href="timetable.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-book"></use></svg>
+                <div class="label">Timetable</div>
+            </a>
+            <a href="stats.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-stats"></use></svg>
+                <div class="label">Stats</div>
+            </a>
+            <a href="settings.html" class="nav-item active">
+                <svg class="icon"><use href="../assets/icons.svg#icon-settings"></use></svg>
+                <div class="label">Settings</div>
+            </a>
+        </nav>
+    </div>
+
+    <!-- SVG Icons -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="hidden-svg">
+      <symbol id="icon-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </symbol>
+      <symbol id="icon-alarm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="13" r="8"/>
+        <polyline points="12,9 12,13 15,16"/>
+        <path d="M5 3L2 6"/>
+        <path d="M22 6L19 3"/>
+        <path d="M6.38 18.7L4 21"/>
+        <path d="M17.64 18.7L20 21"/>
+      </symbol>
+      <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <circle cx="12" cy="12" r="6"/>
+        <circle cx="12" cy="12" r="2"/>
+      </symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </symbol>
+      <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12,6 12,12 16,14"/>
+      </symbol>
+      <symbol id="icon-volume-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11,5 6,9 2,9 2,15 6,15 11,19 11,5"/>
+        <line x1="23" y1="9" x2="17" y2="15"/>
+        <line x1="17" y1="9" x2="23" y2="15"/>
+      </symbol>
+      <symbol id="icon-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/>
+        <circle cx="18" cy="16" r="3"/>
+      </symbol>
+      <symbol id="icon-bar-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="20" x2="12" y2="10"/>
+        <line x1="18" y1="20" x2="18" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="16"/>
+      </symbol>
+      <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3,6 5,6 21,6"/>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        <line x1="10" y1="11" x2="10" y2="17"/>
+        <line x1="14" y1="11" x2="14" y2="17"/>
+      </symbol>
+      <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </symbol>
+      <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <circle cx="12" cy="16" r="1"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </symbol>
+      <symbol id="icon-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16,17 21,12 16,7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+      </symbol>
+      <symbol id="icon-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9,22 9,12 15,12 15,22"/>
+      </symbol>
+      <symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </symbol>
+      <symbol id="icon-stats" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 20V10"/>
+        <path d="M12 20V4"/>
+        <path d="M6 20v-6"/>
+      </symbol>
+      <symbol id="icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </symbol>
+    </svg>
+
+    <script>
+        // Settings state
+        const settings = {
+            'push-notifications': true,
+            'daily-reminders': true,
+            'goal-reminders': false,
+            'theme': 'auto',
+            'language': 'vi',
+            'pomodoro-time': '25',
+            'block-notifications': true,
+            'background-sound': false
+        };
+
+        // Load settings from localStorage
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('appSettings');
+            if (savedSettings) {
+                Object.assign(settings, JSON.parse(savedSettings));
+            }
+            updateUI();
+        }
+
+        // Save settings to localStorage
+        function saveSettings() {
+            localStorage.setItem('appSettings', JSON.stringify(settings));
+            showNotification('Đã lưu cài đặt!');
+        }
+
+        // Update UI based on settings
+        function updateUI() {
+            // Update toggles
+            document.querySelectorAll('.toggle-switch').forEach(toggle => {
+                const setting = toggle.dataset.setting;
+                if (settings[setting]) {
+                    toggle.classList.add('active');
+                } else {
+                    toggle.classList.remove('active');
+                }
+            });
+
+            // Update selects
+            document.querySelectorAll('.select-dropdown').forEach(select => {
+                const setting = select.dataset.setting;
+                select.value = settings[setting];
+            });
+        }
+
+        // Toggle switch handler
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const setting = this.dataset.setting;
+                settings[setting] = !settings[setting];
+                this.classList.toggle('active');
+            });
+        });
+
+        // Select dropdown handler
+        document.querySelectorAll('.select-dropdown').forEach(select => {
+            select.addEventListener('change', function() {
+                const setting = this.dataset.setting;
+                settings[setting] = this.value;
+            });
+        });
+
+        // Export data
+        function exportData() {
+            const data = {
+                settings: settings,
+                tasks: JSON.parse(localStorage.getItem('tasks') || '[]'),
+                sessions: JSON.parse(localStorage.getItem('sessions') || '[]'),
+                exportDate: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `todo-app-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            showNotification('Đã xuất dữ liệu!');
+        }
+
+        // Delete data
+        function deleteData() {
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        // Close delete modal
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+        }
+
+        // Confirm delete
+        function confirmDelete() {
+            localStorage.clear();
+            closeDeleteModal();
+            showNotification('Đã xóa tất cả dữ liệu!');
+            
+            // Reset to default settings
+            Object.keys(settings).forEach(key => {
+                if (key.includes('notification') || key.includes('reminder')) {
+                    settings[key] = true;
+                } else if (key === 'theme') {
+                    settings[key] = 'auto';
+                } else if (key === 'language') {
+                    settings[key] = 'vi';
+                } else if (key === 'pomodoro-time') {
+                    settings[key] = '25';
+                } else {
+                    settings[key] = false;
+                }
+            });
+            
+            updateUI();
+        }
+
+        // Reset settings
+        function resetSettings() {
+            if (confirm('Bạn có chắc muốn đặt lại tất cả cài đặt về mặc định?')) {
+                Object.keys(settings).forEach(key => {
+                    if (key.includes('notification') || key.includes('reminder')) {
+                        settings[key] = true;
+                    } else if (key === 'theme') {
+                        settings[key] = 'auto';
+                    } else if (key === 'language') {
+                        settings[key] = 'vi';
+                    } else if (key === 'pomodoro-time') {
+                        settings[key] = '25';
+                    } else {
+                        settings[key] = false;
+                    }
+                });
+                updateUI();
+                showNotification('Đã đặt lại cài đặt!');
+            }
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--c-primary);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Close modal on backdrop click
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+
+        // Initialize
+        loadSettings();
+
+        // Account functions
+        function editProfile() {
+            alert('Tính năng chỉnh sửa hồ sơ sẽ được tích hợp sau!');
+        }
+
+        function changePassword() {
+            alert('Tính năng đổi mật khẩu sẽ được tích hợp sau!');
+        }
+
+        function logout() {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                alert('Đăng xuất thành công!');
+                window.location.href = '../auth/login.html';
+            }
+        }
+    </script>
+</body>
+</html>

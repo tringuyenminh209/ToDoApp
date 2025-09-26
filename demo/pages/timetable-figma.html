@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thời khóa biểu - DOL LEAF</title>
+    <style>
+        /* Design System Variables */
+        :root {
+            --c-primary: #0FA968;
+            --c-primary-hover: #0B8C57;
+            --c-primary-press: #09764B;
+            --c-accent: #1F6FEB;
+            --c-text: #0B1220;
+            --c-muted: #475569;
+            --c-line: #E2E8F0;
+            --c-bg: #F8FAFC;
+            --c-panel: #FFFFFF;
+            --c-success: #22C55E;
+            --c-warn: #F59E0B;
+            --c-danger: #DC2626;
+            --r-card: 16px;
+            --r-cta: 24px;
+            --space: 4px;
+            --focus: #A7F3D0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --c-bg: #0A0F1A;
+                --c-panel: #111827;
+                --c-line: #1F2937;
+                --c-text: #E5E7EB;
+                --c-primary: #34D399;
+                --c-accent: #69A2FF;
+                --focus: #99F6E4;
+            }
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--c-panel);
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--c-panel);
+            border-bottom: 1px solid var(--c-line);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--c-bg);
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.33;
+            margin-bottom: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .add-class-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--c-primary);
+            border-radius: 8px;
+            background: var(--c-primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .add-class-btn:hover {
+            background: var(--c-primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 16px;
+        }
+
+        /* Current Status */
+        .current-status {
+            margin-bottom: 16px;
+        }
+
+        .status-card {
+            background: var(--c-panel);
+            border: 1px solid var(--c-line);
+            border-radius: var(--r-card);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .status-card.active {
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            color: white;
+            border-color: var(--c-primary);
+        }
+
+        .status-card.next {
+            background: linear-gradient(135deg, var(--c-warn) 0%, #FBBF24 100%);
+            color: white;
+            border-color: var(--c-warn);
+        }
+
+        .status-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--c-bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .status-card.active .status-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .status-card.next .status-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .status-content {
+            flex: 1;
+        }
+
+        .status-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .status-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .status-time {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Study Section */
+        .study-section {
+            margin-bottom: 16px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--c-text);
+        }
+
+        .add-study-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--c-primary);
+            border-radius: 8px;
+            background: var(--c-primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .add-study-btn:hover {
+            background: var(--c-primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .study-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .study-item {
+            background: var(--c-panel);
+            border: 1px solid var(--c-line);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .study-item:hover {
+            border-color: var(--c-primary);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(15, 169, 104, 0.1);
+        }
+
+        .study-item.completed {
+            opacity: 0.6;
+            background: var(--c-bg);
+        }
+
+        .study-item.completed .study-title {
+            text-decoration: line-through;
+        }
+
+        .study-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .study-item[data-type="homework"] .study-icon {
+            background: var(--c-warn);
+            color: white;
+        }
+
+        .study-item[data-type="review"] .study-icon {
+            background: var(--c-accent);
+            color: white;
+        }
+
+        .study-item[data-type="exam"] .study-icon {
+            background: var(--c-danger);
+            color: white;
+        }
+
+        .study-content {
+            flex: 1;
+        }
+
+        .study-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 4px;
+        }
+
+        .study-subtitle {
+            font-size: 12px;
+            color: var(--c-muted);
+        }
+
+        .study-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .study-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--c-line);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .study-checkbox.checked {
+            background: var(--c-primary);
+            border-color: var(--c-primary);
+            color: white;
+        }
+
+        .study-progress {
+            font-size: 12px;
+            color: var(--c-muted);
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .study-progress-success {
+            color: var(--c-success);
+        }
+
+        .study-progress-medium {
+            color: var(--c-warn);
+        }
+
+        .study-progress-danger {
+            color: var(--c-danger);
+        }
+
+        /* Week Navigation */
+        .week-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: var(--c-panel);
+            border-radius: var(--r-card);
+            border: 1px solid var(--c-line);
+        }
+
+        .week-nav-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--c-bg);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .week-nav-btn:hover {
+            background: var(--c-primary);
+            color: white;
+        }
+
+        .week-info {
+            text-align: center;
+        }
+
+        .week-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-text);
+        }
+
+        .week-dates {
+            font-size: 12px;
+            color: var(--c-muted);
+            margin-top: 2px;
+        }
+
+        /* Timetable Grid */
+        .timetable-container {
+            background: var(--c-panel);
+            border-radius: var(--r-card);
+            border: 1px solid var(--c-line);
+            overflow: hidden;
+        }
+
+        .timetable-header {
+            display: grid;
+            grid-template-columns: 40px repeat(7, 1fr);
+            background: var(--c-bg);
+            border-bottom: 1px solid var(--c-line);
+        }
+
+        .time-label {
+            padding: 8px 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--c-muted);
+            text-align: center;
+            border-right: 1px solid var(--c-line);
+        }
+
+        .day-header {
+            padding: 8px 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--c-text);
+            text-align: center;
+            border-right: 1px solid var(--c-line);
+        }
+
+        .day-header:last-child {
+            border-right: none;
+        }
+
+        .timetable-grid {
+            display: grid;
+            grid-template-columns: 40px repeat(7, 1fr);
+        }
+
+        .time-slot {
+            padding: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--c-muted);
+            text-align: center;
+            border-right: 1px solid var(--c-line);
+            border-bottom: 1px solid var(--c-line);
+            background: var(--c-bg);
+        }
+
+        .day-cell {
+            min-height: 60px;
+            border-right: 1px solid var(--c-line);
+            border-bottom: 1px solid var(--c-line);
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .day-cell:last-child {
+            border-right: none;
+        }
+
+        .day-cell:hover {
+            background: var(--focus);
+        }
+
+        .day-cell.empty {
+            background: var(--c-panel);
+        }
+
+        .class-block {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: var(--c-primary);
+            color: white;
+            border-radius: 4px;
+            padding: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .class-block[data-color="primary"] {
+            background: var(--c-primary);
+        }
+
+        .class-block[data-color="accent"] {
+            background: var(--c-accent);
+        }
+
+        .class-block[data-color="success"] {
+            background: var(--c-success);
+        }
+
+        .class-block[data-color="warn"] {
+            background: var(--c-warn);
+        }
+
+        .class-block[data-color="danger"] {
+            background: var(--c-danger);
+        }
+
+        .class-block:hover {
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(15, 169, 104, 0.3);
+        }
+
+        .class-name {
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        .class-room {
+            font-size: 9px;
+            opacity: 0.9;
+        }
+
+        /* SVG Icon Styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: currentColor;
+            stroke: currentColor;
+        }
+
+        .icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: var(--c-panel);
+            border-top: 1px solid var(--c-line);
+            display: flex;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            text-decoration: none;
+            color: var(--c-muted);
+            transition: color 0.2s ease;
+            border-radius: 12px;
+            margin: 0 4px;
+        }
+
+        .nav-item.active {
+            color: var(--c-primary);
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+        }
+
+        .nav-item .label {
+            font-size: 12px;
+            line-height: 1.33;
+        }
+
+        .next-week {
+            transform: rotate(180deg);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .timetable-header,
+            .timetable-grid {
+                grid-template-columns: 35px repeat(7, 1fr);
+            }
+
+            .time-label,
+            .day-header {
+                font-size: 10px;
+                padding: 6px 2px;
+            }
+
+            .day-cell {
+                min-height: 50px;
+            }
+
+            .class-block {
+                font-size: 9px;
+            }
+
+            .class-name {
+                font-size: 9px;
+            }
+
+            .class-room {
+                font-size: 8px;
+            }
+
+            .nav-item {
+                padding: 6px 8px;
+            }
+
+            .nav-item .label {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <button class="back-btn" title="Quay lại" aria-label="Quay lại">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"/>
+                        <polyline points="12,19 5,12 12,5"/>
+                    </svg>
+                </button>
+                <h1 class="header-title">Thời khóa biểu</h1>
+            </div>
+            <div class="header-actions">
+                <button class="add-class-btn" title="Thêm lớp học">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Thêm lớp
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Current Class Status -->
+            <div class="current-status">
+                <div class="status-card">
+                    <div class="status-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12,6 12,12 16,14"/>
+                        </svg>
+                    </div>
+                    <div class="status-content">
+                        <div class="status-title">Không có lớp học</div>
+                        <div class="status-subtitle">Nghỉ ngơi</div>
+                    </div>
+                    <div class="status-time">--:--</div>
+                </div>
+            </div>
+
+            <!-- Week Navigation -->
+            <div class="week-nav">
+                <button class="week-nav-btn" title="Tuần trước" aria-label="Tuần trước">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"/>
+                        <polyline points="12,19 5,12 12,5"/>
+                    </svg>
+                </button>
+                <div class="week-info">
+                    <div class="week-title">Tuần 1 - Tháng 9</div>
+                    <div class="week-dates">28/9 - 4/10/2025</div>
+                </div>
+                <button class="week-nav-btn" title="Tuần sau" aria-label="Tuần sau">
+                    <svg class="icon icon-sm next-week" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"/>
+                        <polyline points="12,19 5,12 12,5"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Study Section -->
+            <div class="study-section">
+                <div class="section-header">
+                    <h3 class="section-title">Làm bài tập & Ôn tập</h3>
+                    <button class="add-study-btn" title="Thêm bài tập">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Thêm
+                    </button>
+                </div>
+                
+                <div class="study-list">
+                    <!-- Study Item 1 -->
+                    <div class="study-item" data-type="homework">
+                        <div class="study-icon">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                        </div>
+                        <div class="study-content">
+                            <div class="study-title">Làm bài tập Java OOP</div>
+                            <div class="study-subtitle">Bài tập • Java Programming • Hạn: 25/09/2024</div>
+                        </div>
+                        <div class="study-actions">
+                            <div class="study-progress study-progress-medium">Chưa xong</div>
+                            <div class="study-checkbox" title="Đánh dấu hoàn thành"></div>
+                        </div>
+                    </div>
+
+                    <!-- Study Item 2 -->
+                    <div class="study-item completed" data-type="review">
+                        <div class="study-icon">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            </svg>
+                        </div>
+                        <div class="study-content">
+                            <div class="study-title">Ôn tập AWS Cloud</div>
+                            <div class="study-subtitle">Ôn tập • AWS Cloud • Hạn: 20/09/2024</div>
+                        </div>
+                        <div class="study-actions">
+                            <div class="study-progress study-progress-success">Hoàn thành</div>
+                            <div class="study-checkbox checked" title="Đã hoàn thành">✓</div>
+                        </div>
+                    </div>
+
+                    <!-- Study Item 3 -->
+                    <div class="study-item" data-type="exam">
+                        <div class="study-icon">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="6"/>
+                                <circle cx="12" cy="12" r="2"/>
+                            </svg>
+                        </div>
+                        <div class="study-content">
+                            <div class="study-title">Chuẩn bị thi Mobile App</div>
+                            <div class="study-subtitle">Thi cử • Mobile Development • Hạn: 30/09/2024</div>
+                        </div>
+                        <div class="study-actions">
+                            <div class="study-progress study-progress-danger">Chưa xong</div>
+                            <div class="study-checkbox" title="Đánh dấu hoàn thành"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timetable Grid -->
+            <div class="timetable-container">
+                <!-- Header -->
+                <div class="timetable-header">
+                    <div class="time-label">Tiết</div>
+                    <div class="day-header">CN</div>
+                    <div class="day-header">T2</div>
+                    <div class="day-header">T3</div>
+                    <div class="day-header">T4</div>
+                    <div class="day-header">T5</div>
+                    <div class="day-header">T6</div>
+                    <div class="day-header">T7</div>
+                </div>
+
+                <!-- Grid -->
+                <div class="timetable-grid">
+                    <!-- Period 1 -->
+                    <div class="time-slot">1</div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="primary">
+                            <div class="class-name">IT就職作品開発</div>
+                            <div class="class-room">1603</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="success">
+                            <div class="class-name">モバイルアプリ開発演習</div>
+                            <div class="class-room">1604</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="danger">
+                            <div class="class-name">IoT制作演習I</div>
+                            <div class="class-room">3501</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="primary">
+                            <div class="class-name">外国語IV(英語中級)</div>
+                            <div class="class-room">1302</div>
+                        </div>
+                    </div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell empty"></div>
+
+                    <!-- Period 2 -->
+                    <div class="time-slot">2</div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="primary">
+                            <div class="class-name">IT就職作品開発</div>
+                            <div class="class-room">1603</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="success">
+                            <div class="class-name">モバイルアプリ開発演習</div>
+                            <div class="class-room">1604</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="danger">
+                            <div class="class-name">IoT制作演習I</div>
+                            <div class="class-room">3501</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="accent">
+                            <div class="class-name">就職対策I</div>
+                            <div class="class-room">3303</div>
+                        </div>
+                    </div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell empty"></div>
+
+                    <!-- Period 3 -->
+                    <div class="time-slot">3</div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="accent">
+                            <div class="class-name">AWSクラウド演習I</div>
+                            <div class="class-room">3501</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="warn">
+                            <div class="class-name">AI活用演習</div>
+                            <div class="class-room">1604</div>
+                        </div>
+                    </div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="primary">
+                            <div class="class-name">IT就職作品開発</div>
+                            <div class="class-room">1603</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="success">
+                            <div class="class-name">チームデスクトップアプリ開発</div>
+                            <div class="class-room">2301</div>
+                        </div>
+                    </div>
+                    <div class="day-cell empty"></div>
+
+                    <!-- Period 4 -->
+                    <div class="time-slot">4</div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="accent">
+                            <div class="class-name">AWSクラウド演習I</div>
+                            <div class="class-room">3501</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="warn">
+                            <div class="class-name">AI活用演習</div>
+                            <div class="class-room">1604</div>
+                        </div>
+                    </div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="primary">
+                            <div class="class-name">IT就職作品開発</div>
+                            <div class="class-room">1603</div>
+                        </div>
+                    </div>
+                    <div class="day-cell">
+                        <div class="class-block" data-color="success">
+                            <div class="class-name">チームデスクトップアプリ開発</div>
+                            <div class="class-room">2301</div>
+                        </div>
+                    </div>
+                    <div class="day-cell empty"></div>
+
+                    <!-- Period 5 -->
+                    <div class="time-slot">5</div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell empty"></div>
+                    <div class="day-cell empty"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9,22 9,12 15,12 15,22"/>
+                </svg>
+                <div class="label">Home</div>
+            </a>
+            <a href="calendar.html" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <div class="label">Calendar</div>
+            </a>
+            <a href="timetable.html" class="nav-item active">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+                <div class="label">Timetable</div>
+            </a>
+            <a href="stats.html" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+                <div class="label">Stats</div>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <div class="label">Settings</div>
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

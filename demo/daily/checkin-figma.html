@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-in sáng - DOL LEAF</title>
+    <style>
+        /* Design System Variables */
+        :root {
+            --c-primary: #0FA968;
+            --c-primary-hover: #0B8C57;
+            --c-primary-press: #09764B;
+            --c-accent: #1F6FEB;
+            --c-text: #0B1220;
+            --c-muted: #475569;
+            --c-line: #E2E8F0;
+            --c-bg: #F8FAFC;
+            --c-panel: #FFFFFF;
+            --c-success: #22C55E;
+            --c-warn: #F59E0B;
+            --c-danger: #DC2626;
+            --r-card: 16px;
+            --r-cta: 24px;
+            --space: 4px;
+            --focus: #A7F3D0;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--c-panel);
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--c-panel);
+            border-bottom: 1px solid var(--c-line);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--c-bg);
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.33;
+            margin-bottom: 4px;
+        }
+
+        .skip-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--c-line);
+            border-radius: 8px;
+            background: var(--c-panel);
+            color: var(--c-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skip-btn:hover {
+            border-color: var(--c-primary);
+            color: var(--c-primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 16px;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .welcome-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .welcome-icon::after {
+            content: '🌿';
+            font-size: 40px;
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--c-text);
+            margin-bottom: 8px;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: var(--c-muted);
+            line-height: 1.5;
+        }
+
+        /* Check-in Form */
+        .checkin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-section {
+            background: var(--c-panel);
+            border-radius: var(--r-card);
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--c-line);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--c-text);
+        }
+
+        /* Energy Level */
+        .energy-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .energy-option {
+            padding: 20px 16px;
+            border: 2px solid var(--c-line);
+            border-radius: var(--r-card);
+            background: var(--c-panel);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .energy-option:hover {
+            border-color: var(--c-primary);
+            background: var(--c-bg);
+        }
+
+        .energy-option.selected {
+            border-color: var(--c-primary);
+            background: var(--focus);
+        }
+
+        .energy-icon {
+            margin-bottom: 8px;
+            color: var(--c-primary);
+            width: 28px;
+            height: 28px;
+            margin: 0 auto 8px;
+        }
+
+        .energy-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 4px;
+        }
+
+        .energy-description {
+            font-size: 12px;
+            color: var(--c-muted);
+        }
+
+        /* Mood Selector */
+        .mood-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .mood-option {
+            padding: 16px 8px;
+            border: 2px solid var(--c-line);
+            border-radius: 12px;
+            background: var(--c-panel);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .mood-option:hover {
+            border-color: var(--c-primary);
+            background: var(--c-bg);
+        }
+
+        .mood-option.selected {
+            border-color: var(--c-primary);
+            background: var(--focus);
+        }
+
+        .mood-icon {
+            margin-bottom: 8px;
+            color: var(--c-primary);
+            width: 28px;
+            height: 28px;
+            margin: 0 auto 8px;
+        }
+
+        .mood-label {
+            font-size: 12px;
+            color: var(--c-text);
+            font-weight: 500;
+        }
+
+        /* Schedule Input */
+        .schedule-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--c-line);
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--c-panel);
+            color: var(--c-text);
+            transition: all 0.2s ease;
+        }
+
+        .schedule-input:focus {
+            outline: none;
+            border-color: var(--c-primary);
+            box-shadow: 0 0 0 3px rgba(15, 169, 104, 0.1);
+        }
+
+        .schedule-input::placeholder {
+            color: var(--c-muted);
+        }
+
+        /* AI Suggestions */
+        .ai-suggestions {
+            background: linear-gradient(135deg, #E6F8F1 0%, #EEF5FF 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 24px;
+            display: none;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .ai-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .ai-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-text);
+        }
+
+        .suggestion-card {
+            background: var(--c-panel);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestion-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .suggestion-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 4px;
+        }
+
+        .suggestion-description {
+            font-size: 12px;
+            color: var(--c-muted);
+            margin-bottom: 8px;
+        }
+
+        .suggestion-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--c-muted);
+        }
+
+        .suggestion-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--r-cta);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(15, 169, 104, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 169, 104, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 16px;
+            background: var(--c-panel);
+            color: var(--c-text);
+            border: 2px solid var(--c-line);
+            border-radius: var(--r-cta);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--c-primary);
+            color: var(--c-primary);
+        }
+
+        /* SVG Icon Styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: currentColor;
+            stroke: currentColor;
+        }
+
+        .icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .icon-xl {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: var(--c-panel);
+            border-top: 1px solid var(--c-line);
+            display: flex;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            text-decoration: none;
+            color: var(--c-muted);
+            transition: color 0.2s ease;
+            border-radius: 12px;
+            margin: 0 4px;
+        }
+
+        .nav-item.active {
+            color: var(--c-primary);
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+        }
+
+        .nav-item .label {
+            font-size: 12px;
+            line-height: 1.33;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .form-section {
+                padding: 16px;
+            }
+
+            .energy-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .mood-selector {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .nav-item {
+                padding: 6px 8px;
+            }
+
+            .nav-item .label {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <button class="back-btn" title="Quay lại">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <h1 class="header-title">Check-in sáng</h1>
+            </div>
+            <button class="skip-btn">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+                Bỏ qua
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <div class="welcome-icon"></div>
+                <h1 class="welcome-title">Chào buổi sáng!</h1>
+                <p class="welcome-subtitle">Hãy dành 2 phút để thiết lập tâm thế cho ngày mới</p>
+            </div>
+
+            <!-- Check-in Form -->
+            <form class="checkin-form">
+                <!-- Energy Level -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+                        </svg>
+                        Mức năng lượng hiện tại
+                    </h2>
+                    
+                    <div class="energy-selector">
+                        <div class="energy-option" data-energy="low">
+                            <div class="energy-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="1" y="6" width="18" height="10" rx="2" ry="2"/>
+                                    <line x1="23" y1="13" x2="23" y2="11"/>
+                                </svg>
+                            </div>
+                            <div class="energy-title">Thấp</div>
+                            <div class="energy-description">Cần nghỉ ngơi thêm</div>
+                        </div>
+                        <div class="energy-option selected" data-energy="medium">
+                            <div class="energy-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+                                </svg>
+                            </div>
+                            <div class="energy-title">Trung bình</div>
+                            <div class="energy-description">Sẵn sàng làm việc</div>
+                        </div>
+                        <div class="energy-option" data-energy="high">
+                            <div class="energy-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                                </svg>
+                            </div>
+                            <div class="energy-title">Cao</div>
+                            <div class="energy-description">Tràn đầy năng lượng</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mood -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                        Tâm trạng hôm nay
+                    </h2>
+                    
+                    <div class="mood-selector">
+                        <div class="mood-option" data-mood="terrible">
+                            <div class="mood-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
+                                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                </svg>
+                            </div>
+                            <div class="mood-label">Tệ</div>
+                        </div>
+                        <div class="mood-option" data-mood="bad">
+                            <div class="mood-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
+                                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                </svg>
+                            </div>
+                            <div class="mood-label">Không tốt</div>
+                        </div>
+                        <div class="mood-option selected" data-mood="okay">
+                            <div class="mood-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                </svg>
+                            </div>
+                            <div class="mood-label">Bình thường</div>
+                        </div>
+                        <div class="mood-option" data-mood="good">
+                            <div class="mood-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                </svg>
+                            </div>
+                            <div class="mood-label">Tốt</div>
+                        </div>
+                        <div class="mood-option" data-mood="great">
+                            <div class="mood-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                </svg>
+                            </div>
+                            <div class="mood-label">Tuyệt vời</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schedule -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        Lịch trình hôm nay
+                    </h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="schedule">Có sự kiện quan trọng nào không?</label>
+                        <input type="text" id="schedule" class="schedule-input" placeholder="Ví dụ: Họp lúc 2h, Deadline dự án...">
+                    </div>
+                </div>
+            </form>
+
+            <!-- AI Suggestions -->
+            <div class="ai-suggestions">
+                <div class="ai-header">
+                    <div class="ai-icon">AI</div>
+                    <h3 class="ai-title">Top 3 việc hôm nay</h3>
+                </div>
+                
+                <div class="suggestion-card">
+                    <div class="suggestion-title">Học Java cơ bản</div>
+                    <div class="suggestion-description">Tập trung vào OOP và Collections</div>
+                    <div class="suggestion-meta">
+                        <span>
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                            120p
+                        </span>
+                        <span>
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="6"/>
+                                <circle cx="12" cy="12" r="2"/>
+                            </svg>
+                            Ưu tiên cao
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="suggestion-card">
+                    <div class="suggestion-title">Viết báo cáo tuần</div>
+                    <div class="suggestion-description">Tổng kết công việc tuần qua</div>
+                    <div class="suggestion-meta">
+                        <span>
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                            60p
+                        </span>
+                        <span>
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="6"/>
+                                <circle cx="12" cy="12" r="2"/>
+                            </svg>
+                            Ưu tiên trung bình
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="suggestion-card">
+                    <div class="suggestion-title">Tập thể dục 30 phút</div>
+                    <div class="suggestion-description">Đi bộ hoặc chạy bộ</div>
+                    <div class="suggestion-meta">
+                        <span>
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                            30p
+                        </span>
+                        <span>
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="6"/>
+                                <circle cx="12" cy="12" r="2"/>
+                            </svg>
+                            Ưu tiên thấp
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button type="button" class="btn-secondary">Quay lại</button>
+                <button type="submit" class="btn-primary">Hoàn thành</button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9,22 9,12 15,12 15,22"/>
+                </svg>
+                <div class="label">Home</div>
+            </a>
+            <a href="#" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <div class="label">Calendar</div>
+            </a>
+            <a href="#" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+                <div class="label">Timetable</div>
+            </a>
+            <a href="#" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+                <div class="label">Stats</div>
+            </a>
+            <a href="#" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <div class="label">Settings</div>
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

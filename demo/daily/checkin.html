@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-in sáng - DOL LEAF</title>
+    <link rel="icon" type="image/png" href="../assets/TodoappLogo.png">
+    <link rel="stylesheet" href="../assets/icons.svg">
+    <style>
+        /* Design System Variables */
+        :root {
+            --c-primary: #0FA968;
+            --c-primary-hover: #0B8C57;
+            --c-primary-press: #09764B;
+            --c-accent: #1F6FEB;
+            --c-text: #0B1220;
+            --c-muted: #475569;
+            --c-line: #E2E8F0;
+            --c-bg: #F8FAFC;
+            --c-panel: #FFFFFF;
+            --c-success: #22C55E;
+            --c-warn: #F59E0B;
+            --c-danger: #DC2626;
+            --r-card: 16px;
+            --r-cta: 24px;
+            --space: 4px;
+            --focus: #A7F3D0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --c-bg: #0A0F1A;
+                --c-panel: #111827;
+                --c-line: #1F2937;
+                --c-text: #E5E7EB;
+                --c-primary: #34D399;
+                --c-accent: #69A2FF;
+                --focus: #99F6E4;
+            }
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--c-panel);
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--c-panel);
+            border-bottom: 1px solid var(--c-line);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--c-bg);
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.33;
+            margin-bottom: 4px;
+        }
+
+        .skip-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--c-line);
+            border-radius: 8px;
+            background: var(--c-panel);
+            color: var(--c-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skip-btn:hover {
+            border-color: var(--c-primary);
+            color: var(--c-primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 16px;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .welcome-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .welcome-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--c-text);
+            margin-bottom: 8px;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: var(--c-muted);
+            line-height: 1.5;
+        }
+
+        /* Check-in Form */
+        .checkin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-section {
+            background: var(--c-panel);
+            border-radius: var(--r-card);
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--c-line);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--c-text);
+        }
+
+        /* Energy Level */
+        .energy-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .energy-option {
+            padding: 20px 16px;
+            border: 2px solid var(--c-line);
+            border-radius: var(--r-card);
+            background: var(--c-panel);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .energy-option:hover {
+            border-color: var(--c-primary);
+            background: var(--c-bg);
+        }
+
+        .energy-option.selected {
+            border-color: var(--c-primary);
+            background: var(--focus);
+        }
+
+        .energy-icon {
+            margin-bottom: 8px;
+            color: var(--c-primary);
+        }
+
+        .energy-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 4px;
+        }
+
+        .energy-description {
+            font-size: 12px;
+            color: var(--c-muted);
+        }
+
+        /* Mood Selector */
+        .mood-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .mood-option {
+            padding: 16px 8px;
+            border: 2px solid var(--c-line);
+            border-radius: 12px;
+            background: var(--c-panel);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .mood-option:hover {
+            border-color: var(--c-primary);
+            background: var(--c-bg);
+        }
+
+        .mood-option.selected {
+            border-color: var(--c-primary);
+            background: var(--focus);
+        }
+
+        .mood-icon {
+            margin-bottom: 8px;
+            color: var(--c-primary);
+        }
+
+        .mood-label {
+            font-size: 12px;
+            color: var(--c-text);
+            font-weight: 500;
+        }
+
+        /* Schedule Input */
+        .schedule-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--c-line);
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--c-panel);
+            color: var(--c-text);
+            transition: all 0.2s ease;
+        }
+
+        .schedule-input:focus {
+            outline: none;
+            border-color: var(--c-primary);
+            box-shadow: 0 0 0 3px rgba(15, 169, 104, 0.1);
+        }
+
+        .schedule-input::placeholder {
+            color: var(--c-muted);
+        }
+
+        /* AI Suggestions */
+        .ai-suggestions {
+            background: linear-gradient(135deg, #E6F8F1 0%, #EEF5FF 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 24px;
+            display: none;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .ai-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .ai-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-text);
+        }
+
+        .suggestion-card {
+            background: var(--c-panel);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestion-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .suggestion-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 4px;
+        }
+
+        .suggestion-description {
+            font-size: 12px;
+            color: var(--c-muted);
+            margin-bottom: 8px;
+        }
+
+        .suggestion-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--c-muted);
+        }
+
+        .suggestion-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--r-cta);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(15, 169, 104, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 169, 104, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 16px;
+            background: var(--c-panel);
+            color: var(--c-text);
+            border: 2px solid var(--c-line);
+            border-radius: var(--r-cta);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--c-primary);
+            color: var(--c-primary);
+        }
+
+        /* SVG Icon Styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: currentColor;
+            stroke: currentColor;
+        }
+
+        .icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .icon-xl {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Loading State */
+        .btn-primary.loading {
+            color: transparent;
+        }
+
+        .btn-primary.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: var(--c-panel);
+            border-top: 1px solid var(--c-line);
+            display: flex;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            text-decoration: none;
+            color: var(--c-muted);
+            transition: color 0.2s ease;
+            border-radius: 12px;
+            margin: 0 4px;
+        }
+
+        .nav-item.active {
+            color: var(--c-primary);
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+        }
+
+        .nav-item .label {
+            font-size: 12px;
+            line-height: 1.33;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .form-section {
+                padding: 16px;
+            }
+
+            .energy-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .mood-selector {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .nav-item {
+                padding: 6px 8px;
+            }
+
+            .nav-item .label {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <button class="back-btn" onclick="goBack()" title="Quay lại" aria-label="Quay lại">
+                    <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-arrow-left"></use></svg>
+                </button>
+                <h1 class="header-title">Check-in sáng</h1>
+            </div>
+            <button class="skip-btn" onclick="skipCheckin()">
+                <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-skip"></use></svg>
+                Bỏ qua
+            </button>
+        </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <div class="welcome-icon">
+                <img src="../assets/TodoappLogo.png" alt="DOL LEAF Logo" class="welcome-logo">
+            </div>
+            <h1 class="welcome-title">Chào buổi sáng!</h1>
+            <p class="welcome-subtitle">Hãy dành 2 phút để thiết lập tâm thế cho ngày mới</p>
+        </div>
+
+        <!-- Check-in Form -->
+        <form class="checkin-form" id="checkinForm">
+            <!-- Energy Level -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-lightning"></use></svg>
+                    Mức năng lượng hiện tại
+                </h2>
+                
+                <div class="energy-selector">
+                    <div class="energy-option" data-energy="low">
+                        <div class="energy-icon">
+                            <svg class="icon icon-lg"><use href="../assets/icons.svg#icon-battery"></use></svg>
+                        </div>
+                        <div class="energy-title">Thấp</div>
+                        <div class="energy-description">Cần nghỉ ngơi thêm</div>
+                    </div>
+                    <div class="energy-option selected" data-energy="medium">
+                        <div class="energy-icon">
+                            <svg class="icon icon-lg"><use href="../assets/icons.svg#icon-lightning"></use></svg>
+                        </div>
+                        <div class="energy-title">Trung bình</div>
+                        <div class="energy-description">Sẵn sàng làm việc</div>
+                    </div>
+                    <div class="energy-option" data-energy="high">
+                        <div class="energy-icon">
+                            <svg class="icon icon-lg"><use href="../assets/icons.svg#icon-flame"></use></svg>
+                        </div>
+                        <div class="energy-title">Cao</div>
+                        <div class="energy-description">Tràn đầy năng lượng</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mood -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-heart"></use></svg>
+                    Tâm trạng hôm nay
+                </h2>
+                
+                <div class="mood-selector">
+                    <div class="mood-option" data-mood="terrible">
+                        <div class="mood-icon">
+                            <svg class="icon icon-lg"><use href="../assets/icons.svg#icon-target"></use></svg>
+                        </div>
+                        <div class="mood-label">Tệ</div>
+                    </div>
+                    <div class="mood-option" data-mood="bad">
+                        <div class="mood-icon">
+                            <svg class="icon icon-lg"><use href="../assets/icons.svg#icon-target"></use></svg>
+                        </div>
+                        <div class="mood-label">Không tốt</div>
+                    </div>
+                    <div class="mood-option selected" data-mood="okay">
+                        <div class="mood-icon">
+                            <svg class="icon icon-lg"><use href="../assets/icons.svg#icon-target"></use></svg>
+                        </div>
+                        <div class="mood-label">Bình thường</div>
+                    </div>
+                    <div class="mood-option" data-mood="good">
+                        <div class="mood-icon">
+                            <svg class="icon icon-lg"><use href="../assets/icons.svg#icon-target"></use></svg>
+                        </div>
+                        <div class="mood-label">Tốt</div>
+                    </div>
+                    <div class="mood-option" data-mood="great">
+                        <div class="mood-icon">
+                            <svg class="icon icon-lg"><use href="../assets/icons.svg#icon-heart"></use></svg>
+                        </div>
+                        <div class="mood-label">Tuyệt vời</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schedule -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-calendar"></use></svg>
+                    Lịch trình hôm nay
+                </h2>
+                
+                <div class="form-group">
+                    <label class="form-label" for="schedule">Có sự kiện quan trọng nào không?</label>
+                    <input type="text" id="schedule" class="schedule-input" placeholder="Ví dụ: Họp lúc 2h, Deadline dự án...">
+                </div>
+            </div>
+        </form>
+
+        <!-- AI Suggestions -->
+        <div class="ai-suggestions" id="aiSuggestions">
+            <div class="ai-header">
+                <div class="ai-icon">AI</div>
+                <h3 class="ai-title">Top 3 việc hôm nay</h3>
+            </div>
+            
+            <div class="suggestion-card">
+                <div class="suggestion-title">Học Java cơ bản</div>
+                <div class="suggestion-description">Tập trung vào OOP và Collections</div>
+                <div class="suggestion-meta">
+                    <span><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-clock"></use></svg> 120p</span>
+                    <span><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-target"></use></svg> Ưu tiên cao</span>
+                </div>
+            </div>
+            
+            <div class="suggestion-card">
+                <div class="suggestion-title">Viết báo cáo tuần</div>
+                <div class="suggestion-description">Tổng kết công việc tuần qua</div>
+                <div class="suggestion-meta">
+                    <span><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-clock"></use></svg> 60p</span>
+                    <span><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-target"></use></svg> Ưu tiên trung bình</span>
+                </div>
+            </div>
+            
+            <div class="suggestion-card">
+                <div class="suggestion-title">Tập thể dục 30 phút</div>
+                <div class="suggestion-description">Đi bộ hoặc chạy bộ</div>
+                <div class="suggestion-meta">
+                    <span><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-clock"></use></svg> 30p</span>
+                    <span><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-target"></use></svg> Ưu tiên thấp</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button type="button" class="btn-secondary" onclick="goBack()">Quay lại</button>
+            <button type="submit" class="btn-primary" id="submitBtn" onclick="submitCheckin()">Hoàn thành</button>
+        </div>
+    </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="../pages/home.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-home"></use></svg>
+                <div class="label">Home</div>
+            </a>
+            <a href="../pages/calendar.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-calendar"></use></svg>
+                <div class="label">Calendar</div>
+            </a>
+            <a href="../pages/timetable.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-book"></use></svg>
+                <div class="label">Timetable</div>
+            </a>
+            <a href="../pages/stats.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-stats"></use></svg>
+                <div class="label">Stats</div>
+            </a>
+            <a href="../pages/settings.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-settings"></use></svg>
+                <div class="label">Settings</div>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        // Check-in state
+        let checkinData = {
+            energy: 'medium',
+            mood: 'okay',
+            schedule: ''
+        };
+
+        // Energy selection
+        document.querySelectorAll('.energy-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.energy-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                checkinData.energy = this.dataset.energy;
+            });
+        });
+
+        // Mood selection
+        document.querySelectorAll('.mood-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.mood-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                checkinData.mood = this.dataset.mood;
+            });
+        });
+
+        // Schedule input
+        document.getElementById('schedule').addEventListener('input', function() {
+            checkinData.schedule = this.value;
+        });
+
+        // Submit check-in
+        function submitCheckin() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                // Store check-in data
+                const checkinRecord = {
+                    ...checkinData,
+                    timestamp: new Date().toISOString(),
+                    date: new Date().toDateString()
+                };
+                
+                localStorage.setItem('lastCheckin', JSON.stringify(checkinRecord));
+                
+                // Show AI suggestions
+                document.getElementById('aiSuggestions').style.display = 'block';
+                
+                // Update button
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Vào trang chủ';
+                submitBtn.onclick = function() {
+                    window.location.href = '../pages/home.html';
+                };
+                
+                // Scroll to suggestions
+                document.getElementById('aiSuggestions').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+                
+            }, 2000);
+        }
+
+        // Skip check-in
+        function skipCheckin() {
+            if (confirm('Bạn có chắc chắn muốn bỏ qua check-in?')) {
+                window.location.href = '../pages/home.html';
+            }
+        }
+
+        // Go back
+        function goBack() {
+            if (confirm('Bạn có chắc chắn muốn rời khỏi trang?')) {
+                window.location.href = '../pages/home.html';
+            }
+        }
+
+        // Check if already checked in today
+        function checkAlreadyCheckedIn() {
+            const lastCheckin = localStorage.getItem('lastCheckin');
+            if (lastCheckin) {
+                const checkinData = JSON.parse(lastCheckin);
+                const today = new Date().toDateString();
+                
+                if (checkinData.date === today) {
+                    if (confirm('Bạn đã check-in hôm nay. Bạn có muốn check-in lại không?')) {
+                        return;
+                    } else {
+                        window.location.href = '../pages/home.html';
+                    }
+                }
+            }
+        }
+
+        // Initialize
+        checkAlreadyCheckedIn();
+    </script>
+</body>
+</html>
