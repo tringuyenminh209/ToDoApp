@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - DOL LEAF</title>
+    <link rel="icon" type="image/png" href="../assets/TodoappLogo.png">
+    <link rel="stylesheet" href="../assets/icons.svg">
+    <style>
+        /* Design System Variables */
+        :root {
+            --c-primary: #0FA968;
+            --c-primary-hover: #0B8C57;
+            --c-primary-press: #09764B;
+            --c-accent: #1F6FEB;
+            --c-text: #0B1220;
+            --c-muted: #475569;
+            --c-line: #E2E8F0;
+            --c-bg: #F8FAFC;
+            --c-panel: #FFFFFF;
+            --c-success: #22C55E;
+            --c-warn: #F59E0B;
+            --c-danger: #DC2626;
+            --r-card: 16px;
+            --r-cta: 24px;
+            --space: 4px;
+            --focus: #A7F3D0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --c-bg: #0A0F1A;
+                --c-panel: #111827;
+                --c-line: #1F2937;
+                --c-text: #E5E7EB;
+                --c-primary: #34D399;
+                --c-accent: #69A2FF;
+                --focus: #99F6E4;
+            }
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--c-panel);
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            padding: 16px;
+            border-bottom: 1px solid var(--c-line);
+            background: var(--c-panel);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(15, 169, 104, 0.2);
+        }
+
+        .app-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.33;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: var(--c-bg);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .view-btn {
+            padding: 8px 16px;
+            border: none;
+            background: none;
+            color: var(--c-muted);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .view-btn.active {
+            background: var(--c-panel);
+            color: var(--c-text);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .week-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--c-text);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--c-line);
+        }
+
+        .week-info {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-text);
+        }
+
+        /* Calendar Grid */
+        .calendar-section {
+            padding: 16px;
+        }
+
+        /* Week View */
+        .week-view {
+            display: none;
+        }
+
+        .week-view.active {
+            display: block;
+        }
+
+        .week-header {
+            display: grid;
+            grid-template-columns: 60px repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .time-label {
+            font-size: 12px;
+            color: var(--c-muted);
+            text-align: center;
+            padding: 8px 4px;
+        }
+
+        .day-header {
+            text-align: center;
+            padding: 8px 4px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--c-text);
+        }
+
+        .day-header.today {
+            color: var(--c-primary);
+            background: #E6F8F1;
+            border-radius: 6px;
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: 60px repeat(7, 1fr);
+            gap: 8px;
+            min-height: 600px;
+        }
+
+        .time-slot {
+            font-size: 12px;
+            color: var(--c-muted);
+            text-align: center;
+            padding: 4px;
+            border-top: 1px solid var(--c-line);
+            position: relative;
+        }
+
+        .day-column {
+            border-top: 1px solid var(--c-line);
+            position: relative;
+        }
+
+        .time-block {
+            position: absolute;
+            left: 4px;
+            right: 4px;
+            background: var(--c-primary);
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 5;
+            min-height: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .time-block:hover {
+            background: var(--c-primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .time-block.overlap {
+            background: var(--c-warn);
+        }
+
+        .time-block.overlap:hover {
+            background: #D97706;
+        }
+
+        /* Day View */
+        .day-view {
+            display: none;
+        }
+
+        .day-view.active {
+            display: block;
+        }
+
+        .day-header-single {
+            text-align: center;
+            padding: 16px;
+            background: var(--c-bg);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .day-date {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 4px;
+        }
+
+        .day-weekday {
+            font-size: 14px;
+            color: var(--c-muted);
+        }
+
+        .day-schedule {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .schedule-item {
+            background: var(--c-panel);
+            border: 1px solid var(--c-line);
+            border-radius: 12px;
+            padding: 16px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .schedule-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transform: translateY(-1px);
+        }
+
+        .schedule-time {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--c-primary);
+            margin-bottom: 4px;
+        }
+
+        .schedule-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--c-text);
+            margin-bottom: 4px;
+        }
+
+        .schedule-meta {
+            font-size: 12px;
+            color: var(--c-muted);
+            display: flex;
+            gap: 12px;
+        }
+
+        .schedule-priority {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 2px;
+        }
+
+        .priority-1 { background: #94A3B8; }
+        .priority-2 { background: #22C55E; }
+        .priority-3 { background: #F59E0B; }
+        .priority-4 { background: #F97316; }
+        .priority-5 { background: #DC2626; }
+
+        /* Task List */
+        .task-list {
+            margin-top: 24px;
+        }
+
+        .task-list-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 16px;
+        }
+
+        .task-item {
+            background: var(--c-panel);
+            border: 1px solid var(--c-line);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: grab;
+            transition: all 0.2s ease;
+        }
+
+        .task-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .task-item:active {
+            cursor: grabbing;
+            transform: rotate(2deg);
+        }
+
+        .task-item-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .task-item-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--c-text);
+            flex: 1;
+        }
+
+        .task-item-meta {
+            font-size: 12px;
+            color: var(--c-muted);
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: 100px;
+            right: 16px;
+            width: 56px;
+            height: 56px;
+            background: var(--c-primary);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+            z-index: 20;
+        }
+
+        .fab:hover {
+            background: var(--c-primary-hover);
+            transform: scale(1.05);
+        }
+
+        .fab:active {
+            transform: scale(0.96);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: var(--c-panel);
+            border-top: 1px solid var(--c-line);
+            display: flex;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            text-decoration: none;
+            color: #64748B;
+            transition: color 0.2s ease;
+        }
+
+        .nav-item.active {
+            color: var(--c-primary);
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+        }
+
+        .nav-item .label {
+            font-size: 12px;
+            line-height: 1.33;
+        }
+
+        /* SVG Icon Styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: currentColor;
+            stroke: currentColor;
+        }
+
+        .icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .icon-xl {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Responsive */
+        @media (max-width: 375px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .week-grid {
+                gap: 4px;
+            }
+            
+            .time-block {
+                font-size: 11px;
+                padding: 4px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div class="header-left">
+                    <div class="app-logo">
+                        <img src="../assets/TodoappLogo.png" alt="DOL LEAF Logo">
+                    </div>
+                    <h1>Calendar</h1>
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="week" title="Xem tuần" aria-label="Xem tuần">Tuần</button>
+                    <button class="view-btn" data-view="day" title="Xem ngày" aria-label="Xem ngày">Ngày</button>
+                </div>
+            </div>
+            <div class="week-nav">
+                <button class="nav-btn" id="prevWeek" title="Tuần trước" aria-label="Tuần trước">‹</button>
+                <div class="week-info" id="weekInfo">18-24/09/2024</div>
+                <button class="nav-btn" id="nextWeek" title="Tuần sau" aria-label="Tuần sau">›</button>
+            </div>
+        </header>
+
+        <!-- Calendar Section -->
+        <section class="calendar-section">
+            <!-- Week View -->
+            <div class="week-view active" id="weekView">
+                <div class="week-header">
+                    <div class="time-label">Giờ</div>
+                    <div class="day-header">T2</div>
+                    <div class="day-header">T3</div>
+                    <div class="day-header">T4</div>
+                    <div class="day-header today">T5</div>
+                    <div class="day-header">T6</div>
+                    <div class="day-header">T7</div>
+                    <div class="day-header">CN</div>
+                </div>
+                <div class="week-grid" id="weekGrid">
+                    <!-- Time slots will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Day View -->
+            <div class="day-view" id="dayView">
+                <div class="day-header-single">
+                    <div class="day-date">18/09/2024</div>
+                    <div class="day-weekday">Thứ 5</div>
+                </div>
+                <div class="day-schedule">
+                    <div class="schedule-item">
+                        <div class="schedule-time">09:00 - 09:30</div>
+                        <div class="schedule-title">Học Java cơ bản - OOP</div>
+                        <div class="schedule-meta">
+                            <span><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-clock"></use></svg> 30 phút</span>
+                            <span><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-book"></use></svg> Học tập</span>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-time">11:00 - 11:40</div>
+                        <div class="schedule-title">Viết báo cáo tuần</div>
+                        <div class="schedule-meta">
+                            <span><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-clock"></use></svg> 40 phút</span>
+                            <span><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-briefcase"></use></svg> Công việc</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task List -->
+            <div class="task-list">
+                <h3 class="task-list-title">Nhiệm vụ chưa lên lịch</h3>
+                <div class="task-item" draggable="true" data-task="1">
+                    <div class="task-item-header">
+                        <div class="schedule-priority priority-3"></div>
+                        <div class="task-item-title">Tập thể dục 30 phút</div>
+                    </div>
+                    <div class="task-item-meta"><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-clock"></use></svg> 30 phút • <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-heart"></use></svg> Sức khỏe</div>
+                </div>
+                <div class="task-item" draggable="true" data-task="2">
+                    <div class="task-item-header">
+                        <div class="schedule-priority priority-2"></div>
+                        <div class="task-item-title">Đọc sách 20 phút</div>
+                    </div>
+                    <div class="task-item-meta"><svg class="icon icon-sm"><use href="../assets/icons.svg#icon-clock"></use></svg> 20 phút • <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-book"></use></svg> Học tập</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAB -->
+        <button class="fab" title="Thêm task" aria-label="Thêm task mới">
+            <svg class="icon"><use href="../assets/icons.svg#icon-plus"></use></svg>
+        </button>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-home"></use></svg>
+                <div class="label">Home</div>
+            </a>
+            <a href="calendar.html" class="nav-item active">
+                <svg class="icon"><use href="../assets/icons.svg#icon-calendar"></use></svg>
+                <div class="label">Calendar</div>
+            </a>
+            <a href="timetable.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-book"></use></svg>
+                <div class="label">Timetable</div>
+            </a>
+            <a href="stats.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-stats"></use></svg>
+                <div class="label">Stats</div>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-settings"></use></svg>
+                <div class="label">Settings</div>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        // Calendar state
+        let currentDate = new Date();
+        let currentView = 'week';
+        let currentWeekStart = new Date(currentDate);
+        currentWeekStart.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Start from Monday
+
+        // DOM elements
+        const weekView = document.getElementById('weekView');
+        const dayView = document.getElementById('dayView');
+        const weekGrid = document.getElementById('weekGrid');
+        const weekInfo = document.getElementById('weekInfo');
+        const viewBtns = document.querySelectorAll('.view-btn');
+        const prevWeekBtn = document.getElementById('prevWeek');
+        const nextWeekBtn = document.getElementById('nextWeek');
+
+        // Generate time slots
+        function generateTimeSlots() {
+            const timeSlots = [];
+            for (let hour = 8; hour < 22; hour++) {
+                timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
+            }
+            return timeSlots;
+        }
+
+        // Generate week grid
+        function generateWeekGrid() {
+            const timeSlots = generateTimeSlots();
+            let gridHTML = '';
+
+            timeSlots.forEach(time => {
+                // Time label
+                gridHTML += `<div class="time-slot">${time}</div>`;
+                
+                // Day columns
+                for (let day = 0; day < 7; day++) {
+                    gridHTML += `<div class="day-column" data-day="${day}" data-time="${time}"></div>`;
+                }
+            });
+
+            weekGrid.innerHTML = gridHTML;
+            addTimeBlocks();
+        }
+
+        // Add time blocks
+        function addTimeBlocks() {
+            // Sample time blocks
+            const timeBlocks = [
+                { day: 3, time: '09:00', duration: 30, title: 'Học Java', priority: 3 },
+                { day: 3, time: '11:00', duration: 40, title: 'Báo cáo', priority: 2 },
+                { day: 4, time: '14:00', duration: 20, title: 'Tập thể dục', priority: 4 }
+            ];
+
+            timeBlocks.forEach(block => {
+                const dayColumn = document.querySelector(`[data-day="${block.day}"][data-time="${block.time}"]`);
+                if (dayColumn) {
+                    const timeBlock = document.createElement('div');
+                    timeBlock.className = 'time-block';
+                    timeBlock.style.top = '0px';
+                    timeBlock.style.height = `${block.duration * 2}px`;
+                    timeBlock.innerHTML = `
+                        <div style="font-weight: 500; line-height: 1.2;">${block.title}</div>
+                        <div style="font-size: 10px; opacity: 0.8; margin-top: 2px;">${block.duration}p</div>
+                    `;
+                    dayColumn.appendChild(timeBlock);
+                }
+            });
+        }
+
+        // Update week info
+        function updateWeekInfo() {
+            const weekEnd = new Date(currentWeekStart);
+            weekEnd.setDate(currentWeekStart.getDate() + 6);
+            
+            const startStr = currentWeekStart.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+            const endStr = weekEnd.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            
+            weekInfo.textContent = `${startStr}-${endStr}`;
+        }
+
+        // Switch view
+        function switchView(view) {
+            currentView = view;
+            
+            viewBtns.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-view="${view}"]`).classList.add('active');
+            
+            if (view === 'week') {
+                weekView.classList.add('active');
+                dayView.classList.remove('active');
+            } else {
+                weekView.classList.remove('active');
+                dayView.classList.add('active');
+            }
+        }
+
+        // Navigate weeks
+        function navigateWeek(direction) {
+            currentWeekStart.setDate(currentWeekStart.getDate() + (direction * 7));
+            updateWeekInfo();
+            generateWeekGrid();
+        }
+
+        // Event listeners
+        viewBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchView(btn.dataset.view);
+            });
+        });
+
+        prevWeekBtn.addEventListener('click', () => navigateWeek(-1));
+        nextWeekBtn.addEventListener('click', () => navigateWeek(1));
+
+        // Drag and drop
+        let draggedTask = null;
+
+        document.querySelectorAll('.task-item').forEach(item => {
+            item.addEventListener('dragstart', function(e) {
+                draggedTask = this;
+                this.style.opacity = '0.5';
+            });
+
+            item.addEventListener('dragend', function(e) {
+                this.style.opacity = '1';
+                draggedTask = null;
+            });
+        });
+
+        // Drop zones
+        document.addEventListener('dragover', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('drop', function(e) {
+            e.preventDefault();
+            
+            if (draggedTask && e.target.classList.contains('day-column')) {
+                const day = e.target.dataset.day;
+                const time = e.target.dataset.time;
+                
+                // Create time block
+                const timeBlock = document.createElement('div');
+                timeBlock.className = 'time-block';
+                timeBlock.style.top = '0px';
+                timeBlock.style.height = '40px';
+                timeBlock.innerHTML = `
+                    <div style="font-weight: 500;">${draggedTask.querySelector('.task-item-title').textContent}</div>
+                    <div style="font-size: 10px; opacity: 0.8;">30p</div>
+                `;
+                
+                e.target.appendChild(timeBlock);
+                draggedTask.remove();
+                
+                // Show success message
+                showNotification('Đã thêm vào lịch!');
+            }
+        });
+
+        // FAB click
+        document.querySelector('.fab').addEventListener('click', function() {
+            window.location.href = '../tasks/add-task.html';
+        });
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--c-primary);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Initialize
+        updateWeekInfo();
+        generateWeekGrid();
+    </script>
+</body>
+</html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Task - DOL LEAF</title>
+    <style>
+        /* Design System Variables */
+        :root {
+            --c-primary: #0FA968;
+            --c-primary-hover: #0B8C57;
+            --c-primary-press: #09764B;
+            --c-accent: #1F6FEB;
+            --c-text: #0B1220;
+            --c-muted: #475569;
+            --c-line: #E2E8F0;
+            --c-bg: #F8FAFC;
+            --c-panel: #FFFFFF;
+            --c-success: #22C55E;
+            --c-warn: #F59E0B;
+            --c-danger: #DC2626;
+            --r-card: 16px;
+            --r-cta: 24px;
+            --r-field: 12px;
+            --space: 4px;
+            --focus: #A7F3D0;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--c-panel);
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            padding: 16px;
+            border-bottom: 1px solid var(--c-line);
+            background: var(--c-panel);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(15, 169, 104, 0.2);
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .app-logo::after {
+            content: '🌿';
+            font-size: 18px;
+        }
+
+        .btn-back {
+            background: none;
+            border: none;
+            color: var(--c-text);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-back:hover {
+            background: var(--c-line);
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-save {
+            background: var(--c-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-save:hover {
+            background: var(--c-primary-hover);
+        }
+
+        .btn-save:disabled {
+            background: #94A3B8;
+            cursor: not-allowed;
+        }
+
+        /* Form */
+        .form {
+            padding: 24px 16px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--c-text);
+            margin-bottom: 8px;
+            line-height: 1.42;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--c-line);
+            border-radius: var(--r-field);
+            font-size: 16px;
+            line-height: 1.5;
+            background: var(--c-panel);
+            color: var(--c-text);
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--c-primary);
+            box-shadow: 0 0 0 2px var(--focus);
+        }
+
+        .form-input::placeholder {
+            color: #94A3B8;
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Priority Selector */
+        .priority-selector {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 8px;
+            background: var(--c-bg);
+            border-radius: 12px;
+            border: 1px solid var(--c-line);
+        }
+
+        .priority-btn {
+            flex: 1;
+            padding: 16px 8px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background: var(--c-panel);
+            color: var(--c-text);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-height: 70px;
+        }
+
+        .priority-btn:hover {
+            border-color: var(--c-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15, 169, 104, 0.15);
+        }
+
+        .priority-btn.selected {
+            border-color: var(--c-primary);
+            background: linear-gradient(135deg, #E6F8F1 0%, #F0FDF4 100%);
+            color: var(--c-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(15, 169, 104, 0.2);
+        }
+
+        .priority-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--c-panel);
+            transition: all 0.3s ease;
+        }
+
+        .priority-btn.selected .priority-dot {
+            border-color: var(--c-primary);
+            transform: scale(1.2);
+        }
+
+        .priority-btn[data-priority="1"] .priority-dot { 
+            background: #94A3B8; 
+        }
+        .priority-btn[data-priority="2"] .priority-dot { 
+            background: #22C55E; 
+        }
+        .priority-btn[data-priority="3"] .priority-dot { 
+            background: #F59E0B; 
+        }
+        .priority-btn[data-priority="4"] .priority-dot { 
+            background: #F97316; 
+        }
+        .priority-btn[data-priority="5"] .priority-dot { 
+            background: #DC2626; 
+        }
+
+        .priority-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--c-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .priority-btn.selected .priority-label {
+            color: var(--c-primary);
+        }
+
+        .priority-number {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--c-text);
+        }
+
+        .priority-btn.selected .priority-number {
+            color: var(--c-primary);
+        }
+
+        /* Energy Selector */
+        .energy-selector {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .energy-btn {
+            flex: 1;
+            padding: 12px 8px;
+            border: 1px solid var(--c-line);
+            border-radius: 8px;
+            background: var(--c-panel);
+            color: var(--c-text);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .energy-btn:hover {
+            border-color: var(--c-primary);
+        }
+
+        .energy-btn.selected {
+            border-color: var(--c-primary);
+            background: #E6F8F1;
+            color: var(--c-primary);
+        }
+
+        /* AI Breakdown Section */
+        .ai-section {
+            background: #E6F8F1;
+            border: 1px solid var(--c-primary);
+            border-radius: var(--r-card);
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .ai-icon {
+            font-size: 20px;
+        }
+
+        .ai-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-primary);
+        }
+
+        .btn-ai-breakdown {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--c-panel);
+            border: 1px solid var(--c-primary);
+            border-radius: 8px;
+            color: var(--c-primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-ai-breakdown:hover {
+            background: var(--c-primary);
+            color: white;
+        }
+
+        /* Subtasks */
+        .subtasks {
+            margin-top: 16px;
+        }
+
+        .subtask-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--c-panel);
+            border: 1px solid var(--c-line);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .subtask-drag {
+            color: var(--c-muted);
+            cursor: grab;
+        }
+
+        .subtask-drag:active {
+            cursor: grabbing;
+        }
+
+        .subtask-input {
+            flex: 1;
+            border: none;
+            background: none;
+            font-size: 14px;
+            color: var(--c-text);
+            outline: none;
+        }
+
+        .subtask-delete {
+            background: none;
+            border: none;
+            color: var(--c-danger);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .subtask-delete:hover {
+            background: #FEE2E2;
+        }
+
+        .btn-add-subtask {
+            width: 100%;
+            padding: 12px 16px;
+            background: none;
+            border: 1px dashed var(--c-line);
+            border-radius: 8px;
+            color: var(--c-muted);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-add-subtask:hover {
+            border-color: var(--c-primary);
+            color: var(--c-primary);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: var(--c-panel);
+            border-top: 1px solid var(--c-line);
+            display: flex;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            text-decoration: none;
+            color: #64748B;
+            transition: color 0.2s ease;
+        }
+
+        .nav-item.active {
+            color: var(--c-primary);
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+        }
+
+        .nav-item .label {
+            font-size: 12px;
+            line-height: 1.33;
+        }
+
+        /* SVG Icon Styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: currentColor;
+            stroke: currentColor;
+        }
+
+        .icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .icon-xl {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Responsive */
+        @media (max-width: 375px) {
+            .container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="btn-back" title="Quay lại">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div class="app-logo"></div>
+                <h1>Thêm nhiệm vụ</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn-save" disabled>Lưu</button>
+            </div>
+        </header>
+
+        <!-- Form -->
+        <form class="form">
+            <!-- Title -->
+            <div class="form-group">
+                <label class="form-label" for="title">Tiêu đề*</label>
+                <input type="text" id="title" class="form-input" placeholder="Nhập tiêu đề nhiệm vụ..." required>
+            </div>
+
+            <!-- Note -->
+            <div class="form-group">
+                <label class="form-label" for="note">Ghi chú</label>
+                <textarea id="note" class="form-input form-textarea" placeholder="Thêm ghi chú chi tiết..."></textarea>
+            </div>
+
+            <!-- Deadline -->
+            <div class="form-group">
+                <label class="form-label" for="deadline">Hạn chót</label>
+                <input type="datetime-local" id="deadline" class="form-input">
+            </div>
+
+            <!-- Estimate -->
+            <div class="form-group">
+                <label class="form-label" for="estimate">Ước tính (phút)</label>
+                <input type="number" id="estimate" class="form-input" placeholder="25" min="0" max="600">
+            </div>
+
+            <!-- Priority -->
+            <div class="form-group">
+                <label class="form-label">Mức độ ưu tiên</label>
+                <div class="priority-selector">
+                    <button type="button" class="priority-btn" data-priority="1">
+                        <div class="priority-dot"></div>
+                        <div class="priority-number">1</div>
+                        <div class="priority-label">Rất thấp</div>
+                    </button>
+                    <button type="button" class="priority-btn" data-priority="2">
+                        <div class="priority-dot"></div>
+                        <div class="priority-number">2</div>
+                        <div class="priority-label">Thấp</div>
+                    </button>
+                    <button type="button" class="priority-btn selected" data-priority="3">
+                        <div class="priority-dot"></div>
+                        <div class="priority-number">3</div>
+                        <div class="priority-label">Trung bình</div>
+                    </button>
+                    <button type="button" class="priority-btn" data-priority="4">
+                        <div class="priority-dot"></div>
+                        <div class="priority-number">4</div>
+                        <div class="priority-label">Cao</div>
+                    </button>
+                    <button type="button" class="priority-btn" data-priority="5">
+                        <div class="priority-dot"></div>
+                        <div class="priority-number">5</div>
+                        <div class="priority-label">Rất cao</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Energy -->
+            <div class="form-group">
+                <label class="form-label">Mức năng lượng</label>
+                <div class="energy-selector">
+                    <button type="button" class="energy-btn" data-energy="low">Thấp</button>
+                    <button type="button" class="energy-btn selected" data-energy="med">Trung bình</button>
+                    <button type="button" class="energy-btn" data-energy="high">Cao</button>
+                </div>
+            </div>
+
+            <!-- AI Breakdown -->
+            <div class="ai-section">
+                <div class="ai-header">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+                    </svg>
+                    <span class="ai-title">AI Chia nhỏ</span>
+                </div>
+                <button type="button" class="btn-ai-breakdown">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+                    </svg>
+                    <span>Nhờ AI chia nhỏ nhiệm vụ</span>
+                </button>
+                
+                <div class="subtasks">
+                    <div class="subtask-item">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                        <input type="text" class="subtask-input" placeholder="Bước 1...">
+                        <button type="button" class="subtask-delete" title="Xóa bước">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3,6 5,6 21,6"/>
+                                <path d="M19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="subtask-item">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                        <input type="text" class="subtask-input" placeholder="Bước 2...">
+                        <button type="button" class="subtask-delete" title="Xóa bước">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3,6 5,6 21,6"/>
+                                <path d="M19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="subtask-item">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                        <input type="text" class="subtask-input" placeholder="Bước 3...">
+                        <button type="button" class="subtask-delete" title="Xóa bước">
+                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3,6 5,6 21,6"/>
+                                <path d="M19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button type="button" class="btn-add-subtask">+ Thêm bước</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9,22 9,12 15,12 15,22"/>
+                </svg>
+                <div class="label">Home</div>
+            </a>
+            <a href="#" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <div class="label">Calendar</div>
+            </a>
+            <a href="#" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+                <div class="label">Timetable</div>
+            </a>
+            <a href="#" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+                <div class="label">Stats</div>
+            </a>
+            <a href="#" class="nav-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <div class="label">Settings</div>
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

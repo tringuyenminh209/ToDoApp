@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Step 2 - DOL LEAF</title>
+    <style>
+        /* Design System Variables */
+        :root {
+            --c-primary: #0FA968;
+            --c-primary-hover: #0B8C57;
+            --c-primary-press: #09764B;
+            --c-accent: #2563EB;
+            --c-accent-hover: #1D4ED8;
+            --c-accent-press: #1E40AF;
+            --c-success: #10B981;
+            --c-warning: #F59E0B;
+            --c-error: #EF4444;
+            --c-surface: #FFFFFF;
+            --c-surface-2: #F8FAFC;
+            --c-surface-3: #F1F5F9;
+            --c-text: #1E293B;
+            --c-text-2: #475569;
+            --c-text-3: #64748B;
+            --c-muted: #94A3B8;
+            --c-line: #E2E8F0;
+            --c-line-2: #CBD5E1;
+            --c-shadow: rgba(15, 23, 42, 0.08);
+            --c-shadow-lg: rgba(15, 23, 42, 0.12);
+            --c-overlay: rgba(15, 23, 42, 0.4);
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Container */
+        .onboarding-container {
+            background: var(--c-surface);
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px var(--c-shadow-lg), 0 10px 10px -5px var(--c-shadow);
+            width: 100%;
+            max-width: 480px;
+            padding: 40px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .onboarding-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--c-primary) 0%, var(--c-accent) 100%);
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .language-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--c-line);
+            border-radius: 8px;
+            background: var(--c-surface);
+            color: var(--c-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .language-btn:hover {
+            border-color: var(--c-primary);
+            background: var(--c-surface-2);
+        }
+
+        .language-btn::after {
+            content: 'VI';
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Header */
+        .onboarding-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .onboarding-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            color: white;
+            font-size: 40px;
+        }
+
+        .onboarding-logo::after {
+            content: '🌿';
+        }
+
+        .onboarding-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--c-text);
+            margin-bottom: 8px;
+        }
+
+        .onboarding-subtitle {
+            font-size: 16px;
+            color: var(--c-text-2);
+            line-height: 1.5;
+        }
+
+        /* Progress */
+        .progress-container {
+            margin-bottom: 32px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--c-line);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 66.66%;
+            background: linear-gradient(90deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 14px;
+            color: var(--c-text-2);
+            margin-top: 8px;
+        }
+
+        /* Step Content */
+        .step-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .step-description {
+            font-size: 14px;
+            color: var(--c-text-2);
+            text-align: center;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        /* Time Selection */
+        .time-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .time-card {
+            padding: 16px;
+            border: 2px solid var(--c-line);
+            border-radius: 12px;
+            background: var(--c-surface);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .time-card:hover {
+            border-color: var(--c-primary);
+            background: var(--c-surface-2);
+        }
+
+        .time-card.selected {
+            border-color: var(--c-primary);
+            background: #E6F8F1;
+        }
+
+        .time-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 4px;
+        }
+
+        .time-description {
+            font-size: 12px;
+            color: var(--c-text-2);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 169, 104, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 16px;
+            background: var(--c-surface);
+            color: var(--c-text);
+            border: 2px solid var(--c-line);
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--c-primary);
+            color: var(--c-primary);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        /* SVG Icon Styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: currentColor;
+            stroke: currentColor;
+        }
+
+        .icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .icon-xl {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .onboarding-container {
+                padding: 32px 24px;
+                margin: 16px;
+            }
+
+            .onboarding-title {
+                font-size: 24px;
+            }
+
+            .onboarding-subtitle {
+                font-size: 14px;
+            }
+
+            .time-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .language-switcher {
+                top: 16px;
+                right: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="onboarding-container">
+        <!-- Language Switcher -->
+        <div class="language-switcher">
+            <button class="language-btn" title="Chọn ngôn ngữ"></button>
+        </div>
+
+        <!-- Header -->
+        <div class="onboarding-header">
+            <div class="onboarding-logo"></div>
+            <h1 class="onboarding-title">Chào mừng đến với DOL LEAF</h1>
+            <p class="onboarding-subtitle">Hãy cùng thiết lập mục tiêu và bắt đầu hành trình của bạn</p>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-text">Bước 2/3</div>
+        </div>
+
+        <!-- Step 2: Time Selection -->
+        <div>
+            <h2 class="step-title">Khung giờ rảnh của bạn?</h2>
+            <p class="step-description">Chọn thời gian bạn thường có thể tập trung làm việc</p>
+            
+            <div class="time-grid">
+                <div class="time-card" data-time="morning">
+                    <div class="time-title">Sáng sớm</div>
+                    <div class="time-description">6:00 - 9:00</div>
+                </div>
+                <div class="time-card selected" data-time="morning-late">
+                    <div class="time-title">Sáng muộn</div>
+                    <div class="time-description">9:00 - 12:00</div>
+                </div>
+                <div class="time-card" data-time="afternoon">
+                    <div class="time-title">Chiều</div>
+                    <div class="time-description">13:00 - 17:00</div>
+                </div>
+                <div class="time-card" data-time="evening">
+                    <div class="time-title">Tối</div>
+                    <div class="time-description">19:00 - 22:00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+            <button class="btn-secondary">Quay lại</button>
+            <button class="btn-primary" disabled>Tiếp tục</button>
+        </div>
+    </div>
+</body>
+</html>

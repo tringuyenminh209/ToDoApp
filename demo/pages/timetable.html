@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thời khóa biểu - DOL LEAF</title>
+    <link rel="icon" type="image/png" href="../assets/TodoappLogo.png">
+    <link rel="stylesheet" href="../assets/icons.svg">
+    <style>
+        /* Design System Variables */
+        :root {
+            --c-primary: #0FA968;
+            --c-primary-hover: #0B8C57;
+            --c-primary-press: #09764B;
+            --c-accent: #1F6FEB;
+            --c-text: #0B1220;
+            --c-muted: #475569;
+            --c-line: #E2E8F0;
+            --c-bg: #F8FAFC;
+            --c-panel: #FFFFFF;
+            --c-success: #22C55E;
+            --c-warn: #F59E0B;
+            --c-danger: #DC2626;
+            --r-card: 16px;
+            --r-cta: 24px;
+            --space: 4px;
+            --focus: #A7F3D0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --c-bg: #0A0F1A;
+                --c-panel: #111827;
+                --c-line: #1F2937;
+                --c-text: #E5E7EB;
+                --c-primary: #34D399;
+                --c-accent: #69A2FF;
+                --focus: #99F6E4;
+            }
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--c-panel);
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--c-panel);
+            border-bottom: 1px solid var(--c-line);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--c-bg);
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.33;
+            margin-bottom: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .add-class-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--c-primary);
+            border-radius: 8px;
+            background: var(--c-primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .add-class-btn:hover {
+            background: var(--c-primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 16px;
+        }
+
+        /* Current Status */
+        .current-status {
+            margin-bottom: 16px;
+        }
+
+        .status-card {
+            background: var(--c-panel);
+            border: 1px solid var(--c-line);
+            border-radius: var(--r-card);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .status-card.active {
+            background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-accent) 100%);
+            color: white;
+            border-color: var(--c-primary);
+        }
+
+        .status-card.next {
+            background: linear-gradient(135deg, var(--c-warn) 0%, #FBBF24 100%);
+            color: white;
+            border-color: var(--c-warn);
+        }
+
+        .status-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--c-bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .status-card.active .status-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .status-card.next .status-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .status-content {
+            flex: 1;
+        }
+
+        .status-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .status-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .status-time {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Study Section */
+        .study-section {
+            margin-bottom: 16px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--c-text);
+        }
+
+        .add-study-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--c-primary);
+            border-radius: 8px;
+            background: var(--c-primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .add-study-btn:hover {
+            background: var(--c-primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .study-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .study-item {
+            background: var(--c-panel);
+            border: 1px solid var(--c-line);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .study-item:hover {
+            border-color: var(--c-primary);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(15, 169, 104, 0.1);
+        }
+
+        .study-item.completed {
+            opacity: 0.6;
+            background: var(--c-bg);
+        }
+
+        .study-item.completed .study-title {
+            text-decoration: line-through;
+        }
+
+        .study-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .study-item[data-type="homework"] .study-icon {
+            background: var(--c-warn);
+            color: white;
+        }
+
+        .study-item[data-type="review"] .study-icon {
+            background: var(--c-accent);
+            color: white;
+        }
+
+        .study-item[data-type="exam"] .study-icon {
+            background: var(--c-danger);
+            color: white;
+        }
+
+        .study-content {
+            flex: 1;
+        }
+
+        .study-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--c-text);
+            margin-bottom: 4px;
+        }
+
+        .study-subtitle {
+            font-size: 12px;
+            color: var(--c-muted);
+        }
+
+        .study-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .study-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--c-line);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .study-checkbox.checked {
+            background: var(--c-primary);
+            border-color: var(--c-primary);
+            color: white;
+        }
+
+        .study-progress {
+            font-size: 12px;
+            color: var(--c-muted);
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Week Navigation */
+        .week-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: var(--c-panel);
+            border-radius: var(--r-card);
+            border: 1px solid var(--c-line);
+        }
+
+        .week-nav-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--c-bg);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .week-nav-btn:hover {
+            background: var(--c-primary);
+            color: white;
+        }
+
+        .week-info {
+            text-align: center;
+        }
+
+        .week-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--c-text);
+        }
+
+        .week-dates {
+            font-size: 12px;
+            color: var(--c-muted);
+            margin-top: 2px;
+        }
+
+        /* Timetable Grid */
+        .timetable-container {
+            background: var(--c-panel);
+            border-radius: var(--r-card);
+            border: 1px solid var(--c-line);
+            overflow: hidden;
+        }
+
+        .timetable-header {
+            display: grid;
+            grid-template-columns: 40px repeat(7, 1fr);
+            background: var(--c-bg);
+            border-bottom: 1px solid var(--c-line);
+        }
+
+        .time-label {
+            padding: 8px 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--c-muted);
+            text-align: center;
+            border-right: 1px solid var(--c-line);
+        }
+
+        .day-header {
+            padding: 8px 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--c-text);
+            text-align: center;
+            border-right: 1px solid var(--c-line);
+        }
+
+        .day-header:last-child {
+            border-right: none;
+        }
+
+        .timetable-grid {
+            display: grid;
+            grid-template-columns: 40px repeat(7, 1fr);
+        }
+
+        .time-slot {
+            padding: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--c-muted);
+            text-align: center;
+            border-right: 1px solid var(--c-line);
+            border-bottom: 1px solid var(--c-line);
+            background: var(--c-bg);
+        }
+
+        .day-cell {
+            min-height: 60px;
+            border-right: 1px solid var(--c-line);
+            border-bottom: 1px solid var(--c-line);
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .day-cell:last-child {
+            border-right: none;
+        }
+
+        .day-cell:hover {
+            background: var(--focus);
+        }
+
+        .day-cell.empty {
+            background: var(--c-panel);
+        }
+
+        .class-block {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: var(--c-primary);
+            color: white;
+            border-radius: 4px;
+            padding: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .class-block[data-color="primary"] {
+            background: var(--c-primary);
+        }
+
+        .class-block[data-color="accent"] {
+            background: var(--c-accent);
+        }
+
+        .class-block[data-color="success"] {
+            background: var(--c-success);
+        }
+
+        .class-block[data-color="warn"] {
+            background: var(--c-warn);
+        }
+
+        .class-block[data-color="danger"] {
+            background: var(--c-danger);
+        }
+
+        .class-block:hover {
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(15, 169, 104, 0.3);
+        }
+
+        .class-name {
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        .class-room {
+            font-size: 9px;
+            opacity: 0.9;
+        }
+
+        /* Class Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--c-panel);
+            border-radius: var(--r-card);
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--c-text);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--c-bg);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--c-text);
+            margin-bottom: 6px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--c-line);
+            border-radius: 8px;
+            font-size: 16px;
+            background: var(--c-panel);
+            color: var(--c-text);
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--c-primary);
+            box-shadow: 0 0 0 3px rgba(15, 169, 104, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--c-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--c-primary-hover);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--c-panel);
+            color: var(--c-text);
+            border: 2px solid var(--c-line);
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--c-primary);
+            color: var(--c-primary);
+        }
+
+        .btn-danger {
+            background: var(--c-danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #B91C1C;
+        }
+
+        /* SVG Icon Styles */
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: currentColor;
+            stroke: currentColor;
+        }
+
+        .icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: var(--c-panel);
+            border-top: 1px solid var(--c-line);
+            display: flex;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            text-decoration: none;
+            color: var(--c-muted);
+            transition: color 0.2s ease;
+            border-radius: 12px;
+            margin: 0 4px;
+        }
+
+        .nav-item.active {
+            color: var(--c-primary);
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+        }
+
+        .nav-item .label {
+            font-size: 12px;
+            line-height: 1.33;
+        }
+
+        .next-week {
+            transform: rotate(180deg);
+        }
+
+        .close-icon {
+            transform: rotate(45deg);
+        }
+
+        .modal-actions-secondary {
+            margin-top: 12px;
+        }
+
+        .modal-actions-secondary .btn-secondary {
+            display: none;
+        }
+
+        .modal-actions-secondary .btn-secondary.show {
+            display: block;
+        }
+
+        .btn-danger {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .timetable-header,
+            .timetable-grid {
+                grid-template-columns: 35px repeat(7, 1fr);
+            }
+
+            .time-label,
+            .day-header {
+                font-size: 10px;
+                padding: 6px 2px;
+            }
+
+            .day-cell {
+                min-height: 50px;
+            }
+
+            .class-block {
+                font-size: 9px;
+            }
+
+            .class-name {
+                font-size: 9px;
+            }
+
+            .class-room {
+                font-size: 8px;
+            }
+
+            .nav-item {
+                padding: 6px 8px;
+            }
+
+            .nav-item .label {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <button class="back-btn" onclick="goBack()" title="Quay lại" aria-label="Quay lại">
+                    <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-arrow-left"></use></svg>
+                </button>
+                <h1 class="header-title">Thời khóa biểu</h1>
+            </div>
+            <div class="header-actions">
+                <button class="add-class-btn" onclick="openAddClassModal()">
+                    <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-plus"></use></svg>
+                    Thêm lớp
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Current Class Status -->
+            <div class="current-status" id="currentStatus">
+                <div class="status-card">
+                    <div class="status-icon">
+                        <svg class="icon icon-lg"><use href="../assets/icons.svg#icon-clock"></use></svg>
+                    </div>
+                    <div class="status-content">
+                        <div class="status-title" id="statusTitle">Không có lớp học</div>
+                        <div class="status-subtitle" id="statusSubtitle">Nghỉ ngơi</div>
+                    </div>
+                    <div class="status-time" id="statusTime">--:--</div>
+                </div>
+            </div>
+
+            <!-- Week Navigation -->
+            <div class="week-nav">
+                <button class="week-nav-btn" onclick="changeWeek(-1)" title="Tuần trước" aria-label="Tuần trước">
+                    <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-arrow-left"></use></svg>
+                </button>
+                <div class="week-info">
+                    <div class="week-title">Tuần 1 - Tháng 9</div>
+                    <div class="week-dates">28/9 - 4/10/2025</div>
+                </div>
+                <button class="week-nav-btn" onclick="changeWeek(1)" title="Tuần sau" aria-label="Tuần sau">
+                    <svg class="icon icon-sm next-week"><use href="../assets/icons.svg#icon-arrow-left"></use></svg>
+                </button>
+            </div>
+
+            <!-- Study Section -->
+            <div class="study-section">
+                <div class="section-header">
+                    <h3 class="section-title">Làm bài tập & Ôn tập</h3>
+                    <button class="add-study-btn" onclick="openStudyModal()">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-plus"></use></svg>
+                        Thêm
+                    </button>
+                </div>
+                
+                <div class="study-list" id="studyList">
+                    <!-- Study items will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Timetable Grid -->
+            <div class="timetable-container">
+                <!-- Header -->
+                <div class="timetable-header">
+                    <div class="time-label">Tiết</div>
+                    <div class="day-header">CN</div>
+                    <div class="day-header">T2</div>
+                    <div class="day-header">T3</div>
+                    <div class="day-header">T4</div>
+                    <div class="day-header">T5</div>
+                    <div class="day-header">T6</div>
+                    <div class="day-header">T7</div>
+                </div>
+
+                <!-- Grid -->
+                <div class="timetable-grid" id="timetableGrid">
+                    <!-- Time slots will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-home"></use></svg>
+                <div class="label">Home</div>
+            </a>
+            <a href="calendar.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-calendar"></use></svg>
+                <div class="label">Calendar</div>
+            </a>
+            <a href="timetable.html" class="nav-item active">
+                <svg class="icon"><use href="../assets/icons.svg#icon-calendar"></use></svg>
+                <div class="label">Timetable</div>
+            </a>
+            <a href="stats.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-stats"></use></svg>
+                <div class="label">Stats</div>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <svg class="icon"><use href="../assets/icons.svg#icon-settings"></use></svg>
+                <div class="label">Settings</div>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Add/Edit Class Modal -->
+    <div class="modal-overlay" id="classModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Thêm lớp học</h2>
+                <button class="modal-close" onclick="closeClassModal()" title="Đóng" aria-label="Đóng">
+                    <svg class="icon icon-sm close-icon"><use href="../assets/icons.svg#icon-plus"></use></svg>
+                </button>
+            </div>
+            
+            <form id="classForm">
+                <div class="form-group">
+                    <label class="form-label" for="className">Tên lớp học</label>
+                    <input type="text" id="className" class="form-input" placeholder="Ví dụ: IT就職作品開発" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="classDay">Ngày</label>
+                        <select id="classDay" class="form-select" required>
+                            <option value="">Chọn ngày</option>
+                            <option value="0">Chủ nhật</option>
+                            <option value="1">Thứ 2</option>
+                            <option value="2">Thứ 3</option>
+                            <option value="3">Thứ 4</option>
+                            <option value="4">Thứ 5</option>
+                            <option value="5">Thứ 6</option>
+                            <option value="6">Thứ 7</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="classPeriod">Tiết học</label>
+                        <select id="classPeriod" class="form-select" required>
+                            <option value="">Chọn tiết</option>
+                            <option value="1">Tiết 1</option>
+                            <option value="2">Tiết 2</option>
+                            <option value="3">Tiết 3</option>
+                            <option value="4">Tiết 4</option>
+                            <option value="5">Tiết 5</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="classRoom">Phòng học</label>
+                    <input type="text" id="classRoom" class="form-input" placeholder="Ví dụ: 1603">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="classColor">Màu sắc</label>
+                    <select id="classColor" class="form-select">
+                        <option value="primary">Xanh lá (Mặc định)</option>
+                        <option value="accent">Xanh dương</option>
+                        <option value="success">Xanh nhạt</option>
+                        <option value="warn">Vàng</option>
+                        <option value="danger">Đề</option>
+                    </select>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeClassModal()">Hủy</button>
+                    <button type="submit" class="btn-primary">Lưu</button>
+                    <button type="button" class="btn-primary btn-danger" id="deleteBtn" onclick="deleteClass()">Xóa</button>
+                </div>
+                
+                <div class="modal-actions modal-actions-secondary">
+                    <button type="button" class="btn-secondary" id="createTaskBtn" onclick="createTaskFromClass()">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-plus"></use></svg>
+                        Tạo Task
+                    </button>
+                    <button type="button" class="btn-secondary" id="setReminderBtn" onclick="setClassReminder()">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#icon-bell"></use></svg>
+                        Nhắc nhở
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Study Modal -->
+    <div class="modal-overlay" id="studyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="studyModalTitle">Thêm bài tập/ôn tập</h2>
+                <button class="modal-close" onclick="closeStudyModal()" title="Đóng" aria-label="Đóng">
+                    <svg class="icon icon-sm close-icon"><use href="../assets/icons.svg#icon-plus"></use></svg>
+                </button>
+            </div>
+            
+            <form id="studyForm">
+                <div class="form-group">
+                    <label class="form-label" for="studyTitle">Tiêu đề</label>
+                    <input type="text" id="studyTitle" class="form-input" placeholder="Ví dụ: Làm bài tập Java OOP" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="studyType">Loại</label>
+                    <select id="studyType" class="form-select" required>
+                        <option value="homework">Bài tập</option>
+                        <option value="review">Ôn tập</option>
+                        <option value="exam">Thi cử</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="studySubject">Môn học</label>
+                    <input type="text" id="studySubject" class="form-input" placeholder="Ví dụ: Java Programming">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="studyDueDate">Hạn nộp</label>
+                        <input type="date" id="studyDueDate" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="studyPriority">Ưu tiên</label>
+                        <select id="studyPriority" class="form-select">
+                            <option value="low">Thấp</option>
+                            <option value="medium" selected>Trung bình</option>
+                            <option value="high">Cao</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="studyDescription">Mô tả</label>
+                    <textarea id="studyDescription" class="form-input" rows="3" placeholder="Mô tả chi tiết..."></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeStudyModal()">Hủy</button>
+                    <button type="submit" class="btn-primary">Lưu</button>
+                    <button type="button" class="btn-primary btn-danger" id="deleteStudyBtn" onclick="deleteStudy()">Xóa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample timetable data (based on the image)
+        let timetableData = {
+            '1-1': { // Monday, Period 1
+                name: 'IT就職作品開発',
+                room: '1603',
+                color: 'primary'
+            },
+            '1-2': { // Monday, Period 2
+                name: 'IT就職作品開発',
+                room: '1603',
+                color: 'primary'
+            },
+            '1-3': { // Monday, Period 3
+                name: 'AWSクラウド演習I',
+                room: '3501',
+                color: 'accent'
+            },
+            '1-4': { // Monday, Period 4
+                name: 'AWSクラウド演習I',
+                room: '3501',
+                color: 'accent'
+            },
+            '2-1': { // Tuesday, Period 1
+                name: 'モバイルアプリ開発演習',
+                room: '1604',
+                color: 'success'
+            },
+            '2-2': { // Tuesday, Period 2
+                name: 'モバイルアプリ開発演習',
+                room: '1604',
+                color: 'success'
+            },
+            '2-3': { // Tuesday, Period 3
+                name: 'AI活用演習',
+                room: '1604',
+                color: 'warn'
+            },
+            '2-4': { // Tuesday, Period 4
+                name: 'AI活用演習',
+                room: '1604',
+                color: 'warn'
+            },
+            '3-1': { // Wednesday, Period 1
+                name: 'IoT制作演習I',
+                room: '3501',
+                color: 'danger'
+            },
+            '3-2': { // Wednesday, Period 2
+                name: 'IoT制作演習I',
+                room: '3501',
+                color: 'danger'
+            },
+            '4-1': { // Thursday, Period 1
+                name: '外国語IV(英語中級)',
+                room: '1302',
+                color: 'primary'
+            },
+            '4-2': { // Thursday, Period 2
+                name: '就職対策I',
+                room: '3303',
+                color: 'accent'
+            },
+            '4-3': { // Thursday, Period 3
+                name: 'IT就職作品開発',
+                room: '1603',
+                color: 'primary'
+            },
+            '4-4': { // Thursday, Period 4
+                name: 'IT就職作品開発',
+                room: '1603',
+                color: 'primary'
+            },
+            '5-3': { // Friday, Period 3
+                name: 'デスクトップアプリ開発', // 修正: 文字化けを日本語に修正
+                room: '2301',
+                color: 'success'
+            },
+            '5-4': { // Friday, Period 4
+                name: 'デスクトップアプリ開発', // 修正: 文字化けを日本語に修正
+                room: '2301',
+                color: 'success'
+            },
+        };
+
+        let currentEditingClass = null;
+        let currentStatusInterval = null;
+        let classReminders = JSON.parse(localStorage.getItem('classReminders')) || {};
+        let studyData = JSON.parse(localStorage.getItem('studyData')) || [];
+        let currentEditingStudy = null;
+
+        // Initialize timetable
+        function initTimetable() {
+            const grid = document.getElementById('timetableGrid');
+            grid.innerHTML = '';
+
+            // Generate 5 periods x 7 days = 35 cells
+            for (let period = 1; period <= 5; period++) {
+                // Time slot
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+                timeSlot.textContent = period;
+                grid.appendChild(timeSlot);
+
+                // Day cells
+                for (let day = 0; day < 7; day++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'day-cell empty';
+                    cell.dataset.day = day;
+                    cell.dataset.period = period;
+                    cell.onclick = () => openAddClassModal(day, period);
+                    grid.appendChild(cell);
+
+                    // Add class if exists
+                    const classKey = `${day}-${period}`;
+                    if (timetableData[classKey]) {
+                        addClassToCell(cell, timetableData[classKey], classKey);
+                    }
+                }
+            }
+        }
+
+        // Add class to cell
+        function addClassToCell(cell, classData, classKey) {
+            cell.className = 'day-cell';
+            cell.innerHTML = `
+                <div class="class-block" onclick="editClass('${classKey}')" data-color="${classData.color}">
+                    <div class="class-name">${classData.name}</div>
+                    <div class="class-room">${classData.room}</div>
+                </div>
+            `;
+        }
+
+        // Open add class modal
+        function openAddClassModal(day = null, period = null) {
+            const modal = document.getElementById('classModal');
+            const form = document.getElementById('classForm');
+            const title = document.getElementById('modalTitle');
+            const deleteBtn = document.getElementById('deleteBtn');
+
+            if (day !== null && period !== null) {
+                // Pre-fill form for new class
+                document.getElementById('classDay').value = day;
+                document.getElementById('classPeriod').value = period;
+                title.textContent = 'Thêm lớp học';
+                deleteBtn.style.display = 'none';
+                currentEditingClass = null;
+            }
+
+            modal.classList.add('show');
+        }
+
+        // Edit class
+        function editClass(classKey) {
+            const classData = timetableData[classKey];
+            if (!classData) return;
+
+            const modal = document.getElementById('classModal');
+            const title = document.getElementById('modalTitle');
+            const deleteBtn = document.getElementById('deleteBtn');
+            const createTaskBtn = document.getElementById('createTaskBtn');
+            const setReminderBtn = document.getElementById('setReminderBtn');
+
+            // Fill form with existing data
+            const [day, period] = classKey.split('-');
+            document.getElementById('className').value = classData.name;
+            document.getElementById('classDay').value = day;
+            document.getElementById('classPeriod').value = period;
+            document.getElementById('classRoom').value = classData.room;
+            document.getElementById('classColor').value = classData.color;
+
+            title.textContent = 'Sửa lớp học';
+            deleteBtn.style.display = 'block';
+            createTaskBtn.classList.add('show');
+            setReminderBtn.classList.add('show');
+            currentEditingClass = classKey;
+
+            modal.classList.add('show');
+        }
+
+        // Close modal
+        function closeClassModal() {
+            const modal = document.getElementById('classModal');
+            modal.classList.remove('show');
+            document.getElementById('classForm').reset();
+            document.getElementById('deleteBtn').style.display = 'none';
+            document.getElementById('createTaskBtn').classList.remove('show');
+            document.getElementById('setReminderBtn').classList.remove('show');
+            currentEditingClass = null;
+        }
+
+        // Save class
+        document.getElementById('classForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const className = document.getElementById('className').value;
+            const classDay = document.getElementById('classDay').value;
+            const classPeriod = document.getElementById('classPeriod').value;
+            const classRoom = document.getElementById('classRoom').value;
+            const classColor = document.getElementById('classColor').value;
+
+            const classKey = `${classDay}-${classPeriod}`;
+            const classData = {
+                name: className,
+                room: classRoom,
+                color: classColor
+            };
+
+            // Remove old class if editing
+            if (currentEditingClass && currentEditingClass !== classKey) {
+                delete timetableData[currentEditingClass];
+                // Clear old cell
+                const oldCell = document.querySelector(`[data-day="${currentEditingClass.split('-')[0]}"][data-period="${currentEditingClass.split('-')[1]}"]`);
+                if (oldCell) {
+                    oldCell.className = 'day-cell empty';
+                    oldCell.innerHTML = '';
+                }
+            }
+
+            // Add/update class
+            timetableData[classKey] = classData;
+            
+            // Update cell
+            const cell = document.querySelector(`[data-day="${classDay}"][data-period="${classPeriod}"]`);
+            if (cell) {
+                addClassToCell(cell, classData, classKey);
+            }
+
+            // Save to localStorage
+            localStorage.setItem('timetableData', JSON.stringify(timetableData));
+
+            closeClassModal();
+        });
+
+        // Delete class
+        function deleteClass() {
+            if (!currentEditingClass) return;
+
+            if (confirm('Bạn có chắc chắn muốn xóa lớp học này?')) {
+                delete timetableData[currentEditingClass];
+                
+                // Clear cell
+                const [day, period] = currentEditingClass.split('-');
+                const cell = document.querySelector(`[data-day="${day}"][data-period="${period}"]`);
+                if (cell) {
+                    cell.className = 'day-cell empty';
+                    cell.innerHTML = '';
+                }
+
+                // Save to localStorage
+                localStorage.setItem('timetableData', JSON.stringify(timetableData));
+
+                closeClassModal();
+            }
+        }
+
+        // Change week
+        function changeWeek(direction) {
+            // TODO: Implement week navigation
+            console.log('Change week:', direction);
+        }
+
+        // Go back
+        function goBack() {
+            window.location.href = 'home.html';
+        }
+
+        // Load saved data
+        function loadTimetableData() {
+            const saved = localStorage.getItem('timetableData');
+            if (saved) {
+                timetableData = { ...timetableData, ...JSON.parse(saved) };
+            }
+        }
+
+        // Update current status
+        function updateCurrentStatus() {
+            const now = new Date();
+            const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTime = currentHour * 60 + currentMinute;
+
+            // Class schedule (assuming 8:00 AM start, 50 minutes per class, 10 minutes break)
+            const classTimes = [
+                { start: 8 * 60, end: 8 * 60 + 50 },      // 8:00-8:50
+                { start: 9 * 60, end: 9 * 60 + 50 },      // 9:00-9:50
+                { start: 10 * 60, end: 10 * 60 + 50 },    // 10:00-10:50
+                { start: 11 * 60, end: 11 * 60 + 50 },    // 11:00-11:50
+                { start: 13 * 60, end: 13 * 60 + 50 }     // 13:00-13:50
+            ];
+
+            let currentClass = null;
+            let nextClass = null;
+            let statusType = 'break'; // break, active, next
+
+            // Check current class
+            for (let period = 1; period <= 5; period++) {
+                const classKey = `${currentDay}-${period}`;
+                const classData = timetableData[classKey];
+                const classTime = classTimes[period - 1];
+
+                if (classData && classTime) {
+                    if (currentTime >= classTime.start && currentTime <= classTime.end) {
+                        currentClass = { ...classData, period, classTime };
+                        statusType = 'active';
+                        break;
+                    } else if (currentTime < classTime.start && !nextClass) {
+                        nextClass = { ...classData, period, classTime };
+                        statusType = 'next';
+                    }
+                }
+            }
+
+            // Update UI
+            const statusCard = document.querySelector('.status-card');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusSubtitle = document.getElementById('statusSubtitle');
+            const statusTime = document.getElementById('statusTime');
+
+            statusCard.className = 'status-card';
+            if (statusType === 'active') {
+                statusCard.classList.add('active');
+                statusTitle.textContent = currentClass.name;
+                statusSubtitle.textContent = `Tiết ${currentClass.period} - Phòng ${currentClass.room}`;
+                const remaining = currentClass.classTime.end - currentTime;
+                statusTime.textContent = `${Math.floor(remaining / 60)}:${(remaining % 60).toString().padStart(2, '0')}`;
+            } else if (statusType === 'next') {
+                statusCard.classList.add('next');
+                statusTitle.textContent = nextClass.name;
+                statusSubtitle.textContent = `Tiết ${nextClass.period} - Phòng ${nextClass.room}`;
+                const remaining = nextClass.classTime.start - currentTime;
+                statusTime.textContent = `${Math.floor(remaining / 60)}:${(remaining % 60).toString().padStart(2, '0')}`;
+            } else {
+                statusTitle.textContent = 'Không có lớp học';
+                statusSubtitle.textContent = 'Nghỉ ngơi';
+                statusTime.textContent = '--:--';
+            }
+        }
+
+        // Create task from class
+        function createTaskFromClass() {
+            if (!currentEditingClass) return;
+
+            const classData = timetableData[currentEditingClass];
+            if (!classData) return;
+
+            const [day, period] = currentEditingClass.split('-');
+            const dayNames = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+            const dayName = dayNames[parseInt(day)];
+
+            // Create task data
+            const taskData = {
+                title: `Học ${classData.name}`,
+                description: `Lớp học ${classData.name} tại phòng ${classData.room}`,
+                dueDate: new Date().toISOString().split('T')[0],
+                priority: 'medium',
+                category: 'Học tập',
+                tags: [classData.name, dayName, `Tiết ${period}`],
+                estimatedTime: 50,
+                status: 'pending'
+            };
+
+            // Save to localStorage
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.push(taskData);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+
+            alert(`Đã tạo task: ${taskData.title}`);
+            closeClassModal();
+        }
+
+        // Set class reminder
+        function setClassReminder() {
+            if (!currentEditingClass) return;
+
+            const classData = timetableData[currentEditingClass];
+            if (!classData) return;
+
+            const [day, period] = currentEditingClass.split('-');
+            const reminderMinutes = prompt('Nhắc nhở trước bao nhiêu phút? (mặc định: 10)', '10');
+            
+            if (reminderMinutes && !isNaN(reminderMinutes)) {
+                classReminders[currentEditingClass] = {
+                    minutes: parseInt(reminderMinutes),
+                    enabled: true
+                };
+                localStorage.setItem('classReminders', JSON.stringify(classReminders));
+                alert(`Đã đặt nhắc nhở ${reminderMinutes} phút trước giờ học!`);
+            }
+        }
+
+        // Check reminders
+        function checkReminders() {
+            const now = new Date();
+            const currentDay = now.getDay();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+
+            const classTimes = [
+                { start: 8 * 60, end: 8 * 60 + 50 },
+                { start: 9 * 60, end: 9 * 60 + 50 },
+                { start: 10 * 60, end: 10 * 60 + 50 },
+                { start: 11 * 60, end: 11 * 60 + 50 },
+                { start: 13 * 60, end: 13 * 60 + 50 }
+            ];
+
+            for (let period = 1; period <= 5; period++) {
+                const classKey = `${currentDay}-${period}`;
+                const classData = timetableData[classKey];
+                const reminder = classReminders[classKey];
+                const classTime = classTimes[period - 1];
+
+                if (classData && reminder && reminder.enabled && classTime) {
+                    const reminderTime = classTime.start - reminder.minutes;
+                    if (currentTime === reminderTime) {
+                        // Show notification
+                        if (Notification.permission === 'granted') {
+                            new Notification(`Nhắc nhở lớp học`, {
+                                body: `${classData.name} - Phòng ${classData.room} sẽ bắt đầu trong ${reminder.minutes} phút`,
+                                icon: '../assets/TodoappLogo.png'
+                            });
+                        } else {
+                            alert(`Nhắc nhềE${classData.name} - Phòng ${classData.room} sẽ bắt đầu trong ${reminder.minutes} phút`);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Request notification permission
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+
+        // Initialize study section
+        function initStudySection() {
+            renderStudyList();
+        }
+
+        // Render study list
+        function renderStudyList() {
+            const studyList = document.getElementById('studyList');
+            studyList.innerHTML = '';
+
+            if (studyData.length === 0) {
+                studyList.innerHTML = `
+                    <div class="study-item" style="justify-content: center; opacity: 0.6;">
+                        <div class="study-content">
+                            <div class="study-title">Chưa có bài tập nào</div>
+                            <div class="study-subtitle">Nhấn "Thêm" để tạo bài tập đầu tiên</div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            studyData.forEach((study, index) => {
+                const studyItem = document.createElement('div');
+                studyItem.className = `study-item ${study.completed ? 'completed' : ''}`;
+                studyItem.dataset.type = study.type;
+                studyItem.dataset.index = index;
+
+                const typeIcons = {
+                    homework: 'icon-edit',
+                    review: 'icon-book',
+                    exam: 'icon-target'
+                };
+
+                const typeNames = {
+                    homework: 'Bài tập',
+                    review: 'Ôn tập',
+                    exam: 'Thi cử'
+                };
+
+                const priorityColors = {
+                    low: '#22C55E',
+                    medium: '#F59E0B',
+                    high: '#DC2626'
+                };
+
+                studyItem.innerHTML = `
+                    <div class="study-icon">
+                        <svg class="icon icon-sm"><use href="../assets/icons.svg#${typeIcons[study.type]}"></use></svg>
+                    </div>
+                    <div class="study-content">
+                        <div class="study-title">${study.title}</div>
+                        <div class="study-subtitle">
+                            ${typeNames[study.type]} • ${study.subject || 'Không có môn học'}
+                            ${study.dueDate ? ` • Hạn: ${new Date(study.dueDate).toLocaleDateString('vi-VN')}` : ''}
+                        </div>
+                    </div>
+                    <div class="study-actions">
+                        <div class="study-progress" style="color: ${priorityColors[study.priority]}">
+                            ${study.completed ? 'Hoàn thành' : 'Chưa xong'}
+                        </div>
+                        <div class="study-checkbox ${study.completed ? 'checked' : ''}" onclick="toggleStudyComplete(${index})">
+                            ${study.completed ? '✓' : ''}
+                        </div>
+                    </div>
+                `;
+
+                studyItem.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('study-checkbox')) {
+                        editStudy(index);
+                    }
+                });
+
+                studyList.appendChild(studyItem);
+            });
+        }
+
+        // Open study modal
+        function openStudyModal(studyIndex = null) {
+            const modal = document.getElementById('studyModal');
+            const form = document.getElementById('studyForm');
+            const title = document.getElementById('studyModalTitle');
+            const deleteBtn = document.getElementById('deleteStudyBtn');
+
+            if (studyIndex !== null) {
+                // Edit mode
+                const study = studyData[studyIndex];
+                document.getElementById('studyTitle').value = study.title;
+                document.getElementById('studyType').value = study.type;
+                document.getElementById('studySubject').value = study.subject || '';
+                document.getElementById('studyDueDate').value = study.dueDate || '';
+                document.getElementById('studyPriority').value = study.priority;
+                document.getElementById('studyDescription').value = study.description || '';
+
+                title.textContent = 'Sửa bài tập/ôn tập';
+                deleteBtn.style.display = 'block';
+                currentEditingStudy = studyIndex;
+            } else {
+                // Add mode
+                form.reset();
+                document.getElementById('studyPriority').value = 'medium';
+                title.textContent = 'Thêm bài tập/ôn tập';
+                deleteBtn.style.display = 'none';
+                currentEditingStudy = null;
+            }
+
+            modal.classList.add('show');
+        }
+
+        // Close study modal
+        function closeStudyModal() {
+            const modal = document.getElementById('studyModal');
+            modal.classList.remove('show');
+            document.getElementById('studyForm').reset();
+            currentEditingStudy = null;
+        }
+
+        // Save study
+        document.getElementById('studyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const studyData = {
+                title: document.getElementById('studyTitle').value,
+                type: document.getElementById('studyType').value,
+                subject: document.getElementById('studySubject').value,
+                dueDate: document.getElementById('studyDueDate').value,
+                priority: document.getElementById('studyPriority').value,
+                description: document.getElementById('studyDescription').value,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+
+            if (currentEditingStudy !== null) {
+                // Update existing study
+                studyData.completed = studyData[currentEditingStudy].completed;
+                studyData.createdAt = studyData[currentEditingStudy].createdAt;
+                studyData[currentEditingStudy] = studyData;
+            } else {
+                // Add new study
+                studyData.push(studyData);
+            }
+
+            localStorage.setItem('studyData', JSON.stringify(studyData));
+            renderStudyList();
+            closeStudyModal();
+        });
+
+        // Toggle study complete
+        function toggleStudyComplete(index) {
+            studyData[index].completed = !studyData[index].completed;
+            localStorage.setItem('studyData', JSON.stringify(studyData));
+            renderStudyList();
+        }
+
+        // Edit study
+        function editStudy(index) {
+            openStudyModal(index);
+        }
+
+        // Delete study
+        function deleteStudy() {
+            if (currentEditingStudy !== null && confirm('Bạn có chắc chắn muốn xóa bài tập này?')) {
+                studyData.splice(currentEditingStudy, 1);
+                localStorage.setItem('studyData', JSON.stringify(studyData));
+                renderStudyList();
+                closeStudyModal();
+            }
+        }
+
+        // Initialize
+        loadTimetableData();
+        initTimetable();
+        initStudySection();
+        updateCurrentStatus();
+        requestNotificationPermission();
+
+        // Update status every minute
+        currentStatusInterval = setInterval(() => {
+            updateCurrentStatus();
+            checkReminders();
+        }, 60000);
+    </script>
+</body>
+</html>
