@@ -94,3 +94,7 @@ node_modules/
 # Temporary folders
 tmp/
 temp/
+
+# Demo and Documentation
+demo/
+docs/
