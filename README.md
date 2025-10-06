@@ -1,6 +1,6 @@
 # To-Do AI App
 
-A modern To-Do application with AI integration built with Laravel 12 backend and Flutter mobile app.
+A modern To-Do application with AI integration built with Laravel 12 backend and Android Studio mobile app.
 
 ## 🚀 Features
 
@@ -15,9 +15,10 @@ A modern To-Do application with AI integration built with Laravel 12 backend and
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Flutter Mobile App                       │
+│                  Android Studio Mobile App                  │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐          │
-│  │   iOS App   │ │ Android App │ │  Web App    │          │
+│  │   Android   │ │   Kotlin    │ │ Material 3  │          │
+│  │     App     │ │   Native    │ │    Design   │          │
 │  └─────────────┘ └─────────────┘ └─────────────┘          │
 └─────────────────────────────────────────────────────────────┘
                               │
@@ -53,12 +54,12 @@ A modern To-Do application with AI integration built with Laravel 12 backend and
 - **Auth**: Laravel Sanctum
 
 ### Mobile App
-- **Framework**: Flutter 3.24
-- **Language**: Dart 3.5
-- **State Management**: BLoC
-- **Navigation**: GoRouter
-- **Local Storage**: Hive, SharedPreferences
-- **Networking**: Dio, Retrofit
+- **Framework**: Android Studio
+- **Language**: Kotlin
+- **Architecture**: MVVM + Repository Pattern
+- **UI**: Material Design 3, Jetpack Compose
+- **Local Storage**: Room Database, SharedPreferences
+- **Networking**: Retrofit, OkHttp
 
 ### DevOps
 - **Containerization**: Docker, Docker Compose
@@ -70,7 +71,8 @@ A modern To-Do application with AI integration built with Laravel 12 backend and
 - Docker & Docker Compose
 - PHP 8.3+
 - Composer
-- Flutter 3.24+
+- Android Studio
+- Kotlin
 - Node.js 18+
 
 ## 🚀 Quick Start
@@ -117,15 +119,13 @@ php artisan migrate
 php artisan db:seed
 ```
 
-### 5. Setup Flutter Mobile App
+### 5. Setup Android Mobile App
 ```bash
-cd mobile
+cd mobile-android
 
-# Install dependencies
-flutter pub get
-
-# Run the app
-flutter run
+# Open in Android Studio
+# Install dependencies via Gradle
+# Run the app on emulator or device
 ```
 
 ## 📱 API Documentation
@@ -163,10 +163,11 @@ cd backend
 php artisan test
 ```
 
-### Flutter Tests
+### Android Tests
 ```bash
-cd mobile
-flutter test
+cd mobile-android
+./gradlew test
+./gradlew connectedAndroidTest
 ```
 
 ## 📊 Database Schema
@@ -247,7 +248,7 @@ For support, email support@todoapp.com or create an issue in this repository.
 
 ## 🎯 Roadmap
 
-- [ ] Web application
+- [ ] iOS version (Swift)
 - [ ] Team collaboration features
 - [ ] Advanced AI coaching
 - [ ] Integration with calendar apps
