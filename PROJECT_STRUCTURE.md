@@ -4,7 +4,7 @@
 
 ```
 TodoApp/
-├── 📱 Flutter Mobile App (Frontend)
+├── 📱 Android Studio Mobile App (Frontend)
 ├── 🚀 Laravel 12 Backend (API)
 ├── 🐳 Docker Environment
 ├── 📊 Database (MySQL + Redis)
@@ -21,7 +21,7 @@ TodoApp/
 ├── 📁 docker/                  # Docker Configuration
 ├── 📁 docs/                    # Project Documentation
 ├── 📁 backend/                 # Laravel 12 Backend (sẽ tạo)
-├── 📁 mobile/                  # Flutter Mobile App (sẽ tạo)
+├── 📁 mobile-android/          # Android Studio Mobile App (sẽ tạo)
 ├── 📁 shared/                  # Shared Resources (sẽ tạo)
 ├── 📄 docker-compose.yml       # Docker Services
 ├── 📄 Dockerfile              # Laravel Container
@@ -121,169 +121,92 @@ backend/
 └── 📄 .env
 ```
 
-### 3. Mobile App Structure (Flutter)
+### 3. Mobile App Structure (Android Studio)
 ```
-mobile/
-├── 📁 lib/
-│   ├── 📁 core/
-│   │   ├── 📁 constants/
-│   │   │   ├── 📄 app_constants.dart
-│   │   │   ├── 📄 api_constants.dart
-│   │   │   └── 📄 theme_constants.dart
-│   │   ├── 📁 errors/
-│   │   │   ├── 📄 exceptions.dart
-│   │   │   └── 📄 failures.dart
-│   │   ├── 📁 network/
-│   │   │   ├── 📄 api_client.dart
-│   │   │   └── 📄 network_info.dart
-│   │   └── 📁 utils/
-│   │       ├── 📄 validators.dart
-│   │       └── 📄 formatters.dart
-│   ├── 📁 features/
-│   │   ├── 📁 auth/
+mobile-android/
+├── 📁 app/
+│   ├── 📁 src/main/
+│   │   ├── 📁 java/com/todoapp/
+│   │   │   ├── 📁 ui/
+│   │   │   │   ├── 📁 auth/
+│   │   │   │   │   ├── 📄 LoginActivity.kt
+│   │   │   │   │   ├── 📄 RegisterActivity.kt
+│   │   │   │   │   └── 📄 ForgotPasswordActivity.kt
+│   │   │   │   ├── 📁 home/
+│   │   │   │   │   ├── 📄 HomeActivity.kt
+│   │   │   │   │   ├── 📄 DashboardFragment.kt
+│   │   │   │   │   └── 📄 Top3TasksFragment.kt
+│   │   │   │   ├── 📁 tasks/
+│   │   │   │   │   ├── 📄 TaskListActivity.kt
+│   │   │   │   │   ├── 📄 AddTaskActivity.kt
+│   │   │   │   │   └── 📄 EditTaskActivity.kt
+│   │   │   │   ├── 📁 focus/
+│   │   │   │   │   ├── 📄 FocusActivity.kt
+│   │   │   │   │   ├── 📄 PomodoroTimerFragment.kt
+│   │   │   │   │   └── 📄 FocusStatsFragment.kt
+│   │   │   │   ├── 📁 stats/
+│   │   │   │   │   ├── 📄 StatsActivity.kt
+│   │   │   │   │   ├── 📄 AnalyticsFragment.kt
+│   │   │   │   │   └── 📄 StreakFragment.kt
+│   │   │   │   └── 📁 settings/
+│   │   │   │       ├── 📄 SettingsActivity.kt
+│   │   │   │       ├── 📄 ProfileFragment.kt
+│   │   │   │       └── 📄 NotificationSettingsFragment.kt
 │   │   │   ├── 📁 data/
-│   │   │   │   ├── 📁 datasources/
-│   │   │   │   │   └── 📄 auth_remote_datasource.dart
-│   │   │   │   ├── 📁 models/
-│   │   │   │   │   └── 📄 user_model.dart
-│   │   │   │   └── 📁 repositories/
-│   │   │   │       └── 📄 auth_repository_impl.dart
+│   │   │   │   ├── 📁 api/
+│   │   │   │   │   ├── 📄 ApiService.kt
+│   │   │   │   │   ├── 📄 AuthApi.kt
+│   │   │   │   │   ├── 📄 TaskApi.kt
+│   │   │   │   │   └── 📄 AIApi.kt
+│   │   │   │   ├── 📁 local/
+│   │   │   │   │   ├── 📄 TodoDatabase.kt
+│   │   │   │   │   ├── 📄 TaskDao.kt
+│   │   │   │   │   ├── 📄 UserDao.kt
+│   │   │   │   │   └── 📄 SessionDao.kt
+│   │   │   │   └── 📁 repository/
+│   │   │   │       ├── 📄 AuthRepositoryImpl.kt
+│   │   │   │       ├── 📄 TaskRepositoryImpl.kt
+│   │   │   │       └── 📄 SessionRepositoryImpl.kt
 │   │   │   ├── 📁 domain/
-│   │   │   │   ├── 📁 entities/
-│   │   │   │   │   └── 📄 user.dart
-│   │   │   │   ├── 📁 repositories/
-│   │   │   │   │   └── 📄 auth_repository.dart
-│   │   │   │   └── 📁 usecases/
-│   │   │   │       ├── 📄 login_usecase.dart
-│   │   │   │       └── 📄 register_usecase.dart
-│   │   │   └── 📁 presentation/
-│   │   │       ├── 📁 pages/
-│   │   │       │   ├── 📄 login_page.dart
-│   │   │       │   ├── 📄 register_page.dart
-│   │   │       │   └── 📄 forgot_password_page.dart
-│   │   │       ├── 📁 widgets/
-│   │   │       │   ├── 📄 login_form.dart
-│   │   │       │   └── 📄 auth_button.dart
-│   │   │       └── 📁 bloc/
-│   │   │           ├── 📄 auth_bloc.dart
-│   │   │           ├── 📄 auth_event.dart
-│   │   │           └── 📄 auth_state.dart
-│   │   ├── 📁 tasks/
-│   │   │   ├── 📁 data/
-│   │   │   │   ├── 📁 datasources/
-│   │   │   │   │   └── 📄 task_remote_datasource.dart
-│   │   │   │   ├── 📁 models/
-│   │   │   │   │   ├── 📄 task_model.dart
-│   │   │   │   │   └── 📄 subtask_model.dart
-│   │   │   │   └── 📁 repositories/
-│   │   │   │       └── 📄 task_repository_impl.dart
-│   │   │   ├── 📁 domain/
-│   │   │   │   ├── 📁 entities/
-│   │   │   │   │   ├── 📄 task.dart
-│   │   │   │   │   └── 📄 subtask.dart
-│   │   │   │   ├── 📁 repositories/
-│   │   │   │   │   └── 📄 task_repository.dart
-│   │   │   │   └── 📁 usecases/
-│   │   │   │       ├── 📄 create_task_usecase.dart
-│   │   │   │       ├── 📄 update_task_usecase.dart
-│   │   │   │       └── 📄 delete_task_usecase.dart
-│   │   │   └── 📁 presentation/
-│   │   │       ├── 📁 pages/
-│   │   │       │   ├── 📄 home_page.dart
-│   │   │       │   ├── 📄 add_task_page.dart
-│   │   │       │   └── 📄 edit_task_page.dart
-│   │   │       ├── 📁 widgets/
-│   │   │       │   ├── 📄 task_card.dart
-│   │   │       │   ├── 📄 task_list.dart
-│   │   │       │   └── 📄 priority_selector.dart
-│   │   │       └── 📁 bloc/
-│   │   │           ├── 📄 task_bloc.dart
-│   │   │           ├── 📄 task_event.dart
-│   │   │           └── 📄 task_state.dart
-│   │   ├── 📁 focus/
-│   │   │   ├── 📁 data/
-│   │   │   ├── 📁 domain/
-│   │   │   └── 📁 presentation/
-│   │   │       ├── 📁 pages/
-│   │   │       │   └── 📄 focus_page.dart
-│   │   │       ├── 📁 widgets/
-│   │   │       │   ├── 📄 pomodoro_timer.dart
-│   │   │       │   └── 📄 focus_stats.dart
-│   │   │       └── 📁 bloc/
-│   │   │           ├── 📄 focus_bloc.dart
-│   │   │           ├── 📄 focus_event.dart
-│   │   │           └── 📄 focus_state.dart
-│   │   ├── 📁 calendar/
-│   │   │   ├── 📁 data/
-│   │   │   ├── 📁 domain/
-│   │   │   └── 📁 presentation/
-│   │   │       ├── 📁 pages/
-│   │   │       │   └── 📄 calendar_page.dart
-│   │   │       ├── 📁 widgets/
-│   │   │       │   ├── 📄 calendar_widget.dart
-│   │   │       │   └── 📄 schedule_item.dart
-│   │   │       └── 📁 bloc/
-│   │   │           ├── 📄 calendar_bloc.dart
-│   │   │           ├── 📄 calendar_event.dart
-│   │   │           └── 📄 calendar_state.dart
-│   │   ├── 📁 stats/
-│   │   │   ├── 📁 data/
-│   │   │   ├── 📁 domain/
-│   │   │   └── 📁 presentation/
-│   │   │       ├── 📁 pages/
-│   │   │       │   └── 📄 stats_page.dart
-│   │   │       ├── 📁 widgets/
-│   │   │       │   ├── 📄 stats_chart.dart
-│   │   │       │   └── 📄 streak_widget.dart
-│   │   │       └── 📁 bloc/
-│   │   │           ├── 📄 stats_bloc.dart
-│   │   │           ├── 📄 stats_event.dart
-│   │   │           └── 📄 stats_state.dart
-│   │   └── 📁 settings/
-│   │       ├── 📁 data/
-│   │       ├── 📁 domain/
-│   │       └── 📁 presentation/
-│   │           ├── 📁 pages/
-│   │           │   └── 📄 settings_page.dart
-│   │           ├── 📁 widgets/
-│   │           │   ├── 📄 theme_selector.dart
-│   │           │   └── 📄 notification_settings.dart
-│   │           └── 📁 bloc/
-│   │               ├── 📄 settings_bloc.dart
-│   │               ├── 📄 settings_event.dart
-│   │               └── 📄 settings_state.dart
-│   ├── 📁 shared/
-│   │   ├── 📁 widgets/
-│   │   │   ├── 📄 custom_button.dart
-│   │   │   ├── 📄 custom_text_field.dart
-│   │   │   ├── 📄 loading_widget.dart
-│   │   │   └── 📄 error_widget.dart
-│   │   ├── 📁 themes/
-│   │   │   ├── 📄 app_theme.dart
-│   │   │   ├── 📄 colors.dart
-│   │   │   └── 📄 text_styles.dart
-│   │   └── 📁 utils/
-│   │       ├── 📄 date_utils.dart
-│   │       ├── 📄 string_utils.dart
-│   │       └── 📄 validation_utils.dart
-│   └── 📄 main.dart
-├── 📁 assets/
-│   ├── 📁 images/
-│   │   ├── 📄 logo.png
-│   │   ├── 📄 splash_screen.png
-│   │   └── 📄 icons/
-│   ├── 📁 fonts/
-│   │   ├── 📄 NotoSansJP-Regular.ttf
-│   │   └── 📄 Inter-Regular.ttf
-│   └── 📄 pubspec.yaml
-├── 📁 test/
-│   ├── 📁 unit/
-│   │   ├── 📄 auth_test.dart
-│   │   └── 📄 task_test.dart
-│   └── 📁 widget/
-│       ├── 📄 login_page_test.dart
-│       └── 📄 task_card_test.dart
-├── 📄 pubspec.yaml
+│   │   │   │   ├── 📁 model/
+│   │   │   │   │   ├── 📄 User.kt
+│   │   │   │   │   ├── 📄 Task.kt
+│   │   │   │   │   ├── 📄 Project.kt
+│   │   │   │   │   └── 📄 Session.kt
+│   │   │   │   ├── 📁 usecase/
+│   │   │   │   │   ├── 📄 LoginUseCase.kt
+│   │   │   │   │   ├── 📄 CreateTaskUseCase.kt
+│   │   │   │   │   └── 📄 StartFocusUseCase.kt
+│   │   │   │   └── 📁 repository/
+│   │   │   │       ├── 📄 AuthRepository.kt
+│   │   │   │       ├── 📄 TaskRepository.kt
+│   │   │   │       └── 📄 SessionRepository.kt
+│   │   │   └── 📁 di/
+│   │   │       ├── 📄 NetworkModule.kt
+│   │   │       ├── 📄 DatabaseModule.kt
+│   │   │       └── 📄 RepositoryModule.kt
+│   │   ├── 📁 res/
+│   │   │   ├── 📁 layout/
+│   │   │   │   ├── 📄 activity_login.xml
+│   │   │   │   ├── 📄 activity_home.xml
+│   │   │   │   ├── 📄 fragment_task_list.xml
+│   │   │   │   └── 📄 fragment_focus_timer.xml
+│   │   │   ├── 📁 values/
+│   │   │   │   ├── 📄 colors.xml
+│   │   │   │   ├── 📄 strings.xml
+│   │   │   │   ├── 📄 styles.xml
+│   │   │   │   └── 📄 themes.xml
+│   │   │   ├── 📁 drawable/
+│   │   │   │   ├── 📄 ic_add_task.xml
+│   │   │   │   ├── 📄 ic_focus_mode.xml
+│   │   │   │   └── 📄 ic_stats.xml
+│   │   │   └── 📁 menu/
+│   │   │       ├── 📄 bottom_navigation.xml
+│   │   │       └── 📄 main_menu.xml
+│   │   └── 📄 AndroidManifest.xml
+│   └── 📄 build.gradle.kts
+├── 📁 build.gradle.kts
+└── 📄 settings.gradle.kts
 └── 📄 analysis_options.yaml
 ```
 
@@ -341,34 +264,35 @@ docs/
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 2. Mobile App Architecture (Flutter)
+### 2. Mobile App Architecture (Android Studio)
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Flutter Mobile App                      │
+│                Android Studio Mobile App                   │
 ├─────────────────────────────────────────────────────────────┤
 │  🎨 Presentation Layer (UI/UX)                             │
-│  ├── Pages (Screens)                                       │
-│  ├── Widgets (Reusable Components)                         │
-│  └── Themes (Design System)                                │
+│  ├── Activities (Screens)                                  │
+│  ├── Fragments (Reusable Components)                       │
+│  ├── Views (XML Layouts)                                   │
+│  └── Material Design 3 (Design System)                     │
 ├─────────────────────────────────────────────────────────────┤
-│  🧠 Business Logic Layer (BLoC)                            │
-│  ├── AuthBloc (Authentication State)                       │
-│  ├── TaskBloc (Task Management)                            │
-│  ├── FocusBloc (Focus Mode)                                │
-│  ├── CalendarBloc (Scheduling)                             │
-│  ├── StatsBloc (Analytics)                                 │
-│  └── SettingsBloc (App Settings)                           │
+│  🧠 Business Logic Layer (MVVM)                            │
+│  ├── ViewModels (State Management)                         │
+│  ├── LiveData (Reactive Data)                              │
+│  ├── Repository Pattern (Data Abstraction)                 │
+│  └── Use Cases (Business Logic)                            │
 ├─────────────────────────────────────────────────────────────┤
 │  📡 Data Layer (Repository Pattern)                        │
-│  ├── Remote Data Sources (API Calls)                       │
-│  ├── Local Data Sources (Hive, SharedPreferences)          │
+│  ├── Remote Data Sources (Retrofit API)                    │
+│  ├── Local Data Sources (Room Database)                    │
+│  ├── SharedPreferences (Settings)                          │
 │  └── Repository Implementations                            │
 ├─────────────────────────────────────────────────────────────┤
 │  🔧 Core Layer (Utilities)                                 │
-│  ├── Network (API Client, Connectivity)                    │
-│  ├── Storage (Local Database, Cache)                       │
-│  ├── Notifications (Push, Local)                           │
-│  └── Utils (Validators, Formatters)                        │
+│  ├── Dependency Injection (Dagger/Hilt)                    │
+│  ├── Networking (OkHttp, Retrofit)                         │
+│  ├── Database (Room, SQLite)                               │
+│  ├── Notifications (Firebase, Local)                       │
+│  └── Utils (Extensions, Helpers)                           │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -431,14 +355,15 @@ docs/
 - **Testing**: PHPUnit, Pest
 
 ### Mobile App
-- **Framework**: Flutter 3.24
-- **Language**: Dart 3.5
-- **State Management**: BLoC
-- **Navigation**: GoRouter
-- **Local Storage**: Hive, SharedPreferences
-- **Networking**: Dio, Retrofit
+- **Framework**: Android Studio
+- **Language**: Kotlin
+- **Architecture**: MVVM + Repository Pattern
+- **State Management**: ViewModel + LiveData
+- **Navigation**: Navigation Component
+- **Local Storage**: Room Database, SharedPreferences
+- **Networking**: Retrofit, OkHttp
 - **Notifications**: Firebase Messaging
-- **Testing**: Flutter Test, Mockito
+- **Testing**: JUnit, Espresso, Mockito
 
 ### DevOps
 - **Containerization**: Docker, Docker Compose
@@ -484,17 +409,17 @@ php artisan test
 
 ### 3. Mobile App Development
 ```bash
-# Install dependencies
-flutter pub get
-
-# Run app
-flutter run
+# Open in Android Studio
+# Install dependencies via Gradle
+# Run app on emulator or device
 
 # Run tests
-flutter test
+./gradlew test
+./gradlew connectedAndroidTest
 
 # Build APK
-flutter build apk
+./gradlew assembleDebug
+./gradlew assembleRelease
 ```
 
 ## Deployment Strategy
@@ -518,10 +443,10 @@ flutter build apk
 ## Next Steps
 
 1. **Setup Laravel Backend**: Tạo cấu trúc thư mục và cài đặt dependencies
-2. **Setup Flutter Mobile**: Tạo cấu trúc thư mục và cài đặt dependencies
+2. **Setup Android Mobile**: Tạo cấu trúc thư mục và cài đặt dependencies
 3. **Database Migration**: Tạo Laravel migrations từ init.sql
 4. **API Development**: Implement REST API endpoints
-5. **Mobile App Development**: Implement Flutter screens và BLoC
+5. **Mobile App Development**: Implement Android Activities/Fragments và ViewModels
 6. **AI Integration**: Integrate OpenAI API
 7. **Testing**: Write unit và integration tests
 8. **Deployment**: Setup CI/CD pipeline
