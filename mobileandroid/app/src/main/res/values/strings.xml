@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Info -->
+    <string name="app_name">DOL LEAF</string>
+    <string name="app_tagline">AI-Powered Todo App</string>
+    <string name="app_version">Version 1.0.0</string>
+    <string name="app_logo">App Logo</string>
+
+    <!-- Login -->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login_title">Đăng nhập</string>
+    <string name="login_subtitle">Chào mừng bạn quay trở lại!</string>
+    <string name="login_description">Đăng nhập để tiếp tục sử dụng ứng dụng</string>
+    <string name="login_button">Đăng nhập</string>
+    <string name="logging_in">Đang đăng nhập...</string>
+    <string name="login_success">Đăng nhập thành công!</string>
+
+    <!-- Register -->
+    <string name="register_title">Đăng ký</string>
+    <string name="register_description">Tạo tài khoản mới để bắt đầu</string>
+    <string name="register_button">Đăng ký</string>
+    <string name="registering">Đang đăng ký...</string>
+    <string name="register_success">Đăng ký thành công!</string>
+
+    <!-- Forgot Password -->
+    <string name="forgot_password_title">Quên mật khẩu?</string>
+    <string name="forgot_password_description">Nhập email của bạn để nhận liên kết đặt lại mật khẩu</string>
+    <string name="forgot_password_icon">Forgot Password Icon</string>
+    <string name="reset_password_button">Gửi liên kết đặt lại</string>
+    <string name="resetting_password">Đang gửi...</string>
+    <string name="reset_success">Đã gửi liên kết đặt lại mật khẩu!</string>
+
+    <!-- Form Fields -->
+    <string name="name_hint">Họ và tên</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Mật khẩu</string>
+    <string name="confirm_password_hint">Xác nhận mật khẩu</string>
+
+    <!-- Validation Messages -->
+    <string name="name_required">Vui lòng nhập họ và tên</string>
+    <string name="name_too_short">Họ và tên phải có ít nhất 2 ký tự</string>
+    <string name="email_required">Vui lòng nhập email</string>
+    <string name="email_invalid">Email không hợp lệ</string>
+    <string name="password_required">Vui lòng nhập mật khẩu</string>
+    <string name="password_too_short">Mật khẩu phải có ít nhất 6 ký tự</string>
+    <string name="confirm_password_required">Vui lòng xác nhận mật khẩu</string>
+    <string name="passwords_not_match">Mật khẩu không khớp</string>
+    <string name="terms_required">Vui lòng chấp nhận điều khoản sử dụng</string>
+
+    <!-- Links -->
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="no_account">Chưa có tài khoản?</string>
+    <string name="register_link">Đăng ký ngay</string>
+    <string name="have_account">Đã có tài khoản?</string>
+    <string name="login_link">Đăng nhập</string>
+    <string name="remember_password">Nhớ mật khẩu?</string>
+    <string name="remember_me">Ghi nhớ đăng nhập</string>
+    <string name="or_divider">hoặc</string>
+
+    <!-- Social Login -->
+    <string name="google_login">Đăng nhập với Google</string>
+    <string name="apple_login">Đăng nhập với Apple</string>
+
+    <!-- Terms -->
+    <string name="terms_agreement">Tôi đồng ý với Điều khoản sử dụng và Chính sách bảo mật</string>
+
+    <!-- Navigation -->
+    <string name="back">Quay lại</string>
+
+    <!-- Errors -->
+    <string name="error_network">Lỗi kết nối mạng</string>
+    <string name="error_server">Lỗi máy chủ</string>
+    <string name="error_unknown">Đã xảy ra lỗi không xác định</string>
+</resources>

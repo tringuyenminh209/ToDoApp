@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors (Jade) -->
+    <color name="primary">#0FA968</color>
+    <color name="primary_hover">#0B8C57</color>
+    <color name="primary_press">#09764B</color>
+    <color name="primary_light">#E6F8F1</color>
+    <color name="primary_dark">#00503C</color>
+
+    <!-- Accent Colors (Electric Blue)  -->
+    <color name="accent">#1F6FEB</color>
+    <color name="accent_hover">#1D4ED8</color>
+    <color name="accent_press">#1E40AF</color>
+    <color name="accent_light">#EEF5FF</color>
+
+    <!-- Status Colors -->
+    <color name="success">#22C55E</color>
+    <color name="warning">#F59E0B</color>
+    <color name="error">#DC2626</color>
+    <color name="info">#1F6FEB</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#0B1220</color>
+    <color name="text_secondary">#475569</color>
+    <color name="text_tertiary">#64748B</color>
+    <color name="text_disabled">#94A3B8</color>
+    <color name="muted">#94A3B8</color>
+
+    <!-- Surface Colors -->
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F8FAFC</color>
+    <color name="background">#F8FAFC</color>
+    <color name="background_gradient_start">#0FA968</color>
+    <color name="background_gradient_end">#1F6FEB</color>
+    
+    <!-- Glassmorphism Colors -->
+    <color name="surface_glassmorphism">#F5FFFFFF</color>
+    <color name="glassmorphism_border">#33FFFFFF</color>
+    <color name="glassmorphism_overlay">#1AFFFFFF</color>
+
+    <!-- Border Colors -->
+    <color name="line">#E2E8F0</color>
+    <color name="line_variant">#CBD5E1</color>
+
+    <!-- Overlay -->
+    <color name="overlay">#66000000</color>
+    <color name="overlay_light">#33000000</color>
+
+    <!-- Transparent -->
+    <color name="transparent">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+</resources>

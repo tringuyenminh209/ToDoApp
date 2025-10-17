@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('task_id')->constrained('tasks')->onDelete('cascade');
             $table->foreignId('tag_id')->constrained('tags')->onDelete('cascade');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamps();
 
             // Indexes
             $table->unique(['task_id', 'tag_id']);

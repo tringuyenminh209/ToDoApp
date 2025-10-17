@@ -12,8 +12,21 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Cấu hình middleware cho API
+        $middleware->api(prepend: [
+            // Loại bỏ EnsureFrontendRequestsAreStateful để tránh CSRF issues
+            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // Xử lý authentication exception cho API
+        $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthenticated',
+                    'error' => 'Token không hợp lệ hoặc đã hết hạn'
+                ], 401);
+            }
+        });
     })->create();
