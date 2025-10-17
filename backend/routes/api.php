@@ -1,64 +1,103 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\FocusSessionController;
+use App\Http\Controllers\AIController;
+use App\Http\Controllers\StatsController;
+use App\Http\Controllers\DailyCheckinController;
+use App\Http\Controllers\DailyReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-// Health check endpoint
-Route::get('/health', function () {
+Route::get('/test', function(){
     return response()->json([
-        'status' => 'healthy',
-        'timestamp' => now(),
-        'version' => '1.0.0'
+        'message' => 'API',
+        'time' => now()
     ]);
 });
 
-// API v1 routes
-Route::prefix('v1')->group(function () {
-    // Authentication routes
-    Route::post('/auth/login', [App\Http\Controllers\Api\AuthController::class, 'login']);
-    Route::post('/auth/register', [App\Http\Controllers\Api\AuthController::class, 'register']);
-    Route::post('/auth/logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-    // Protected routes
-    Route::middleware('auth:sanctum')->group(function () {
-        // User routes
-        Route::get('/user/profile', [App\Http\Controllers\Api\UserController::class, 'profile']);
-        Route::put('/user/profile', [App\Http\Controllers\Api\UserController::class, 'updateProfile']);
-
-        // Project routes
-        Route::apiResource('projects', App\Http\Controllers\Api\ProjectController::class);
-
-        // Task routes
-        Route::apiResource('tasks', App\Http\Controllers\Api\TaskController::class);
-        Route::post('/tasks/{task}/breakdown', [App\Http\Controllers\Api\TaskController::class, 'breakdown']);
-
-        // Session routes (Focus Mode)
-        Route::apiResource('sessions', App\Http\Controllers\Api\SessionController::class);
-        Route::post('/sessions/{session}/complete', [App\Http\Controllers\Api\SessionController::class, 'complete']);
-
-        // AI routes
-        Route::post('/ai/plan-today', [App\Http\Controllers\Api\AIController::class, 'planToday']);
-        Route::post('/ai/nudge', [App\Http\Controllers\Api\AIController::class, 'nudge']);
-        Route::post('/ai/review', [App\Http\Controllers\Api\AIController::class, 'review']);
-
-        // Stats routes
-        Route::get('/stats/dashboard', [App\Http\Controllers\Api\StatsController::class, 'dashboard']);
-        Route::get('/stats/streak', [App\Http\Controllers\Api\StatsController::class, 'streak']);
-        Route::get('/stats/heatmap', [App\Http\Controllers\Api\StatsController::class, 'heatmap']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
     });
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Task routes
+    Route::apiResource('tasks', TaskController::class);
+
+    // Additional task routes
+    Route::put('/tasks/{id}/complete', [TaskController::class, 'complete']);
+    Route::put('/tasks/{id}/start', [TaskController::class, 'start']);
+    Route::get('/tasks/stats', [TaskController::class, 'stats']);
+    Route::get('/tasks/by-priority/{priority}', [TaskController::class, 'byPriority']);
+    Route::get('/tasks/overdue', [TaskController::class, 'overdue']);
+    Route::get('/tasks/due-soon', [TaskController::class, 'dueSoon']);
+
+    // Focus Session routes
+    Route::prefix('sessions')->group(function () {
+        Route::post('/start', [FocusSessionController::class, 'start']);
+        Route::get('/current', [FocusSessionController::class, 'current']);
+        Route::get('/stats', [FocusSessionController::class, 'stats']);
+        Route::get('/by-date', [FocusSessionController::class, 'byDate']);
+        Route::put('/{id}/stop', [FocusSessionController::class, 'stop']);
+        Route::put('/{id}/pause', [FocusSessionController::class, 'pause']);
+        Route::put('/{id}/resume', [FocusSessionController::class, 'resume']);
+        Route::get('/', [FocusSessionController::class, 'index']);
+    });
+
+            // AI routes
+            Route::prefix('ai')->group(function () {
+                Route::get('/status', [AIController::class, 'status']);
+                Route::post('/breakdown-task', [AIController::class, 'breakdownTask']);
+                Route::get('/daily-suggestions', [AIController::class, 'dailySuggestions']);
+                Route::post('/daily-summary', [AIController::class, 'dailySummary']);
+                Route::get('/suggestions', [AIController::class, 'suggestions']);
+                Route::put('/suggestions/{id}/read', [AIController::class, 'markSuggestionRead']);
+                Route::get('/summaries', [AIController::class, 'summaries']);
+                Route::post('/insights', [AIController::class, 'insights']);
+                Route::post('/learning-recommendations', [AIController::class, 'learningRecommendations']);
+                Route::post('/focus-analysis', [AIController::class, 'focusAnalysis']);
+                Route::post('/motivational-message', [AIController::class, 'motivationalMessage']);
+            });
+
+    // Stats routes
+    Route::prefix('stats')->group(function () {
+        Route::get('/dashboard', [StatsController::class, 'dashboard']);
+        Route::get('/tasks', [StatsController::class, 'tasks']);
+        Route::get('/sessions', [StatsController::class, 'sessions']);
+        Route::get('/trends', [StatsController::class, 'trends']);
+        Route::get('/performance', [StatsController::class, 'performance']);
+    });
+
+    // Daily Check-in routes
+    Route::prefix('daily-checkin')->group(function () {
+        Route::get('/today', [DailyCheckinController::class, 'today']);
+        Route::get('/stats', [DailyCheckinController::class, 'stats']);
+        Route::get('/trends', [DailyCheckinController::class, 'trends']);
+        Route::get('/{date}', [DailyCheckinController::class, 'show']);
+        Route::get('/', [DailyCheckinController::class, 'index']);
+        Route::post('/', [DailyCheckinController::class, 'store']);
+        Route::put('/{id}', [DailyCheckinController::class, 'update']);
+        Route::delete('/{id}', [DailyCheckinController::class, 'destroy']);
+    });
+
+    // Daily Review routes
+    Route::prefix('daily-review')->group(function () {
+        Route::get('/today', [DailyReviewController::class, 'today']);
+        Route::get('/stats', [DailyReviewController::class, 'stats']);
+        Route::get('/trends', [DailyReviewController::class, 'trends']);
+        Route::get('/insights', [DailyReviewController::class, 'insights']);
+        Route::get('/{date}', [DailyReviewController::class, 'show']);
+        Route::get('/', [DailyReviewController::class, 'index']);
+        Route::post('/', [DailyReviewController::class, 'store']);
+        Route::put('/{id}', [DailyReviewController::class, 'update']);
+        Route::delete('/{id}', [DailyReviewController::class, 'destroy']);
+    });
+
 });
