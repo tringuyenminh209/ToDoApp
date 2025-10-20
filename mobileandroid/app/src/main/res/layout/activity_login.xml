@@ -33,7 +33,7 @@
             android:paddingHorizontal="@dimen/spacing_md"
             android:text="VI"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="@color/glassmorphism_overlay"
             app:cornerRadius="20dp"
@@ -97,7 +97,7 @@
                 android:layout_marginTop="@dimen/spacing_xl"
                 android:text="@string/welcome_back"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:alpha="0.9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +111,7 @@
                 android:layout_marginTop="@dimen/spacing_sm"
                 android:text="@string/login_title"
                 android:textColor="@color/white"
-                android:textSize="32sp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +127,7 @@
                 android:gravity="center"
                 android:text="@string/login_description"
                 android:textColor="@color/white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_login_title" />
@@ -180,7 +180,7 @@
                             android:paddingStart="56dp"
                             android:paddingEnd="12dp"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -213,7 +213,7 @@
                             android:paddingStart="56dp"
                             android:paddingEnd="12dp"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -233,7 +233,7 @@
                             android:buttonTint="@color/primary"
                             android:text="@string/remember_me"
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/tv_forgot_password"
@@ -245,7 +245,7 @@
                             android:padding="@dimen/spacing_sm"
                             android:text="@string/forgot_password"
                             android:textColor="@color/primary"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -258,7 +258,7 @@
                         android:layout_marginBottom="@dimen/spacing_xl"
                         android:text="@string/login_button"
                         android:textColor="@color/white"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         app:backgroundTint="@color/primary"
                         app:cornerRadius="20dp"
@@ -290,7 +290,7 @@
                             android:layout_marginHorizontal="@dimen/spacing_lg"
                             android:text="@string/or_divider"
                             android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
+                            android:textSize="12sp" />
 
                         <View
                             android:layout_width="0dp"
@@ -318,7 +318,7 @@
                             android:layout_weight="1"
                             android:text="Google"
                             android:textColor="@color/text_primary"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:textStyle="bold"
                             app:backgroundTint="@color/white"
                             app:cornerRadius="16dp"
@@ -340,7 +340,7 @@
                             android:layout_weight="1"
                             android:text="Apple"
                             android:textColor="@color/text_primary"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:textStyle="bold"
                             app:backgroundTint="@color/white"
                             app:cornerRadius="16dp"
@@ -375,7 +375,7 @@
                     android:text="@string/no_account"
                     android:textColor="@color/white"
                     android:alpha="0.9"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_register_link"
@@ -388,7 +388,7 @@
                     android:padding="@dimen/spacing_sm"
                     android:text="@string/register_link"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
             </LinearLayout>

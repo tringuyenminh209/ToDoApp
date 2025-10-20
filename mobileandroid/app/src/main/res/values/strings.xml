@@ -65,10 +65,76 @@
     <string name="terms_agreement">Tôi đồng ý với Điều khoản sử dụng và Chính sách bảo mật</string>
 
     <!-- Navigation -->
-    <string name="back">Quay lại</string>
+    <string name="back">戻る</string>
 
     <!-- Errors -->
     <string name="error_network">Lỗi kết nối mạng</string>
     <string name="error_server">Lỗi máy chủ</string>
     <string name="error_unknown">Đã xảy ra lỗi không xác định</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title">DOL LEAFへようこそ</string>
+    <string name="onboarding_subtitle">目標を設定して、あなたの旅を始めましょう</string>
+    <string name="onboarding_step">Bước %1$d/%2$d</string>
+    <string name="step_progress">ステップ 2/3</string>
+    
+    <!-- Step 1: Goals -->
+    <string name="onboarding_step1_title">Mục tiêu của bạn là gì?</string>
+    <string name="onboarding_step1_description">Chọn lĩnh vực bạn muốn tập trung phát triển</string>
+    <string name="goal_learning">Học tập</string>
+    <string name="goal_work">Công việc</string>
+    <string name="goal_health">Sức khỏe</string>
+    
+    <!-- Step 2: Time -->
+    <string name="onboarding_step2_title">あなたの空き時間は？</string>
+    <string name="onboarding_step2_description">通常集中して作業できる時間を選択してください</string>
+    <string name="time_morning">早朝</string>
+    <string name="time_morning_late">午前遅め</string>
+    <string name="time_afternoon">午後</string>
+    <string name="time_evening">夕方</string>
+    <string name="time_morning_slot">6:00 - 9:00</string>
+    <string name="time_morning_late_slot">9:00 - 12:00</string>
+    <string name="time_afternoon_slot">13:00 - 17:00</string>
+    <string name="time_evening_slot">19:00 - 22:00</string>
+    
+    <!-- Step 3: Notifications -->
+    <string name="onboarding_step3_title">Nhận thông báo?</string>
+    <string name="onboarding_step3_description">Chúng tôi sẽ gửi lời nhắc nhẹ nhàng để giúp bạn duy trì thói quen</string>
+    <string name="notification_reminder">Nhận thông báo nhắc nhở</string>
+    <string name="notification_info">Bạn có thể thay đổi cài đặt này bất cứ lúc nào trong phần cài đặt</string>
+    
+    <!-- Buttons -->
+    <string name="btn_next">次へ</string>
+    <string name="btn_complete">完了</string>
+    <string name="onboarding_welcome">Chào mừng bạn đến với DOL LEAF! Chúng tôi sẽ tạo một số task mẫu để bạn bắt đầu.</string>
+    
+    <!-- Main Activity - 主画面 -->
+    <string name="main_today">Hôm nay</string>
+    <string name="main_date_placeholder">Thứ 5, 18/10/2024</string>
+    <string name="main_progress_today">Tiến độ hôm nay</string>
+    <string name="main_view_stats">Xem thống kê</string>
+    <string name="main_timetable">Thời khóa biểu</string>
+    <string name="main_checkin">Check-in sáng</string>
+    <string name="main_review">Review tối</string>
+    <string name="main_ai_coach">AI Coach</string>
+    <string name="main_ai_arrange">AI sắp xếp</string>
+    <string name="main_start_5min">Bắt đầu 5p</string>
+    <string name="main_reschedule">Dời lịch</string>
+    <string name="main_top3_today">Top 3 hôm nay</string>
+    <string name="main_start_focus">Bắt đầu Focus</string>
+    <string name="main_empty_tasks">Chưa có task nào</string>
+    <string name="main_empty_tasks_description">Bắt đầu thêm task mới để bắt đầu</string>
+    
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_calendar">Lịch</string>
+    <string name="nav_paths">Lộ trình</string>
+    <string name="nav_knowledge">Kiến thức</string>
+    <string name="nav_settings">Cài đặt</string>
+    
+    <!-- Task Card -->
+    <string name="task_start">Bắt đầu</string>
+    <string name="task_more">Xem thêm</string>
+    <string name="task_time_format">%d phút</string>
+    <string name="task_priority">Ưu tiên %d</string>
 </resources>
