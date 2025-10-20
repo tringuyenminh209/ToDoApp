@@ -12,44 +12,41 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodoApp"
         tools:targetApi="31">
+        <!-- Onboarding Activity (LAUNCHER for Preview) -->
+        <activity
+            android:name=".ui.activities.onboardingActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TodoApp">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- Splash Activity -->
         <activity
             android:name=".ui.activities.SplashActivity"
             android:exported="false"
-            android:theme="@style/Theme.TodoApp.Splash">
-
-        </activity>
-
+            android:theme="@style/Theme.TodoApp.Splash"></activity>
         <!-- Login Activity -->
         <activity
             android:name=".ui.activities.LoginActivity"
-            android:exported="true"
-            android:theme="@style/Theme.TodoApp" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!-- Register Activity -->
+            android:exported="false"
+            android:theme="@style/Theme.TodoApp" /> <!-- Register Activity -->
         <activity
             android:name=".ui.activities.RegisterActivity"
             android:exported="false"
-            android:theme="@style/Theme.TodoApp" />
-
-        <!-- Forgot Password Activity -->
+            android:theme="@style/Theme.TodoApp" /> <!-- Forgot Password Activity -->
         <activity
             android:name=".ui.activities.ForgotPasswordActivity"
             android:exported="false"
-            android:theme="@style/Theme.TodoApp" />
-
-        <!-- Main Activity -->
+            android:theme="@style/Theme.TodoApp" /> <!-- Main Activity -->
         <activity
             android:name=".ui.activities.MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.TodoApp" />
+            android:theme="@style/Theme.TodoApp">
 
+        </activity>
     </application>
 
 </manifest>

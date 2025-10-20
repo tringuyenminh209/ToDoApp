@@ -56,7 +56,7 @@
             android:paddingHorizontal="@dimen/spacing_md"
             android:text="VI"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="@color/glassmorphism_overlay"
             app:cornerRadius="20dp"
@@ -120,7 +120,7 @@
                 android:layout_marginTop="@dimen/spacing_xl"
                 android:text="@string/register_title"
                 android:textColor="@color/white"
-                android:textSize="28sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +136,7 @@
                 android:gravity="center"
                 android:text="@string/register_description"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_register_title" />
@@ -189,7 +189,7 @@
                             android:paddingStart="56dp"
                             android:paddingEnd="12dp"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,7 +222,7 @@
                             android:paddingStart="56dp"
                             android:paddingEnd="12dp"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -255,7 +255,7 @@
                             android:paddingStart="56dp"
                             android:paddingEnd="12dp"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -288,7 +288,7 @@
                             android:paddingStart="56dp"
                             android:paddingEnd="12dp"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -313,7 +313,7 @@
                             android:layout_weight="1"
                             android:text="@string/terms_agreement"
                             android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
@@ -324,7 +324,7 @@
                         android:layout_height="64dp"
                         android:text="@string/register_button"
                         android:textColor="@color/white"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         app:backgroundTint="@color/primary"
                         app:cornerRadius="20dp"
@@ -351,7 +351,7 @@
                     android:alpha="0.9"
                     android:text="@string/have_account"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_login_link"
@@ -364,7 +364,7 @@
                     android:padding="@dimen/spacing_sm"
                     android:text="@string/login_link"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
