@@ -76,14 +76,15 @@
     <string name="onboarding_title">DOL LEAFへようこそ</string>
     <string name="onboarding_subtitle">目標を設定して、あなたの旅を始めましょう</string>
     <string name="onboarding_step">ステップ %1$d/%2$d</string>
-    
+    <string name="step_progress">ステップ 2/3</string>
+
     <!-- Step 1: Goals -->
     <string name="onboarding_step1_title">あなたの目標は何ですか？</string>
     <string name="onboarding_step1_description">集中して発展させたい分野を選択してください</string>
     <string name="goal_learning">学習</string>
     <string name="goal_work">仕事</string>
     <string name="goal_health">健康</string>
-    
+
     <!-- Step 2: Time -->
     <string name="onboarding_step2_title">あなたの空き時間は？</string>
     <string name="onboarding_step2_description">通常集中して作業できる時間を選択してください</string>
@@ -95,22 +96,26 @@
     <string name="time_morning_late_slot">9:00 - 12:00</string>
     <string name="time_afternoon_slot">13:00 - 17:00</string>
     <string name="time_evening_slot">19:00 - 22:00</string>
-    
+
     <!-- Step 3: Notifications -->
     <string name="onboarding_step3_title">通知を受け取りますか？</string>
     <string name="onboarding_step3_description">習慣を維持するための優しいリマインダーを送信します</string>
     <string name="notification_reminder">リマインダー通知を受け取る</string>
     <string name="notification_info">この設定はいつでも設定画面で変更できます</string>
-    
+
     <!-- Buttons -->
     <string name="btn_next">次へ</string>
     <string name="btn_complete">完了</string>
     <string name="onboarding_welcome">DOL LEAFへようこそ！始めるためのサンプルタスクを作成します。</string>
-    
+
     <!-- Main Activity - 主画面 -->
+    <string name="main_greeting">おはようございます</string>
     <string name="main_today">今日</string>
     <string name="main_date_placeholder">木曜日、2024年10月18日</string>
     <string name="main_progress_today">今日の進捗</string>
+    <string name="main_tasks_completed">完了したタスク</string>
+    <string name="main_focus_time">集中時間</string>
+    <string name="main_streak_days">連続日数</string>
     <string name="main_view_stats">統計を見る</string>
     <string name="main_timetable">時間割</string>
     <string name="main_checkin">朝のチェックイン</string>
@@ -120,21 +125,57 @@
     <string name="main_start_5min">5分開始</string>
     <string name="main_reschedule">再スケジュール</string>
     <string name="main_top3_today">今日のトップ3</string>
+    <string name="main_view_all">すべてを見る</string>
     <string name="main_start_focus">集中開始</string>
     <string name="main_empty_tasks">まだタスクがありません</string>
     <string name="main_empty_tasks_description">新しいタスクを追加して始めましょう</string>
-    
+
     <!-- Bottom Navigation -->
     <string name="nav_home">ホーム</string>
     <string name="nav_calendar">カレンダー</string>
     <string name="nav_paths">学習パス</string>
     <string name="nav_knowledge">知識</string>
     <string name="nav_settings">設定</string>
-    
-    <!-- Task Card -->
-    <string name="task_start">開始</string>
-    <string name="task_more">もっと見る</string>
-    <string name="task_time_format">%d分</string>
-    <string name="task_priority">優先度 %d</string>
-</resources>
 
+    <!-- Add Task Screen -->
+    <string name="add_task_title">タスク追加</string>
+    <string name="basic_information">基本情報</string>
+    <string name="task_title_hint">タスクタイトル</string>
+    <string name="task_description_hint">詳細な説明（任意）</string>
+    <string name="priority_and_time">優先度 &amp; 時間</string>
+    <string name="priority">優先度レベル</string>
+    <string name="priority_high">高</string>
+    <string name="priority_medium">中</string>
+    <string name="priority_low">低</string>
+    <string name="estimated_time">推定時間</string>
+    <string name="time_hint">分</string>
+    <string name="subtasks">実装ステップ</string>
+    <string name="add_subtask">ステップ追加</string>
+    <string name="no_subtasks">まだステップがありません</string>
+    <string name="no_subtasks_description">小さいステップを追加して簡単にしましょう</string>
+    <string name="subtask_hint">ステップの説明</string>
+    <string name="remove">削除</string>
+    <string name="save">保存</string>
+    <string name="task_start">開始</string>
+
+    <!-- Deadline Section -->
+    <string name="deadline">締切</string>
+    <string name="deadline_hint">yyyy/mm/dd --:--</string>
+    <string name="today">今日</string>
+    <string name="tomorrow">明日</string>
+    <string name="next_week">来週</string>
+
+    <!-- AI Support Section -->
+    <string name="ai_support">AIサポート</string>
+    <string name="beta">BETA</string>
+    <string name="ai_suggestions">AI提案</string>
+    <string name="ai_breakdown_task">タスクを分割</string>
+    <string name="ai_optimize_time">時間を最適化</string>
+    <string name="ai_suggest_subtasks">ステップを提案</string>
+    <string name="ai_status_info">AIが分析して適切な提案を提供します</string>
+
+    <!-- Task Actions -->
+    <string name="task_more">もっと見る</string>
+    <string name="task_priority">優先度</string>
+    <string name="task_time_format">%d分</string>
+</resources>

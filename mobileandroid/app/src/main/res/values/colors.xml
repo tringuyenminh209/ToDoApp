@@ -15,9 +15,13 @@
 
     <!-- Status Colors -->
     <color name="success">#22C55E</color>
+    <color name="success_light">#D1FAE5</color>
     <color name="warning">#F59E0B</color>
+    <color name="warning_light">#FEF3C7</color>
     <color name="error">#DC2626</color>
+    <color name="error_light">#FEE2E2</color>
     <color name="info">#1F6FEB</color>
+    <color name="info_light">#DBEAFE</color>
 
     <!-- Text Colors -->
     <color name="text_primary">#0B1220</color>
@@ -34,6 +38,7 @@
 
     <!-- Surface colors -->
     <color name="surface">#F8F9FA</color>
+    <color name="surface_variant">#E9ECEF</color>
     <color name="primary_alpha_12">#1F6366FF</color>
     <color name="background">#F8FAFC</color>
     <color name="background_gradient_start">#0FA968</color>

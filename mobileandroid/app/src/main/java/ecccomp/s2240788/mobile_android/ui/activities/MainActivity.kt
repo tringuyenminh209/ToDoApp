@@ -82,9 +82,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // FAB
-        binding.fabFocus.setOnClickListener {
-            Toast.makeText(this, "Start focus session", Toast.LENGTH_SHORT).show()
-        }
+//        binding.fabFocus.setOnClickListener {
+//            Toast.makeText(this, "Start focus session", Toast.LENGTH_SHORT).show()
+//        }
     }
 
     private fun setupObservers() {
