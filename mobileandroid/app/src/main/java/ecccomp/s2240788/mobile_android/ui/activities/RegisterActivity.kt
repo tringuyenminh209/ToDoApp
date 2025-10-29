@@ -166,8 +166,12 @@ class RegisterActivity : AppCompatActivity() {
                 passwordLayout.error = getString(R.string.password_required)
                 false
             }
-            password.length < 6 -> {
+            password.length < 8 -> {
                 passwordLayout.error = getString(R.string.password_too_short)
+                false
+            }
+            !password.matches(Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$")) -> {
+                passwordLayout.error = "パスワードは大文字、小文字、数字を含む必要があります"
                 false
             }
             else -> {

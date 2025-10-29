@@ -183,7 +183,7 @@ class TaskController extends Controller
             'priority' => 'sometimes|integer|min:1|max:5',
             'energy_level' => 'sometimes|in:low,medium,high',
             'estimated_minutes' => 'nullable|integer|min:1|max:600',
-            'deadline' => 'nullable|date|after:now',
+            'deadline' => 'nullable|date',
             'status' => 'sometimes|in:pending,in_progress,completed,cancelled',
             'project_id' => 'nullable|exists:projects,id',
             'learning_milestone_id' => 'nullable|exists:learning_milestones,id',
@@ -239,11 +239,10 @@ class TaskController extends Controller
         try {
             DB::beginTransaction();
 
-            // Delete related data
-            $task->subtasks()->delete();
+            // Delete related data (tags need manual detach, others cascade automatically)
             $task->tags()->detach();
-            $task->focusSessions()->delete();
 
+            // Subtasks and FocusSessions cascade delete via foreign key constraints
             $task->delete();
 
             DB::commit();

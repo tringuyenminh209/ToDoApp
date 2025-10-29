@@ -113,11 +113,6 @@ Class User extends Authenticatable{
         return $this->hasMany(KnowledgeItem::class);
     }
 
-    public function subtasks(): HasMany
-    {
-        return $this->hasMany(Subtask::class);
-    }
-
     // Scopes
     public function scopeVerified($query)
     {

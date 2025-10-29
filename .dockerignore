@@ -1,0 +1,52 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+docs/
+*.md
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Backend
+backend/vendor/
+backend/storage/logs/*.log
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+backend/bootstrap/cache/*
+backend/.env.example
+backend/.env.testing
+backend/tests/
+
+# Mobile Android
+mobileandroid/
+mobile-android/
+
+# Build artifacts
+*.log
+*.cache
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Misc
+.env.backup
+.phpunit.result.cache

@@ -36,8 +36,8 @@ return new class extends Migration
             $table->timestamp('ended_at')->nullable()->comment('終了時刻');
 
             // Status & Quality
-            $table->enum('status', ['completed', 'paused', 'cancelled'])
-                ->default('completed')
+            $table->enum('status', ['active', 'completed', 'paused', 'cancelled'])
+                ->default('active')
                 ->comment('セッションステータス');
             $table->text('notes')->nullable()->comment('メモ');
             $table->tinyInteger('quality_score')->nullable()

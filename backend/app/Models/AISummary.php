@@ -13,17 +13,15 @@ class AISummary extends Model
     protected $fillable = [
         'user_id',
         'summary_type',
+        'date',
         'content',
-        'period_start',
-        'period_end',
-        'metadata',
+        'metrics',
     ];
 
     protected $casts = [
+        'date' => 'date',
         'content' => 'array',
-        'period_start' => 'date',
-        'period_end' => 'date',
-        'metadata' => 'array',
+        'metrics' => 'array',
     ];
 
     // Relationships

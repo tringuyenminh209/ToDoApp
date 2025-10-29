@@ -13,19 +13,37 @@ class DailyReview extends Model
     protected $fillable = [
         'user_id',
         'date',
+        'mood',
         'tasks_completed',
         'focus_time_minutes',
         'productivity_score',
+        'focus_time_score',
+        'task_completion_score',
+        'goal_achievement_score',
+        'work_life_balance_score',
+        'achievements',
+        'challenges',
+        'lessons_learned',
+        'gratitude',
         'gratitude_note',
         'challenges_faced',
         'tomorrow_goals',
+        'notes',
     ];
 
     protected $casts = [
+        'date' => 'date',
         'tasks_completed' => 'integer',
         'focus_time_minutes' => 'integer',
         'productivity_score' => 'integer',
-        'date' => 'date',
+        'focus_time_score' => 'integer',
+        'task_completion_score' => 'integer',
+        'goal_achievement_score' => 'integer',
+        'work_life_balance_score' => 'integer',
+        'achievements' => 'array',
+        'challenges' => 'array',
+        'lessons_learned' => 'array',
+        'gratitude' => 'array',
     ];
 
     // Relationships

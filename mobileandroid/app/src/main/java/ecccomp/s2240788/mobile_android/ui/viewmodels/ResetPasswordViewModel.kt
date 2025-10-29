@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
-import ecccomp.s2240788.mobile_android.data.models.ForgotPasswordRequest
+import ecccomp.s2240788.mobile_android.data.models.ResetPasswordRequest
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
 
-class ForgotPasswordViewModel : ViewModel() {
+class ResetPasswordViewModel : ViewModel() {
 
     private val apiService: ApiService = NetworkModule.provideApiService(
         NetworkModule.provideRetrofit(NetworkModule.provideOkHttpClient())
@@ -24,35 +24,44 @@ class ForgotPasswordViewModel : ViewModel() {
     private val _resetSuccess = MutableLiveData<Boolean>()
     val resetSuccess: LiveData<Boolean> = _resetSuccess
 
-    /**
-     * パスワードリセット処理
-     * Backend: POST /api/forgot-password
-     * Request: { email }
-     * Response: { message: "Email sent successfully" }
-     */
-    fun resetPassword(email: String) {
+    fun resetPassword(email: String, token: String, password: String, passwordConfirmation: String) {
         viewModelScope.launch {
             try {
-                // Validation: email format
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    _error.value = "メールアドレスの形式が正しくありません"
+                // Validation: token must be 6 digits
+                if (token.length != 6 || !token.all { it.isDigit() }) {
+                    _error.value = "トークンは6桁の数字である必要があります"
+                    return@launch
+                }
+
+                // Validation: password min 8 chars with uppercase, lowercase, digit
+                if (password.length < 8) {
+                    _error.value = "パスワードは8文字以上である必要があります"
+                    return@launch
+                }
+
+                if (!password.matches(Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$"))) {
+                    _error.value = "パスワードは大文字、小文字、数字を含む必要があります"
+                    return@launch
+                }
+
+                // Validation: password confirmation match
+                if (password != passwordConfirmation) {
+                    _error.value = "パスワードが一致しません"
                     return@launch
                 }
 
                 _isLoading.value = true
                 _error.value = null
 
-                val request = ForgotPasswordRequest(email)
-                val response = apiService.forgotPassword(request)
+                val request = ResetPasswordRequest(email, token, password, passwordConfirmation)
+                val response = apiService.resetPassword(request)
 
                 if (response.isSuccessful) {
-                    // Success: Email sent
                     _resetSuccess.value = true
                 } else {
-                    // HTTP error handling
                     _error.value = when (response.code()) {
+                        422 -> "トークンが無効または期限切れです"
                         404 -> "このメールアドレスは登録されていません"
-                        422 -> "入力データが無効です"
                         500 -> "サーバーエラーが発生しました。しばらくしてからお試しください"
                         else -> "パスワードリセットに失敗しました: ${response.message()}"
                     }
@@ -70,3 +79,4 @@ class ForgotPasswordViewModel : ViewModel() {
         _error.value = null
     }
 }
+

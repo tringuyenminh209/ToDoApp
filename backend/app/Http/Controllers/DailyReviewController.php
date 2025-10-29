@@ -76,24 +76,39 @@ class DailyReviewController extends Controller
                 'task_completion_score' => $request->task_completion_score,
                 'goal_achievement_score' => $request->goal_achievement_score,
                 'work_life_balance_score' => $request->work_life_balance_score,
-                'achievements' => json_encode($request->achievements),
-                'challenges' => json_encode($request->challenges ?? []),
-                'lessons_learned' => json_encode($request->lessons_learned ?? []),
-                'tomorrow_goals' => json_encode($request->tomorrow_goals ?? []),
-                'gratitude' => json_encode($request->gratitude ?? []),
+                'achievements' => $request->achievements,  // Auto-casts to JSON
+                'challenges' => $request->challenges ?? [],
+                'lessons_learned' => $request->lessons_learned ?? [],
+                'gratitude' => $request->gratitude ?? [],
                 'notes' => $request->notes,
+                // Backwards compatibility
+                'gratitude_note' => $request->notes,
+                'challenges_faced' => is_array($request->challenges) && count($request->challenges) > 0
+                    ? implode(', ', $request->challenges)
+                    : null,
+                'tomorrow_goals' => is_array($request->tomorrow_goals) && count($request->tomorrow_goals) > 0
+                    ? implode(', ', $request->tomorrow_goals)
+                    : null,
             ]);
 
-            // Tạo performance metric record
-            PerformanceMetric::create([
-                'user_id' => $user->id,
-                'date' => $date,
-                'productivity_score' => $overallScore,
-                'focus_time_score' => $request->focus_time_score,
-                'task_completion_score' => $request->task_completion_score,
-                'goal_achievement_score' => $request->goal_achievement_score,
-                'work_life_balance_score' => $request->work_life_balance_score,
-            ]);
+            // Tạo performance metric records (row-based storage)
+            $metrics = [
+                ['metric_type' => 'productivity', 'metric_value' => $overallScore * 10], // Convert 1-10 to percentage
+                ['metric_type' => 'focus_time', 'metric_value' => $request->focus_time_score * 10],
+                ['metric_type' => 'task_completion', 'metric_value' => $request->task_completion_score * 10],
+                ['metric_type' => 'goal_achievement', 'metric_value' => $request->goal_achievement_score * 10],
+                ['metric_type' => 'work_life_balance', 'metric_value' => $request->work_life_balance_score * 10],
+            ];
+
+            foreach ($metrics as $metric) {
+                PerformanceMetric::create([
+                    'user_id' => $user->id,
+                    'metric_date' => $date,  // Note: metric_date, not 'date'
+                    'metric_type' => $metric['metric_type'],
+                    'metric_value' => $metric['metric_value'],
+                    'trend_direction' => 'stable',
+                ]);
+            }
 
             DB::commit();
 
@@ -228,25 +243,25 @@ class DailyReviewController extends Controller
                 $updateData['work_life_balance_score'] = $workLifeBalanceScore;
             }
 
-            // Update JSON fields
+            // Update JSON fields (auto-cast by model)
             if ($request->has('achievements')) {
-                $updateData['achievements'] = json_encode($request->achievements);
+                $updateData['achievements'] = $request->achievements;
             }
 
             if ($request->has('challenges')) {
-                $updateData['challenges'] = json_encode($request->challenges);
+                $updateData['challenges'] = $request->challenges;
             }
 
             if ($request->has('lessons_learned')) {
-                $updateData['lessons_learned'] = json_encode($request->lessons_learned);
+                $updateData['lessons_learned'] = $request->lessons_learned;
             }
 
             if ($request->has('tomorrow_goals')) {
-                $updateData['tomorrow_goals'] = json_encode($request->tomorrow_goals);
+                $updateData['tomorrow_goals'] = $request->tomorrow_goals;
             }
 
             if ($request->has('gratitude')) {
-                $updateData['gratitude'] = json_encode($request->gratitude);
+                $updateData['gratitude'] = $request->gratitude;
             }
 
             $review->update($updateData);
@@ -769,8 +784,7 @@ class DailyReviewController extends Controller
         }
 
         $allAchievements = $reviews->pluck('achievements')
-            ->map(fn($achievements) => json_decode($achievements, true))
-            ->flatten()
+            ->flatten()  // Already arrays from model auto-casting
             ->filter();
 
         $achievementCounts = $allAchievements->countBy();
@@ -794,8 +808,7 @@ class DailyReviewController extends Controller
         }
 
         $allChallenges = $reviews->pluck('challenges')
-            ->map(fn($challenges) => json_decode($challenges, true))
-            ->flatten()
+            ->flatten()  // Already arrays from model auto-casting
             ->filter();
 
         $challengeCounts = $allChallenges->countBy();
