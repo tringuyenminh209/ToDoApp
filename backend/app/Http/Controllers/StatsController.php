@@ -105,9 +105,11 @@ class StatsController extends Controller
                     round(($tasks->where('status', 'completed')->count() / $tasks->count()) * 100, 2) : 0,
                 'average_completion_time' => $this->calculateAverageCompletionTime($tasks),
                 'priority_distribution' => [
-                    'high' => $tasks->where('priority', 'high')->count(),
-                    'medium' => $tasks->where('priority', 'medium')->count(),
-                    'low' => $tasks->where('priority', 'low')->count(),
+                    'very_high' => $tasks->where('priority', 5)->count(),
+                    'high' => $tasks->where('priority', 4)->count(),
+                    'medium' => $tasks->where('priority', 3)->count(),
+                    'low' => $tasks->where('priority', 2)->count(),
+                    'very_low' => $tasks->where('priority', 1)->count(),
                 ],
                 'energy_level_distribution' => [
                     'high' => $tasks->where('energy_level', 'high')->count(),
@@ -260,20 +262,30 @@ class StatsController extends Controller
             $query = PerformanceMetric::where('user_id', $user->id);
 
             if ($period !== 'all') {
-                $query = $this->applyPeriodFilter($query, $period, 'date');
+                $query = $this->applyPeriodFilter($query, $period, 'metric_date');
             }
 
-            $metrics = $query->orderBy('date', 'desc')->get();
+            $metrics = $query->orderBy('metric_date', 'desc')->get();
+
+            // Calculate overall average
+            $overallScore = $metrics->count() > 0 ? round($metrics->avg('metric_value'), 2) : 0;
+
+            // Group by metric type to get category scores
+            $byType = $metrics->groupBy('metric_type');
 
             $performanceData = [
-                'current_score' => $metrics->first()->productivity_score ?? 0,
-                'average_score' => $metrics->count() > 0 ? round($metrics->avg('productivity_score'), 2) : 0,
+                'current_score' => $overallScore,
+                'average_score' => $overallScore,
                 'trend' => $this->calculatePerformanceTrend($metrics),
                 'categories' => [
-                    'focus_time' => $metrics->avg('focus_time_score') ?? 0,
-                    'task_completion' => $metrics->avg('task_completion_score') ?? 0,
-                    'goal_achievement' => $metrics->avg('goal_achievement_score') ?? 0,
-                    'work_life_balance' => $metrics->avg('work_life_balance_score') ?? 0,
+                    'daily_completion' => $byType->has('daily_completion') ?
+                        round($byType['daily_completion']->avg('metric_value'), 2) : 0,
+                    'focus_time' => $byType->has('focus_time') ?
+                        round($byType['focus_time']->avg('metric_value'), 2) : 0,
+                    'mood_trend' => $byType->has('mood_trend') ?
+                        round($byType['mood_trend']->avg('metric_value'), 2) : 0,
+                    'streak_maintenance' => $byType->has('streak_maintenance') ?
+                        round($byType['streak_maintenance']->avg('metric_value'), 2) : 0,
                 ],
                 'weekly_data' => $this->getWeeklyPerformanceData($metrics),
             ];
@@ -359,8 +371,8 @@ class StatsController extends Controller
             'total' => $projects->count(),
             'active' => $projects->where('status', 'active')->count(),
             'completed' => $projects->where('status', 'completed')->count(),
-            'on_hold' => $projects->where('status', 'on_hold')->count(),
-            'average_progress' => $projects->count() > 0 ? round($projects->avg('progress'), 2) : 0,
+            'paused' => $projects->where('status', 'paused')->count(),
+            'average_progress' => $projects->count() > 0 ? round($projects->avg('progress_percentage'), 2) : 0,
         ];
     }
 
@@ -370,15 +382,29 @@ class StatsController extends Controller
     private function getPerformanceStats($user, $today, $thisWeek, $thisMonth)
     {
         $metrics = PerformanceMetric::where('user_id', $user->id)
-            ->orderBy('date', 'desc')
+            ->orderBy('metric_date', 'desc')
             ->limit(30)
             ->get();
 
+        // Calculate overall score from all metric types
+        $overallScore = $metrics->count() > 0 ? round($metrics->avg('metric_value'), 2) : 0;
+
+        // Get recent daily scores (average all metric types per day)
+        $recentScores = $metrics
+            ->groupBy(function($item) {
+                return $item->metric_date->format('Y-m-d');
+            })
+            ->map(function($dayMetrics) {
+                return round($dayMetrics->avg('metric_value'), 2);
+            })
+            ->take(7)
+            ->values();
+
         return [
-            'current_score' => $metrics->first()->productivity_score ?? 0,
-            'average_score' => $metrics->count() > 0 ? round($metrics->avg('productivity_score'), 2) : 0,
+            'current_score' => $recentScores->first() ?? 0,
+            'average_score' => $overallScore,
             'trend' => $this->calculatePerformanceTrend($metrics),
-            'recent_scores' => $metrics->take(7)->pluck('productivity_score'),
+            'recent_scores' => $recentScores,
         ];
     }
 
@@ -547,13 +573,24 @@ class StatsController extends Controller
             return 'stable';
         }
 
-        $recent = $metrics->take(7)->avg('productivity_score');
-        $previous = $metrics->skip(7)->take(7)->avg('productivity_score');
+        // Group by date and calculate daily averages
+        $byDate = $metrics->groupBy(function($item) {
+            return $item->metric_date->format('Y-m-d');
+        })->map(function($dayMetrics) {
+            return $dayMetrics->avg('metric_value');
+        })->values();
+
+        if ($byDate->count() < 2) {
+            return 'stable';
+        }
+
+        $recent = $byDate->take(7)->avg();
+        $previous = $byDate->skip(7)->take(7)->avg();
 
         if ($recent > $previous + 5) {
-            return 'improving';
+            return 'up';
         } elseif ($recent < $previous - 5) {
-            return 'declining';
+            return 'down';
         }
 
         return 'stable';
@@ -564,15 +601,26 @@ class StatsController extends Controller
      */
     private function getWeeklyPerformanceData($metrics)
     {
-        return $metrics->take(7)->map(function ($metric) {
-            return [
-                'date' => $metric->date->format('Y-m-d'),
-                'score' => $metric->productivity_score,
-                'focus_time' => $metric->focus_time_score,
-                'task_completion' => $metric->task_completion_score,
-                'goal_achievement' => $metric->goal_achievement_score,
-                'work_life_balance' => $metric->work_life_balance_score,
-            ];
+        // Group by date and then by metric_type
+        $byDate = $metrics->groupBy(function($item) {
+            return $item->metric_date->format('Y-m-d');
         });
+
+        return $byDate->take(7)->map(function ($dayMetrics, $date) {
+            $byType = $dayMetrics->groupBy('metric_type');
+
+            return [
+                'date' => $date,
+                'overall_score' => round($dayMetrics->avg('metric_value'), 2),
+                'daily_completion' => $byType->has('daily_completion') ?
+                    round($byType['daily_completion']->avg('metric_value'), 2) : 0,
+                'focus_time' => $byType->has('focus_time') ?
+                    round($byType['focus_time']->avg('metric_value'), 2) : 0,
+                'mood_trend' => $byType->has('mood_trend') ?
+                    round($byType['mood_trend']->avg('metric_value'), 2) : 0,
+                'streak_maintenance' => $byType->has('streak_maintenance') ?
+                    round($byType['streak_maintenance']->avg('metric_value'), 2) : 0,
+            ];
+        })->values();
     }
 }

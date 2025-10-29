@@ -13,16 +13,25 @@ class DailyCheckin extends Model
     protected $fillable = [
         'user_id',
         'date',
+        'mood',
         'energy_level',
         'mood_score',
+        'sleep_hours',
+        'stress_level',
         'schedule_note',
+        'priorities',
+        'goals',
+        'notes',
         'ai_suggestions_generated',
     ];
 
     protected $casts = [
-        'mood_score' => 'integer',
-        'ai_suggestions_generated' => 'boolean',
         'date' => 'date',
+        'mood_score' => 'integer',
+        'sleep_hours' => 'decimal:2',
+        'priorities' => 'array',
+        'goals' => 'array',
+        'ai_suggestions_generated' => 'boolean',
     ];
 
     // Relationships

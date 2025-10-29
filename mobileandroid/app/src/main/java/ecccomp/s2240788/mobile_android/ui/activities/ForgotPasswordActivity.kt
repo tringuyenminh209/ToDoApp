@@ -71,11 +71,14 @@ class ForgotPasswordActivity : AppCompatActivity() {
         // Success handling
         viewModel.resetSuccess.observe(this) { success ->
             if (success) {
-                Toast.makeText(this, getString(R.string.reset_success), Toast.LENGTH_SHORT).show()
-                // Navigate back to LoginActivity
-                startActivity(Intent(this, LoginActivity::class.java))
+                Toast.makeText(this, "リセットメールを送信しました。トークンを入力してください", Toast.LENGTH_LONG).show()
+                
+                // Navigate to ResetPasswordActivity with email
+                val intent = Intent(this, ResetPasswordActivity::class.java)
+                intent.putExtra("email", binding.etEmail.text.toString().trim())
+                startActivity(intent)
                 finish()
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }

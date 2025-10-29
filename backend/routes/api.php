@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\FocusSessionController;
 use App\Http\Controllers\AIController;
@@ -19,25 +21,44 @@ Route::get('/test', function(){
     ]);
 });
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+// Authentication routes with rate limiting
+Route::post('/register', [AuthController::class, 'register'])
+    ->middleware('throttle:3,1'); // 3 requests per minute
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->middleware('throttle:5,1'); // 5 requests per minute
+
+// Password reset routes with rate limiting
+Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword'])
+    ->middleware('throttle:3,1'); // 3 requests per minute
+
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])
+    ->middleware('throttle:5,1'); // 5 requests per minute
+
+// Email verification routes
+Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+    ->name('verification.verify');
 
 Route::middleware('auth:sanctum')->group(function () {
+    // Email verification
+    Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])
+        ->middleware('throttle:6,1'); // 6 requests per minute
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
 
-    // Task routes
-    Route::apiResource('tasks', TaskController::class);
-
-    // Additional task routes
-    Route::put('/tasks/{id}/complete', [TaskController::class, 'complete']);
-    Route::put('/tasks/{id}/start', [TaskController::class, 'start']);
+    // Additional task routes (must be before apiResource)
     Route::get('/tasks/stats', [TaskController::class, 'stats']);
     Route::get('/tasks/by-priority/{priority}', [TaskController::class, 'byPriority']);
     Route::get('/tasks/overdue', [TaskController::class, 'overdue']);
     Route::get('/tasks/due-soon', [TaskController::class, 'dueSoon']);
+    Route::put('/tasks/{id}/complete', [TaskController::class, 'complete']);
+    Route::put('/tasks/{id}/start', [TaskController::class, 'start']);
+
+    // Task routes (Resource routes must be last)
+    Route::apiResource('tasks', TaskController::class);
 
     // Focus Session routes
     Route::prefix('sessions')->group(function () {
@@ -51,18 +72,24 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [FocusSessionController::class, 'index']);
     });
 
-            // AI routes
-            Route::prefix('ai')->group(function () {
+            // AI routes (with rate limiting to prevent abuse)
+            Route::prefix('ai')->middleware('throttle:20,1')->group(function () {
                 Route::get('/status', [AIController::class, 'status']);
-                Route::post('/breakdown-task', [AIController::class, 'breakdownTask']);
-                Route::get('/daily-suggestions', [AIController::class, 'dailySuggestions']);
-                Route::post('/daily-summary', [AIController::class, 'dailySummary']);
+
+                // Heavy AI operations - stricter rate limit (10 requests per minute)
+                Route::middleware('throttle:10,1')->group(function () {
+                    Route::post('/breakdown-task', [AIController::class, 'breakdownTask']);
+                    Route::get('/daily-suggestions', [AIController::class, 'dailySuggestions']);
+                    Route::post('/daily-summary', [AIController::class, 'dailySummary']);
+                    Route::post('/insights', [AIController::class, 'insights']);
+                    Route::post('/learning-recommendations', [AIController::class, 'learningRecommendations']);
+                    Route::post('/focus-analysis', [AIController::class, 'focusAnalysis']);
+                });
+
+                // Lighter operations
                 Route::get('/suggestions', [AIController::class, 'suggestions']);
                 Route::put('/suggestions/{id}/read', [AIController::class, 'markSuggestionRead']);
                 Route::get('/summaries', [AIController::class, 'summaries']);
-                Route::post('/insights', [AIController::class, 'insights']);
-                Route::post('/learning-recommendations', [AIController::class, 'learningRecommendations']);
-                Route::post('/focus-analysis', [AIController::class, 'focusAnalysis']);
                 Route::post('/motivational-message', [AIController::class, 'motivationalMessage']);
             });
 

@@ -69,7 +69,7 @@ class AIController extends Controller
             }
 
             // Cập nhật task
-            $task->update(['ai_breakdown' => true]);
+            $task->update(['ai_breakdown_enabled' => true]);
 
             DB::commit();
 
@@ -122,10 +122,9 @@ class AIController extends Controller
             // Lưu suggestions vào database
             $aiSuggestion = AISuggestion::create([
                 'user_id' => $user->id,
-                'suggestion_type' => 'daily_tasks',
-                'content' => json_encode($suggestions),
-                'priority' => 'medium',
-                'is_read' => false,
+                'type' => 'daily_plan',
+                'content' => $suggestions,  // Model auto-casts to JSON
+                'is_accepted' => false,
             ]);
 
             return response()->json([
@@ -185,13 +184,13 @@ class AIController extends Controller
                 'user_id' => $user->id,
                 'summary_type' => 'daily',
                 'date' => $date,
-                'content' => json_encode($summary),
-                'metrics' => json_encode([
+                'content' => $summary,  // Model auto-casts to JSON
+                'metrics' => [
                     'tasks_completed' => $tasks->where('status', 'completed')->count(),
                     'tasks_total' => $tasks->count(),
                     'sessions_count' => $sessions->count(),
                     'total_focus_time' => $sessions->sum('actual_minutes'),
-                ]),
+                ],  // Model auto-casts to JSON
             ]);
 
             return response()->json([
@@ -223,19 +222,19 @@ class AIController extends Controller
         $query = AISuggestion::where('user_id', $request->user()->id);
 
         // Filtering
-        if ($request->has('suggestion_type')) {
-            $query->where('suggestion_type', $request->suggestion_type);
+        if ($request->has('type')) {
+            $query->where('type', $request->type);
         }
 
-        if ($request->has('is_read')) {
-            $query->where('is_read', $request->boolean('is_read'));
+        if ($request->has('is_accepted')) {
+            $query->where('is_accepted', $request->boolean('is_accepted'));
         }
 
         // Sorting
         $sortBy = $request->get('sort_by', 'created_at');
         $sortOrder = $request->get('sort_order', 'desc');
 
-        $allowedSortFields = ['created_at', 'priority', 'suggestion_type'];
+        $allowedSortFields = ['created_at', 'type', 'feedback_score'];
         if (in_array($sortBy, $allowedSortFields)) {
             $query->orderBy($sortBy, $sortOrder);
         }
@@ -252,7 +251,7 @@ class AIController extends Controller
     }
 
     /**
-     * Đánh dấu suggestion đã đọc
+     * Đánh dấu suggestion đã accept
      * PUT /api/ai/suggestions/{id}/read
      */
     public function markSuggestionRead(Request $request, string $id): JsonResponse
@@ -260,12 +259,12 @@ class AIController extends Controller
         $suggestion = AISuggestion::where('user_id', $request->user()->id)
             ->findOrFail($id);
 
-        $suggestion->update(['is_read' => true]);
+        $suggestion->update(['is_accepted' => true]);
 
         return response()->json([
             'success' => true,
             'data' => $suggestion,
-            'message' => '提案を既読にしました'
+            'message' => '提案を承認しました'
         ]);
     }
 

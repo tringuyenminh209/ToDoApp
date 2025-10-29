@@ -48,16 +48,27 @@ class DailyCheckinController extends Controller
         try {
             DB::beginTransaction();
 
+            // Map mood enum to score for backwards compatibility
+            $moodScoreMap = [
+                'excellent' => 5,
+                'good' => 4,
+                'average' => 3,
+                'poor' => 2,
+                'terrible' => 1,
+            ];
+
             $checkin = DailyCheckin::create([
                 'user_id' => $user->id,
                 'date' => $date,
                 'mood' => $request->mood,
+                'mood_score' => $moodScoreMap[$request->mood] ?? 3,
                 'energy_level' => $request->energy_level,
                 'sleep_hours' => $request->sleep_hours,
                 'stress_level' => $request->stress_level,
-                'priorities' => json_encode($request->priorities),
-                'goals' => json_encode($request->goals ?? []),
+                'priorities' => $request->priorities,  // Model auto-casts to JSON
+                'goals' => $request->goals ?? [],      // Model auto-casts to JSON
                 'notes' => $request->notes,
+                'schedule_note' => $request->notes,    // Keep for backwards compatibility
             ]);
 
             DB::commit();
@@ -159,12 +170,30 @@ class DailyCheckinController extends Controller
                 'mood', 'energy_level', 'sleep_hours', 'stress_level', 'notes'
             ]);
 
+            // Update mood_score if mood is changed
+            if ($request->has('mood')) {
+                $moodScoreMap = [
+                    'excellent' => 5,
+                    'good' => 4,
+                    'average' => 3,
+                    'poor' => 2,
+                    'terrible' => 1,
+                ];
+                $updateData['mood_score'] = $moodScoreMap[$request->mood] ?? 3;
+            }
+
+            // Priorities and goals - model will auto-cast to JSON
             if ($request->has('priorities')) {
-                $updateData['priorities'] = json_encode($request->priorities);
+                $updateData['priorities'] = $request->priorities;
             }
 
             if ($request->has('goals')) {
-                $updateData['goals'] = json_encode($request->goals);
+                $updateData['goals'] = $request->goals;
+            }
+
+            // Keep schedule_note in sync with notes for backwards compatibility
+            if ($request->has('notes')) {
+                $updateData['schedule_note'] = $request->notes;
             }
 
             $checkin->update($updateData);

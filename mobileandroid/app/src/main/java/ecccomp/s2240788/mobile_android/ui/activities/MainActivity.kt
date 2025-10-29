@@ -1,16 +1,20 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ecccomp.s2240788.mobile_android.databinding.ActivityMainBinding
+import ecccomp.s2240788.mobile_android.ui.viewmodels.LogoutViewModel
 import ecccomp.s2240788.mobile_android.ui.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
+    private lateinit var logoutViewModel: LogoutViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        logoutViewModel = ViewModelProvider(this)[LogoutViewModel::class.java]
+        observeLogoutViewModel()
     }
 
     private fun setupUI() {
@@ -35,7 +41,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupClickListeners() {
         // Header actions
         binding.btnLanguage.setOnClickListener {
-            Toast.makeText(this, "Language selection", Toast.LENGTH_SHORT).show()
+            // Long press to show logout option
+            showLogoutDialog()
         }
 
         binding.btnNotification.setOnClickListener {
@@ -100,5 +107,45 @@ class MainActivity : AppCompatActivity() {
                 // TODO: Update RecyclerView with tasks
             }
         }
+    }
+
+    /**
+     * ログアウト処理のObserverを設定
+     */
+    private fun observeLogoutViewModel() {
+        logoutViewModel.logoutSuccess.observe(this) { success ->
+            if (success) {
+                // LoginActivityに遷移（バックスタックをクリア）
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+                finish()
+            }
+        }
+
+        logoutViewModel.isLoading.observe(this) { isLoading ->
+            // ローディング表示は必要に応じて実装
+        }
+
+        logoutViewModel.error.observe(this) { error ->
+            if (error != null) {
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /**
+     * ログアウト確認ダイアログを表示
+     */
+    private fun showLogoutDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("ログアウト")
+            .setMessage("ログアウトしますか？")
+            .setPositiveButton("はい") { _, _ ->
+                logoutViewModel.logout()
+            }
+            .setNegativeButton("いいえ", null)
+            .show()
     }
 }

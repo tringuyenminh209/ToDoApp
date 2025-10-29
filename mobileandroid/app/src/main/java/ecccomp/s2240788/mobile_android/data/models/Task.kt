@@ -29,6 +29,17 @@ data class RegisterRequest(
     val password: String
 )
 
+data class ForgotPasswordRequest(
+    val email: String
+)
+
+data class ResetPasswordRequest(
+    val email: String,
+    val token: String,
+    val password: String,
+    val password_confirmation: String
+)
+
 data class CreateTaskRequest(
     val title: String,
     val description: String?,

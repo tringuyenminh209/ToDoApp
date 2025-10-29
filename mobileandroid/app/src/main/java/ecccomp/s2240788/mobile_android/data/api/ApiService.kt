@@ -15,6 +15,24 @@ interface ApiService {
     @GET("user")
     suspend fun getUser(): Response<ApiResponse<User>>
 
+    @POST("logout")
+    suspend fun logout(): Response<Map<String, Any>>
+
+    @POST("forgot-password")
+    suspend fun forgotPassword(@Body request: ForgotPasswordRequest): Response<Map<String, String>>
+
+    @POST("reset-password")
+    suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<Map<String, String>>
+
+    @POST("refresh-token")
+    suspend fun refreshToken(): Response<AuthResponse>
+
+    @POST("email/verification-notification")
+    suspend fun resendVerificationEmail(): Response<Map<String, String>>
+
+    @GET("email/verify/{id}/{hash}")
+    suspend fun verifyEmail(@Path("id") id: Int, @Path("hash") hash: String): Response<Map<String, String>>
+
     //Tasks
     @GET("tasks")
     suspend fun getTasks(): Response<ApiResponse<List<Task>>>
