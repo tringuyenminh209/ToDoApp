@@ -25,465 +25,628 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Header -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/header"
+            <!-- Header with Enhanced Design -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/header_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/header_background"
-                android:paddingHorizontal="@dimen/spacing_lg"
-                android:paddingTop="@dimen/spacing_lg"
-                android:paddingBottom="@dimen/spacing_lg">
+                android:layout_marginHorizontal="@dimen/spacing_lg"
+                android:layout_marginTop="@dimen/spacing_lg"
+                android:layout_marginBottom="@dimen/spacing_md"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="@color/line_variant">
 
-                <!-- Logo -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/logo_container"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/app_logo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_logo"
-                        android:contentDescription="@string/app_name" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Title & Date -->
-                <LinearLayout
-                    android:id="@+id/title_container"
-                    android:layout_width="0dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="@dimen/spacing_md"
-                    app:layout_constraintStart_toEndOf="@id/logo_container"
-                    app:layout_constraintEnd_toStartOf="@id/actions_container"
-                    app:layout_constraintTop_toTopOf="@id/logo_container"
-                    app:layout_constraintBottom_toBottomOf="@id/logo_container">
+                    android:padding="@dimen/spacing_lg">
 
-                    <TextView
-                        android:id="@+id/tv_header_title"
+                    <!-- Logo -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/logo_container"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        app:cardBackgroundColor="@color/primary_light"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeWidth="0dp">
+
+                        <ImageView
+                            android:id="@+id/app_logo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_logo"
+                            android:contentDescription="@string/app_name"
+                             />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Title & Greeting -->
+                    <LinearLayout
+                        android:id="@+id/title_container"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="@dimen/spacing_md"
+                        app:layout_constraintStart_toEndOf="@id/logo_container"
+                        app:layout_constraintEnd_toStartOf="@id/actions_container"
+                        app:layout_constraintTop_toTopOf="@id/logo_container"
+                        app:layout_constraintBottom_toBottomOf="@id/logo_container">
+
+                        <TextView
+                            android:id="@+id/tv_greeting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/main_greeting"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_header_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/main_today"
+                            android:textColor="@color/text_primary"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_header_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/main_date_placeholder"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!-- Actions -->
+                    <LinearLayout
+                        android:id="@+id/actions_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/main_today"
-                        android:textColor="@color/text_primary"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
 
-                    <TextView
-                        android:id="@+id/tv_header_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/main_date_placeholder"
-                        android:textColor="@color/text_muted"
-                        android:textSize="14sp" />
+                        <!-- Language Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_language"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            android:padding="0dp"
+                            android:text="VI"
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="12dp"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
 
-                </LinearLayout>
+                        <!-- Notification Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_notification"
+                            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="@dimen/spacing_sm"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@drawable/ic_notifications"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconSize="20dp"
+                            app:iconTint="@color/text_primary"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="12dp"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
 
-                <!-- Actions -->
-                <LinearLayout
-                    android:id="@+id/actions_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                        <!-- Add Task Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_add_task"
+                            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="@dimen/spacing_sm"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@drawable/ic_add"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconSize="20dp"
+                            app:iconTint="@color/text_primary"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="12dp"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
 
-                    <!-- Language Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_language"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        android:padding="0dp"
-                        android:text="VI"
-                        android:textColor="@color/text_primary"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:backgroundTint="@color/white"
-                        app:cornerRadius="8dp"
-                        app:strokeColor="@color/line"
-                        app:strokeWidth="1dp" />
+                    </LinearLayout>
 
-                    <!-- Notification Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_notification"
-                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="12dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        app:icon="@drawable/ic_notifications"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconSize="20dp"
-                        app:iconTint="@color/text_primary"
-                        app:backgroundTint="@color/white"
-                        app:cornerRadius="8dp"
-                        app:strokeColor="@color/line"
-                        app:strokeWidth="1dp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <!-- Add Task Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_add_task"
-                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="8dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        app:icon="@drawable/ic_add"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconSize="20dp"
-                        app:iconTint="@color/text_primary"
-                        app:backgroundTint="@color/white"
-                        app:cornerRadius="8dp"
-                        app:strokeColor="@color/line"
-                        app:strokeWidth="1dp" />
+            </com.google.android.material.card.MaterialCardView>
 
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Progress Ring Section -->
-            <LinearLayout
-                android:id="@+id/progress_section"
+            <!-- Progress Ring Section with Enhanced Design -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/progress_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="@dimen/spacing_2xl"
-                android:background="@android:color/transparent">
+                android:layout_marginHorizontal="@dimen/spacing_lg"
+                android:layout_marginBottom="@dimen/spacing_md"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="@color/line_variant">
 
-                <!-- Progress Ring -->
-                <FrameLayout
-                    android:layout_width="120dp"
-                    android:layout_height="120dp">
-
-                    <com.google.android.material.progressindicator.CircularProgressIndicator
-                        android:id="@+id/progress_ring"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        app:indicatorSize="120dp"
-                        app:trackThickness="8dp"
-                        app:trackColor="@color/line"
-                        app:trackCornerRadius="4dp"
-                        app:indicatorColor="@color/primary" />
-
-                    <TextView
-                        android:id="@+id/tv_progress_percentage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="45%"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/tv_progress_caption"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_lg"
-                    android:text="@string/main_progress_today"
-                    android:textColor="@color/text_muted"
-                    android:textSize="14sp" />
-
-                <!-- Progress Links -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_lg"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:gravity="center"
-                    android:paddingHorizontal="@dimen/spacing_lg">
+                    android:padding="@dimen/spacing_xl">
+
+                    <!-- Progress Ring -->
+                    <FrameLayout
+                        android:layout_width="120dp"
+                        android:layout_height="120dp">
+
+                        <com.google.android.material.progressindicator.CircularProgressIndicator
+                            android:id="@+id/progress_ring"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            app:indicatorSize="120dp"
+                            app:trackThickness="8dp"
+                            app:trackColor="@color/line"
+                            app:trackCornerRadius="4dp"
+                            app:indicatorColor="@color/primary" />
+
+                        <TextView
+                            android:id="@+id/tv_progress_percentage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="45%"
+                            android:textColor="@color/text_primary"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/tv_progress_caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_lg"
+                        android:text="@string/main_progress_today"
+                        android:textColor="@color/text_muted"
+                        android:textSize="14sp" />
+
+                    <!-- Progress Stats Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_lg"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <!-- Tasks Completed -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/tv_tasks_completed"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3"
+                                android:textColor="@color/text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/main_tasks_completed"
+                                android:textColor="@color/text_muted"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <!-- Focus Time -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/tv_focus_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2h 15m"
+                                android:textColor="@color/text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/main_focus_time"
+                                android:textColor="@color/text_muted"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <!-- Streak -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/tv_streak"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="7"
+                                android:textColor="@color/text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/main_streak_days"
+                                android:textColor="@color/text_muted"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Progress Links -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_lg"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_view_stats"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="@dimen/spacing_xs"
+                            android:text="@string/main_view_stats"
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:paddingVertical="@dimen/spacing_sm"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/ic_stats"
+                            app:iconSize="14dp"
+                            app:iconTint="@color/text_primary"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_view_timetable"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/spacing_xs"
+                            android:text="@string/main_timetable"
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:paddingVertical="@dimen/spacing_sm"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/ic_calendar"
+                            app:iconSize="14dp"
+                            app:iconTint="@color/text_primary"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Daily Actions with Enhanced Design -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/daily_actions_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_lg"
+                android:layout_marginBottom="@dimen/spacing_md"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="@color/line_variant">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_lg">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_view_stats"
+                        android:id="@+id/btn_checkin"
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="@dimen/spacing_xs"
-                        android:text="@string/main_view_stats"
+                        android:text="@string/main_checkin"
                         android:textColor="@color/text_primary"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:paddingVertical="@dimen/spacing_sm"
-                        app:backgroundTint="@color/white"
+                        android:paddingVertical="@dimen/spacing_md"
+                        app:backgroundTint="@color/surface"
                         app:cornerRadius="12dp"
-                        app:icon="@drawable/ic_stats"
-                        app:iconSize="14dp"
-                        app:iconTint="@color/text_primary"
+                        app:icon="@drawable/ic_sun"
+                        app:iconSize="16dp"
+                        app:iconTint="@color/text_muted"
                         app:strokeColor="@color/line"
                         app:strokeWidth="1dp" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_view_timetable"
+                        android:id="@+id/btn_review"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/spacing_xs"
+                        android:text="@string/main_review"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:paddingVertical="@dimen/spacing_md"
+                        app:backgroundTint="@color/primary"
+                        app:cornerRadius="12dp"
+                        app:icon="@drawable/ic_moon"
+                        app:iconSize="16dp"
+                        app:iconTint="@color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_ai_coach"
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="@dimen/spacing_xs"
-                        android:text="@string/main_timetable"
+                        android:text="@string/main_ai_coach"
                         android:textColor="@color/text_primary"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:paddingVertical="@dimen/spacing_sm"
-                        app:backgroundTint="@color/white"
+                        android:paddingVertical="@dimen/spacing_md"
+                        app:backgroundTint="@color/surface"
                         app:cornerRadius="12dp"
-                        app:icon="@drawable/ic_calendar"
-                        app:iconSize="14dp"
+                        app:icon="@drawable/ic_chat"
+                        app:iconSize="16dp"
+                        app:iconTint="@color/text_muted"
+                        app:strokeColor="@color/line"
+                        app:strokeWidth="1dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Quick Actions with Enhanced Design -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/quick_actions_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_lg"
+                android:layout_marginBottom="@dimen/spacing_md"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="@color/line_variant">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_lg">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_ai_arrange"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/spacing_md"
+                        android:text="@string/main_ai_arrange"
+                        android:textColor="@color/text_primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:paddingVertical="@dimen/spacing_md"
+                        app:backgroundTint="@color/surface"
+                        app:cornerRadius="12dp"
+                        app:icon="@drawable/ic_lightning"
+                        app:iconSize="16dp"
+                        app:iconTint="@color/text_primary"
+                        app:strokeColor="@color/line"
+                        app:strokeWidth="1dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_start_5min"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/spacing_md"
+                        android:text="@string/main_start_5min"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:paddingVertical="@dimen/spacing_md"
+                        app:backgroundTint="@color/primary"
+                        app:cornerRadius="12dp"
+                        app:icon="@drawable/ic_play"
+                        app:iconSize="16dp"
+                        app:iconTint="@color/white" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_reschedule"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/spacing_md"
+                        android:text="@string/main_reschedule"
+                        android:textColor="@color/text_primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:paddingVertical="@dimen/spacing_md"
+                        app:backgroundTint="@color/surface"
+                        app:cornerRadius="12dp"
+                        app:icon="@drawable/ic_clock"
+                        app:iconSize="16dp"
                         app:iconTint="@color/text_primary"
                         app:strokeColor="@color/line"
                         app:strokeWidth="1dp" />
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Daily Actions -->
-            <LinearLayout
-                android:id="@+id/daily_actions"
+            <!-- Top 3 Tasks Section with Enhanced Design -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tasks_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginHorizontal="@dimen/spacing_lg"
-                android:layout_marginBottom="@dimen/spacing_lg">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_checkin"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/spacing_xs"
-                    android:text="@string/main_checkin"
-                    android:textColor="@color/text_primary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:paddingVertical="@dimen/spacing_md"
-                    app:backgroundTint="@color/white"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_sun"
-                    app:iconSize="16dp"
-                    app:iconTint="@color/text_muted"
-                    app:strokeColor="@color/line"
-                    app:strokeWidth="1dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_review"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/spacing_xs"
-                    android:text="@string/main_review"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:paddingVertical="@dimen/spacing_md"
-                    app:backgroundTint="@color/primary"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_moon"
-                    app:iconSize="16dp"
-                    app:iconTint="@color/white" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_ai_coach"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/spacing_xs"
-                    android:text="@string/main_ai_coach"
-                    android:textColor="@color/text_primary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:paddingVertical="@dimen/spacing_md"
-                    app:backgroundTint="@color/white"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_chat"
-                    app:iconSize="16dp"
-                    app:iconTint="@color/text_muted"
-                    app:strokeColor="@color/line"
-                    app:strokeWidth="1dp" />
-
-            </LinearLayout>
-
-            <!-- Quick Actions -->
-            <LinearLayout
-                android:id="@+id/quick_actions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="@dimen/spacing_lg"
-                android:layout_marginBottom="@dimen/spacing_xl">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_ai_arrange"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/spacing_md"
-                    android:text="@string/main_ai_arrange"
-                    android:textColor="@color/text_primary"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:paddingVertical="@dimen/spacing_md"
-                    app:backgroundTint="@color/white"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_lightning"
-                    app:iconSize="16dp"
-                    app:iconTint="@color/text_primary"
-                    app:strokeColor="@color/line"
-                    app:strokeWidth="1dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_start_5min"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/spacing_md"
-                    android:text="@string/main_start_5min"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:paddingVertical="@dimen/spacing_md"
-                    app:backgroundTint="@color/primary"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_play"
-                    app:iconSize="16dp"
-                    app:iconTint="@color/white" />
-
-    <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_reschedule"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/spacing_md"
-                    android:text="@string/main_reschedule"
-                    android:textColor="@color/text_primary"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:paddingVertical="@dimen/spacing_md"
-                    app:backgroundTint="@color/white"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_clock"
-                    app:iconSize="16dp"
-                    app:iconTint="@color/text_primary"
-                    app:strokeColor="@color/line"
-                    app:strokeWidth="1dp" />
-
-            </LinearLayout>
-
-            <!-- Top 3 Tasks Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginHorizontal="@dimen/spacing_lg"
-                android:layout_marginBottom="@dimen/spacing_xl">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_top3_today"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="@dimen/spacing_lg" />
-
-                <!-- RecyclerView for Tasks -->
-
-                <!-- Empty State -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_tasks"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_task_card" />
+                android:layout_marginBottom="@dimen/spacing_xl"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="@color/line_variant">
 
                 <LinearLayout
-                    android:id="@+id/empty_state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="@dimen/spacing_2xl"
-                    android:visibility="gone"
-                    tools:visibility="visible">
+                    android:padding="@dimen/spacing_lg">
 
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:src="@drawable/ic_task"
-                        android:alpha="0.6"
-                        android:contentDescription="@string/main_empty_tasks" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Section Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_lg"
-                        android:text="@string/main_empty_tasks"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/spacing_lg">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/main_top3_today"
+                            android:textColor="@color/text_primary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_view_all_tasks"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/main_view_all"
+                            android:textColor="@color/primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@android:color/transparent"
+                            app:cornerRadius="8dp" />
+
+                    </LinearLayout>
+
+                    <!-- Tasks RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_tasks"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_sm"
-                        android:text="@string/main_empty_tasks_description"
-                        android:textColor="@color/text_muted"
-                        android:textSize="14sp"
-                        android:gravity="center" />
+                        android:nestedScrollingEnabled="false"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/item_task_card" />
+
+                    <!-- Empty State -->
+                    <LinearLayout
+                        android:id="@+id/empty_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_2xl"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/ic_task"
+                            android:alpha="0.6"
+                            android:contentDescription="@string/main_empty_tasks"
+                            app:tint="@color/text_muted" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_lg"
+                            android:text="@string/main_empty_tasks"
+                            android:textColor="@color/text_primary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_sm"
+                            android:text="@string/main_empty_tasks_description"
+                            android:textColor="@color/text_muted"
+                            android:textSize="14sp"
+                            android:gravity="center" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <!-- Floating Action Button -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_focus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_lg"
-        android:layout_marginBottom="100dp"
-        android:contentDescription="@string/main_start_focus"
-        app:srcCompat="@drawable/ic_play"
-        app:backgroundTint="@color/primary"
-        app:tint="@color/white"
-        app:elevation="6dp"
-        app:borderWidth="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

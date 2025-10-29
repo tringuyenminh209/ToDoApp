@@ -9,25 +9,28 @@
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="@dimen/radius_lg"
     app:cardElevation="@dimen/elevation_sm"
-    app:strokeColor="@color/white"
-    app:strokeWidth="0dp">
+    app:strokeWidth="0.5dp"
+    app:strokeColor="@color/line_variant">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/spacing_lg">
 
-        <!-- Priority Dot -->
-        <View
-            android:id="@+id/priority_dot"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
+        <!-- Priority Indicator with Enhanced Design -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/priority_indicator"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_marginTop="6dp"
-            android:background="@drawable/priority_dot_background"
+            app:cardBackgroundColor="@color/primary"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeWidth="0dp" />
 
-        <!-- Task Title -->
+        <!-- Task Title with Better Typography -->
         <TextView
             android:id="@+id/tv_task_title"
             android:layout_width="0dp"
@@ -36,14 +39,45 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/text_primary"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold"
+            android:lineSpacingExtra="2dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/priority_dot"
+            app:layout_constraintStart_toEndOf="@id/priority_indicator"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Học Java cơ bản - OOP" />
 
-        <!-- Task Meta -->
+        <!-- Progress Bar -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_bar"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:layout_marginEnd="@dimen/spacing_md"
+            app:indicatorColor="@color/primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/priority_indicator"
+            app:layout_constraintTop_toBottomOf="@id/tv_task_title"
+            app:trackColor="@color/line"
+            app:trackCornerRadius="2dp"
+            tools:progress="60" />
+
+        <!-- Progress Text -->
+        <TextView
+            android:id="@+id/tv_progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/priority_indicator"
+            app:layout_constraintTop_toBottomOf="@id/progress_bar"
+            tools:text="2/3 hoàn thành" />
+
+        <!-- Task Meta with Enhanced Icons -->
         <LinearLayout
             android:id="@+id/meta_container"
             android:layout_width="wrap_content"
@@ -51,8 +85,8 @@
             android:layout_marginStart="@dimen/spacing_md"
             android:layout_marginTop="@dimen/spacing_sm"
             android:orientation="horizontal"
-            app:layout_constraintStart_toEndOf="@id/priority_dot"
-            app:layout_constraintTop_toBottomOf="@id/tv_task_title">
+            app:layout_constraintStart_toEndOf="@id/priority_indicator"
+            app:layout_constraintTop_toBottomOf="@id/tv_progress_text">
 
             <!-- Time -->
             <LinearLayout
@@ -66,19 +100,20 @@
                 tools:visibility="visible">
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_clock"
                     android:contentDescription="@null"
-                    app:tint="@color/text_muted" />
+                    app:tint="@color/accent" />
 
                 <TextView
                     android:id="@+id/tv_task_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textColor="@color/text_muted"
-                    android:textSize="11sp"
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
                     tools:text="25 phút" />
 
             </LinearLayout>
@@ -94,42 +129,185 @@
                 tools:visibility="visible">
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_calendar"
                     android:contentDescription="@null"
-                    app:tint="@color/text_muted" />
+                    app:tint="@color/accent" />
 
                 <TextView
                     android:id="@+id/tv_task_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textColor="@color/text_muted"
-                    android:textSize="11sp"
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
                     tools:text="Hôm nay 15:00" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Subtasks RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_subtasks"
+        <!-- Subtasks with Enhanced Design -->
+        <LinearLayout
+            android:id="@+id/subtasks_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_xl"
-            android:layout_marginTop="@dimen/spacing_sm"
-            android:nestedScrollingEnabled="false"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/meta_container"
-            tools:itemCount="2"
-            tools:listitem="@layout/item_subtask"
-            tools:visibility="visible" />
+            tools:visibility="visible">
 
-        <!-- Actions -->
+            <!-- Subtask 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_xs"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:cardBackgroundColor="@color/success"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_check"
+                        android:contentDescription="@null"
+                        app:tint="@color/white" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_sm"
+                    android:layout_weight="1"
+                    android:text="Xem video bài 1: Giới thiệu OOP"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10p"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:background="@drawable/time_badge_background"
+                    android:paddingHorizontal="@dimen/spacing_xs"
+                    android:paddingVertical="2dp" />
+
+            </LinearLayout>
+
+            <!-- Subtask 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_xs"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:cardBackgroundColor="@color/success"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_check"
+                        android:contentDescription="@null"
+                        app:tint="@color/white" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_sm"
+                    android:layout_weight="1"
+                    android:text="Làm bài tập thực hành"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="15p"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:background="@drawable/time_badge_background"
+                    android:paddingHorizontal="@dimen/spacing_xs"
+                    android:paddingVertical="2dp" />
+
+            </LinearLayout>
+
+            <!-- Subtask 3 (Pending) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:cardBackgroundColor="@color/surface"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/line"
+                    app:strokeWidth="1dp">
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/circle_background"
+                        android:backgroundTint="@color/text_muted" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_sm"
+                    android:layout_weight="1"
+                    android:text="Kiểm tra kiến thức"
+                    android:textColor="@color/text_muted"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5p"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:background="@drawable/time_badge_background"
+                    android:paddingHorizontal="@dimen/spacing_xs"
+                    android:paddingVertical="2dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Actions with Enhanced Design -->
         <LinearLayout
             android:id="@+id/actions_container"
             android:layout_width="0dp"
@@ -139,32 +317,37 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_subtasks">
+            app:layout_constraintTop_toBottomOf="@id/subtasks_container">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_start"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="44dp"
                 android:paddingHorizontal="@dimen/spacing_lg"
                 android:text="@string/task_start"
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/primary"
-                app:cornerRadius="8dp" />
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_play"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/spacing_xs"
+                app:iconSize="16dp"
+                app:iconTint="@color/white" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_more"
                 style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:layout_marginStart="@dimen/spacing_sm"
                 android:insetLeft="0dp"
                 android:insetTop="0dp"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 android:contentDescription="@string/task_more"
-                app:backgroundTint="@android:color/transparent"
+                app:backgroundTint="@color/surface"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_more"
                 app:iconGravity="textStart"

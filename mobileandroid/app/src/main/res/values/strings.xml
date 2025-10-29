@@ -77,14 +77,14 @@
     <string name="onboarding_subtitle">目標を設定して、あなたの旅を始めましょう</string>
     <string name="onboarding_step">Bước %1$d/%2$d</string>
     <string name="step_progress">ステップ 2/3</string>
-    
+
     <!-- Step 1: Goals -->
     <string name="onboarding_step1_title">Mục tiêu của bạn là gì?</string>
     <string name="onboarding_step1_description">Chọn lĩnh vực bạn muốn tập trung phát triển</string>
     <string name="goal_learning">Học tập</string>
     <string name="goal_work">Công việc</string>
     <string name="goal_health">Sức khỏe</string>
-    
+
     <!-- Step 2: Time -->
     <string name="onboarding_step2_title">あなたの空き時間は？</string>
     <string name="onboarding_step2_description">通常集中して作業できる時間を選択してください</string>
@@ -96,22 +96,26 @@
     <string name="time_morning_late_slot">9:00 - 12:00</string>
     <string name="time_afternoon_slot">13:00 - 17:00</string>
     <string name="time_evening_slot">19:00 - 22:00</string>
-    
+
     <!-- Step 3: Notifications -->
     <string name="onboarding_step3_title">Nhận thông báo?</string>
     <string name="onboarding_step3_description">Chúng tôi sẽ gửi lời nhắc nhẹ nhàng để giúp bạn duy trì thói quen</string>
     <string name="notification_reminder">Nhận thông báo nhắc nhở</string>
     <string name="notification_info">Bạn có thể thay đổi cài đặt này bất cứ lúc nào trong phần cài đặt</string>
-    
+
     <!-- Buttons -->
     <string name="btn_next">次へ</string>
     <string name="btn_complete">完了</string>
     <string name="onboarding_welcome">Chào mừng bạn đến với DOL LEAF! Chúng tôi sẽ tạo một số task mẫu để bạn bắt đầu.</string>
-    
+
     <!-- Main Activity - 主画面 -->
+    <string name="main_greeting">Chào buổi sáng</string>
     <string name="main_today">Hôm nay</string>
     <string name="main_date_placeholder">Thứ 5, 18/10/2024</string>
     <string name="main_progress_today">Tiến độ hôm nay</string>
+    <string name="main_tasks_completed">Tasks hoàn thành</string>
+    <string name="main_focus_time">Thời gian tập trung</string>
+    <string name="main_streak_days">Ngày liên tiếp</string>
     <string name="main_view_stats">Xem thống kê</string>
     <string name="main_timetable">Thời khóa biểu</string>
     <string name="main_checkin">Check-in sáng</string>
@@ -121,20 +125,236 @@
     <string name="main_start_5min">Bắt đầu 5p</string>
     <string name="main_reschedule">Dời lịch</string>
     <string name="main_top3_today">Top 3 hôm nay</string>
+    <string name="main_view_all">Xem tất cả</string>
     <string name="main_start_focus">Bắt đầu Focus</string>
     <string name="main_empty_tasks">Chưa có task nào</string>
     <string name="main_empty_tasks_description">Bắt đầu thêm task mới để bắt đầu</string>
-    
+
     <!-- Bottom Navigation -->
     <string name="nav_home">Trang chủ</string>
     <string name="nav_calendar">Lịch</string>
     <string name="nav_paths">Lộ trình</string>
     <string name="nav_knowledge">Kiến thức</string>
     <string name="nav_settings">Cài đặt</string>
-    
-    <!-- Task Card -->
+
+    <!-- Add Task Screen -->
+    <string name="add_task_title">Thêm Task</string>
+    <string name="basic_information">Thông tin cơ bản</string>
+    <string name="task_title_hint">Tiêu đề task</string>
+    <string name="task_description_hint">Mô tả chi tiết (tùy chọn)</string>
+    <string name="priority_and_time">Ưu tiên &amp; Thời gian</string>
+    <string name="priority">Mức độ ưu tiên</string>
+    <string name="priority_high">Cao</string>
+    <string name="priority_medium">Trung bình</string>
+    <string name="priority_low">Thấp</string>
+    <string name="estimated_time">Thời gian ước tính</string>
+    <string name="time_hint">Số phút</string>
+    <string name="subtasks">Các bước thực hiện</string>
+    <string name="add_subtask">Thêm bước</string>
+    <string name="no_subtasks">Chưa có bước nào</string>
+    <string name="no_subtasks_description">Thêm các bước nhỏ để dễ thực hiện</string>
+    <string name="subtask_hint">Mô tả bước thực hiện</string>
+    <string name="remove">Xóa</string>
+    <string name="save">Lưu</string>
     <string name="task_start">Bắt đầu</string>
+
+    <!-- Deadline Section -->
+    <string name="deadline">Hạn chót</string>
+    <string name="deadline_hint">yyyy/mm/dd --:--</string>
+    <string name="today">Hôm nay</string>
+    <string name="tomorrow">Ngày mai</string>
+    <string name="next_week">Tuần sau</string>
+
+    <!-- AI Support Section -->
+    <string name="ai_support">AI hỗ trợ</string>
+    <string name="beta">BETA</string>
+    <string name="ai_suggestions">Gợi ý từ AI</string>
+    <string name="ai_breakdown_task">Chia nhỏ task</string>
+    <string name="ai_optimize_time">Tối ưu thời gian</string>
+    <string name="ai_suggest_subtasks">Gợi ý bước thực hiện</string>
+    <string name="ai_status_info">AI sẽ phân tích và đưa ra gợi ý phù hợp</string>
+
+    <!-- Task Actions -->
     <string name="task_more">Xem thêm</string>
+    <string name="task_priority">Mức độ ưu tiên</string>
     <string name="task_time_format">%d phút</string>
-    <string name="task_priority">Ưu tiên %d</string>
+
+    <!-- Common Actions -->
+    <string name="skip">Bỏ qua</string>
+    <string name="submit">Gửi</string>
+    <string name="cancel">Hủy</string>
+    <string name="delete">Xóa</string>
+    <string name="edit">Sửa</string>
+
+    <!-- Daily Check-in -->
+    <string name="daily_checkin_title">Check-in Sáng</string>
+    <string name="checkin_welcome">Chào buổi sáng!</string>
+    <string name="checkin_subtitle">Bạn cảm thấy thế nào hôm nay?</string>
+    <string name="checkin_mood_label">Tâm trạng của bạn</string>
+    <string name="mood_excellent">Tuyệt vời</string>
+    <string name="mood_good">Tốt</string>
+    <string name="mood_average">Bình thường</string>
+    <string name="mood_poor">Kém</string>
+    <string name="mood_terrible">Rất tệ</string>
+    <string name="checkin_energy_label">Năng lượng</string>
+    <string name="energy_high">Cao</string>
+    <string name="energy_medium">Trung bình</string>
+    <string name="energy_low">Thấp</string>
+    <string name="checkin_sleep_label">Số giờ ngủ</string>
+    <string name="checkin_stress_label">Mức độ căng thẳng</string>
+    <string name="stress_low">Thấp</string>
+    <string name="stress_medium">Trung bình</string>
+    <string name="stress_high">Cao</string>
+    <string name="checkin_priorities_label">3 ưu tiên hàng đầu</string>
+    <string name="checkin_priorities_hint">Điều quan trọng nhất hôm nay</string>
+    <string name="priority_1">Ưu tiên 1</string>
+    <string name="priority_2">Ưu tiên 2</string>
+    <string name="priority_3">Ưu tiên 3 (tùy chọn)</string>
+    <string name="checkin_goals_label">Mục tiêu hôm nay</string>
+    <string name="checkin_goals_hint">Bạn muốn đạt được gì?</string>
+    <string name="goal_1">Mục tiêu 1</string>
+    <string name="goal_2">Mục tiêu 2 (tùy chọn)</string>
+    <string name="checkin_notes_label">Ghi chú</string>
+    <string name="checkin_notes_hint">Bất kỳ điều gì bạn muốn ghi nhớ...</string>
+    <string name="checkin_submit">Hoàn tất Check-in</string>
+
+    <!-- Daily Review -->
+    <string name="daily_review_title">Review Tối</string>
+    <string name="review_welcome">Chào buổi tối!</string>
+    <string name="review_subtitle">Ngày của bạn thế nào?</string>
+    <string name="review_mood_label">Tâm trạng cuối ngày</string>
+    <string name="review_stats_label">Thống kê hôm nay</string>
+    <string name="review_tasks_completed">Số task đã hoàn thành</string>
+    <string name="review_focus_time">Tổng thời gian tập trung (phút)</string>
+    <string name="review_scores_label">Đánh giá hiệu suất</string>
+    <string name="review_productivity_score">Năng suất làm việc</string>
+    <string name="review_focus_score">Khả năng tập trung</string>
+    <string name="review_task_completion_score">Hoàn thành công việc</string>
+    <string name="review_goal_achievement_score">Đạt mục tiêu</string>
+    <string name="review_work_life_balance_score">Cân bằng công việc - cuộc sống</string>
+    <string name="review_achievements_label">Thành tựu hôm nay</string>
+    <string name="review_achievements_hint">Điều gì bạn tự hào?</string>
+    <string name="add_achievement">Thêm thành tựu</string>
+    <string name="review_challenges_label">Khó khăn gặp phải</string>
+    <string name="review_challenges_hint">Điều gì làm bạn vất vả?</string>
+    <string name="add_challenge">Thêm khó khăn</string>
+    <string name="review_lessons_label">Bài học kinh nghiệm</string>
+    <string name="review_lessons_hint">Bạn học được gì?</string>
+    <string name="add_lesson">Thêm bài học</string>
+    <string name="review_gratitude_label">Biết ơn</string>
+    <string name="review_gratitude_hint">Điều gì bạn biết ơn?</string>
+    <string name="add_gratitude">Thêm lời cảm ơn</string>
+    <string name="review_notes_label">Ghi chú thêm</string>
+    <string name="review_notes_hint">Suy nghĩ của bạn về ngày hôm nay...</string>
+    <string name="review_tomorrow_goals_label">Mục tiêu ngày mai</string>
+    <string name="review_tomorrow_goals_hint">Bạn muốn làm gì vào ngày mai?</string>
+    <string name="review_submit">Hoàn tất Review</string>
+
+    <!-- Task Detail -->
+    <string name="task_detail">Chi tiết Task</string>
+    <string name="tags">Nhãn</string>
+    <string name="focus_sessions">Phiên tập trung</string>
+    <string name="mark_complete">Hoàn thành</string>
+    <string name="start_focus">Bắt đầu Focus</string>
+    <string name="total_focus_time">Tổng: %s</string>
+
+    <!-- AI Coach -->
+    <string name="ai_coach">AI Coach</string>
+    <string name="ask_ai_coach">Hỏi AI Coach...</string>
+    <string name="ai_thinking">AI đang suy nghĩ...</string>
+    <string name="ai_suggestion">Gợi ý từ AI</string>
+
+    <!-- Calendar -->
+    <string name="calendar_title">Lịch</string>
+    <string name="select_date">Chọn ngày</string>
+    <string name="no_tasks_on_date">Không có task nào</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Cài đặt</string>
+    <string name="account">Tài khoản</string>
+    <string name="preferences">Tùy chọn</string>
+    <string name="notifications">Thông báo</string>
+    <string name="theme">Giao diện</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="about">Về ứng dụng</string>
+    <string name="logout">Đăng xuất</string>
+
+    <!-- Stats -->
+    <string name="stats_title">Thống kê</string>
+    <string name="daily_stats">Thống kê hôm nay</string>
+    <string name="weekly_stats">Thống kê tuần</string>
+    <string name="monthly_stats">Thống kê tháng</string>
+    <string name="productivity_trend">Xu hướng năng suất</string>
+    <string name="focus_time_trend">Xu hướng tập trung</string>
+
+    <!-- Messages -->
+    <string name="loading">Đang tải...</string>
+    <string name="saving">Đang lưu...</string>
+    <string name="deleting">Đang xóa...</string>
+    <string name="success">Thành công!</string>
+    <string name="error">Có lỗi xảy ra</string>
+    <string name="no_internet">Không có kết nối internet</string>
+    <string name="try_again">Thử lại</string>
+
+    <!-- Confirmations -->
+    <string name="confirm_delete_task">Xóa task này?</string>
+    <string name="confirm_delete_message">Hành động này không thể hoàn tác</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+
+    <!-- Calendar Fragment - NEW -->
+    <string name="calendar_today">Hôm nay</string>
+    <string name="calendar_filter_label">Lọc tasks</string>
+    <string name="calendar_filter_all">Tất cả</string>
+    <string name="calendar_filter_active">Đang làm</string>
+    <string name="calendar_filter_completed">Hoàn thành</string>
+    <string name="calendar_add_task">Thêm Task</string>
+    <string name="calendar_empty_tasks">Không có task nào</string>
+    <string name="calendar_empty_tasks_description">Thêm task mới cho ngày này để bắt đầu</string>
+
+    <!-- AI Coach - NEW -->
+    <string name="ai_coach_quick_actions">Gợi ý nhanh</string>
+    <string name="ai_coach_plan_day">Lên kế hoạch hôm nay</string>
+    <string name="ai_coach_focus_help">Tôi cần tập trung</string>
+    <string name="ai_coach_motivation">Động lực cho tôi</string>
+    <string name="ai_coach_break">Nghỉ giải lao</string>
+    <string name="ai_coach_welcome_title">Xin chào! Tôi là AI Coach</string>
+    <string name="ai_coach_welcome_message">Tôi ở đây để giúp bạn lên kế hoạch, tập trung và đạt mục tiêu</string>
+    <string name="ai_coach_welcome_hint">Hãy thử hỏi tôi bất cứ điều gì về năng suất, quản lý thời gian hoặc mục tiêu của bạn</string>
+
+    <!-- Task Detail - NEW -->
+    <string name="task_add_subtask">Thêm bước</string>
+    <string name="task_add_tag">Thêm nhãn</string>
+    <string name="task_no_subtasks">Chưa có bước thực hiện</string>
+    <string name="task_no_tags">Chưa có nhãn</string>
+    <string name="share">Chia sẻ</string>
+
+    <!-- Paths Activity - NEW -->
+    <string name="paths_title">Lộ trình</string>
+    <string name="paths_subtitle">Theo dõi tiến độ mục tiêu</string>
+    <string name="paths_add">Thêm lộ trình</string>
+    <string name="paths_active">Đang thực hiện</string>
+    <string name="paths_completed">Đã hoàn thành</string>
+    <string name="paths_overall">Tiến độ chung</string>
+    <string name="paths_filter_all">Tất cả</string>
+    <string name="paths_filter_active">Đang làm</string>
+    <string name="paths_filter_completed">Hoàn thành</string>
+    <string name="paths_empty">Chưa có lộ trình nào</string>
+    <string name="paths_empty_description">Tạo lộ trình mới để theo dõi tiến độ mục tiêu của bạn</string>
+
+    <!-- Knowledge Activity - NEW -->
+    <string name="knowledge_title">Kiến thức</string>
+    <string name="knowledge_subtitle">Quản lý ghi chú và tài liệu</string>
+    <string name="knowledge_add">Thêm kiến thức</string>
+    <string name="knowledge_search_hint">Tìm kiếm ghi chú, bài viết, liên kết...</string>
+    <string name="knowledge_total">Tổng số</string>
+    <string name="knowledge_categories">Danh mục</string>
+    <string name="knowledge_recent">Gần đây</string>
+    <string name="knowledge_filter_all">Tất cả</string>
+    <string name="knowledge_filter_notes">Ghi chú</string>
+    <string name="knowledge_filter_articles">Bài viết</string>
+    <string name="knowledge_filter_links">Liên kết</string>
+    <string name="knowledge_empty">Chưa có kiến thức nào</string>
+    <string name="knowledge_empty_description">Thêm ghi chú, bài viết hoặc liên kết để xây dựng kho kiến thức của bạn</string>
+
 </resources>
