@@ -94,7 +94,7 @@ class TaskController extends Controller
             'priority' => 'required|integer|min:1|max:5',
             'energy_level' => 'required|in:low,medium,high',
             'estimated_minutes' => 'nullable|integer|min:1|max:600',
-            'deadline' => 'nullable|date|after:now',
+            'deadline' => 'nullable|date|after_or_equal:today',
             'project_id' => 'nullable|exists:projects,id',
             'learning_milestone_id' => 'nullable|exists:learning_milestones,id',
             'tag_ids' => 'nullable|array',

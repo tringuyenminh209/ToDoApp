@@ -5,6 +5,7 @@
     android:id="@+id/card_task"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="96dp"
     android:layout_marginBottom="@dimen/spacing_md"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="@dimen/radius_lg"

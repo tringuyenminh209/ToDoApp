@@ -187,110 +187,52 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Stats Card -->
+            
+
+            <!-- Categories Row -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/stats_card"
+                android:id="@+id/categories_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_lg"
                 android:layout_marginBottom="@dimen/spacing_md"
-                app:cardBackgroundColor="@color/primary_light"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
+                app:cardElevation="0dp"
+                app:strokeColor="@color/line"
+                app:strokeWidth="0.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/spacing_lg">
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/spacing_md">
 
-                    <!-- Total Items -->
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:layout_marginStart="@dimen/spacing_md"
+                        android:text="@string/knowledge_categories"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/tv_total_items"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="24"
-                            android:textColor="@color/primary"
-                            android:textSize="32sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/knowledge_total"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:layout_marginTop="@dimen/spacing_xs" />
-
-                    </LinearLayout>
-
-                    <!-- Categories -->
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_categories"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/tv_categories_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5"
-                            android:textColor="@color/primary"
-                            android:textSize="32sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/knowledge_categories"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:layout_marginTop="@dimen/spacing_xs" />
-
-                    </LinearLayout>
-
-                    <!-- Recent -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/tv_recent_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="3"
-                            android:textColor="@color/primary"
-                            android:textSize="32sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/knowledge_recent"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:layout_marginTop="@dimen/spacing_xs" />
-
-                    </LinearLayout>
+                        android:layout_marginTop="@dimen/spacing_sm"
+                        android:paddingHorizontal="@dimen/spacing_md"
+                        android:overScrollMode="never"
+                        android:nestedScrollingEnabled="false"
+                        tools:itemCount="6"
+                        tools:listitem="@layout/item_category_chip" />
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Filter Chips -->
+            <!-- Filter Chips (mapped to backend item_type, flags) -->
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/filter_chip_group"
                 android:layout_width="match_parent"
@@ -317,11 +259,18 @@
                     android:text="@string/knowledge_filter_notes" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_articles"
+                    android:id="@+id/chip_code"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/knowledge_filter_articles" />
+                    android:text="@string/knowledge_filter_code" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_exercises"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/knowledge_filter_exercises" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_links"
@@ -330,9 +279,37 @@
                     android:layout_height="wrap_content"
                     android:text="@string/knowledge_filter_links" />
 
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_attachments"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/knowledge_filter_attachments" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_favorites"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/knowledge_filter_favorites" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_archived"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/knowledge_filter_archived" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_due_review"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/knowledge_filter_due_review" />
+
             </com.google.android.material.chip.ChipGroup>
 
-            <!-- Knowledge Items RecyclerView -->
+            <!-- Knowledge Items (cards represent saved learned knowledge) -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_knowledge"
                 android:layout_width="match_parent"
@@ -341,7 +318,7 @@
                 android:layout_marginBottom="@dimen/spacing_xl"
                 android:nestedScrollingEnabled="false"
                 tools:itemCount="5"
-                tools:listitem="@layout/item_task_card" />
+                tools:listitem="@layout/item_knowledge_card" />
 
             <!-- Empty State -->
             <LinearLayout
@@ -429,5 +406,19 @@
         app:itemActiveIndicatorStyle="@null"
         app:menu="@menu/bottom_navigation_menu"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- Add Knowledge FAB -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_knowledge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/knowledge_add"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/spacing_lg"
+        android:layout_marginBottom="@dimen/spacing_lg"
+        app:srcCompat="@drawable/ic_add"
+        app:tint="@color/white"
+        app:backgroundTint="@color/primary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,6 +60,9 @@ dependencies {
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
 
+    // SwipeRefreshLayout
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
     // Animation & Transitions
     implementation(libs.androidx.dynamicanimation)
     implementation(libs.androidx.transition)

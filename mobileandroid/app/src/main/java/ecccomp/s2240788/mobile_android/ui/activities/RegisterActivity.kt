@@ -81,8 +81,11 @@ class RegisterActivity : AppCompatActivity() {
         viewModel.registerSuccess.observe(this) { success ->
             if (success) {
                 Toast.makeText(this, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
-                // Navigate to LoginActivity
-                startActivity(Intent(this, LoginActivity::class.java))
+                // Navigate to MainActivity (user is now logged in with token saved)
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
                 finish()
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             }

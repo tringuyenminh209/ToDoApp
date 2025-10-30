@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Network permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".TodoApplication"
         android:allowBackup="true"
@@ -12,8 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TodoApp"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <!-- Task Activities -->
+        <activity
+            android:name=".ui.activities.TaskListActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activities.EditTaskActivity"
             android:exported="false" />
@@ -55,8 +63,14 @@
             android:theme="@style/Theme.TodoApp"></activity> <!-- Splash Activity -->
         <activity
             android:name=".ui.activities.SplashActivity"
-            android:exported="false"
-            android:theme="@style/Theme.TodoApp.Splash" /> <!-- Login Activity -->
+            android:exported="true"
+            android:theme="@style/Theme.TodoApp.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- Login Activity -->
         <activity
             android:name=".ui.activities.LoginActivity"
             android:exported="false"
@@ -76,14 +90,8 @@
             android:windowSoftInputMode="adjustResize" /> <!-- Main Activity -->
         <activity
             android:name=".ui.activities.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.TodoApp">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"
+            android:theme="@style/Theme.TodoApp" />
     </application>
 
 </manifest>

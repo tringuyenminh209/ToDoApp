@@ -55,6 +55,13 @@ class RegisterViewModel : ViewModel() {
                     return@launch
                 }
 
+                // Validation: password must contain uppercase, lowercase, and digit (backend requirement)
+                val passwordPattern = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$")
+                if (!passwordPattern.matches(password)) {
+                    _error.value = "パスワードは大文字、小文字、数字を含む必要があります"
+                    return@launch
+                }
+
                 _isLoading.value = true
                 _error.value = null
 
