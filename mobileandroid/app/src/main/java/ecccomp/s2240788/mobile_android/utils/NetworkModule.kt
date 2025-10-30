@@ -19,8 +19,8 @@ import java.util.concurrent.TimeUnit
 
 object NetworkModule {
 
-    private const val BASE_URL = "http://10.0.2.2:8080/api/"
-    private var contextRef: WeakReference<Context>? = null
+    private const val BASE_URL = "http://localhost:8080/api/"
+    internal var contextRef: WeakReference<Context>? = null
 
     /**
      * Contextを設定（Applicationから呼び出す）
@@ -34,11 +34,11 @@ object NetworkModule {
             .addInterceptor(AuthInterceptor())               // Tokenをheaderに追加
             .addInterceptor(ResponseInterceptor())           // 401エラーをキャッチして自動ログアウト
             .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.BASIC  // Changed from BODY to BASIC for better performance
             })                                              // Log request và response
-            .connectTimeout(30, TimeUnit.SECONDS)           // Thời gian kết nối tối đa
-            .readTimeout(30, TimeUnit.SECONDS)              // Thời gian đọc tối đ党派đa
-            .writeTimeout(30, TimeUnit.SECONDS)             // Thời gian ghi tối đa
+            .connectTimeout(10, TimeUnit.SECONDS)           // Reduced from 30s to 10s
+            .readTimeout(10, TimeUnit.SECONDS)              // Reduced from 30s to 10s
+            .writeTimeout(10, TimeUnit.SECONDS)             // Reduced from 30s to 10s
             .build()
     }
 

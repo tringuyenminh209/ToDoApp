@@ -119,14 +119,14 @@
     <string name="main_tasks_completed">タスク完了</string>
     <string name="main_focus_time">フォーカス時間</string>
     <string name="main_streak_days">連続日数</string>
-    <string name="main_view_stats">統計を見る</string>
+    <string name="main_view_stats">統計</string>
     <string name="main_timetable">時間割</string>
-    <string name="main_checkin">朝のチェックイン</string>
-    <string name="main_review">夜のレビュー</string>
+    <string name="main_checkin">朝チェック</string>
+    <string name="main_review">夜レビュー</string>
     <string name="main_ai_coach">AIコーチ</string>
     <string name="main_ai_arrange">AI整列</string>
-    <string name="main_start_5min">5分で始める</string>
-    <string name="main_reschedule">スケジュール変更</string>
+    <string name="main_start_5min">開始</string>
+    <string name="main_reschedule">予定変更</string>
     <string name="main_top3_today">今日のトップ3</string>
     <string name="main_view_all">すべて表示</string>
     <string name="main_start_focus">フォーカスを開始</string>
@@ -152,6 +152,10 @@
     <string name="priority_low">低</string>
     <string name="estimated_time">予想時間</string>
     <string name="time_hint">分</string>
+    <string name="energy_level">エネルギーレベル</string>
+    <string name="energy_low">低い</string>
+    <string name="energy_medium">中</string>
+    <string name="energy_high">高い</string>
     <string name="subtasks">実行ステップ</string>
     <string name="add_subtask">ステップを追加</string>
     <string name="no_subtasks">ステップがありません</string>
@@ -159,6 +163,7 @@
     <string name="subtask_hint">ステップの説明</string>
     <string name="remove">削除</string>
     <string name="save">保存</string>
+    <string name="edit_task_title">タスクを編集</string>
     <string name="task_start">開始</string>
 
     <!-- Deadline Section -->
@@ -200,9 +205,6 @@
     <string name="mood_poor">悪い</string>
     <string name="mood_terrible">非常に悪い</string>
     <string name="checkin_energy_label">エネルギー</string>
-    <string name="energy_high">高い</string>
-    <string name="energy_medium">中</string>
-    <string name="energy_low">低い</string>
     <string name="checkin_sleep_label">睡眠時間</string>
     <string name="checkin_stress_label">ストレスレベル</string>
     <string name="stress_low">低い</string>
@@ -260,6 +262,12 @@
     <string name="mark_complete">完了</string>
     <string name="start_focus">フォーカス開始</string>
     <string name="total_focus_time">合計: %s</string>
+    
+    <!-- Task Detail Placeholders -->
+    <string name="task_detail_title_placeholder">サンプルタスクのタイトル</string>
+    <string name="task_detail_due_placeholder">期限: 2025-10-28</string>
+    <string name="task_detail_priority_placeholder">優先度: 高い</string>
+    <string name="task_detail_description_placeholder">タスクの説明...</string>
 
     <!-- AI Coach -->
     <string name="ai_coach">AIコーチ</string>
@@ -357,7 +365,44 @@
     <string name="knowledge_filter_notes">メモ</string>
     <string name="knowledge_filter_articles">記事</string>
     <string name="knowledge_filter_links">リンク</string>
+    <string name="knowledge_filter_code">コード</string>
+    <string name="knowledge_filter_exercises">練習問題</string>
+    <string name="knowledge_filter_attachments">添付ファイル</string>
+    <string name="knowledge_filter_favorites">お気に入り</string>
+    <string name="knowledge_filter_archived">アーカイブ</string>
+    <string name="knowledge_filter_due_review">レビュー期限</string>
     <string name="knowledge_empty">知識がありません</string>
     <string name="knowledge_empty_description">メモ、記事、リンクを追加して知識ベースを構築</string>
+
+    <!-- Knowledge Item Card -->
+    <string name="favorite">お気に入り</string>
+    <string name="more">その他</string>
+    <string name="knowledge_category_label">カテゴリ</string>
+    <string name="knowledge_last_review_label">最終:</string>
+    <string name="knowledge_next_review_label">次回:</string>
+    <string name="knowledge_title_placeholder">サンプルタイトル</string>
+    <string name="knowledge_preview_placeholder">概要プレビュー...</string>
+    <string name="knowledge_type_code">コード</string>
+    <string name="knowledge_language_placeholder">言語</string>
+    <string name="knowledge_tag_sample1">アルゴリズム</string>
+    <string name="knowledge_tag_sample2">配列</string>
+
+    <!-- Task Management -->
+    <string name="tasks_title">タスク管理</string>
+    <string name="filter_all">すべて</string>
+    <string name="filter_pending">未完了</string>
+    <string name="filter_completed">完了</string>
+    <string name="add_task">タスクを追加</string>
+    <string name="complete_task">完了</string>
+    <string name="delete_task">削除</string>
+    <string name="no_tasks">タスクがありません</string>
+    <string name="empty_tasks_title">タスクがありません</string>
+    <string name="empty_tasks_message">新しいタスクを追加して始めましょう</string>
+    <string name="priority_indicator">優先度</string>
+    <string name="task_title">タスクタイトル</string>
+    <string name="task_description">説明（任意）</string>
+    <string name="due_date">期限</string>
+    <string name="select_due_date">期限を選択</string>
+    <string name="save_task">保存</string>
 
 </resources>

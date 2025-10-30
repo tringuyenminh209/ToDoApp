@@ -118,7 +118,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
                     android:layout_marginStart="@dimen/spacing_sm"
-                    android:enabled="false"
                     android:text="@string/save"
                     android:textColor="@color/white"
                     android:textSize="14sp"
@@ -326,128 +325,62 @@
                         android:orientation="horizontal"
                         android:layout_marginBottom="@dimen/spacing_lg">
 
-                        <!-- High Priority -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/card_priority_high"
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:id="@+id/chipgroup_priority"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="@dimen/spacing_xs"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:background="@drawable/priority_card_selector"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="0dp"
-                            app:strokeWidth="2dp"
-                            app:strokeColor="@color/error">
+                            android:orientation="horizontal"
+                            android:weightSum="3">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_priority_high"
+                                style="@style/Widget.Material3.Chip.Filter"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="@dimen/spacing_xs"
+                                android:text="@string/priority_high"
                                 android:gravity="center"
-                                android:padding="@dimen/spacing_md">
+                                android:textAlignment="center"
+                                android:checkable="true"
+                                app:checkedIconVisible="true"
+                                app:chipIcon="@drawable/ic_priority"
+                                app:chipIconTint="@color/error"
+                                app:chipBackgroundColor="@color/surface" />
 
-                                <View
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
-                                    android:background="@drawable/circle_background"
-                                    android:backgroundTint="@color/error" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/spacing_xs"
-                                    android:text="@string/priority_high"
-                                    android:textColor="@color/text_primary"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <!-- Medium Priority -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/card_priority_medium"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginHorizontal="@dimen/spacing_xs"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:background="@drawable/priority_card_selector"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="0dp"
-                            app:strokeWidth="2dp"
-                            app:strokeColor="@color/warning">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_priority_medium"
+                                style="@style/Widget.Material3.Chip.Filter"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
+                                android:layout_weight="1"
+                                android:layout_marginHorizontal="@dimen/spacing_xs"
+                                android:text="@string/priority_medium"
                                 android:gravity="center"
-                                android:padding="@dimen/spacing_md">
+                                android:textAlignment="center"
+                                android:checkable="true"
+                                app:checkedIconVisible="true"
+                                app:chipIcon="@drawable/ic_priority"
+                                app:chipIconTint="@color/warning"
+                                app:chipBackgroundColor="@color/surface" />
 
-                                <View
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
-                                    android:background="@drawable/circle_background"
-                                    android:backgroundTint="@color/warning" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/spacing_xs"
-                                    android:text="@string/priority_medium"
-                                    android:textColor="@color/text_primary"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <!-- Low Priority -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/card_priority_low"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="@dimen/spacing_xs"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:background="@drawable/priority_card_selector"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="0dp"
-                            app:strokeWidth="2dp"
-                            app:strokeColor="@color/success">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_priority_low"
+                                style="@style/Widget.Material3.Chip.Filter"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
+                                android:layout_weight="1"
+                                android:layout_marginStart="@dimen/spacing_xs"
+                                android:text="@string/priority_low"
                                 android:gravity="center"
-                                android:padding="@dimen/spacing_md">
+                                android:textAlignment="center"
+                                android:checkable="true"
+                                app:checkedIconVisible="true"
+                                app:chipIcon="@drawable/ic_priority"
+                                app:chipIconTint="@color/success"
+                                app:chipBackgroundColor="@color/surface" />
 
-                                <View
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
-                                    android:background="@drawable/circle_background"
-                                    android:backgroundTint="@color/success" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/spacing_xs"
-                                    android:text="@string/priority_low"
-                                    android:textColor="@color/text_primary"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -517,6 +450,64 @@
                                 android:background="@android:color/transparent" />
 
                         </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                    <!-- Energy Level -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_lg"
+                        android:text="@string/energy_level"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/spacing_sm">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipgroup_energy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:singleSelection="true"
+                            app:selectionRequired="true"
+                            app:chipSpacingHorizontal="8dp">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_energy_high"
+                                style="@style/Widget.Material3.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/energy_high"
+                                android:checkable="true"
+                                app:checkedIconVisible="true"
+                                app:chipBackgroundColor="@color/surface" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_energy_medium"
+                                style="@style/Widget.Material3.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/energy_medium"
+                                android:checkable="true"
+                                app:checkedIconVisible="true"
+                                app:chipBackgroundColor="@color/surface" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_energy_low"
+                                style="@style/Widget.Material3.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/energy_low"
+                                android:checkable="true"
+                                app:checkedIconVisible="true"
+                                app:chipBackgroundColor="@color/surface" />
+
+                        </com.google.android.material.chip.ChipGroup>
 
                     </LinearLayout>
 

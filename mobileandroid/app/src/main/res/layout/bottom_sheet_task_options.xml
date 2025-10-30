@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_lg"
+    android:background="@color/white">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/tv_task_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="タスクオプション"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/spacing_lg" />
+
+    <!-- Edit Option -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/option_edit"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/edit"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:strokeColor="@color/line"
+        app:strokeWidth="1dp"
+        app:backgroundTint="@color/surface"
+        app:icon="@drawable/ic_edit"
+        app:iconPadding="8dp"
+        app:iconSize="18dp"
+        app:iconTint="@color/primary" />
+
+    <!-- Complete Option -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/option_complete"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:text="完了にする"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:strokeColor="@color/line"
+        app:strokeWidth="1dp"
+        app:backgroundTint="@color/surface"
+        app:icon="@drawable/ic_check"
+        app:iconPadding="8dp"
+        app:iconSize="18dp"
+        app:iconTint="@color/success" />
+
+    <!-- Delete Option -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/option_delete"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:text="@string/delete"
+        android:textColor="@color/error"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:strokeColor="@color/error"
+        app:strokeWidth="1dp"
+        app:backgroundTint="@color/surface"
+        app:icon="@drawable/ic_delete"
+        app:iconPadding="8dp"
+        app:iconSize="18dp"
+        app:iconTint="@color/error" />
+
+    <!-- Cancel -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancel"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:text="@string/cancel"
+        android:textColor="@color/text_secondary"
+        app:cornerRadius="12dp" />
+
+</LinearLayout>

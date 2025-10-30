@@ -74,8 +74,11 @@ class LoginActivity : AppCompatActivity() {
         viewModel.loginSuccess.observe(this) { success ->
             if (success) {
                 Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
-                // Navigate to MainActivity
-                startActivity(Intent(this, MainActivity::class.java))
+                // Navigate to MainActivity (clear back stack)
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
                 finish()
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             }
