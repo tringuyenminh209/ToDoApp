@@ -2,21 +2,27 @@ package ecccomp.s2240788.mobile_android.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityTaskDetailBinding
+import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskDisplayAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.TaskDetailViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TaskDetailActivity : AppCompatActivity() {
+class TaskDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTaskDetailBinding
     private lateinit var viewModel: TaskDetailViewModel
     private var taskId: Int = -1
+    private lateinit var subtaskAdapter: SubtaskDisplayAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +37,19 @@ class TaskDetailActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[TaskDetailViewModel::class.java]
 
+        setupSubtaskRecyclerView()
         setupClicks()
         observeViewModel()
 
         viewModel.loadTask(taskId)
+    }
+
+    private fun setupSubtaskRecyclerView() {
+        subtaskAdapter = SubtaskDisplayAdapter { subtask ->
+            viewModel.toggleSubtask(subtask.id)
+        }
+        binding.rvSubtasks.layoutManager = LinearLayoutManager(this)
+        binding.rvSubtasks.adapter = subtaskAdapter
     }
 
     private fun setupClicks() {
@@ -44,6 +59,10 @@ class TaskDetailActivity : AppCompatActivity() {
             val i = Intent(this, EditTaskActivity::class.java)
             i.putExtra("task_id", taskId)
             startActivity(i)
+        }
+
+        binding.btnAddSubtask.setOnClickListener {
+            showAddSubtaskDialog()
         }
 
         binding.btnDelete.setOnClickListener {
@@ -59,6 +78,24 @@ class TaskDetailActivity : AppCompatActivity() {
 
         binding.btnComplete.setOnClickListener {
             viewModel.completeTask(taskId)
+        }
+
+        binding.btnStartFocus.setOnClickListener {
+            // Check task status first
+            val currentTask = viewModel.task.value
+            if (currentTask?.status == "completed") {
+                Toast.makeText(this, "このタスクは既に完了しています", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (currentTask?.status == "in_progress") {
+                // Already in progress, navigate directly to focus session
+                val intent = Intent(this, FocusSessionActivity::class.java)
+                intent.putExtra("task_id", taskId)
+                startActivity(intent)
+            } else {
+                // Start the task first
+                viewModel.startTask(taskId)
+            }
         }
     }
 
@@ -91,6 +128,17 @@ class TaskDetailActivity : AppCompatActivity() {
 
             // Description
             binding.tvDescription.text = task.description ?: ""
+
+            // Subtasks
+            val subtasks = task.subtasks ?: emptyList()
+            if (subtasks.isEmpty()) {
+                binding.rvSubtasks.visibility = View.GONE
+                binding.emptySubtasks.visibility = View.VISIBLE
+            } else {
+                binding.rvSubtasks.visibility = View.VISIBLE
+                binding.emptySubtasks.visibility = View.GONE
+                subtaskAdapter.submitList(subtasks)
+            }
         }
 
         viewModel.toast.observe(this) { msg ->
@@ -100,6 +148,44 @@ class TaskDetailActivity : AppCompatActivity() {
         viewModel.finishEvent.observe(this) { done ->
             if (done == true) finish()
         }
+
+        // Navigate to Focus Session when task started
+        viewModel.startedTaskId.observe(this) { startedTaskId ->
+            if (startedTaskId != null) {
+                val intent = Intent(this, FocusSessionActivity::class.java)
+                intent.putExtra("task_id", startedTaskId)
+                viewModel.task.value?.let { task ->
+                    intent.putExtra("task_title", task.title)
+                }
+                startActivity(intent)
+                
+                // Reset the startedTaskId to prevent re-navigation on orientation change
+                viewModel.clearStartedTaskId()
+            }
+        }
+    }
+
+    private fun showAddSubtaskDialog() {
+        // Create a custom view for the dialog
+        val dialogView = layoutInflater.inflate(R.layout.dialog_add_subtask, null)
+        val etSubtaskTitle = dialogView.findViewById<TextInputEditText>(R.id.et_subtask_title)
+        val tilSubtaskTitle = dialogView.findViewById<TextInputLayout>(R.id.til_subtask_title)
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.add_subtask))
+            .setView(dialogView)
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
+                val title = etSubtaskTitle.text.toString().trim()
+                if (title.isNotEmpty()) {
+                    viewModel.addSubtask(taskId, title)
+                } else {
+                    Toast.makeText(this, "サブタスク名を入力してください", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .create()
+
+        dialog.show()
     }
 }
 

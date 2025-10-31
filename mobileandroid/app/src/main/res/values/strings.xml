@@ -193,6 +193,7 @@
     <string name="cancel">キャンセル</string>
     <string name="delete">削除</string>
     <string name="edit">編集</string>
+    <string name="add">追加</string>
 
     <!-- Daily Check-in -->
     <string name="daily_checkin_title">朝のチェックイン</string>
@@ -404,5 +405,104 @@
     <string name="due_date">期限</string>
     <string name="select_due_date">期限を選択</string>
     <string name="save_task">保存</string>
+
+    <!-- Calendar specific strings -->
+    <string name="calendar_selected_date">選択された日付</string>
+    <string name="calendar_task_count_single">1件のタスク</string>
+    <string name="calendar_task_count_plural">%d件のタスク</string>
+
+    <!-- Time input strings -->
+    <string name="estimated_time_desc">予想時間</string>
+    <string name="or_custom">またはカスタム:</string>
+    <string name="hours">時間</string>
+    <string name="minutes">分</string>
+
+    <!-- Timetable -->
+    <string name="timetable_title">時間割</string>
+    <string name="timetable_add_class">クラスを追加</string>
+    <string name="timetable_add_class_title">クラスを追加</string>
+    <string name="timetable_edit_class_title">クラスを編集</string>
+    <string name="timetable_no_class">クラスがありません</string>
+    <string name="timetable_no_next_class">次のクラスはありません</string>
+    <string name="timetable_break_time">休憩時間</string>
+    <string name="timetable_status_icon">ステータスアイコン</string>
+    <string name="timetable_status_active">授業中</string>
+    <string name="timetable_status_next">次の授業</string>
+    <string name="timetable_status_break">休憩中</string>
+    <string name="timetable_week_1">第1週 - 9月</string>
+    <string name="timetable_date_range">28/9 - 4/10/2025</string>
+    <string name="timetable_period">時限</string>
+    <string name="timetable_sun">日</string>
+    <string name="timetable_mon">月</string>
+    <string name="timetable_tue">火</string>
+    <string name="timetable_wed">水</string>
+    <string name="timetable_thu">木</string>
+    <string name="timetable_fri">金</string>
+    <string name="timetable_sat">土</string>
+    
+    <!-- Class Dialog -->
+    <string name="timetable_class_name_hint">クラス名（例: IT就職作品開発）</string>
+    <string name="timetable_day_hint">曜日</string>
+    <string name="timetable_period_hint">時限</string>
+    <string name="timetable_room_hint">教室（例: 1603）</string>
+    <string name="timetable_color_hint">色</string>
+    <string name="timetable_color_primary">緑（デフォルト）</string>
+    <string name="timetable_color_accent">青</string>
+    <string name="timetable_color_success">ライトグリーン</string>
+    <string name="timetable_color_warning">黄</string>
+    <string name="timetable_color_danger">赤</string>
+    <string name="timetable_create_task">タスクを作成</string>
+    <string name="timetable_set_reminder">リマインダーを設定</string>
+    <string name="timetable_confirm_delete_class">このクラスを削除しますか？</string>
+    
+    <!-- Study Section -->
+    <string name="timetable_study_section">宿題 &amp; 復習</string>
+    <string name="timetable_add_study">追加</string>
+    <string name="timetable_add_study_title">宿題/復習を追加</string>
+    <string name="timetable_edit_study_title">宿題/復習を編集</string>
+    <string name="timetable_study_icon">学習アイコン</string>
+    <string name="timetable_study_title_hint">タイトル（例: Java OOP宿題）</string>
+    <string name="timetable_study_type_hint">タイプ</string>
+    <string name="timetable_study_type_homework">宿題</string>
+    <string name="timetable_study_type_review">復習</string>
+    <string name="timetable_study_type_exam">試験</string>
+    <string name="timetable_study_subject_hint">科目（例: Java Programming）</string>
+    <string name="timetable_study_due_date_hint">提出期限</string>
+    <string name="timetable_study_priority_hint">優先度</string>
+    <string name="timetable_study_description_hint">詳細説明...</string>
+    <string name="timetable_study_completed">完了</string>
+    <string name="timetable_study_pending">未完了</string>
+    <string name="timetable_confirm_delete_study">この宿題を削除しますか？</string>
+    
+    <!-- Days Array -->
+    <string name="day_sunday">日曜日</string>
+    <string name="day_monday">月曜日</string>
+    <string name="day_tuesday">火曜日</string>
+    <string name="day_wednesday">水曜日</string>
+    <string name="day_thursday">木曜日</string>
+    <string name="day_friday">金曜日</string>
+    <string name="day_saturday">土曜日</string>
+    
+    <!-- Periods Array -->
+    <string name="period_1">第1時限</string>
+    <string name="period_2">第2時限</string>
+    <string name="period_3">第3時限</string>
+    <string name="period_4">第4時限</string>
+    <string name="period_5">第5時限</string>
+
+    <!-- Start Task Dialog -->
+    <string name="start_task_dialog_title">タスクを開始</string>
+    <string name="start_task_dialog_subtitle">開始するタスクを選択してください</string>
+    <string name="start_task_dialog_icon">タスク開始アイコン</string>
+    <string name="start_task_available_count">%d個のタスクが利用可能</string>
+    <string name="start_task_sort">並び替え</string>
+    <string name="start_task_quick_tasks">クイックタスク</string>
+    <string name="start_task_ai_suggest">AI提案</string>
+    <string name="start_task_create_new">新規作成</string>
+    <string name="start_task_start_btn">開始</string>
+    <string name="start_task_ai_recommended">AI推奨</string>
+    <string name="start_task_empty_icon">空のアイコン</string>
+    <string name="start_task_empty_title">利用可能なタスクがありません</string>
+    <string name="start_task_empty_message">新しいタスクを作成するか、フィルターを変更してください</string>
 
 </resources>

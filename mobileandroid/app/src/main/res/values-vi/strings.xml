@@ -148,7 +148,11 @@
     <string name="priority_medium">Trung bình</string>
     <string name="priority_low">Thấp</string>
     <string name="estimated_time">Thời gian ước tính</string>
+    <string name="estimated_time_desc">Chọn nhanh hoặc nhập tùy chỉnh</string>
     <string name="time_hint">Số phút</string>
+    <string name="or_custom">hoặc tùy chỉnh:</string>
+    <string name="hours">Giờ</string>
+    <string name="minutes">Phút</string>
     <string name="subtasks">Các bước thực hiện</string>
     <string name="add_subtask">Thêm bước</string>
     <string name="no_subtasks">Chưa có bước nào</string>
@@ -311,6 +315,9 @@
     <string name="calendar_add_task">Thêm Task</string>
     <string name="calendar_empty_tasks">Không có task nào</string>
     <string name="calendar_empty_tasks_description">Thêm task mới cho ngày này để bắt đầu</string>
+    <string name="calendar_selected_date">Đã chọn: %1$s</string>
+    <string name="calendar_task_count_single">%1$d task</string>
+    <string name="calendar_task_count_plural">%1$d tasks</string>
 
     <!-- AI Coach -->
     <string name="ai_coach_quick_actions">Gợi ý nhanh</string>
@@ -356,5 +363,12 @@
     <string name="knowledge_filter_links">Liên kết</string>
     <string name="knowledge_empty">Chưa có kiến thức nào</string>
     <string name="knowledge_empty_description">Thêm ghi chú, bài viết hoặc liên kết để xây dựng kho kiến thức của bạn</string>
+    
+    <!-- Timetable -->
+    <string name="timetable_no_class">Không có lớp</string>
+    <string name="timetable_no_next_class">Không có lớp tiếp theo</string>
+    <string name="timetable_status_active">Đang học</string>
+    <string name="timetable_status_next">Lớp tiếp theo</string>
+    <string name="timetable_status_break">Giờ nghỉ</string>
 
 </resources>

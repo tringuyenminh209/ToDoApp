@@ -97,6 +97,86 @@ class MainTaskAdapter(
                     dateContainer.visibility = View.GONE
                 }
 
+                // Subtasks - display dynamically
+                if (!task.subtasks.isNullOrEmpty()) {
+                    subtasksContainer.visibility = View.VISIBLE
+                    subtasksContainer.removeAllViews()  // Clear existing views
+
+                    // Show max 3 subtasks
+                    task.subtasks.take(3).forEach { subtask ->
+                        val subtaskView = android.widget.LinearLayout(itemView.context).apply {
+                            orientation = android.widget.LinearLayout.HORIZONTAL
+                            layoutParams = android.view.ViewGroup.MarginLayoutParams(
+                                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                            ).apply {
+                                bottomMargin = 8
+                            }
+                            gravity = android.view.Gravity.CENTER_VERTICAL
+                        }
+
+                        // Checkbox/indicator
+                        val indicator = com.google.android.material.card.MaterialCardView(itemView.context).apply {
+                            layoutParams = android.view.ViewGroup.LayoutParams(40, 40)
+                            radius = 20f
+                            cardElevation = 0f
+                            strokeWidth = if (subtask.is_completed) 0 else 2
+                            strokeColor = ContextCompat.getColor(context, R.color.line)
+                            setCardBackgroundColor(ContextCompat.getColor(
+                                context,
+                                if (subtask.is_completed) R.color.success else R.color.surface
+                            ))
+                        }
+
+                        if (subtask.is_completed) {
+                            val checkIcon = android.widget.ImageView(itemView.context).apply {
+                                setImageResource(R.drawable.ic_check)
+                                setColorFilter(ContextCompat.getColor(context, R.color.white))
+                                layoutParams = android.view.ViewGroup.LayoutParams(24, 24)
+                            }
+                            indicator.addView(checkIcon)
+                        }
+
+                        // Subtask title
+                        val titleText = android.widget.TextView(itemView.context).apply {
+                            text = subtask.title
+                            textSize = 13f
+                            setTextColor(ContextCompat.getColor(
+                                context,
+                                if (subtask.is_completed) R.color.text_secondary else R.color.text_muted
+                            ))
+                            layoutParams = android.widget.LinearLayout.LayoutParams(
+                                0,
+                                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                                1f
+                            ).apply {
+                                marginStart = 16
+                            }
+                        }
+
+                        // Time badge (if exists)
+                        if (subtask.estimated_minutes != null && subtask.estimated_minutes > 0) {
+                            val timeText = android.widget.TextView(itemView.context).apply {
+                                text = "${subtask.estimated_minutes}分"
+                                textSize = 11f
+                                setTextColor(ContextCompat.getColor(context, R.color.text_muted))
+                                setPadding(16, 4, 16, 4)
+                                setBackgroundResource(R.drawable.time_badge_background)
+                            }
+                            subtaskView.addView(indicator)
+                            subtaskView.addView(titleText)
+                            subtaskView.addView(timeText)
+                        } else {
+                            subtaskView.addView(indicator)
+                            subtaskView.addView(titleText)
+                        }
+
+                        subtasksContainer.addView(subtaskView)
+                    }
+                } else {
+                    subtasksContainer.visibility = View.GONE
+                }
+
                 // Start button - mark task as in_progress
                 btnStart.setOnClickListener {
                     onStartClick(task)

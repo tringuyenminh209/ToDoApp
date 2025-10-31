@@ -56,12 +56,14 @@
                 app:cardCornerRadius="8dp"
                 app:cardElevation="2dp"
                 app:layout_constraintStart_toEndOf="@id/btn_back"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_back"
+                app:layout_constraintBottom_toBottomOf="@id/btn_back"
                 app:strokeWidth="0dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:padding="6dp"
                     android:src="@drawable/ic_logo"
                     android:contentDescription="@string/app_name" />
 
@@ -73,13 +75,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_md"
+                android:layout_marginEnd="@dimen/spacing_xs"
                 android:text="@string/task_detail"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@id/header_actions"
                 app:layout_constraintStart_toEndOf="@id/logo_container"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/btn_back"
+                app:layout_constraintBottom_toBottomOf="@id/btn_back" />
 
             <!-- Header Actions -->
             <LinearLayout
@@ -89,7 +93,8 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="@id/btn_back"
+                app:layout_constraintBottom_toBottomOf="@id/btn_back">
 
                 <!-- Share Button -->
                 <com.google.android.material.button.MaterialButton
@@ -198,60 +203,82 @@
                         android:textStyle="bold"
                         android:text="@string/task_detail_title_placeholder" />
 
+                    <!-- Metadata Row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/spacing_sm"
-                        android:gravity="center_vertical">
+                        android:layout_marginBottom="@dimen/spacing_md"
+                        android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_calendar"
-                            app:tint="@color/text_muted" />
-
-                        <TextView
-                            android:id="@+id/tv_due_date"
-                            android:layout_width="wrap_content"
+                        <!-- Due Date -->
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:textColor="@color/text_muted"
-                            android:textSize="14sp"
-                            android:text="@string/task_detail_due_placeholder" />
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_calendar"
+                                android:contentDescription="@string/due_date"
+                                app:tint="@color/text_muted" />
+
+                            <TextView
+                                android:id="@+id/tv_due_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/spacing_xs"
+                                android:text="@string/task_detail_due_placeholder"
+                                android:textColor="@color/text_muted"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                        <!-- Priority -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_star"
+                                android:contentDescription="@string/priority"
+                                app:tint="@color/warning" />
+
+                            <TextView
+                                android:id="@+id/tv_priority"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/spacing_xs"
+                                android:text="@string/task_detail_priority_placeholder"
+                                android:textColor="@color/text_muted"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                    <LinearLayout
+                    <!-- Divider -->
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/spacing_sm"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_star"
-                            app:tint="@color/warning" />
-
-                        <TextView
-                            android:id="@+id/tv_priority"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:textColor="@color/text_muted"
-                            android:textSize="14sp"
-                            android:text="@string/task_detail_priority_placeholder" />
-
-                    </LinearLayout>
+                        android:layout_height="1dp"
+                        android:background="@color/line" />
 
                     <TextView
                         android:id="@+id/tv_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_md"
+                        android:text="@string/task_detail_description_placeholder"
                         android:textColor="@color/text_secondary"
                         android:textSize="16sp"
-                        android:text="@string/task_detail_description_placeholder" />
+                        android:lineSpacingExtra="4dp" />
 
                 </LinearLayout>
 
@@ -475,31 +502,41 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:layout_marginBottom="@dimen/spacing_lg"
                 android:orientation="horizontal"
+                android:gravity="center"
                 android:weightSum="2">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_complete"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="@dimen/spacing_sm"
                     android:layout_weight="1"
                     android:text="@string/mark_complete"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
                     app:backgroundTint="@color/success"
-                    app:cornerRadius="24dp"
-                    app:icon="@drawable/ic_check" />
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_check"
+                    app:iconSize="20dp"
+                    app:iconGravity="textStart" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_start_focus"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/spacing_sm"
                     android:layout_weight="1"
                     android:text="@string/start_focus"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
                     app:backgroundTint="@color/primary"
-                    app:cornerRadius="24dp"
-                    app:icon="@drawable/ic_timer" />
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_timer"
+                    app:iconSize="20dp"
+                    app:iconGravity="textStart" />
 
             </LinearLayout>
 

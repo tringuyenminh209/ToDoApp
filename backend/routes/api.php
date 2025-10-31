@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\FocusSessionController;
 use App\Http\Controllers\AIController;
 use App\Http\Controllers\StatsController;
@@ -59,6 +60,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Task routes (Resource routes must be last)
     Route::apiResource('tasks', TaskController::class);
+
+    // Subtask routes
+    Route::get('/tasks/{taskId}/subtasks', [SubtaskController::class, 'index']);
+    Route::post('/tasks/{taskId}/subtasks', [SubtaskController::class, 'store']);
+    Route::post('/tasks/{taskId}/subtasks/reorder', [SubtaskController::class, 'reorder']);
+    Route::put('/subtasks/{id}', [SubtaskController::class, 'update']);
+    Route::put('/subtasks/{id}/toggle', [SubtaskController::class, 'toggle']);
+    Route::delete('/subtasks/{id}', [SubtaskController::class, 'destroy']);
 
     // Focus Session routes
     Route::prefix('sessions')->group(function () {

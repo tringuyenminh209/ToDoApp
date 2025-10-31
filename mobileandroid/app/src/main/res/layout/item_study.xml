@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Item for Study List -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/study_item_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_sm"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/line">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_md">
+
+        <!-- Type Icon -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/type_icon_container"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardBackgroundColor="@color/warning"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_type_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/white"
+                android:contentDescription="@string/timetable_study_icon" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Content -->
+        <LinearLayout
+            android:id="@+id/content_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/spacing_md"
+            app:layout_constraintStart_toEndOf="@id/type_icon_container"
+            app:layout_constraintEnd_toStartOf="@id/checkbox_container"
+            app:layout_constraintTop_toTopOf="@id/type_icon_container"
+            app:layout_constraintBottom_toBottomOf="@id/type_icon_container">
+
+            <TextView
+                android:id="@+id/tv_study_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Làm bài tập Java OOP"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/tv_study_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bài tập • Java Programming"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <!-- Checkbox and Progress -->
+        <LinearLayout
+            android:id="@+id/checkbox_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/tv_study_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chưa xong"
+                android:textColor="@color/warning"
+                android:textSize="12sp"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkbox_complete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:buttonTint="@color/primary"
+                android:minWidth="0dp"
+                android:minHeight="0dp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

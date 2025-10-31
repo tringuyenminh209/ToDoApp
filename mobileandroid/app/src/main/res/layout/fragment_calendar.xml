@@ -34,7 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/spacing_lg">
+                android:padding="@dimen/spacing_lg"
+                android:animateLayoutChanges="true">
 
                 <!-- Month Navigation -->
                 <LinearLayout
@@ -44,12 +45,33 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
+                    <!-- Prev Month -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_prev_month"
+                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:icon="@drawable/ic_arrow_back"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="18dp"
+                        app:iconTint="@color/text_primary"
+                        app:backgroundTint="@color/surface"
+                        app:cornerRadius="8dp"
+                        app:strokeColor="@color/line"
+                        app:strokeWidth="1dp" />
+
                     <!-- Month/Year Info -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginHorizontal="@dimen/spacing_md">
 
                         <TextView
                             android:id="@+id/tv_month_year"
@@ -71,20 +93,42 @@
 
                     </LinearLayout>
 
+                    <!-- Next Month -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_next_month"
+                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="@dimen/spacing_sm"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:icon="@drawable/ic_arrow_forward"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="18dp"
+                        app:iconTint="@color/text_primary"
+                        app:backgroundTint="@color/surface"
+                        app:cornerRadius="8dp"
+                        app:strokeColor="@color/line"
+                        app:strokeWidth="1dp" />
+
                     <!-- Today Button -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_today"
-                        style="@style/Widget.Material3.Button.TextButton"
+                        style="@style/Widget.Material3.Button"
                         android:layout_width="wrap_content"
-                        android:layout_height="36dp"
+                        android:layout_height="40dp"
                         android:text="@string/calendar_today"
-                        android:textColor="@color/primary"
+                        android:textAllCaps="false"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        app:cornerRadius="8dp"
+                        android:paddingHorizontal="@dimen/spacing_md"
                         app:icon="@drawable/ic_calendar"
                         app:iconSize="16dp"
-                        app:iconTint="@color/primary" />
+                        app:backgroundTint="@color/primary"
+                        app:cornerRadius="12dp" />
 
                 </LinearLayout>
 
@@ -94,7 +138,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="320dp"
                     android:background="@color/white"
-                    android:dateTextAppearance="@android:style/TextAppearance.Small" />
+                    android:dateTextAppearance="@android:style/TextAppearance.Small"
+                    android:weekSeparatorLineColor="@color/line" />
 
             </LinearLayout>
 
@@ -112,6 +157,7 @@
             app:cardElevation="2dp"
             app:strokeColor="@color/line"
             app:strokeWidth="0.5dp"
+            android:animateLayoutChanges="true"
             app:layout_constraintTop_toBottomOf="@id/header_card">
 
             <LinearLayout
@@ -165,6 +211,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:chipSpacingHorizontal="8dp"
+                    app:chipSpacingVertical="6dp"
                     app:selectionRequired="true"
                     app:singleSelection="true">
 
@@ -175,9 +222,11 @@
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:text="@string/calendar_filter_all"
-                        app:chipBackgroundColor="@color/primary"
-                        app:chipIcon="@drawable/ic_list"
-                        app:chipIconTint="@color/white" />
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:chipIcon="@drawable/ic_inbox"
+                        app:rippleColor="@color/primary_alpha_12"
+                        app:chipStrokeColor="@color/line"
+                        app:chipStrokeWidth="1dp" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_active_tasks"
@@ -186,7 +235,10 @@
                         android:layout_height="wrap_content"
                         android:text="@string/calendar_filter_active"
                         app:chipIcon="@drawable/ic_clock"
-                        app:chipIconTint="@color/accent" />
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:rippleColor="@color/primary_alpha_12"
+                        app:chipStrokeColor="@color/line"
+                        app:chipStrokeWidth="1dp" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_completed_tasks"
@@ -195,7 +247,10 @@
                         android:layout_height="wrap_content"
                         android:text="@string/calendar_filter_completed"
                         app:chipIcon="@drawable/ic_check"
-                        app:chipIconTint="@color/success" />
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:rippleColor="@color/primary_alpha_12"
+                        app:chipStrokeColor="@color/line"
+                        app:chipStrokeWidth="1dp" />
 
                 </com.google.android.material.chip.ChipGroup>
 
@@ -207,21 +262,20 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tasks_container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_sm"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/filter_card">
 
             <!-- Tasks for Selected Date -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_tasks"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_md"
                 android:clipToPadding="false"
                 android:paddingBottom="80dp"
+                android:nestedScrollingEnabled="false"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -231,15 +285,12 @@
             <!-- Empty State -->
             <LinearLayout
                 android:id="@+id/empty_state"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="@dimen/spacing_2xl"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible">
 

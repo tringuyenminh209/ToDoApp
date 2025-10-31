@@ -2,28 +2,35 @@ package ecccomp.s2240788.mobile_android.ui.activities
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.databinding.ActivityEditTaskBinding
+import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInput
+import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInputAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.EditTaskViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.UUID
 
 /**
  * EditTaskActivity
  * タスク編集画面
  */
-class EditTaskActivity : AppCompatActivity() {
+class EditTaskActivity : BaseActivity() {
 
     private lateinit var binding: ActivityEditTaskBinding
     private lateinit var viewModel: EditTaskViewModel
     private var taskId: Int = -1
-    private var selectedPriority = "medium"
+    private var selectedPriority = 3 // Default: medium (1-5)
     private var selectedEnergy = "medium"
     private var selectedDeadline: String? = null
     private var calendar: Calendar = Calendar.getInstance()
+    private lateinit var subtaskAdapter: SubtaskInputAdapter
+    private val subtasks = mutableListOf<SubtaskInput>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +46,7 @@ class EditTaskActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[EditTaskViewModel::class.java]
 
+        setupSubtaskRecyclerView()
         setupClickListeners()
         setupObservers()
 
@@ -50,19 +58,29 @@ class EditTaskActivity : AppCompatActivity() {
         // Back button
         binding.btnBack?.setOnClickListener { finish() }
 
-        // Priority selection (chips)
-        binding.chipPriorityHigh?.setOnClickListener {
-            selectedPriority = "high"
+        // Priority selection (1-5)
+        binding.chipPriority1?.setOnClickListener {
+            selectedPriority = 1
             updatePrioritySelection()
         }
 
-        binding.chipPriorityMedium?.setOnClickListener {
-            selectedPriority = "medium"
+        binding.chipPriority2?.setOnClickListener {
+            selectedPriority = 2
             updatePrioritySelection()
         }
 
-        binding.chipPriorityLow?.setOnClickListener {
-            selectedPriority = "low"
+        binding.chipPriority3?.setOnClickListener {
+            selectedPriority = 3
+            updatePrioritySelection()
+        }
+
+        binding.chipPriority4?.setOnClickListener {
+            selectedPriority = 4
+            updatePrioritySelection()
+        }
+
+        binding.chipPriority5?.setOnClickListener {
+            selectedPriority = 5
             updatePrioritySelection()
         }
 
@@ -88,6 +106,32 @@ class EditTaskActivity : AppCompatActivity() {
         // Deadline input - show date picker
         binding.etDeadline?.setOnClickListener { showDatePicker() }
 
+        // Time quick select buttons
+        binding.btnTime15?.setOnClickListener {
+            binding.etHours?.setText("0")
+            binding.etMinutes?.setText("15")
+        }
+
+        binding.btnTime30?.setOnClickListener {
+            binding.etHours?.setText("0")
+            binding.etMinutes?.setText("30")
+        }
+
+        binding.btnTime60?.setOnClickListener {
+            binding.etHours?.setText("1")
+            binding.etMinutes?.setText("0")
+        }
+
+        binding.btnTime120?.setOnClickListener {
+            binding.etHours?.setText("2")
+            binding.etMinutes?.setText("0")
+        }
+
+        // Add subtask button
+        binding.btnAddSubtask?.setOnClickListener {
+            addNewSubtask()
+        }
+
         // Save button
         binding.btnSave?.setOnClickListener {
             if (validateInputs()) {
@@ -103,12 +147,8 @@ class EditTaskActivity : AppCompatActivity() {
                 binding.etTaskTitle?.setText(it.title)
                 binding.etTaskDescription?.setText(it.description)
 
-                // Map priority Int to string
-                selectedPriority = when (it.priority) {
-                    4, 5 -> "high"
-                    1, 2 -> "low"
-                    else -> "medium"
-                }
+                // Priority (1-5)
+                selectedPriority = it.priority.coerceIn(1, 5)
                 updatePrioritySelection()
 
                 // Energy level
@@ -119,9 +159,16 @@ class EditTaskActivity : AppCompatActivity() {
                     else -> binding.chipEnergyMedium?.isChecked = true
                 }
 
-                // Estimated minutes
+                // Estimated minutes - convert to hours and minutes
                 it.estimated_minutes?.let { mins ->
-                    binding.etEstimatedTime?.setText(mins.toString())
+                    val hours = mins / 60
+                    val minutes = mins % 60
+                    if (hours > 0) {
+                        binding.etHours?.setText(hours.toString())
+                    }
+                    if (minutes > 0) {
+                        binding.etMinutes?.setText(minutes.toString())
+                    }
                 }
 
                 // Deadline
@@ -136,6 +183,22 @@ class EditTaskActivity : AppCompatActivity() {
                         binding.etDeadline?.setText(dateStr)
                         selectedDeadline = dateStr
                     }
+                }
+
+                // Load subtasks
+                it.subtasks?.let { taskSubtasks ->
+                    subtasks.clear()
+                    taskSubtasks.forEach { subtask ->
+                        subtasks.add(
+                            SubtaskInput(
+                                id = subtask.id.toString(),
+                                title = subtask.title,
+                                estimatedMinutes = subtask.estimated_minutes
+                            )
+                        )
+                    }
+                    subtaskAdapter.submitList(subtasks.toList())
+                    updateEmptyState()
                 }
             }
         }
@@ -163,27 +226,20 @@ class EditTaskActivity : AppCompatActivity() {
     }
 
     private fun updatePrioritySelection() {
-        // Ensure single selection among chips
-        val high = binding.chipPriorityHigh
-        val medium = binding.chipPriorityMedium
-        val low = binding.chipPriorityLow
+        // Reset all chips
+        binding.chipPriority1?.isChecked = false
+        binding.chipPriority2?.isChecked = false
+        binding.chipPriority3?.isChecked = false
+        binding.chipPriority4?.isChecked = false
+        binding.chipPriority5?.isChecked = false
 
+        // Set selected chip
         when (selectedPriority) {
-            "high" -> {
-                high?.isChecked = true
-                medium?.isChecked = false
-                low?.isChecked = false
-            }
-            "low" -> {
-                high?.isChecked = false
-                medium?.isChecked = false
-                low?.isChecked = true
-            }
-            else -> {
-                high?.isChecked = false
-                medium?.isChecked = true
-                low?.isChecked = false
-            }
+            1 -> binding.chipPriority1?.isChecked = true
+            2 -> binding.chipPriority2?.isChecked = true
+            3 -> binding.chipPriority3?.isChecked = true
+            4 -> binding.chipPriority4?.isChecked = true
+            5 -> binding.chipPriority5?.isChecked = true
         }
     }
 
@@ -226,21 +282,82 @@ class EditTaskActivity : AppCompatActivity() {
         val title = binding.etTaskTitle?.text?.toString()?.trim() ?: ""
         val description = binding.etTaskDescription?.text?.toString()?.trim() ?: ""
 
+        // Calculate estimated minutes from hours and minutes inputs
         var estimated: Int? = null
         try {
-            val valStr = binding.etEstimatedTime?.text?.toString()?.trim() ?: ""
-            if (valStr.isNotEmpty()) {
-                var base = valStr.toInt()
-                val unitIndex = binding.spinnerTimeUnit?.selectedItemPosition ?: 0
-                if (unitIndex == 1) base *= 60
-                estimated = base
+            val hoursStr = binding.etHours?.text?.toString()?.trim() ?: ""
+            val minsStr = binding.etMinutes?.text?.toString()?.trim() ?: ""
+            
+            val hours = if (hoursStr.isNotEmpty()) hoursStr.toInt() else 0
+            val mins = if (minsStr.isNotEmpty()) minsStr.toInt() else 0
+            
+            if (hours > 0 || mins > 0) {
+                estimated = hours * 60 + mins
             }
         } catch (e: Exception) { }
 
-        viewModel.updateTask(taskId, title, description, selectedPriority, selectedDeadline, selectedEnergy, estimated)
+        // Get subtasks from adapter
+        val currentSubtasks = getSubtasks()
+
+        viewModel.updateTask(
+            taskId,
+            title,
+            description,
+            selectedPriority,
+            selectedDeadline,
+            selectedEnergy,
+            estimated,
+            currentSubtasks
+        )
     }
 
     private fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun setupSubtaskRecyclerView() {
+        subtaskAdapter = SubtaskInputAdapter(this::removeSubtask)
+        binding.rvSubtasks?.layoutManager = LinearLayoutManager(this)
+        binding.rvSubtasks?.adapter = subtaskAdapter
+
+        // Show/hide empty state
+        updateEmptyState()
+    }
+
+    private fun addNewSubtask() {
+        val newSubtask = SubtaskInput(
+            id = UUID.randomUUID().toString(),
+            title = "",
+            estimatedMinutes = null
+        )
+        subtasks.add(newSubtask)
+        subtaskAdapter.submitList(subtasks.toList())
+        updateEmptyState()
+
+        // Scroll to new subtask
+        binding.rvSubtasks?.post {
+            binding.rvSubtasks?.smoothScrollToPosition(subtasks.size - 1)
+        }
+    }
+
+    private fun removeSubtask(subtask: SubtaskInput) {
+        subtasks.remove(subtask)
+        subtaskAdapter.submitList(subtasks.toList())
+        updateEmptyState()
+        Toast.makeText(this, "サブタスクを削除しました", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateEmptyState() {
+        if (subtasks.isEmpty()) {
+            binding.emptySubtasks?.visibility = View.VISIBLE
+            binding.rvSubtasks?.visibility = View.GONE
+        } else {
+            binding.emptySubtasks?.visibility = View.GONE
+            binding.rvSubtasks?.visibility = View.VISIBLE
+        }
+    }
+
+    private fun getSubtasks(): List<SubtaskInput> {
+        return subtaskAdapter.getSubtasks()
     }
 }

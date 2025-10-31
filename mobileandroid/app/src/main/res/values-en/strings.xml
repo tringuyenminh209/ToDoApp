@@ -1,181 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App Info -->
+    <!-- Common -->
     <string name="app_name">DOL LEAF</string>
-    <string name="app_tagline">AI-Powered Todo App</string>
-    <string name="app_version">Version 1.0.0</string>
-    <string name="app_logo">App Logo</string>
-
-    <!-- Login -->
-    <string name="welcome_back">Welcome Back</string>
-    <string name="login_title">Login</string>
-    <string name="login_subtitle">Welcome back!</string>
-    <string name="login_description">Login to continue using the app</string>
-    <string name="login_button">Login</string>
-    <string name="logging_in">Logging in...</string>
-    <string name="login_success">Login successful!</string>
-
-    <!-- Register -->
-    <string name="register_title">Register</string>
-    <string name="register_description">Create a new account to get started</string>
-    <string name="register_button">Register</string>
-    <string name="registering">Registering...</string>
-    <string name="register_success">Registration successful!</string>
-
-    <!-- Forgot Password -->
-    <string name="forgot_password_title">Forgot Password?</string>
-    <string name="forgot_password_description">Enter your email to receive a password reset link</string>
-    <string name="forgot_password_icon">Forgot Password Icon</string>
-    <string name="reset_password_button">Send Reset Link</string>
-    <string name="resetting_password">Sending...</string>
-    <string name="reset_success">Password reset link sent!</string>
-
-    <!-- Form Fields -->
-    <string name="name_hint">Full Name</string>
-    <string name="email_hint">Email</string>
-    <string name="password_hint">Password</string>
-    <string name="confirm_password_hint">Confirm Password</string>
-
-    <!-- Validation Messages -->
-    <string name="name_required">Please enter your name</string>
-    <string name="name_too_short">Name must be at least 2 characters</string>
-    <string name="email_required">Please enter your email</string>
-    <string name="email_invalid">Invalid email address</string>
-    <string name="password_required">Please enter your password</string>
-    <string name="password_too_short">Password must be at least 6 characters</string>
-    <string name="confirm_password_required">Please confirm your password</string>
-    <string name="passwords_not_match">Passwords do not match</string>
-    <string name="terms_required">Please accept the terms and conditions</string>
-
-    <!-- Links -->
-    <string name="forgot_password">Forgot Password?</string>
-    <string name="no_account">Don\'t have an account?</string>
-    <string name="register_link">Register now</string>
-    <string name="have_account">Already have an account?</string>
-    <string name="login_link">Login</string>
-    <string name="remember_password">Remember your password?</string>
-    <string name="remember_me">Remember me</string>
-    <string name="or_divider">or</string>
-
-    <!-- Social Login -->
-    <string name="google_login">Login with Google</string>
-    <string name="apple_login">Login with Apple</string>
-
-    <!-- Terms -->
-    <string name="terms_agreement">I agree to the Terms of Service and Privacy Policy</string>
+    <string name="back">Back</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Navigation -->
-    <string name="back">Back</string>
-
-    <!-- Errors -->
-    <string name="error_network">Network connection error</string>
-    <string name="error_server">Server error</string>
-    <string name="error_unknown">An unknown error occurred</string>
-
-    <!-- Onboarding -->
-    <string name="onboarding_title">Welcome to DOL LEAF</string>
-    <string name="onboarding_subtitle">Let\'s set up your goals and start your journey</string>
-    <string name="onboarding_step">Step %1$d/%2$d</string>
-    <string name="step_progress">Step 2/3</string>
-
-    <!-- Step 1: Goals -->
-    <string name="onboarding_step1_title">What is your goal?</string>
-    <string name="onboarding_step1_description">Choose the area you want to focus on developing</string>
-    <string name="goal_learning">Learning</string>
-    <string name="goal_work">Work</string>
-    <string name="goal_health">Health</string>
-
-    <!-- Step 2: Time -->
-    <string name="onboarding_step2_title">What is your free time?</string>
-    <string name="onboarding_step2_description">Choose the time when you can usually focus on work</string>
-    <string name="time_morning">Early Morning</string>
-    <string name="time_morning_late">Late Morning</string>
-    <string name="time_afternoon">Afternoon</string>
-    <string name="time_evening">Evening</string>
-    <string name="time_morning_slot">6:00 - 9:00</string>
-    <string name="time_morning_late_slot">9:00 - 12:00</string>
-    <string name="time_afternoon_slot">13:00 - 17:00</string>
-    <string name="time_evening_slot">19:00 - 22:00</string>
-
-    <!-- Step 3: Notifications -->
-    <string name="onboarding_step3_title">Receive notifications?</string>
-    <string name="onboarding_step3_description">We will send gentle reminders to help you maintain your habits</string>
-    <string name="notification_reminder">Receive reminder notifications</string>
-    <string name="notification_info">You can change this setting anytime in Settings</string>
-
-    <!-- Buttons -->
-    <string name="btn_next">Next</string>
-    <string name="btn_complete">Complete</string>
-    <string name="onboarding_welcome">Welcome to DOL LEAF! We will create some sample tasks for you to get started.</string>
-
-    <!-- Main Activity - Home Screen -->
-    <string name="main_greeting">Good Morning</string>
-    <string name="main_today">Today</string>
-    <string name="main_date_placeholder">Thu, Oct 18, 2024</string>
-    <string name="main_progress_today">Today\'s Progress</string>
-    <string name="main_tasks_completed">Tasks Completed</string>
-    <string name="main_focus_time">Focus Time</string>
-    <string name="main_streak_days">Day Streak</string>
-    <string name="main_view_stats">View Stats</string>
-    <string name="main_timetable">Timetable</string>
-    <string name="main_checkin">Morning Check-in</string>
-    <string name="main_review">Evening Review</string>
-    <string name="main_ai_coach">AI Coach</string>
-    <string name="main_ai_arrange">AI Arrange</string>
-    <string name="main_start_5min">Start 5min</string>
-    <string name="main_reschedule">Reschedule</string>
-    <string name="main_top3_today">Top 3 Today</string>
-    <string name="main_view_all">View All</string>
-    <string name="main_start_focus">Start Focus</string>
-    <string name="main_empty_tasks">No tasks yet</string>
-    <string name="main_empty_tasks_description">Start by adding a new task</string>
-
-    <!-- Bottom Navigation -->
     <string name="nav_home">Home</string>
     <string name="nav_calendar">Calendar</string>
     <string name="nav_paths">Paths</string>
     <string name="nav_knowledge">Knowledge</string>
     <string name="nav_settings">Settings</string>
 
-    <!-- Add Task Screen -->
-    <string name="add_task_title">Add Task</string>
-    <string name="basic_information">Basic Information</string>
+    <!-- Main -->
+    <string name="main_today">Today</string>
+    <string name="main_view_all">View all</string>
+    <string name="main_empty_tasks">No tasks</string>
+    <string name="main_empty_tasks_description">Add a new task to get started</string>
+
+    <!-- Task list -->
+    <string name="tasks_title">Tasks</string>
+    <string name="filter_all">All</string>
+    <string name="filter_pending">Active</string>
+    <string name="filter_completed">Completed</string>
+    <string name="add_task">Add task</string>
+    <string name="delete_task">Delete</string>
+    <string name="complete_task">Complete</string>
+    <string name="empty_tasks_title">No tasks</string>
+    <string name="empty_tasks_message">Create a task to start working</string>
+    <string name="task_more">More</string>
+    <string name="task_start">Start</string>
+
+    <!-- Add/Edit Task -->
+    <string name="add_task_title">Add task</string>
+    <string name="edit_task_title">Edit task</string>
+    <string name="basic_information">Basic information</string>
     <string name="task_title_hint">Task title</string>
     <string name="task_description_hint">Detailed description (optional)</string>
-    <string name="priority_and_time">Priority &amp; Time</string>
-    <string name="priority">Priority Level</string>
+    <string name="priority_and_time">Priority &amp; time</string>
+    <string name="priority">Priority level</string>
     <string name="priority_high">High</string>
     <string name="priority_medium">Medium</string>
     <string name="priority_low">Low</string>
-    <string name="estimated_time">Estimated Time</string>
-    <string name="time_hint">Minutes</string>
-    <string name="subtasks">Implementation Steps</string>
-    <string name="add_subtask">Add Step</string>
-    <string name="no_subtasks">No steps yet</string>
-    <string name="no_subtasks_description">Add small steps to make it easier</string>
-    <string name="subtask_hint">Step description</string>
-    <string name="remove">Remove</string>
-    <string name="save">Save</string>
-    <string name="task_start">Start</string>
-
-    <!-- Deadline Section -->
+    <string name="estimated_time">Estimated time</string>
+    <string name="time_hint">min</string>
+    <string name="energy_level">Energy level</string>
+    <string name="energy_high">High</string>
+    <string name="energy_medium">Medium</string>
+    <string name="energy_low">Low</string>
     <string name="deadline">Deadline</string>
-    <string name="deadline_hint">yyyy/mm/dd --:--</string>
+    <string name="deadline_hint">yyyy/MM/dd</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
-    <string name="next_week">Next Week</string>
+    <string name="next_week">Next week</string>
+    <string name="subtasks">Subtasks</string>
+    <string name="add_subtask">Add subtask</string>
+    <string name="no_subtasks">No subtasks</string>
+    <string name="no_subtasks_description">Add small steps to make progress</string>
 
-    <!-- AI Support Section -->
-    <string name="ai_support">AI Support</string>
-    <string name="beta">BETA</string>
-    <string name="ai_suggestions">AI Suggestions</string>
+    <!-- Task Detail -->
+    <string name="task_detail">Task detail</string>
+    <string name="tags">Tags</string>
+    <string name="focus_sessions">Focus sessions</string>
+    <string name="mark_complete">Mark complete</string>
+    <string name="start_focus">Start focus</string>
+    <string name="due_date">Due</string>
+
+    <!-- AI -->
+    <string name="ai_support">AI support</string>
+    <string name="ai_suggestions">AI suggestions</string>
     <string name="ai_breakdown_task">Break down task</string>
     <string name="ai_optimize_time">Optimize time</string>
-    <string name="ai_suggest_subtasks">Suggest steps</string>
-    <string name="ai_status_info">AI will analyze and provide appropriate suggestions</string>
+    <string name="ai_suggest_subtasks">Suggest subtasks</string>
+    <string name="beta">BETA</string>
+    <string name="ai_status_info">AI will analyze and suggest suitable actions</string>
 
-    <!-- Task Actions -->
-    <string name="task_more">More</string>
-    <string name="task_priority">Priority</string>
-    <string name="task_time_format">%d minutes</string>
+    <!-- Search -->
+    <string name="knowledge_search_hint">Search notes, articles, links…</string>
+    
+    <!-- Timetable -->
+    <string name="timetable_no_class">No class</string>
+    <string name="timetable_no_next_class">No next class</string>
+    <string name="timetable_status_active">In class</string>
+    <string name="timetable_status_next">Next class</string>
+    <string name="timetable_status_break">Break time</string>
 </resources>

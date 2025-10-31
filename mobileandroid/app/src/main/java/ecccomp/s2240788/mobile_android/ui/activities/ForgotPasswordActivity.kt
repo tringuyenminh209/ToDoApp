@@ -10,7 +10,7 @@ import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityForgotPasswordBinding
 import ecccomp.s2240788.mobile_android.ui.viewmodels.ForgotPasswordViewModel
 
-class ForgotPasswordActivity : AppCompatActivity() {
+class ForgotPasswordActivity : BaseActivity() {
 
     private lateinit var binding: ActivityForgotPasswordBinding
     private lateinit var viewModel: ForgotPasswordViewModel

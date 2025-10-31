@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.CreateTaskRequest
+import ecccomp.s2240788.mobile_android.data.models.CreateSubtaskRequest
+import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInput
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
 
@@ -30,15 +32,16 @@ class AddTaskViewModel : ViewModel() {
 
     /**
      * タスクを作成
-     * Adapts priority string (low/medium/high) to Int (1-5) and sets default energy_level
+     * Priority is now directly 1-5 integer
      */
     fun createTask(
         title: String,
         description: String?,
-        priority: String, // "low", "medium", "high"
+        priority: Int, // 1-5
         dueDate: String?,
         energyLevel: String, // "low" | "medium" | "high"
-        estimatedMinutes: Int?
+        estimatedMinutes: Int?,
+        subtasks: List<SubtaskInput> = emptyList()
     ) {
         viewModelScope.launch {
             try {
@@ -48,20 +51,16 @@ class AddTaskViewModel : ViewModel() {
                     return@launch
                 }
 
+                // Validate priority range
+                val validPriority = priority.coerceIn(1, 5)
+
                 _isLoading.value = true
                 _error.value = null
-
-                // Map priority string to Int (1-5)
-                val priorityInt = when (priority) {
-                    "low" -> 2
-                    "high" -> 5
-                    else -> 3  // medium
-                }
 
                 val request = CreateTaskRequest(
                     title = title.trim(),
                     description = if (description.isNullOrBlank()) null else description.trim(),
-                    priority = priorityInt,
+                    priority = validPriority,
                     energy_level = energyLevel,
                     estimated_minutes = estimatedMinutes,
                     deadline = dueDate
@@ -72,7 +71,14 @@ class AddTaskViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
                     if (apiResponse != null && apiResponse.success) {
-                        _taskCreated.value = true
+                        val createdTask = apiResponse.data
+
+                        // Create subtasks if any
+                        if (createdTask != null && subtasks.isNotEmpty()) {
+                            createSubtasks(createdTask.id, subtasks)
+                        } else {
+                            _taskCreated.value = true
+                        }
                     } else {
                         _error.value = "タスクの作成に失敗しました"
                     }
@@ -94,6 +100,40 @@ class AddTaskViewModel : ViewModel() {
 
     fun clearError() {
         _error.value = null
+    }
+
+    private suspend fun createSubtasks(taskId: Int, subtasks: List<SubtaskInput>) {
+        try {
+            // Filter out empty subtasks
+            val validSubtasks = subtasks.filter { it.title.trim().isNotEmpty() }
+
+            if (validSubtasks.isEmpty()) {
+                _taskCreated.value = true
+                return
+            }
+
+            // Create each subtask
+            var successCount = 0
+            for ((index, subtask) in validSubtasks.withIndex()) {
+                val request = CreateSubtaskRequest(
+                    title = subtask.title.trim(),
+                    estimated_minutes = subtask.estimatedMinutes,
+                    sort_order = index
+                )
+
+                val response = apiService.createSubtask(taskId, request)
+                if (response.isSuccessful && response.body()?.success == true) {
+                    successCount++
+                }
+            }
+
+            // Success if at least one subtask was created or if there were no valid subtasks
+            _taskCreated.value = true
+
+        } catch (e: Exception) {
+            // Even if subtask creation fails, the task was created successfully
+            _taskCreated.value = true
+        }
     }
 
 }

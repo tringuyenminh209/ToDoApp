@@ -14,7 +14,19 @@ data class Task(
     val user_id: Int,
     val project_id: Int?,
     val learning_milestone_id: Int?,
-    val ai_breakdown_enabled: Boolean
+    val ai_breakdown_enabled: Boolean,
+    val subtasks: List<Subtask>? = null
+)
+
+data class Subtask(
+    val id: Int,
+    val task_id: Int,
+    val title: String,
+    val is_completed: Boolean,
+    val estimated_minutes: Int?,
+    val sort_order: Int,
+    val created_at: String,
+    val updated_at: String
 )
 
 // Request models
@@ -47,6 +59,99 @@ data class CreateTaskRequest(
     val energy_level: String,
     val estimated_minutes: Int?,
     val deadline: String?
+)
+
+data class CreateSubtaskRequest(
+    val title: String,
+    val estimated_minutes: Int?,
+    val sort_order: Int?
+)
+
+data class StartFocusSessionRequest(
+    val task_id: Int,
+    val duration_minutes: Int,
+    val session_type: String // "work", "break", "long_break"
+)
+
+data class FocusSession(
+    val id: Int,
+    val task_id: Int,
+    val user_id: Int,
+    val duration_minutes: Int,
+    val notes: String?,
+    val completed_at: String,
+    val created_at: String
+)
+
+// Learning Path Models
+data class LearningPath(
+    val id: Int,
+    val user_id: Int,
+    val title: String,
+    val description: String?,
+    val category: String?,
+    val status: String, // active, completed, paused
+    val progress_percentage: Int,
+    val total_milestones: Int,
+    val completed_milestones: Int,
+    val target_date: String?,
+    val created_at: String,
+    val updated_at: String,
+    val milestones: List<LearningMilestone>? = null
+)
+
+data class LearningMilestone(
+    val id: Int,
+    val learning_path_id: Int,
+    val title: String,
+    val description: String?,
+    val status: String, // not_started, in_progress, completed
+    val order_index: Int,
+    val completed_at: String?,
+    val created_at: String,
+    val updated_at: String
+)
+
+data class CreateLearningPathRequest(
+    val title: String,
+    val description: String?,
+    val category: String?,
+    val target_date: String?
+)
+
+// Statistics Models
+data class UserStats(
+    val total_tasks: Int,
+    val completed_tasks: Int,
+    val pending_tasks: Int,
+    val in_progress_tasks: Int,
+    val completion_rate: Float,
+    val total_focus_time: Int, // minutes
+    val total_focus_sessions: Int,
+    val average_session_duration: Int, // minutes
+    val current_streak: Int, // days
+    val longest_streak: Int, // days
+    val tasks_by_priority: TasksByPriority,
+    val weekly_stats: WeeklyStats,
+    val monthly_productivity: List<DailyProductivity>
+)
+
+data class TasksByPriority(
+    val high: Int,
+    val medium: Int,
+    val low: Int
+)
+
+data class WeeklyStats(
+    val tasks_completed: Int,
+    val focus_time: Int, // minutes
+    val days_active: Int
+)
+
+data class DailyProductivity(
+    val date: String, // YYYY-MM-DD
+    val tasks_completed: Int,
+    val focus_minutes: Int
 )
 
 //Response models

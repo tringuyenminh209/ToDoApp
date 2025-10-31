@@ -10,7 +10,7 @@ import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityRegisterBinding
 import ecccomp.s2240788.mobile_android.ui.viewmodels.RegisterViewModel
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : BaseActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var viewModel: RegisterViewModel

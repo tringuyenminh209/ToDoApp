@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.data.models.Task
-import ecccomp.s2240788.mobile_android.databinding.ItemTaskBinding
+import ecccomp.s2240788.mobile_android.databinding.ItemTaskCardBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,7 +25,7 @@ class TaskAdapter(
 ) : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        val binding = ItemTaskBinding.inflate(
+        val binding = ItemTaskCardBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -38,115 +38,81 @@ class TaskAdapter(
     }
 
     inner class TaskViewHolder(
-        private val binding: ItemTaskBinding
+        private val binding: ItemTaskCardBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(task: Task) {
             binding.apply {
-                // タイトル
+                // Title
                 tvTaskTitle.text = task.title
 
-                // 説明（nullチェック）
-                if (!task.description.isNullOrEmpty()) {
-                    tvTaskDescription.text = task.description
-                    tvTaskDescription.visibility = View.VISIBLE
+                // Priority color indicator
+                val priorityColor = when (task.priority) {
+                    5 -> R.color.error
+                    4 -> R.color.warning
+                    3 -> R.color.warning
+                    2 -> R.color.success
+                    else -> R.color.success
+                }
+                priorityIndicator.setCardBackgroundColor(
+                    ContextCompat.getColor(itemView.context, priorityColor)
+                )
+
+                // Progress bar - simplified to 0, 50, 100
+                val progress = when (task.status) {
+                    "completed" -> 100
+                    "in_progress" -> 50
+                    else -> 0
+                }
+                progressBar.progress = progress
+
+                // Progress text
+                val progressText = when (task.status) {
+                    "completed" -> "完了"
+                    "in_progress" -> "進行中"
+                    else -> "未着手"
+                }
+                tvProgressText.text = progressText
+
+                // Estimated time
+                if (task.estimated_minutes != null && task.estimated_minutes > 0) {
+                    timeContainer.visibility = View.VISIBLE
+                    tvTaskTime.text = "${task.estimated_minutes}分"
                 } else {
-                    tvTaskDescription.visibility = View.GONE
+                    timeContainer.visibility = View.GONE
                 }
 
-                // ステータスに応じた表示
-                when (task.status) {
-                    "completed" -> {
-                        tvTaskTitle.paintFlags = tvTaskTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                        tvTaskTitle.alpha = 0.6f
-                        tvTaskDescription.alpha = 0.6f
-                        btnComplete.visibility = View.GONE
-                        tvStatusBadge.text = "完了"
-                        tvStatusBadge.setBackgroundResource(R.drawable.badge_completed)
-                        tvStatusBadge.visibility = View.VISIBLE
-                    }
-                    "in_progress" -> {
-                        tvTaskTitle.paintFlags = tvTaskTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                        tvTaskTitle.alpha = 1.0f
-                        tvTaskDescription.alpha = 1.0f
-                        btnComplete.visibility = View.VISIBLE
-                        tvStatusBadge.text = "進行中"
-                        tvStatusBadge.setBackgroundResource(R.drawable.badge_in_progress)
-                        tvStatusBadge.visibility = View.VISIBLE
-                    }
-                    else -> {
-                        tvTaskTitle.paintFlags = tvTaskTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                        tvTaskTitle.alpha = 1.0f
-                        tvTaskDescription.alpha = 1.0f
-                        btnComplete.visibility = View.VISIBLE
-                        tvStatusBadge.visibility = View.GONE
-                    }
-                }
-
-                // 優先度の表示 (1-5 -> low/medium/high)
-                when (task.priority) {
-                    4, 5 -> {
-                        ivPriority.setColorFilter(
-                            ContextCompat.getColor(root.context, R.color.priority_high)
-                        )
-                        ivPriority.visibility = View.VISIBLE
-                    }
-                    3 -> {
-                        ivPriority.setColorFilter(
-                            ContextCompat.getColor(root.context, R.color.priority_medium)
-                        )
-                        ivPriority.visibility = View.VISIBLE
-                    }
-                    1, 2 -> {
-                        ivPriority.setColorFilter(
-                            ContextCompat.getColor(root.context, R.color.priority_low)
-                        )
-                        ivPriority.visibility = View.VISIBLE
-                    }
-                    else -> {
-                        ivPriority.visibility = View.GONE
-                    }
-                }
-
-                // 期限の表示 (deadline instead of due_date)
+                // Deadline
                 if (!task.deadline.isNullOrEmpty()) {
+                    dateContainer.visibility = View.VISIBLE
                     try {
-                        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                         val outputFormat = SimpleDateFormat("MM/dd", Locale.getDefault())
                         val date = inputFormat.parse(task.deadline)
-                        tvDueDate.text = "〆 ${outputFormat.format(date!!)}"
-                        tvDueDate.visibility = View.VISIBLE
-
-                        // 期限切れチェック
-                        if (date.before(Date()) && task.status != "completed") {
-                            tvDueDate.setTextColor(
-                                ContextCompat.getColor(root.context, R.color.error)
-                            )
-                        } else {
-                            tvDueDate.setTextColor(
-                                ContextCompat.getColor(root.context, R.color.text_secondary)
-                            )
-                        }
+                        tvTaskDate.text = if (date != null) outputFormat.format(date) else task.deadline
                     } catch (e: Exception) {
-                        tvDueDate.visibility = View.GONE
+                        tvTaskDate.text = task.deadline
                     }
                 } else {
-                    tvDueDate.visibility = View.GONE
+                    dateContainer.visibility = View.GONE
                 }
 
-                // クリックリスナー
+                // Subtasks - hide for now (will be implemented later)
+                subtasksContainer.visibility = View.GONE
+
+                // Start button
+                btnStart.setOnClickListener {
+                    onTaskComplete(task)  // Using onTaskComplete callback for start action
+                }
+
+                // More button
+                btnMore.setOnClickListener {
+                    onTaskDelete(task)  // Using onTaskDelete callback for more options
+                }
+
+                // Card click
                 root.setOnClickListener {
                     onTaskClick(task)
-                }
-
-                // 完了ボタン
-                btnComplete.setOnClickListener {
-                    onTaskComplete(task)
-                }
-
-                // 削除ボタン
-                btnDelete.setOnClickListener {
-                    onTaskDelete(task)
                 }
             }
         }

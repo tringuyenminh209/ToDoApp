@@ -16,8 +16,12 @@ import ecccomp.s2240788.mobile_android.databinding.BottomSheetTaskOptionsBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.MainTaskAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.LogoutViewModel
 import ecccomp.s2240788.mobile_android.ui.viewmodels.MainViewModel
+import ecccomp.s2240788.mobile_android.utils.LocaleHelper
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         setupUI()
         setupObservers()  // Setup observers BEFORE loading data
         setupClickListeners()
+        setupBottomNavigation()
 
         // Load tasks
         viewModel.getTasks()
@@ -51,6 +56,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
+        // Set current date
+        updateCurrentDate()
+        
+        // Update language button text
+        updateLanguageButton()
+        
         // Set initial progress (45%)
         binding.progressRing.progress = 45
 
@@ -77,12 +88,51 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(true)
         }
     }
+    
+    /**
+     * Update current date display based on locale
+     */
+    private fun updateCurrentDate() {
+        val calendar = Calendar.getInstance()
+        val currentLanguage = LocaleHelper.getLanguage(this)
+        
+        val dateFormat = when (currentLanguage) {
+            LocaleHelper.LANGUAGE_JAPANESE -> {
+                // 木曜日, 10月31日
+                SimpleDateFormat("EEEE, M月d日", Locale.JAPANESE)
+            }
+            LocaleHelper.LANGUAGE_VIETNAMESE -> {
+                // Thứ 5, 31/10/2024
+                SimpleDateFormat("EEEE, dd/MM/yyyy", Locale("vi"))
+            }
+            LocaleHelper.LANGUAGE_ENGLISH -> {
+                // Thursday, Oct 31, 2024
+                SimpleDateFormat("EEEE, MMM d, yyyy", Locale.ENGLISH)
+            }
+            else -> SimpleDateFormat("EEEE, M月d日", Locale.JAPANESE)
+        }
+        
+        binding.tvHeaderDate.text = dateFormat.format(calendar.time)
+    }
+    
+    /**
+     * Update language button text
+     */
+    private fun updateLanguageButton() {
+        val currentLanguage = LocaleHelper.getLanguage(this)
+        binding.btnLanguage.text = LocaleHelper.getLanguageShortName(currentLanguage)
+    }
 
     private fun setupClickListeners() {
-        // Header actions
+        // Header actions - Language switcher
         binding.btnLanguage.setOnClickListener {
-            // Long press to show logout option
+            showLanguageDialog()
+        }
+        
+        // Long press language button to show logout
+        binding.btnLanguage.setOnLongClickListener {
             showLogoutDialog()
+            true
         }
 
         binding.btnNotification.setOnClickListener {
@@ -112,7 +162,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnStart5min.setOnClickListener {
-            Toast.makeText(this, "Start 5-min task", Toast.LENGTH_SHORT).show()
+            showSelectTaskToStartDialog()
         }
 
         binding.btnReschedule.setOnClickListener {
@@ -121,11 +171,13 @@ class MainActivity : AppCompatActivity() {
 
         // Progress links
         binding.btnViewStats.setOnClickListener {
-            Toast.makeText(this, "View statistics", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, StatsActivity::class.java)
+            startActivity(intent)
         }
 
         binding.btnViewTimetable.setOnClickListener {
-            Toast.makeText(this, "View timetable", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, TimetableActivity::class.java)
+            startActivity(intent)
         }
 
         // View All Tasks button
@@ -149,6 +201,30 @@ class MainActivity : AppCompatActivity() {
         viewModel.error.observe(this) { error ->
             if (error != null) {
                 Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+            }
+        }
+
+        viewModel.successMessage.observe(this) { message ->
+            if (message != null) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Navigate to Focus Session when task started
+        viewModel.startedTaskId.observe(this) { taskId ->
+            if (taskId != null) {
+                // Get the started task details
+                val startedTask = viewModel.tasks.value?.find { it.id == taskId }
+                
+                val intent = Intent(this, FocusSessionActivity::class.java)
+                intent.putExtra("task_id", taskId)
+                if (startedTask != null) {
+                    intent.putExtra("task_title", startedTask.title)
+                }
+                startActivity(intent)
+                
+                // Reset the startedTaskId to prevent re-navigation on orientation change
+                viewModel.clearStartedTaskId()
             }
         }
 
@@ -200,6 +276,43 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * 言語選択ダイアログを表示
+     */
+    private fun showLanguageDialog() {
+        val currentLanguage = LocaleHelper.getLanguage(this)
+        val languages = arrayOf(
+            LocaleHelper.getLanguageDisplayName(LocaleHelper.LANGUAGE_JAPANESE),
+            LocaleHelper.getLanguageDisplayName(LocaleHelper.LANGUAGE_VIETNAMESE),
+            LocaleHelper.getLanguageDisplayName(LocaleHelper.LANGUAGE_ENGLISH)
+        )
+        
+        val languageCodes = arrayOf(
+            LocaleHelper.LANGUAGE_JAPANESE,
+            LocaleHelper.LANGUAGE_VIETNAMESE,
+            LocaleHelper.LANGUAGE_ENGLISH
+        )
+        
+        // Find current selection
+        val checkedItem = languageCodes.indexOf(currentLanguage)
+        
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.language))
+            .setSingleChoiceItems(languages, checkedItem) { dialog, which ->
+                val selectedLanguage = languageCodes[which]
+                if (selectedLanguage != currentLanguage) {
+                    // Save new language
+                    LocaleHelper.setLanguage(this, selectedLanguage)
+                    
+                    // Recreate activity to apply new locale
+                    recreate()
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
+    }
+    
+    /**
      * ログアウト確認ダイアログを表示
      */
     private fun showLogoutDialog() {
@@ -228,15 +341,15 @@ class MainActivity : AppCompatActivity() {
             // Edit option
             optionEdit.setOnClickListener {
                 bottomSheet.dismiss()
-                val intent = Intent(this@MainActivity, TaskListActivity::class.java)
+                val intent = Intent(this@MainActivity, EditTaskActivity::class.java)
+                intent.putExtra("task_id", task.id)
                 startActivity(intent)
             }
 
             // Complete option
             optionComplete.setOnClickListener {
                 bottomSheet.dismiss()
-                Toast.makeText(this@MainActivity, "タスクを完了しました", Toast.LENGTH_SHORT).show()
-                // TODO: Call viewModel to mark as complete
+                viewModel.completeTask(task.id)
             }
 
             // Delete option
@@ -260,11 +373,9 @@ class MainActivity : AppCompatActivity() {
     private fun showDeleteConfirmDialog(task: Task) {
         AlertDialog.Builder(this)
             .setTitle("タスクを削除")
-            .setMessage("「${task.title}」を削除しますか？")
+            .setMessage("「${task.title}」を削除しますか？\nこの操作は取り消せません。")
             .setPositiveButton("削除") { _, _ ->
-                Toast.makeText(this, "タスクを削除しました", Toast.LENGTH_SHORT).show()
-                // TODO: Call viewModel to delete task
-                viewModel.getTasks() // Refresh
+                viewModel.deleteTask(task.id)
             }
             .setNegativeButton("キャンセル", null)
             .show()
@@ -288,13 +399,86 @@ class MainActivity : AppCompatActivity() {
             .setTitle("タスクを開始")
             .setMessage("「${task.title}」を開始しますか？")
             .setPositiveButton("開始") { _, _ ->
-                Toast.makeText(this, "タスクを開始しました！", Toast.LENGTH_SHORT).show()
-                // TODO: Call API to mark task as in_progress
-                // For now, just navigate to task list
-                val intent = Intent(this, TaskListActivity::class.java)
-                startActivity(intent)
+                // Call API to mark task as in_progress
+                viewModel.startTask(task.id)
             }
             .setNegativeButton("キャンセル", null)
             .show()
+    }
+
+    /**
+     * タスク選択ダイアログ（開始ボタン用）
+     */
+    private fun showSelectTaskToStartDialog() {
+        // Get current tasks from ViewModel
+        val allTasks = viewModel.tasks.value ?: emptyList()
+
+        // Filter out completed and in-progress tasks
+        val availableTasks = allTasks.filter {
+            it.status != "completed" && it.status != "in_progress"
+        }
+
+        if (availableTasks.isEmpty()) {
+            Toast.makeText(this, "開始できるタスクがありません", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Create task titles array
+        val taskTitles = availableTasks.map { task ->
+            val prioritySymbol = when (task.priority) {
+                5 -> "🔴"
+                4 -> "🟠"
+                3 -> "🟡"
+                2 -> "🟢"
+                else -> "⚪"
+            }
+            "$prioritySymbol ${task.title}"
+        }.toTypedArray()
+
+        AlertDialog.Builder(this)
+            .setTitle("タスクを選択")
+            .setItems(taskTitles) { _, which ->
+                val selectedTask = availableTasks[which]
+                showStartTaskDialog(selectedTask)
+            }
+            .setNegativeButton("キャンセル", null)
+            .show()
+    }
+
+    /**
+     * ボトムナビゲーションのセットアップ
+     */
+    private fun setupBottomNavigation() {
+        binding.bottomNavigation.selectedItemId = R.id.nav_home
+
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    // Current screen
+                    true
+                }
+                R.id.nav_calendar -> {
+                    startActivity(Intent(this, CalendarActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_paths -> {
+                    startActivity(Intent(this, PathsActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_knowledge -> {
+                    startActivity(Intent(this, KnowledgeActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }

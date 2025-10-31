@@ -2,27 +2,36 @@ package ecccomp.s2240788.mobile_android.ui.activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import ecccomp.s2240788.mobile_android.databinding.ActivityAddTaskBinding;
+import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInput;
+import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInputAdapter;
 import ecccomp.s2240788.mobile_android.ui.viewmodels.AddTaskViewModel;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * AddTaskActivity
  * 新規タスク作成画面
  */
-public class AddTaskActivity extends AppCompatActivity {
+public class AddTaskActivity extends BaseActivity {
 
     private ActivityAddTaskBinding binding;
     private AddTaskViewModel viewModel;
-    private String selectedPriority = "medium";
+    private int selectedPriority = 3; // Default: medium (1-5)
     private String selectedEnergy = "medium";
     private String selectedDeadline = null;
     private Calendar calendar = Calendar.getInstance();
+    private SubtaskInputAdapter subtaskAdapter;
+    private List<SubtaskInput> subtasks = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +41,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(AddTaskViewModel.class);
 
+        setupSubtaskRecyclerView();
         setupClickListeners();
         setupObservers();
 
@@ -46,14 +56,8 @@ public class AddTaskActivity extends AppCompatActivity {
 
         // Time unit spinner entries (分 / 時間)
         try {
-            android.widget.ArrayAdapter<String> unitAdapter = new android.widget.ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                new String[]{"分", "時間"}
-            );
-            unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            binding.spinnerTimeUnit.setAdapter(unitAdapter);
-            binding.spinnerTimeUnit.setSelection(0);
+            // Quick time buttons are now in the layout
+            // Hours and minutes input fields (et_hours, et_minutes) replace spinner
         } catch (Exception ignored) {}
     }
 
@@ -61,19 +65,29 @@ public class AddTaskActivity extends AppCompatActivity {
         // Back button
         binding.btnBack.setOnClickListener(v -> finish());
 
-        // Priority selection
-        binding.chipPriorityHigh.setOnClickListener(v -> {
-            selectedPriority = "high";
+        // Priority selection (1-5)
+        binding.chipPriority1.setOnClickListener(v -> {
+            selectedPriority = 1;
             updatePrioritySelection();
         });
 
-        binding.chipPriorityMedium.setOnClickListener(v -> {
-            selectedPriority = "medium";
+        binding.chipPriority2.setOnClickListener(v -> {
+            selectedPriority = 2;
             updatePrioritySelection();
         });
 
-        binding.chipPriorityLow.setOnClickListener(v -> {
-            selectedPriority = "low";
+        binding.chipPriority3.setOnClickListener(v -> {
+            selectedPriority = 3;
+            updatePrioritySelection();
+        });
+
+        binding.chipPriority4.setOnClickListener(v -> {
+            selectedPriority = 4;
+            updatePrioritySelection();
+        });
+
+        binding.chipPriority5.setOnClickListener(v -> {
+            selectedPriority = 5;
             updatePrioritySelection();
         });
 
@@ -100,9 +114,30 @@ public class AddTaskActivity extends AppCompatActivity {
             showDatePicker();
         });
 
+        // Time quick select buttons
+        binding.btnTime15.setOnClickListener(v -> {
+            binding.etHours.setText("0");
+            binding.etMinutes.setText("15");
+        });
+
+        binding.btnTime30.setOnClickListener(v -> {
+            binding.etHours.setText("0");
+            binding.etMinutes.setText("30");
+        });
+
+        binding.btnTime60.setOnClickListener(v -> {
+            binding.etHours.setText("1");
+            binding.etMinutes.setText("0");
+        });
+
+        binding.btnTime120.setOnClickListener(v -> {
+            binding.etHours.setText("2");
+            binding.etMinutes.setText("0");
+        });
+
         // Add subtask button
         binding.btnAddSubtask.setOnClickListener(v -> {
-            Toast.makeText(this, "サブタスク機能は開発中です", Toast.LENGTH_SHORT).show();
+            addNewSubtask();
         });
 
         // Save button
@@ -138,20 +173,28 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private void updatePrioritySelection() {
         // Reset all priority chips
-        binding.chipPriorityHigh.setChecked(false);
-        binding.chipPriorityMedium.setChecked(false);
-        binding.chipPriorityLow.setChecked(false);
+        binding.chipPriority1.setChecked(false);
+        binding.chipPriority2.setChecked(false);
+        binding.chipPriority3.setChecked(false);
+        binding.chipPriority4.setChecked(false);
+        binding.chipPriority5.setChecked(false);
 
         // Set checked state based on current selection
         switch (selectedPriority) {
-            case "high":
-                binding.chipPriorityHigh.setChecked(true);
+            case 1:
+                binding.chipPriority1.setChecked(true);
                 break;
-            case "medium":
-                binding.chipPriorityMedium.setChecked(true);
+            case 2:
+                binding.chipPriority2.setChecked(true);
                 break;
-            case "low":
-                binding.chipPriorityLow.setChecked(true);
+            case 3:
+                binding.chipPriority3.setChecked(true);
+                break;
+            case 4:
+                binding.chipPriority4.setChecked(true);
+                break;
+            case 5:
+                binding.chipPriority5.setChecked(true);
                 break;
         }
     }
@@ -173,16 +216,29 @@ public class AddTaskActivity extends AppCompatActivity {
         String description = binding.etTaskDescription.getText().toString().trim();
         Integer estimated = null;
         try {
-            String val = binding.etEstimatedTime.getText() != null ? binding.etEstimatedTime.getText().toString().trim() : "";
-            if (!val.isEmpty()) {
-                int base = Integer.parseInt(val);
-                // Convert hours to minutes if spinner is set to 時間
-                int unitIndex = binding.spinnerTimeUnit.getSelectedItemPosition();
-                estimated = (unitIndex == 1) ? base * 60 : base;
+            String hoursStr = binding.etHours.getText() != null ? binding.etHours.getText().toString().trim() : "";
+            String minsStr = binding.etMinutes.getText() != null ? binding.etMinutes.getText().toString().trim() : "";
+
+            int hours = hoursStr.isEmpty() ? 0 : Integer.parseInt(hoursStr);
+            int mins = minsStr.isEmpty() ? 0 : Integer.parseInt(minsStr);
+
+            if (hours > 0 || mins > 0) {
+                estimated = hours * 60 + mins;
             }
         } catch (Exception ignored) {}
 
-        viewModel.createTask(title, description, selectedPriority, selectedDeadline, selectedEnergy, estimated);
+        // Get subtasks from adapter
+        List<SubtaskInput> currentSubtasks = getSubtasks();
+
+        viewModel.createTask(
+            title,
+            description,
+            selectedPriority,
+            selectedDeadline,
+            selectedEnergy,
+            estimated,
+            currentSubtasks
+        );
     }
 
     private void showError(String message) {
@@ -230,5 +286,54 @@ public class AddTaskActivity extends AppCompatActivity {
         // Format for API (yyyy-MM-dd)
         SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         selectedDeadline = apiFormat.format(calendar.getTime());
+    }
+
+    private void setupSubtaskRecyclerView() {
+        subtaskAdapter = new SubtaskInputAdapter(subtask -> {
+            removeSubtask(subtask);
+            return null;
+        });
+        binding.rvSubtasks.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvSubtasks.setAdapter(subtaskAdapter);
+
+        // Show/hide empty state
+        updateEmptyState();
+    }
+
+    private void addNewSubtask() {
+        SubtaskInput newSubtask = new SubtaskInput(
+            UUID.randomUUID().toString(),
+            "",
+            null
+        );
+        subtasks.add(newSubtask);
+        subtaskAdapter.submitList(new ArrayList<>(subtasks));
+        updateEmptyState();
+
+        // Scroll to new subtask
+        binding.rvSubtasks.post(() -> {
+            binding.rvSubtasks.smoothScrollToPosition(subtasks.size() - 1);
+        });
+    }
+
+    private void removeSubtask(SubtaskInput subtask) {
+        subtasks.remove(subtask);
+        subtaskAdapter.submitList(new ArrayList<>(subtasks));
+        updateEmptyState();
+        Toast.makeText(this, "サブタスクを削除しました", Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateEmptyState() {
+        if (subtasks.isEmpty()) {
+            binding.emptySubtasks.setVisibility(View.VISIBLE);
+            binding.rvSubtasks.setVisibility(View.GONE);
+        } else {
+            binding.emptySubtasks.setVisibility(View.GONE);
+            binding.rvSubtasks.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public List<SubtaskInput> getSubtasks() {
+        return subtaskAdapter.getSubtasks();
     }
 }
