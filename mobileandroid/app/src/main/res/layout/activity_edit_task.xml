@@ -308,7 +308,7 @@
 
                     </LinearLayout>
 
-                    <!-- Priority Selection (match Add Task: 3 levels, equal width) -->
+                    <!-- Priority Selection -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -318,68 +318,89 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="@dimen/spacing_sm" />
 
+                    <!-- Priority Level 1-5 -->
                     <LinearLayout
+                        android:id="@+id/chipgroup_priority"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:weightSum="5"
                         android:layout_marginBottom="@dimen/spacing_lg">
 
-                        <LinearLayout
-                            android:id="@+id/chipgroup_priority"
-                            android:layout_width="match_parent"
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_priority_1"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="3">
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="1"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:checkable="true"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/surface" />
 
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chip_priority_high"
-                                style="@style/Widget.Material3.Chip.Filter"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginEnd="@dimen/spacing_xs"
-                                android:text="@string/priority_high"
-                                android:gravity="center"
-                                android:textAlignment="center"
-                                android:checkable="true"
-                                app:checkedIconVisible="true"
-                                app:chipIcon="@drawable/ic_priority"
-                                app:chipIconTint="@color/error"
-                                app:chipBackgroundColor="@color/surface" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_priority_2"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="4dp"
+                            android:text="2"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:checkable="true"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/surface" />
 
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chip_priority_medium"
-                                style="@style/Widget.Material3.Chip.Filter"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginHorizontal="@dimen/spacing_xs"
-                                android:text="@string/priority_medium"
-                                android:gravity="center"
-                                android:textAlignment="center"
-                                android:checkable="true"
-                                app:checkedIconVisible="true"
-                                app:chipIcon="@drawable/ic_priority"
-                                app:chipIconTint="@color/warning"
-                                app:chipBackgroundColor="@color/surface" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_priority_3"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="4dp"
+                            android:text="3"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:checkable="true"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/surface" />
 
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chip_priority_low"
-                                style="@style/Widget.Material3.Chip.Filter"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="@dimen/spacing_xs"
-                                android:text="@string/priority_low"
-                                android:gravity="center"
-                                android:textAlignment="center"
-                                android:checkable="true"
-                                app:checkedIconVisible="true"
-                                app:chipIcon="@drawable/ic_priority"
-                                app:chipIconTint="@color/success"
-                                app:chipBackgroundColor="@color/surface" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_priority_4"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="4dp"
+                            android:text="4"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:checkable="true"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/surface" />
 
-                        </LinearLayout>
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_priority_5"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="5"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:checkable="true"
+                            app:checkedIconVisible="false"
+                            app:chipBackgroundColor="@color/surface" />
 
                     </LinearLayout>
 
@@ -391,22 +412,110 @@
                         android:textColor="@color/text_secondary"
                         android:textSize="14sp"
                         android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/estimated_time_desc"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp"
                         android:layout_marginBottom="@dimen/spacing_sm" />
 
+                    <!-- Quick Select Time Chips -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="@dimen/spacing_sm">
 
-                        <!-- Time Input -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_time_15"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="@dimen/spacing_xs"
+                            android:text="15p"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="12dp"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_time_30"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="@dimen/spacing_xs"
+                            android:text="30p"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="12dp"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_time_60"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="@dimen/spacing_xs"
+                            android:text="1h"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="12dp"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_time_120"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/spacing_xs"
+                            android:text="2h"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="12dp"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
+
+                    </LinearLayout>
+
+                    <!-- Custom Time Input -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:baselineAligned="false">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/or_custom"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp"
+                            android:layout_marginEnd="@dimen/spacing_sm" />
+
+                        <!-- Hours Input -->
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_estimated_time"
+                            android:id="@+id/til_hours"
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginEnd="@dimen/spacing_sm"
-                            android:hint="@string/time_hint"
+                            android:layout_marginEnd="@dimen/spacing_xs"
+                            android:hint="@string/hours"
                             app:boxBackgroundColor="@color/surface"
                             app:boxCornerRadiusTopEnd="12dp"
                             app:boxCornerRadiusTopStart="12dp"
@@ -415,40 +524,54 @@
                             app:boxStrokeColor="@color/line"
                             app:boxStrokeWidth="1dp"
                             app:boxStrokeWidthFocused="2dp"
-                            app:startIconDrawable="@drawable/ic_clock"
-                            app:startIconTint="@color/text_muted"
-                            app:startIconContentDescription="@string/time_hint">
+                            app:suffixText="h"
+                            app:suffixTextColor="@color/text_secondary">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_estimated_time"
+                                android:id="@+id/et_hours"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
+                                android:maxLength="2"
+                                android:textAlignment="center"
                                 android:textColor="@color/text_primary"
-                                android:textSize="14sp"
-                                android:paddingStart="@dimen/spacing_xxxl" />
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- Time Unit Spinner -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="wrap_content"
+                        <!-- Minutes Input -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_minutes"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            app:cardBackgroundColor="@color/surface"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="0dp"
-                            app:strokeColor="@color/line"
-                            app:strokeWidth="1dp">
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/spacing_xs"
+                            android:hint="@string/minutes"
+                            app:boxBackgroundColor="@color/surface"
+                            app:boxCornerRadiusTopEnd="12dp"
+                            app:boxCornerRadiusTopStart="12dp"
+                            app:boxCornerRadiusBottomEnd="12dp"
+                            app:boxCornerRadiusBottomStart="12dp"
+                            app:boxStrokeColor="@color/line"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:suffixText="m"
+                            app:suffixTextColor="@color/text_secondary">
 
-                            <Spinner
-                                android:id="@+id/spinner_time_unit"
-                                android:layout_width="wrap_content"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_minutes"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingHorizontal="@dimen/spacing_md"
-                                android:paddingVertical="@dimen/spacing_sm"
-                                android:background="@android:color/transparent" />
+                                android:inputType="number"
+                                android:maxLength="2"
+                                android:textAlignment="center"
+                                android:textColor="@color/text_primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
 
-                        </com.google.android.material.card.MaterialCardView>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 

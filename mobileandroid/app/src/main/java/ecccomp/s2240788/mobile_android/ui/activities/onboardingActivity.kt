@@ -12,7 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.ui.adapters.OnboardingPagerAdapter
 
-class onboardingActivity : AppCompatActivity() {
+class onboardingActivity : BaseActivity() {
     
     // UI Components
     private lateinit var viewPager: ViewPager2

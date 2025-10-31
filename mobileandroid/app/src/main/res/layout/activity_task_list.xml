@@ -93,6 +93,51 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- Search Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/search_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_lg"
+        android:layout_marginTop="@dimen/spacing_md"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="1dp"
+        app:strokeWidth="0.5dp"
+        app:strokeColor="@color/line_variant"
+        app:layout_constraintTop_toBottomOf="@id/header_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="@dimen/spacing_md">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_search"
+                app:tint="@color/text_muted" />
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_md"
+                android:background="@android:color/transparent"
+                android:hint="@string/knowledge_search_hint"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_muted"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
     <!-- Filter Tabs Card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/tabs_card"
@@ -105,7 +150,7 @@
         app:cardElevation="1dp"
         app:strokeWidth="0.5dp"
         app:strokeColor="@color/line_variant"
-        app:layout_constraintTop_toBottomOf="@id/header_card"
+        app:layout_constraintTop_toBottomOf="@id/search_card"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -165,7 +210,7 @@
                 android:clipToPadding="false"
                 android:paddingTop="@dimen/spacing_sm"
                 android:paddingBottom="80dp"
-                tools:listitem="@layout/item_task" />
+                tools:listitem="@layout/item_task_card" />
 
             <!-- Empty State -->
             <LinearLayout

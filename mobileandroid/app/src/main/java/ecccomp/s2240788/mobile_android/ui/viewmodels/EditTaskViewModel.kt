@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
+import ecccomp.s2240788.mobile_android.data.models.CreateSubtaskRequest
 import ecccomp.s2240788.mobile_android.data.models.CreateTaskRequest
+import ecccomp.s2240788.mobile_android.data.models.Subtask
 import ecccomp.s2240788.mobile_android.data.models.Task
+import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInput
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
 
@@ -103,6 +106,26 @@ class EditTaskViewModel : ViewModel() {
      */
     private fun convertMapToTask(map: Map<*, *>): Task? {
         return try {
+            // Extract subtasks
+            val subtasksList = (map["subtasks"] as? List<*>)?.mapNotNull { subtaskMap ->
+                if (subtaskMap is Map<*, *>) {
+                    try {
+                        Subtask(
+                            id = (subtaskMap["id"] as? Number)?.toInt() ?: 0,
+                            task_id = (subtaskMap["task_id"] as? Number)?.toInt() ?: 0,
+                            title = subtaskMap["title"] as? String ?: "",
+                            is_completed = subtaskMap["is_completed"] as? Boolean ?: false,
+                            estimated_minutes = (subtaskMap["estimated_minutes"] as? Number)?.toInt(),
+                            sort_order = (subtaskMap["sort_order"] as? Number)?.toInt() ?: 0,
+                            created_at = subtaskMap["created_at"] as? String ?: "",
+                            updated_at = subtaskMap["updated_at"] as? String ?: ""
+                        )
+                    } catch (e: Exception) {
+                        null
+                    }
+                } else null
+            }
+
             Task(
                 id = (map["id"] as? Number)?.toInt() ?: 0,
                 title = map["title"] as? String ?: "",
@@ -117,7 +140,8 @@ class EditTaskViewModel : ViewModel() {
                 user_id = (map["user_id"] as? Number)?.toInt() ?: 0,
                 project_id = (map["project_id"] as? Number)?.toInt(),
                 learning_milestone_id = (map["learning_milestone_id"] as? Number)?.toInt(),
-                ai_breakdown_enabled = map["ai_breakdown_enabled"] as? Boolean ?: false
+                ai_breakdown_enabled = map["ai_breakdown_enabled"] as? Boolean ?: false,
+                subtasks = subtasksList
             )
         } catch (e: Exception) {
             null
@@ -131,10 +155,11 @@ class EditTaskViewModel : ViewModel() {
         taskId: Int,
         title: String,
         description: String?,
-        priority: String, // "low", "medium", "high"
+        priority: Int, // 1-5
         dueDate: String?,
         energyLevel: String?,
-        estimatedMinutes: Int?
+        estimatedMinutes: Int?,
+        subtasks: List<SubtaskInput> = emptyList()
     ) {
         viewModelScope.launch {
             try {
@@ -147,17 +172,13 @@ class EditTaskViewModel : ViewModel() {
                 _isLoading.value = true
                 _error.value = null
 
-                // Map priority string to Int
-                val priorityInt = when (priority) {
-                    "low" -> 2
-                    "high" -> 5
-                    else -> 3
-                }
+                // Validate priority range
+                val validPriority = priority.coerceIn(1, 5)
 
                 val request = CreateTaskRequest(
                     title = title.trim(),
                     description = if (description.isNullOrBlank()) null else description.trim(),
-                    priority = priorityInt,
+                    priority = validPriority,
                     energy_level = energyLevel ?: _task.value?.energy_level ?: "medium",
                     estimated_minutes = estimatedMinutes ?: _task.value?.estimated_minutes,
                     deadline = dueDate ?: _task.value?.deadline
@@ -168,7 +189,8 @@ class EditTaskViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
                     if (apiResponse != null && apiResponse.success) {
-                        _taskUpdated.value = true
+                        // Update subtasks
+                        updateSubtasks(taskId, subtasks)
                     } else {
                         _error.value = "タスクの更新に失敗しました"
                     }
@@ -191,6 +213,56 @@ class EditTaskViewModel : ViewModel() {
 
     fun clearError() {
         _error.value = null
+    }
+
+    private suspend fun updateSubtasks(taskId: Int, newSubtasks: List<SubtaskInput>) {
+        try {
+            val oldSubtasks = _task.value?.subtasks ?: emptyList()
+
+            // Filter out empty subtasks
+            val validSubtasks = newSubtasks.filter { it.title.trim().isNotEmpty() }
+
+            // Find subtasks to delete (old subtasks not in new list)
+            val subtasksToDelete = oldSubtasks.filter { oldSub ->
+                !validSubtasks.any { it.id == oldSub.id.toString() }
+            }
+
+            // Delete removed subtasks
+            for (subtask in subtasksToDelete) {
+                try {
+                    apiService.deleteSubtask(subtask.id)
+                } catch (e: Exception) {
+                    // Continue even if delete fails
+                }
+            }
+
+            // Update existing or create new subtasks
+            for ((index, subtask) in validSubtasks.withIndex()) {
+                val request = CreateSubtaskRequest(
+                    title = subtask.title.trim(),
+                    estimated_minutes = subtask.estimatedMinutes,
+                    sort_order = index
+                )
+
+                // Check if it's an existing subtask (has numeric ID from backend)
+                val isExisting = subtask.id.toIntOrNull() != null &&
+                                oldSubtasks.any { it.id.toString() == subtask.id }
+
+                if (isExisting) {
+                    // Update existing subtask
+                    apiService.updateSubtask(subtask.id.toInt(), request)
+                } else {
+                    // Create new subtask
+                    apiService.createSubtask(taskId, request)
+                }
+            }
+
+            _taskUpdated.value = true
+
+        } catch (e: Exception) {
+            // Even if subtask update fails, the task was updated successfully
+            _taskUpdated.value = true
+        }
     }
 }
 

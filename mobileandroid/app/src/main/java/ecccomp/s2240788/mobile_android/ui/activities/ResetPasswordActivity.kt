@@ -15,7 +15,7 @@ import ecccomp.s2240788.mobile_android.ui.viewmodels.ResetPasswordViewModel
  * OTPトークンと新しいパスワードを入力してパスワードをリセットする
  * ForgotPasswordActivityから遷移
  */
-class ResetPasswordActivity : AppCompatActivity() {
+class ResetPasswordActivity : BaseActivity() {
 
     private lateinit var binding: ActivityResetPasswordBinding
     private lateinit var viewModel: ResetPasswordViewModel

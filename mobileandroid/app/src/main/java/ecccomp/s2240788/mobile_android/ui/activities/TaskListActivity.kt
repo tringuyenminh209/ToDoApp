@@ -9,9 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import ecccomp.s2240788.mobile_android.R
+import ecccomp.s2240788.mobile_android.data.models.Task
 import ecccomp.s2240788.mobile_android.databinding.ActivityTaskListBinding
-import ecccomp.s2240788.mobile_android.ui.adapters.TaskAdapter
+import ecccomp.s2240788.mobile_android.databinding.BottomSheetTaskOptionsBinding
+import ecccomp.s2240788.mobile_android.ui.adapters.MainTaskAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.TaskViewModel
 import com.google.android.material.tabs.TabLayout
 
@@ -19,11 +22,11 @@ import com.google.android.material.tabs.TabLayout
  * TaskListActivity
  * 全タスク一覧を表示する画面
  */
-class TaskListActivity : AppCompatActivity() {
+class TaskListActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTaskListBinding
     private lateinit var taskViewModel: TaskViewModel
-    private lateinit var taskAdapter: TaskAdapter
+    private lateinit var taskAdapter: MainTaskAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,20 +45,19 @@ class TaskListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        taskAdapter = TaskAdapter(
+        taskAdapter = MainTaskAdapter(
             onTaskClick = { task ->
-                // タスク編集画面へ遷移
-                val intent = Intent(this, EditTaskActivity::class.java)
+                val intent = Intent(this, TaskDetailActivity::class.java)
                 intent.putExtra("task_id", task.id)
                 startActivity(intent)
             },
-            onTaskComplete = { task ->
-                if (task.status != "completed") {
-                    taskViewModel.completeTask(task.id)
+            onStartClick = { task ->
+                if (task.status != "completed" && task.status != "in_progress") {
+                    showStartTaskDialog(task)
                 }
             },
-            onTaskDelete = { task ->
-                showDeleteConfirmationDialog(task.id)
+            onMoreClick = { task ->
+                showTaskOptionsBottomSheet(task)
             }
         )
 
@@ -88,6 +90,15 @@ class TaskListActivity : AppCompatActivity() {
             val intent = Intent(this, AddTaskActivity::class.java)
             startActivity(intent)
         }
+
+        // Search
+        binding.etSearch.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                taskViewModel.setQuery(s?.toString() ?: "")
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
     }
 
     private fun setupTabLayout() {
@@ -148,14 +159,91 @@ class TaskListActivity : AppCompatActivity() {
                 taskViewModel.clearTaskDeleted()
             }
         }
+
+        // Navigate to Focus Session when task started
+        taskViewModel.startedTaskId.observe(this) { taskId ->
+            if (taskId != null) {
+                // Get the started task details
+                val startedTask = taskViewModel.tasks.value?.find { it.id == taskId }
+                
+                val intent = Intent(this, FocusSessionActivity::class.java)
+                intent.putExtra("task_id", taskId)
+                if (startedTask != null) {
+                    intent.putExtra("task_title", startedTask.title)
+                }
+                startActivity(intent)
+                
+                // Reset the startedTaskId to prevent re-navigation on orientation change
+                taskViewModel.clearStartedTaskId()
+            }
+        }
     }
 
-    private fun showDeleteConfirmationDialog(taskId: Int) {
+    private fun showStartTaskDialog(task: Task) {
+        if (task.status == "in_progress") {
+            Toast.makeText(this, "このタスクは既に進行中です", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (task.status == "completed") {
+            Toast.makeText(this, "このタスクは既に完了しています", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         AlertDialog.Builder(this)
-            .setTitle("タスクの削除")
-            .setMessage("このタスクを削除しますか？")
+            .setTitle("タスクを開始")
+            .setMessage("「${task.title}」を開始しますか？")
+            .setPositiveButton("開始") { _, _ ->
+                taskViewModel.startTask(task.id)
+            }
+            .setNegativeButton("キャンセル", null)
+            .show()
+    }
+
+    private fun showTaskOptionsBottomSheet(task: Task) {
+        val bottomSheet = BottomSheetDialog(this)
+        val sheetBinding = BottomSheetTaskOptionsBinding.inflate(layoutInflater)
+        bottomSheet.setContentView(sheetBinding.root)
+
+        sheetBinding.apply {
+            // Set task title
+            tvTaskTitle.text = task.title
+
+            // Edit option
+            optionEdit.setOnClickListener {
+                bottomSheet.dismiss()
+                val intent = Intent(this@TaskListActivity, EditTaskActivity::class.java)
+                intent.putExtra("task_id", task.id)
+                startActivity(intent)
+            }
+
+            // Complete option
+            optionComplete.setOnClickListener {
+                bottomSheet.dismiss()
+                taskViewModel.completeTask(task.id)
+            }
+
+            // Delete option
+            optionDelete.setOnClickListener {
+                bottomSheet.dismiss()
+                showDeleteConfirmationDialog(task)
+            }
+
+            // Cancel
+            btnCancel.setOnClickListener {
+                bottomSheet.dismiss()
+            }
+        }
+
+        bottomSheet.show()
+    }
+
+    private fun showDeleteConfirmationDialog(task: Task) {
+        AlertDialog.Builder(this)
+            .setTitle("タスクを削除")
+            .setMessage("「${task.title}」を削除しますか？\nこの操作は取り消せません。")
             .setPositiveButton("削除") { _, _ ->
-                taskViewModel.deleteTask(taskId)
+                taskViewModel.deleteTask(task.id)
             }
             .setNegativeButton("キャンセル", null)
             .show()

@@ -37,7 +37,11 @@ class TaskViewModel : ViewModel() {
     private val _taskCompleted = MutableLiveData<Task?>()
     val taskCompleted: LiveData<Task?> = _taskCompleted
 
+    private val _startedTaskId = MutableLiveData<Int?>()
+    val startedTaskId: LiveData<Int?> = _startedTaskId
+
     private var currentFilter: TaskFilter = TaskFilter.ALL
+    private var currentQuery: String = ""
 
     enum class TaskFilter {
         ALL, PENDING, COMPLETED
@@ -118,19 +122,30 @@ class TaskViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
                     if (apiResponse != null && apiResponse.success) {
+                        _startedTaskId.postValue(taskId)
                         // リストを更新
                         fetchTasks()
                     } else {
                         _error.value = "タスクの開始に失敗しました"
+                        _startedTaskId.postValue(null)
                     }
                 } else {
                     _error.value = "タスクの開始に失敗しました: ${response.message()}"
+                    _startedTaskId.postValue(null)
                 }
 
             } catch (e: Exception) {
                 _error.value = "ネットワークエラー: ${e.message}"
+                _startedTaskId.postValue(null)
             }
         }
+    }
+
+    /**
+     * Clear started task ID to prevent re-navigation
+     */
+    fun clearStartedTaskId() {
+        _startedTaskId.value = null
     }
 
     /**
@@ -161,11 +176,28 @@ class TaskViewModel : ViewModel() {
     fun applyFilter(filter: TaskFilter) {
         currentFilter = filter
         val allTasks = _tasks.value ?: emptyList()
-
-        _filteredTasks.value = when (filter) {
+        val base = when (filter) {
             TaskFilter.ALL -> allTasks
             TaskFilter.PENDING -> allTasks.filter { it.status == "pending" || it.status == "in_progress" }
             TaskFilter.COMPLETED -> allTasks.filter { it.status == "completed" }
+        }
+        applyQueryOn(base)
+    }
+
+    fun setQuery(query: String) {
+        currentQuery = query
+        val base = when (currentFilter) {
+            TaskFilter.ALL -> _tasks.value ?: emptyList()
+            TaskFilter.PENDING -> (_tasks.value ?: emptyList()).filter { it.status == "pending" || it.status == "in_progress" }
+            TaskFilter.COMPLETED -> (_tasks.value ?: emptyList()).filter { it.status == "completed" }
+        }
+        applyQueryOn(base)
+    }
+
+    private fun applyQueryOn(list: List<Task>) {
+        val q = currentQuery.trim().lowercase()
+        _filteredTasks.value = if (q.isEmpty()) list else list.filter {
+            it.title.lowercase().contains(q) || (it.description ?: "").lowercase().contains(q)
         }
     }
 

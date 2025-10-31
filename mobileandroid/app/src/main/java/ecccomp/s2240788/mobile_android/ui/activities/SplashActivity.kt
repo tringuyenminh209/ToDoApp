@@ -8,7 +8,7 @@ import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivitySplashBinding
 import ecccomp.s2240788.mobile_android.ui.viewmodels.SplashViewModel
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySplashBinding
     private lateinit var viewModel: SplashViewModel

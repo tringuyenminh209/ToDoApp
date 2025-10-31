@@ -194,22 +194,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/spacing_lg">
+                    android:padding="@dimen/spacing_lg"
+                    android:animateLayoutChanges="true">
 
                     <!-- Progress Ring -->
                     <FrameLayout
-                        android:layout_width="140dp"
-                        android:layout_height="140dp"
-                        android:layout_gravity="center">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:clipToPadding="false">
 
                         <com.google.android.material.progressindicator.CircularProgressIndicator
                             android:id="@+id/progress_ring"
-                            android:layout_width="140dp"
-                            android:layout_height="140dp"
-                            app:indicatorSize="140dp"
-                            app:trackThickness="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:indicatorSize="160dp"
+                            app:indicatorInset="8dp"
+                            app:trackThickness="14dp"
                             app:trackColor="@color/line"
-                            app:trackCornerRadius="6dp"
+                            app:trackCornerRadius="7dp"
                             app:indicatorColor="@color/primary" />
 
                         <LinearLayout
@@ -225,7 +228,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="45%"
                                 android:textColor="@color/text_primary"
-                                android:textSize="28sp"
+                                android:textSize="32sp"
+                                android:letterSpacing="0.02"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -235,7 +239,9 @@
                                 android:layout_marginTop="2dp"
                                 android:text="@string/main_progress_today"
                                 android:textColor="@color/text_muted"
-                                android:textSize="11sp" />
+                                android:textSize="12sp"
+                                android:textAllCaps="false"
+                                android:letterSpacing="0.02" />
 
                         </LinearLayout>
 
@@ -259,6 +265,14 @@
                             android:orientation="vertical"
                             android:gravity="center">
 
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginBottom="4dp"
+                                android:src="@drawable/ic_task"
+                                android:contentDescription="@null"
+                                app:tint="@color/accent" />
+
                             <TextView
                                 android:id="@+id/tv_tasks_completed"
                                 android:layout_width="wrap_content"
@@ -278,6 +292,12 @@
 
                         </LinearLayout>
 
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="48dp"
+                            android:layout_marginHorizontal="8dp"
+                            android:background="@color/line" />
+
                         <!-- Focus Time -->
                         <LinearLayout
                             android:layout_width="0dp"
@@ -285,6 +305,14 @@
                             android:layout_weight="1"
                             android:orientation="vertical"
                             android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginBottom="4dp"
+                                android:src="@drawable/ic_clock"
+                                android:contentDescription="@null"
+                                app:tint="@color/accent" />
 
                             <TextView
                                 android:id="@+id/tv_focus_time"
@@ -305,6 +333,12 @@
 
                         </LinearLayout>
 
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="48dp"
+                            android:layout_marginHorizontal="8dp"
+                            android:background="@color/line" />
+
                         <!-- Streak -->
                         <LinearLayout
                             android:layout_width="0dp"
@@ -312,6 +346,14 @@
                             android:layout_weight="1"
                             android:orientation="vertical"
                             android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginBottom="4dp"
+                                android:src="@drawable/ic_sun"
+                                android:contentDescription="@null"
+                                app:tint="@color/accent" />
 
                             <TextView
                                 android:id="@+id/tv_streak"
@@ -352,6 +394,14 @@
                             android:text="@string/main_view_stats"
                             android:textColor="@color/text_primary"
                             android:textSize="13sp"
+                            android:textAllCaps="false"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            app:autoSizeTextType="uniform"
+                            app:autoSizeMinTextSize="10sp"
+                            app:autoSizeMaxTextSize="13sp"
+                            app:autoSizeStepGranularity="1sp"
                             android:textStyle="bold"
                             app:backgroundTint="@color/surface"
                             app:cornerRadius="12dp"
@@ -371,6 +421,14 @@
                             android:text="@string/main_timetable"
                             android:textColor="@color/text_primary"
                             android:textSize="13sp"
+                            android:textAllCaps="false"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            app:autoSizeTextType="uniform"
+                            app:autoSizeMinTextSize="10sp"
+                            app:autoSizeMaxTextSize="13sp"
+                            app:autoSizeStepGranularity="1sp"
                             android:textStyle="bold"
                             app:backgroundTint="@color/surface"
                             app:cornerRadius="12dp"
@@ -415,6 +473,15 @@
                         android:text="@string/main_checkin"
                         android:textColor="@color/text_primary"
                         android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lineSpacingExtra="1dp"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="9sp"
+                        app:autoSizeMaxTextSize="12sp"
+                        app:autoSizeStepGranularity="1sp"
                         android:textStyle="bold"
                         app:backgroundTint="@color/surface"
                         app:cornerRadius="12dp"
@@ -435,6 +502,15 @@
                         android:text="@string/main_review"
                         android:textColor="@color/white"
                         android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lineSpacingExtra="1dp"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="9sp"
+                        app:autoSizeMaxTextSize="12sp"
+                        app:autoSizeStepGranularity="1sp"
                         android:textStyle="bold"
                         app:backgroundTint="@color/primary"
                         app:cornerRadius="12dp"
@@ -454,6 +530,15 @@
                         android:text="@string/main_ai_coach"
                         android:textColor="@color/text_primary"
                         android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lineSpacingExtra="1dp"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="9sp"
+                        app:autoSizeMaxTextSize="12sp"
+                        app:autoSizeStepGranularity="1sp"
                         android:textStyle="bold"
                         app:backgroundTint="@color/surface"
                         app:cornerRadius="12dp"
@@ -498,6 +583,15 @@
                         android:text="@string/main_ai_arrange"
                         android:textColor="@color/text_primary"
                         android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lineSpacingExtra="1dp"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="9sp"
+                        app:autoSizeMaxTextSize="12sp"
+                        app:autoSizeStepGranularity="1sp"
                         android:textStyle="bold"
                         app:backgroundTint="@color/surface"
                         app:cornerRadius="12dp"
@@ -518,6 +612,15 @@
                         android:text="@string/main_start_5min"
                         android:textColor="@color/white"
                         android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lineSpacingExtra="1dp"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="9sp"
+                        app:autoSizeMaxTextSize="12sp"
+                        app:autoSizeStepGranularity="1sp"
                         android:textStyle="bold"
                         app:backgroundTint="@color/primary"
                         app:cornerRadius="12dp"
@@ -537,6 +640,15 @@
                         android:text="@string/main_reschedule"
                         android:textColor="@color/text_primary"
                         android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lineSpacingExtra="1dp"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="9sp"
+                        app:autoSizeMaxTextSize="12sp"
+                        app:autoSizeStepGranularity="1sp"
                         android:textStyle="bold"
                         app:backgroundTint="@color/surface"
                         app:cornerRadius="12dp"

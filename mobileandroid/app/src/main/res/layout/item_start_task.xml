@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Item for Start Task Dialog List -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/task_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_md"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/radius_lg"
+    app:cardElevation="0dp"
+    app:strokeWidth="1.5dp"
+    app:strokeColor="@color/line"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_lg">
+
+        <!-- Priority Indicator -->
+        <View
+            android:id="@+id/priority_indicator"
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            android:background="@color/priority_high"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- Task Content -->
+        <LinearLayout
+            android:id="@+id/content_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/spacing_md"
+            app:layout_constraintStart_toEndOf="@id/priority_indicator"
+            app:layout_constraintEnd_toStartOf="@id/btn_start"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Task Title -->
+            <TextView
+                android:id="@+id/tv_task_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="完成 Java OOP プログラミング課題"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"
+                tools:ignore="HardcodedText" />
+
+            <!-- Task Meta Info -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/spacing_sm">
+
+                <!-- Priority Badge -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/priority_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/error_light"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp">
+
+                    <TextView
+                        android:id="@+id/tv_priority"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/priority_high"
+                        android:textColor="@color/error"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="6dp"
+                        android:paddingVertical="2dp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Estimated Time -->
+                <LinearLayout
+                    android:id="@+id/time_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="@dimen/spacing_sm">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/ic_clock"
+                        app:tint="@color/text_muted"
+                        android:contentDescription="@string/estimated_time" />
+
+                    <TextView
+                        android:id="@+id/tv_estimated_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="45分"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp"
+                        android:layout_marginStart="4dp"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
+
+                <!-- Energy Level -->
+                <LinearLayout
+                    android:id="@+id/energy_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="@dimen/spacing_sm">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/ic_energy"
+                        app:tint="@color/warning"
+                        android:contentDescription="@string/energy_level" />
+
+                    <TextView
+                        android:id="@+id/tv_energy_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/energy_high"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp"
+                        android:layout_marginStart="4dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Task Description/Tags -->
+            <LinearLayout
+                android:id="@+id/tags_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:visibility="visible">
+
+                <!-- Category Tag -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/primary_light"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp"
+                    android:layout_marginEnd="6dp">
+
+                    <TextView
+                        android:id="@+id/tv_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="学習"
+                        android:textColor="@color/primary"
+                        android:textSize="10sp"
+                        android:paddingHorizontal="6dp"
+                        android:paddingVertical="2dp"
+                        tools:ignore="HardcodedText" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Due Date Tag -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/due_date_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/accent_light"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="6dp"
+                        android:paddingVertical="2dp">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/accent"
+                            android:contentDescription="@string/due_date" />
+
+                        <TextView
+                            android:id="@+id/tv_due_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="今日"
+                            android:textColor="@color/accent"
+                            android:textSize="10sp"
+                            android:layout_marginStart="4dp"
+                            tools:ignore="HardcodedText" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Subtasks Progress (Optional) -->
+            <LinearLayout
+                android:id="@+id/subtasks_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_checklist"
+                    app:tint="@color/text_muted"
+                    android:contentDescription="@string/subtasks" />
+
+                <TextView
+                    android:id="@+id/tv_subtasks_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2/5 ステップ完了"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:layout_marginStart="4dp"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progress_indicator"
+                    android:layout_width="60dp"
+                    android:layout_height="4dp"
+                    android:progress="40"
+                    app:trackThickness="4dp"
+                    app:trackCornerRadius="2dp"
+                    app:indicatorColor="@color/primary"
+                    app:trackColor="@color/line" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Start Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_start"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/start_task_start_btn"
+            android:textSize="12sp"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            app:icon="@drawable/ic_play"
+            app:iconSize="14dp"
+            app:backgroundTint="@color/primary"
+            app:cornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- AI Recommendation Badge (Optional) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/ai_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/accent"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_sparkle"
+                    app:tint="@color/white"
+                    android:contentDescription="@string/ai_suggestion" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_task_ai_recommended"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

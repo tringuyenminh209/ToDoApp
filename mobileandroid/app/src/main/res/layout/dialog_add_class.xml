@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog for Add/Edit Class -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_xl">
+
+        <!-- Dialog Title -->
+        <TextView
+            android:id="@+id/tv_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timetable_add_class_title"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/spacing_xl" />
+
+        <!-- Class Name -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_class_name"
+            style="@style/CustomTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/timetable_class_name_hint"
+            android:layout_marginBottom="@dimen/spacing_lg"
+            app:startIconDrawable="@drawable/ic_book"
+            app:startIconTint="@color/primary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_class_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Day and Period Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/spacing_lg">
+
+            <!-- Day Selector -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_class_day"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                android:hint="@string/timetable_day_hint"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:startIconDrawable="@drawable/ic_calendar"
+                app:startIconTint="@color/primary">
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinner_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Period Selector -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_class_period"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_sm"
+                android:hint="@string/timetable_period_hint"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:startIconDrawable="@drawable/ic_clock"
+                app:startIconTint="@color/primary">
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinner_period"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <!-- Room -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_class_room"
+            style="@style/CustomTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/timetable_room_hint"
+            android:layout_marginBottom="@dimen/spacing_lg"
+            app:startIconDrawable="@drawable/ic_location"
+            app:startIconTint="@color/primary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_class_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Color Selector -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_class_color"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/timetable_color_hint"
+            android:layout_marginBottom="@dimen/spacing_xl"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:startIconDrawable="@drawable/ic_palette"
+            app:startIconTint="@color/primary">
+
+            <AutoCompleteTextView
+                android:id="@+id/spinner_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <!-- Cancel Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_height_md"
+                android:text="@string/cancel"
+                android:textColor="@color/text_primary"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/line" />
+
+            <!-- Save Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_height_md"
+                android:text="@string/save"
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+
+        <!-- Delete Button (Only for Edit Mode) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_delete"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_md"
+            android:text="@string/delete"
+            android:textColor="@color/error"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:visibility="gone"
+            app:cornerRadius="12dp"
+            app:strokeColor="@color/error"
+            app:icon="@drawable/ic_delete"
+            app:iconTint="@color/error" />
+
+        <!-- Extra Actions (Only for Edit Mode) -->
+        <LinearLayout
+            android:id="@+id/extra_actions_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:visibility="gone">
+
+            <!-- Create Task Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_create_task"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_md"
+                android:text="@string/timetable_create_task"
+                android:textColor="@color/primary"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/primary"
+                app:icon="@drawable/ic_add"
+                app:iconTint="@color/primary" />
+
+            <!-- Set Reminder Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_set_reminder"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_md"
+                android:text="@string/timetable_set_reminder"
+                android:textColor="@color/primary"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/primary"
+                app:icon="@drawable/ic_notifications"
+                app:iconTint="@color/primary" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

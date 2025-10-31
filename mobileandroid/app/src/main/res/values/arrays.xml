@@ -21,5 +21,48 @@
         <item>45 phút</item>
     </string-array>
 
+    <!-- Timetable Days -->
+    <string-array name="timetable_days">
+        <item>@string/day_sunday</item>
+        <item>@string/day_monday</item>
+        <item>@string/day_tuesday</item>
+        <item>@string/day_wednesday</item>
+        <item>@string/day_thursday</item>
+        <item>@string/day_friday</item>
+        <item>@string/day_saturday</item>
+    </string-array>
+
+    <!-- Timetable Periods -->
+    <string-array name="timetable_periods">
+        <item>@string/period_1</item>
+        <item>@string/period_2</item>
+        <item>@string/period_3</item>
+        <item>@string/period_4</item>
+        <item>@string/period_5</item>
+    </string-array>
+
+    <!-- Timetable Colors -->
+    <string-array name="timetable_colors">
+        <item>@string/timetable_color_primary</item>
+        <item>@string/timetable_color_accent</item>
+        <item>@string/timetable_color_success</item>
+        <item>@string/timetable_color_warning</item>
+        <item>@string/timetable_color_danger</item>
+    </string-array>
+
+    <!-- Study Types -->
+    <string-array name="study_types">
+        <item>@string/timetable_study_type_homework</item>
+        <item>@string/timetable_study_type_review</item>
+        <item>@string/timetable_study_type_exam</item>
+    </string-array>
+
+    <!-- Study Priority -->
+    <string-array name="study_priorities">
+        <item>@string/priority_low</item>
+        <item>@string/priority_medium</item>
+        <item>@string/priority_high</item>
+    </string-array>
+
 </resources>
 
