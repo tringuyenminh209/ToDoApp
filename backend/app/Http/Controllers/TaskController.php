@@ -90,6 +90,7 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'category' => 'nullable|in:study,work,personal,other',
             'description' => 'nullable|string|max:1000',
             'priority' => 'required|integer|min:1|max:5',
             'energy_level' => 'required|in:low,medium,high',
@@ -107,6 +108,7 @@ class TaskController extends Controller
             $task = Task::create([
                 'user_id' => $request->user()->id,
                 'title' => $request->title,
+                'category' => $request->category ?? 'other',
                 'description' => $request->description,
                 'priority' => $request->priority,
                 'energy_level' => $request->energy_level,
@@ -179,6 +181,7 @@ class TaskController extends Controller
 
         $request->validate([
             'title' => 'sometimes|string|max:255',
+            'category' => 'nullable|in:study,work,personal,other',
             'description' => 'nullable|string|max:1000',
             'priority' => 'sometimes|integer|min:1|max:5',
             'energy_level' => 'sometimes|in:low,medium,high',
@@ -195,7 +198,7 @@ class TaskController extends Controller
             DB::beginTransaction();
 
             $updateData = $request->only([
-                'title', 'description', 'priority', 'energy_level',
+                'title', 'category', 'description', 'priority', 'energy_level',
                 'estimated_minutes', 'deadline', 'status', 'project_id',
                 'learning_milestone_id'
             ]);

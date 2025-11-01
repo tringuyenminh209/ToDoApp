@@ -10,6 +10,7 @@ use App\Http\Controllers\AIController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\DailyCheckinController;
 use App\Http\Controllers\DailyReviewController;
+use App\Http\Controllers\TimetableController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -134,6 +135,28 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [DailyReviewController::class, 'store']);
         Route::put('/{id}', [DailyReviewController::class, 'update']);
         Route::delete('/{id}', [DailyReviewController::class, 'destroy']);
+    });
+
+    // Timetable routes
+    Route::prefix('timetable')->group(function () {
+        Route::get('/', [TimetableController::class, 'index']);
+
+        // Classes
+        Route::get('/classes', [TimetableController::class, 'getClasses']);
+        Route::post('/classes', [TimetableController::class, 'createClass']);
+        Route::put('/classes/{id}', [TimetableController::class, 'updateClass']);
+        Route::delete('/classes/{id}', [TimetableController::class, 'deleteClass']);
+
+        // Weekly Content
+        Route::get('/classes/{id}/weekly-content', [TimetableController::class, 'getWeeklyContent']);
+        Route::post('/classes/{id}/weekly-content', [TimetableController::class, 'updateWeeklyContent']);
+        Route::delete('/weekly-content/{id}', [TimetableController::class, 'deleteWeeklyContent']);
+
+        // Studies (homework/review)
+        Route::get('/studies', [TimetableController::class, 'getStudies']);
+        Route::post('/studies', [TimetableController::class, 'createStudy']);
+        Route::put('/studies/{id}/toggle', [TimetableController::class, 'toggleStudy']);
+        Route::delete('/studies/{id}', [TimetableController::class, 'deleteStudy']);
     });
 
 });

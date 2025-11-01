@@ -32,6 +32,9 @@ return new class extends Migration
 
             // Task Information
             $table->string('title', 255)->comment('タスクタイトル');
+            $table->enum('category', ['study', 'work', 'personal', 'other'])
+                ->default('other')
+                ->comment('タスクカテゴリー（学習/仕事/個人/その他）');
             $table->text('description')->nullable()->comment('詳細説明');
 
             // Priority & Energy
