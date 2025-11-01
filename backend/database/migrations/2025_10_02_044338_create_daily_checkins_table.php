@@ -25,10 +25,26 @@ return new class extends Migration
                 ->comment('朝のエネルギーレベル');
             $table->tinyInteger('mood_score')
                 ->comment('気分スコア（1-5）');
+            $table->enum('mood', ['excellent', 'good', 'average', 'poor', 'terrible'])
+                ->nullable()
+                ->comment('気分（enum形式）');
+
+            // Sleep and Stress
+            $table->decimal('sleep_hours', 4, 2)->nullable()
+                ->comment('睡眠時間');
+            $table->enum('stress_level', ['low', 'medium', 'high'])
+                ->nullable()
+                ->comment('ストレスレベル');
 
             // Planning
             $table->text('schedule_note')->nullable()
                 ->comment('今日のスケジュールメモ');
+            $table->json('priorities')->nullable()
+                ->comment('優先事項（JSON配列）');
+            $table->json('goals')->nullable()
+                ->comment('目標（JSON配列）');
+            $table->text('notes')->nullable()
+                ->comment('メモ');
             $table->boolean('ai_suggestions_generated')->default(false)
                 ->comment('AI提案生成済み');
 

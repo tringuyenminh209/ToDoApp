@@ -17,6 +17,7 @@ class Task extends Model
         'project_id',
         'learning_milestone_id',
         'title',
+        'category',
         'description',
         'priority',
         'energy_level',
