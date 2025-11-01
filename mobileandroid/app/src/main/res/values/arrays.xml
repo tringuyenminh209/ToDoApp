@@ -31,6 +31,17 @@
         <item>@string/day_friday</item>
         <item>@string/day_saturday</item>
     </string-array>
+    
+    <!-- Days of Week (for dialog) -->
+    <string-array name="days_of_week">
+        <item>@string/day_sunday</item>
+        <item>@string/day_monday</item>
+        <item>@string/day_tuesday</item>
+        <item>@string/day_wednesday</item>
+        <item>@string/day_thursday</item>
+        <item>@string/day_friday</item>
+        <item>@string/day_saturday</item>
+    </string-array>
 
     <!-- Timetable Periods -->
     <string-array name="timetable_periods">

@@ -3,6 +3,7 @@ package ecccomp.s2240788.mobile_android.data.models
 data class Task(
     val id: Int,
     val title: String,
+    val category: String?, // study, work, personal, other
     val description: String?,
     val status: String,
     val priority: Int,  // 1-5
@@ -54,6 +55,7 @@ data class ResetPasswordRequest(
 
 data class CreateTaskRequest(
     val title: String,
+    val category: String?, // study, work, personal, other
     val description: String?,
     val priority: Int,
     val energy_level: String,

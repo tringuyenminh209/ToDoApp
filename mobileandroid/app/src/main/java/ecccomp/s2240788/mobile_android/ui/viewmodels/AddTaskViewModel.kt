@@ -41,6 +41,7 @@ class AddTaskViewModel : ViewModel() {
         dueDate: String?,
         energyLevel: String, // "low" | "medium" | "high"
         estimatedMinutes: Int?,
+        category: String?, // "study" | "work" | "personal" | "other"
         subtasks: List<SubtaskInput> = emptyList()
     ) {
         viewModelScope.launch {
@@ -59,6 +60,7 @@ class AddTaskViewModel : ViewModel() {
 
                 val request = CreateTaskRequest(
                     title = title.trim(),
+                    category = category,
                     description = if (description.isNullOrBlank()) null else description.trim(),
                     priority = validPriority,
                     energy_level = energyLevel,

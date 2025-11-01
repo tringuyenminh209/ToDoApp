@@ -56,6 +56,7 @@ class StudyAdapter(
                 StudyType.HOMEWORK -> itemView.context.getString(R.string.timetable_study_type_homework)
                 StudyType.REVIEW -> itemView.context.getString(R.string.timetable_study_type_review)
                 StudyType.EXAM -> itemView.context.getString(R.string.timetable_study_type_exam)
+                StudyType.PROJECT -> itemView.context.getString(R.string.timetable_study_type_project)
             }
             val subtitleText = buildString {
                 append(typeText)
@@ -75,18 +76,17 @@ class StudyAdapter(
                 StudyType.HOMEWORK -> Pair(R.drawable.ic_edit, R.color.warning)
                 StudyType.REVIEW -> Pair(R.drawable.ic_book, R.color.accent)
                 StudyType.EXAM -> Pair(R.drawable.ic_target, R.color.error)
+                StudyType.PROJECT -> Pair(R.drawable.ic_folder, R.color.primary)
             }
             icon.setImageResource(iconRes)
             iconContainer.setCardBackgroundColor(itemView.context.getColor(bgColor))
             
-            // Set progress text and color based on priority
+            // Set progress text and color based on priority (1-5)
             val (progressText, progressColor) = when (study.priority) {
-                ecccomp.s2240788.mobile_android.data.models.Priority.HIGH -> 
-                    Pair(itemView.context.getString(R.string.priority_high), R.color.error)
-                ecccomp.s2240788.mobile_android.data.models.Priority.MEDIUM -> 
-                    Pair(itemView.context.getString(R.string.priority_medium), R.color.warning)
-                ecccomp.s2240788.mobile_android.data.models.Priority.LOW -> 
-                    Pair(itemView.context.getString(R.string.priority_low), R.color.success)
+                1, 2 -> Pair(itemView.context.getString(R.string.priority_high), R.color.error)
+                3 -> Pair(itemView.context.getString(R.string.priority_medium), R.color.warning)
+                4, 5 -> Pair(itemView.context.getString(R.string.priority_low), R.color.success)
+                else -> Pair(itemView.context.getString(R.string.priority_medium), R.color.warning)
             }
             progress.text = if (study.completed) {
                 itemView.context.getString(R.string.timetable_study_completed)

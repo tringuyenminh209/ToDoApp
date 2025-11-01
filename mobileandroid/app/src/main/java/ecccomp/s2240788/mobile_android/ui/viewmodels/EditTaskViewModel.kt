@@ -129,6 +129,7 @@ class EditTaskViewModel : ViewModel() {
             Task(
                 id = (map["id"] as? Number)?.toInt() ?: 0,
                 title = map["title"] as? String ?: "",
+                category = map["category"] as? String,
                 description = map["description"] as? String,
                 status = map["status"] as? String ?: "pending",
                 priority = (map["priority"] as? Number)?.toInt() ?: 3,
@@ -159,6 +160,7 @@ class EditTaskViewModel : ViewModel() {
         dueDate: String?,
         energyLevel: String?,
         estimatedMinutes: Int?,
+        category: String?, // "study" | "work" | "personal" | "other"
         subtasks: List<SubtaskInput> = emptyList()
     ) {
         viewModelScope.launch {
@@ -177,6 +179,7 @@ class EditTaskViewModel : ViewModel() {
 
                 val request = CreateTaskRequest(
                     title = title.trim(),
+                    category = category ?: _task.value?.category,
                     description = if (description.isNullOrBlank()) null else description.trim(),
                     priority = validPriority,
                     energy_level = energyLevel ?: _task.value?.energy_level ?: "medium",

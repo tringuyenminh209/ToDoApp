@@ -83,10 +83,18 @@
     <!-- Search -->
     <string name="knowledge_search_hint">Search notes, articles, links…</string>
     
+    <!-- Status -->
+    <string name="status">Status</string>
+    
     <!-- Timetable -->
     <string name="timetable_no_class">No class</string>
     <string name="timetable_no_next_class">No next class</string>
     <string name="timetable_status_active">In class</string>
     <string name="timetable_status_next">Next class</string>
     <string name="timetable_status_break">Break time</string>
+    <!-- Task Type -->
+    <string name="task_type">Task type</string>
+    <string name="type_study">Study</string>
+    <string name="type_work">Work</string>
+
 </resources>

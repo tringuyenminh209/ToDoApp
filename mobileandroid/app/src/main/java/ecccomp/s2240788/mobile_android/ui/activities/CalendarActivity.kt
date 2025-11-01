@@ -12,6 +12,12 @@ import ecccomp.s2240788.mobile_android.ui.viewmodels.CalendarViewModel
 /**
  * CalendarActivity
  * カレンダー画面 - タスクを日付別に表示
+ * 
+ * Features:
+ * - Calendar view with task indicators
+ * - Date selection
+ * - Task list filtered by selected date
+ * - Status filters (All, Active, Completed)
  */
 class CalendarActivity : BaseActivity() {
 
@@ -25,7 +31,35 @@ class CalendarActivity : BaseActivity() {
 
         viewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
+        setupObservers()
         setupBottomNavigation()
+        
+        // Load initial data
+        viewModel.fetchTasks()
+    }
+    
+    /**
+     * Setup observers for ViewModel data
+     * ViewModelのデータを監視
+     */
+    private fun setupObservers() {
+        // Observe loading state
+        viewModel.isLoading.observe(this) { isLoading ->
+            // Fragment will handle loading state
+            android.util.Log.d("CalendarActivity", "Loading: $isLoading")
+        }
+        
+        // Observe errors
+        viewModel.error.observe(this) { error ->
+            error?.let {
+                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+            }
+        }
+        
+        // Observe filtered tasks for logging
+        viewModel.filteredTasks.observe(this) { tasks ->
+            android.util.Log.d("CalendarActivity", "Filtered tasks: ${tasks.size}")
+        }
     }
 
     /**

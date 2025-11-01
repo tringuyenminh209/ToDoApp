@@ -249,6 +249,7 @@ class TaskViewModel : ViewModel() {
             Task(
                 id = (map["id"] as? Number)?.toInt() ?: 0,
                 title = map["title"] as? String ?: "",
+                category = map["category"] as? String,
                 description = map["description"] as? String,
                 status = map["status"] as? String ?: "pending",
                 priority = (map["priority"] as? Number)?.toInt() ?: 3,

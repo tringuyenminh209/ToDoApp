@@ -44,6 +44,55 @@ class MainTaskAdapter(
             binding.apply {
                 // Title
                 tvTaskTitle.text = task.title
+                
+                // Apply strikethrough for completed tasks
+                if (task.status == "completed") {
+                    tvTaskTitle.paintFlags = tvTaskTitle.paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+                    tvTaskTitle.alpha = 0.6f
+                } else {
+                    tvTaskTitle.paintFlags = tvTaskTitle.paintFlags and android.graphics.Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                    tvTaskTitle.alpha = 1.0f
+                }
+
+                // Status Badge
+                when (task.status) {
+                    "completed" -> {
+                        statusBadge.visibility = View.VISIBLE
+                        statusBadge.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.success_light))
+                        ivStatusIcon.setImageResource(R.drawable.ic_check)
+                        ivStatusIcon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.success))
+                        tvStatus.text = itemView.context.getString(R.string.status_completed)
+                        tvStatus.setTextColor(ContextCompat.getColor(itemView.context, R.color.success))
+                    }
+                    "in_progress" -> {
+                        statusBadge.visibility = View.VISIBLE
+                        statusBadge.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.warning_light))
+                        ivStatusIcon.setImageResource(R.drawable.ic_play)
+                        ivStatusIcon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.warning))
+                        tvStatus.text = itemView.context.getString(R.string.status_in_progress)
+                        tvStatus.setTextColor(ContextCompat.getColor(itemView.context, R.color.warning))
+                    }
+                    else -> {
+                        statusBadge.visibility = View.GONE
+                    }
+                }
+
+                // Category Badge
+                if (!task.category.isNullOrEmpty()) {
+                    categoryBadge.visibility = View.VISIBLE
+                    val (categoryText, categoryColor, categoryBgColor) = when (task.category.lowercase()) {
+                        "learning", "学習" -> Triple(R.string.category_learning, R.color.primary, R.color.primary_light)
+                        "work", "仕事" -> Triple(R.string.category_work, R.color.info, R.color.info_light)
+                        "personal", "個人" -> Triple(R.string.category_personal, R.color.accent, R.color.accent_light)
+                        "project", "プロジェクト" -> Triple(R.string.category_project, R.color.warning, R.color.warning_light)
+                        else -> Triple(R.string.category_other, R.color.text_muted, R.color.surface)
+                    }
+                    categoryBadge.setCardBackgroundColor(ContextCompat.getColor(itemView.context, categoryBgColor))
+                    tvCategory.text = itemView.context.getString(categoryText)
+                    tvCategory.setTextColor(ContextCompat.getColor(itemView.context, categoryColor))
+                } else {
+                    categoryBadge.visibility = View.GONE
+                }
 
                 // Priority color
                 val priorityColor = when (task.priority) {
@@ -57,21 +106,21 @@ class MainTaskAdapter(
                     ContextCompat.getColor(itemView.context, priorityColor)
                 )
 
-                // Progress
-                val progress = when (task.status) {
-                    "completed" -> 100
-                    "in_progress" -> 50
-                    else -> 0
+                // Progress bar - only show if has subtasks
+                if (!task.subtasks.isNullOrEmpty()) {
+                    progressBar.visibility = View.VISIBLE
+                    tvProgressText.visibility = View.VISIBLE
+                    
+                    val completedCount = task.subtasks.count { it.is_completed }
+                    val totalCount = task.subtasks.size
+                    val progress = if (totalCount > 0) (completedCount * 100) / totalCount else 0
+                    
+                    progressBar.progress = progress
+                    tvProgressText.text = "$completedCount/$totalCount 完了"
+                } else {
+                    progressBar.visibility = View.GONE
+                    tvProgressText.visibility = View.GONE
                 }
-                progressBar.progress = progress
-
-                // Progress text
-                val progressText = when (task.status) {
-                    "completed" -> "完了"
-                    "in_progress" -> "進行中"
-                    else -> "未着手"
-                }
-                tvProgressText.text = progressText
 
                 // Estimated time
                 if (task.estimated_minutes != null && task.estimated_minutes > 0) {
@@ -177,9 +226,23 @@ class MainTaskAdapter(
                     subtasksContainer.visibility = View.GONE
                 }
 
-                // Start button - mark task as in_progress
-                btnStart.setOnClickListener {
-                    onStartClick(task)
+                // Start button - hide if completed or in_progress
+                if (task.status == "completed") {
+                    btnStart.visibility = View.GONE
+                } else if (task.status == "in_progress") {
+                    btnStart.visibility = View.VISIBLE
+                    btnStart.text = itemView.context.getString(R.string.task_continue)
+                    btnStart.setIconResource(R.drawable.ic_play)
+                    btnStart.setOnClickListener {
+                        onStartClick(task)
+                    }
+                } else {
+                    btnStart.visibility = View.VISIBLE
+                    btnStart.text = itemView.context.getString(R.string.task_start)
+                    btnStart.setIconResource(R.drawable.ic_play)
+                    btnStart.setOnClickListener {
+                        onStartClick(task)
+                    }
                 }
 
                 // More button

@@ -1,5 +1,7 @@
 package ecccomp.s2240788.mobile_android.ui.adapters
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -49,6 +51,8 @@ class SubtaskInputAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private var currentSubtask: SubtaskInput? = null
+        private var titleTextWatcher: TextWatcher? = null
+        private var timeTextWatcher: TextWatcher? = null
 
         init {
             // Remove button
@@ -56,11 +60,20 @@ class SubtaskInputAdapter(
                 currentSubtask?.let { onRemove(it) }
             }
 
-            // Track text changes
-            binding.etSubtask.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) {
-                    currentSubtask?.title = binding.etSubtask.text?.toString() ?: ""
-                }
+            // Quick time buttons
+            binding.btnTime5.setOnClickListener {
+                binding.etTime.setText("5")
+                currentSubtask?.estimatedMinutes = 5
+            }
+
+            binding.btnTime10.setOnClickListener {
+                binding.etTime.setText("10")
+                currentSubtask?.estimatedMinutes = 10
+            }
+
+            binding.btnTime15.setOnClickListener {
+                binding.etTime.setText("15")
+                currentSubtask?.estimatedMinutes = 15
             }
         }
 
@@ -70,11 +83,46 @@ class SubtaskInputAdapter(
             // Set subtask number
             binding.tvSubtaskNumber.text = number.toString()
 
+            // Remove old text watchers
+            titleTextWatcher?.let { binding.etSubtask.removeTextChangedListener(it) }
+            timeTextWatcher?.let { binding.etTime.removeTextChangedListener(it) }
+
             // Set title (only if different to avoid cursor jumping)
             val currentText = binding.etSubtask.text?.toString() ?: ""
             if (currentText != subtask.title) {
                 binding.etSubtask.setText(subtask.title)
             }
+
+            // Set time
+            val currentTime = binding.etTime.text?.toString() ?: ""
+            val subtaskTime = subtask.estimatedMinutes?.toString() ?: ""
+            if (currentTime != subtaskTime) {
+                binding.etTime.setText(subtaskTime)
+            }
+
+            // Add new text watchers
+            titleTextWatcher = object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    currentSubtask?.title = s?.toString() ?: ""
+                }
+            }
+            binding.etSubtask.addTextChangedListener(titleTextWatcher)
+
+            timeTextWatcher = object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    val timeStr = s?.toString() ?: ""
+                    currentSubtask?.estimatedMinutes = if (timeStr.isNotEmpty()) {
+                        timeStr.toIntOrNull()
+                    } else {
+                        null
+                    }
+                }
+            }
+            binding.etTime.addTextChangedListener(timeTextWatcher)
         }
     }
 

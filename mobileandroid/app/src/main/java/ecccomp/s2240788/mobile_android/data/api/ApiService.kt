@@ -115,4 +115,90 @@ interface ApiService {
     // Statistics
     @GET("stats/user")
     suspend fun getUserStats(): Response<ApiResponse<UserStats>>
+    
+    // Timetable
+    @GET("timetable")
+    suspend fun getTimetable(
+        @Query("year") year: Int? = null,
+        @Query("week") week: Int? = null
+    ): Response<ApiResponse<TimetableResponse>>
+    
+    @GET("timetable/classes")
+    suspend fun getTimetableClasses(): Response<ApiResponse<List<TimetableClass>>>
+    
+    @POST("timetable/classes")
+    suspend fun createTimetableClass(@Body request: CreateTimetableClassRequest): Response<ApiResponse<TimetableClass>>
+    
+    @PUT("timetable/classes/{id}")
+    suspend fun updateTimetableClass(@Path("id") id: Int, @Body request: CreateTimetableClassRequest): Response<ApiResponse<TimetableClass>>
+    
+    @DELETE("timetable/classes/{id}")
+    suspend fun deleteTimetableClass(@Path("id") id: Int): Response<ApiResponse<Unit>>
+    
+    // Weekly Content endpoints
+    @GET("timetable/classes/{id}/weekly-content")
+    suspend fun getWeeklyContent(
+        @Path("id") classId: Int,
+        @Query("year") year: Int? = null,
+        @Query("week") week: Int? = null
+    ): Response<ApiResponse<TimetableClassWeeklyContent>>
+    
+    @POST("timetable/classes/{id}/weekly-content")
+    suspend fun updateWeeklyContent(
+        @Path("id") classId: Int,
+        @Body request: UpdateWeeklyContentRequest
+    ): Response<ApiResponse<TimetableClassWeeklyContent>>
+    
+    @DELETE("timetable/weekly-content/{id}")
+    suspend fun deleteWeeklyContent(@Path("id") id: Int): Response<ApiResponse<Unit>>
+    
+    @GET("timetable/studies")
+    suspend fun getTimetableStudies(@Query("status") status: String? = null): Response<ApiResponse<List<TimetableStudy>>>
+    
+    @POST("timetable/studies")
+    suspend fun createTimetableStudy(@Body request: CreateTimetableStudyRequest): Response<ApiResponse<TimetableStudy>>
+    
+    @PUT("timetable/studies/{id}/toggle")
+    suspend fun toggleTimetableStudy(@Path("id") id: Int): Response<ApiResponse<TimetableStudy>>
+    
+    @DELETE("timetable/studies/{id}")
+    suspend fun deleteTimetableStudy(@Path("id") id: Int): Response<ApiResponse<Unit>>
+    
+    // Stats endpoints
+    @GET("stats/dashboard")
+    suspend fun getStatsDashboard(): Response<ApiResponse<StatsDashboard>>
+    
+    @GET("stats/tasks")
+    suspend fun getTasksStats(@Query("period") period: String? = null): Response<ApiResponse<TasksStats>>
+    
+    @GET("stats/sessions")
+    suspend fun getSessionsStats(@Query("period") period: String? = null): Response<ApiResponse<SessionsStats>>
+    
+    @GET("stats/trends")
+    suspend fun getTrends(@Query("period") period: String, @Query("metric") metric: String? = null): Response<ApiResponse<TrendsData>>
+    
+    // Knowledge Items
+    @GET("knowledge")
+    suspend fun getKnowledgeItems(@Query("filter") filter: String? = null): Response<ApiResponse<List<KnowledgeItem>>>
+    
+    @POST("knowledge")
+    suspend fun createKnowledgeItem(@Body request: CreateKnowledgeItemRequest): Response<ApiResponse<KnowledgeItem>>
+    
+    @GET("knowledge/{id}")
+    suspend fun getKnowledgeItem(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
+    
+    @PUT("knowledge/{id}")
+    suspend fun updateKnowledgeItem(@Path("id") id: Int, @Body request: CreateKnowledgeItemRequest): Response<ApiResponse<KnowledgeItem>>
+    
+    @DELETE("knowledge/{id}")
+    suspend fun deleteKnowledgeItem(@Path("id") id: Int): Response<ApiResponse<Unit>>
+    
+    @PUT("knowledge/{id}/favorite")
+    suspend fun toggleKnowledgeFavorite(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
+    
+    @PUT("knowledge/{id}/archive")
+    suspend fun toggleKnowledgeArchive(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
+    
+    @PUT("knowledge/{id}/review")
+    suspend fun markKnowledgeReviewed(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
 }
