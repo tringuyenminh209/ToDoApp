@@ -31,12 +31,57 @@
             app:layout_constraintTop_toTopOf="parent"
             app:strokeWidth="0dp" />
 
+        <!-- Status Badge (Completed/In Progress) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/status_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            app:cardBackgroundColor="@color/success_light"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toEndOf="@id/priority_indicator"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp">
+
+                <ImageView
+                    android:id="@+id/iv_status_icon"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_check"
+                    app:tint="@color/success"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/status_completed"
+                    android:textColor="@color/success"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Task Title with Better Typography -->
         <TextView
             android:id="@+id/tv_task_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_xs"
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/text_primary"
@@ -45,8 +90,37 @@
             android:lineSpacingExtra="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/priority_indicator"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/status_badge"
             tools:text="Học Java cơ bản - OOP" />
+        
+        <!-- Category/Type Badge -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/category_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_xs"
+            app:cardBackgroundColor="@color/primary_light"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toEndOf="@id/priority_indicator"
+            app:layout_constraintTop_toBottomOf="@id/tv_task_title"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:text="@string/category_learning"
+                android:textColor="@color/primary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:text="学習" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Progress Bar -->
         <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -59,9 +133,11 @@
             app:indicatorColor="@color/primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/priority_indicator"
-            app:layout_constraintTop_toBottomOf="@id/tv_task_title"
+            app:layout_constraintTop_toBottomOf="@id/category_badge"
             app:trackColor="@color/line"
             app:trackCornerRadius="2dp"
+            android:visibility="gone"
+            tools:visibility="visible"
             tools:progress="60" />
 
         <!-- Progress Text -->
@@ -363,4 +439,3 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
-

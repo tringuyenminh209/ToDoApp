@@ -165,6 +165,7 @@
     <string name="save">保存</string>
     <string name="edit_task_title">タスクを編集</string>
     <string name="task_start">開始</string>
+    <string name="task_continue">続ける</string>
 
     <!-- Deadline Section -->
     <string name="deadline">締め切り</string>
@@ -263,6 +264,10 @@
     <string name="mark_complete">完了</string>
     <string name="start_focus">フォーカス開始</string>
     <string name="total_focus_time">合計: %s</string>
+    
+    <!-- Subtask Input -->
+    <string name="drag_to_reorder">ドラッグして並び替え</string>
+    <string name="subtask_title_hint">サブタスクのタイトル</string>
     
     <!-- Task Detail Placeholders -->
     <string name="task_detail_title_placeholder">サンプルタスクのタイトル</string>
@@ -417,6 +422,19 @@
     <string name="hours">時間</string>
     <string name="minutes">分</string>
 
+    <!-- Status -->
+    <string name="status">ステータス</string>
+    <string name="status_pending">未着手</string>
+    <string name="status_in_progress">進行中</string>
+    <string name="status_completed">完了</string>
+    
+    <!-- Category/Type -->
+    <string name="category_learning">学習</string>
+    <string name="category_work">仕事</string>
+    <string name="category_personal">個人</string>
+    <string name="category_project">プロジェクト</string>
+    <string name="category_other">その他</string>
+    
     <!-- Timetable -->
     <string name="timetable_title">時間割</string>
     <string name="timetable_add_class">クラスを追加</string>
@@ -427,8 +445,15 @@
     <string name="timetable_break_time">休憩時間</string>
     <string name="timetable_status_icon">ステータスアイコン</string>
     <string name="timetable_status_active">授業中</string>
+    <string name="timetable_status_in_class">授業中</string>
     <string name="timetable_status_next">次の授業</string>
     <string name="timetable_status_break">休憩中</string>
+    <string name="timetable_status_free">空き時間</string>
+    <string name="timetable_edit_weekly_content">週別内容を編集</string>
+    <string name="timetable_weekly_title">週別タイトル</string>
+    <string name="timetable_weekly_content">内容・トピック</string>
+    <string name="timetable_weekly_homework">宿題</string>
+    <string name="timetable_weekly_notes">メモ</string>
     <string name="timetable_week_1">第1週 - 9月</string>
     <string name="timetable_date_range">28/9 - 4/10/2025</string>
     <string name="timetable_period">時限</string>
@@ -441,10 +466,23 @@
     <string name="timetable_sat">土</string>
     
     <!-- Class Dialog -->
+    <string name="timetable_add_class_subtitle">新しい授業を追加</string>
+    <string name="timetable_class_name">授業名</string>
     <string name="timetable_class_name_hint">クラス名（例: IT就職作品開発）</string>
+    <string name="timetable_day">曜日</string>
     <string name="timetable_day_hint">曜日</string>
     <string name="timetable_period_hint">時限</string>
+    <string name="timetable_period_format">第%d時限</string>
+    <string name="timetable_start_time">開始時刻</string>
+    <string name="timetable_end_time">終了時刻</string>
+    <string name="timetable_select_start_time">開始時刻を選択</string>
+    <string name="timetable_select_end_time">終了時刻を選択</string>
+    <string name="timetable_room">教室</string>
     <string name="timetable_room_hint">教室（例: 1603）</string>
+    <string name="timetable_instructor">講師</string>
+    <string name="timetable_description">説明</string>
+    <string name="timetable_notes">メモ</string>
+    <string name="timetable_color">色</string>
     <string name="timetable_color_hint">色</string>
     <string name="timetable_color_primary">緑（デフォルト）</string>
     <string name="timetable_color_accent">青</string>
@@ -454,6 +492,16 @@
     <string name="timetable_create_task">タスクを作成</string>
     <string name="timetable_set_reminder">リマインダーを設定</string>
     <string name="timetable_confirm_delete_class">このクラスを削除しますか？</string>
+    <string name="timetable_error_name_required">授業名を入力してください</string>
+    <string name="timetable_error_start_time_required">開始時刻を選択してください</string>
+    <string name="timetable_error_end_time_required">終了時刻を選択してください</string>
+    
+    <!-- Color Names -->
+    <string name="color_blue">青</string>
+    <string name="color_green">緑</string>
+    <string name="color_red">赤</string>
+    <string name="color_orange">オレンジ</string>
+    <string name="color_purple">紫</string>
     
     <!-- Study Section -->
     <string name="timetable_study_section">宿題 &amp; 復習</string>
@@ -466,6 +514,7 @@
     <string name="timetable_study_type_homework">宿題</string>
     <string name="timetable_study_type_review">復習</string>
     <string name="timetable_study_type_exam">試験</string>
+    <string name="timetable_study_type_project">プロジェクト</string>
     <string name="timetable_study_subject_hint">科目（例: Java Programming）</string>
     <string name="timetable_study_due_date_hint">提出期限</string>
     <string name="timetable_study_priority_hint">優先度</string>
@@ -504,5 +553,14 @@
     <string name="start_task_empty_icon">空のアイコン</string>
     <string name="start_task_empty_title">利用可能なタスクがありません</string>
     <string name="start_task_empty_message">新しいタスクを作成するか、フィルターを変更してください</string>
+    <string name="start_task_no_available_tasks">開始できるタスクがありません</string>
+    <string name="start_task_sort_priority">優先度順</string>
+    <string name="start_task_sort_time">所要時間順</string>
+    <string name="start_task_sort_deadline">期限順</string>
+
+    <!-- Task Type -->
+    <string name="task_type">タスク種別</string>
+    <string name="type_study">学習</string>
+    <string name="type_work">仕事</string>
 
 </resources>

@@ -28,6 +28,7 @@ public class AddTaskActivity extends BaseActivity {
     private AddTaskViewModel viewModel;
     private int selectedPriority = 3; // Default: medium (1-5)
     private String selectedEnergy = "medium";
+    private String selectedCategory = "study"; // Default: study
     private String selectedDeadline = null;
     private Calendar calendar = Calendar.getInstance();
     private SubtaskInputAdapter subtaskAdapter;
@@ -52,6 +53,12 @@ public class AddTaskActivity extends BaseActivity {
         selectedEnergy = "medium";
         if (binding.chipEnergyMedium != null) {
             binding.chipEnergyMedium.setChecked(true);
+        }
+
+        // Category default (study)
+        selectedCategory = "study";
+        if (binding.chipTypeStudy != null) {
+            binding.chipTypeStudy.setChecked(true);
         }
 
         // Time unit spinner entries (分 / 時間)
@@ -95,6 +102,10 @@ public class AddTaskActivity extends BaseActivity {
         binding.chipEnergyHigh.setOnClickListener(v -> selectedEnergy = "high");
         binding.chipEnergyMedium.setOnClickListener(v -> selectedEnergy = "medium");
         binding.chipEnergyLow.setOnClickListener(v -> selectedEnergy = "low");
+
+        // Category/Type selection
+        binding.chipTypeStudy.setOnClickListener(v -> selectedCategory = "study");
+        binding.chipTypeWork.setOnClickListener(v -> selectedCategory = "work");
 
         // Deadline quick buttons
         binding.btnToday.setOnClickListener(v -> {
@@ -237,6 +248,7 @@ public class AddTaskActivity extends BaseActivity {
             selectedDeadline,
             selectedEnergy,
             estimated,
+            selectedCategory,
             currentSubtasks
         );
     }

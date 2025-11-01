@@ -402,7 +402,7 @@
         app:labelVisibilityMode="labeled"
         app:itemIconTint="@color/bottom_nav_item_color"
         app:itemTextColor="@color/bottom_nav_item_color"
-        app:itemRippleColor="@color/primary_alpha_12"
+        app:itemRippleColor="@color/bottom_nav_ripple"
         app:itemActiveIndicatorStyle="@null"
         app:menu="@menu/bottom_navigation_menu"
         app:layout_constraintBottom_toBottomOf="parent" />

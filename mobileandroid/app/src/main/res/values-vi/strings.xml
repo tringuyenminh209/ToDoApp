@@ -364,11 +364,19 @@
     <string name="knowledge_empty">Chưa có kiến thức nào</string>
     <string name="knowledge_empty_description">Thêm ghi chú, bài viết hoặc liên kết để xây dựng kho kiến thức của bạn</string>
     
+    <!-- Status -->
+    <string name="status">Trạng thái</string>
+    
     <!-- Timetable -->
     <string name="timetable_no_class">Không có lớp</string>
     <string name="timetable_no_next_class">Không có lớp tiếp theo</string>
     <string name="timetable_status_active">Đang học</string>
     <string name="timetable_status_next">Lớp tiếp theo</string>
     <string name="timetable_status_break">Giờ nghỉ</string>
+
+    <!-- Task Type -->
+    <string name="task_type">Loại Task</string>
+    <string name="type_study">Học tập</string>
+    <string name="type_work">Công việc</string>
 
 </resources>

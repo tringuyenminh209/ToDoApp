@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ecccomp.s2240788.mobile_android.data.api.ApiService
+import ecccomp.s2240788.mobile_android.data.models.CreateKnowledgeItemRequest
 import ecccomp.s2240788.mobile_android.data.models.KnowledgeItem
+import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
 
 /**
@@ -12,6 +15,10 @@ import kotlinx.coroutines.launch
  * 知識アイテムの管理とCRUD操作
  */
 class KnowledgeViewModel : ViewModel() {
+
+    private val apiService: ApiService = NetworkModule.provideApiService(
+        NetworkModule.provideRetrofit(NetworkModule.provideOkHttpClient())
+    )
 
     private val _knowledgeItems = MutableLiveData<List<KnowledgeItem>>()
     val knowledgeItems: LiveData<List<KnowledgeItem>> = _knowledgeItems
@@ -35,21 +42,75 @@ class KnowledgeViewModel : ViewModel() {
     /**
      * 知識アイテムを取得
      */
-    fun loadKnowledgeItems() {
+    fun loadKnowledgeItems(filter: String? = null) {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
+                _error.value = null
                 
-                // TODO: API call to fetch knowledge items
-                // For now, use empty list as placeholder
-                val items = emptyList<KnowledgeItem>()
+                val response = apiService.getKnowledgeItems(filter)
                 
-                _knowledgeItems.postValue(items)
-                applyFilterAndSearch()
-                
+                if (response.isSuccessful) {
+                    val items = response.body()?.data ?: emptyList()
+                    _knowledgeItems.postValue(items)
+                    applyFilterAndSearch()
+                } else {
+                    _error.value = "Failed to load knowledge items: ${response.message()}"
+                    _knowledgeItems.postValue(emptyList())
+                }
             } catch (e: Exception) {
                 _error.value = "ネットワークエラー: ${e.message}"
                 _knowledgeItems.postValue(emptyList())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * 知識アイテムを作成
+     */
+    fun createKnowledgeItem(request: CreateKnowledgeItemRequest, onSuccess: () -> Unit = {}) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+                
+                val response = apiService.createKnowledgeItem(request)
+                
+                if (response.isSuccessful) {
+                    loadKnowledgeItems() // Reload list
+                    onSuccess()
+                } else {
+                    _error.value = "Failed to create item: ${response.message()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Error creating item: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * 知識アイテムを更新
+     */
+    fun updateKnowledgeItem(id: Int, request: CreateKnowledgeItemRequest, onSuccess: () -> Unit = {}) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+                
+                val response = apiService.updateKnowledgeItem(id, request)
+                
+                if (response.isSuccessful) {
+                    loadKnowledgeItems() // Reload list
+                    onSuccess()
+                } else {
+                    _error.value = "Failed to update item: ${response.message()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Error updating item: ${e.message}"
             } finally {
                 _isLoading.value = false
             }
@@ -103,17 +164,24 @@ class KnowledgeViewModel : ViewModel() {
         }
         
         _filteredItems.postValue(filtered)
-        _knowledgeItems.postValue(filtered)
     }
 
     /**
      * アイテムをお気に入りに追加/削除
      */
-    fun toggleFavorite(itemId: Int) {
+    fun toggleFavorite(itemId: Int, onSuccess: () -> Unit = {}) {
         viewModelScope.launch {
             try {
-                // TODO: API call to toggle favorite
-                loadKnowledgeItems()
+                _error.value = null
+                
+                val response = apiService.toggleKnowledgeFavorite(itemId)
+                
+                if (response.isSuccessful) {
+                    loadKnowledgeItems()
+                    onSuccess()
+                } else {
+                    _error.value = "お気に入りの更新に失敗しました: ${response.message()}"
+                }
             } catch (e: Exception) {
                 _error.value = "お気に入りの更新に失敗しました: ${e.message}"
             }
@@ -123,11 +191,19 @@ class KnowledgeViewModel : ViewModel() {
     /**
      * アイテムをアーカイブ/復元
      */
-    fun toggleArchive(itemId: Int) {
+    fun toggleArchive(itemId: Int, onSuccess: () -> Unit = {}) {
         viewModelScope.launch {
             try {
-                // TODO: API call to toggle archive
-                loadKnowledgeItems()
+                _error.value = null
+                
+                val response = apiService.toggleKnowledgeArchive(itemId)
+                
+                if (response.isSuccessful) {
+                    loadKnowledgeItems()
+                    onSuccess()
+                } else {
+                    _error.value = "アーカイブの更新に失敗しました: ${response.message()}"
+                }
             } catch (e: Exception) {
                 _error.value = "アーカイブの更新に失敗しました: ${e.message}"
             }
@@ -137,13 +213,24 @@ class KnowledgeViewModel : ViewModel() {
     /**
      * アイテムを削除
      */
-    fun deleteItem(itemId: Int) {
+    fun deleteItem(itemId: Int, onSuccess: () -> Unit = {}) {
         viewModelScope.launch {
             try {
-                // TODO: API call to delete item
-                loadKnowledgeItems()
+                _isLoading.value = true
+                _error.value = null
+                
+                val response = apiService.deleteKnowledgeItem(itemId)
+                
+                if (response.isSuccessful) {
+                    loadKnowledgeItems()
+                    onSuccess()
+                } else {
+                    _error.value = "削除に失敗しました: ${response.message()}"
+                }
             } catch (e: Exception) {
                 _error.value = "削除に失敗しました: ${e.message}"
+            } finally {
+                _isLoading.value = false
             }
         }
     }
@@ -151,11 +238,19 @@ class KnowledgeViewModel : ViewModel() {
     /**
      * レビュー済みとしてマーク
      */
-    fun markAsReviewed(itemId: Int) {
+    fun markAsReviewed(itemId: Int, onSuccess: () -> Unit = {}) {
         viewModelScope.launch {
             try {
-                // TODO: API call to mark as reviewed
-                loadKnowledgeItems()
+                _error.value = null
+                
+                val response = apiService.markKnowledgeReviewed(itemId)
+                
+                if (response.isSuccessful) {
+                    loadKnowledgeItems()
+                    onSuccess()
+                } else {
+                    _error.value = "レビューの更新に失敗しました: ${response.message()}"
+                }
             } catch (e: Exception) {
                 _error.value = "レビューの更新に失敗しました: ${e.message}"
             }
@@ -173,5 +268,11 @@ class KnowledgeViewModel : ViewModel() {
     fun clearError() {
         _error.value = null
     }
+    
+    /**
+     * Refresh knowledge items
+     */
+    fun refreshKnowledgeItems() {
+        loadKnowledgeItems()
+    }
 }
-

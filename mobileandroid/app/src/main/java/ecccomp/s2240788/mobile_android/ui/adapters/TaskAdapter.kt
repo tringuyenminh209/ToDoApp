@@ -97,8 +97,47 @@ class TaskAdapter(
                     dateContainer.visibility = View.GONE
                 }
 
-                // Subtasks - hide for now (will be implemented later)
-                subtasksContainer.visibility = View.GONE
+                // Subtasks - display compact (up to 3)
+                if (!task.subtasks.isNullOrEmpty()) {
+                    subtasksContainer.visibility = View.VISIBLE
+                    subtasksContainer.removeAllViews()
+
+                    val inflater = LayoutInflater.from(itemView.context)
+                    task.subtasks.take(3).forEach { subtask ->
+                        val row = inflater.inflate(R.layout.item_subtask_mini, subtasksContainer, false)
+                        val indicator = row.findViewById<com.google.android.material.card.MaterialCardView>(R.id.indicator)
+                        val check = row.findViewById<android.widget.ImageView>(R.id.iv_check)
+                        val title = row.findViewById<android.widget.TextView>(R.id.tv_subtask_title)
+                        val time = row.findViewById<android.widget.TextView>(R.id.tv_subtask_time)
+
+                        val completed = subtask.is_completed
+                        if (completed) {
+                            indicator.strokeWidth = 0
+                            indicator.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.success))
+                            check.visibility = View.VISIBLE
+                            title.setTextColor(ContextCompat.getColor(itemView.context, R.color.text_secondary))
+                        } else {
+                            indicator.strokeWidth = 1
+                            indicator.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.surface))
+                            indicator.setStrokeColor(ContextCompat.getColor(itemView.context, R.color.line))
+                            check.visibility = View.GONE
+                            title.setTextColor(ContextCompat.getColor(itemView.context, R.color.text_muted))
+                        }
+
+                        title.text = subtask.title
+                        val minutes = subtask.estimated_minutes
+                        if (minutes != null && minutes > 0) {
+                            time.visibility = View.VISIBLE
+                            time.text = "${minutes}p"
+                        } else {
+                            time.visibility = View.GONE
+                        }
+
+                        subtasksContainer.addView(row)
+                    }
+                } else {
+                    subtasksContainer.visibility = View.GONE
+                }
 
                 // Start button
                 btnStart.setOnClickListener {

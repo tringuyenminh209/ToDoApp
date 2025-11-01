@@ -45,3 +45,21 @@ data class KnowledgeCategory(
     val updated_at: String
 )
 
+/**
+ * Create Knowledge Item Request
+ */
+data class CreateKnowledgeItemRequest(
+    val title: String,
+    val item_type: String, // note, code_snippet, exercise, resource_link, attachment
+    val content: String? = null,
+    val code_language: String? = null,
+    val url: String? = null,
+    val question: String? = null,
+    val answer: String? = null,
+    val difficulty: String? = null,
+    val tags: List<String>? = null,
+    val learning_path_id: Int? = null,
+    val source_task_id: Int? = null,
+    val category_id: Int? = null
+)
+

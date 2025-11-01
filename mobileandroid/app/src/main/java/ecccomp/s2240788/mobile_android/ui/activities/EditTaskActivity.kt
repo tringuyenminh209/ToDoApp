@@ -27,6 +27,7 @@ class EditTaskActivity : BaseActivity() {
     private var taskId: Int = -1
     private var selectedPriority = 3 // Default: medium (1-5)
     private var selectedEnergy = "medium"
+    private var selectedCategory = "study" // Default: study
     private var selectedDeadline: String? = null
     private var calendar: Calendar = Calendar.getInstance()
     private lateinit var subtaskAdapter: SubtaskInputAdapter
@@ -89,6 +90,10 @@ class EditTaskActivity : BaseActivity() {
         binding.chipEnergyMedium?.setOnClickListener { selectedEnergy = "medium" }
         binding.chipEnergyLow?.setOnClickListener { selectedEnergy = "low" }
 
+        // Category/Type selection
+        binding.chipTypeStudy?.setOnClickListener { selectedCategory = "study" }
+        binding.chipTypeWork?.setOnClickListener { selectedCategory = "work" }
+
         // Deadline quick buttons
         binding.btnToday?.setOnClickListener {
             calendar = Calendar.getInstance()
@@ -146,6 +151,13 @@ class EditTaskActivity : BaseActivity() {
             task?.let {
                 binding.etTaskTitle?.setText(it.title)
                 binding.etTaskDescription?.setText(it.description)
+
+                // Category
+                selectedCategory = it.category ?: "study"
+                when (selectedCategory) {
+                    "work" -> binding.chipTypeWork?.isChecked = true
+                    else -> binding.chipTypeStudy?.isChecked = true
+                }
 
                 // Priority (1-5)
                 selectedPriority = it.priority.coerceIn(1, 5)
@@ -307,6 +319,7 @@ class EditTaskActivity : BaseActivity() {
             selectedDeadline,
             selectedEnergy,
             estimated,
+            selectedCategory,
             currentSubtasks
         )
     }

@@ -170,7 +170,7 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/header_card"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/bottom_action_bar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -197,11 +197,23 @@
                         android:id="@+id/tv_task_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/spacing_md"
+                        android:layout_marginBottom="@dimen/spacing_sm"
                         android:textColor="@color/text_primary"
-                        android:textSize="24sp"
+                        android:textSize="26sp"
                         android:textStyle="bold"
+                        android:lineSpacingExtra="2dp"
                         android:text="@string/task_detail_title_placeholder" />
+
+                    <!-- Progress -->
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progress_task"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_md"
+                        app:trackThickness="8dp"
+                        app:indicatorColor="@color/primary"
+                        app:trackColor="@color/line"
+                        app:indicatorDirectionLinear="startToEnd" />
 
                     <!-- Metadata Row -->
                     <LinearLayout
@@ -216,7 +228,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_chip"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:minHeight="32dp"
+                            android:layout_marginEnd="@dimen/spacing_sm">
 
                             <ImageView
                                 android:layout_width="20dp"
@@ -231,7 +250,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/spacing_xs"
                                 android:text="@string/task_detail_due_placeholder"
-                                android:textColor="@color/text_muted"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp" />
 
                         </LinearLayout>
@@ -242,7 +261,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_chip"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:minHeight="32dp"
+                            android:layout_marginStart="@dimen/spacing_sm">
 
                             <ImageView
                                 android:layout_width="20dp"
@@ -257,12 +283,36 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/spacing_xs"
                                 android:text="@string/task_detail_priority_placeholder"
-                                android:textColor="@color/text_muted"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp" />
 
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <!-- Task Type Chip -->
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_task_type"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_xs"
+                        android:visibility="gone"
+                        app:chipIconVisible="false"
+                        tools:text="Study"
+                        tools:visibility="visible" />
+
+                    <!-- Status Chip -->
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_status"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_sm"
+                        android:text="@string/status"
+                        app:chipIconVisible="false"
+                        app:chipStartPadding="12dp"
+                        app:chipEndPadding="12dp" />
 
                     <!-- Divider -->
                     <View
@@ -498,50 +548,62 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Action Buttons -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_md"
-                android:layout_marginBottom="@dimen/spacing_lg"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:weightSum="2">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_complete"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_marginEnd="@dimen/spacing_sm"
-                    android:layout_weight="1"
-                    android:text="@string/mark_complete"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/success"
-                    app:cornerRadius="16dp"
-                    app:icon="@drawable/ic_check"
-                    app:iconSize="20dp"
-                    app:iconGravity="textStart" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_start_focus"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_marginStart="@dimen/spacing_sm"
-                    android:layout_weight="1"
-                    android:text="@string/start_focus"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/primary"
-                    app:cornerRadius="16dp"
-                    app:icon="@drawable/ic_timer"
-                    app:iconSize="20dp"
-                    app:iconGravity="textStart" />
-
-            </LinearLayout>
+            <!-- Removed inline action buttons; moved to sticky bottom bar -->
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Sticky Bottom Action Bar -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bottom_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_md"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="0dp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="2">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_complete"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                android:layout_weight="1"
+                android:text="@string/mark_complete"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/success"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_check"
+                app:iconSize="20dp"
+                app:iconGravity="textStart" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_start_focus"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="@dimen/spacing_sm"
+                android:layout_weight="1"
+                android:text="@string/start_focus"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_timer"
+                app:iconSize="20dp"
+                app:iconGravity="textStart" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

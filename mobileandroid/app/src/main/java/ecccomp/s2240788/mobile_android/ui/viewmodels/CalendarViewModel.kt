@@ -174,6 +174,7 @@ class CalendarViewModel : ViewModel() {
             Task(
                 id = (map["id"] as? Number)?.toInt() ?: 0,
                 title = map["title"] as? String ?: "",
+                category = map["category"] as? String,
                 description = map["description"] as? String,
                 status = map["status"] as? String ?: "pending",
                 priority = (map["priority"] as? Number)?.toInt() ?: 3,
@@ -208,6 +209,92 @@ class CalendarViewModel : ViewModel() {
         val date = _selectedDate.value ?: Calendar.getInstance().time
         val format = SimpleDateFormat("MMMM, yyyy", Locale.getDefault())
         return format.format(date)
+    }
+    
+    /**
+     * Get dates that have tasks (for calendar decoration)
+     * タスクがある日付のリストを取得（カレンダー装飾用）
+     */
+    fun getDatesWithTasks(): Set<String> {
+        val tasks = _allTasks.value ?: emptyList()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        
+        return tasks.mapNotNull { task ->
+            if (!task.deadline.isNullOrEmpty()) {
+                try {
+                    task.deadline.substring(0, 10) // Extract YYYY-MM-DD
+                } catch (e: Exception) {
+                    null
+                }
+            } else {
+                null
+            }
+        }.toSet()
+    }
+    
+    /**
+     * Get task count for a specific date
+     * 特定の日付のタスク数を取得
+     */
+    fun getTaskCountForDate(date: Date): Int {
+        val tasks = _allTasks.value ?: emptyList()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateString = dateFormat.format(date)
+        
+        return tasks.count { task ->
+            if (!task.deadline.isNullOrEmpty()) {
+                try {
+                    val taskDate = task.deadline.substring(0, 10)
+                    taskDate == dateString
+                } catch (e: Exception) {
+                    false
+                }
+            } else {
+                false
+            }
+        }
+    }
+    
+    /**
+     * Get tasks for date range (for monthly view)
+     * 期間内のタスクを取得（月表示用）
+     */
+    fun getTasksForDateRange(startDate: Date, endDate: Date): Map<String, List<Task>> {
+        val tasks = _allTasks.value ?: emptyList()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val result = mutableMapOf<String, MutableList<Task>>()
+        
+        tasks.forEach { task ->
+            if (!task.deadline.isNullOrEmpty()) {
+                try {
+                    val taskDateString = task.deadline.substring(0, 10)
+                    val taskDate = dateFormat.parse(taskDateString)
+                    
+                    if (taskDate != null && !taskDate.before(startDate) && !taskDate.after(endDate)) {
+                        if (!result.containsKey(taskDateString)) {
+                            result[taskDateString] = mutableListOf()
+                        }
+                        result[taskDateString]?.add(task)
+                    }
+                } catch (e: Exception) {
+                    // Skip invalid dates
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    /**
+     * Check if selected date is today
+     * 選択された日付が今日かどうか
+     */
+    fun isSelectedDateToday(): Boolean {
+        val selectedDate = _selectedDate.value ?: return false
+        val today = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        
+        return dateFormat.format(selectedDate) == dateFormat.format(today)
     }
 }
 

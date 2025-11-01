@@ -14,6 +14,7 @@ import ecccomp.s2240788.mobile_android.data.models.Task
 import ecccomp.s2240788.mobile_android.databinding.ActivityMainBinding
 import ecccomp.s2240788.mobile_android.databinding.BottomSheetTaskOptionsBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.MainTaskAdapter
+import ecccomp.s2240788.mobile_android.ui.dialogs.StartTaskDialogFragment
 import ecccomp.s2240788.mobile_android.ui.viewmodels.LogoutViewModel
 import ecccomp.s2240788.mobile_android.ui.viewmodels.MainViewModel
 import ecccomp.s2240788.mobile_android.utils.LocaleHelper
@@ -408,41 +409,31 @@ class MainActivity : BaseActivity() {
 
     /**
      * タスク選択ダイアログ（開始ボタン用）
+     * dialog_start_task.xmlを使用した新しいUI
      */
     private fun showSelectTaskToStartDialog() {
         // Get current tasks from ViewModel
         val allTasks = viewModel.tasks.value ?: emptyList()
+        
+        android.util.Log.d("MainActivity", "All tasks from ViewModel: ${allTasks.size}")
 
         // Filter out completed and in-progress tasks
         val availableTasks = allTasks.filter {
             it.status != "completed" && it.status != "in_progress"
         }
+        
+        android.util.Log.d("MainActivity", "Available tasks after filter: ${availableTasks.size}")
 
         if (availableTasks.isEmpty()) {
-            Toast.makeText(this, "開始できるタスクがありません", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.start_task_no_available_tasks), Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Create task titles array
-        val taskTitles = availableTasks.map { task ->
-            val prioritySymbol = when (task.priority) {
-                5 -> "🔴"
-                4 -> "🟠"
-                3 -> "🟡"
-                2 -> "🟢"
-                else -> "⚪"
-            }
-            "$prioritySymbol ${task.title}"
-        }.toTypedArray()
-
-        AlertDialog.Builder(this)
-            .setTitle("タスクを選択")
-            .setItems(taskTitles) { _, which ->
-                val selectedTask = availableTasks[which]
-                showStartTaskDialog(selectedTask)
-            }
-            .setNegativeButton("キャンセル", null)
-            .show()
+        // Show new StartTaskDialogFragment with dialog_start_task.xml
+        val dialog = StartTaskDialogFragment.newInstance(availableTasks) { selectedTask ->
+            showStartTaskDialog(selectedTask)
+        }
+        dialog.show(supportFragmentManager, "StartTaskDialog")
     }
 
     /**
