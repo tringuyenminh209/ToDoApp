@@ -11,6 +11,8 @@ use App\Http\Controllers\StatsController;
 use App\Http\Controllers\DailyCheckinController;
 use App\Http\Controllers\DailyReviewController;
 use App\Http\Controllers\TimetableController;
+use App\Http\Controllers\LearningPathController;
+use App\Http\Controllers\LearningPathTemplateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -157,6 +159,33 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/studies', [TimetableController::class, 'createStudy']);
         Route::put('/studies/{id}/toggle', [TimetableController::class, 'toggleStudy']);
         Route::delete('/studies/{id}', [TimetableController::class, 'deleteStudy']);
+    });
+
+    // Learning Path routes
+    Route::prefix('learning-paths')->group(function () {
+        Route::get('/stats', [LearningPathController::class, 'stats']);
+        Route::get('/', [LearningPathController::class, 'index']);
+        Route::post('/', [LearningPathController::class, 'store']);
+        Route::get('/{id}', [LearningPathController::class, 'show']);
+        Route::put('/{id}', [LearningPathController::class, 'update']);
+        Route::delete('/{id}', [LearningPathController::class, 'destroy']);
+        Route::put('/{id}/complete', [LearningPathController::class, 'complete']);
+    });
+
+    // Learning Path Template routes
+    Route::prefix('learning-path-templates')->group(function () {
+        // Browse templates
+        Route::get('/', [LearningPathTemplateController::class, 'index']);
+        Route::get('/featured', [LearningPathTemplateController::class, 'featured']);
+        Route::get('/popular', [LearningPathTemplateController::class, 'popular']);
+        Route::get('/categories', [LearningPathTemplateController::class, 'categories']);
+        Route::get('/category/{category}', [LearningPathTemplateController::class, 'byCategory']);
+
+        // Template detail
+        Route::get('/{id}', [LearningPathTemplateController::class, 'show']);
+
+        // Clone template to user's learning path
+        Route::post('/{id}/clone', [LearningPathTemplateController::class, 'clone']);
     });
 
 });
