@@ -69,14 +69,54 @@ class PathsActivity : BaseActivity() {
         }
 
         binding.btnAddPath.setOnClickListener {
-            // TODO: Open add path dialog/activity
-            Toast.makeText(this, "Add Path (開発中)", Toast.LENGTH_SHORT).show()
+            showAddPathBottomSheet()
         }
 
         binding.btnAddPathEmpty.setOnClickListener {
-            // TODO: Open add path dialog/activity
-            Toast.makeText(this, "Add Path (開発中)", Toast.LENGTH_SHORT).show()
+            showAddPathBottomSheet()
         }
+    }
+
+    /**
+     * ロードマップ追加のボトムシートを表示
+     */
+    private fun showAddPathBottomSheet() {
+        val bottomSheetDialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_add_path, null)
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+        // Browse Templates
+        bottomSheetView.findViewById<View>(R.id.card_browse_templates).setOnClickListener {
+            bottomSheetDialog.dismiss()
+            val intent = Intent(this, TemplateBrowserActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Create Manual
+        bottomSheetView.findViewById<View>(R.id.card_create_manual).setOnClickListener {
+            bottomSheetDialog.dismiss()
+            val intent = Intent(this, CreateLearningPathActivity::class.java)
+            startActivityForResult(intent, REQUEST_CREATE_PATH)
+        }
+
+        // Cancel
+        bottomSheetView.findViewById<View>(R.id.btn_cancel).setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CREATE_PATH && resultCode == RESULT_OK) {
+            // Refresh paths list
+            viewModel.refreshPaths()
+        }
+    }
+
+    companion object {
+        private const val REQUEST_CREATE_PATH = 1001
     }
 
     /**

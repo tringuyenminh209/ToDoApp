@@ -50,11 +50,9 @@ class TemplateListActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar(title: String) {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-            this.title = title
+        // Header card với back button thay vì toolbar
+        binding.btnBack.setOnClickListener {
+            finish()
         }
     }
 

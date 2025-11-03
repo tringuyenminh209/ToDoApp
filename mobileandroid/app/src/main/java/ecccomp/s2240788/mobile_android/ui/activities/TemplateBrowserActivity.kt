@@ -45,11 +45,9 @@ class TemplateBrowserActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-            title = "ロードマップテンプレート"
+        // Header card với back button thay vì toolbar
+        binding.btnBack.setOnClickListener {
+            finish()
         }
     }
 

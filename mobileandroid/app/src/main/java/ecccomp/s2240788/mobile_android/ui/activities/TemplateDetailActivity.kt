@@ -50,11 +50,9 @@ class TemplateDetailActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-            title = "テンプレート詳細"
+        // Header card với back button thay vì toolbar
+        binding.btnBack.setOnClickListener {
+            finish()
         }
     }
 
@@ -70,21 +68,21 @@ class TemplateDetailActivity : AppCompatActivity() {
         // Template Detail
         viewModel.templateDetail.observe(this) { template ->
             binding.apply {
-                // Header
-                tvIcon.text = template.icon ?: "📚"
+                // Header - Icon giờ là ImageView
+                // ivIcon.setImageResource() // Nếu cần set icon
                 tvTitle.text = template.title
                 tvDescription.text = template.description ?: ""
                 
                 // Badges
                 tvCategory.text = template.category.displayName
                 tvDifficulty.text = template.difficulty.displayName
-                tvDifficulty.setTextColor(Color.parseColor(template.difficulty.color))
+                // Không set color cho badge nữa vì dùng LinearLayout
                 
                 // Featured badge
                 if (template.isFeatured) {
-                    chipFeatured.visibility = View.VISIBLE
+                    badgeFeatured.visibility = View.VISIBLE
                 } else {
-                    chipFeatured.visibility = View.GONE
+                    badgeFeatured.visibility = View.GONE
                 }
                 
                 // Stats
@@ -109,10 +107,9 @@ class TemplateDetailActivity : AppCompatActivity() {
                     sectionMilestones.visibility = View.GONE
                 }
                 
-                // Color accent
+                // Color accent - không cần set cho appBarLayout nữa
                 try {
                     val color = Color.parseColor(template.color)
-                    appBarLayout.setBackgroundColor(color)
                     fabClone.backgroundTintList = android.content.res.ColorStateList.valueOf(color)
                 } catch (e: Exception) {
                     // Use default color
