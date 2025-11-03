@@ -80,6 +80,17 @@
             android:name=".ui.activities.TimetableActivity"
             android:exported="false" />
 
+        <!-- Template/Roadmap Activities -->
+        <activity
+            android:name=".ui.activities.TemplateBrowserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.TemplateDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.TemplateListActivity"
+            android:exported="false" />
+
         <!-- Onboarding Activity (LAUNCHER for Preview) -->
         <activity
             android:name=".ui.activities.onboardingActivity"

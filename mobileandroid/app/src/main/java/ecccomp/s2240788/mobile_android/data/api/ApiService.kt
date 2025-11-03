@@ -201,4 +201,26 @@ interface ApiService {
     
     @PUT("knowledge/{id}/review")
     suspend fun markKnowledgeReviewed(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
+    
+    // Learning Path Templates
+    @GET("learning-path-templates")
+    suspend fun getTemplates(@QueryMap filters: Map<String, String>? = null): Response<TemplateListResponse>
+    
+    @GET("learning-path-templates/featured")
+    suspend fun getFeaturedTemplates(): Response<TemplateListResponse>
+    
+    @GET("learning-path-templates/popular")
+    suspend fun getPopularTemplates(): Response<TemplateListResponse>
+    
+    @GET("learning-path-templates/categories")
+    suspend fun getTemplateCategories(): Response<TemplateCategoriesResponse>
+    
+    @GET("learning-path-templates/category/{category}")
+    suspend fun getTemplatesByCategory(@Path("category") category: String): Response<TemplateListResponse>
+    
+    @GET("learning-path-templates/{id}")
+    suspend fun getTemplateDetail(@Path("id") id: Long): Response<TemplateDetailResponse>
+    
+    @POST("learning-path-templates/{id}/clone")
+    suspend fun cloneTemplate(@Path("id") id: Long): Response<CloneTemplateResponse>
 }
