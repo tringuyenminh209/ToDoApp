@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp"
+    app:strokeWidth="0.5dp"
+    app:strokeColor="@color/line_variant">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="12dp"
-    android:background="?attr/selectableItemBackground">
+    android:padding="16dp">
 
     <!-- Priority Indicator -->
     <View
@@ -29,7 +41,9 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
-            android:layout_marginBottom="4dp"
+            android:includeFontPadding="false"
+            android:lineSpacingMultiplier="1.1"
+            android:layout_marginBottom="6dp"
             tools:text="Java構文とデータ型" />
 
         <!-- Description -->
@@ -39,6 +53,8 @@
             android:layout_height="wrap_content"
             android:textSize="13sp"
             android:textColor="@color/text_secondary"
+            android:includeFontPadding="false"
+            android:lineSpacingMultiplier="1.3"
             android:layout_marginBottom="8dp"
             android:visibility="gone"
             tools:visibility="visible"
@@ -50,29 +66,72 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_duration"
+            <!-- Duration with background -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@color/text_hint"
-                android:drawableStart="@android:drawable/ic_menu_recent_history"
-                android:drawablePadding="4dp"
-                android:layout_marginEnd="12dp"
-                tools:text="5時間" />
+                android:orientation="horizontal"
+                android:background="@drawable/bg_rounded_light"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:gravity="center_vertical"
+                android:layout_marginEnd="8dp">
 
-            <TextView
-                android:id="@+id/tv_resources"
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_calendar"
+                    android:tint="@color/text_muted"
+                    android:layout_marginEnd="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:includeFontPadding="false"
+                    tools:text="5時間" />
+            </LinearLayout>
+
+            <!-- Resources with background -->
+            <LinearLayout
+                android:id="@+id/layout_resources"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@color/text_hint"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_rounded_light"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:gravity="center_vertical"
                 android:visibility="gone"
-                tools:visibility="visible"
-                tools:text="📚 2個のリソース" />
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_link"
+                    android:tint="@color/text_muted"
+                    android:layout_marginEnd="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_resources"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:includeFontPadding="false"
+                    tools:text="2個のリソース" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
 
 </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
 

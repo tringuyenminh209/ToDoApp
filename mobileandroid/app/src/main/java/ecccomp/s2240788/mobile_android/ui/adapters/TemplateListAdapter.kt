@@ -66,11 +66,11 @@ class TemplateListAdapter(
                     tvUsageCount.text = "新着"
                 }
                 
-                // Featured badge
+                // Featured badge - giờ là LinearLayout
                 if (template.isFeatured) {
-                    chipFeatured.visibility = android.view.View.VISIBLE
+                    badgeFeatured.visibility = android.view.View.VISIBLE
                 } else {
-                    chipFeatured.visibility = android.view.View.GONE
+                    badgeFeatured.visibility = android.view.View.GONE
                 }
                 
                 // Card color accent

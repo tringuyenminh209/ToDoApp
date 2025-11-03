@@ -53,16 +53,14 @@ class PathsAdapter(
                     tvPathDescription.visibility = View.GONE
                 }
 
-                // Status indicator color
-                val statusColor = when (path.status) {
-                    "completed" -> R.color.success
-                    "in_progress", "active" -> R.color.primary
-                    "paused" -> R.color.warning
-                    else -> R.color.text_muted
+                // Status text - giờ là TextView trong LinearLayout
+                val statusText = when (path.status) {
+                    "completed" -> "完了"
+                    "in_progress", "active" -> "進行中"
+                    "paused" -> "一時停止"
+                    else -> "未開始"
                 }
-                statusIndicator.setCardBackgroundColor(
-                    ContextCompat.getColor(itemView.context, statusColor)
-                )
+                tvStatus.text = statusText
 
                 // Progress bar
                 progressBar.setProgressCompat(path.progress_percentage, true)
@@ -86,19 +84,31 @@ class PathsAdapter(
                     tvTargetDate.visibility = View.GONE
                 }
 
-                // Complete button - hide if already completed
-                if (path.status == "completed") {
-                    btnComplete.visibility = View.GONE
-                } else {
-                    btnComplete.visibility = View.VISIBLE
-                    btnComplete.setOnClickListener {
-                        onCompleteClick(path)
+                // More button - thay thế Complete và Delete buttons
+                btnMore.setOnClickListener {
+                    // Show popup menu với options Complete và Delete
+                    val popup = android.widget.PopupMenu(itemView.context, it)
+                    popup.menuInflater.inflate(R.menu.menu_path_actions, popup.menu)
+                    
+                    // Hide complete option if already completed
+                    if (path.status == "completed") {
+                        popup.menu.findItem(R.id.action_complete)?.isVisible = false
                     }
-                }
-
-                // Delete button
-                btnDelete.setOnClickListener {
-                    onDeleteClick(path)
+                    
+                    popup.setOnMenuItemClickListener { menuItem ->
+                        when (menuItem.itemId) {
+                            R.id.action_complete -> {
+                                onCompleteClick(path)
+                                true
+                            }
+                            R.id.action_delete -> {
+                                onDeleteClick(path)
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                    popup.show()
                 }
 
                 // Card click

@@ -117,8 +117,13 @@ data class LearningMilestone(
 data class CreateLearningPathRequest(
     val title: String,
     val description: String?,
-    val category: String?,
-    val target_date: String?
+    val goal_type: String,
+    val target_start_date: String?,
+    val target_end_date: String?,
+    val estimated_hours_total: Int?,
+    val tags: List<String>? = null,
+    val color: String? = null,
+    val icon: String? = null
 )
 
 // Statistics Models

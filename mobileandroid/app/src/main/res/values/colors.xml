@@ -51,6 +51,7 @@
     <color name="glassmorphism_overlay">#1AFFFFFF</color>
 
     <!-- Border Colors -->
+    <color name="border_color">#E2E8F0</color>
     <color name="line">#E2E8F0</color>
     <color name="line_variant">#CBD5E1</color>
 

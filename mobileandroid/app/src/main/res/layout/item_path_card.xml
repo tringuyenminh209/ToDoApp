@@ -5,164 +5,269 @@
     android:id="@+id/card_path"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_md"
+    android:layout_marginBottom="16dp"
+    android:clickable="true"
+    android:focusable="true"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="@dimen/radius_lg"
-    app:cardElevation="@dimen/elevation_sm"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp"
     app:strokeWidth="0.5dp"
     app:strokeColor="@color/line_variant">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_lg">
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <!-- Status Indicator -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/status_indicator"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginTop="6dp"
-            app:cardBackgroundColor="@color/primary"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:strokeWidth="0dp" />
-
-        <!-- Path Title -->
-        <TextView
-            android:id="@+id/tv_path_title"
-            android:layout_width="0dp"
+        <!-- Header Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_md"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/text_primary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:lineSpacingExtra="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/status_indicator"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Học Full-stack Development" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
 
-        <!-- Path Description -->
-        <TextView
-            android:id="@+id/tv_path_description"
-            android:layout_width="0dp"
+            <!-- Icon -->
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_target"
+                android:tint="@color/text_muted"
+                android:padding="10dp"
+                android:background="@drawable/icon_background_primary"
+                android:layout_marginEnd="12dp" />
+
+            <!-- Title & Description -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_path_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="1.0"
+                    android:layout_marginBottom="6dp"
+                    tools:text="Học Full-stack Development" />
+
+                <TextView
+                    android:id="@+id/tv_path_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="1.2"
+                    tools:text="Frontend + Backend + Database" />
+            </LinearLayout>
+
+            <!-- Status Badge -->
+            <LinearLayout
+                android:id="@+id/status_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_featured"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="進行中"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    android:includeFontPadding="false"
+                    tools:text="進行中" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Stats Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_md"
-            android:layout_marginTop="@dimen/spacing_xs"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/status_indicator"
-            app:layout_constraintTop_toBottomOf="@id/tv_path_title"
-            tools:text="Frontend + Backend + Database" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <!-- Duration -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    android:includeFontPadding="false"
+                    android:layout_marginBottom="4dp"
+                    tools:text="240時間" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="学習時間"
+                    android:textSize="11sp"
+                    android:textColor="@color/text_secondary"
+                    android:includeFontPadding="false" />
+            </LinearLayout>
+
+            <!-- Milestones -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_milestones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    android:includeFontPadding="false"
+                    android:layout_marginBottom="4dp"
+                    tools:text="5マイルストーン" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="段階"
+                    android:textSize="11sp"
+                    android:textColor="@color/text_secondary"
+                    android:includeFontPadding="false" />
+            </LinearLayout>
+
+            <!-- Tasks -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_tasks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    android:includeFontPadding="false"
+                    android:layout_marginBottom="4dp"
+                    tools:text="45タスク" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="タスク"
+                    android:textSize="11sp"
+                    android:textColor="@color/text_secondary"
+                    android:includeFontPadding="false" />
+            </LinearLayout>
+        </LinearLayout>
 
         <!-- Progress Section -->
         <LinearLayout
-            android:id="@+id/progress_container"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_md"
-            android:layout_marginTop="@dimen/spacing_md"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/status_indicator"
-            app:layout_constraintTop_toBottomOf="@id/tv_path_description">
+            android:layout_marginBottom="12dp">
 
             <!-- Progress Bar -->
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progress_bar"
                 android:layout_width="match_parent"
-                android:layout_height="6dp"
+                android:layout_height="8dp"
+                android:layout_marginBottom="8dp"
                 app:indicatorColor="@color/primary"
                 app:trackColor="@color/line"
-                app:trackCornerRadius="3dp"
+                app:trackCornerRadius="4dp"
                 tools:progress="65" />
 
-            <!-- Progress Info -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Progress Text -->
+            <TextView
+                android:id="@+id/tv_progress_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xs"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tv_progress_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="5/8 milestones • 65%" />
-
-                <TextView
-                    android:id="@+id/tv_target_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_muted"
-                    android:textSize="11sp"
-                    android:drawableStart="@drawable/ic_calendar"
-                    android:drawablePadding="4dp"
-                    android:drawableTint="@color/text_muted"
-                    tools:text="Target: 12/2025" />
-
-            </LinearLayout>
-
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="学習期間" />
         </LinearLayout>
 
-        <!-- Action Buttons -->
+        <!-- Bottom Info Row -->
         <LinearLayout
-            android:id="@+id/action_buttons"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_md"
-            android:layout_marginTop="@dimen/spacing_md"
             android:orientation="horizontal"
-            android:gravity="end"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/status_indicator"
-            app:layout_constraintTop_toBottomOf="@id/progress_container">
+            android:gravity="center_vertical">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_complete"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:text="@string/mark_complete"
+            <!-- Usage Count -->
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_person"
+                android:tint="@color/text_muted"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/tv_usage_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/text_muted"
                 android:textSize="12sp"
-                android:textStyle="bold"
-                android:textColor="@color/success"
-                app:icon="@drawable/ic_check"
-                app:iconSize="16dp"
-                app:iconTint="@color/success"
-                app:iconGravity="textStart" />
+                tools:text="125人が使用中" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_delete"
-                style="@style/Widget.Material3.Button.TextButton"
+            <!-- Target Date -->
+            <TextView
+                android:id="@+id/tv_target_date"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginStart="@dimen/spacing_sm"
-                android:text="@string/delete"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:textColor="@color/error"
-                app:icon="@drawable/ic_close"
-                app:iconSize="16dp"
-                app:iconTint="@color/error"
-                app:iconGravity="textStart" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_muted"
+                android:textSize="11sp"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="4dp"
+                android:drawableTint="@color/text_muted"
+                android:visibility="gone"
+                tools:text="12/2025" />
 
+            <!-- Action Buttons -->
+            <ImageView
+                android:id="@+id/btn_more"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_more"
+                android:tint="@color/text_muted"
+                android:padding="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless" />
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
 

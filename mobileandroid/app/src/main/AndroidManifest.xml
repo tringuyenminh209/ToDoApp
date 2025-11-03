@@ -90,6 +90,10 @@
         <activity
             android:name=".ui.activities.TemplateListActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.activities.CreateLearningPathActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- Onboarding Activity (LAUNCHER for Preview) -->
         <activity

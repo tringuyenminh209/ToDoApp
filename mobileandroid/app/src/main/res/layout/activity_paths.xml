@@ -290,7 +290,7 @@
                 android:layout_marginBottom="@dimen/spacing_xl"
                 android:nestedScrollingEnabled="false"
                 tools:itemCount="3"
-                tools:listitem="@layout/item_task_card" />
+                tools:listitem="@layout/item_path_card" />
 
             <!-- Empty State -->
             <LinearLayout
