@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityTemplateDetailBinding
 import ecccomp.s2240788.mobile_android.data.models.getFormattedDuration
 import ecccomp.s2240788.mobile_android.data.models.getTotalMilestones
@@ -68,15 +69,16 @@ class TemplateDetailActivity : AppCompatActivity() {
         // Template Detail
         viewModel.templateDetail.observe(this) { template ->
             binding.apply {
-                // Header - Icon giờ là ImageView
-                // ivIcon.setImageResource() // Nếu cần set icon
+                // Icon - Load drawable from template.icon field
+                val iconResId = getIconResId(template.icon)
+                ivIcon.setImageResource(iconResId)
+                
                 tvTitle.text = template.title
                 tvDescription.text = template.description ?: ""
                 
                 // Badges
                 tvCategory.text = template.category.displayName
                 tvDifficulty.text = template.difficulty.displayName
-                // Không set color cho badge nữa vì dùng LinearLayout
                 
                 // Featured badge
                 if (template.isFeatured) {
@@ -107,7 +109,7 @@ class TemplateDetailActivity : AppCompatActivity() {
                     sectionMilestones.visibility = View.GONE
                 }
                 
-                // Color accent - không cần set cho appBarLayout nữa
+                // Color accent
                 try {
                     val color = Color.parseColor(template.color)
                     fabClone.backgroundTintList = android.content.res.ColorStateList.valueOf(color)
@@ -153,6 +155,24 @@ class TemplateDetailActivity : AppCompatActivity() {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 viewModel.clearMessage()
             }
+        }
+    }
+
+    private fun getIconResId(iconName: String?): Int {
+        if (iconName.isNullOrEmpty()) {
+            return R.drawable.ic_computer // Default icon
+        }
+        
+        val resId = resources.getIdentifier(
+            iconName,
+            "drawable",
+            packageName
+        )
+        
+        return if (resId != 0) {
+            resId
+        } else {
+            R.drawable.ic_computer // Fallback to default icon
         }
     }
 

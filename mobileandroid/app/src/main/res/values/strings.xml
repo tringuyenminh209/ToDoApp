@@ -563,4 +563,8 @@
     <string name="type_study">学習</string>
     <string name="type_work">仕事</string>
 
+    <!-- Learning Path Detail -->
+    <string name="milestones">マイルストーン</string>
+    <string name="target_date">目標日</string>
+
 </resources>

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.*
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
@@ -262,10 +263,26 @@ class TemplateViewModel : ViewModel() {
                         _message.value = body.message
                         Log.d(TAG, "Template cloned successfully: ${body.data.learningPathId}")
                     } else {
-                        _error.value = "テンプレートのクローンに失敗しました"
+                        _error.value = body?.message ?: "テンプレートのクローンに失敗しました"
                     }
                 } else {
-                    _error.value = "エラー: ${response.code()}"
+                    // Try to parse error message from response body
+                    val errorMessage = try {
+                        val errorBody = response.errorBody()?.string()
+                        if (errorBody != null) {
+                            // Try to parse as JSON to get message
+                            val gson = Gson()
+                            val errorJson = gson.fromJson(errorBody, Map::class.java)
+                            (errorJson["message"] as? String) ?: "テンプレートのクローンに失敗しました"
+                        } else {
+                            "エラー: ${response.code()}"
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error parsing error body", e)
+                        "エラー: ${response.code()}"
+                    }
+                    _error.value = errorMessage
+                    Log.e(TAG, "Clone template failed: ${response.code()} - $errorMessage")
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error cloning template", e)
