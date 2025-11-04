@@ -42,6 +42,9 @@ class PathsViewModel : ViewModel() {
     private val _overallProgress = MutableLiveData<Int>()
     val overallProgress: LiveData<Int> = _overallProgress
 
+    private val _pathDetail = MutableLiveData<LearningPath?>()
+    val pathDetail: LiveData<LearningPath?> = _pathDetail
+
     private var currentFilter: FilterType = FilterType.ALL
 
     enum class FilterType {
@@ -214,6 +217,42 @@ class PathsViewModel : ViewModel() {
      */
     fun refreshPaths() {
         fetchPaths()
+    }
+
+    /**
+     * Learning Path の詳細を取得
+     */
+    fun getLearningPathDetail(pathId: Int) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                val response = apiService.getLearningPath(pathId)
+
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse?.success == true) {
+                        _pathDetail.value = apiResponse.data
+                    } else {
+                        _error.value = apiResponse?.message ?: "学習パス詳細の取得に失敗しました"
+                    }
+                } else {
+                    _error.value = "ネットワークエラー: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "エラーが発生しました: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Path 詳細をクリア
+     */
+    fun clearPathDetail() {
+        _pathDetail.value = null
     }
 }
 

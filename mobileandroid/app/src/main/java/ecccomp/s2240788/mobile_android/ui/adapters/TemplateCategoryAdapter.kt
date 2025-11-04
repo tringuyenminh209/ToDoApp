@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ItemTemplateCategoryBinding
 import ecccomp.s2240788.mobile_android.data.models.TemplateCategory
 import ecccomp.s2240788.mobile_android.data.models.TemplateCategoryCount
@@ -38,8 +39,9 @@ class TemplateCategoryAdapter(
             val category = TemplateCategory.fromValue(categoryCount.category)
             
             binding.apply {
-                // Icon
-                tvIcon.text = getCategoryIcon(category)
+                // Icon - Load drawable resource
+                val iconResId = getCategoryIconResId(category)
+                tvIcon.setImageResource(iconResId)
                 
                 // Name
                 tvCategoryName.text = category.displayName
@@ -54,14 +56,14 @@ class TemplateCategoryAdapter(
             }
         }
 
-        private fun getCategoryIcon(category: TemplateCategory): String {
+        private fun getCategoryIconResId(category: TemplateCategory): Int {
             return when (category) {
-                TemplateCategory.PROGRAMMING -> "💻"
-                TemplateCategory.DESIGN -> "🎨"
-                TemplateCategory.BUSINESS -> "💼"
-                TemplateCategory.LANGUAGE -> "🗣️"
-                TemplateCategory.DATA_SCIENCE -> "📊"
-                TemplateCategory.OTHER -> "📚"
+                TemplateCategory.PROGRAMMING -> R.drawable.ic_computer
+                TemplateCategory.DESIGN -> R.drawable.ic_palette
+                TemplateCategory.BUSINESS -> R.drawable.ic_briefcase
+                TemplateCategory.LANGUAGE -> R.drawable.ic_language
+                TemplateCategory.DATA_SCIENCE -> R.drawable.ic_stats
+                TemplateCategory.OTHER -> R.drawable.ic_book
             }
         }
     }

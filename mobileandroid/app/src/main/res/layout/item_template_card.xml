@@ -28,14 +28,14 @@
             android:gravity="center_vertical"
             android:layout_marginBottom="12dp">
 
-            <TextView
+
+           <ImageView
                 android:id="@+id/tv_icon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:gravity="center"
-                android:textSize="32sp"
+                android:padding="8dp"
                 android:background="@drawable/bg_circle_light"
-                tools:text="☕" />
+                android:src="@drawable/ic_java"/>
 
             <Space
                 android:layout_width="0dp"
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/priority_high"
                     android:includeFontPadding="false"
                     tools:text="プログラミング" />
             </LinearLayout>
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:textColor="@color/success"
+                    android:textColor="@color/text_primary"
                     android:includeFontPadding="false"
                     tools:text="初級" />
             </LinearLayout>
@@ -157,7 +157,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="4dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -168,22 +168,25 @@
 
                 <TextView
                     android:id="@+id/tv_duration"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/success"
                     android:includeFontPadding="false"
+                    android:singleLine="true"
+                    android:gravity="center"
                     android:layout_marginBottom="4dp"
                     tools:text="240時間" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="学習時間"
                     android:textSize="11sp"
                     android:textColor="@color/text_secondary"
-                    android:includeFontPadding="false" />
+                    android:includeFontPadding="false"
+                    android:gravity="center" />
             </LinearLayout>
 
             <View
@@ -200,22 +203,25 @@
 
                 <TextView
                     android:id="@+id/tv_milestones"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/success"
                     android:includeFontPadding="false"
+                    android:singleLine="true"
+                    android:gravity="center"
                     android:layout_marginBottom="4dp"
                     tools:text="5マイルストーン" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="段階"
                     android:textSize="11sp"
                     android:textColor="@color/text_secondary"
-                    android:includeFontPadding="false" />
+                    android:includeFontPadding="false"
+                    android:gravity="center" />
             </LinearLayout>
 
             <View
@@ -232,22 +238,25 @@
 
                 <TextView
                     android:id="@+id/tv_tasks"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/success"
                     android:includeFontPadding="false"
+                    android:singleLine="true"
+                    android:gravity="center"
                     android:layout_marginBottom="4dp"
                     tools:text="45タスク" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="タスク"
                     android:textSize="11sp"
                     android:textColor="@color/text_secondary"
-                    android:includeFontPadding="false" />
+                    android:includeFontPadding="false"
+                    android:gravity="center" />
             </LinearLayout>
         </LinearLayout>
 

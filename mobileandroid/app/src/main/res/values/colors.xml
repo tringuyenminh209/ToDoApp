@@ -7,8 +7,8 @@
     <color name="primary_light">#E6F8F1</color>
     <color name="primary_dark">#00503C</color>
 
-    <!-- Accent Colors (Electric Blue)  -->
-    <color name="accent">#1F6FEB</color>
+    <!-- Accent Colors  -->
+    <color name="accent">#475569</color>
     <color name="accent_hover">#1D4ED8</color>
     <color name="accent_press">#1E40AF</color>
     <color name="accent_light">#EEF5FF</color>

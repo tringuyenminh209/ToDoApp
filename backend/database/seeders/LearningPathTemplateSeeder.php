@@ -52,7 +52,7 @@ class LearningPathTemplateSeeder extends Seeder
             'difficulty' => 'beginner',
             'estimated_hours_total' => 240,
             'tags' => ['java', 'backend', 'spring', 'oop'],
-            'icon' => '☕',
+            'icon' => 'ic_java',
             'color' => '#ED8B00',
             'is_featured' => true,
         ]);
@@ -280,7 +280,7 @@ class LearningPathTemplateSeeder extends Seeder
             'difficulty' => 'beginner',
             'estimated_hours_total' => 180,
             'tags' => ['react', 'javascript', 'frontend', 'web'],
-            'icon' => '⚛️',
+            'icon' => 'ic_reactnative',
             'color' => '#61DAFB',
             'is_featured' => true,
         ]);
@@ -471,7 +471,7 @@ class LearningPathTemplateSeeder extends Seeder
             'difficulty' => 'beginner',
             'estimated_hours_total' => 200,
             'tags' => ['python', 'data-science', 'machine-learning', 'pandas'],
-            'icon' => '🐍',
+            'icon' => 'ic_python',
             'color' => '#3776AB',
             'is_featured' => true,
         ]);
@@ -610,7 +610,7 @@ class LearningPathTemplateSeeder extends Seeder
             'difficulty' => 'beginner',
             'estimated_hours_total' => 120,
             'tags' => ['ui', 'ux', 'figma', 'design'],
-            'icon' => '🎨',
+            'icon' => 'ic_design',
             'color' => '#F24E1E',
             'is_featured' => true,
         ]);
@@ -741,7 +741,7 @@ class LearningPathTemplateSeeder extends Seeder
             'difficulty' => 'intermediate',
             'estimated_hours_total' => 320,
             'tags' => ['fullstack', 'react', 'node', 'database'],
-            'icon' => '🌐',
+            'icon' => 'ic_fullstack',
             'color' => '#68A063',
             'is_featured' => true,
         ]);
@@ -796,7 +796,7 @@ class LearningPathTemplateSeeder extends Seeder
             'difficulty' => 'beginner',
             'estimated_hours_total' => 220,
             'tags' => ['android', 'kotlin', 'mobile', 'jetpack-compose'],
-            'icon' => '📱',
+            'icon' => 'ic_android',
             'color' => '#3DDC84',
             'is_featured' => false,
         ]);
@@ -851,7 +851,7 @@ class LearningPathTemplateSeeder extends Seeder
             'difficulty' => 'intermediate',
             'estimated_hours_total' => 180,
             'tags' => ['english', 'business', 'communication'],
-            'icon' => '🗣️',
+            'icon' => 'ic_language',
             'color' => '#4285F4',
             'is_featured' => false,
         ]);
@@ -898,7 +898,7 @@ class LearningPathTemplateSeeder extends Seeder
             'difficulty' => 'beginner',
             'estimated_hours_total' => 160,
             'tags' => ['marketing', 'seo', 'sns', 'analytics'],
-            'icon' => '📊',
+            'icon' => 'ic_marketing',
             'color' => '#EA4335',
             'is_featured' => false,
         ]);
@@ -945,7 +945,7 @@ class LearningPathTemplateSeeder extends Seeder
             'difficulty' => 'intermediate',
             'estimated_hours_total' => 200,
             'tags' => ['laravel', 'php', 'backend', 'api'],
-            'icon' => '🔴',
+            'icon' => 'ic_laravel',
             'color' => '#FF2D20',
             'is_featured' => true,
         ]);
@@ -1000,7 +1000,7 @@ class LearningPathTemplateSeeder extends Seeder
             'difficulty' => 'intermediate',
             'estimated_hours_total' => 160,
             'tags' => ['machine-learning', 'python', 'ai', 'deep-learning'],
-            'icon' => '🤖',
+            'icon' => 'ic_machine',
             'color' => '#FF6F00',
             'is_featured' => false,
         ]);

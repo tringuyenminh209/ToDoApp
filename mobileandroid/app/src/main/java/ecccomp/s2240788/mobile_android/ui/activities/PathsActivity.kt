@@ -45,8 +45,10 @@ class PathsActivity : BaseActivity() {
     private fun setupRecyclerView() {
         adapter = PathsAdapter(
             onPathClick = { path ->
-                // TODO: Open path detail
-                Toast.makeText(this, "Path: ${path.title}", Toast.LENGTH_SHORT).show()
+                // Navigate to learning path detail
+                val intent = Intent(this, LearningPathDetailActivity::class.java)
+                intent.putExtra("LEARNING_PATH_ID", path.id)
+                startActivity(intent)
             },
             onCompleteClick = { path ->
                 viewModel.completePath(path.id)

@@ -94,6 +94,9 @@
             android:name=".ui.activities.CreateLearningPathActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.activities.LearningPathDetailActivity"
+            android:exported="false" />
 
         <!-- Onboarding Activity (LAUNCHER for Preview) -->
         <activity

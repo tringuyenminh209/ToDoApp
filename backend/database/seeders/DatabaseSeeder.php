@@ -16,15 +16,14 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'NGUYEN MINH TRI',
+            'email' => '2240788@ecc.ac.jp',
             'password' => '123456q12S'
         ]);
 
         // Seed Learning Path Templates
         $this->call([
             LearningPathTemplateSeeder::class,
-            TestUserLearningPathsSeeder::class,
         ]);
     }
 }

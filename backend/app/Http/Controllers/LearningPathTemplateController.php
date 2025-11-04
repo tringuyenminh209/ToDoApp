@@ -137,8 +137,17 @@ class LearningPathTemplateController extends Controller
     public function clone(Request $request, $id)
     {
         try {
-            $template = LearningPathTemplate::with('milestones.tasks')->findOrFail($id);
+            // Validate user
             $user = $request->user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => '認証が必要です'
+                ], 401);
+            }
+
+            // Get template with relationships
+            $template = LearningPathTemplate::with('milestones.tasks')->findOrFail($id);
 
             DB::beginTransaction();
 
@@ -148,34 +157,38 @@ class LearningPathTemplateController extends Controller
                 'title' => $template->title,
                 'description' => $template->description,
                 'goal_type' => $this->mapCategoryToGoalType($template->category),
-                'estimated_hours_total' => $template->estimated_hours_total,
+                'estimated_hours_total' => $template->estimated_hours_total ?? 0,
                 'status' => 'active',
                 'is_ai_generated' => false,
                 'ai_prompt' => null,
             ]);
 
             // Clone milestones and tasks
-            foreach ($template->milestones as $milestoneTemplate) {
-                $milestone = $learningPath->milestones()->create([
-                    'title' => $milestoneTemplate->title,
-                    'description' => $milestoneTemplate->description,
-                    'sort_order' => $milestoneTemplate->sort_order,
-                    'estimated_hours' => $milestoneTemplate->estimated_hours,
-                    'status' => 'not_started',
-                ]);
-
-                // Clone tasks
-                foreach ($milestoneTemplate->tasks as $taskTemplate) {
-                    Task::create([
-                        'user_id' => $user->id,
-                        'learning_milestone_id' => $milestone->id,
-                        'title' => $taskTemplate->title,
-                        'description' => $taskTemplate->description,
-                        'category' => 'study',
-                        'estimated_minutes' => $taskTemplate->estimated_minutes,
-                        'priority' => $taskTemplate->priority,
+            if ($template->milestones && $template->milestones->count() > 0) {
+                foreach ($template->milestones as $milestoneTemplate) {
+                    $milestone = $learningPath->milestones()->create([
+                        'title' => $milestoneTemplate->title ?? 'Untitled Milestone',
+                        'description' => $milestoneTemplate->description,
+                        'sort_order' => $milestoneTemplate->sort_order ?? 0,
+                        'estimated_hours' => $milestoneTemplate->estimated_hours ?? 0,
                         'status' => 'pending',
                     ]);
+
+                    // Clone tasks if they exist
+                    if ($milestoneTemplate->tasks && $milestoneTemplate->tasks->count() > 0) {
+                        foreach ($milestoneTemplate->tasks as $taskTemplate) {
+                            Task::create([
+                                'user_id' => $user->id,
+                                'learning_milestone_id' => $milestone->id,
+                                'title' => $taskTemplate->title ?? 'Untitled Task',
+                                'description' => $taskTemplate->description,
+                                'category' => 'study',
+                                'estimated_minutes' => $taskTemplate->estimated_minutes ?? 0,
+                                'priority' => $taskTemplate->priority ?? 3,
+                                'status' => 'pending',
+                            ]);
+                        }
+                    }
                 }
             }
 
@@ -192,12 +205,20 @@ class LearningPathTemplateController extends Controller
                     'learning_path' => $learningPath->load('milestones.tasks')
                 ]
             ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            DB::rollBack();
+            Log::error('Template not found: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'テンプレートが見つかりません'
+            ], 404);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error cloning template: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
             return response()->json([
                 'success' => false,
-                'message' => 'テンプレートのクローンに失敗しました'
+                'message' => 'テンプレートのクローンに失敗しました: ' . $e->getMessage()
             ], 500);
         }
     }

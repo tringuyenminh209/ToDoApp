@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ItemTemplateCardBinding
 import ecccomp.s2240788.mobile_android.data.models.LearningPathTemplate
-import ecccomp.s2240788.mobile_android.data.models.getCategoryIcon
 import ecccomp.s2240788.mobile_android.data.models.getFormattedDuration
 import ecccomp.s2240788.mobile_android.data.models.getTotalMilestones
 import ecccomp.s2240788.mobile_android.data.models.getTotalTasks
@@ -40,8 +40,11 @@ class TemplateListAdapter(
 
         fun bind(template: LearningPathTemplate) {
             binding.apply {
-                // Icon and title
-                tvIcon.text = template.icon ?: template.getCategoryIcon()
+                // Icon - Load drawable from template.icon field
+                val iconResId = getIconResId(template.icon)
+                tvIcon.setImageResource(iconResId)
+                
+                // Title
                 tvTitle.text = template.title
                 
                 // Description
@@ -66,7 +69,7 @@ class TemplateListAdapter(
                     tvUsageCount.text = "新着"
                 }
                 
-                // Featured badge - giờ là LinearLayout
+                // Featured badge
                 if (template.isFeatured) {
                     badgeFeatured.visibility = android.view.View.VISIBLE
                 } else {
@@ -84,6 +87,25 @@ class TemplateListAdapter(
                 root.setOnClickListener {
                     onTemplateClick(template)
                 }
+            }
+        }
+
+        private fun getIconResId(iconName: String?): Int {
+            if (iconName.isNullOrEmpty()) {
+                return R.drawable.ic_computer // Default icon
+            }
+            
+            val context = binding.root.context
+            val resId = context.resources.getIdentifier(
+                iconName,
+                "drawable",
+                context.packageName
+            )
+            
+            return if (resId != 0) {
+                resId
+            } else {
+                R.drawable.ic_computer // Fallback to default icon
             }
         }
     }
