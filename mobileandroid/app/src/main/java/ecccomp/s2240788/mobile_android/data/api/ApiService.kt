@@ -37,6 +37,9 @@ interface ApiService {
     @GET("tasks")
     suspend fun getTasks(): Response<ApiResponse<Any>>
 
+    @GET("tasks/{id}")
+    suspend fun getTask(@Path("id") id: Int): Response<ApiResponse<Task>>
+
     @POST("tasks")
     suspend fun createTask(@Body task: CreateTaskRequest): Response<ApiResponse<Task>>
 

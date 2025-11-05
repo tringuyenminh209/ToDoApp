@@ -57,6 +57,14 @@ class MilestoneDetailActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
+
+        binding.btnViewKnowledge.setOnClickListener {
+            // Navigate to milestone knowledge activity
+            val intent = Intent(this, MilestoneKnowledgeActivity::class.java)
+            intent.putExtra("MILESTONE_ID", milestoneId)
+            intent.putExtra("MILESTONE_TITLE", binding.tvTitle.text.toString())
+            startActivity(intent)
+        }
     }
 
     private fun setupRecyclerView() {

@@ -246,6 +246,13 @@ class TaskViewModel : ViewModel() {
 
     private fun convertMapToTask(map: Map<*, *>): Task? {
         return try {
+            // Parse subtasks
+            val subtasksList = (map["subtasks"] as? List<*>)?.mapNotNull { subtaskMap ->
+                if (subtaskMap is Map<*, *>) {
+                    convertMapToSubtask(subtaskMap)
+                } else null
+            }
+
             Task(
                 id = (map["id"] as? Number)?.toInt() ?: 0,
                 title = map["title"] as? String ?: "",
@@ -261,7 +268,25 @@ class TaskViewModel : ViewModel() {
                 user_id = (map["user_id"] as? Number)?.toInt() ?: 0,
                 project_id = (map["project_id"] as? Number)?.toInt(),
                 learning_milestone_id = (map["learning_milestone_id"] as? Number)?.toInt(),
-                ai_breakdown_enabled = map["ai_breakdown_enabled"] as? Boolean ?: false
+                ai_breakdown_enabled = map["ai_breakdown_enabled"] as? Boolean ?: false,
+                subtasks = subtasksList
+            )
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun convertMapToSubtask(map: Map<*, *>): ecccomp.s2240788.mobile_android.data.models.Subtask? {
+        return try {
+            ecccomp.s2240788.mobile_android.data.models.Subtask(
+                id = (map["id"] as? Number)?.toInt() ?: 0,
+                task_id = (map["task_id"] as? Number)?.toInt() ?: 0,
+                title = map["title"] as? String ?: "",
+                is_completed = map["is_completed"] as? Boolean ?: false,
+                estimated_minutes = (map["estimated_minutes"] as? Number)?.toInt(),
+                sort_order = (map["sort_order"] as? Number)?.toInt() ?: 0,
+                created_at = map["created_at"] as? String ?: "",
+                updated_at = map["updated_at"] as? String ?: ""
             )
         } catch (e: Exception) {
             null
