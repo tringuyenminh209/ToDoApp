@@ -23,6 +23,9 @@ class KnowledgeActivity : BaseActivity() {
 
     private lateinit var binding: ActivityKnowledgeBinding
     private lateinit var viewModel: KnowledgeViewModel
+    private lateinit var adapter: ecccomp.s2240788.mobile_android.ui.adapters.KnowledgeAdapter
+    private var taskId: Int? = null
+    private var taskTitle: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,23 +34,60 @@ class KnowledgeActivity : BaseActivity() {
 
         viewModel = ViewModelProvider(this)[KnowledgeViewModel::class.java]
 
+        // Get task ID from intent (if coming from task detail)
+        taskId = intent.getIntExtra("TASK_ID", -1).takeIf { it != -1 }
+        taskTitle = intent.getStringExtra("TASK_TITLE")
+
         setupUI()
         setupClickListeners()
         setupObservers()
-        setupBottomNavigation()
+
+        // Only setup bottom navigation if not filtered by task
+        if (taskId == null) {
+            setupBottomNavigation()
+        } else {
+            binding.bottomNavigation.visibility = View.GONE
+            // Update title to show task name
+            taskTitle?.let {
+                binding.tvTitle.text = it
+                binding.tvSubtitle.text = "学習内容"
+            }
+        }
 
         // Load knowledge items
-        viewModel.loadKnowledgeItems()
+        taskId?.let {
+            viewModel.loadKnowledgeItemsByTask(it)
+        } ?: run {
+            viewModel.loadKnowledgeItems()
+        }
     }
 
     private fun setupUI() {
-        // RecyclerView setup (will be implemented with adapter)
+        // Setup Knowledge adapter
+        adapter = ecccomp.s2240788.mobile_android.ui.adapters.KnowledgeAdapter(
+            onItemClick = { item ->
+                // TODO: Open knowledge detail activity
+                Toast.makeText(this, "View: ${item.title}", Toast.LENGTH_SHORT).show()
+            },
+            onFavoriteClick = { item ->
+                viewModel.toggleFavorite(item.id) {
+                    Toast.makeText(this, "お気に入り更新", Toast.LENGTH_SHORT).show()
+                }
+            },
+            onMenuClick = { item ->
+                // TODO: Show menu options (edit, delete, archive, etc.)
+                Toast.makeText(this, "Menu: ${item.title}", Toast.LENGTH_SHORT).show()
+            }
+        )
+
+        // RecyclerView setup
         binding.rvKnowledge.layoutManager = LinearLayoutManager(this)
-        
+        binding.rvKnowledge.adapter = adapter
+
         // Categories RecyclerView
         binding.rvCategories.layoutManager = LinearLayoutManager(
-            this, 
-            LinearLayoutManager.HORIZONTAL, 
+            this,
+            LinearLayoutManager.HORIZONTAL,
             false
         )
     }
@@ -109,25 +149,28 @@ class KnowledgeActivity : BaseActivity() {
     }
 
     private fun setupObservers() {
-        viewModel.knowledgeItems.observe(this) { items ->
+        // Observe filtered items instead of knowledgeItems
+        viewModel.filteredItems.observe(this) { items ->
             if (items.isEmpty()) {
                 binding.emptyState.visibility = View.VISIBLE
                 binding.rvKnowledge.visibility = View.GONE
             } else {
                 binding.emptyState.visibility = View.GONE
                 binding.rvKnowledge.visibility = View.VISIBLE
-                // TODO: Submit list to adapter when created
+                adapter.submitList(items)
             }
         }
 
         viewModel.error.observe(this) { error ->
             error?.let {
                 Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                viewModel.clearError()
             }
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
-            // TODO: Show/hide loading indicator
+            // Show/hide loading indicator (if needed)
+            // binding.progressBarLoading?.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
 
@@ -170,7 +213,11 @@ class KnowledgeActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadKnowledgeItems()
+        taskId?.let {
+            viewModel.loadKnowledgeItemsByTask(it)
+        } ?: run {
+            viewModel.loadKnowledgeItems()
+        }
     }
 }
 

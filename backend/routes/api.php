@@ -13,6 +13,7 @@ use App\Http\Controllers\DailyReviewController;
 use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\LearningPathController;
 use App\Http\Controllers\LearningPathTemplateController;
+use App\Http\Controllers\KnowledgeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -186,6 +187,19 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Clone template to user's learning path
         Route::post('/{id}/clone', [LearningPathTemplateController::class, 'clone']);
+    });
+
+    // Knowledge routes
+    Route::prefix('knowledge')->group(function () {
+        Route::get('/stats', [KnowledgeController::class, 'stats']);
+        Route::get('/', [KnowledgeController::class, 'index']);
+        Route::post('/', [KnowledgeController::class, 'store']);
+        Route::get('/{id}', [KnowledgeController::class, 'show']);
+        Route::put('/{id}', [KnowledgeController::class, 'update']);
+        Route::delete('/{id}', [KnowledgeController::class, 'destroy']);
+        Route::put('/{id}/favorite', [KnowledgeController::class, 'toggleFavorite']);
+        Route::put('/{id}/archive', [KnowledgeController::class, 'toggleArchive']);
+        Route::put('/{id}/review', [KnowledgeController::class, 'markReviewed']);
     });
 
 });

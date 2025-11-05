@@ -18,10 +18,14 @@ class TaskTemplate extends Model
         'estimated_minutes',
         'priority',
         'resources',
+        'subtasks',
+        'knowledge_items',
     ];
 
     protected $casts = [
         'resources' => 'array',
+        'subtasks' => 'array',
+        'knowledge_items' => 'array',
         'sort_order' => 'integer',
         'estimated_minutes' => 'integer',
         'priority' => 'integer',

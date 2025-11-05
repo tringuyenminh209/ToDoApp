@@ -58,21 +58,42 @@ class TaskAdapter(
                     ContextCompat.getColor(itemView.context, priorityColor)
                 )
 
-                // Progress bar - simplified to 0, 50, 100
-                val progress = when (task.status) {
-                    "completed" -> 100
-                    "in_progress" -> 50
-                    else -> 0
-                }
-                progressBar.progress = progress
+                // Progress bar - calculate from subtasks if available
+                val subtasks = task.subtasks
+                if (!subtasks.isNullOrEmpty()) {
+                    val completedCount = subtasks.count { it.is_completed }
+                    val totalCount = subtasks.size
+                    val progress = (completedCount * 100) / totalCount
 
-                // Progress text
-                val progressText = when (task.status) {
-                    "completed" -> "完了"
-                    "in_progress" -> "進行中"
-                    else -> "未着手"
+                    progressBar.visibility = View.VISIBLE
+                    progressBar.progress = progress
+
+                    tvProgressText.visibility = View.VISIBLE
+                    tvProgressText.text = "$completedCount/$totalCount 完了"
+                } else {
+                    // Simple progress based on status
+                    val progress = when (task.status) {
+                        "completed" -> 100
+                        "in_progress" -> 50
+                        else -> 0
+                    }
+
+                    if (progress > 0) {
+                        progressBar.visibility = View.VISIBLE
+                        progressBar.progress = progress
+
+                        tvProgressText.visibility = View.VISIBLE
+                        val progressText = when (task.status) {
+                            "completed" -> "完了"
+                            "in_progress" -> "進行中"
+                            else -> "未着手"
+                        }
+                        tvProgressText.text = progressText
+                    } else {
+                        progressBar.visibility = View.GONE
+                        tvProgressText.visibility = View.GONE
+                    }
                 }
-                tvProgressText.text = progressText
 
                 // Estimated time
                 if (task.estimated_minutes != null && task.estimated_minutes > 0) {
@@ -80,6 +101,35 @@ class TaskAdapter(
                     tvTaskTime.text = "${task.estimated_minutes}分"
                 } else {
                     timeContainer.visibility = View.GONE
+                }
+
+                // Category badge
+                if (!task.category.isNullOrEmpty()) {
+                    categoryBadge.visibility = View.VISIBLE
+                    val categoryText = when (task.category) {
+                        "study" -> "学習"
+                        "work" -> "仕事"
+                        "personal" -> "個人"
+                        "other" -> "その他"
+                        else -> task.category
+                    }
+                    tvCategory.text = categoryText
+
+                    // Category color
+                    val (bgColor, textColor) = when (task.category) {
+                        "study" -> Pair(R.color.primary_light, R.color.primary)
+                        "work" -> Pair(R.color.warning_light, R.color.warning)
+                        "personal" -> Pair(R.color.success_light, R.color.success)
+                        else -> Pair(R.color.surface, R.color.text_muted)
+                    }
+                    categoryBadge.setCardBackgroundColor(
+                        ContextCompat.getColor(itemView.context, bgColor)
+                    )
+                    tvCategory.setTextColor(
+                        ContextCompat.getColor(itemView.context, textColor)
+                    )
+                } else {
+                    categoryBadge.visibility = View.GONE
                 }
 
                 // Deadline

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="center_vertical"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- Checkbox Circle -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/checkbox_indicator"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:cardBackgroundColor="@color/surface"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/line"
+        app:strokeWidth="1dp">
+
+        <ImageView
+            android:id="@+id/iv_check"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_check"
+            android:contentDescription="@null"
+            app:tint="@color/white"
+            android:visibility="gone" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Subtask Info -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
+
+        <!-- Subtask Title -->
+        <TextView
+            android:id="@+id/tv_subtask_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="サブタスクのタイトル"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
+            tools:text="ビデオを見る: Java基礎入門" />
+
+        <!-- Estimated Time -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_clock"
+                android:contentDescription="@null"
+                app:tint="@color/text_muted" />
+
+            <TextView
+                android:id="@+id/tv_subtask_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="25分"
+                android:textColor="@color/text_muted"
+                android:textSize="11sp"
+                tools:text="25分" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Start Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_start_subtask"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:contentDescription="@string/task_start"
+        app:backgroundTint="@color/primary"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/ic_play"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="16dp"
+        app:iconTint="@color/white" />
+
+</LinearLayout>

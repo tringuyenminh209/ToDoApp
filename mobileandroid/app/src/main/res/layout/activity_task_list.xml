@@ -207,6 +207,8 @@
                 android:id="@+id/rvTasks"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/spacing_lg"
+                android:layout_marginTop="@dimen/spacing_lg"
                 android:clipToPadding="false"
                 android:paddingTop="@dimen/spacing_sm"
                 android:paddingBottom="80dp"

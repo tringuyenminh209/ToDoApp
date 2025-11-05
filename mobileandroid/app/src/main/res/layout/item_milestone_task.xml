@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="1dp"
+    app:cardBackgroundColor="@color/white"
+    app:strokeWidth="0.5dp"
+    app:strokeColor="@color/line_variant">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Checkbox -->
+        <ImageView
+            android:id="@+id/iv_checkbox"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_circle_outline"
+            android:contentDescription="@string/task_status"
+            app:tint="@color/text_muted"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Content -->
+        <LinearLayout
+            android:id="@+id/content_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_checkbox"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Title and Priority -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_task_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="タスクのタイトル"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingMultiplier="1.1"
+                    tools:text="タスクのタイトル" />
+
+                <!-- Priority Badge -->
+                <TextView
+                    android:id="@+id/tv_priority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:text="高"
+                    android:textColor="@color/warning"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/badge_warning_light"
+                    android:includeFontPadding="false"
+                    tools:text="高" />
+
+            </LinearLayout>
+
+            <!-- Description -->
+            <TextView
+                android:id="@+id/tv_task_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="タスクの説明"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:lineSpacingMultiplier="1.2"
+                android:visibility="gone"
+                tools:text="タスクの説明"
+                tools:visibility="visible" />
+
+            <!-- Estimated Time -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_clock"
+                    android:contentDescription="@string/estimated_time"
+                    app:tint="@color/primary" />
+
+                <TextView
+                    android:id="@+id/tv_estimated_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="30分"
+                    android:textColor="@color/primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:includeFontPadding="false"
+                    tools:text="1時間30分" />
+
+            </LinearLayout>
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Knowledge Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_knowledge"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="学習内容"
+                    android:textSize="12sp"
+                    android:textColor="@color/primary"
+                    app:icon="@drawable/ic_book"
+                    app:iconSize="18dp"
+                    app:iconTint="@color/primary"
+                    app:iconGravity="start"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <!-- Expand Subtasks Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_expand_subtasks"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="サブタスク"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    app:icon="@drawable/ic_expand_more"
+                    app:iconSize="18dp"
+                    app:iconTint="@color/text_secondary"
+                    app:iconGravity="end"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <!-- Start Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="開始"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/primary"
+                    app:cornerRadius="8dp"
+                    app:icon="@drawable/ic_play"
+                    app:iconSize="16dp"
+                    app:iconTint="@color/white"
+                    app:iconGravity="textStart"
+                    app:iconPadding="4dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Subtasks Section (Expandable) -->
+        <LinearLayout
+            android:id="@+id/subtasks_section"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_checkbox"
+            app:layout_constraintTop_toBottomOf="@id/content_container"
+            tools:visibility="visible">
+
+            <!-- Subtasks List -->
+            <LinearLayout
+                android:id="@+id/subtasks_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

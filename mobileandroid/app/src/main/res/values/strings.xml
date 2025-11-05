@@ -567,4 +567,7 @@
     <string name="milestones">マイルストーン</string>
     <string name="target_date">目標日</string>
 
+    <!-- Milestone Detail -->
+    <string name="task_status">タスクステータス</string>
+
 </resources>
