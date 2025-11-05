@@ -77,4 +77,10 @@
     <color name="divider">#E5E7EB</color>
     <color name="background_light">#F9FAFB</color>
 
+    <!-- Calendar Colors -->
+    <color name="calendar_selected_date_text">#FFFFFF</color>
+    <color name="calendar_focused_month_text">#0B1220</color>
+    <color name="calendar_unfocused_month_text">#94A3B8</color>
+    <color name="calendar_selected_week_bg">#E6F8F1</color>
+
 </resources>

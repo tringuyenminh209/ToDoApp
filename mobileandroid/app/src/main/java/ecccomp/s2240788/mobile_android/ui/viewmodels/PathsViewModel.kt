@@ -204,6 +204,8 @@ class PathsViewModel : ViewModel() {
                 total_milestones = (map["total_milestones"] as? Number)?.toInt() ?: 0,
                 completed_milestones = (map["completed_milestones"] as? Number)?.toInt() ?: 0,
                 target_date = map["target_date"] as? String,
+                icon = map["icon"] as? String,
+                color = map["color"] as? String,
                 created_at = map["created_at"] as? String ?: "",
                 updated_at = map["updated_at"] as? String ?: ""
             )

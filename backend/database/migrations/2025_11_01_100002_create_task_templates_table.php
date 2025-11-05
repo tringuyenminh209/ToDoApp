@@ -30,6 +30,12 @@ return new class extends Migration
             // Resources
             $table->json('resources')->nullable()->comment('リソース（リンク、動画など）');
 
+            // Subtasks
+            $table->json('subtasks')->nullable()->comment('サブタスクのリスト');
+
+            // Knowledge Items
+            $table->json('knowledge_items')->nullable()->comment('学習コンテンツ（ノート、コード例、リンク、演習）');
+
             $table->timestamps();
 
             // Indexes

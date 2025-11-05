@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\LearningPath;
 use App\Models\LearningPathTemplate;
 use App\Models\Task;
+use App\Models\KnowledgeItem;
+use App\Models\KnowledgeCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -177,7 +179,7 @@ class LearningPathTemplateController extends Controller
                     // Clone tasks if they exist
                     if ($milestoneTemplate->tasks && $milestoneTemplate->tasks->count() > 0) {
                         foreach ($milestoneTemplate->tasks as $taskTemplate) {
-                            Task::create([
+                            $task = Task::create([
                                 'user_id' => $user->id,
                                 'learning_milestone_id' => $milestone->id,
                                 'title' => $taskTemplate->title ?? 'Untitled Task',
@@ -187,6 +189,24 @@ class LearningPathTemplateController extends Controller
                                 'priority' => $taskTemplate->priority ?? 3,
                                 'status' => 'pending',
                             ]);
+
+                            // Create subtasks from template
+                            if (!empty($taskTemplate->subtasks) && is_array($taskTemplate->subtasks)) {
+                                foreach ($taskTemplate->subtasks as $subtaskData) {
+                                    $task->subtasks()->create([
+                                        'title' => $subtaskData['title'] ?? 'Subtask',
+                                        'description' => $subtaskData['description'] ?? null,
+                                        'estimated_minutes' => $subtaskData['estimated_minutes'] ?? 0,
+                                        'is_completed' => false,
+                                        'sort_order' => $subtaskData['sort_order'] ?? 0,
+                                    ]);
+                                }
+                            }
+
+                            // Create knowledge items from template
+                            if (!empty($taskTemplate->knowledge_items) && is_array($taskTemplate->knowledge_items)) {
+                                $this->createKnowledgeItems($user->id, $learningPath->id, $task->id, $taskTemplate->knowledge_items);
+                            }
                         }
                     }
                 }
@@ -283,6 +303,57 @@ class LearningPathTemplateController extends Controller
         ];
 
         return $mapping[$category] ?? 'personal';
+    }
+
+    /**
+     * Create knowledge items for a task from template data
+     */
+    private function createKnowledgeItems($userId, $learningPathId, $taskId, $knowledgeItemsData)
+    {
+        // Get or create default category
+        $category = KnowledgeCategory::firstOrCreate(
+            ['user_id' => $userId, 'name' => 'プログラミング学習'],
+            ['description' => 'プログラミング学習用のメモとコード', 'icon' => 'code', 'color' => '#3B82F6']
+        );
+
+        foreach ($knowledgeItemsData as $itemData) {
+            $knowledgeItem = [
+                'user_id' => $userId,
+                'category_id' => $category->id,
+                'learning_path_id' => $learningPathId,
+                'source_task_id' => $taskId,
+                'title' => $itemData['title'] ?? 'Untitled',
+                'item_type' => $itemData['type'] ?? 'note',
+                'view_count' => 0,
+                'review_count' => 0,
+                'retention_score' => 3,
+                'is_favorite' => false,
+                'is_archived' => false,
+            ];
+
+            // Add type-specific fields
+            switch ($itemData['type'] ?? 'note') {
+                case 'note':
+                    $knowledgeItem['content'] = $itemData['content'] ?? '';
+                    break;
+                case 'code_snippet':
+                    $knowledgeItem['content'] = $itemData['content'] ?? '';
+                    $knowledgeItem['code_language'] = $itemData['code_language'] ?? 'java';
+                    break;
+                case 'resource_link':
+                    $knowledgeItem['title'] = $itemData['title'] ?? 'Resource';
+                    $knowledgeItem['url'] = $itemData['url'] ?? '';
+                    $knowledgeItem['content'] = $itemData['description'] ?? '';
+                    break;
+                case 'exercise':
+                    $knowledgeItem['question'] = $itemData['question'] ?? '';
+                    $knowledgeItem['answer'] = $itemData['answer'] ?? '';
+                    $knowledgeItem['difficulty'] = $itemData['difficulty'] ?? 'medium';
+                    break;
+            }
+
+            KnowledgeItem::create($knowledgeItem);
+        }
     }
 }
 

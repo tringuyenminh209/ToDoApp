@@ -42,6 +42,10 @@ class PathsAdapter(
 
         fun bind(path: LearningPath) {
             binding.apply {
+                // Icon - Load drawable from path.icon field
+                val iconResId = getIconResId(path.icon)
+                ivIcon.setImageResource(iconResId)
+                
                 // Title
                 tvPathTitle.text = path.title
 
@@ -115,6 +119,24 @@ class PathsAdapter(
                 root.setOnClickListener {
                     onPathClick(path)
                 }
+            }
+        }
+        
+        private fun getIconResId(iconName: String?): Int {
+            if (iconName.isNullOrEmpty()) {
+                return R.drawable.ic_computer // Default icon
+            }
+            
+            val resId = itemView.context.resources.getIdentifier(
+                iconName,
+                "drawable",
+                itemView.context.packageName
+            )
+            
+            return if (resId != 0) {
+                resId
+            } else {
+                R.drawable.ic_computer // Fallback to default icon
             }
         }
     }

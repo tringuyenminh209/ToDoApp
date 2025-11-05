@@ -275,4 +275,34 @@ class KnowledgeViewModel : ViewModel() {
     fun refreshKnowledgeItems() {
         loadKnowledgeItems()
     }
+
+    /**
+     * Load knowledge items for a specific task
+     */
+    fun loadKnowledgeItemsByTask(taskId: Int) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                // Load all knowledge items and filter by source_task_id
+                val response = apiService.getKnowledgeItems(null)
+
+                if (response.isSuccessful) {
+                    val allItems = response.body()?.data ?: emptyList()
+                    val taskItems = allItems.filter { it.source_task_id == taskId }
+                    _knowledgeItems.postValue(taskItems)
+                    applyFilterAndSearch()
+                } else {
+                    _error.value = "Failed to load knowledge items: ${response.message()}"
+                    _knowledgeItems.postValue(emptyList())
+                }
+            } catch (e: Exception) {
+                _error.value = "ネットワークエラー: ${e.message}"
+                _knowledgeItems.postValue(emptyList())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
 }

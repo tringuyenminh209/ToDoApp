@@ -352,15 +352,4 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Floating Action Button - Complete -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fab_complete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:text="完了にする"
-        app:icon="@drawable/ic_check"
-        app:backgroundTint="@color/success" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

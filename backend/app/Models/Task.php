@@ -65,6 +65,11 @@ class Task extends Model
         return $this->hasMany(FocusSession::class);
     }
 
+    public function knowledgeItems(): HasMany
+    {
+        return $this->hasMany(KnowledgeItem::class, 'source_task_id');
+    }
+
     // Scopes
     public function scopeByStatus($query, $status)
     {

@@ -60,8 +60,11 @@ class LearningPathDetailActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         milestoneAdapter = MilestoneAdapter(
             onMilestoneClick = { milestone ->
-                // TODO: Navigate to milestone detail or expand tasks
-                Toast.makeText(this, "Milestone: ${milestone.title}", Toast.LENGTH_SHORT).show()
+                // Navigate to milestone detail with tasks
+                val intent = Intent(this, MilestoneDetailActivity::class.java)
+                intent.putExtra("MILESTONE_ID", milestone.id)
+                intent.putExtra("LEARNING_PATH_ID", pathId)
+                startActivity(intent)
             }
         )
         binding.rvMilestones.apply {
@@ -121,12 +124,6 @@ class LearningPathDetailActivity : AppCompatActivity() {
                         sectionMilestones.visibility = View.GONE
                     }
 
-                    // Show/hide complete button based on status
-                    if (it.status == "completed") {
-                        fabComplete.visibility = View.GONE
-                    } else {
-                        fabComplete.visibility = View.VISIBLE
-                    }
                 }
             }
         }
@@ -146,20 +143,6 @@ class LearningPathDetailActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // Complete learning path
-        binding.fabComplete.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("学習パスを完了")
-                .setMessage("この学習パスを完了としてマークしますか？")
-                .setPositiveButton("完了") { _, _ ->
-                    viewModel.completePath(pathId)
-                    // Reload detail
-                    viewModel.getLearningPathDetail(pathId)
-                }
-                .setNegativeButton("キャンセル", null)
-                .show()
-        }
-
         // Edit learning path
         binding.btnEdit.setOnClickListener {
             // TODO: Navigate to edit learning path activity

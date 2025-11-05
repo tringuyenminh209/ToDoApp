@@ -16,7 +16,8 @@ data class Task(
     val project_id: Int?,
     val learning_milestone_id: Int?,
     val ai_breakdown_enabled: Boolean,
-    val subtasks: List<Subtask>? = null
+    val subtasks: List<Subtask>? = null,
+    val knowledge_items: List<KnowledgeItem>? = null
 )
 
 data class Subtask(
@@ -97,6 +98,8 @@ data class LearningPath(
     val total_milestones: Int,
     val completed_milestones: Int,
     val target_date: String?,
+    val icon: String? = null,
+    val color: String? = null,
     val created_at: String,
     val updated_at: String,
     val milestones: List<LearningMilestone>? = null
@@ -111,7 +114,8 @@ data class LearningMilestone(
     val order_index: Int,
     val completed_at: String?,
     val created_at: String,
-    val updated_at: String
+    val updated_at: String,
+    val tasks: List<Task>? = null
 )
 
 data class CreateLearningPathRequest(

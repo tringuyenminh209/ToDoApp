@@ -61,7 +61,13 @@ class LearningPathController extends Controller
             $user = Auth::user();
 
             $path = LearningPath::where('user_id', $user->id)
-                ->with(['milestones.tasks', 'knowledgeItems'])
+                ->with([
+                    'milestones.tasks.subtasks',
+                    'milestones.tasks.knowledgeItems' => function($query) {
+                        $query->orderBy('item_type')->orderBy('created_at');
+                    },
+                    'knowledgeItems'
+                ])
                 ->findOrFail($id);
 
             return response()->json([
