@@ -26,6 +26,9 @@ class KnowledgeViewModel : ViewModel() {
     private val _filteredItems = MutableLiveData<List<KnowledgeItem>>()
     val filteredItems: LiveData<List<KnowledgeItem>> = _filteredItems
 
+    private val _learningPaths = MutableLiveData<List<ecccomp.s2240788.mobile_android.data.models.LearningPath>>()
+    val learningPaths: LiveData<List<ecccomp.s2240788.mobile_android.data.models.LearningPath>> = _learningPaths
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -34,6 +37,7 @@ class KnowledgeViewModel : ViewModel() {
 
     private var currentFilter: FilterType = FilterType.ALL
     private var currentQuery: String = ""
+    private var currentLearningPathId: Int? = null  // null = all paths
 
     enum class FilterType {
         ALL, NOTES, CODE, EXERCISES, LINKS, ATTACHMENTS, FAVORITES, ARCHIVED, DUE_REVIEW
@@ -138,22 +142,29 @@ class KnowledgeViewModel : ViewModel() {
      */
     private fun applyFilterAndSearch() {
         val allItems = _knowledgeItems.value ?: emptyList()
-        
-        // Apply filter
-        var filtered = when (currentFilter) {
-            FilterType.ALL -> allItems
-            FilterType.NOTES -> allItems.filter { it.item_type == "note" }
-            FilterType.CODE -> allItems.filter { it.item_type == "code_snippet" }
-            FilterType.EXERCISES -> allItems.filter { it.item_type == "exercise" }
-            FilterType.LINKS -> allItems.filter { it.item_type == "resource_link" }
-            FilterType.ATTACHMENTS -> allItems.filter { it.item_type == "attachment" }
-            FilterType.FAVORITES -> allItems.filter { it.is_favorite }
-            FilterType.ARCHIVED -> allItems.filter { it.is_archived }
-            FilterType.DUE_REVIEW -> allItems.filter { 
+
+        // Filter by learning path first
+        var filtered = if (currentLearningPathId != null) {
+            allItems.filter { it.learning_path_id == currentLearningPathId }
+        } else {
+            allItems
+        }
+
+        // Apply type filter
+        filtered = when (currentFilter) {
+            FilterType.ALL -> filtered
+            FilterType.NOTES -> filtered.filter { it.item_type == "note" }
+            FilterType.CODE -> filtered.filter { it.item_type == "code_snippet" }
+            FilterType.EXERCISES -> filtered.filter { it.item_type == "exercise" }
+            FilterType.LINKS -> filtered.filter { it.item_type == "resource_link" }
+            FilterType.ATTACHMENTS -> filtered.filter { it.item_type == "attachment" }
+            FilterType.FAVORITES -> filtered.filter { it.is_favorite }
+            FilterType.ARCHIVED -> filtered.filter { it.is_archived }
+            FilterType.DUE_REVIEW -> filtered.filter {
                 it.next_review_date != null && it.next_review_date <= getCurrentDate()
             }
         }
-        
+
         // Apply search
         if (currentQuery.isNotEmpty()) {
             filtered = filtered.filter { item ->
@@ -162,7 +173,7 @@ class KnowledgeViewModel : ViewModel() {
                 item.tags?.any { it.contains(currentQuery, ignoreCase = true) } == true
             }
         }
-        
+
         _filteredItems.postValue(filtered)
     }
 
@@ -292,6 +303,100 @@ class KnowledgeViewModel : ViewModel() {
                     val allItems = response.body()?.data ?: emptyList()
                     val taskItems = allItems.filter { it.source_task_id == taskId }
                     _knowledgeItems.postValue(taskItems)
+                    applyFilterAndSearch()
+                } else {
+                    _error.value = "Failed to load knowledge items: ${response.message()}"
+                    _knowledgeItems.postValue(emptyList())
+                }
+            } catch (e: Exception) {
+                _error.value = "ネットワークエラー: ${e.message}"
+                _knowledgeItems.postValue(emptyList())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Load user's learning paths
+     */
+    fun loadLearningPaths() {
+        viewModelScope.launch {
+            try {
+                val response = apiService.getLearningPaths()
+
+                if (response.isSuccessful) {
+                    val paths = response.body()?.data ?: emptyList()
+                    _learningPaths.postValue(paths)
+                } else {
+                    _learningPaths.postValue(emptyList())
+                }
+            } catch (e: Exception) {
+                _learningPaths.postValue(emptyList())
+            }
+        }
+    }
+
+    /**
+     * Filter knowledge items by learning path
+     */
+    fun filterByLearningPath(learningPathId: Int?) {
+        currentLearningPathId = learningPathId
+        applyFilterAndSearch()
+    }
+
+    /**
+     * Load knowledge items for a specific milestone
+     * This loads items by getting all knowledge items whose source_task_id belongs to the milestone's tasks
+     */
+    fun loadKnowledgeItemsByMilestone(milestoneId: Int) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                // Load all knowledge items
+                val response = apiService.getKnowledgeItems(null)
+
+                if (response.isSuccessful) {
+                    val allItems = response.body()?.data ?: emptyList()
+                    // For now, filter by learning_path_id since knowledge items belong to learning paths
+                    // In a real scenario, we would need to get milestone's task IDs first
+                    // and filter by source_task_id
+                    // Temporary: just show all items for the learning path
+                    _knowledgeItems.postValue(allItems)
+                    applyFilterAndSearch()
+                } else {
+                    _error.value = "Failed to load knowledge items: ${response.message()}"
+                    _knowledgeItems.postValue(emptyList())
+                }
+            } catch (e: Exception) {
+                _error.value = "ネットワークエラー: ${e.message}"
+                _knowledgeItems.postValue(emptyList())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Load knowledge items by task IDs
+     */
+    fun loadKnowledgeItemsByTaskIds(taskIds: List<Int>) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                // Load all knowledge items and filter by task IDs
+                val response = apiService.getKnowledgeItems(null)
+
+                if (response.isSuccessful) {
+                    val allItems = response.body()?.data ?: emptyList()
+                    val filteredItems = allItems.filter { item ->
+                        item.source_task_id != null && taskIds.contains(item.source_task_id)
+                    }
+                    _knowledgeItems.postValue(filteredItems)
                     applyFilterAndSearch()
                 } else {
                     _error.value = "Failed to load knowledge items: ${response.message()}"

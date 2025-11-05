@@ -81,10 +81,11 @@ class MainTaskAdapter(
                 if (!task.category.isNullOrEmpty()) {
                     categoryBadge.visibility = View.VISIBLE
                     val (categoryText, categoryColor, categoryBgColor) = when (task.category.lowercase()) {
-                        "learning", "学習" -> Triple(R.string.category_learning, R.color.primary, R.color.primary_light)
+                        "study", "learning", "学習" -> Triple(R.string.category_learning, R.color.primary, R.color.primary_light)
                         "work", "仕事" -> Triple(R.string.category_work, R.color.info, R.color.info_light)
                         "personal", "個人" -> Triple(R.string.category_personal, R.color.accent, R.color.accent_light)
                         "project", "プロジェクト" -> Triple(R.string.category_project, R.color.warning, R.color.warning_light)
+                        "other", "その他" -> Triple(R.string.category_other, R.color.text_muted, R.color.surface)
                         else -> Triple(R.string.category_other, R.color.text_muted, R.color.surface)
                     }
                     categoryBadge.setCardBackgroundColor(ContextCompat.getColor(itemView.context, categoryBgColor))

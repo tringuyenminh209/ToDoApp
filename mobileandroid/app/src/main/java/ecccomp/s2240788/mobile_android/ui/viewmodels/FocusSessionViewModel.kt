@@ -77,18 +77,63 @@ class FocusSessionViewModel : ViewModel() {
     fun loadTask(taskId: Int) {
         viewModelScope.launch {
             try {
-                val response = apiService.getTasks()
+                val response = apiService.getTask(taskId)
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
-                    if (apiResponse?.success == true) {
-                        val tasks = parseTasksFromResponse(apiResponse.data)
-                        val task = tasks.find { it.id == taskId }
-                        if (task != null) {
-                            _currentTask.value = task
-                        } else {
-                            _toast.value = "タスクが見つかりません"
+                    if (apiResponse?.success == true && apiResponse.data != null) {
+                        val task = apiResponse.data
+                        _currentTask.value = task
+
+                        // Set timer duration based on task estimated minutes
+                        task.estimated_minutes?.let { minutes ->
+                            setTimerDuration(minutes)
                         }
+                    } else {
+                        _toast.value = "タスクが見つかりません"
                     }
+                } else {
+                    _toast.value = "タスクの取得に失敗しました"
+                }
+            } catch (e: Exception) {
+                _toast.value = "エラーが発生しました: ${e.message}"
+            }
+        }
+    }
+
+    /**
+     * サブタスクを含むタスクを取得してフォーカス
+     */
+    fun loadTaskWithSubtask(taskId: Int, subtaskIndex: Int) {
+        viewModelScope.launch {
+            try {
+                val response = apiService.getTask(taskId)
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse?.success == true && apiResponse.data != null) {
+                        val task = apiResponse.data
+                        val subtasks = task.subtasks
+
+                        if (subtasks != null && subtaskIndex >= 0 && subtaskIndex < subtasks.size) {
+                            val subtask = subtasks[subtaskIndex]
+
+                            // Create a modified task object with subtask info for display
+                            val modifiedTask = task.copy(
+                                title = subtask.title,
+                                estimated_minutes = subtask.estimated_minutes ?: 60
+                            )
+                            _currentTask.value = modifiedTask
+
+                            // Set timer duration based on subtask estimated minutes
+                            val minutes = subtask.estimated_minutes ?: 60
+                            setTimerDuration(minutes)
+                        } else {
+                            _toast.value = "サブタスクが見つかりません"
+                        }
+                    } else {
+                        _toast.value = "タスクが見つかりません"
+                    }
+                } else {
+                    _toast.value = "タスクの取得に失敗しました"
                 }
             } catch (e: Exception) {
                 _toast.value = "エラーが発生しました: ${e.message}"

@@ -22,6 +22,7 @@ class FocusSessionActivity : BaseActivity() {
     private lateinit var binding: ActivityFocusSessionBinding
     private lateinit var viewModel: FocusSessionViewModel
     private var taskId: Int = -1
+    private var subtaskIndex: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +31,18 @@ class FocusSessionActivity : BaseActivity() {
 
         viewModel = ViewModelProvider(this)[FocusSessionViewModel::class.java]
 
-        // Get task ID from intent
+        // Get task ID and subtask index from intent
         taskId = intent.getIntExtra("task_id", -1)
+        subtaskIndex = intent.getIntExtra("subtask_index", -1)
+
         if (taskId != -1) {
-            viewModel.loadTask(taskId)
+            if (subtaskIndex != -1) {
+                // Focus on specific subtask
+                viewModel.loadTaskWithSubtask(taskId, subtaskIndex)
+            } else {
+                // Focus on main task
+                viewModel.loadTask(taskId)
+            }
         }
 
         setupClickListeners()

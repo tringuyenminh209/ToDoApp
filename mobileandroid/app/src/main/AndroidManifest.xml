@@ -77,6 +77,12 @@
             android:name=".ui.activities.KnowledgeActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activities.KnowledgeDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.MilestoneKnowledgeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.TimetableActivity"
             android:exported="false" />
 

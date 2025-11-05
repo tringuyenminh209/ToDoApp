@@ -345,6 +345,7 @@
     <string name="task_no_subtasks">実行ステップがありません</string>
     <string name="task_no_tags">タグがありません</string>
     <string name="share">共有</string>
+    <string name="archive">アーカイブ</string>
 
     <!-- Paths Activity -->
     <string name="paths_title">ルート</string>
@@ -383,6 +384,7 @@
     <!-- Knowledge Item Card -->
     <string name="favorite">お気に入り</string>
     <string name="more">その他</string>
+    <string name="more_options">その他のオプション</string>
     <string name="knowledge_category_label">カテゴリ</string>
     <string name="knowledge_last_review_label">最終:</string>
     <string name="knowledge_next_review_label">次回:</string>
@@ -392,6 +394,33 @@
     <string name="knowledge_language_placeholder">言語</string>
     <string name="knowledge_tag_sample1">アルゴリズム</string>
     <string name="knowledge_tag_sample2">配列</string>
+    <string name="select_learning_path">ルートを選択</string>
+    <string name="all_learning_paths">すべてのルート</string>
+    <string name="knowledge_detail">知識詳細</string>
+    <string name="content">内容</string>
+    <string name="copy_code">コードをコピー</string>
+    <string name="exercise">演習</string>
+    <string name="question">問題</string>
+    <string name="answer">答え</string>
+    <string name="show_answer">答えを表示</string>
+    <string name="hide_answer">答えを隠す</string>
+    <string name="resource_link">リソースリンク</string>
+    <string name="open_in_browser">ブラウザで開く</string>
+    <string name="review_info">復習情報</string>
+    <string name="review_count">復習回数</string>
+    <string name="last_reviewed">最終復習日</string>
+    <string name="next_review">次回復習日</string>
+    <string name="mark_as_reviewed">復習済みにする</string>
+    <string name="meta_info">メタ情報</string>
+    <string name="view_count">閲覧回数</string>
+    <string name="created_at">作成日</string>
+    <string name="code_copied">コードをコピーしました</string>
+    <string name="marked_as_reviewed">復習済みにしました</string>
+    <string name="knowledge_select_path">ルートを選択して学習内容を表示</string>
+    <string name="view_learning_content">学習内容を見る</string>
+    <string name="milestone_knowledge">マイルストーンの学習内容</string>
+    <string name="milestone_knowledge_empty_description">このマイルストーンにはまだ学習内容がありません</string>
+    <string name="search_hint">検索...</string>
 
     <!-- Task Management -->
     <string name="tasks_title">タスク管理</string>

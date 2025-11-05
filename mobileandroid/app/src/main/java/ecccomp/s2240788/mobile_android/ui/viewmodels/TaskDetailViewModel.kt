@@ -32,15 +32,17 @@ class TaskDetailViewModel : ViewModel() {
     fun loadTask(taskId: Int) {
         viewModelScope.launch {
             try {
-                val res = apiService.getTasks()
+                val res = apiService.getTask(taskId)
                 if (res.isSuccessful) {
                     val body = res.body()
                     if (body?.success == true) {
-                        val list = extractTasksFromResponse(body.data)
-                        _task.value = list.find { it.id == taskId }
-                        if (_task.value == null) _toast.value = "タスクが見つかりません"
-                    } else _toast.value = body?.message ?: "取得に失敗しました"
-                } else _toast.value = "API Error: ${res.message()}"
+                        _task.value = body.data
+                    } else {
+                        _toast.value = body?.message ?: "取得に失敗しました"
+                    }
+                } else {
+                    _toast.value = "API Error: ${res.message()}"
+                }
             } catch (e: Exception) {
                 _toast.value = "ネットワークエラー: ${e.message}"
             }
