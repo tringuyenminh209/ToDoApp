@@ -43,6 +43,7 @@
     <string name="email_invalid">Email không hợp lệ</string>
     <string name="password_required">Vui lòng nhập mật khẩu</string>
     <string name="password_too_short">Mật khẩu phải có ít nhất 8 ký tự</string>
+    <string name="password_invalid_format">Mật khẩu phải chứa chữ hoa, chữ thường và số</string>
     <string name="confirm_password_required">Vui lòng xác nhận mật khẩu</string>
     <string name="passwords_not_match">Mật khẩu không khớp</string>
     <string name="terms_required">Vui lòng chấp nhận điều khoản sử dụng</string>
@@ -378,5 +379,23 @@
     <string name="task_type">Loại Task</string>
     <string name="type_study">Học tập</string>
     <string name="type_work">Công việc</string>
+
+    <!-- Cheat Code -->
+    <string name="cheat_code">Mã lệnh</string>
+    <string name="cheat_code_title">Mã lệnh</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="all">Tất cả</string>
+    <string name="programming">Lập trình</string>
+    <string name="markup">Đánh dấu</string>
+    <string name="database">Cơ sở dữ liệu</string>
+    <string name="search_languages">Tìm kiếm ngôn ngữ...</string>
+    <string name="no_languages_found">Không tìm thấy ngôn ngữ</string>
+    <string name="exercises">Bài tập</string>
+    <string name="output">Kết quả</string>
+    <string name="examples_count">%d ví dụ</string>
+    <string name="sections_and_examples">%d phần • %d ví dụ</string>
+    <string name="error_invalid_language_data">Dữ liệu ngôn ngữ không hợp lệ</string>
+    <string name="code_copied">Đã sao chép mã</string>
+    <string name="copy_code">Sao chép mã</string>
 
 </resources>

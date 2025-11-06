@@ -46,6 +46,7 @@
     <string name="email_invalid">無効なメールアドレスです</string>
     <string name="password_required">パスワードを入力してください</string>
     <string name="password_too_short">パスワードは8文字以上で入力してください</string>
+    <string name="password_invalid_format">パスワードは大文字、小文字、数字を含む必要があります</string>
     <string name="confirm_password_required">パスワードを確認してください</string>
     <string name="passwords_not_match">パスワードが一致しません</string>
     <string name="terms_required">利用規約に同意してください</string>
@@ -328,6 +329,7 @@
     <string name="calendar_add_task">タスクを追加</string>
     <string name="calendar_empty_tasks">タスクがありません</string>
     <string name="calendar_empty_tasks_description">この日のタスクを追加して始めましょう</string>
+    <string name="calendar_tasks_for_date">この日のタスク</string>
 
     <!-- AI Coach -->
     <string name="ai_coach_quick_actions">クイック提案</string>
@@ -598,5 +600,21 @@
 
     <!-- Milestone Detail -->
     <string name="task_status">タスクステータス</string>
+
+    <!-- Cheat Code -->
+    <string name="cheat_code">チートコード</string>
+    <string name="cheat_code_title">チートコード</string>
+    <string name="search">検索</string>
+    <string name="all">すべて</string>
+    <string name="programming">プログラミング</string>
+    <string name="markup">マークアップ</string>
+    <string name="database">データベース</string>
+    <string name="search_languages">言語を検索...</string>
+    <string name="no_languages_found">言語が見つかりません</string>
+    <string name="exercises">演習問題</string>
+    <string name="output">出力</string>
+    <string name="examples_count">%d個の例</string>
+    <string name="sections_and_examples">%d個のセクション • %d個の例</string>
+    <string name="error_invalid_language_data">無効な言語データです</string>
 
 </resources>

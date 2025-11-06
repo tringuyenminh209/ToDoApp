@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         // Seed Learning Path Templates
         $this->call([
             LearningPathTemplateSeeder::class,
+            CheatCodePhpSeeder::class,
         ]);
     }
 }

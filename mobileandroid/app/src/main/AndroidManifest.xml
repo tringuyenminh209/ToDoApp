@@ -83,6 +83,12 @@
             android:name=".ui.activities.MilestoneKnowledgeActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activities.CheatCodeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.CheatCodeDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.TimetableActivity"
             android:exported="false" />
 

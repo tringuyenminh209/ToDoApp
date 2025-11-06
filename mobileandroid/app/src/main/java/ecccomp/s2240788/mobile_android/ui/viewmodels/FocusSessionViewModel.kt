@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.Task
+import ecccomp.s2240788.mobile_android.data.models.KnowledgeItem
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
 
@@ -50,6 +51,13 @@ class FocusSessionViewModel : ViewModel() {
     // Notification & messages
     private val _toast = MutableLiveData<String?>()
     val toast: LiveData<String?> = _toast
+
+    // Knowledge items
+    private val _knowledgeItems = MutableLiveData<List<KnowledgeItem>>()
+    val knowledgeItems: LiveData<List<KnowledgeItem>> = _knowledgeItems
+
+    private val _isLoadingKnowledge = MutableLiveData<Boolean>(false)
+    val isLoadingKnowledge: LiveData<Boolean> = _isLoadingKnowledge
 
     // Session stats
     private var sessionStartTimeMillis: Long = 0
@@ -407,6 +415,34 @@ class FocusSessionViewModel : ViewModel() {
      */
     fun clearSessionCompleted() {
         _focusSessionCompleted.value = false
+    }
+
+    /**
+     * Load knowledge items for the current task
+     */
+    fun loadKnowledgeItems(taskId: Int) {
+        viewModelScope.launch {
+            try {
+                _isLoadingKnowledge.value = true
+
+                // Load all knowledge items and filter by source_task_id
+                val response = apiService.getKnowledgeItems(null)
+
+                if (response.isSuccessful) {
+                    val allItems = response.body()?.data ?: emptyList()
+                    val taskItems = allItems.filter { it.source_task_id == taskId }
+                    _knowledgeItems.postValue(taskItems)
+                } else {
+                    _knowledgeItems.postValue(emptyList())
+                    _toast.value = "学習内容の読み込みに失敗しました"
+                }
+            } catch (e: Exception) {
+                _knowledgeItems.postValue(emptyList())
+                _toast.value = "ネットワークエラー: ${e.message}"
+            } finally {
+                _isLoadingKnowledge.value = false
+            }
+        }
     }
 
     override fun onCleared() {

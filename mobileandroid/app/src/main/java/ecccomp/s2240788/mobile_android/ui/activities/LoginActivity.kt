@@ -10,6 +10,7 @@ import com.google.android.material.textfield.TextInputLayout
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityLoginBinding
 import ecccomp.s2240788.mobile_android.ui.viewmodels.LoginViewModel
+import ecccomp.s2240788.mobile_android.utils.LocaleHelper
 
 class LoginActivity : BaseActivity() {
 
@@ -22,6 +23,7 @@ class LoginActivity : BaseActivity() {
         setContentView(binding.root)
 
         setupViewModel()
+        setupLanguageSwitcher()
         setupClickListeners()
         setupObservers()
         setupInputValidation()
@@ -29,6 +31,28 @@ class LoginActivity : BaseActivity() {
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+    }
+
+    private fun setupLanguageSwitcher() {
+        // Update button text based on current language
+        updateLanguageButton()
+        
+        // Set click listener for language switcher
+        binding.btnLanguage.setOnClickListener {
+            val currentLanguage = LocaleHelper.getLanguage(this)
+            val nextLanguage = LocaleHelper.getNextLanguage(currentLanguage)
+            
+            // Save new language preference
+            LocaleHelper.setLanguage(this, nextLanguage)
+            
+            // Restart activity to apply new locale
+            recreate()
+        }
+    }
+
+    private fun updateLanguageButton() {
+        val currentLanguage = LocaleHelper.getLanguage(this)
+        binding.btnLanguage.text = LocaleHelper.getLanguageShortName(currentLanguage)
     }
 
     private fun setupClickListeners() {
@@ -140,7 +164,7 @@ class LoginActivity : BaseActivity() {
                 false
             }
             !password.matches(Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$")) -> {
-                passwordLayout.error = "パスワードは大文字、小文字、数字を含む必要があります"
+                passwordLayout.error = getString(R.string.password_invalid_format)
                 false
             }
             else -> {

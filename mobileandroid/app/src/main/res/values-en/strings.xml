@@ -80,6 +80,57 @@
     <string name="beta">BETA</string>
     <string name="ai_status_info">AI will analyze and suggest suitable actions</string>
 
+    <!-- Login -->
+    <string name="welcome_back">Welcome back</string>
+    <string name="login_title">Login</string>
+    <string name="login_subtitle">Welcome back!</string>
+    <string name="login_description">Login to continue using the app</string>
+    <string name="login_button">Login</string>
+    <string name="logging_in">Logging in...</string>
+    <string name="login_success">Login successful!</string>
+
+    <!-- Register -->
+    <string name="register_title">Register</string>
+    <string name="register_description">Create a new account to get started</string>
+    <string name="register_button">Register</string>
+    <string name="registering">Registering...</string>
+    <string name="register_success">Registration successful!</string>
+
+    <!-- Form Fields -->
+    <string name="name_hint">Full name</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="confirm_password_hint">Confirm password</string>
+
+    <!-- Validation Messages -->
+    <string name="name_required">Please enter your name</string>
+    <string name="name_too_short">Name must be at least 2 characters</string>
+    <string name="email_required">Please enter email</string>
+    <string name="email_invalid">Invalid email address</string>
+    <string name="password_required">Please enter password</string>
+    <string name="password_too_short">Password must be at least 8 characters</string>
+    <string name="password_invalid_format">Password must contain uppercase, lowercase, and numbers</string>
+    <string name="confirm_password_required">Please confirm password</string>
+    <string name="passwords_not_match">Passwords do not match</string>
+    <string name="terms_required">Please accept terms and conditions</string>
+
+    <!-- Links -->
+    <string name="forgot_password">Forgot password?</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="register_link">Register now</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="login_link">Login</string>
+    <string name="remember_me">Remember me</string>
+    <string name="or_divider">or</string>
+
+    <!-- Terms -->
+    <string name="terms_agreement">I agree to Terms and Conditions and Privacy Policy</string>
+
+    <!-- Errors -->
+    <string name="error_network">Network error</string>
+    <string name="error_server">Server error</string>
+    <string name="error_unknown">An unknown error occurred</string>
+
     <!-- Search -->
     <string name="knowledge_search_hint">Search notes, articles, links…</string>
     
@@ -96,5 +147,23 @@
     <string name="task_type">Task type</string>
     <string name="type_study">Study</string>
     <string name="type_work">Work</string>
+
+    <!-- Cheat Code -->
+    <string name="cheat_code">Cheat Code</string>
+    <string name="cheat_code_title">Cheat Code</string>
+    <string name="search">Search</string>
+    <string name="all">All</string>
+    <string name="programming">Programming</string>
+    <string name="markup">Markup</string>
+    <string name="database">Database</string>
+    <string name="search_languages">Search languages...</string>
+    <string name="no_languages_found">No languages found</string>
+    <string name="exercises">Exercises</string>
+    <string name="output">Output</string>
+    <string name="examples_count">%d examples</string>
+    <string name="sections_and_examples">%d sections • %d examples</string>
+    <string name="error_invalid_language_data">Invalid language data</string>
+    <string name="code_copied">Code copied</string>
+    <string name="copy_code">Copy code</string>
 
 </resources>
