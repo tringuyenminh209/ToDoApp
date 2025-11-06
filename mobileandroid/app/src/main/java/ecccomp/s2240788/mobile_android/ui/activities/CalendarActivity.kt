@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityCalendarBinding
+import ecccomp.s2240788.mobile_android.ui.fragments.CalendarFragment
 import ecccomp.s2240788.mobile_android.ui.viewmodels.CalendarViewModel
 
 /**
@@ -31,9 +32,16 @@ class CalendarActivity : BaseActivity() {
 
         viewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
+        // Load CalendarFragment dynamically
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, CalendarFragment())
+                .commit()
+        }
+
         setupObservers()
         setupBottomNavigation()
-        
+
         // Load initial data
         viewModel.fetchTasks()
     }

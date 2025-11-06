@@ -6,6 +6,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.data.models.CodeExample
+import ecccomp.s2240788.mobile_android.utils.CodeHighlightHelper
 
 class CodeExampleAdapter(
+    private val languageName: String,
     private val onExampleClick: (CodeExample) -> Unit
 ) : ListAdapter<CodeExample, CodeExampleAdapter.ViewHolder>(DiffCallback()) {
 
@@ -28,18 +31,18 @@ class CodeExampleAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), onExampleClick)
+        holder.bind(getItem(position), languageName, onExampleClick)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val chipTitle: Chip = itemView.findViewById(R.id.chip_title)
         private val btnCopy: ImageButton = itemView.findViewById(R.id.btn_copy)
         private val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
-        private val tvCode: TextView = itemView.findViewById(R.id.tv_code)
+        private val webviewCode: WebView = itemView.findViewById(R.id.webview_code)
         private val outputContainer: LinearLayout = itemView.findViewById(R.id.output_container)
         private val tvOutput: TextView = itemView.findViewById(R.id.tv_output)
 
-        fun bind(example: CodeExample, onExampleClick: (CodeExample) -> Unit) {
+        fun bind(example: CodeExample, languageName: String, onExampleClick: (CodeExample) -> Unit) {
             // Set title
             chipTitle.text = example.title
 
@@ -51,8 +54,8 @@ class CodeExampleAdapter(
                 tvDescription.text = example.description
             }
 
-            // Set code
-            tvCode.text = example.code
+            // Set code with syntax highlighting
+            setupWebView(webviewCode, example.code, languageName)
 
             // Set output
             if (example.output.isNullOrBlank()) {
@@ -73,6 +76,46 @@ class CodeExampleAdapter(
             // Click listener
             itemView.setOnClickListener {
                 onExampleClick(example)
+            }
+        }
+
+        private fun setupWebView(webView: WebView, code: String, language: String) {
+            // Configure WebView
+            webView.settings.apply {
+                javaScriptEnabled = true
+                domStorageEnabled = true
+                loadWithOverviewMode = false
+                useWideViewPort = false
+                builtInZoomControls = false
+                displayZoomControls = false
+                setSupportZoom(false)
+            }
+
+            // Generate highlighted HTML
+            val html = CodeHighlightHelper.generateHighlightedHtml(
+                webView.context,
+                code,
+                language
+            )
+
+            // Load HTML
+            webView.loadDataWithBaseURL(
+                null,
+                html,
+                "text/html",
+                "UTF-8",
+                null
+            )
+
+            // Adjust height dynamically
+            webView.post {
+                val heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(webView.width, View.MeasureSpec.EXACTLY)
+                webView.measure(widthMeasureSpec, heightMeasureSpec)
+
+                val params = webView.layoutParams
+                params.height = webView.measuredHeight
+                webView.layoutParams = params
             }
         }
     }

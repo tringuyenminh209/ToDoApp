@@ -48,7 +48,7 @@ class CheatCodeDetailActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = CheatCodeSectionAdapter { example ->
+        adapter = CheatCodeSectionAdapter(languageName) { example ->
             Toast.makeText(this, example.title, Toast.LENGTH_SHORT).show()
         }
 

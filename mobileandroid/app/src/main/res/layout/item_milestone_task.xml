@@ -95,32 +95,58 @@
                 tools:text="タスクの説明"
                 tools:visibility="visible" />
 
-            <!-- Estimated Time -->
+            <!-- Estimated Time and Knowledge Button -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_clock"
-                    android:contentDescription="@string/estimated_time"
-                    app:tint="@color/primary" />
-
-                <TextView
-                    android:id="@+id/tv_estimated_time"
+                <!-- Estimated Time -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="30分"
-                    android:textColor="@color/primary"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_clock"
+                        android:contentDescription="@string/estimated_time"
+                        app:tint="@color/primary" />
+
+                    <TextView
+                        android:id="@+id/tv_estimated_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="30分"
+                        android:textColor="@color/primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:includeFontPadding="false"
+                        tools:text="1時間30分" />
+
+                </LinearLayout>
+
+                <!-- Knowledge Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_knowledge"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="学習内容"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:includeFontPadding="false"
-                    tools:text="1時間30分" />
+                    android:textColor="@color/info"
+                    app:icon="@drawable/ic_book"
+                    app:iconSize="16dp"
+                    app:iconTint="@color/info"
+                    app:iconGravity="start"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
@@ -131,22 +157,6 @@
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
-
-                <!-- Knowledge Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_knowledge"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:text="学習内容"
-                    android:textSize="12sp"
-                    android:textColor="@color/primary"
-                    app:icon="@drawable/ic_book"
-                    app:iconSize="18dp"
-                    app:iconTint="@color/primary"
-                    app:iconGravity="start"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
 
                 <!-- Expand Subtasks Button -->
                 <com.google.android.material.button.MaterialButton

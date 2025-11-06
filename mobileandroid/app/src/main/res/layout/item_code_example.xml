@@ -67,24 +67,25 @@
             tools:visibility="visible"
             tools:text="Begin with a PHP open tag" />
 
-        <!-- Code Block -->
-        <HorizontalScrollView
+        <!-- Code Block with Syntax Highlighting -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background"
-            android:padding="@dimen/spacing_md">
+            app:cardBackgroundColor="#F8F9FA"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/line"
+            app:strokeWidth="1dp">
 
-            <TextView
-                android:id="@+id/tv_code"
-                android:layout_width="wrap_content"
+            <WebView
+                android:id="@+id/webview_code"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:textColor="@color/text_primary"
-                android:textSize="12sp"
-                android:lineSpacingExtra="4dp"
-                tools:text="&lt;?php\n\necho &quot;Hello World\\n&quot;;\nprint(&quot;Hello quickref.me&quot;);\n\n?&gt;" />
+                android:background="@android:color/transparent"
+                android:padding="@dimen/spacing_md"
+                android:scrollbars="horizontal" />
 
-        </HorizontalScrollView>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Output (if available) -->
         <LinearLayout
