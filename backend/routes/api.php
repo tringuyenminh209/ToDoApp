@@ -13,6 +13,7 @@ use App\Http\Controllers\DailyReviewController;
 use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\LearningPathController;
 use App\Http\Controllers\LearningPathTemplateController;
+use App\Http\Controllers\CheatCodeController;
 use App\Http\Controllers\KnowledgeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,17 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
 // Email verification routes
 Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
     ->name('verification.verify');
+
+// Cheat Code routes (public - no authentication required)
+Route::prefix('cheat-code')->group(function () {
+    Route::get('/languages', [CheatCodeController::class, 'getLanguages']);
+    Route::get('/languages/{id}', [CheatCodeController::class, 'getLanguage']);
+    Route::get('/languages/{languageId}/sections', [CheatCodeController::class, 'getSections']);
+    Route::get('/languages/{languageId}/sections/{sectionId}', [CheatCodeController::class, 'getSection']);
+    Route::get('/languages/{languageId}/sections/{sectionId}/examples', [CheatCodeController::class, 'getExamples']);
+    Route::get('/languages/{languageId}/sections/{sectionId}/examples/{exampleId}', [CheatCodeController::class, 'getExample']);
+    Route::get('/categories', [CheatCodeController::class, 'getCategories']);
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     // Email verification

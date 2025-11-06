@@ -80,6 +80,12 @@ class KnowledgeActivity : BaseActivity() {
             val intent = Intent(this, TemplateBrowserActivity::class.java)
             startActivity(intent)
         }
+
+        // CheatCode navigation
+        binding.cheatCodeCard.setOnClickListener {
+            val intent = Intent(this, CheatCodeActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupObservers() {

@@ -6,8 +6,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityFocusSessionBinding
+import ecccomp.s2240788.mobile_android.ui.adapters.FocusKnowledgeAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.FocusSessionViewModel
 
 /**
@@ -21,6 +23,7 @@ class FocusSessionActivity : BaseActivity() {
 
     private lateinit var binding: ActivityFocusSessionBinding
     private lateinit var viewModel: FocusSessionViewModel
+    private lateinit var knowledgeAdapter: FocusKnowledgeAdapter
     private var taskId: Int = -1
     private var subtaskIndex: Int = -1
 
@@ -43,10 +46,29 @@ class FocusSessionActivity : BaseActivity() {
                 // Focus on main task
                 viewModel.loadTask(taskId)
             }
+
+            // Load knowledge items for this task
+            viewModel.loadKnowledgeItems(taskId)
         }
 
+        setupKnowledgeRecyclerView()
         setupClickListeners()
         observeViewModel()
+    }
+
+    /**
+     * Knowledge RecyclerView setup
+     */
+    private fun setupKnowledgeRecyclerView() {
+        knowledgeAdapter = FocusKnowledgeAdapter { item ->
+            // Handle item click if needed
+            Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
+        }
+
+        binding.rvKnowledgeItems.apply {
+            layoutManager = LinearLayoutManager(this@FocusSessionActivity)
+            adapter = knowledgeAdapter
+        }
     }
 
     /**
@@ -154,6 +176,24 @@ class FocusSessionActivity : BaseActivity() {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 viewModel.clearToast()
             }
+        }
+
+        // Knowledge items
+        viewModel.knowledgeItems.observe(this) { items ->
+            if (items.isNullOrEmpty()) {
+                binding.learningContentCard.visibility = View.GONE
+                binding.emptyKnowledgeState.visibility = View.VISIBLE
+            } else {
+                binding.learningContentCard.visibility = View.VISIBLE
+                binding.emptyKnowledgeState.visibility = View.GONE
+                knowledgeAdapter.submitList(items)
+                binding.tvKnowledgeCount.text = "${items.size} items"
+            }
+        }
+
+        // Knowledge loading state
+        viewModel.isLoadingKnowledge.observe(this) { isLoading ->
+            // You can show a loading indicator if needed
         }
     }
 

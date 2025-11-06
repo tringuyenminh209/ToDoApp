@@ -226,4 +226,43 @@ interface ApiService {
     
     @POST("learning-path-templates/{id}/clone")
     suspend fun cloneTemplate(@Path("id") id: Long): Response<CloneTemplateResponse>
+    
+    // Cheat Code endpoints (public - no authentication required)
+    @GET("cheat-code/languages")
+    suspend fun getCheatCodeLanguages(
+        @Query("category") category: String? = null,
+        @Query("search") search: String? = null,
+        @Query("sort_by") sortBy: String? = null,
+        @Query("sort_order") sortOrder: String? = null
+    ): Response<ApiResponse<List<CheatCodeLanguage>>>
+    
+    @GET("cheat-code/languages/{id}")
+    suspend fun getCheatCodeLanguage(@Path("id") id: Int): Response<ApiResponse<CheatCodeLanguage>>
+    
+    @GET("cheat-code/languages/{languageId}/sections")
+    suspend fun getCheatCodeSections(@Path("languageId") languageId: Int): Response<ApiResponse<CheatCodeSectionsResponse>>
+    
+    @GET("cheat-code/languages/{languageId}/sections/{sectionId}")
+    suspend fun getCheatCodeSection(
+        @Path("languageId") languageId: Int,
+        @Path("sectionId") sectionId: Int
+    ): Response<ApiResponse<CheatCodeSection>>
+    
+    @GET("cheat-code/languages/{languageId}/sections/{sectionId}/examples")
+    suspend fun getCodeExamples(
+        @Path("languageId") languageId: Int,
+        @Path("sectionId") sectionId: Int,
+        @Query("difficulty") difficulty: String? = null,
+        @Query("search") search: String? = null
+    ): Response<ApiResponse<List<CodeExample>>>
+    
+    @GET("cheat-code/languages/{languageId}/sections/{sectionId}/examples/{exampleId}")
+    suspend fun getCodeExample(
+        @Path("languageId") languageId: Int,
+        @Path("sectionId") sectionId: Int,
+        @Path("exampleId") exampleId: Int
+    ): Response<ApiResponse<CodeExample>>
+    
+    @GET("cheat-code/categories")
+    suspend fun getCheatCodeCategories(): Response<ApiResponse<List<String>>>
 }

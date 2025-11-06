@@ -18,9 +18,11 @@ class KnowledgeController extends Controller
         $query = KnowledgeItem::where('user_id', $user->id)
             ->with(['category', 'learningPath', 'sourceTask']);
 
-        // Filter by type
+        // Filter by type (also support 'filter' parameter for backward compatibility)
         if ($request->has('type')) {
             $query->where('item_type', $request->type);
+        } elseif ($request->has('filter')) {
+            $query->where('item_type', $request->filter);
         }
 
         // Filter by category
