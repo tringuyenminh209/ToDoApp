@@ -21,10 +21,18 @@ class DatabaseSeeder extends Seeder
             'password' => '123456q12S'
         ]);
 
-        // Seed Learning Path Templates
+        // Seed Learning Path Templates and CheatCode Data
         $this->call([
             LearningPathTemplateSeeder::class,
             CheatCodePhpSeeder::class,
+            CheatCodeJavaSeeder::class,
+            CheatCodeGoSeeder::class,
+            CheatCodeJavaScriptSeeder::class,
+            CheatCodePythonSeeder::class,
+            CheatCodeCppSeeder::class,
+            CheatCodeKotlinSeeder::class,
+            CheatCodeCss3Seeder::class,
+            CheatCodeHtmlSeeder::class,
         ]);
     }
 }

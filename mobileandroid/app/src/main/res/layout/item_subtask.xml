@@ -29,5 +29,25 @@
         android:textSize="14sp"
         tools:text="Xem video bài 1 (10p)" />
 
+    <!-- Start Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_start_subtask"
+        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:contentDescription="@string/task_start"
+        app:backgroundTint="@color/primary"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/ic_play"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="16dp"
+        app:iconTint="@color/white" />
+
 </LinearLayout>
 

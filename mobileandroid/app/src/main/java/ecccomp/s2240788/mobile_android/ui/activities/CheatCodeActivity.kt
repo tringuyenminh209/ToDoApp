@@ -6,7 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityCheatCodeBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.CheatCodeLanguageAdapter
@@ -42,7 +42,7 @@ class CheatCodeActivity : BaseActivity() {
         }
 
         binding.rvLanguages.apply {
-            layoutManager = LinearLayoutManager(this@CheatCodeActivity)
+            layoutManager = GridLayoutManager(this@CheatCodeActivity, 2)
             adapter = this@CheatCodeActivity.adapter
         }
     }
@@ -80,8 +80,22 @@ class CheatCodeActivity : BaseActivity() {
                     else -> "all"
                 }
                 viewModel.filterByCategory(category)
+                updateCategoryTitle(category)
             }
         }
+        
+        // Set initial category title
+        updateCategoryTitle("all")
+    }
+
+    private fun updateCategoryTitle(category: String) {
+        val title = when (category) {
+            "programming" -> getString(R.string.programming)
+            "markup" -> getString(R.string.markup)
+            "database" -> getString(R.string.database)
+            else -> getString(R.string.all)
+        }
+        binding.tvCategoryTitle.text = title
     }
 
     private fun toggleSearchBar() {

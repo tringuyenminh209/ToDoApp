@@ -14,26 +14,27 @@ import ecccomp.s2240788.mobile_android.data.models.CheatCodeSection
 import ecccomp.s2240788.mobile_android.data.models.CodeExample
 
 class CheatCodeSectionAdapter(
+    private val languageName: String,
     private val onExampleClick: (CodeExample) -> Unit
 ) : ListAdapter<CheatCodeSection, CheatCodeSectionAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_cheat_code_section, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, languageName)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position), onExampleClick)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, languageName: String) : RecyclerView.ViewHolder(itemView) {
         private val tvSectionTitle: TextView = itemView.findViewById(R.id.tv_section_title)
         private val chipExamplesCount: Chip = itemView.findViewById(R.id.chip_examples_count)
         private val rvExamples: RecyclerView = itemView.findViewById(R.id.rv_examples)
 
         private var currentOnExampleClick: ((CodeExample) -> Unit)? = null
-        private val examplesAdapter = CodeExampleAdapter { example ->
+        private val examplesAdapter = CodeExampleAdapter(languageName) { example ->
             // Use the callback from bind()
             currentOnExampleClick?.invoke(example)
         }

@@ -12,7 +12,6 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="ecccomp.s2240788.mobile_android.ui.fragments.CalendarFragment"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         tools:layout="@layout/fragment_calendar" />

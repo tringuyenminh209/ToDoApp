@@ -48,9 +48,14 @@ class TaskDetailActivity : BaseActivity() {
     }
 
     private fun setupSubtaskRecyclerView() {
-        subtaskAdapter = SubtaskDisplayAdapter { subtask ->
-            viewModel.toggleSubtask(subtask.id)
-        }
+        subtaskAdapter = SubtaskDisplayAdapter(
+            onToggle = { subtask ->
+                viewModel.toggleSubtask(subtask.id)
+            },
+            onStart = { subtask ->
+                startSubtaskFocus(subtask.id, subtask.title)
+            }
+        )
         binding.rvSubtasks.layoutManager = LinearLayoutManager(this)
         binding.rvSubtasks.adapter = subtaskAdapter
     }
@@ -291,6 +296,25 @@ class TaskDetailActivity : BaseActivity() {
             .create()
 
         dialog.show()
+    }
+
+    private fun startSubtaskFocus(subtaskId: Int, subtaskTitle: String) {
+        // Check if task is completed
+        val currentTask = viewModel.task.value
+        if (currentTask?.status == "completed") {
+            Toast.makeText(this, "このタスクは既に完了しています", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Navigate to FocusSessionActivity with subtask information
+        val intent = Intent(this, FocusSessionActivity::class.java)
+        intent.putExtra("task_id", taskId)
+        intent.putExtra("subtask_id", subtaskId)
+        intent.putExtra("subtask_title", subtaskTitle)
+        currentTask?.let { task ->
+            intent.putExtra("task_title", task.title)
+        }
+        startActivity(intent)
     }
 }
 
