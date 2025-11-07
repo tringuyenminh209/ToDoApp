@@ -489,4 +489,105 @@ JSON形式で返してください：
             return false;
         }
     }
+
+    /**
+     * Chat with AI - for general conversation
+     *
+     * @param array $messages Array of messages in format: [['role' => 'user/assistant', 'content' => 'message']]
+     * @param array $options Additional options for the API call
+     * @return array Response containing message and metadata
+     */
+    public function chat(array $messages, array $options = []): array
+    {
+        if (!$this->apiKey) {
+            return [
+                'message' => 'AI service is currently unavailable. Please try again later.',
+                'error' => true
+            ];
+        }
+
+        $maxRetries = 3;
+        $retryDelay = 1;
+        $models = [$this->model];
+
+        if ($this->enableFallback && $this->fallbackModel !== $this->model) {
+            $models[] = $this->fallbackModel;
+        }
+
+        foreach ($models as $model) {
+            for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+                try {
+                    // Prepare messages array
+                    $apiMessages = [
+                        [
+                            'role' => 'system',
+                            'content' => $options['system_prompt'] ?? 'You are a helpful productivity assistant. Always respond in Japanese in a friendly and encouraging manner.'
+                        ]
+                    ];
+
+                    // Add conversation history
+                    foreach ($messages as $msg) {
+                        $apiMessages[] = [
+                            'role' => $msg['role'],
+                            'content' => $msg['content']
+                        ];
+                    }
+
+                    $response = Http::withHeaders([
+                        'Authorization' => 'Bearer ' . $this->apiKey,
+                        'Content-Type' => 'application/json',
+                    ])->timeout(30)->post($this->baseUrl . '/chat/completions', [
+                        'model' => $model,
+                        'messages' => $apiMessages,
+                        'max_tokens' => $options['max_tokens'] ?? 800,
+                        'temperature' => $options['temperature'] ?? 0.7,
+                        'stream' => false,
+                    ]);
+
+                    if ($response->successful()) {
+                        $data = $response->json();
+                        $content = $data['choices'][0]['message']['content'] ?? '';
+
+                        Log::info('AI Chat: Success', [
+                            'model' => $model,
+                            'tokens' => $data['usage']['total_tokens'] ?? 0
+                        ]);
+
+                        return [
+                            'message' => $content,
+                            'model' => $model,
+                            'tokens' => $data['usage']['total_tokens'] ?? 0,
+                            'finish_reason' => $data['choices'][0]['finish_reason'] ?? 'stop',
+                            'error' => false
+                        ];
+                    } else {
+                        Log::warning('AI Chat: API request failed', [
+                            'status' => $response->status(),
+                            'attempt' => $attempt,
+                            'model' => $model
+                        ]);
+                    }
+
+                } catch (\Exception $e) {
+                    Log::error('AI Chat: API call failed', [
+                        'error' => $e->getMessage(),
+                        'attempt' => $attempt,
+                        'model' => $model
+                    ]);
+                }
+
+                if ($attempt < $maxRetries) {
+                    sleep($retryDelay);
+                    $retryDelay *= 2;
+                }
+            }
+        }
+
+        // All attempts failed
+        Log::warning('AI Chat: All models failed');
+        return [
+            'message' => '申し訳ございません。現在AIサービスに接続できません。しばらくしてからもう一度お試しください。',
+            'error' => true
+        ];
+    }
 }

@@ -69,20 +69,24 @@
 
         <!-- Code Block with Syntax Highlighting -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_code_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="#F8F9FA"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
             app:strokeColor="@color/line"
-            app:strokeWidth="1dp">
+            app:strokeWidth="1dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
             <WebView
                 android:id="@+id/webview_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:padding="@dimen/spacing_md"
+                android:padding="12dp"
                 android:scrollbars="horizontal" />
 
         </com.google.android.material.card.MaterialCardView>

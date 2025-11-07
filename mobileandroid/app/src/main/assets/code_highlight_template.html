@@ -16,6 +16,8 @@
             line-height: 1.6;
             background: transparent;
             overflow-x: auto;
+            margin: 0;
+            padding: 8px;
         }
 
         pre {
@@ -123,76 +125,109 @@
     <pre><code class="language-LANGUAGE_PLACEHOLDER">CODE_PLACEHOLDER</code></pre>
 
     <script>
-        // Minimal Prism.js-like syntax highlighter
+        // Minimal syntax highlighter with single-pass tokenization
         (function() {
             const code = document.querySelector('code');
             const language = code.className.replace('language-', '');
-            let text = code.textContent;
+            const text = code.textContent;
 
-            // Simple syntax highlighting patterns
-            const patterns = {
+            // Token definitions for each language
+            const tokens = {
                 php: [
-                    { pattern: /(&lt;\?php|\?&gt;)/g, className: 'delimiter' },
-                    { pattern: /\b(echo|print|return|if|else|elseif|foreach|for|while|function|class|public|private|protected|static|const|new|extends|implements|namespace|use|try|catch|finally|throw)\b/g, className: 'keyword' },
-                    { pattern: /(\$[a-zA-Z_][a-zA-Z0-9_]*)/g, className: 'variable' },
-                    { pattern: /(["'])(?:(?=(\\?))\2.)*?\1/g, className: 'string' },
-                    { pattern: /\/\/.*/g, className: 'comment' },
-                    { pattern: /\/\*[\s\S]*?\*\//g, className: 'comment' },
-                    { pattern: /\b(\d+)\b/g, className: 'number' }
+                    { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                    { regex: /\/\/.*/, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                    { regex: /\b(echo|print|return|if|else|elseif|foreach|for|while|function|class|public|private|protected|static|const|new|extends|implements|namespace|use|try|catch|finally|throw|as|array|die|exit|include|require)\b/, type: 'keyword' },
+                    { regex: /\$[a-zA-Z_][a-zA-Z0-9_]*/, type: 'variable' },
+                    { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                    { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
                 ],
                 java: [
-                    { pattern: /\b(public|private|protected|static|final|class|interface|extends|implements|new|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|throws|import|package|void|int|long|double|float|char|boolean|String|true|false|null)\b/g, className: 'keyword' },
-                    { pattern: /(["'])(?:(?=(\\?))\2.)*?\1/g, className: 'string' },
-                    { pattern: /\/\/.*/g, className: 'comment' },
-                    { pattern: /\/\*[\s\S]*?\*\//g, className: 'comment' },
-                    { pattern: /\b([A-Z][a-zA-Z0-9]*)\b/g, className: 'class-name' },
-                    { pattern: /\b(\d+)\b/g, className: 'number' }
+                    { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                    { regex: /\/\/.*/, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*")/, type: 'string' },
+                    { regex: /\b(public|private|protected|static|final|class|interface|extends|implements|new|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|throws|import|package|void|int|long|double|float|char|boolean|String|true|false|null)\b/, type: 'keyword' },
+                    { regex: /\b[A-Z][a-zA-Z0-9]*\b/, type: 'class-name' },
+                    { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                    { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
                 ],
                 javascript: [
-                    { pattern: /\b(var|let|const|function|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|class|extends|import|export|default|async|await|new|typeof|instanceof|true|false|null|undefined)\b/g, className: 'keyword' },
-                    { pattern: /(["'`])(?:(?=(\\?))\2.)*?\1/g, className: 'string' },
-                    { pattern: /\/\/.*/g, className: 'comment' },
-                    { pattern: /\/\*[\s\S]*?\*\//g, className: 'comment' },
-                    { pattern: /\b(\d+)\b/g, className: 'number' }
+                    { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                    { regex: /\/\/.*/, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/, type: 'string' },
+                    { regex: /\b(var|let|const|function|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|class|extends|import|export|default|async|await|new|typeof|instanceof|true|false|null|undefined)\b/, type: 'keyword' },
+                    { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                    { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
                 ],
                 python: [
-                    { pattern: /\b(def|class|if|elif|else|for|while|return|import|from|as|try|except|finally|with|lambda|pass|break|continue|True|False|None|and|or|not|in|is)\b/g, className: 'keyword' },
-                    { pattern: /(["'])(?:(?=(\\?))\2.)*?\1/g, className: 'string' },
-                    { pattern: /#.*/g, className: 'comment' },
-                    { pattern: /\b(\d+)\b/g, className: 'number' }
+                    { regex: /#.*/, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                    { regex: /\b(def|class|if|elif|else|for|while|return|import|from|as|try|except|finally|with|lambda|pass|break|continue|True|False|None|and|or|not|in|is)\b/, type: 'keyword' },
+                    { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                    { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
                 ],
                 html: [
-                    { pattern: /(&lt;!--[\s\S]*?--&gt;)/g, className: 'comment' },
-                    { pattern: /(&lt;\/?)([a-zA-Z][a-zA-Z0-9]*)/g, className: 'tag' },
-                    { pattern: /\s([a-zA-Z-]+)=/g, className: 'attr-name' },
-                    { pattern: /=(["'])(?:(?=(\\?))\2.)*?\1/g, className: 'attr-value' },
-                    { pattern: /(&lt;\?php|\?&gt;)/g, className: 'delimiter' }
+                    { regex: /<!--[\s\S]*?-->/, type: 'comment' },
+                    { regex: /<\/?[a-zA-Z][a-zA-Z0-9]*/, type: 'tag' },
+                    { regex: /\s[a-zA-Z-]+=/, type: 'attr-name' },
+                    { regex: /=("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'attr-value' }
                 ],
                 go: [
-                    { pattern: /\b(package|import|func|var|const|type|struct|interface|return|if|else|for|range|switch|case|break|continue|goto|defer|go|chan|select|true|false|nil)\b/g, className: 'keyword' },
-                    { pattern: /(["'`])(?:(?=(\\?))\2.)*?\1/g, className: 'string' },
-                    { pattern: /\/\/.*/g, className: 'comment' },
-                    { pattern: /\/\*[\s\S]*?\*\//g, className: 'comment' },
-                    { pattern: /\b(\d+)\b/g, className: 'number' }
+                    { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                    { regex: /\/\/.*/, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/, type: 'string' },
+                    { regex: /\b(package|import|func|var|const|type|struct|interface|return|if|else|for|range|switch|case|break|continue|goto|defer|go|chan|select|true|false|nil)\b/, type: 'keyword' },
+                    { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                    { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
                 ]
             };
 
-            // Apply highlighting for detected language
-            if (patterns[language]) {
-                let html = text;
-
-                // Escape HTML entities first
-                html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-                // Apply patterns in reverse order to handle overlapping
-                patterns[language].reverse().forEach(({pattern, className}) => {
-                    html = html.replace(pattern, (match) => {
-                        return '<span class="token ' + className + '">' + match + '</span>';
-                    });
-                });
-
-                code.innerHTML = html;
+            // Escape HTML entities
+            function escapeHtml(str) {
+                return str
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
             }
+
+            // Tokenize and highlight
+            function highlight(code, lang) {
+                if (!tokens[lang]) {
+                    return escapeHtml(code);
+                }
+
+                let result = '';
+                let pos = 0;
+
+                while (pos < code.length) {
+                    let matched = false;
+
+                    // Try to match each token type
+                    for (let tokenDef of tokens[lang]) {
+                        const regex = new RegExp('^' + tokenDef.regex.source);
+                        const match = code.slice(pos).match(regex);
+
+                        if (match) {
+                            const token = match[0];
+                            result += '<span class="token ' + tokenDef.type + '">' + escapeHtml(token) + '</span>';
+                            pos += token.length;
+                            matched = true;
+                            break;
+                        }
+                    }
+
+                    // If no match, add the character as-is
+                    if (!matched) {
+                        result += escapeHtml(code[pos]);
+                        pos++;
+                    }
+                }
+
+                return result;
+            }
+
+            // Apply highlighting
+            code.innerHTML = highlight(text, language);
         })();
     </script>
 </body>

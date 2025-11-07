@@ -417,6 +417,8 @@
     <string name="view_count">閲覧回数</string>
     <string name="created_at">作成日</string>
     <string name="code_copied">コードをコピーしました</string>
+    <string name="code_example">コード例</string>
+    <string name="close">閉じる</string>
     <string name="marked_as_reviewed">復習済みにしました</string>
     <string name="knowledge_select_path">ルートを選択して学習内容を表示</string>
     <string name="view_learning_content">学習内容を見る</string>
@@ -616,5 +618,82 @@
     <string name="examples_count">%d個の例</string>
     <string name="sections_and_examples">%d個のセクション • %d個の例</string>
     <string name="error_invalid_language_data">無効な言語データです</string>
+
+    <!-- Focus Enhancement Features -->
+    <string name="deep_work_mode">ディープワークモード</string>
+    <string name="deep_work_mode_desc">中断のない集中時間が必要なタスク</string>
+    <string name="allow_interruptions">中断を許可</string>
+    <string name="focus_difficulty">集中難易度</string>
+    <string name="focus_difficulty_desc">このタスクにはどの程度の集中力が必要ですか？</string>
+    <string name="difficulty_1_shallow">1 - 浅い</string>
+    <string name="difficulty_2_light">2 - 軽い</string>
+    <string name="difficulty_3_moderate">3 - 中程度</string>
+    <string name="difficulty_4_deep">4 - 深い</string>
+    <string name="difficulty_5_ultra_deep">5 - 超深い</string>
+    <string name="warmup_time">ウォームアップ時間</string>
+    <string name="warmup_time_desc">タスクを開始する前の準備時間</string>
+    <string name="cooldown_time">クールダウン時間</string>
+    <string name="cooldown_time_desc">タスク後の振り返り時間</string>
+    <string name="recovery_time">回復時間</string>
+    <string name="recovery_time_desc">タスク完了後の休憩時間</string>
+    <string name="minutes_short">分</string>
+
+    <!-- Environment Checklist -->
+    <string name="environment_checklist">環境チェックリスト</string>
+    <string name="environment_checklist_desc">最適な集中環境を確保する</string>
+    <string name="check_quiet_space">静かな空間</string>
+    <string name="check_phone_silent">電話をサイレントモードに</string>
+    <string name="check_materials_ready">資料準備完了</string>
+    <string name="check_water_coffee">水/コーヒー準備完了</string>
+    <string name="check_comfortable">快適な姿勢</string>
+    <string name="check_notifications_off">通知オフ</string>
+    <string name="apps_closed">閉じたアプリ</string>
+    <string name="environment_notes">メモ</string>
+    <string name="all_checks_passed">すべてのチェック完了！</string>
+    <string name="checks_remaining">残り %d 項目</string>
+    <string name="start_focus_session">フォーカスセッション開始</string>
+    <string name="skip_checklist">スキップ</string>
+
+    <!-- Quick Start -->
+    <string name="create_and_start_now">作成してすぐに開始</string>
+    <string name="create_and_start_desc">タスクを作成してすぐにフォーカスセッションを開始</string>
+
+    <!-- Context Switch Warning -->
+    <string name="context_switch_warning">コンテキストスイッチ警告</string>
+    <string name="context_switch_detected">コンテキストスイッチが検出されました</string>
+    <string name="from_task">前のタスク</string>
+    <string name="to_task">次のタスク</string>
+    <string name="estimated_recovery_cost">推定回復時間: 約 %d 分</string>
+    <string name="switch_tip_title">ヒント</string>
+    <string name="switch_tip_category">異なるタスクカテゴリは精神的な調整が必要です。類似のタスクをまとめて実行することを検討してください。</string>
+    <string name="switch_tip_difficulty">集中難易度の変化が検出されました。新しいタスクに向けて精神的に準備する時間を取ってください。</string>
+    <string name="proceed_anyway">とにかく続行</string>
+    <string name="schedule_later">後でスケジュール</string>
+    <string name="batch_similar_tasks">類似タスクをまとめる</string>
+
+    <!-- Distraction Logging -->
+    <string name="log_distraction">気を散らしたことを記録</string>
+    <string name="distraction_type">気を散らしたタイプ</string>
+    <string name="distraction_phone">電話</string>
+    <string name="distraction_social_media">ソーシャルメディア</string>
+    <string name="distraction_noise">騒音</string>
+    <string name="distraction_person">人</string>
+    <string name="distraction_thoughts">思考</string>
+    <string name="distraction_hunger">空腹/喉の渇き</string>
+    <string name="distraction_fatigue">疲労</string>
+    <string name="distraction_other">その他</string>
+    <string name="distraction_duration">持続時間（秒）</string>
+    <string name="distraction_notes">メモ</string>
+    <string name="log_and_continue">記録して続行</string>
+
+    <!-- Analytics -->
+    <string name="focus_analytics">集中分析</string>
+    <string name="total_distractions">総気を散らし回数</string>
+    <string name="average_distraction_duration">平均持続時間</string>
+    <string name="top_distractions">トップの気を散らし要因</string>
+    <string name="distractions_by_time">時間帯別</string>
+    <string name="context_switches_this_week">今週のコンテキストスイッチ</string>
+    <string name="significant_switches">重要なスイッチ</string>
+    <string name="total_cost">合計コスト</string>
 
 </resources>

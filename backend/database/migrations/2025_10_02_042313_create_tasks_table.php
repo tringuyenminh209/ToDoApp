@@ -59,6 +59,30 @@ return new class extends Migration
             $table->boolean('ai_breakdown_enabled')->default(false)
                 ->comment('AIによる分解済み');
 
+            // Deep Work Mode features
+            $table->boolean('requires_deep_focus')->default(false)
+                ->comment('Deep Work Modeが必要');
+            $table->boolean('allow_interruptions')->default(true)
+                ->comment('割り込みを許可するか');
+            $table->integer('focus_difficulty')->default(3)
+                ->comment('集中難易度（1-5: shallow to ultra-deep focus）');
+
+            // Time management features
+            $table->integer('warmup_minutes')->nullable()
+                ->comment('タスク前の準備時間（分）');
+            $table->integer('cooldown_minutes')->nullable()
+                ->comment('タスク後の振り返り時間（分）');
+            $table->integer('recovery_minutes')->nullable()
+                ->comment('タスク完了後の休息時間（分）');
+
+            // Context tracking
+            $table->timestamp('last_focus_at')->nullable()
+                ->comment('最後にこのタスクに集中した時刻');
+            $table->integer('total_focus_minutes')->default(0)
+                ->comment('集中に費やした合計時間（分）');
+            $table->integer('distraction_count')->default(0)
+                ->comment('記録された気が散った回数');
+
             $table->timestamps();
 
             // Indexes for Performance

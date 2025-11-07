@@ -39,6 +39,7 @@ class CodeExampleAdapter(
         private val btnCopy: ImageButton = itemView.findViewById(R.id.btn_copy)
         private val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
         private val webviewCode: WebView = itemView.findViewById(R.id.webview_code)
+        private val cardCodeContainer: com.google.android.material.card.MaterialCardView = itemView.findViewById(R.id.card_code_container)
         private val outputContainer: LinearLayout = itemView.findViewById(R.id.output_container)
         private val tvOutput: TextView = itemView.findViewById(R.id.tv_output)
 
@@ -73,10 +74,55 @@ class CodeExampleAdapter(
                 Toast.makeText(itemView.context, itemView.context.getString(R.string.code_copied), Toast.LENGTH_SHORT).show()
             }
 
-            // Click listener
-            itemView.setOnClickListener {
-                onExampleClick(example)
+            // Click on code card to show fullscreen dialog
+            cardCodeContainer.setOnClickListener {
+                showFullscreenCodeDialog(example, languageName)
             }
+        }
+
+        private fun showFullscreenCodeDialog(example: CodeExample, languageName: String) {
+            val context = itemView.context
+            val dialog = android.app.Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+            dialog.setContentView(ecccomp.s2240788.mobile_android.R.layout.dialog_code_fullscreen)
+
+            // Get views from dialog
+            val tvDialogTitle: TextView = dialog.findViewById(ecccomp.s2240788.mobile_android.R.id.tv_dialog_title)
+            val chipLanguage: Chip = dialog.findViewById(ecccomp.s2240788.mobile_android.R.id.chip_language)
+            val btnClose: ImageButton = dialog.findViewById(ecccomp.s2240788.mobile_android.R.id.btn_close)
+            val btnCopyFullscreen: com.google.android.material.button.MaterialButton = dialog.findViewById(ecccomp.s2240788.mobile_android.R.id.btn_copy_fullscreen)
+            val webviewCodeFullscreen: WebView = dialog.findViewById(ecccomp.s2240788.mobile_android.R.id.webview_code_fullscreen)
+            val outputContainerFullscreen: LinearLayout = dialog.findViewById(ecccomp.s2240788.mobile_android.R.id.output_container_fullscreen)
+            val tvOutputFullscreen: TextView = dialog.findViewById(ecccomp.s2240788.mobile_android.R.id.tv_output_fullscreen)
+
+            // Set title and language
+            tvDialogTitle.text = example.title
+            chipLanguage.text = languageName.uppercase()
+
+            // Setup WebView with syntax highlighting
+            setupWebView(webviewCodeFullscreen, example.code, languageName)
+
+            // Set output if available
+            if (example.output.isNullOrBlank()) {
+                outputContainerFullscreen.visibility = View.GONE
+            } else {
+                outputContainerFullscreen.visibility = View.VISIBLE
+                tvOutputFullscreen.text = example.output
+            }
+
+            // Close button
+            btnClose.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            // Copy button
+            btnCopyFullscreen.setOnClickListener {
+                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("code", example.code)
+                clipboard.setPrimaryClip(clip)
+                Toast.makeText(context, context.getString(ecccomp.s2240788.mobile_android.R.string.code_copied), Toast.LENGTH_SHORT).show()
+            }
+
+            dialog.show()
         }
 
         private fun setupWebView(webView: WebView, code: String, language: String) {

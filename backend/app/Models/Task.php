@@ -25,6 +25,16 @@ class Task extends Model
         'deadline',
         'status',
         'ai_breakdown_enabled',
+        // Focus enhancement features
+        'requires_deep_focus',
+        'allow_interruptions',
+        'focus_difficulty',
+        'warmup_minutes',
+        'cooldown_minutes',
+        'recovery_minutes',
+        'last_focus_at',
+        'total_focus_minutes',
+        'distraction_count',
     ];
 
     protected $casts = [
@@ -32,6 +42,16 @@ class Task extends Model
         'priority' => 'integer',
         'estimated_minutes' => 'integer',
         'ai_breakdown_enabled' => 'boolean',
+        // Focus enhancement features
+        'requires_deep_focus' => 'boolean',
+        'allow_interruptions' => 'boolean',
+        'focus_difficulty' => 'integer',
+        'warmup_minutes' => 'integer',
+        'cooldown_minutes' => 'integer',
+        'recovery_minutes' => 'integer',
+        'last_focus_at' => 'datetime',
+        'total_focus_minutes' => 'integer',
+        'distraction_count' => 'integer',
     ];
 
     // Relationships
@@ -68,6 +88,26 @@ class Task extends Model
     public function knowledgeItems(): HasMany
     {
         return $this->hasMany(KnowledgeItem::class, 'source_task_id');
+    }
+
+    public function focusEnvironments(): HasMany
+    {
+        return $this->hasMany(FocusEnvironment::class);
+    }
+
+    public function distractionLogs(): HasMany
+    {
+        return $this->hasMany(DistractionLog::class);
+    }
+
+    public function contextSwitchesFrom(): HasMany
+    {
+        return $this->hasMany(ContextSwitch::class, 'from_task_id');
+    }
+
+    public function contextSwitchesTo(): HasMany
+    {
+        return $this->hasMany(ContextSwitch::class, 'to_task_id');
     }
 
     // Scopes

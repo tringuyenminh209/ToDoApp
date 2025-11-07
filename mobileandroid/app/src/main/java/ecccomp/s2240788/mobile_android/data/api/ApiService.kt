@@ -265,4 +265,32 @@ interface ApiService {
     
     @GET("cheat-code/categories")
     suspend fun getCheatCodeCategories(): Response<ApiResponse<List<String>>>
+
+    // Focus Enhancement endpoints
+    // Environment Checklist
+    @POST("focus/environment/check")
+    suspend fun saveEnvironmentCheck(@Body request: SaveEnvironmentCheckRequest): Response<ApiResponse<FocusEnvironment>>
+
+    @GET("focus/environment/task/{taskId}")
+    suspend fun getEnvironmentHistory(@Path("taskId") taskId: Int): Response<ApiResponse<List<FocusEnvironment>>>
+
+    // Distraction Logging
+    @POST("focus/distraction/log")
+    suspend fun logDistraction(@Body request: LogDistractionRequest): Response<ApiResponse<DistractionLog>>
+
+    @GET("focus/distraction/task/{taskId}")
+    suspend fun getDistractionLogs(@Path("taskId") taskId: Int): Response<ApiResponse<List<DistractionLog>>>
+
+    @GET("focus/distraction/analytics")
+    suspend fun getDistractionAnalytics(@Query("days") days: Int = 7): Response<ApiResponse<DistractionAnalytics>>
+
+    // Context Switching
+    @POST("focus/context-switch/check")
+    suspend fun checkContextSwitch(@Body request: CheckContextSwitchRequest): Response<ApiResponse<ContextSwitchResponse>>
+
+    @PUT("focus/context-switch/{id}/proceed")
+    suspend fun confirmContextSwitch(@Path("id") id: Int, @Body note: Map<String, String?>): Response<ApiResponse<ContextSwitch>>
+
+    @GET("focus/context-switch/analytics")
+    suspend fun getContextSwitchAnalytics(@Query("days") days: Int = 7): Response<ApiResponse<ContextSwitchAnalytics>>
 }

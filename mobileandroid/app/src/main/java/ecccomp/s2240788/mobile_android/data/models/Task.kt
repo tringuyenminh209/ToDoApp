@@ -16,6 +16,17 @@ data class Task(
     val project_id: Int?,
     val learning_milestone_id: Int?,
     val ai_breakdown_enabled: Boolean,
+    // Focus enhancement features
+    val requires_deep_focus: Boolean = false,
+    val allow_interruptions: Boolean = true,
+    val focus_difficulty: Int = 3, // 1-5: shallow to ultra-deep
+    val warmup_minutes: Int? = null,
+    val cooldown_minutes: Int? = null,
+    val recovery_minutes: Int? = null,
+    val last_focus_at: String? = null,
+    val total_focus_minutes: Int = 0,
+    val distraction_count: Int = 0,
+    // Relations
     val subtasks: List<Subtask>? = null,
     val knowledge_items: List<KnowledgeItem>? = null
 )
@@ -61,7 +72,14 @@ data class CreateTaskRequest(
     val priority: Int,
     val energy_level: String,
     val estimated_minutes: Int?,
-    val deadline: String?
+    val deadline: String?,
+    // Focus enhancement features
+    val requires_deep_focus: Boolean = false,
+    val allow_interruptions: Boolean = true,
+    val focus_difficulty: Int = 3,
+    val warmup_minutes: Int? = null,
+    val cooldown_minutes: Int? = null,
+    val recovery_minutes: Int? = null
 )
 
 data class CreateSubtaskRequest(
@@ -177,4 +195,121 @@ data class AuthResponse(
     val user: User,
     val token: String,
     val message: String
+)
+
+// Focus Enhancement Models
+data class FocusEnvironment(
+    val id: Int,
+    val task_id: Int,
+    val user_id: Int,
+    val focus_session_id: Int?,
+    val quiet_space: Boolean = false,
+    val phone_silent: Boolean = false,
+    val materials_ready: Boolean = false,
+    val water_coffee_ready: Boolean = false,
+    val comfortable_position: Boolean = false,
+    val notifications_off: Boolean = false,
+    val apps_closed: List<String>? = null,
+    val all_checks_passed: Boolean = false,
+    val notes: String? = null,
+    val created_at: String,
+    val updated_at: String
+)
+
+data class SaveEnvironmentCheckRequest(
+    val task_id: Int,
+    val focus_session_id: Int? = null,
+    val quiet_space: Boolean = false,
+    val phone_silent: Boolean = false,
+    val materials_ready: Boolean = false,
+    val water_coffee_ready: Boolean = false,
+    val comfortable_position: Boolean = false,
+    val notifications_off: Boolean = false,
+    val apps_closed: List<String>? = null,
+    val notes: String? = null
+)
+
+data class DistractionLog(
+    val id: Int,
+    val task_id: Int,
+    val user_id: Int,
+    val focus_session_id: Int?,
+    val distraction_type: String, // phone, social_media, noise, person, thoughts, hunger_thirst, fatigue, other
+    val duration_seconds: Int?,
+    val notes: String?,
+    val occurred_at: String,
+    val time_of_day: String?,
+    val created_at: String,
+    val updated_at: String
+)
+
+data class LogDistractionRequest(
+    val task_id: Int,
+    val focus_session_id: Int? = null,
+    val distraction_type: String,
+    val duration_seconds: Int? = null,
+    val notes: String? = null
+)
+
+data class DistractionAnalytics(
+    val total_distractions: Int,
+    val average_duration_seconds: Int,
+    val top_distractions: List<DistractionStat>,
+    val by_time_of_day: List<TimeOfDayStat>,
+    val period_days: Int
+)
+
+data class DistractionStat(
+    val distraction_type: String,
+    val count: Int,
+    val total_duration: Int?
+)
+
+data class TimeOfDayStat(
+    val hour: Int,
+    val count: Int
+)
+
+data class ContextSwitch(
+    val id: Int,
+    val user_id: Int,
+    val from_task_id: Int?,
+    val from_category: String?,
+    val from_focus_difficulty: Int?,
+    val to_task_id: Int,
+    val to_category: String?,
+    val to_focus_difficulty: Int?,
+    val is_significant_switch: Boolean,
+    val estimated_cost_minutes: Int,
+    val user_proceeded: Boolean,
+    val user_note: String?,
+    val created_at: String,
+    val updated_at: String
+)
+
+data class CheckContextSwitchRequest(
+    val from_task_id: Int? = null,
+    val to_task_id: Int
+)
+
+data class ContextSwitchResponse(
+    val context_switch: ContextSwitch,
+    val should_warn: Boolean,
+    val warning_message: String?
+)
+
+data class ContextSwitchAnalytics(
+    val total_switches: Int,
+    val significant_switches: Int,
+    val average_cost_minutes: Int,
+    val total_cost_minutes: Int,
+    val total_cost_hours: Double,
+    val common_patterns: List<SwitchPattern>,
+    val period_days: Int
+)
+
+data class SwitchPattern(
+    val from_category: String?,
+    val to_category: String?,
+    val count: Int
 )
