@@ -293,4 +293,35 @@ interface ApiService {
 
     @GET("focus/context-switch/analytics")
     suspend fun getContextSwitchAnalytics(@Query("days") days: Int = 7): Response<ApiResponse<ContextSwitchAnalytics>>
+
+    // ==================== Chat AI Endpoints ====================
+
+    @GET("ai/chat/conversations")
+    suspend fun getChatConversations(
+        @Query("status") status: String? = null,
+        @Query("sort_by") sortBy: String = "last_message_at",
+        @Query("sort_order") sortOrder: String = "desc",
+        @Query("per_page") perPage: Int = 20
+    ): Response<ApiResponse<ChatConversationsResponse>>
+
+    @POST("ai/chat/conversations")
+    suspend fun createChatConversation(@Body request: CreateConversationRequest): Response<ApiResponse<ChatConversation>>
+
+    @GET("ai/chat/conversations/{id}")
+    suspend fun getChatConversation(@Path("id") id: Long): Response<ApiResponse<ChatConversation>>
+
+    @PUT("ai/chat/conversations/{id}")
+    suspend fun updateChatConversation(
+        @Path("id") id: Long,
+        @Body request: UpdateConversationRequest
+    ): Response<ApiResponse<ChatConversation>>
+
+    @DELETE("ai/chat/conversations/{id}")
+    suspend fun deleteChatConversation(@Path("id") id: Long): Response<ApiResponse<Unit>>
+
+    @POST("ai/chat/conversations/{id}/messages")
+    suspend fun sendChatMessage(
+        @Path("id") id: Long,
+        @Body request: SendMessageRequest
+    ): Response<ApiResponse<SendMessageResponse>>
 }

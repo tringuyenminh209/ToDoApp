@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
+import ecccomp.s2240788.mobile_android.data.models.CheckContextSwitchRequest
+import ecccomp.s2240788.mobile_android.data.models.ContextSwitchResponse
 import ecccomp.s2240788.mobile_android.data.models.CreateTaskRequest
 import ecccomp.s2240788.mobile_android.data.models.CreateSubtaskRequest
+import ecccomp.s2240788.mobile_android.data.models.SaveEnvironmentCheckRequest
 import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInput
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
@@ -30,9 +33,19 @@ class AddTaskViewModel : ViewModel() {
     private val _taskCreated = MutableLiveData<Boolean>()
     val taskCreated: LiveData<Boolean> = _taskCreated
 
+    private val _createdTaskId = MutableLiveData<Int?>()
+    val createdTaskId: LiveData<Int?> = _createdTaskId
+
+    private val _environmentCheckSaved = MutableLiveData<Boolean>()
+    val environmentCheckSaved: LiveData<Boolean> = _environmentCheckSaved
+
+    private val _contextSwitchResponse = MutableLiveData<ContextSwitchResponse?>()
+    val contextSwitchResponse: LiveData<ContextSwitchResponse?> = _contextSwitchResponse
+
     /**
      * タスクを作成
      * Priority is now directly 1-5 integer
+     * Focus Enhancement fields added
      */
     fun createTask(
         title: String,
@@ -42,7 +55,13 @@ class AddTaskViewModel : ViewModel() {
         energyLevel: String, // "low" | "medium" | "high"
         estimatedMinutes: Int?,
         category: String?, // "study" | "work" | "personal" | "other"
-        subtasks: List<SubtaskInput> = emptyList()
+        subtasks: List<SubtaskInput> = emptyList(),
+        requiresDeepFocus: Boolean = false,
+        allowInterruptions: Boolean = true,
+        focusDifficulty: Int = 3,
+        warmupMinutes: Int? = null,
+        cooldownMinutes: Int? = null,
+        startImmediately: Boolean = false
     ) {
         viewModelScope.launch {
             try {
@@ -65,7 +84,12 @@ class AddTaskViewModel : ViewModel() {
                     priority = validPriority,
                     energy_level = energyLevel,
                     estimated_minutes = estimatedMinutes,
-                    deadline = dueDate
+                    deadline = dueDate,
+                    requires_deep_focus = requiresDeepFocus,
+                    allow_interruptions = allowInterruptions,
+                    focus_difficulty = focusDifficulty,
+                    warmup_minutes = warmupMinutes,
+                    cooldown_minutes = cooldownMinutes
                 )
 
                 val response = apiService.createTask(request)
@@ -74,6 +98,11 @@ class AddTaskViewModel : ViewModel() {
                     val apiResponse = response.body()
                     if (apiResponse != null && apiResponse.success) {
                         val createdTask = apiResponse.data
+
+                        // Store created task ID
+                        if (createdTask != null) {
+                            _createdTaskId.value = createdTask.id
+                        }
 
                         // Create subtasks if any
                         if (createdTask != null && subtasks.isNotEmpty()) {
@@ -102,6 +131,65 @@ class AddTaskViewModel : ViewModel() {
 
     fun clearError() {
         _error.value = null
+    }
+
+    /**
+     * Save environment checklist
+     */
+    fun saveEnvironmentCheck(request: SaveEnvironmentCheckRequest) {
+        viewModelScope.launch {
+            try {
+                val response = apiService.saveEnvironmentCheck(request)
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _environmentCheckSaved.value = true
+                } else {
+                    _error.value = "環境チェックの保存に失敗しました"
+                    _environmentCheckSaved.value = false
+                }
+            } catch (e: Exception) {
+                _error.value = "ネットワークエラー: ${e.message}"
+                _environmentCheckSaved.value = false
+            }
+        }
+    }
+
+    /**
+     * Check for context switch
+     */
+    fun checkContextSwitch(toTaskId: Int, fromTaskId: Int? = null) {
+        viewModelScope.launch {
+            try {
+                val request = CheckContextSwitchRequest(fromTaskId, toTaskId)
+                val response = apiService.checkContextSwitch(request)
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _contextSwitchResponse.value = response.body()?.data
+                } else {
+                    _contextSwitchResponse.value = null
+                }
+            } catch (e: Exception) {
+                _error.value = "ネットワークエラー: ${e.message}"
+                _contextSwitchResponse.value = null
+            }
+        }
+    }
+
+    /**
+     * Confirm context switch
+     */
+    fun confirmContextSwitch(contextSwitchId: Int, note: String? = null) {
+        viewModelScope.launch {
+            try {
+                val noteMap = if (note != null) {
+                    mapOf("note" to note)
+                } else {
+                    mapOf<String, String>()
+                }
+                apiService.confirmContextSwitch(contextSwitchId, noteMap)
+            } catch (e: Exception) {
+                // Silent fail for confirmation
+                android.util.Log.e("AddTaskViewModel", "Error confirming context switch", e)
+            }
+        }
     }
 
     private suspend fun createSubtasks(taskId: Int, subtasks: List<SubtaskInput>) {

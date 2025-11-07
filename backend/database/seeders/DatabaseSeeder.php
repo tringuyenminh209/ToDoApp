@@ -33,6 +33,11 @@ class DatabaseSeeder extends Seeder
             CheatCodeKotlinSeeder::class,
             CheatCodeCss3Seeder::class,
             CheatCodeHtmlSeeder::class,
+            CheatCodeBashSeeder::class,
+            CheatCodeLaravelSeeder::class,
+            CheatCodeDockerSeeder::class,
+            CheatCodeYamlSeeder::class,
+            CheatCodeMysqlSeeder::class,
         ]);
     }
 }

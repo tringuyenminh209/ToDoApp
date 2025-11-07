@@ -1,16 +1,22 @@
 package ecccomp.s2240788.mobile_android.ui.activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import ecccomp.s2240788.mobile_android.data.models.ContextSwitch;
+import ecccomp.s2240788.mobile_android.data.models.ContextSwitchResponse;
+import ecccomp.s2240788.mobile_android.data.models.SaveEnvironmentCheckRequest;
 import ecccomp.s2240788.mobile_android.databinding.ActivityAddTaskBinding;
 import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInput;
 import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInputAdapter;
+import ecccomp.s2240788.mobile_android.ui.dialogs.ContextSwitchWarningDialog;
+import ecccomp.s2240788.mobile_android.ui.dialogs.EnvironmentChecklistDialog;
 import ecccomp.s2240788.mobile_android.ui.viewmodels.AddTaskViewModel;
+import ecccomp.s2240788.mobile_android.ui.activities.FocusSessionActivity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +38,18 @@ public class AddTaskActivity extends BaseActivity {
     private String selectedDeadline = null;
     private Calendar calendar = Calendar.getInstance();
     private SubtaskInputAdapter subtaskAdapter;
-    private List<SubtaskInput> subtasks = new ArrayList<>();
+    private final List<SubtaskInput> subtasks = new ArrayList<>();
+
+    // Deep Work Mode fields
+    private boolean requiresDeepFocus = false;
+    private boolean allowInterruptions = true;
+    private int focusDifficulty = 3; // Default: medium (1-5)
+    private Integer warmupMinutes = null;
+    private Integer cooldownMinutes = null;
+
+    // Focus Enhancement
+    private boolean shouldStartImmediately = false;
+    private Integer createdTaskId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +62,10 @@ public class AddTaskActivity extends BaseActivity {
         setupSubtaskRecyclerView();
         setupClickListeners();
         setupObservers();
+        setupDeepWorkMode();
+        
+        // Check for context switch when opening AddTask
+        // Note: We'll check after task is created, not on open
 
         // Set initial priority selection (medium is default)
         updatePrioritySelection();
@@ -154,9 +175,18 @@ public class AddTaskActivity extends BaseActivity {
         // Save button
         binding.btnSave.setOnClickListener(v -> {
             if (validateInputs()) {
-                createTask();
+                createTask(false);
             }
         });
+
+        // Quick Start button (create and start immediately)
+        if (binding.btnCreateAndStart != null) {
+            binding.btnCreateAndStart.setOnClickListener(v -> {
+                if (validateInputs()) {
+                    createTask(true);
+                }
+            });
+        }
     }
 
     private void setupObservers() {
@@ -173,11 +203,46 @@ public class AddTaskActivity extends BaseActivity {
             }
         });
 
-        // Success
+        // Success - handle task creation
         viewModel.getTaskCreated().observe(this, success -> {
             if (success) {
-                Toast.makeText(this, "タスクを作成しました！", Toast.LENGTH_SHORT).show();
-                finish();
+                Integer taskId = viewModel.getCreatedTaskId().getValue();
+                if (taskId != null) {
+                    createdTaskId = taskId;
+                    
+                    if (shouldStartImmediately) {
+                        // Show environment checklist before starting
+                        showEnvironmentChecklist(taskId);
+                    } else {
+                        Toast.makeText(this, "タスクを作成しました！", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                } else {
+                    Toast.makeText(this, "タスクを作成しました！", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
+
+        // Environment check saved
+        viewModel.getEnvironmentCheckSaved().observe(this, saved -> {
+            if (saved != null && saved && createdTaskId != null) {
+                // Check for context switch after environment check is saved
+                checkContextSwitchAndStart(createdTaskId);
+            }
+        });
+
+        // Context switch response
+        viewModel.getContextSwitchResponse().observe(this, switchResponse -> {
+            if (switchResponse != null && createdTaskId != null) {
+                if (switchResponse.getShould_warn() && switchResponse.getWarning_message() != null) {
+                    showContextSwitchWarning(switchResponse, createdTaskId);
+                } else {
+                    startFocusSession(createdTaskId);
+                }
+            } else if (createdTaskId != null) {
+                // No significant switch, start directly
+                startFocusSession(createdTaskId);
             }
         });
     }
@@ -222,7 +287,9 @@ public class AddTaskActivity extends BaseActivity {
         return true;
     }
 
-    private void createTask() {
+    private void createTask(boolean startImmediately) {
+        shouldStartImmediately = startImmediately;
+        
         String title = binding.etTaskTitle.getText().toString().trim();
         String description = binding.etTaskDescription.getText().toString().trim();
         Integer estimated = null;
@@ -238,6 +305,18 @@ public class AddTaskActivity extends BaseActivity {
             }
         } catch (Exception ignored) {}
 
+        // Get warmup/cooldown times
+        try {
+            if (binding.etWarmup != null && binding.etWarmup.getText() != null) {
+                String warmupStr = binding.etWarmup.getText().toString().trim();
+                warmupMinutes = warmupStr.isEmpty() ? null : Integer.parseInt(warmupStr);
+            }
+            if (binding.etCooldown != null && binding.etCooldown.getText() != null) {
+                String cooldownStr = binding.etCooldown.getText().toString().trim();
+                cooldownMinutes = cooldownStr.isEmpty() ? null : Integer.parseInt(cooldownStr);
+            }
+        } catch (Exception ignored) {}
+
         // Get subtasks from adapter
         List<SubtaskInput> currentSubtasks = getSubtasks();
 
@@ -249,7 +328,13 @@ public class AddTaskActivity extends BaseActivity {
             selectedEnergy,
             estimated,
             selectedCategory,
-            currentSubtasks
+            currentSubtasks,
+            requiresDeepFocus,
+            allowInterruptions,
+            focusDifficulty,
+            warmupMinutes,
+            cooldownMinutes,
+            startImmediately
         );
     }
 
@@ -347,5 +432,129 @@ public class AddTaskActivity extends BaseActivity {
 
     public List<SubtaskInput> getSubtasks() {
         return subtaskAdapter.getSubtasks();
+    }
+
+    private void setupDeepWorkMode() {
+        // Deep Work Mode toggle
+        if (binding.switchDeepWork != null) {
+            binding.switchDeepWork.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                requiresDeepFocus = isChecked;
+                allowInterruptions = !isChecked; // Inverse logic
+            });
+        }
+
+        // Focus Difficulty slider (1-5)
+        if (binding.sliderFocusDifficulty != null) {
+            binding.sliderFocusDifficulty.addOnChangeListener((slider, value, fromUser) -> {
+                focusDifficulty = (int) value;
+            });
+
+            // Set default value
+            binding.sliderFocusDifficulty.setValue(3f);
+        }
+
+        // Auto-adjust settings when deep work is enabled
+        if (binding.switchDeepWork != null) {
+            binding.switchDeepWork.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    // Auto-set focus difficulty to 4 when deep work enabled
+                    if (binding.sliderFocusDifficulty != null) {
+                        binding.sliderFocusDifficulty.setValue(4f);
+                        focusDifficulty = 4;
+                    }
+                    // Suggest warmup/cooldown times
+                    if (binding.etWarmup != null && (binding.etWarmup.getText() == null || binding.etWarmup.getText().toString().trim().isEmpty())) {
+                        binding.etWarmup.setText("5");
+                        warmupMinutes = 5;
+                    }
+                    if (binding.etCooldown != null && (binding.etCooldown.getText() == null || binding.etCooldown.getText().toString().trim().isEmpty())) {
+                        binding.etCooldown.setText("10");
+                        cooldownMinutes = 10;
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * Show environment checklist dialog
+     */
+    private void showEnvironmentChecklist(int taskId) {
+        EnvironmentChecklistDialog dialog = EnvironmentChecklistDialog.newInstance(taskId);
+        dialog.setOnStartSessionListener(environmentData -> {
+            // Save environment check via API
+            saveEnvironmentCheck(environmentData);
+            return null;
+        });
+        dialog.show(getSupportFragmentManager(), "environment_checklist");
+    }
+
+    /**
+     * Save environment check and start focus session
+     */
+    private void saveEnvironmentCheck(SaveEnvironmentCheckRequest environmentData) {
+        viewModel.saveEnvironmentCheck(environmentData);
+    }
+
+    /**
+     * Check for context switch and start focus session
+     */
+    private void checkContextSwitchAndStart(int taskId) {
+        viewModel.checkContextSwitch(taskId, null);
+    }
+
+    /**
+     * Show context switch warning dialog
+     */
+    private void showContextSwitchWarning(ContextSwitchResponse switchResponse, int taskId) {
+        ContextSwitch contextSwitch = switchResponse.getContext_switch();
+        String fromTask = contextSwitch.getFrom_category() != null 
+            ? contextSwitch.getFrom_category() 
+            : "前のタスク";
+        String toTask = binding.etTaskTitle.getText().toString().trim();
+        int cost = contextSwitch.getEstimated_cost_minutes();
+        String tips = switchResponse.getWarning_message() != null 
+            ? switchResponse.getWarning_message() 
+            : "異なるタスクカテゴリへの切り替えは集中力を低下させる可能性があります。";
+
+        ContextSwitchWarningDialog dialog = ContextSwitchWarningDialog.newInstance(
+            fromTask, toTask, cost, tips, contextSwitch
+        );
+        
+        dialog.setOnProceedListener(() -> {
+            // Confirm context switch
+            if (contextSwitch != null) {
+                viewModel.confirmContextSwitch(contextSwitch.getId(), "User proceeded with context switch");
+            }
+            startFocusSession(taskId);
+            return null;
+        });
+
+        dialog.setOnBatchTasksListener(() -> {
+            // TODO: Navigate to task batching screen
+            Toast.makeText(this, "タスクのバッチ処理機能は今後実装予定です", Toast.LENGTH_SHORT).show();
+            finish();
+            return null;
+        });
+
+        dialog.setOnCancelListener(() -> {
+            // User cancelled, just finish
+            finish();
+            return null;
+        });
+        
+        dialog.show(getSupportFragmentManager(), "context_switch_warning");
+    }
+
+
+    /**
+     * Start focus session
+     */
+    private void startFocusSession(int taskId) {
+        Intent intent = new Intent(this, FocusSessionActivity.class);
+        intent.putExtra("task_id", taskId);
+        intent.putExtra("task_title", binding.etTaskTitle.getText().toString().trim());
+        startActivity(intent);
+        finish();
     }
 }
