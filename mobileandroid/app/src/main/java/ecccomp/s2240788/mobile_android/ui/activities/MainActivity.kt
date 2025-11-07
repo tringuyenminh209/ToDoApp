@@ -154,7 +154,8 @@ class MainActivity : BaseActivity() {
         }
 
         binding.btnAiCoach.setOnClickListener {
-            Toast.makeText(this, "AI Coach", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, AICoachActivity::class.java)
+            startActivity(intent)
         }
 
         // Quick actions

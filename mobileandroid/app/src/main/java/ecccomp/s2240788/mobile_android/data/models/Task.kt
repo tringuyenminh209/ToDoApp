@@ -313,3 +313,55 @@ data class SwitchPattern(
     val to_category: String?,
     val count: Int
 )
+
+// ==================== Chat AI Models ====================
+
+data class ChatConversation(
+    val id: Long,
+    val user_id: Long,
+    val title: String?,
+    val status: String, // "active" or "archived"
+    val last_message_at: String?,
+    val message_count: Int,
+    val created_at: String,
+    val updated_at: String,
+    val messages: List<ChatMessage>? = null
+)
+
+data class ChatMessage(
+    val id: Long,
+    val conversation_id: Long,
+    val user_id: Long? = null,
+    val role: String, // "user", "assistant", or "system"
+    val content: String,
+    val metadata: Map<String, Any>? = null,
+    val token_count: Int? = null,
+    val created_at: String,
+    val updated_at: String? = null
+)
+
+data class CreateConversationRequest(
+    val title: String? = null,
+    val message: String
+)
+
+data class SendMessageRequest(
+    val message: String
+)
+
+data class UpdateConversationRequest(
+    val title: String? = null,
+    val status: String? = null
+)
+
+data class ChatConversationsResponse(
+    val current_page: Int,
+    val data: List<ChatConversation>,
+    val total: Int,
+    val per_page: Int
+)
+
+data class SendMessageResponse(
+    val user_message: ChatMessage,
+    val assistant_message: ChatMessage
+)

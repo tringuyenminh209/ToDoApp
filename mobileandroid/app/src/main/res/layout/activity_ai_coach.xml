@@ -85,6 +85,18 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- Loading Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_card"
+        tools:visibility="visible" />
+
     <!-- Quick Actions -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/quick_actions_card"
@@ -265,7 +277,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"
-                android:maxLines="3" />
+                android:maxLines="3"
+                android:imeOptions="actionSend" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
