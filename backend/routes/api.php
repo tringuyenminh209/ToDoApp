@@ -15,6 +15,7 @@ use App\Http\Controllers\LearningPathController;
 use App\Http\Controllers\LearningPathTemplateController;
 use App\Http\Controllers\CheatCodeController;
 use App\Http\Controllers\KnowledgeController;
+use App\Http\Controllers\FocusEnhancementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -116,7 +117,34 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::put('/suggestions/{id}/read', [AIController::class, 'markSuggestionRead']);
                 Route::get('/summaries', [AIController::class, 'summaries']);
                 Route::post('/motivational-message', [AIController::class, 'motivationalMessage']);
+
+                // Chat routes - moderate rate limit (30 requests per minute for chat)
+                Route::prefix('chat')->middleware('throttle:30,1')->group(function () {
+                    Route::get('/conversations', [AIController::class, 'getConversations']);
+                    Route::post('/conversations', [AIController::class, 'createConversation']);
+                    Route::get('/conversations/{id}', [AIController::class, 'getConversation']);
+                    Route::put('/conversations/{id}', [AIController::class, 'updateConversation']);
+                    Route::delete('/conversations/{id}', [AIController::class, 'deleteConversation']);
+                    Route::post('/conversations/{id}/messages', [AIController::class, 'sendMessage']);
+                });
             });
+
+    // Focus Enhancement routes
+    Route::prefix('focus')->group(function () {
+        // Environment Checklist
+        Route::post('/environment/check', [FocusEnhancementController::class, 'saveEnvironmentCheck']);
+        Route::get('/environment/task/{taskId}', [FocusEnhancementController::class, 'getEnvironmentHistory']);
+
+        // Distraction Logging
+        Route::post('/distraction/log', [FocusEnhancementController::class, 'logDistraction']);
+        Route::get('/distraction/task/{taskId}', [FocusEnhancementController::class, 'getDistractionLogs']);
+        Route::get('/distraction/analytics', [FocusEnhancementController::class, 'getDistractionAnalytics']);
+
+        // Context Switching
+        Route::post('/context-switch/check', [FocusEnhancementController::class, 'checkContextSwitch']);
+        Route::put('/context-switch/{id}/proceed', [FocusEnhancementController::class, 'confirmContextSwitch']);
+        Route::get('/context-switch/analytics', [FocusEnhancementController::class, 'getContextSwitchAnalytics']);
+    });
 
     // Stats routes
     Route::prefix('stats')->group(function () {

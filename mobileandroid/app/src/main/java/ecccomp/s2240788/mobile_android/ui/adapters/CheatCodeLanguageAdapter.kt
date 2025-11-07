@@ -41,8 +41,27 @@ class CheatCodeLanguageAdapter(
             val backgroundColor = getLanguageColor(language.name)
             cardLanguage.setCardBackgroundColor(Color.parseColor(backgroundColor))
 
-            // Set icon tint to black/dark
-            ivLanguageIcon.setColorFilter(Color.parseColor("#000000"))
+            // Set icon from database
+            if (!language.icon.isNullOrBlank()) {
+                val iconResId = itemView.context.resources.getIdentifier(
+                    language.icon,
+                    "drawable",
+                    itemView.context.packageName
+                )
+                if (iconResId != 0) {
+                    ivLanguageIcon.setImageResource(iconResId)
+                    // Set icon tint to white for better visibility on colored background
+                    ivLanguageIcon.setColorFilter(Color.parseColor("#FFFFFF"))
+                } else {
+                    // Fallback to default icon
+                    ivLanguageIcon.setImageResource(R.drawable.ic_computer)
+                    ivLanguageIcon.setColorFilter(Color.parseColor("#FFFFFF"))
+                }
+            } else {
+                // Default icon if no icon specified
+                ivLanguageIcon.setImageResource(R.drawable.ic_computer)
+                ivLanguageIcon.setColorFilter(Color.parseColor("#FFFFFF"))
+            }
 
             // Set tag if needed (e.g., Laravel -> PHP)
             if (language.name == "laravel" || language.name == "php") {
@@ -51,10 +70,6 @@ class CheatCodeLanguageAdapter(
             } else {
                 tvTag.visibility = View.GONE
             }
-
-            // TODO: Set language icon based on language.name
-            // For now, using default icon
-            ivLanguageIcon.setImageResource(R.drawable.ic_computer)
 
             // Click listener
             itemView.setOnClickListener {

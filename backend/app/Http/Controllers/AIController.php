@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\AISuggestion;
 use App\Models\AISummary;
+use App\Models\ChatConversation;
+use App\Models\ChatMessage;
 use App\Services\AIService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -463,5 +465,261 @@ class AIController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Get all conversations for authenticated user
+     * GET /api/ai/chat/conversations
+     */
+    public function getConversations(Request $request): JsonResponse
+    {
+        $query = ChatConversation::where('user_id', $request->user()->id)
+            ->with(['messages' => function($q) {
+                $q->latest()->limit(1); // Only get last message for preview
+            }]);
+
+        // Filter by status
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Sort
+        $sortBy = $request->get('sort_by', 'last_message_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+        $query->orderBy($sortBy, $sortOrder);
+
+        // Paginate
+        $perPage = min($request->get('per_page', 20), 100);
+        $conversations = $query->paginate($perPage);
+
+        return response()->json([
+            'success' => true,
+            'data' => $conversations,
+            'message' => '会話リストを取得しました'
+        ]);
+    }
+
+    /**
+     * Get a specific conversation with messages
+     * GET /api/ai/chat/conversations/{id}
+     */
+    public function getConversation(Request $request, string $id): JsonResponse
+    {
+        $conversation = ChatConversation::where('user_id', $request->user()->id)
+            ->with('messages')
+            ->findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'data' => $conversation,
+            'message' => '会話を取得しました'
+        ]);
+    }
+
+    /**
+     * Create a new conversation
+     * POST /api/ai/chat/conversations
+     */
+    public function createConversation(Request $request): JsonResponse
+    {
+        $request->validate([
+            'title' => 'nullable|string|max:255',
+            'message' => 'required|string|max:5000',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Create conversation
+            $conversation = ChatConversation::create([
+                'user_id' => $request->user()->id,
+                'title' => $request->title,
+                'status' => 'active',
+            ]);
+
+            // Create first user message
+            $userMessage = ChatMessage::create([
+                'conversation_id' => $conversation->id,
+                'user_id' => $request->user()->id,
+                'role' => 'user',
+                'content' => $request->message,
+            ]);
+
+            // Get AI response
+            $aiResponse = $this->aiService->chat([
+                [
+                    'role' => 'user',
+                    'content' => $request->message
+                ]
+            ]);
+
+            // Create assistant message
+            $assistantMessage = ChatMessage::create([
+                'conversation_id' => $conversation->id,
+                'user_id' => $request->user()->id,
+                'role' => 'assistant',
+                'content' => $aiResponse['message'],
+                'token_count' => $aiResponse['tokens'] ?? null,
+                'metadata' => [
+                    'model' => $aiResponse['model'] ?? null,
+                    'finish_reason' => $aiResponse['finish_reason'] ?? null,
+                ],
+            ]);
+
+            // Update conversation stats
+            $conversation->updateStats();
+
+            // Generate title if not provided
+            if (!$request->title) {
+                $conversation->generateTitle();
+            }
+
+            DB::commit();
+
+            $conversation->load('messages');
+
+            return response()->json([
+                'success' => true,
+                'data' => $conversation,
+                'message' => '新しい会話を作成しました！'
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Chat conversation creation failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => '会話の作成に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Send a message in existing conversation
+     * POST /api/ai/chat/conversations/{id}/messages
+     */
+    public function sendMessage(Request $request, string $id): JsonResponse
+    {
+        $request->validate([
+            'message' => 'required|string|max:5000',
+        ]);
+
+        $conversation = ChatConversation::where('user_id', $request->user()->id)
+            ->findOrFail($id);
+
+        if ($conversation->status !== 'active') {
+            return response()->json([
+                'success' => false,
+                'message' => 'この会話は現在アクティブではありません'
+            ], 400);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            // Create user message
+            $userMessage = ChatMessage::create([
+                'conversation_id' => $conversation->id,
+                'user_id' => $request->user()->id,
+                'role' => 'user',
+                'content' => $request->message,
+            ]);
+
+            // Get conversation history (last 10 messages for context)
+            $history = $conversation->messages()
+                ->orderBy('created_at', 'desc')
+                ->limit(10)
+                ->get()
+                ->reverse()
+                ->map(function($msg) {
+                    return [
+                        'role' => $msg->role,
+                        'content' => $msg->content
+                    ];
+                })
+                ->toArray();
+
+            // Get AI response
+            $aiResponse = $this->aiService->chat($history);
+
+            // Create assistant message
+            $assistantMessage = ChatMessage::create([
+                'conversation_id' => $conversation->id,
+                'user_id' => $request->user()->id,
+                'role' => 'assistant',
+                'content' => $aiResponse['message'],
+                'token_count' => $aiResponse['tokens'] ?? null,
+                'metadata' => [
+                    'model' => $aiResponse['model'] ?? null,
+                    'finish_reason' => $aiResponse['finish_reason'] ?? null,
+                ],
+            ]);
+
+            // Update conversation stats
+            $conversation->updateStats();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'user_message' => $userMessage,
+                    'assistant_message' => $assistantMessage,
+                ],
+                'message' => 'メッセージを送信しました！'
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Chat message sending failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'メッセージの送信に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Update conversation (title, status)
+     * PUT /api/ai/chat/conversations/{id}
+     */
+    public function updateConversation(Request $request, string $id): JsonResponse
+    {
+        $request->validate([
+            'title' => 'nullable|string|max:255',
+            'status' => 'nullable|in:active,archived',
+        ]);
+
+        $conversation = ChatConversation::where('user_id', $request->user()->id)
+            ->findOrFail($id);
+
+        $conversation->update($request->only(['title', 'status']));
+
+        return response()->json([
+            'success' => true,
+            'data' => $conversation,
+            'message' => '会話を更新しました'
+        ]);
+    }
+
+    /**
+     * Delete conversation
+     * DELETE /api/ai/chat/conversations/{id}
+     */
+    public function deleteConversation(Request $request, string $id): JsonResponse
+    {
+        $conversation = ChatConversation::where('user_id', $request->user()->id)
+            ->findOrFail($id);
+
+        $conversation->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => '会話を削除しました'
+        ]);
     }
 }
