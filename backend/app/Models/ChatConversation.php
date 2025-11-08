@@ -76,14 +76,18 @@ class ChatConversation extends Model
 
     /**
      * Update conversation stats
+     * 会話の統計情報を更新（メッセージ数と最終メッセージ時刻）
      */
     public function updateStats(): void
     {
-        $this->message_count = $this->messages()->count();
-        $lastMessage = $this->messages()->latest()->first();
-        if ($lastMessage) {
-            $this->last_message_at = $lastMessage->created_at;
-        }
+        // 単一クエリでメッセージ数と最終メッセージを取得
+        $stats = $this->messages()
+            ->selectRaw('COUNT(*) as count, MAX(created_at) as last_message_at')
+            ->first();
+
+        $this->message_count = $stats->count ?? 0;
+        // Laravel sẽ自動的にdatetimeにキャスト
+        $this->last_message_at = $stats->last_message_at ?? null;
         $this->save();
     }
 }

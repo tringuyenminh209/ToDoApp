@@ -314,11 +314,19 @@ class AIController extends Controller
         $status = $this->aiService->getStatus();
         $isConnected = $this->aiService->testConnection();
 
+        // Check if API key is set
+        $apiKeySet = !empty(config('services.openai.api_key'));
+        $apiKeyMasked = $apiKeySet ? substr(config('services.openai.api_key'), 0, 7) . '...' : 'Not set';
+
         return response()->json([
             'success' => true,
             'data' => [
                 'status' => $status,
                 'connected' => $isConnected,
+                'api_key_configured' => $apiKeySet,
+                'api_key_preview' => $apiKeyMasked,
+                'model' => $status['model'] ?? 'unknown',
+                'fallback_model' => $status['fallback_model'] ?? 'unknown',
                 'last_checked' => now()->toISOString(),
             ],
             'message' => 'AIサービスステータスを取得しました'
@@ -553,12 +561,29 @@ class AIController extends Controller
                 ]
             ]);
 
+            // Check if AI service returned an error
+            if (!empty($aiResponse['error'])) {
+                DB::rollBack();
+                Log::warning('AI service error during conversation creation', [
+                    'user_id' => $request->user()->id,
+                    'message' => $aiResponse['message'] ?? 'Unknown error',
+                    'debug_info' => $aiResponse['debug_info'] ?? null
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $aiResponse['message'] ?? 'AIサービスに接続できませんでした',
+                    'error' => 'ai_service_unavailable',
+                    'debug' => $aiResponse['debug_info'] ?? null
+                ], 503);
+            }
+
             // Create assistant message
             $assistantMessage = ChatMessage::create([
                 'conversation_id' => $conversation->id,
                 'user_id' => $request->user()->id,
                 'role' => 'assistant',
-                'content' => $aiResponse['message'],
+                'content' => $aiResponse['message'] ?? '応答を生成できませんでした',
                 'token_count' => $aiResponse['tokens'] ?? null,
                 'metadata' => [
                     'model' => $aiResponse['model'] ?? null,
@@ -644,12 +669,30 @@ class AIController extends Controller
             // Get AI response
             $aiResponse = $this->aiService->chat($history);
 
+            // Check if AI service returned an error
+            if (!empty($aiResponse['error'])) {
+                DB::rollBack();
+                Log::warning('AI service error during message sending', [
+                    'user_id' => $request->user()->id,
+                    'conversation_id' => $conversation->id,
+                    'message' => $aiResponse['message'] ?? 'Unknown error',
+                    'debug_info' => $aiResponse['debug_info'] ?? null
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $aiResponse['message'] ?? 'AIサービスに接続できませんでした',
+                    'error' => 'ai_service_unavailable',
+                    'debug' => $aiResponse['debug_info'] ?? null
+                ], 503);
+            }
+
             // Create assistant message
             $assistantMessage = ChatMessage::create([
                 'conversation_id' => $conversation->id,
                 'user_id' => $request->user()->id,
                 'role' => 'assistant',
-                'content' => $aiResponse['message'],
+                'content' => $aiResponse['message'] ?? '応答を生成できませんでした',
                 'token_count' => $aiResponse['tokens'] ?? null,
                 'metadata' => [
                     'model' => $aiResponse['model'] ?? null,

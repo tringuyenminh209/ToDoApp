@@ -57,6 +57,11 @@ Route::prefix('cheat-code')->group(function () {
     Route::get('/categories', [CheatCodeController::class, 'getCategories']);
 });
 
+// Roadmap API routes - Public endpoint for browsing popular roadmaps
+Route::prefix('roadmaps')->group(function () {
+    Route::get('/popular', [\App\Http\Controllers\RoadmapApiController::class, 'popular']);
+});
+
 Route::middleware('auth:sanctum')->group(function () {
     // Email verification
     Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])
@@ -211,6 +216,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [LearningPathController::class, 'update']);
         Route::delete('/{id}', [LearningPathController::class, 'destroy']);
         Route::put('/{id}/complete', [LearningPathController::class, 'complete']);
+    });
+
+    // Roadmap API routes - External roadmap integration (requires authentication)
+    Route::prefix('roadmaps')->group(function () {
+        Route::post('/generate', [\App\Http\Controllers\RoadmapApiController::class, 'generate']);
+        Route::post('/import', [\App\Http\Controllers\RoadmapApiController::class, 'import']);
     });
 
     // Learning Path Template routes
