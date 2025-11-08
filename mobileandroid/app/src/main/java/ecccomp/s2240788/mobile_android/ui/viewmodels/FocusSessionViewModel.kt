@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.Task
+import ecccomp.s2240788.mobile_android.data.models.Subtask
 import ecccomp.s2240788.mobile_android.data.models.KnowledgeItem
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
@@ -63,9 +64,22 @@ class FocusSessionViewModel : ViewModel() {
     private val _isLoadingKnowledge = MutableLiveData<Boolean>(false)
     val isLoadingKnowledge: LiveData<Boolean> = _isLoadingKnowledge
 
+    // Subtasks tracking
+    private val _subtasks = MutableLiveData<List<Subtask>>()
+    val subtasks: LiveData<List<Subtask>> = _subtasks
+
+    // Track elapsed time for each subtask (subtask_id -> elapsed seconds)
+    private val subtaskElapsedSeconds = mutableMapOf<Int, Int>()
+    private val _subtaskElapsedMinutes = MutableLiveData<Map<Int, Int>>()
+    val subtaskElapsedMinutes: LiveData<Map<Int, Int>> = _subtaskElapsedMinutes
+
+    // Track which subtasks have been auto-completed in this session
+    private val autoCompletedSubtaskIds = mutableSetOf<Int>()
+
     // Session stats
     private var sessionStartTimeMillis: Long = 0
     private var pomodoroCount: Int = 0
+    private var lastTickTimeMillis: Long = 0
 
     enum class TimerMode {
         WORK, SHORT_BREAK, LONG_BREAK
@@ -95,6 +109,9 @@ class FocusSessionViewModel : ViewModel() {
                     if (apiResponse?.success == true && apiResponse.data != null) {
                         val task = apiResponse.data
                         _currentTask.value = task
+
+                        // Update subtasks
+                        _subtasks.value = task.subtasks ?: emptyList()
 
                         // Update deep work mode status
                         _isDeepWorkMode.value = task.requires_deep_focus
@@ -138,6 +155,9 @@ class FocusSessionViewModel : ViewModel() {
                             )
                             _currentTask.value = modifiedTask
 
+                            // Update subtasks (show all subtasks, highlight current one)
+                            _subtasks.value = task.subtasks ?: emptyList()
+
                             // Update deep work mode status (inherit from parent task)
                             _isDeepWorkMode.value = task.requires_deep_focus
 
@@ -166,13 +186,23 @@ class FocusSessionViewModel : ViewModel() {
         if (_isTimerRunning.value == true) return
 
         sessionStartTimeMillis = System.currentTimeMillis()
+        lastTickTimeMillis = sessionStartTimeMillis
         _isTimerRunning.value = true
 
         countDownTimer = object : CountDownTimer(timeRemainingMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
+                val currentTime = System.currentTimeMillis()
+                val elapsedSeconds = ((currentTime - lastTickTimeMillis) / 1000).toInt()
+                lastTickTimeMillis = currentTime
+
                 timeRemainingMillis = millisUntilFinished
                 updateTimerDisplay(millisUntilFinished)
                 updateProgress()
+
+                // Update subtask elapsed time and auto-complete if needed
+                if (elapsedSeconds > 0) {
+                    updateSubtaskProgress(elapsedSeconds)
+                }
             }
 
             override fun onFinish() {
@@ -187,6 +217,8 @@ class FocusSessionViewModel : ViewModel() {
     fun pauseTimer() {
         countDownTimer?.cancel()
         _isTimerRunning.value = false
+        lastTickTimeMillis = 0
+        // Note: Don't reset elapsed time on pause - keep progress
     }
 
     /**
@@ -196,6 +228,11 @@ class FocusSessionViewModel : ViewModel() {
         countDownTimer?.cancel()
         _isTimerRunning.value = false
         timeRemainingMillis = totalTimeMillis
+        lastTickTimeMillis = 0
+        // Reset subtask elapsed time
+        subtaskElapsedSeconds.clear()
+        autoCompletedSubtaskIds.clear()
+        _subtaskElapsedMinutes.value = emptyMap()
         updateTimerDisplay(timeRemainingMillis)
         updateProgress()
     }
@@ -352,6 +389,68 @@ class FocusSessionViewModel : ViewModel() {
     private fun updateProgress() {
         val progressPercent = ((totalTimeMillis - timeRemainingMillis) * 100 / totalTimeMillis).toInt()
         _progress.value = progressPercent
+    }
+
+    /**
+     * Update subtask progress and auto-complete if time elapsed >= estimated_minutes
+     */
+    private fun updateSubtaskProgress(elapsedSeconds: Int) {
+        val currentSubtasks = _subtasks.value ?: return
+        var updated = false
+
+        currentSubtasks.forEach { subtask ->
+            // Skip if already completed or no estimated time
+            if (subtask.is_completed || subtask.estimated_minutes == null || subtask.estimated_minutes <= 0) {
+                return@forEach
+            }
+
+            // Skip if already auto-completed in this session
+            if (subtask.id in autoCompletedSubtaskIds) {
+                return@forEach
+            }
+
+            // Add elapsed seconds
+            val currentElapsedSeconds = subtaskElapsedSeconds[subtask.id] ?: 0
+            val newElapsedSeconds = currentElapsedSeconds + elapsedSeconds
+            subtaskElapsedSeconds[subtask.id] = newElapsedSeconds
+
+            // Convert to minutes for display
+            val elapsedMinutes = newElapsedSeconds / 60
+            updated = true
+
+            // Auto-complete if elapsed time >= estimated time (in minutes)
+            if (elapsedMinutes >= subtask.estimated_minutes) {
+                autoCompleteSubtask(subtask.id)
+            }
+        }
+
+        if (updated) {
+            // Convert seconds to minutes for LiveData
+            val elapsedMinutesMap = subtaskElapsedSeconds.mapValues { it.value / 60 }
+            _subtaskElapsedMinutes.value = elapsedMinutesMap
+        }
+    }
+
+    /**
+     * Auto-complete a subtask via API
+     */
+    private fun autoCompleteSubtask(subtaskId: Int) {
+        // Mark as auto-completed to prevent duplicate calls
+        autoCompletedSubtaskIds.add(subtaskId)
+
+        viewModelScope.launch {
+            try {
+                val response = apiService.toggleSubtask(subtaskId)
+                if (response.isSuccessful && response.body()?.success == true) {
+                    // Reload task to get updated subtasks
+                    val taskId = _currentTask.value?.id ?: return@launch
+                    loadTask(taskId)
+                    _toast.value = "サブタスクが自動完了しました"
+                }
+            } catch (e: Exception) {
+                // Silent fail - don't show error for auto-complete
+            }
+        }
     }
 
     /**

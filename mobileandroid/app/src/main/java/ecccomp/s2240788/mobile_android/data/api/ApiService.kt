@@ -35,7 +35,7 @@ interface ApiService {
 
     //Tasks
     @GET("tasks")
-    suspend fun getTasks(): Response<ApiResponse<Any>>
+    suspend fun getTasks(@Query("per_page") perPage: Int = 100): Response<ApiResponse<Any>>
 
     @GET("tasks/{id}")
     suspend fun getTask(@Path("id") id: Int): Response<ApiResponse<Task>>

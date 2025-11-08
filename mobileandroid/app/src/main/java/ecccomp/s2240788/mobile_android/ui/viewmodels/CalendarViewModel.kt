@@ -59,19 +59,36 @@ class CalendarViewModel : ViewModel() {
                 _isLoading.value = true
                 _error.value = null
 
-                val response = apiService.getTasks()
+                // Request all tasks (request up to 100 tasks for calendar view)
+                val response = apiService.getTasks(perPage = 100)
 
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
+                    android.util.Log.d("CalendarViewModel", "API Response: success=${apiResponse?.success}, data type=${apiResponse?.data?.javaClass?.simpleName}")
+                    
                     if (apiResponse?.success == true) {
                         val tasks = parseTasksFromResponse(apiResponse.data)
+                        android.util.Log.d("CalendarViewModel", "Loaded ${tasks.size} tasks from API")
+                        
+                        // Debug: Log tasks with deadlines
+                        tasks.forEach { task ->
+                            if (!task.deadline.isNullOrEmpty()) {
+                                android.util.Log.d("CalendarViewModel", 
+                                    "Task '${task.title}' has deadline: ${task.deadline}")
+                            }
+                        }
+                        
                         _allTasks.value = tasks
                         applyFilter()
                     } else {
-                        _error.value = apiResponse?.message ?: "タスクの取得に失敗しました"
+                        val errorMsg = apiResponse?.message ?: "タスクの取得に失敗しました"
+                        android.util.Log.e("CalendarViewModel", "API Error: $errorMsg")
+                        _error.value = errorMsg
                     }
                 } else {
-                    _error.value = "ネットワークエラー: ${response.code()}"
+                    val errorMsg = "ネットワークエラー: ${response.code()} - ${response.message()}"
+                    android.util.Log.e("CalendarViewModel", errorMsg)
+                    _error.value = errorMsg
                 }
             } catch (e: Exception) {
                 _error.value = "エラーが発生しました: ${e.message}"
@@ -125,12 +142,35 @@ class CalendarViewModel : ViewModel() {
         // 日付でフィルタリング
         var filtered = tasks.filter { task ->
             if (task.deadline.isNullOrEmpty()) {
-                false
+                // Tasks without deadline: show for today only if not completed
+                val isToday = dateFormat.format(Calendar.getInstance().time) == selectedDateString
+                if (isToday && task.status != "completed") {
+                    true // Show pending tasks without deadline for today
+                } else {
+                    false
+                }
             } else {
                 try {
-                    val taskDate = task.deadline.substring(0, 10) // YYYY-MM-DD部分を抽出
-                    taskDate == selectedDateString
+                    // Handle different deadline formats: "yyyy-MM-dd" or "yyyy-MM-dd HH:mm:ss"
+                    val deadlineStr = task.deadline.trim()
+                    val taskDate = if (deadlineStr.length >= 10) {
+                        deadlineStr.substring(0, 10) // Extract YYYY-MM-DD part
+                    } else {
+                        deadlineStr
+                    }
+                    
+                    // Match exact date
+                    val matches = taskDate == selectedDateString
+                    
+                    // Debug logging (can be removed later)
+                    if (!matches && taskDate.isNotEmpty()) {
+                        android.util.Log.d("CalendarViewModel", 
+                            "Task '${task.title}' deadline '$taskDate' != selected '$selectedDateString'")
+                    }
+                    
+                    matches
                 } catch (e: Exception) {
+                    android.util.Log.e("CalendarViewModel", "Error parsing deadline: ${task.deadline}", e)
                     false
                 }
             }
@@ -143,25 +183,47 @@ class CalendarViewModel : ViewModel() {
             FilterType.COMPLETED -> filtered.filter { it.status == "completed" }
         }
 
+        android.util.Log.d("CalendarViewModel", 
+            "Filtered ${filtered.size} tasks for date $selectedDateString (from ${tasks.size} total tasks)")
+
         _filteredTasks.value = filtered
     }
 
     /**
      * API レスポンスからタスクリストをパース
+     * Handles both paginated response and direct list response
      */
     private fun parseTasksFromResponse(data: Any?): List<Task> {
         return try {
             when (data) {
-                is List<*> -> data.mapNotNull { item ->
-                    when (item) {
-                        is Map<*, *> -> convertMapToTask(item)
-                        is Task -> item
-                        else -> null
+                is Map<*, *> -> {
+                    // Paginated response: { data: [...], current_page: 1, ... }
+                    val tasksData = data["data"] as? List<*>
+                    tasksData?.mapNotNull { item ->
+                        when (item) {
+                            is Map<*, *> -> convertMapToTask(item)
+                            is Task -> item
+                            else -> null
+                        }
+                    } ?: emptyList()
+                }
+                is List<*> -> {
+                    // Direct list response
+                    data.mapNotNull { item ->
+                        when (item) {
+                            is Map<*, *> -> convertMapToTask(item)
+                            is Task -> item
+                            else -> null
+                        }
                     }
                 }
-                else -> emptyList()
+                else -> {
+                    android.util.Log.w("CalendarViewModel", "Unknown response format: ${data?.javaClass?.simpleName}")
+                    emptyList()
+                }
             }
         } catch (e: Exception) {
+            android.util.Log.e("CalendarViewModel", "Error parsing tasks response", e)
             emptyList()
         }
     }

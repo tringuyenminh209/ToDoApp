@@ -78,11 +78,18 @@ class CalendarFragment : Fragment() {
      * カレンダーのセットアップ
      */
     private fun setupCalendar() {
+        // Set initial date to today
+        val today = Calendar.getInstance()
+        binding.calendarView.date = today.timeInMillis
+        
         // カレンダーの日付選択イベント
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val calendar = Calendar.getInstance()
             calendar.set(year, month, dayOfMonth)
-            viewModel.selectDate(calendar.time)
+            val selectedDate = calendar.time
+            viewModel.selectDate(selectedDate)
+            
+            Log.d("CalendarFragment", "Date selected: ${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate)}")
         }
     }
 
@@ -114,9 +121,16 @@ class CalendarFragment : Fragment() {
      */
     private fun setupClickListeners() {
         binding.btnToday.setOnClickListener {
-            viewModel.selectToday()
             // カレンダービューも今日に移動
-            binding.calendarView.date = System.currentTimeMillis()
+            val todayMillis = System.currentTimeMillis()
+            binding.calendarView.date = todayMillis
+            
+            // ViewModelの日付も更新
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = todayMillis
+            viewModel.selectDate(calendar.time)
+            
+            Log.d("CalendarFragment", "Selected today: ${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)}")
         }
 
         binding.btnAddTaskEmpty.setOnClickListener {
