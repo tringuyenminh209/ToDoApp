@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityFocusSessionBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.FocusKnowledgeAdapter
+import ecccomp.s2240788.mobile_android.ui.adapters.FocusSubtaskAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.FocusSessionViewModel
 
 /**
@@ -24,6 +25,7 @@ class FocusSessionActivity : BaseActivity() {
     private lateinit var binding: ActivityFocusSessionBinding
     private lateinit var viewModel: FocusSessionViewModel
     private lateinit var knowledgeAdapter: FocusKnowledgeAdapter
+    private lateinit var subtaskAdapter: FocusSubtaskAdapter
     private var taskId: Int = -1
     private var subtaskIndex: Int = -1
 
@@ -52,6 +54,7 @@ class FocusSessionActivity : BaseActivity() {
         }
 
         setupKnowledgeRecyclerView()
+        setupSubtaskRecyclerView()
         setupClickListeners()
         observeViewModel()
     }
@@ -68,6 +71,18 @@ class FocusSessionActivity : BaseActivity() {
         binding.rvKnowledgeItems.apply {
             layoutManager = LinearLayoutManager(this@FocusSessionActivity)
             adapter = knowledgeAdapter
+        }
+    }
+
+    /**
+     * Subtask RecyclerView setup
+     */
+    private fun setupSubtaskRecyclerView() {
+        subtaskAdapter = FocusSubtaskAdapter()
+
+        binding.rvSubtasks.apply {
+            layoutManager = LinearLayoutManager(this@FocusSessionActivity)
+            adapter = subtaskAdapter
         }
     }
 
@@ -200,6 +215,25 @@ class FocusSessionActivity : BaseActivity() {
         viewModel.isLoadingKnowledge.observe(this) { isLoading ->
             // You can show a loading indicator if needed
         }
+
+        // Subtasks
+        viewModel.subtasks.observe(this) { subtasks ->
+            if (subtasks.isNullOrEmpty()) {
+                binding.subtasksCard.visibility = View.GONE
+            } else {
+                binding.subtasksCard.visibility = View.VISIBLE
+                subtaskAdapter.submitList(subtasks)
+
+                // Update progress text
+                val completedCount = subtasks.count { it.is_completed }
+                binding.tvSubtasksProgress.text = "$completedCount/${subtasks.size}"
+            }
+        }
+
+        // Subtask elapsed minutes
+        viewModel.subtaskElapsedMinutes.observe(this) { elapsedMap ->
+            subtaskAdapter.updateElapsedMinutes(elapsedMap)
+        }
     }
 
     /**
@@ -242,12 +276,24 @@ class FocusSessionActivity : BaseActivity() {
      */
     private fun updateDeepWorkModeUI(isDeepWork: Boolean) {
         if (isDeepWork) {
-            // Change title to "Deep Work Mode"
+            // Change title to "Deep Work Mode" with primary color
             binding.tvTitle.text = "Deep Work Mode"
             binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.primary))
             
+            // Change top bar background to primary_light for Deep Work
+            binding.topBar.setCardBackgroundColor(
+                ContextCompat.getColor(this, R.color.primary_light)
+            )
+            
             // Show deep work badge
             binding.deepWorkBadge.visibility = View.VISIBLE
+            
+            // Change timer card background to primary_light
+            binding.timerCard.setCardBackgroundColor(
+                ContextCompat.getColor(this, R.color.primary_light)
+            )
+            binding.timerCard.strokeColor = ContextCompat.getColor(this, R.color.primary)
+            binding.timerCard.strokeWidth = 2
             
             // Change timer mode badge to show deep work
             binding.timerModeBadge.setCardBackgroundColor(
@@ -258,14 +304,47 @@ class FocusSessionActivity : BaseActivity() {
                 ContextCompat.getColor(this, R.color.white)
             )
             
-            // Change progress indicator color to primary (already done)
+            // Change progress indicator color to primary
+            binding.timerProgress.setIndicatorColor(
+                ContextCompat.getColor(this, R.color.primary)
+            )
+            binding.progressBar.setIndicatorColor(
+                ContextCompat.getColor(this, R.color.primary)
+            )
+            
+            // Change task info card background
+            binding.taskInfoCard.setCardBackgroundColor(
+                ContextCompat.getColor(this, R.color.primary_light)
+            )
+            binding.taskInfoCard.strokeColor = ContextCompat.getColor(this, R.color.primary)
+            binding.taskInfoCard.strokeWidth = 1
+            
         } else {
             // Normal focus mode
             binding.tvTitle.text = "Focus Mode"
             binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
             
+            // Reset top bar background
+            binding.topBar.setCardBackgroundColor(
+                ContextCompat.getColor(this, R.color.white)
+            )
+            
             // Hide deep work badge
             binding.deepWorkBadge.visibility = View.GONE
+            
+            // Reset timer card background
+            binding.timerCard.setCardBackgroundColor(
+                ContextCompat.getColor(this, R.color.white)
+            )
+            binding.timerCard.strokeColor = ContextCompat.getColor(this, R.color.line_variant)
+            binding.timerCard.strokeWidth = 1
+            
+            // Reset task info card background
+            binding.taskInfoCard.setCardBackgroundColor(
+                ContextCompat.getColor(this, R.color.white)
+            )
+            binding.taskInfoCard.strokeColor = ContextCompat.getColor(this, R.color.line_variant)
+            binding.taskInfoCard.strokeWidth = 1
             
             // Reset timer mode badge (will be updated by updateTimerModeUI)
         }
