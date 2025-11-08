@@ -97,6 +97,9 @@
             android:name=".ui.activities.TemplateBrowserActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activities.RoadmapActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.TemplateDetailActivity"
             android:exported="false" />
         <activity

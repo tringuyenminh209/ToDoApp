@@ -561,10 +561,16 @@ JSON形式で返してください：
                             'error' => false
                         ];
                     } else {
+                        $errorBody = $response->json();
+                        $errorMessage = $errorBody['error']['message'] ?? $response->body();
+
                         Log::warning('AI Chat: API request failed', [
                             'status' => $response->status(),
+                            'error' => $errorMessage,
+                            'body' => $errorBody,
                             'attempt' => $attempt,
-                            'model' => $model
+                            'model' => $model,
+                            'base_url' => $this->baseUrl
                         ]);
                     }
 
@@ -584,10 +590,27 @@ JSON形式で返してください：
         }
 
         // All attempts failed
-        Log::warning('AI Chat: All models failed');
+        Log::warning('AI Chat: All models failed', [
+            'models_tried' => $models,
+            'api_key_set' => !empty($this->apiKey),
+            'api_key_preview' => !empty($this->apiKey) ? substr($this->apiKey, 0, 7) . '...' : 'Not set',
+            'base_url' => $this->baseUrl
+        ]);
+
+        // Return more specific error message
+        $errorMsg = '申し訳ございません。現在AIサービスに接続できません。';
+        if (empty($this->apiKey)) {
+            $errorMsg = 'AIサービスが設定されていません。管理者にお問い合わせください。';
+        }
+
         return [
-            'message' => '申し訳ございません。現在AIサービスに接続できません。しばらくしてからもう一度お試しください。',
-            'error' => true
+            'message' => $errorMsg . 'しばらくしてからもう一度お試しください。',
+            'error' => true,
+            'debug_info' => [
+                'api_key_configured' => !empty($this->apiKey),
+                'models_tried' => $models,
+                'base_url' => $this->baseUrl
+            ]
         ];
     }
 }

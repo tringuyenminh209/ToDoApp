@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tv_roadmap_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Frontend Developer Roadmap"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_roadmap_category"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Category Badge -->
+        <TextView
+            android:id="@+id/tv_roadmap_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="プログラミング"
+            android:textSize="10sp"
+            android:textColor="@color/primary"
+            android:background="@drawable/bg_badge"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/tv_roadmap_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="モダンなフロントエンド開発者のロードマップ"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_roadmap_title" />
+
+        <!-- Info Row -->
+        <LinearLayout
+            android:id="@+id/info_row"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_roadmap_description">
+
+            <!-- Difficulty -->
+            <TextView
+                android:id="@+id/tv_roadmap_difficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="初級"
+                android:textSize="12sp"
+                android:textColor="@color/text_muted"
+                android:drawableStart="@drawable/ic_star"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical" />
+
+            <!-- Hours -->
+            <TextView
+                android:id="@+id/tv_roadmap_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="200時間"
+                android:textSize="12sp"
+                android:textColor="@color/text_muted"
+                android:layout_marginStart="16dp"
+                android:drawableStart="@drawable/ic_clock"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

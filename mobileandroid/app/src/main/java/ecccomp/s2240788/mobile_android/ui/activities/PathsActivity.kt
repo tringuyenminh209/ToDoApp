@@ -88,14 +88,21 @@ class PathsActivity : BaseActivity() {
         bottomSheetDialog.setContentView(bottomSheetView)
 
         // Browse Templates
-        bottomSheetView.findViewById<View>(R.id.card_browse_templates).setOnClickListener {
+        bottomSheetView.findViewById<View>(R.id.card_browse_templates)?.setOnClickListener {
             bottomSheetDialog.dismiss()
             val intent = Intent(this, TemplateBrowserActivity::class.java)
             startActivity(intent)
         }
 
+        // Browse Roadmaps
+        bottomSheetView.findViewById<View>(R.id.card_browse_roadmaps)?.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            val intent = Intent(this, RoadmapActivity::class.java)
+            startActivity(intent)
+        }
+
         // Create Manual
-        bottomSheetView.findViewById<View>(R.id.card_create_manual).setOnClickListener {
+        bottomSheetView.findViewById<View>(R.id.card_create_manual)?.setOnClickListener {
             bottomSheetDialog.dismiss()
             val intent = Intent(this, CreateLearningPathActivity::class.java)
             startActivityForResult(intent, REQUEST_CREATE_PATH)

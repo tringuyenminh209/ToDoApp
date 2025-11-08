@@ -32,7 +32,72 @@
         android:textColor="@color/text_secondary"
         android:layout_marginBottom="24dp" />
 
-    <!-- Option 1: Browse Templates -->
+    <!-- Option 1: Browse Roadmaps -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_browse_roadmaps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="2dp"
+        android:layout_marginBottom="16dp"
+        app:strokeWidth="0.5dp"
+        app:strokeColor="@color/line_variant">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:gravity="center_vertical">
+
+            <!-- Icon -->
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@android:drawable/ic_menu_mapmode"
+                android:tint="@color/primary"
+                android:padding="10dp"
+                android:background="@drawable/icon_background_primary"
+                android:layout_marginEnd="16dp" />
+
+            <!-- Content -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ロードマップから選択"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="人気のロードマップとAI生成ロードマップ"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary" />
+            </LinearLayout>
+
+            <!-- Arrow -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="›"
+                android:textSize="32sp"
+                android:textColor="@color/text_secondary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Option 2: Browse Templates -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_browse_templates"
         android:layout_width="match_parent"
@@ -97,7 +162,7 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Option 2: Create Manual -->
+    <!-- Option 3: Create Manual -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_create_manual"
         android:layout_width="match_parent"

@@ -1,5 +1,7 @@
 package ecccomp.s2240788.mobile_android.data.models
 
+import com.google.gson.annotations.SerializedName
+
 data class Task(
     val id: Int,
     val title: String,
@@ -364,6 +366,119 @@ data class ChatConversationsResponse(
 data class SendMessageResponse(
     val user_message: ChatMessage,
     val assistant_message: ChatMessage
+)
+
+// ==================== Roadmap API Models ====================
+
+/**
+ * Popular Roadmap Model
+ * 人気のロードマップモデル
+ */
+data class PopularRoadmap(
+    @SerializedName("id") val id: String,
+    @SerializedName("title") val title: String,
+    @SerializedName("description") val description: String,
+    @SerializedName("category") val category: String,
+    @SerializedName("difficulty") val difficulty: String,
+    @SerializedName("estimated_hours") val estimatedHours: Int,
+    @SerializedName("source") val source: String,
+    @SerializedName("url") val url: String?
+)
+
+/**
+ * Roadmap Milestone (for AI-generated roadmaps)
+ */
+data class RoadmapMilestone(
+    @SerializedName("title") val title: String,
+    @SerializedName("description") val description: String?,
+    @SerializedName("sort_order") val sortOrder: Int,
+    @SerializedName("estimated_hours") val estimatedHours: Int,
+    @SerializedName("tasks") val tasks: List<RoadmapTask>?
+)
+
+/**
+ * Roadmap Task (for AI-generated roadmaps)
+ */
+data class RoadmapTask(
+    @SerializedName("title") val title: String,
+    @SerializedName("description") val description: String?,
+    @SerializedName("estimated_minutes") val estimatedMinutes: Int,
+    @SerializedName("priority") val priority: Int,
+    @SerializedName("subtasks") val subtasks: List<RoadmapSubtask>?,
+    @SerializedName("knowledge_items") val knowledgeItems: List<RoadmapKnowledgeItem>?
+)
+
+/**
+ * Roadmap Subtask
+ */
+data class RoadmapSubtask(
+    @SerializedName("title") val title: String,
+    @SerializedName("estimated_minutes") val estimatedMinutes: Int
+)
+
+/**
+ * Roadmap Knowledge Item
+ */
+data class RoadmapKnowledgeItem(
+    @SerializedName("type") val type: String, // note, code_snippet, resource_link, exercise
+    @SerializedName("title") val title: String,
+    @SerializedName("url") val url: String?,
+    @SerializedName("description") val description: String?,
+    @SerializedName("content") val content: String?
+)
+
+/**
+ * Generated Roadmap Response
+ */
+data class GeneratedRoadmap(
+    @SerializedName("title") val title: String,
+    @SerializedName("description") val description: String?,
+    @SerializedName("estimated_hours") val estimatedHours: Int,
+    @SerializedName("milestones") val milestones: List<RoadmapMilestone>?
+)
+
+/**
+ * Roadmap API Response
+ */
+data class RoadmapListResponse(
+    @SerializedName("success") val success: Boolean,
+    @SerializedName("data") val data: List<PopularRoadmap>,
+    @SerializedName("message") val message: String?
+)
+
+data class RoadmapGenerateResponse(
+    @SerializedName("success") val success: Boolean,
+    @SerializedName("data") val data: GeneratedRoadmap,
+    @SerializedName("message") val message: String?
+)
+
+/**
+ * Request Models
+ */
+data class GenerateRoadmapRequest(
+    val topic: String,
+    val level: String? = "beginner" // beginner, intermediate, advanced
+)
+
+data class ImportRoadmapRequest(
+    val source: String, // popular, ai, microsoft_learn
+    val roadmap_id: String? = null,
+    val topic: String? = null,
+    val level: String? = null,
+    val auto_clone: Boolean = true // 自動的に学習パスにクローンするか
+)
+
+// Import Roadmap Response - contains both template and learning_path_id if auto_clone is true
+data class ImportRoadmapResponse(
+    val success: Boolean,
+    val message: String,
+    val data: ImportRoadmapData
+)
+
+data class ImportRoadmapData(
+    val template: LearningPathTemplate,
+    val learning_path: LearningPath? = null,
+    val learning_path_id: Long? = null
 )
 
 // ==================== AI Task Breakdown Models ====================

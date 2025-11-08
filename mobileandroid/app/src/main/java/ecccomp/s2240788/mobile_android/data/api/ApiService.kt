@@ -226,6 +226,16 @@ interface ApiService {
     
     @POST("learning-path-templates/{id}/clone")
     suspend fun cloneTemplate(@Path("id") id: Long): Response<CloneTemplateResponse>
+
+    // Roadmap API endpoints
+    @GET("roadmaps/popular")
+    suspend fun getPopularRoadmaps(): Response<RoadmapListResponse>
+
+    @POST("roadmaps/generate")
+    suspend fun generateRoadmap(@Body request: GenerateRoadmapRequest): Response<RoadmapGenerateResponse>
+
+    @POST("roadmaps/import")
+    suspend fun importRoadmap(@Body request: ImportRoadmapRequest): Response<ImportRoadmapResponse>
     
     // Cheat Code endpoints (public - no authentication required)
     @GET("cheat-code/languages")
