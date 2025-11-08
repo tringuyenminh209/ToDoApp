@@ -154,6 +154,11 @@ class FocusSessionActivity : BaseActivity() {
             }
         }
 
+        // Deep Work Mode
+        viewModel.isDeepWorkMode.observe(this) { isDeepWork ->
+            updateDeepWorkModeUI(isDeepWork)
+        }
+
         // Session completed
         viewModel.focusSessionCompleted.observe(this) { completed ->
             if (completed) {
@@ -233,9 +238,53 @@ class FocusSessionActivity : BaseActivity() {
     }
 
     /**
+     * Deep Work Mode UI更新
+     */
+    private fun updateDeepWorkModeUI(isDeepWork: Boolean) {
+        if (isDeepWork) {
+            // Change title to "Deep Work Mode"
+            binding.tvTitle.text = "Deep Work Mode"
+            binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.primary))
+            
+            // Show deep work badge
+            binding.deepWorkBadge.visibility = View.VISIBLE
+            
+            // Change timer mode badge to show deep work
+            binding.timerModeBadge.setCardBackgroundColor(
+                ContextCompat.getColor(this, R.color.primary)
+            )
+            binding.tvTimerMode.text = "Deep Work"
+            binding.tvTimerMode.setTextColor(
+                ContextCompat.getColor(this, R.color.white)
+            )
+            
+            // Change progress indicator color to primary (already done)
+        } else {
+            // Normal focus mode
+            binding.tvTitle.text = "Focus Mode"
+            binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+            
+            // Hide deep work badge
+            binding.deepWorkBadge.visibility = View.GONE
+            
+            // Reset timer mode badge (will be updated by updateTimerModeUI)
+        }
+    }
+
+    /**
      * タイマーモードのUI更新
      */
     private fun updateTimerModeUI(mode: FocusSessionViewModel.TimerMode) {
+        // Check if deep work mode is active - if yes, don't override timer badge
+        val isDeepWork = viewModel.isDeepWorkMode.value ?: false
+        if (isDeepWork && mode == FocusSessionViewModel.TimerMode.WORK) {
+            // Deep work mode already set the badge, just update progress color
+            binding.timerProgress.setIndicatorColor(
+                ContextCompat.getColor(this, R.color.primary)
+            )
+            return
+        }
+
         when (mode) {
             FocusSessionViewModel.TimerMode.WORK -> {
                 binding.tvTimerMode.text = "Làm việc"

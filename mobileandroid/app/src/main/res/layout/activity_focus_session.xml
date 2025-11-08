@@ -177,6 +177,46 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="@dimen/spacing_xs" />
 
+                    <!-- Deep Work Badge -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/deep_work_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_sm"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@color/primary_light"
+                        app:cardCornerRadius="@dimen/radius_md"
+                        app:cardElevation="0dp"
+                        app:strokeColor="@color/primary"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="@dimen/spacing_md"
+                            android:paddingVertical="@dimen/spacing_xs">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_task"
+                                app:tint="@color/primary"
+                                android:layout_marginEnd="@dimen/spacing_xs" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Deep Work"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
                     <!-- Task Status -->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -235,7 +275,7 @@
                         android:paddingHorizontal="@dimen/spacing_lg"
                         android:paddingVertical="@dimen/spacing_md"
                         app:cardBackgroundColor="@color/primary_light"
-                        app:cardCornerRadius="20dp"
+                        app:cardCornerRadius="@dimen/radius_lg"
                         app:cardElevation="0dp"
                         app:strokeColor="@color/primary"
                         app:strokeWidth="2dp">

@@ -249,6 +249,34 @@ class TaskDetailActivity : BaseActivity() {
             } else {
                 typeChip.visibility = View.GONE
             }
+
+            // Deep Work Mode Info
+            if (task.requires_deep_focus) {
+                // Show Deep Work card
+                binding.deepWorkCard?.visibility = View.VISIBLE
+
+                // Set Focus Difficulty
+                binding.tvFocusDifficulty?.text = "${task.focus_difficulty}/5"
+
+                // Set Warmup time
+                task.warmup_minutes?.let {
+                    binding.tvWarmup?.text = "$it min"
+                    binding.tvWarmup?.visibility = View.VISIBLE
+                } ?: run {
+                    binding.tvWarmup?.visibility = View.GONE
+                }
+
+                // Set Cooldown time
+                task.cooldown_minutes?.let {
+                    binding.tvCooldown?.text = "$it min"
+                    binding.tvCooldown?.visibility = View.VISIBLE
+                } ?: run {
+                    binding.tvCooldown?.visibility = View.GONE
+                }
+            } else {
+                // Hide Deep Work card if not enabled
+                binding.deepWorkCard?.visibility = View.GONE
+            }
         }
 
         viewModel.toast.observe(this) { msg ->

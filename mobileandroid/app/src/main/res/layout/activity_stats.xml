@@ -411,7 +411,7 @@
                 android:layout_marginHorizontal="@dimen/spacing_lg"
                 android:layout_marginBottom="@dimen/spacing_md"
                 app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="@dimen/radius_lg"
                 app:cardElevation="2dp"
                 app:strokeWidth="0.5dp"
                 app:strokeColor="@color/line_variant">
@@ -430,12 +430,21 @@
                         android:gravity="center_vertical"
                         android:layout_marginBottom="@dimen/spacing_md">
 
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_task"
+                            android:contentDescription="@null"
+                            app:tint="@color/text_primary"
+                            android:layout_marginEnd="@dimen/spacing_sm" />
+
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Deep Work (7 ngày qua)"
                             android:textColor="@color/text_primary"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView

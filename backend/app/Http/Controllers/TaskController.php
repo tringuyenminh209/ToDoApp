@@ -192,6 +192,12 @@ class TaskController extends Controller
             'learning_milestone_id' => 'nullable|exists:learning_milestones,id',
             'tag_ids' => 'nullable|array',
             'tag_ids.*' => 'exists:tags,id',
+            // Deep Work fields
+            'requires_deep_focus' => 'nullable|boolean',
+            'allow_interruptions' => 'nullable|boolean',
+            'focus_difficulty' => 'nullable|integer|min:1|max:5',
+            'warmup_minutes' => 'nullable|integer|min:0|max:60',
+            'cooldown_minutes' => 'nullable|integer|min:0|max:60',
         ]);
 
         try {
@@ -200,7 +206,10 @@ class TaskController extends Controller
             $updateData = $request->only([
                 'title', 'category', 'description', 'priority', 'energy_level',
                 'estimated_minutes', 'deadline', 'status', 'project_id',
-                'learning_milestone_id'
+                'learning_milestone_id',
+                // Deep Work fields
+                'requires_deep_focus', 'allow_interruptions', 'focus_difficulty',
+                'warmup_minutes', 'cooldown_minutes'
             ]);
 
             $task->update($updateData);
