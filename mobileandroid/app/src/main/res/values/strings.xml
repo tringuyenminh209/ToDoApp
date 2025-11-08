@@ -183,6 +183,20 @@
     <string name="ai_optimize_time">時間を最適化</string>
     <string name="ai_suggest_subtasks">実行ステップを提案</string>
     <string name="ai_status_info">AIが分析して適切な提案をします</string>
+    
+    <!-- AI Complexity Selector -->
+    <string name="ai_complexity_title">複雑度レベルを選択</string>
+    <string name="ai_complexity_subtitle">タスクの複雑度に応じて分割方法を選択してください</string>
+    <string name="ai_complexity_simple">シンプル - 3-5個のサブタスク</string>
+    <string name="ai_complexity_medium">中程度 - 5-8個のサブタスク</string>
+    <string name="ai_complexity_complex">複雑 - 8-12個のサブタスク</string>
+    
+    <!-- AI Preview -->
+    <string name="ai_preview_title">生成されたサブタスク</string>
+    <string name="ai_preview_subtitle">%d個のサブタスクが生成されました</string>
+    <string name="ai_preview_empty">サブタスクが生成されませんでした</string>
+    <string name="apply">適用</string>
+    <string name="confirm">確認</string>
 
     <!-- Task Actions -->
     <string name="task_more">詳細を見る</string>
@@ -340,6 +354,10 @@
     <string name="ai_coach_welcome_title">こんにちは！私はAIコーチです</string>
     <string name="ai_coach_welcome_message">計画、集中、目標達成のお手伝いをします</string>
     <string name="ai_coach_welcome_hint">生産性、時間管理、目標について何でもお聞きください</string>
+    
+    <!-- Chat History -->
+    <string name="chat_history">会話履歴</string>
+    <string name="chat_history_empty">会話履歴がありません</string>
 
     <!-- Task Detail -->
     <string name="task_add_subtask">ステップを追加</string>

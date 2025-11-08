@@ -113,7 +113,10 @@ class FocusSessionViewModel : ViewModel() {
                         // Update subtasks
                         _subtasks.value = task.subtasks ?: emptyList()
 
-                        // Update deep work mode status
+                        // Update deep work mode status - Log để debug
+                        android.util.Log.d("FocusSessionViewModel", "Task loaded - requires_deep_focus: ${task.requires_deep_focus}")
+                        android.util.Log.d("FocusSessionViewModel", "Task loaded - allow_interruptions: ${task.allow_interruptions}")
+                        android.util.Log.d("FocusSessionViewModel", "Task loaded - focus_difficulty: ${task.focus_difficulty}")
                         _isDeepWorkMode.value = task.requires_deep_focus
 
                         // Set timer duration based on task estimated minutes
@@ -159,6 +162,7 @@ class FocusSessionViewModel : ViewModel() {
                             _subtasks.value = task.subtasks ?: emptyList()
 
                             // Update deep work mode status (inherit from parent task)
+                            android.util.Log.d("FocusSessionViewModel", "Subtask loaded - parent requires_deep_focus: ${task.requires_deep_focus}")
                             _isDeepWorkMode.value = task.requires_deep_focus
 
                             // Set timer duration based on subtask estimated minutes

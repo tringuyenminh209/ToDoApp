@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import ecccomp.s2240788.mobile_android.R;
 import ecccomp.s2240788.mobile_android.data.models.ContextSwitch;
 import ecccomp.s2240788.mobile_android.data.models.ContextSwitchResponse;
 import ecccomp.s2240788.mobile_android.data.models.SaveEnvironmentCheckRequest;
@@ -15,6 +16,8 @@ import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInput;
 import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInputAdapter;
 import ecccomp.s2240788.mobile_android.ui.dialogs.ContextSwitchWarningDialog;
 import ecccomp.s2240788.mobile_android.ui.dialogs.EnvironmentChecklistDialog;
+import ecccomp.s2240788.mobile_android.ui.dialogs.ComplexitySelectorDialog;
+import ecccomp.s2240788.mobile_android.ui.dialogs.SubtaskPreviewDialog;
 import ecccomp.s2240788.mobile_android.ui.viewmodels.AddTaskViewModel;
 import ecccomp.s2240788.mobile_android.ui.activities.FocusSessionActivity;
 import java.text.SimpleDateFormat;
@@ -172,6 +175,13 @@ public class AddTaskActivity extends BaseActivity {
             addNewSubtask();
         });
 
+        // AI Breakdown button
+        if (binding.btnAiBreakdown != null) {
+            binding.btnAiBreakdown.setOnClickListener(v -> {
+                handleAiBreakdown();
+            });
+        }
+
         // Save button
         binding.btnSave.setOnClickListener(v -> {
             if (validateInputs()) {
@@ -221,6 +231,22 @@ public class AddTaskActivity extends BaseActivity {
                     Toast.makeText(this, "タスクを作成しました！", Toast.LENGTH_SHORT).show();
                     finish();
                 }
+            }
+        });
+
+        // AI Breakdown success - show preview dialog
+        viewModel.getBreakdownSuccess().observe(this, task -> {
+            if (task != null && task.getSubtasks() != null && !task.getSubtasks().isEmpty()) {
+                // Show preview dialog instead of auto-applying
+                showSubtaskPreviewDialog(task.getSubtasks());
+            }
+        });
+
+        // AI Breakdown loading state
+        viewModel.isBreakingDown().observe(this, isBreakingDown -> {
+            if (binding.btnAiBreakdown != null) {
+                binding.btnAiBreakdown.setEnabled(!isBreakingDown);
+                binding.btnAiBreakdown.setText(isBreakingDown ? "AI分割中..." : getString(R.string.ai_breakdown_task));
             }
         });
 
@@ -556,5 +582,104 @@ public class AddTaskActivity extends BaseActivity {
         intent.putExtra("task_title", binding.etTaskTitle.getText().toString().trim());
         startActivity(intent);
         finish();
+    }
+
+    /**
+     * Handle AI Breakdown button click
+     */
+    private void handleAiBreakdown() {
+        String title = binding.etTaskTitle.getText().toString().trim();
+        
+        if (title.isEmpty()) {
+            Toast.makeText(this, "まずタスクのタイトルを入力してください", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Check if task already exists (was created)
+        Integer taskId = viewModel.getCreatedTaskId().getValue();
+        
+        if (taskId == null) {
+            // Task chưa được tạo, cần tạo task trước
+            // Show dialog để confirm
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("AIでタスクを分割")
+                .setMessage("タスクを先に作成してからAIで分割しますか？")
+                .setPositiveButton("作成して分割", (dialog, which) -> {
+                    // Create task first, then show complexity selector
+                    if (validateInputs()) {
+                        shouldStartImmediately = false;
+                        createTask(false);
+                        
+                        // Observe task creation và show complexity selector
+                        viewModel.getCreatedTaskId().observe(this, createdId -> {
+                            if (createdId != null) {
+                                // Show complexity selector
+                                showComplexitySelectorDialog(createdId);
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("キャンセル", null)
+                .show();
+        } else {
+            // Task đã tồn tại, show complexity selector
+            showComplexitySelectorDialog(taskId);
+        }
+    }
+
+    /**
+     * Show complexity selector dialog
+     */
+    private void showComplexitySelectorDialog(int taskId) {
+        ComplexitySelectorDialog dialog = ComplexitySelectorDialog.newInstance();
+        dialog.setOnComplexitySelectedListener(complexityLevel -> {
+            // Call breakdown with selected complexity
+            viewModel.breakdownTask(taskId, complexityLevel);
+            return null;
+        });
+        dialog.show(getSupportFragmentManager(), "complexity_selector");
+    }
+
+    /**
+     * Show subtask preview dialog
+     */
+    private void showSubtaskPreviewDialog(List<ecccomp.s2240788.mobile_android.data.models.Subtask> subtasks) {
+        SubtaskPreviewDialog dialog = SubtaskPreviewDialog.newInstance(subtasks);
+        dialog.setOnApplyListener(() -> {
+            // Apply subtasks to UI
+            applyBreakdownSubtasks();
+            return null;
+        });
+        dialog.setOnCancelListener(() -> {
+            // User cancelled, do nothing
+            return null;
+        });
+        dialog.show(getSupportFragmentManager(), "subtask_preview");
+    }
+
+    /**
+     * Apply breakdown subtasks to UI
+     */
+    private void applyBreakdownSubtasks() {
+        ecccomp.s2240788.mobile_android.data.models.Task task = viewModel.getPendingBreakdownTask();
+        if (task != null && task.getSubtasks() != null) {
+            // Clear existing subtasks
+            subtasks.clear();
+
+            // Add AI-generated subtasks
+            for (ecccomp.s2240788.mobile_android.data.models.Subtask subtask : task.getSubtasks()) {
+                SubtaskInput subtaskInput = new SubtaskInput(
+                    String.valueOf(subtask.getId()),
+                    subtask.getTitle(),
+                    subtask.getEstimated_minutes()
+                );
+                subtasks.add(subtaskInput);
+            }
+
+            subtaskAdapter.submitList(new ArrayList<>(subtasks));
+            updateEmptyState();
+
+            Toast.makeText(this, "AIで" + task.getSubtasks().size() + "個のサブタスクを適用しました！", Toast.LENGTH_SHORT).show();
+        }
     }
 }

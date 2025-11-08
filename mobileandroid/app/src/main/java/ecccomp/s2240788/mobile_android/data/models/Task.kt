@@ -365,3 +365,10 @@ data class SendMessageResponse(
     val user_message: ChatMessage,
     val assistant_message: ChatMessage
 )
+
+// ==================== AI Task Breakdown Models ====================
+
+data class BreakdownTaskRequest(
+    val task_id: Int,
+    val complexity_level: String = "medium" // "simple", "medium", "complex"
+)

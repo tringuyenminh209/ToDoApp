@@ -4,258 +4,407 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_sm"
-    app:cardBackgroundColor="@color/surface"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="0dp"
-    app:strokeColor="@color/line"
-    app:strokeWidth="1dp">
+    android:layout_marginBottom="@dimen/spacing_md"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_md">
+        android:orientation="vertical">
 
-        <!-- Header -->
+        <!-- Colored Header Strip -->
+        <View
+            android:id="@+id/header_strip"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/primary" />
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="@dimen/spacing_xs">
-
-            <!-- Type Icon -->
-            <ImageView
-                android:id="@+id/iv_type_icon"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_book"
-                app:tint="@color/primary" />
-
-            <!-- Type Badge -->
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_type"
-                style="@style/Widget.Material3.Chip.Assist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xs"
-                android:text="Note"
-                android:textSize="10sp"
-                app:chipMinHeight="20dp"
-                app:chipBackgroundColor="@color/primary_light"
-                app:chipCornerRadius="8dp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <!-- Expand Icon -->
-            <ImageView
-                android:id="@+id/iv_expand"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_expand_more"
-                app:tint="@color/text_muted" />
-
-        </LinearLayout>
-
-        <!-- Title -->
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Java基本構文"
-            android:textColor="@color/text_primary"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:layout_marginBottom="@dimen/spacing_xs" />
-
-        <!-- Content Preview -->
-        <TextView
-            android:id="@+id/tv_content_preview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="変数の宣言、データ型、演算子について学習します..."
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:lineSpacingMultiplier="1.2" />
-
-        <!-- Expandable Content -->
-        <LinearLayout
-            android:id="@+id/expandable_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/spacing_sm"
-            android:visibility="gone">
+            android:padding="16dp">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line"
-                android:layout_marginBottom="@dimen/spacing_sm" />
-
-            <!-- Full Content based on type -->
-            <!-- For Notes -->
-            <TextView
-                android:id="@+id/tv_full_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"
-                android:lineSpacingMultiplier="1.4"
-                android:visibility="gone" />
-
-            <!-- For Code Snippets -->
+            <!-- Header -->
             <LinearLayout
-                android:id="@+id/code_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/background"
-                android:padding="@dimen/spacing_sm"
-                android:visibility="gone">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <!-- Type Badge with Icon -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/type_badge"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/spacing_xs">
+                    app:cardBackgroundColor="@color/primary_light"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
 
-                    <TextView
-                        android:id="@+id/tv_code_language"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Java"
-                        android:textColor="@color/primary"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
-
-                    <ImageButton
-                        android:id="@+id/btn_copy_code"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_category"
-                        app:tint="@color/text_muted"
-                        android:contentDescription="Copy code" />
-
-                </LinearLayout>
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_code_content"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="monospace"
-                        android:textColor="@color/text_primary"
-                        android:textSize="11sp"
-                        tools:text="int x = 10;" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="6dp">
 
-                </HorizontalScrollView>
+                        <ImageView
+                            android:id="@+id/iv_type_icon"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_book"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:id="@+id/chip_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:text="コード"
+                            android:textColor="@color/primary"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <!-- Expand Icon -->
+                <ImageView
+                    android:id="@+id/iv_expand"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_expand_more"
+                    android:padding="2dp"
+                    app:tint="@color/text_muted" />
 
             </LinearLayout>
 
-            <!-- For Exercises -->
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="メソッドを使った出力"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.2"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Content Preview -->
+            <TextView
+                android:id="@+id/tv_content_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="java: public class JSample01X { public static void p"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.3" />
+
+            <!-- Expandable Content -->
             <LinearLayout
-                android:id="@+id/exercise_container"
+                android:id="@+id/expandable_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginTop="12dp"
                 android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="問題:"
-                    android:textColor="@color/text_muted"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="@dimen/spacing_xs" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line"
+                    android:layout_marginBottom="12dp" />
 
+                <!-- Full Content based on type -->
+                <!-- For Notes -->
                 <TextView
-                    android:id="@+id/tv_question"
+                    android:id="@+id/tv_full_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:background="@color/warning_light"
                     android:textColor="@color/text_primary"
-                    android:textSize="13sp"
-                    android:layout_marginBottom="@dimen/spacing_sm" />
+                    android:textSize="14sp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:visibility="gone"
+                    tools:text="変数の宣言、データ型、演算子について詳しく学習します。\n- 文字列はダブルクォートで囲む\n- 数値や変数も出力可能" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_show_answer"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
+                <!-- For Code Snippets -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/code_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="答えを表示"
-                    android:textSize="11sp"
-                    app:cornerRadius="8dp" />
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/primary_light"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/primary"
+                    app:strokeWidth="1dp">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="10dp">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:cardBackgroundColor="@color/primary"
+                                app:cardCornerRadius="6dp"
+                                app:cardElevation="0dp">
+
+                                <TextView
+                                    android:id="@+id/tv_code_language"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="3dp"
+                                    android:text="JAVA"
+                                    android:textColor="@color/white"
+                                    android:textSize="10sp"
+                                    android:textStyle="bold" />
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_copy_code"
+                                style="@style/Widget.Material3.Button.TextButton.Icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:text="コピー"
+                                android:textSize="11sp"
+                                android:textColor="@color/primary"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:icon="@drawable/ic_category"
+                                app:iconSize="16dp"
+                                app:iconTint="@color/primary"
+                                app:iconPadding="4dp" />
+
+                        </LinearLayout>
+
+                        <WebView
+                            android:id="@+id/webview_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- For Exercises -->
                 <LinearLayout
-                    android:id="@+id/answer_container"
+                    android:id="@+id/exercise_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="@dimen/spacing_sm"
+                    android:padding="14dp"
+                    android:background="@color/info_light"
                     android:visibility="gone">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="答え:"
-                        android:textColor="@color/success"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="@dimen/spacing_xs" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_checklist"
+                            app:tint="@color/info" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="問題"
+                            android:textColor="@color/info"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tv_answer"
+                        android:id="@+id/tv_question"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_primary"
-                        android:textSize="13sp" />
+                        android:textSize="14sp"
+                        android:lineSpacingMultiplier="1.4"
+                        android:layout_marginBottom="10dp"
+                        tools:text="次のコードの出力結果を答えてください。" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_show_answer"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="答えを表示"
+                        android:textSize="12sp"
+                        android:textColor="@color/info"
+                        app:strokeColor="@color/info"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/ic_visibility"
+                        app:iconSize="18dp"
+                        app:iconTint="@color/info" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/answer_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@color/success_light"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="@color/success"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="6dp">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_check"
+                                    app:tint="@color/success" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:text="答え"
+                                    android:textColor="@color/success"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_answer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/text_primary"
+                                android:textSize="13sp"
+                                android:lineSpacingMultiplier="1.4"
+                                tools:text="Hello\nWorld!" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <!-- For Resource Links -->
-            <LinearLayout
-                android:id="@+id/link_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/tv_url"
+                <!-- For Resource Links -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/link_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/primary"
-                    android:textSize="12sp"
-                    android:autoLink="web"
-                    android:layout_marginBottom="@dimen/spacing_sm" />
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/accent_light"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/accent"
+                    app:strokeWidth="1dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_open_link"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="開く"
-                    android:textSize="11sp"
-                    app:icon="@drawable/ic_link"
-                    app:iconSize="16dp"
-                    app:cornerRadius="8dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="8dp">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@drawable/ic_link"
+                                app:tint="@color/accent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="リソース"
+                                android:textColor="@color/accent"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
+                            android:textSize="12sp"
+                            android:autoLink="web"
+                            android:lineSpacingMultiplier="1.3"
+                            android:layout_marginBottom="10dp"
+                            tools:text="https://docs.oracle.com/javase/tutorial/" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_open_link"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="開く"
+                            android:textSize="12sp"
+                            app:backgroundTint="@color/accent"
+                            app:icon="@drawable/ic_link"
+                            app:iconSize="18dp"
+                            app:cornerRadius="10dp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 

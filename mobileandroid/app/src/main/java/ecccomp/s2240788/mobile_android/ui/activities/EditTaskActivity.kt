@@ -7,10 +7,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityEditTaskBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInput
 import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInputAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.EditTaskViewModel
+import ecccomp.s2240788.mobile_android.ui.dialogs.ComplexitySelectorDialog
+import ecccomp.s2240788.mobile_android.ui.dialogs.SubtaskPreviewDialog
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -145,6 +148,11 @@ class EditTaskActivity : BaseActivity() {
             addNewSubtask()
         }
 
+        // AI Breakdown button
+        binding.btnAiBreakdown?.setOnClickListener {
+            handleAiBreakdown()
+        }
+
         // Save button
         binding.btnSave?.setOnClickListener {
             if (validateInputs()) {
@@ -255,6 +263,22 @@ class EditTaskActivity : BaseActivity() {
                 Toast.makeText(this, "タスクを更新しました！", Toast.LENGTH_SHORT).show()
                 finish()
             }
+        }
+
+        // AI Breakdown success - show preview dialog
+        viewModel.breakdownSuccess.observe(this) { task ->
+            task?.let {
+                if (!it.subtasks.isNullOrEmpty()) {
+                    // Show preview dialog instead of auto-applying
+                    showSubtaskPreviewDialog(it.subtasks)
+                }
+            }
+        }
+
+        // AI Breakdown loading state
+        viewModel.isBreakingDown.observe(this) { isBreakingDown ->
+            binding.btnAiBreakdown?.isEnabled = !isBreakingDown
+            binding.btnAiBreakdown?.text = if (isBreakingDown) "AI分割中..." else getString(R.string.ai_breakdown_task)
         }
     }
 
@@ -441,5 +465,89 @@ class EditTaskActivity : BaseActivity() {
 
         // Set default value
         binding.sliderFocusDifficulty?.value = 3f
+    }
+
+    /**
+     * Handle AI Breakdown button click
+     */
+    private fun handleAiBreakdown() {
+        val currentTask = viewModel.task.value
+        
+        if (currentTask == null) {
+            Toast.makeText(this, "タスクを読み込み中です。しばらく待ってください", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Check if task already has subtasks
+        if (!currentTask.subtasks.isNullOrEmpty()) {
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("AIでタスクを分割")
+                .setMessage("このタスクは既にサブタスクがあります。既存のサブタスクを置き換えますか？")
+                .setPositiveButton("置き換える") { _, _ ->
+                    // Show complexity selector
+                    showComplexitySelectorDialog()
+                }
+                .setNegativeButton("キャンセル", null)
+                .show()
+        } else {
+            // No subtasks, show complexity selector
+            showComplexitySelectorDialog()
+        }
+    }
+
+    /**
+     * Show complexity selector dialog
+     */
+    private fun showComplexitySelectorDialog() {
+        val dialog = ComplexitySelectorDialog.newInstance()
+        dialog.setOnComplexitySelectedListener { complexityLevel ->
+            // Call breakdown with selected complexity
+            viewModel.breakdownTask(complexityLevel)
+        }
+        dialog.show(supportFragmentManager, "complexity_selector")
+    }
+
+    /**
+     * Show subtask preview dialog
+     */
+    private fun showSubtaskPreviewDialog(subtasks: List<ecccomp.s2240788.mobile_android.data.models.Subtask>) {
+        val dialog = SubtaskPreviewDialog.newInstance(subtasks)
+        dialog.setOnApplyListener {
+            // Apply subtasks to UI
+            applyBreakdownSubtasks()
+        }
+        dialog.setOnCancelListener {
+            // User cancelled, do nothing
+        }
+        dialog.show(supportFragmentManager, "subtask_preview")
+    }
+
+    /**
+     * Apply breakdown subtasks to UI
+     */
+    private fun applyBreakdownSubtasks() {
+        val task = viewModel.getPendingBreakdownTask()
+        task?.let {
+            if (!it.subtasks.isNullOrEmpty()) {
+                // Clear existing subtasks
+                subtasks.clear()
+                
+                // Add AI-generated subtasks
+                it.subtasks.forEach { subtask ->
+                    subtasks.add(
+                        SubtaskInput(
+                            id = subtask.id.toString(),
+                            title = subtask.title,
+                            estimatedMinutes = subtask.estimated_minutes
+                        )
+                    )
+                }
+                
+                subtaskAdapter.submitList(subtasks.toList())
+                updateEmptyState()
+                
+                Toast.makeText(this, "AIで${it.subtasks.size}個のサブタスクを適用しました！", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

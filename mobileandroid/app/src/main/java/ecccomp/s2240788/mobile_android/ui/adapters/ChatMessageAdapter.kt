@@ -1,13 +1,14 @@
 package ecccomp.s2240788.mobile_android.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.data.models.ChatMessage
-import ecccomp.s2240788.mobile_android.databinding.ItemChatMessageAiBinding
-import ecccomp.s2240788.mobile_android.databinding.ItemChatMessageUserBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,20 +35,14 @@ class ChatMessageAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(Cha
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_USER -> {
-                val binding = ItemChatMessageUserBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-                UserMessageViewHolder(binding)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_chat_message_user, parent, false)
+                UserMessageViewHolder(view)
             }
             else -> {
-                val binding = ItemChatMessageAiBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-                AIMessageViewHolder(binding)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_chat_message_ai, parent, false)
+                AIMessageViewHolder(view)
             }
         }
     }
@@ -64,14 +59,14 @@ class ChatMessageAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(Cha
      * ViewHolder for User Messages (right-aligned)
      */
     inner class UserMessageViewHolder(
-        private val binding: ItemChatMessageUserBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+        itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
+        private val tvMessage: TextView = itemView.findViewById(R.id.tvMessage)
+        private val tvTimestamp: TextView = itemView.findViewById(R.id.tvTimestamp)
 
         fun bind(message: ChatMessage) {
-            binding.apply {
-                tvMessage.text = message.content
-                tvTimestamp.text = formatTimestamp(message.created_at)
-            }
+            tvMessage.text = message.content
+            tvTimestamp.text = formatTimestamp(message.created_at)
         }
     }
 
@@ -79,14 +74,14 @@ class ChatMessageAdapter : ListAdapter<ChatMessage, RecyclerView.ViewHolder>(Cha
      * ViewHolder for AI Messages (left-aligned)
      */
     inner class AIMessageViewHolder(
-        private val binding: ItemChatMessageAiBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+        itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
+        private val tvMessage: TextView = itemView.findViewById(R.id.tvMessage)
+        private val tvTimestamp: TextView = itemView.findViewById(R.id.tvTimestamp)
 
         fun bind(message: ChatMessage) {
-            binding.apply {
-                tvMessage.text = message.content
-                tvTimestamp.text = formatTimestamp(message.created_at)
-            }
+            tvMessage.text = message.content
+            tvTimestamp.text = formatTimestamp(message.created_at)
         }
     }
 

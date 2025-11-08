@@ -324,4 +324,9 @@ interface ApiService {
         @Path("id") id: Long,
         @Body request: SendMessageRequest
     ): Response<ApiResponse<SendMessageResponse>>
+
+    // ==================== AI Task Breakdown Endpoint ====================
+
+    @POST("ai/breakdown-task")
+    suspend fun breakdownTask(@Body request: BreakdownTaskRequest): Response<ApiResponse<Task>>
 }

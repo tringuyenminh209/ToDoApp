@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:maxHeight="600dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/spacing_lg"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/chat_history"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_close"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            app:backgroundTint="@android:color/transparent"
+            app:icon="@drawable/ic_close"
+            app:iconSize="24dp"
+            app:iconTint="@color/text_secondary" />
+
+    </LinearLayout>
+
+    <!-- Conversations List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_conversations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="500dp"
+        android:padding="@dimen/spacing_md"
+        android:clipToPadding="false" />
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/spacing_2xl"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_chat"
+            android:layout_marginBottom="@dimen/spacing_md"
+            app:tint="@color/text_secondary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chat_history_empty"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

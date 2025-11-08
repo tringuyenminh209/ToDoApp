@@ -3,6 +3,7 @@ package ecccomp.s2240788.mobile_android.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -41,19 +42,27 @@ class KnowledgeAdapter(
 
         fun bind(item: KnowledgeItem) {
             binding.apply {
+                // Set type-based colors and styles
+                val (typeText, bgColor, stripColor, icon) = when (item.item_type) {
+                    "note" -> Quadruple("ノート", R.color.warning_light, R.color.warning, R.drawable.ic_description)
+                    "code_snippet" -> Quadruple("コード", R.color.primary_light, R.color.primary, R.drawable.ic_computer)
+                    "exercise" -> Quadruple("演習", R.color.info_light, R.color.info, R.drawable.ic_checklist)
+                    "resource_link" -> Quadruple("リンク", R.color.accent_light, R.color.accent, R.drawable.ic_link)
+                    else -> Quadruple("その他", R.color.surface, R.color.text_muted, R.drawable.ic_book)
+                }
+
+                // Set header strip color
+                headerStrip.setBackgroundColor(ContextCompat.getColor(root.context, stripColor))
+
+                // Set type badge colors
+                typeBadge.setCardBackgroundColor(ContextCompat.getColor(root.context, bgColor))
+                ivTypeIcon.setImageResource(icon)
+                ivTypeIcon.setColorFilter(ContextCompat.getColor(root.context, stripColor))
+                chipType.text = typeText
+                chipType.setTextColor(ContextCompat.getColor(root.context, stripColor))
+
                 // Title
                 tvTitle.text = item.title
-
-                // Item type chip
-                val typeText = when (item.item_type) {
-                    "note" -> "ノート"
-                    "code_snippet" -> "コード"
-                    "exercise" -> "演習"
-                    "resource_link" -> "リンク"
-                    "attachment" -> "添付"
-                    else -> item.item_type
-                }
-                chipType.text = typeText
 
                 // Language chip (only for code snippets)
                 if (item.item_type == "code_snippet" && !item.code_language.isNullOrEmpty()) {
@@ -148,6 +157,9 @@ class KnowledgeAdapter(
                 dateString
             }
         }
+
+        // Helper data class for multiple values
+        private data class Quadruple<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
     }
 
     class KnowledgeDiffCallback : DiffUtil.ItemCallback<KnowledgeItem>() {
