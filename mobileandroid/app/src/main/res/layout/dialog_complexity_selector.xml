@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ai_complexity_title"
+        android:textColor="@color/text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Subtitle -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ai_complexity_subtitle"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Complexity Options -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="24dp">
+
+        <!-- Simple -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_simple"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="@string/ai_complexity_simple"
+            android:textSize="16sp"
+            android:checkable="true"
+            app:chipBackgroundColor="@color/surface"
+            app:chipStrokeColor="@color/line"
+            app:chipStrokeWidth="1dp" />
+
+        <!-- Medium -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_medium"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="@string/ai_complexity_medium"
+            android:textSize="16sp"
+            android:checkable="true"
+            android:checked="true"
+            app:chipBackgroundColor="@color/surface"
+            app:chipStrokeColor="@color/line"
+            app:chipStrokeWidth="1dp" />
+
+        <!-- Complex -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_complex"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="@string/ai_complexity_complex"
+            android:textSize="16sp"
+            android:checkable="true"
+            app:chipBackgroundColor="@color/surface"
+            app:chipStrokeColor="@color/line"
+            app:chipStrokeWidth="1dp" />
+
+    </LinearLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textColor="@color/text_secondary"
+            android:layout_marginEnd="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/accent" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

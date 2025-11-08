@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.databinding.ActivityAiCoachBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.ChatMessageAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.AICoachViewModel
+import ecccomp.s2240788.mobile_android.ui.dialogs.ConversationHistoryDialog
 
 /**
  * AICoachActivity
@@ -53,12 +54,19 @@ class AICoachActivity : BaseActivity() {
     private fun setupUI() {
         // 初期状態: 空の状態を表示
         updateEmptyState(true)
+        // Show quick actions initially
+        updateQuickActionsVisibility(true)
     }
 
     private fun setupClickListeners() {
         // 戻るボタン
         binding.btnBack.setOnClickListener {
             finish()
+        }
+
+        // History button
+        binding.btnHistory.setOnClickListener {
+            showConversationHistory()
         }
 
         // 送信ボタン
@@ -100,6 +108,8 @@ class AICoachActivity : BaseActivity() {
             if (messages.isNotEmpty()) {
                 chatAdapter.submitList(messages)
                 updateEmptyState(false)
+                // Hide quick actions when messages exist
+                updateQuickActionsVisibility(false)
 
                 // Scroll to bottom when new message arrives
                 binding.rvSuggestions.postDelayed({
@@ -107,6 +117,8 @@ class AICoachActivity : BaseActivity() {
                 }, 100)
             } else {
                 updateEmptyState(true)
+                // Show quick actions when no messages
+                updateQuickActionsVisibility(true)
             }
         }
 
@@ -143,6 +155,17 @@ class AICoachActivity : BaseActivity() {
                 viewModel.clearSuccessMessage()
             }
         }
+
+        // Observe conversations list
+        viewModel.conversations.observe(this) { conversations ->
+            // Update dialog if it's showing
+            updateConversationHistoryDialog(conversations)
+        }
+
+        // Observe loading conversations
+        viewModel.isLoadingConversations.observe(this) { isLoading ->
+            // Can show loading indicator if needed
+        }
     }
 
     private fun sendMessage() {
@@ -176,6 +199,41 @@ class AICoachActivity : BaseActivity() {
             binding.emptyState.visibility = View.GONE
             binding.rvSuggestions.visibility = View.VISIBLE
         }
+    }
+
+    /**
+     * Update quick actions visibility
+     * Only show when there are no messages (initial state)
+     */
+    private fun updateQuickActionsVisibility(show: Boolean) {
+        binding.quickActionsCard.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    /**
+     * Show conversation history dialog
+     */
+    private fun showConversationHistory() {
+        // Load conversations first
+        viewModel.loadConversations()
+
+        // Show dialog with current conversations (will be updated when loaded)
+        val currentConversations = viewModel.conversations.value ?: emptyList()
+        val dialog = ConversationHistoryDialog.newInstance(currentConversations)
+        
+        dialog.setOnConversationSelectedListener { conversation ->
+            // Load selected conversation
+            viewModel.loadConversation(conversation.id)
+        }
+        
+        dialog.show(supportFragmentManager, "conversation_history")
+    }
+
+    /**
+     * Update conversation history dialog if it's showing
+     */
+    private fun updateConversationHistoryDialog(conversations: List<ecccomp.s2240788.mobile_android.data.models.ChatConversation>) {
+        val dialog = supportFragmentManager.findFragmentByTag("conversation_history") as? ConversationHistoryDialog
+        dialog?.updateConversations(conversations)
     }
 
     override fun onDestroy() {

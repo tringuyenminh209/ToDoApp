@@ -24,6 +24,10 @@ class DatabaseSeeder extends Seeder
         // Seed Learning Path Templates and CheatCode Data
         $this->call([
             LearningPathTemplateSeeder::class,
+            JavaBasicCourseSeeder::class,
+            JavaDesignCourseSeeder::class,
+            PhpBasicCourseSeeder::class,
+            LaravelCourseSeeder::class,
             CheatCodePhpSeeder::class,
             CheatCodeJavaSeeder::class,
             CheatCodeGoSeeder::class,

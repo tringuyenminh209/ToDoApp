@@ -36,10 +36,7 @@ class LearningPathTemplateSeeder extends Seeder
         // Template 8: Digital Marketing
         $this->createDigitalMarketingTemplate();
 
-        // Template 9: Laravel Backend
-        $this->createLaravelBackendTemplate();
-
-        // Template 10: Machine Learning Basics
+        // Template 9: Machine Learning Basics
         $this->createMachineLearningTemplate();
     }
 
@@ -1032,61 +1029,6 @@ class LearningPathTemplateSeeder extends Seeder
             'sort_order' => 4,
             'estimated_hours' => 50,
             'deliverables' => ['レポート作成', 'ROI分析'],
-        ]);
-    }
-
-    private function createLaravelBackendTemplate(): void
-    {
-        $template = LearningPathTemplate::create([
-            'title' => 'Laravelバックエンド開発',
-            'description' => '5ヶ月でLaravelを使ったAPI開発をマスター',
-            'category' => 'programming',
-            'difficulty' => 'intermediate',
-            'estimated_hours_total' => 200,
-            'tags' => ['laravel', 'php', 'backend', 'api'],
-            'icon' => 'ic_laravel',
-            'color' => '#FF2D20',
-            'is_featured' => true,
-        ]);
-
-        $milestone1 = $template->milestones()->create([
-            'title' => 'PHP基礎',
-            'description' => 'PHP言語とOOP',
-            'sort_order' => 1,
-            'estimated_hours' => 40,
-            'deliverables' => ['PHP構文マスター', 'OOP実装'],
-        ]);
-
-        $milestone2 = $template->milestones()->create([
-            'title' => 'Laravel基礎',
-            'description' => 'ルーティング/コントローラー/ビュー',
-            'sort_order' => 2,
-            'estimated_hours' => 50,
-            'deliverables' => ['CRUDアプリ', 'Blade使用'],
-        ]);
-
-        $milestone3 = $template->milestones()->create([
-            'title' => 'Eloquent ORM',
-            'description' => 'データベース操作とリレーション',
-            'sort_order' => 3,
-            'estimated_hours' => 40,
-            'deliverables' => ['モデル設計', 'リレーション実装'],
-        ]);
-
-        $milestone4 = $template->milestones()->create([
-            'title' => 'RESTful API',
-            'description' => 'API開発と認証',
-            'sort_order' => 4,
-            'estimated_hours' => 50,
-            'deliverables' => ['API構築', 'JWT認証'],
-        ]);
-
-        $milestone5 = $template->milestones()->create([
-            'title' => 'テストとデプロイ',
-            'description' => 'PHPUnit/本番環境',
-            'sort_order' => 5,
-            'estimated_hours' => 20,
-            'deliverables' => ['ユニットテスト', 'デプロイ'],
         ]);
     }
 

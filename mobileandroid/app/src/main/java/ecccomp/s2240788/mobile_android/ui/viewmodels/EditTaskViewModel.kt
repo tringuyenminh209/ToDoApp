@@ -9,6 +9,7 @@ import ecccomp.s2240788.mobile_android.data.models.CreateSubtaskRequest
 import ecccomp.s2240788.mobile_android.data.models.CreateTaskRequest
 import ecccomp.s2240788.mobile_android.data.models.Subtask
 import ecccomp.s2240788.mobile_android.data.models.Task
+import ecccomp.s2240788.mobile_android.data.models.BreakdownTaskRequest
 import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskInput
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
@@ -34,6 +35,15 @@ class EditTaskViewModel : ViewModel() {
 
     private val _taskUpdated = MutableLiveData<Boolean>()
     val taskUpdated: LiveData<Boolean> = _taskUpdated
+
+    private val _breakdownSuccess = MutableLiveData<Task?>()
+    val breakdownSuccess: LiveData<Task?> = _breakdownSuccess
+
+    // Store breakdown result temporarily for preview
+    private var pendingBreakdownTask: Task? = null
+
+    private val _isBreakingDown = MutableLiveData<Boolean>()
+    val isBreakingDown: LiveData<Boolean> = _isBreakingDown
 
     /**
      * タスクを読み込む
@@ -284,6 +294,68 @@ class EditTaskViewModel : ViewModel() {
             // Even if subtask update fails, the task was updated successfully
             _taskUpdated.value = true
         }
+    }
+
+    /**
+     * AIでタスクを分割
+     */
+    fun breakdownTask(complexityLevel: String = "medium") {
+        val currentTaskId = _task.value?.id ?: return
+
+        viewModelScope.launch {
+            try {
+                _isBreakingDown.value = true
+                _error.value = null
+
+                val request = BreakdownTaskRequest(
+                    task_id = currentTaskId,
+                    complexity_level = complexityLevel
+                )
+
+                val response = apiService.breakdownTask(request)
+
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null && apiResponse.success && apiResponse.data != null) {
+                        // Store for preview, don't auto-apply
+                        pendingBreakdownTask = apiResponse.data
+                        _breakdownSuccess.value = apiResponse.data
+                    } else {
+                        _error.value = apiResponse?.message ?: "AI分割に失敗しました"
+                    }
+                } else {
+                    _error.value = when (response.code()) {
+                        400 -> "このタスクは既にサブタスクに分割されています"
+                        403 -> "このタスクにアクセスする権限がありません"
+                        429 -> "リクエストが多すぎます。しばらく待ってください"
+                        500 -> "サーバーエラーが発生しました"
+                        else -> "AI分割に失敗しました: ${response.message()}"
+                    }
+                }
+
+            } catch (e: Exception) {
+                _error.value = "ネットワークエラー: ${e.message}"
+            } finally {
+                _isBreakingDown.value = false
+            }
+        }
+    }
+
+    /**
+     * Apply breakdown subtasks to current task
+     */
+    fun applyBreakdownSubtasks() {
+        pendingBreakdownTask?.let { task ->
+            // Update task với subtasks mới
+            _task.value = task
+        }
+    }
+
+    /**
+     * Get pending breakdown task
+     */
+    fun getPendingBreakdownTask(): Task? {
+        return pendingBreakdownTask
     }
 }
 

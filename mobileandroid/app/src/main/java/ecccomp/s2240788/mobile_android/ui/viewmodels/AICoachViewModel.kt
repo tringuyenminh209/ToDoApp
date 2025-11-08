@@ -48,6 +48,14 @@ class AICoachViewModel : ViewModel() {
     private val _successMessage = MutableLiveData<String?>()
     val successMessage: LiveData<String?> = _successMessage
 
+    // Conversations list
+    private val _conversations = MutableLiveData<List<ChatConversation>>()
+    val conversations: LiveData<List<ChatConversation>> = _conversations
+
+    // Loading conversations state
+    private val _isLoadingConversations = MutableLiveData<Boolean>()
+    val isLoadingConversations: LiveData<Boolean> = _isLoadingConversations
+
     /**
      * Start a new conversation with initial message
      */
@@ -216,5 +224,41 @@ class AICoachViewModel : ViewModel() {
      */
     fun getCurrentConversationId(): Long? {
         return _currentConversation.value?.id
+    }
+
+    /**
+     * Load conversations list
+     */
+    fun loadConversations() {
+        viewModelScope.launch {
+            try {
+                _isLoadingConversations.value = true
+                _error.value = null
+
+                val result = chatRepository.getConversations(
+                    status = "active",
+                    sortBy = "last_message_at",
+                    sortOrder = "desc",
+                    perPage = 50
+                )
+
+                when (result) {
+                    is ChatResult.Success -> {
+                        _conversations.value = result.data.data
+                    }
+                    is ChatResult.Error -> {
+                        _error.value = result.message
+                    }
+                    is ChatResult.Loading -> {
+                        // Already handled by _isLoadingConversations
+                    }
+                }
+
+            } catch (e: Exception) {
+                _error.value = "エラーが発生しました: ${e.message}"
+            } finally {
+                _isLoadingConversations.value = false
+            }
+        }
     }
 }

@@ -166,11 +166,20 @@ class FocusSessionActivity : BaseActivity() {
                 viewModel.setTimerDuration(estimatedMinutes)
 
                 binding.tvFocusCount.text = "🎯 ${viewModel.getPomodoroCount()}/5 Pomodoro"
+                
+                // CRITICAL: Update deep work mode UI immediately when task loads
+                // This ensures UI is updated even if isDeepWorkMode observer hasn't fired yet
+                val isDeepWork = it.requires_deep_focus
+                android.util.Log.d("FocusSessionActivity", "Task loaded - requires_deep_focus: $isDeepWork, allow_interruptions: ${it.allow_interruptions}, focus_difficulty: ${it.focus_difficulty}")
+                
+                // Always update UI based on task's requires_deep_focus value
+                updateDeepWorkModeUI(isDeepWork)
             }
         }
 
-        // Deep Work Mode
+        // Deep Work Mode observer (backup - should also trigger)
         viewModel.isDeepWorkMode.observe(this) { isDeepWork ->
+            android.util.Log.d("FocusSessionActivity", "isDeepWorkMode LiveData changed: $isDeepWork")
             updateDeepWorkModeUI(isDeepWork)
         }
 
