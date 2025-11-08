@@ -33,6 +33,13 @@ class EditTaskActivity : BaseActivity() {
     private lateinit var subtaskAdapter: SubtaskInputAdapter
     private val subtasks = mutableListOf<SubtaskInput>()
 
+    // Deep Work Mode fields
+    private var requiresDeepFocus = false
+    private var allowInterruptions = true
+    private var focusDifficulty = 3 // Default: medium (1-5)
+    private var warmupMinutes: Int? = null
+    private var cooldownMinutes: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditTaskBinding.inflate(layoutInflater)
@@ -50,6 +57,7 @@ class EditTaskActivity : BaseActivity() {
         setupSubtaskRecyclerView()
         setupClickListeners()
         setupObservers()
+        setupDeepWorkMode()
 
         // Load task data
         viewModel.loadTask(taskId)
@@ -212,6 +220,19 @@ class EditTaskActivity : BaseActivity() {
                     subtaskAdapter.submitList(subtasks.toList())
                     updateEmptyState()
                 }
+
+                // Load Deep Work fields
+                requiresDeepFocus = it.requires_deep_focus
+                allowInterruptions = it.allow_interruptions
+                focusDifficulty = it.focus_difficulty.coerceIn(1, 5)
+                warmupMinutes = it.warmup_minutes
+                cooldownMinutes = it.cooldown_minutes
+
+                // Update UI
+                binding.switchDeepWork?.isChecked = requiresDeepFocus
+                binding.sliderFocusDifficulty?.value = focusDifficulty.toFloat()
+                binding.etWarmup?.setText(warmupMinutes?.toString() ?: "")
+                binding.etCooldown?.setText(cooldownMinutes?.toString() ?: "")
             }
         }
 
@@ -308,6 +329,17 @@ class EditTaskActivity : BaseActivity() {
             }
         } catch (e: Exception) { }
 
+        // Get warmup/cooldown times
+        try {
+            val warmupStr = binding.etWarmup?.text?.toString()?.trim() ?: ""
+            warmupMinutes = if (warmupStr.isEmpty()) null else warmupStr.toIntOrNull()
+
+            val cooldownStr = binding.etCooldown?.text?.toString()?.trim() ?: ""
+            cooldownMinutes = if (cooldownStr.isEmpty()) null else cooldownStr.toIntOrNull()
+        } catch (e: Exception) {
+            // Keep existing values
+        }
+
         // Get subtasks from adapter
         val currentSubtasks = getSubtasks()
 
@@ -320,7 +352,12 @@ class EditTaskActivity : BaseActivity() {
             selectedEnergy,
             estimated,
             selectedCategory,
-            currentSubtasks
+            currentSubtasks,
+            requiresDeepFocus,
+            allowInterruptions,
+            focusDifficulty,
+            warmupMinutes,
+            cooldownMinutes
         )
     }
 
@@ -372,5 +409,37 @@ class EditTaskActivity : BaseActivity() {
 
     private fun getSubtasks(): List<SubtaskInput> {
         return subtaskAdapter.getSubtasks()
+    }
+
+    private fun setupDeepWorkMode() {
+        // Deep Work Mode toggle
+        binding.switchDeepWork?.setOnCheckedChangeListener { _, isChecked ->
+            requiresDeepFocus = isChecked
+            allowInterruptions = !isChecked // Inverse logic
+
+            if (isChecked) {
+                // Auto-set focus difficulty to 4 when deep work enabled
+                binding.sliderFocusDifficulty?.value = 4f
+                focusDifficulty = 4
+
+                // Suggest warmup/cooldown times if empty
+                if (binding.etWarmup?.text?.toString()?.trim().isNullOrEmpty()) {
+                    binding.etWarmup?.setText("5")
+                    warmupMinutes = 5
+                }
+                if (binding.etCooldown?.text?.toString()?.trim().isNullOrEmpty()) {
+                    binding.etCooldown?.setText("10")
+                    cooldownMinutes = 10
+                }
+            }
+        }
+
+        // Focus Difficulty slider (1-5)
+        binding.sliderFocusDifficulty?.addOnChangeListener { _, value, _ ->
+            focusDifficulty = value.toInt()
+        }
+
+        // Set default value
+        binding.sliderFocusDifficulty?.value = 3f
     }
 }

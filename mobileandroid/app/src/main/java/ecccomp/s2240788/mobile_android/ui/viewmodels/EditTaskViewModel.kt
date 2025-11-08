@@ -142,6 +142,12 @@ class EditTaskViewModel : ViewModel() {
                 project_id = (map["project_id"] as? Number)?.toInt(),
                 learning_milestone_id = (map["learning_milestone_id"] as? Number)?.toInt(),
                 ai_breakdown_enabled = map["ai_breakdown_enabled"] as? Boolean ?: false,
+                // Focus enhancement features
+                requires_deep_focus = map["requires_deep_focus"] as? Boolean ?: false,
+                allow_interruptions = map["allow_interruptions"] as? Boolean ?: true,
+                focus_difficulty = (map["focus_difficulty"] as? Number)?.toInt() ?: 3,
+                warmup_minutes = (map["warmup_minutes"] as? Number)?.toInt(),
+                cooldown_minutes = (map["cooldown_minutes"] as? Number)?.toInt(),
                 subtasks = subtasksList
             )
         } catch (e: Exception) {
@@ -161,7 +167,13 @@ class EditTaskViewModel : ViewModel() {
         energyLevel: String?,
         estimatedMinutes: Int?,
         category: String?, // "study" | "work" | "personal" | "other"
-        subtasks: List<SubtaskInput> = emptyList()
+        subtasks: List<SubtaskInput> = emptyList(),
+        // Deep Work fields
+        requiresDeepFocus: Boolean = false,
+        allowInterruptions: Boolean = true,
+        focusDifficulty: Int = 3,
+        warmupMinutes: Int? = null,
+        cooldownMinutes: Int? = null
     ) {
         viewModelScope.launch {
             try {
@@ -184,7 +196,13 @@ class EditTaskViewModel : ViewModel() {
                     priority = validPriority,
                     energy_level = energyLevel ?: _task.value?.energy_level ?: "medium",
                     estimated_minutes = estimatedMinutes ?: _task.value?.estimated_minutes,
-                    deadline = dueDate ?: _task.value?.deadline
+                    deadline = dueDate ?: _task.value?.deadline,
+                    // Deep Work fields
+                    requires_deep_focus = requiresDeepFocus,
+                    allow_interruptions = allowInterruptions,
+                    focus_difficulty = focusDifficulty.coerceIn(1, 5),
+                    warmup_minutes = warmupMinutes,
+                    cooldown_minutes = cooldownMinutes
                 )
 
                 val response = apiService.updateTask(taskId, request)

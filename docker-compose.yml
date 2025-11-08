@@ -26,6 +26,7 @@ services:
       - REDIS_PORT=6379
       - QUEUE_CONNECTION=redis
       - CACHE_DRIVER=redis
+      - CACHE_STORE=redis
       - SESSION_DRIVER=redis
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - OPENAI_MODEL=gpt-5
@@ -39,6 +40,14 @@ services:
       - redis
     networks:
       - todo-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
 
   # MySQL Database
   mysql:
@@ -58,6 +67,14 @@ services:
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     networks:
       - todo-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
 
   # Redis Cache & Queue
   redis:
@@ -68,9 +85,17 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
-    command: redis-server --appendonly yes
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
     networks:
       - todo-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
 
   # PHPMyAdmin (Development only)
   phpmyadmin:

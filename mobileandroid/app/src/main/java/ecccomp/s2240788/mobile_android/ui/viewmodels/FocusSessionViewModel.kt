@@ -45,6 +45,10 @@ class FocusSessionViewModel : ViewModel() {
     private val _currentTask = MutableLiveData<Task?>()
     val currentTask: LiveData<Task?> = _currentTask
 
+    // Deep Work Mode
+    private val _isDeepWorkMode = MutableLiveData<Boolean>(false)
+    val isDeepWorkMode: LiveData<Boolean> = _isDeepWorkMode
+
     private val _focusSessionCompleted = MutableLiveData<Boolean>()
     val focusSessionCompleted: LiveData<Boolean> = _focusSessionCompleted
 
@@ -92,6 +96,9 @@ class FocusSessionViewModel : ViewModel() {
                         val task = apiResponse.data
                         _currentTask.value = task
 
+                        // Update deep work mode status
+                        _isDeepWorkMode.value = task.requires_deep_focus
+
                         // Set timer duration based on task estimated minutes
                         task.estimated_minutes?.let { minutes ->
                             setTimerDuration(minutes)
@@ -130,6 +137,9 @@ class FocusSessionViewModel : ViewModel() {
                                 estimated_minutes = subtask.estimated_minutes ?: 60
                             )
                             _currentTask.value = modifiedTask
+
+                            // Update deep work mode status (inherit from parent task)
+                            _isDeepWorkMode.value = task.requires_deep_focus
 
                             // Set timer duration based on subtask estimated minutes
                             val minutes = subtask.estimated_minutes ?: 60
@@ -391,7 +401,17 @@ class FocusSessionViewModel : ViewModel() {
                 user_id = (map["user_id"] as? Number)?.toInt() ?: 0,
                 project_id = (map["project_id"] as? Number)?.toInt(),
                 learning_milestone_id = (map["learning_milestone_id"] as? Number)?.toInt(),
-                ai_breakdown_enabled = map["ai_breakdown_enabled"] as? Boolean ?: false
+                ai_breakdown_enabled = map["ai_breakdown_enabled"] as? Boolean ?: false,
+                // Focus enhancement features
+                requires_deep_focus = map["requires_deep_focus"] as? Boolean ?: false,
+                allow_interruptions = map["allow_interruptions"] as? Boolean ?: true,
+                focus_difficulty = (map["focus_difficulty"] as? Number)?.toInt() ?: 3,
+                warmup_minutes = (map["warmup_minutes"] as? Number)?.toInt(),
+                cooldown_minutes = (map["cooldown_minutes"] as? Number)?.toInt(),
+                recovery_minutes = (map["recovery_minutes"] as? Number)?.toInt(),
+                last_focus_at = map["last_focus_at"] as? String,
+                total_focus_minutes = (map["total_focus_minutes"] as? Number)?.toInt() ?: 0,
+                distraction_count = (map["distraction_count"] as? Number)?.toInt() ?: 0
             )
         } catch (e: Exception) {
             null

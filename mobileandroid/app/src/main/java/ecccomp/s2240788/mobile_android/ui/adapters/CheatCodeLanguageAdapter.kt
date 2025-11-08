@@ -37,11 +37,23 @@ class CheatCodeLanguageAdapter(
             // Set language name
             tvLanguageName.text = language.displayName
 
-            // Set background color based on language
-            val backgroundColor = getLanguageColor(language.name)
+            // Set background color from database, fallback to default if invalid
+            val backgroundColor = try {
+                if (!language.color.isNullOrBlank() && language.color.startsWith("#")) {
+                    language.color
+                } else {
+                    getLanguageColor(language.name) // Fallback to hardcoded colors
+                }
+            } catch (e: Exception) {
+                getLanguageColor(language.name) // Fallback to hardcoded colors
+            }
             cardLanguage.setCardBackgroundColor(Color.parseColor(backgroundColor))
+            
+            // Adjust text color based on background brightness for better readability
+            val textColor = getContrastTextColor(backgroundColor)
+            tvLanguageName.setTextColor(textColor)
 
-            // Set icon from database
+            // Set icon from database - NO COLOR FILTER to show original colors
             if (!language.icon.isNullOrBlank()) {
                 val iconResId = itemView.context.resources.getIdentifier(
                     language.icon,
@@ -50,17 +62,17 @@ class CheatCodeLanguageAdapter(
                 )
                 if (iconResId != 0) {
                     ivLanguageIcon.setImageResource(iconResId)
-                    // Set icon tint to white for better visibility on colored background
-                    ivLanguageIcon.setColorFilter(Color.parseColor("#FFFFFF"))
+                    // Remove color filter to show original icon colors
+                    ivLanguageIcon.clearColorFilter()
                 } else {
                     // Fallback to default icon
                     ivLanguageIcon.setImageResource(R.drawable.ic_computer)
-                    ivLanguageIcon.setColorFilter(Color.parseColor("#FFFFFF"))
+                    ivLanguageIcon.clearColorFilter()
                 }
             } else {
                 // Default icon if no icon specified
                 ivLanguageIcon.setImageResource(R.drawable.ic_computer)
-                ivLanguageIcon.setColorFilter(Color.parseColor("#FFFFFF"))
+                ivLanguageIcon.clearColorFilter()
             }
 
             // Set tag if needed (e.g., Laravel -> PHP)
@@ -101,7 +113,35 @@ class CheatCodeLanguageAdapter(
                 "go" -> "#00ADD8"
                 "java" -> "#ED8B00"
                 "css3", "css" -> "#1572B6"
+                "mysql" -> "#4479A1"
+                "docker" -> "#0DB7ED"
+                "yaml" -> "#9E9E9E"
+                "bash" -> "#9E9E9E"
                 else -> "#E0E0E0" // Default light grey
+            }
+        }
+
+        /**
+         * Calculate contrast text color (black or white) based on background brightness
+         */
+        private fun getContrastTextColor(backgroundColorHex: String): Int {
+            return try {
+                val color = Color.parseColor(backgroundColorHex)
+                // Calculate luminance using relative luminance formula
+                val r = Color.red(color) / 255.0
+                val g = Color.green(color) / 255.0
+                val b = Color.blue(color) / 255.0
+                
+                val luminance = 0.299 * r + 0.587 * g + 0.114 * b
+                
+                // Use black text on light backgrounds, white on dark backgrounds
+                if (luminance > 0.5) {
+                    Color.parseColor("#000000") // Black for light backgrounds
+                } else {
+                    Color.parseColor("#FFFFFF") // White for dark backgrounds
+                }
+            } catch (e: Exception) {
+                Color.parseColor("#000000") // Default to black
             }
         }
     }
