@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.82,
+    "reasoning": "从路径 ui/adapters、文件名 CheatCodeLanguageAdapter.kt、Kotlin 扩展名以及内容可见：这是一个基于 RecyclerView 的 ListAdapter/ViewHolder UI 适配器，负责将数据模型 CheatCodeLanguage 绑定到 item_cheat_code_language 的布局视图，并处理点击事件。它属于前端界面层的可复用UI组件（小部件/控件），不涉及业务服务、控制器、API、配置或数据模型定义。"
+  },
+  "timestamp": 1762742578,
+  "prompt_hash": "739223c00e9351c866320fdaaa849363",
+  "token_usage": {
+    "input_tokens": 432,
+    "output_tokens": 161,
+    "total_tokens": 593
+  },
+  "model_name": null
+}

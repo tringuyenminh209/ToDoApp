@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.87,
+    "reasoning": "- 路径包含 ui/activities，表明位于前端展示层的活动页面目录。\n- 文件名 TemplateDetailActivity.kt，且扩展名为 Kotlin，符合 Android Activity 命名惯例。\n- 类继承 AppCompatActivity，使用 viewModels、RecyclerView、Adapter、ViewBinding 等 UI 相关组件，显示模板详情的界面逻辑。\n- 导入多为 UI 组件与 ViewModel，未见服务端或底层工具逻辑。\n- 负责页面展示、事件处理与导航（Intent），不承担核心业务规则或数据层职责。\n因此归类为前端页面（page）。"
+  },
+  "timestamp": 1762742436,
+  "prompt_hash": "a91c6a685a2fa6e4fd4533e37f018897",
+  "token_usage": {
+    "input_tokens": 434,
+    "output_tokens": 188,
+    "total_tokens": 622
+  },
+  "model_name": null
+}

@@ -12,6 +12,7 @@ data class Task(
     val energy_level: String,
     val estimated_minutes: Int?,
     val deadline: String?,
+    val scheduled_time: String?, // 予定開始時刻
     val created_at: String,
     val updated_at: String,
     val user_id: Int,
@@ -75,6 +76,7 @@ data class CreateTaskRequest(
     val energy_level: String,
     val estimated_minutes: Int?,
     val deadline: String?,
+    val scheduled_time: String?, // 予定開始時刻
     // Focus enhancement features
     val requires_deep_focus: Boolean = false,
     val allow_interruptions: Boolean = true,
@@ -363,9 +365,15 @@ data class ChatConversationsResponse(
     val per_page: Int
 )
 
+data class CreateConversationResponse(
+    val conversation: ChatConversation,
+    val created_task: Task? = null
+)
+
 data class SendMessageResponse(
     val user_message: ChatMessage,
-    val assistant_message: ChatMessage
+    val assistant_message: ChatMessage,
+    val created_task: Task? = null
 )
 
 // ==================== Roadmap API Models ====================

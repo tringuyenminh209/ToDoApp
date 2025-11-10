@@ -838,6 +838,151 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Scheduled Time Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/scheduled_time_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_md"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/radius_lg"
+                app:cardElevation="2dp"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="@color/line_variant">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_lg">
+
+                    <!-- Section Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/spacing_md">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_clock"
+                            android:contentDescription="@null"
+                            app:tint="@color/accent" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/spacing_sm"
+                            android:text="開始時刻"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!-- Scheduled Time Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_scheduled_time"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="タスク開始時刻 (例: 17:30)"
+                        app:boxBackgroundColor="@color/surface"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxStrokeColor="@color/line"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_clock"
+                        app:endIconTint="@color/accent"
+                        app:hintTextColor="@color/text_secondary"
+                        app:startIconDrawable="@drawable/ic_clock"
+                        app:startIconTint="@color/text_muted"
+                        app:startIconContentDescription="開始時刻">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_scheduled_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:paddingStart="@dimen/spacing_xxxl" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Quick Time Options -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_md"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_morning"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="@dimen/spacing_xs"
+                            android:text="朝 (9:00)"
+                            android:textColor="@color/text_primary"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:paddingVertical="@dimen/spacing_sm"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="8dp"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_afternoon"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="@dimen/spacing_xs"
+                            android:text="昼 (13:00)"
+                            android:textColor="@color/text_primary"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:paddingVertical="@dimen/spacing_sm"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="8dp"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_evening"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/spacing_xs"
+                            android:text="夜 (18:00)"
+                            android:textColor="@color/text_primary"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:paddingVertical="@dimen/spacing_sm"
+                            app:backgroundTint="@color/surface"
+                            app:cornerRadius="8dp"
+                            app:strokeColor="@color/line"
+                            app:strokeWidth="1dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- AI Support Section -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/ai_support_card"

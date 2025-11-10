@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.86,
+    "reasoning": "该文件位于 ui/activities 路径下，文件名为 AddTaskActivity.java，典型的 Android Activity 页面组件；导入了视图绑定、RecyclerView 适配器、对话框、DatePickerDialog、Intent、Toast 等 UI 相关类，负责界面交互与导航；不定义数据模型或底层工具，也非服务/控制器逻辑，符合前端界面页面的职责。"
+  },
+  "timestamp": 1762741545,
+  "prompt_hash": "107e5ba96840a07e42679ce1513ef5a2",
+  "token_usage": {
+    "input_tokens": 429,
+    "output_tokens": 145,
+    "total_tokens": 574
+  },
+  "model_name": null
+}

@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.9,
+    "reasoning": "从文件路径 mobileandroid/app/src/main/java/.../ui/dialogs 可以看出位于 Android 客户端的 UI 对话框目录；文件名 ConversationHistoryDialog.kt 明确为对话框组件；代码继承自 DialogFragment，使用 ViewBinding、RecyclerView 与适配器 ConversationListAdapter 展示历史会话并回调选择结果，属于界面层的可复用 UI 组件；仅引用 ChatConversation 作为展示数据模型，不承担业务逻辑或服务调用，不涉及路由、API、控制器或服务。因此该文件归类为前端/客户端的 UI 组件（widget）。"
+  },
+  "timestamp": 1762743522,
+  "prompt_hash": "879b33c97ffc0dc83451e7fc1aa0267a",
+  "token_usage": {
+    "input_tokens": 437,
+    "output_tokens": 195,
+    "total_tokens": 632
+  },
+  "model_name": null
+}

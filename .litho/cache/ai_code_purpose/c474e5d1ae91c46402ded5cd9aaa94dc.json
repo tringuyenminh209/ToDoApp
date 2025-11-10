@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.82,
+    "reasoning": "从路径 mobileandroid/app/src/main/java/.../ui/dialogs 可见其位于 UI 对话框目录；文件名 EnvironmentChecklistDialog.kt，扩展名为 Kotlin；内容定义了继承 DialogFragment 的类，使用 ViewBinding(DialogEnvironmentChecklistBinding) 渲染视图，并通过回调 onStartSessionListener 传递 SaveEnvironmentCheckRequest，属于界面层的对话框组件。无路由、服务、数据库或配置等特征，因此应归类为前端/客户端界面组件（widget）。"
+  },
+  "timestamp": 1762743609,
+  "prompt_hash": "c474e5d1ae91c46402ded5cd9aaa94dc",
+  "token_usage": {
+    "input_tokens": 436,
+    "output_tokens": 177,
+    "total_tokens": 613
+  },
+  "model_name": null
+}

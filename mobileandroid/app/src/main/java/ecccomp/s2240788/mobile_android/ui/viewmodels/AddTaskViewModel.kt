@@ -63,6 +63,7 @@ class AddTaskViewModel : ViewModel() {
         description: String?,
         priority: Int, // 1-5
         dueDate: String?,
+        scheduledTime: String?,
         energyLevel: String, // "low" | "medium" | "high"
         estimatedMinutes: Int?,
         category: String?, // "study" | "work" | "personal" | "other"
@@ -96,6 +97,7 @@ class AddTaskViewModel : ViewModel() {
                     energy_level = energyLevel,
                     estimated_minutes = estimatedMinutes,
                     deadline = dueDate,
+                    scheduled_time = scheduledTime,
                     requires_deep_focus = requiresDeepFocus,
                     allow_interruptions = allowInterruptions,
                     focus_difficulty = focusDifficulty,

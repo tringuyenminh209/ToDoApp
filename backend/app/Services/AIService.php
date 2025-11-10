@@ -15,6 +15,7 @@ class AIService
     private $enableFallback;
     private $maxTokens;
     private $temperature;
+    private $timeout;
 
     public function __construct()
     {
@@ -25,6 +26,7 @@ class AIService
         $this->enableFallback = config('services.openai.enable_fallback', true);
         $this->maxTokens = config('services.openai.max_tokens', 1000);
         $this->temperature = config('services.openai.temperature', 0.7);
+        $this->timeout = config('services.openai.timeout', 30); // Sử dụng config từ services.php
     }
 
     /**
@@ -144,7 +146,7 @@ class AIService
                     $response = Http::withHeaders([
                         'Authorization' => 'Bearer ' . $this->apiKey,
                         'Content-Type' => 'application/json',
-                    ])->timeout(30)->post($this->baseUrl . '/chat/completions', [
+                    ])->timeout($this->timeout)->post($this->baseUrl . '/chat/completions', [
                         'model' => $model,
                         'messages' => [
                             [
@@ -477,9 +479,11 @@ JSON形式で返してください：
     public function testConnection(): bool
     {
         try {
+            // Test connection timeout: ngắn hơn general timeout (10s)
+            $testTimeout = min(10, $this->timeout * 0.33); // 33% của general timeout hoặc tối đa 10s
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $this->apiKey,
-            ])->timeout(10)->get($this->baseUrl . '/models');
+            ])->timeout((int)$testTimeout)->get($this->baseUrl . '/models');
 
             return $response->successful();
         } catch (\Exception $e) {
@@ -488,6 +492,114 @@ JSON形式で返してください：
             ]);
             return false;
         }
+    }
+
+    /**
+     * Parse task creation intent from user message
+     *
+     * @param string $message User message to analyze
+     * @return array|null Task data if task creation intent detected, null otherwise
+     */
+    public function parseTaskIntent(string $message): ?array
+    {
+        if (!$this->apiKey) {
+            return null;
+        }
+
+        $prompt = "以下のメッセージを分析して、タスク作成の意図があるか判断してください。
+タスク作成の意図がある場合は、タスク情報を抽出してJSONで返してください。
+意図がない場合は、null を返してください。
+
+メッセージ: {$message}
+
+タスク作成の意図がある場合のJSON形式:
+{
+  \"has_task_intent\": true,
+  \"task\": {
+    \"title\": \"タスクのタイトル\",
+    \"description\": \"タスクの説明（オプション）\",
+    \"estimated_minutes\": 推定時間（分）,
+    \"priority\": \"high/medium/low\",
+    \"scheduled_time\": \"YYYY-MM-DD HH:MM:SS\" (オプション、開始時刻が指定されている場合),
+    \"tags\": [\"タグ1\", \"タグ2\"],
+    \"subtasks\": [
+      {
+        \"title\": \"サブタスク1\",
+        \"estimated_minutes\": 時間（分）
+      }
+    ]
+  }
+}
+
+タスク作成の意図がない場合:
+{
+  \"has_task_intent\": false
+}
+
+キーワード例:
+- タスクを追加、タスク作成、〜したい、〜をやる、勉強する、学習する
+- 「15分」「30分」などの時間指定
+- 「ちいさく」「分割」「サブタスク」などの分割指示
+- 「17時30分」「午後5時半」「17:30」などの開始時刻指定
+- 「朝9時から」「13時スタート」などの時刻表現
+
+注意:
+- 質問や雑談は「has_task_intent\": false にしてください
+- scheduled_timeは今日の日付に時刻を組み合わせてください (例: 今日が2025-11-10で「17時30分」なら「2025-11-10 17:30:00」)
+- 時刻指定がない場合は scheduled_time を省略してください";
+
+        try {
+            // Parse task intent timeout: ngắn hơn general timeout (10s)
+            $parseTimeout = min(10, $this->timeout * 0.33); // 33% của general timeout hoặc tối đa 10s
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Content-Type' => 'application/json',
+            ])->timeout((int)$parseTimeout)->post($this->baseUrl . '/chat/completions', [
+                'model' => $this->fallbackModel, // Use faster model for parsing
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'You are a task parser assistant. Analyze user messages and extract task information. Always return valid JSON.'
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => $prompt
+                    ]
+                ],
+                'max_tokens' => 500,
+                'temperature' => 0.3, // Low temperature for consistent parsing
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $content = $data['choices'][0]['message']['content'] ?? '';
+
+                // Parse JSON response
+                $parsedContent = json_decode($content, true);
+
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    if (!empty($parsedContent['has_task_intent']) && $parsedContent['has_task_intent'] === true) {
+                        Log::info('Task intent detected', ['task' => $parsedContent['task']]);
+                        return $parsedContent['task'];
+                    }
+                }
+
+                // Try to extract JSON from response
+                $jsonMatch = [];
+                if (preg_match('/\{.*\}/s', $content, $jsonMatch)) {
+                    $parsedContent = json_decode($jsonMatch[0], true);
+                    if (json_last_error() === JSON_ERROR_NONE && !empty($parsedContent['has_task_intent'])) {
+                        if ($parsedContent['has_task_intent'] === true) {
+                            return $parsedContent['task'];
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Task intent parsing failed: ' . $e->getMessage());
+        }
+
+        return null;
     }
 
     /**
@@ -506,8 +618,8 @@ JSON形式で返してください：
             ];
         }
 
-        $maxRetries = 3;
-        $retryDelay = 1;
+        $maxRetries = 2; // Giảm từ 3 xuống 2 để nhanh hơn
+        $retryDelay = 0.5; // Giảm delay từ 1s xuống 0.5s
         $models = [$this->model];
 
         if ($this->enableFallback && $this->fallbackModel !== $this->model) {
@@ -533,13 +645,16 @@ JSON形式で返してください：
                         ];
                     }
 
+                    // Chat timeout: sử dụng config nhưng có thể override bằng options
+                    $chatTimeout = $options['timeout'] ?? ($this->timeout * 0.5); // Chat timeout = 50% của general timeout (15s nếu timeout=30s)
+
                     $response = Http::withHeaders([
                         'Authorization' => 'Bearer ' . $this->apiKey,
                         'Content-Type' => 'application/json',
-                    ])->timeout(30)->post($this->baseUrl . '/chat/completions', [
+                    ])->timeout((int)$chatTimeout)->post($this->baseUrl . '/chat/completions', [
                         'model' => $model,
                         'messages' => $apiMessages,
-                        'max_tokens' => $options['max_tokens'] ?? 800,
+                        'max_tokens' => $options['max_tokens'] ?? 500, // Giảm từ 800 xuống 500 để nhanh hơn
                         'temperature' => $options['temperature'] ?? 0.7,
                         'stream' => false,
                     ]);
@@ -583,7 +698,7 @@ JSON形式で返してください：
                 }
 
                 if ($attempt < $maxRetries) {
-                    sleep($retryDelay);
+                    usleep((int)($retryDelay * 1000000)); // Convert seconds to microseconds
                     $retryDelay *= 2;
                 }
             }

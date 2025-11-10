@@ -1,6 +1,7 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -32,7 +33,9 @@ class EditTaskActivity : BaseActivity() {
     private var selectedEnergy = "medium"
     private var selectedCategory = "study" // Default: study
     private var selectedDeadline: String? = null
+    private var selectedScheduledTime: String? = null
     private var calendar: Calendar = Calendar.getInstance()
+    private var scheduledCalendar: Calendar = Calendar.getInstance()
     private lateinit var subtaskAdapter: SubtaskInputAdapter
     private val subtasks = mutableListOf<SubtaskInput>()
 
@@ -122,6 +125,20 @@ class EditTaskActivity : BaseActivity() {
         // Deadline input - show date picker
         binding.etDeadline?.setOnClickListener { showDatePicker() }
 
+        // Scheduled Time quick buttons
+        binding.btnMorning?.setOnClickListener {
+            setScheduledTime(9, 0)
+        }
+        binding.btnAfternoon?.setOnClickListener {
+            setScheduledTime(13, 0)
+        }
+        binding.btnEvening?.setOnClickListener {
+            setScheduledTime(18, 0)
+        }
+
+        // Scheduled Time input - show time picker
+        binding.etScheduledTime?.setOnClickListener { showTimePicker() }
+
         // Time quick select buttons
         binding.btnTime15?.setOnClickListener {
             binding.etHours?.setText("0")
@@ -210,6 +227,33 @@ class EditTaskActivity : BaseActivity() {
                     } catch (e: Exception) {
                         binding.etDeadline?.setText(dateStr)
                         selectedDeadline = dateStr
+                    }
+                }
+
+                // Scheduled Time
+                it.scheduled_time?.let { timeStr ->
+                    try {
+                        val inFmt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                        val outFmt = SimpleDateFormat("HH:mm", Locale.getDefault())
+                        val datetime = inFmt.parse(timeStr)
+                        if (datetime != null) {
+                            scheduledCalendar.time = datetime
+                            binding.etScheduledTime?.setText(outFmt.format(datetime))
+                            selectedScheduledTime = timeStr
+                        }
+                    } catch (e: Exception) {
+                        // Try alternative format
+                        try {
+                            val inFmt2 = SimpleDateFormat("HH:mm", Locale.getDefault())
+                            val time = inFmt2.parse(timeStr)
+                            if (time != null) {
+                                scheduledCalendar.time = time
+                                binding.etScheduledTime?.setText(timeStr)
+                                selectedScheduledTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(time)
+                            }
+                        } catch (e2: Exception) {
+                            // Ignore parsing errors
+                        }
                     }
                 }
 
@@ -323,6 +367,38 @@ class EditTaskActivity : BaseActivity() {
         selectedDeadline = apiFmt.format(calendar.time)
     }
 
+    private fun showTimePicker() {
+        val hour = scheduledCalendar.get(Calendar.HOUR_OF_DAY)
+        val minute = scheduledCalendar.get(Calendar.MINUTE)
+
+        val dlg = TimePickerDialog(
+            this,
+            { _, hourOfDay, minuteOfHour ->
+                scheduledCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                scheduledCalendar.set(Calendar.MINUTE, minuteOfHour)
+                updateScheduledTimeDisplay()
+            },
+            hour,
+            minute,
+            true // 24-hour format
+        )
+        dlg.show()
+    }
+
+    private fun setScheduledTime(hour: Int, minute: Int) {
+        scheduledCalendar = Calendar.getInstance()
+        scheduledCalendar.set(Calendar.HOUR_OF_DAY, hour)
+        scheduledCalendar.set(Calendar.MINUTE, minute)
+        updateScheduledTimeDisplay()
+    }
+
+    private fun updateScheduledTimeDisplay() {
+        val viewFmt = SimpleDateFormat("HH:mm", Locale.getDefault())
+        binding.etScheduledTime?.setText(viewFmt.format(scheduledCalendar.time))
+        val apiFmt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        selectedScheduledTime = apiFmt.format(scheduledCalendar.time)
+    }
+
     private fun validateInputs(): Boolean {
         val title = binding.etTaskTitle?.text?.toString()?.trim() ?: ""
 
@@ -373,6 +449,7 @@ class EditTaskActivity : BaseActivity() {
             description,
             selectedPriority,
             selectedDeadline,
+            selectedScheduledTime,
             selectedEnergy,
             estimated,
             selectedCategory,

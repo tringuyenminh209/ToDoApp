@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.9,
+    "reasoning": "从路径 mobileandroid/app/src/main/java/.../ui/adapters 可以看出属于UI层的适配器；文件名 StudyAdapter.kt 和内容显示其继承 RecyclerView.Adapter，负责将 StudyModel 数据绑定到视图并处理点击与复选框事件，导入了 Android 视图组件和 MaterialCheckBox，包含 onCreateViewHolder 等典型适配器方法。这些特征表明它是前端UI组件（小部件/控件）而非业务逻辑、服务或模型。"
+  },
+  "timestamp": 1762743124,
+  "prompt_hash": "e547b8bde445efa7b49f0037157eec2b",
+  "token_usage": {
+    "input_tokens": 426,
+    "output_tokens": 167,
+    "total_tokens": 593
+  },
+  "model_name": null
+}

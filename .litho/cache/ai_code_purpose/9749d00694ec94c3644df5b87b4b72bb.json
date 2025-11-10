@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.86,
+    "reasoning": "该文件位于 ui/adapters 目录，文件名为 TaskTemplateAdapter.kt，使用 Kotlin 并继承 ListAdapter/RecyclerView.ViewHolder，导入了 Android UI 相关类（RecyclerView、LayoutInflater、ViewGroup）与视图绑定 ItemTaskTemplateBinding，同时绑定数据模型 TaskTemplate。其职责是将数据模型渲染到列表项视图，是典型的前端/客户端 UI 组件（RecyclerView 适配器），不包含业务规则或服务调用，因此归类为 widget。"
+  },
+  "timestamp": 1762743270,
+  "prompt_hash": "9749d00694ec94c3644df5b87b4b72bb",
+  "token_usage": {
+    "input_tokens": 429,
+    "output_tokens": 172,
+    "total_tokens": 601
+  },
+  "model_name": null
+}

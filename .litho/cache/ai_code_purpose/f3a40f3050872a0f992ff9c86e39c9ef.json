@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.91,
+    "reasoning": "- 路径包含 ui/activities，表明是应用UI层的活动页面。\n- 文件名 MilestoneDetailActivity.kt，Activity 是 Android 的界面页面组件。\n- 代码继承 AppCompatActivity，使用 ViewBinding、RecyclerView(LinearLayoutManager) 与 Adapter、ViewModel；展示列表、进度、资源等，属于页面展示与交互逻辑。\n- 导入 Intent、AlertDialog、Toast 等典型界面交互组件。\n- 无独立业务规则实现或服务端交互实现，主要负责视图渲染与用户交互，故归类为 page。"
+  },
+  "timestamp": 1762742011,
+  "prompt_hash": "f3a40f3050872a0f992ff9c86e39c9ef",
+  "token_usage": {
+    "input_tokens": 434,
+    "output_tokens": 183,
+    "total_tokens": 617
+  },
+  "model_name": null
+}

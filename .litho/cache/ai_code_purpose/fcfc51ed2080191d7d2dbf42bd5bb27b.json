@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.86,
+    "reasoning": "该文件位于 ui/adapters 目录下，文件名 TimetableAdapter.kt，定义了一个继承 RecyclerView.Adapter 的 Kotlin 类，用于把课程数据渲染为时间表网格并处理单元格点击事件。代码主要涉及视图的创建、ViewHolder、布局填充、点击回调绑定，导入了 Android UI 组件和 Material 组件，以及数据模型 ClassModel，仅承担展示层职责，不包含业务规则或服务逻辑。因此它属于前端UI组件（在枚举中对应 widget）。"
+  },
+  "timestamp": 1762743365,
+  "prompt_hash": "fcfc51ed2080191d7d2dbf42bd5bb27b",
+  "token_usage": {
+    "input_tokens": 428,
+    "output_tokens": 175,
+    "total_tokens": 603
+  },
+  "model_name": null
+}

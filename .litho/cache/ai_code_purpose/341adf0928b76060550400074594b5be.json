@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.86,
+    "reasoning": "1) 路径与目录：位于 ui/adapters 目录，典型的前端界面层组件位置（RecyclerView Adapter）。2) 文件名与扩展名：Kotlin 源文件 MilestoneAdapter.kt，命名表明是适配器组件。3) 代码结构：继承 ListAdapter 并定义 ViewHolder，使用 ViewBinding(ItemMilestoneBinding) 渲染列表项。4) 导入：AndroidX RecyclerView、DiffUtil、ViewBinding，均为UI层相关；依赖数据模型 LearningMilestone 进行展示。5) 类与函数：MilestoneAdapter 接受点击回调 onMilestoneClick，创建/绑定 ViewHolder，属于UI展示与交互的列表项适配逻辑。6) 业务逻辑特征：不处理业务规则，只负责数据到视图的绑定与点击事件转发，属于前端UI组件。"
+  },
+  "timestamp": 1762742900,
+  "prompt_hash": "341adf0928b76060550400074594b5be",
+  "token_usage": {
+    "input_tokens": 428,
+    "output_tokens": 228,
+    "total_tokens": 656
+  },
+  "model_name": null
+}

@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "service",
+    "confidence": 0.78,
+    "reasoning": "- 路径与目录结构：位于 data/repository，典型的数据访问/服务层位置，负责封装数据源访问逻辑。\n- 文件名与扩展名：RoadmapRepository.kt，Repository 命名表明其承担数据获取与聚合的服务职责。\n- 代码内容与结构：定义 RoadmapRepository 类，注入 ApiService，提供 suspend 函数 getPopularRoadmaps，执行网络调用并封装成功/失败结果。\n- 导入导出：导入 ApiService 与数据模型，未对外暴露 HTTP 端点，仅对应用内部提供数据服务能力。\n- 函数和类定义：单一类聚焦于调用 ApiService 并进行错误处理与结果映射，体现服务/仓储模式职责。\n- 业务逻辑特征：包含对 HTTP 响应码与成功标志的判定、错误消息映射，属于业务服务层而非纯工具或模型。"
+  },
+  "timestamp": 1762741456,
+  "prompt_hash": "73175e750132f2d11d260ca202260a45",
+  "token_usage": {
+    "input_tokens": 438,
+    "output_tokens": 245,
+    "total_tokens": 683
+  },
+  "model_name": null
+}

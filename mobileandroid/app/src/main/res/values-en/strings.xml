@@ -161,7 +161,7 @@
     <string name="exercises">Exercises</string>
     <string name="output">Output</string>
     <string name="examples_count">%d examples</string>
-    <string name="sections_and_examples">%d sections • %d examples</string>
+    <string name="sections_and_examples">%1$d sections • %2$d examples</string>
     <string name="error_invalid_language_data">Invalid language data</string>
     <string name="code_copied">Code copied</string>
     <string name="copy_code">Copy code</string>

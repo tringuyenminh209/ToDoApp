@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.86,
+    "reasoning": "从文件路径 ui/adapters、文件名 ConversationListAdapter.kt 以及内容来看，这是一个基于 RecyclerView 的 ListAdapter（含 ViewHolder）用于展示会话列表，并通过 ViewBinding 绑定布局 ItemConversationBinding，处理点击事件等 UI 交互。其职责是将数据模型 ChatConversation 映射到界面项，属于前端/客户端的界面组件，而非业务服务或控制器逻辑。因此归类为前端 UI 组件（widget）。"
+  },
+  "timestamp": 1762742714,
+  "prompt_hash": "f2f8ce7f52dc0790e3617b4cc7d567c5",
+  "token_usage": {
+    "input_tokens": 433,
+    "output_tokens": 169,
+    "total_tokens": 602
+  },
+  "model_name": null
+}

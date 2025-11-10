@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.ChatConversation
 import ecccomp.s2240788.mobile_android.data.models.ChatMessage
+import ecccomp.s2240788.mobile_android.data.models.Task
 import ecccomp.s2240788.mobile_android.data.repository.ChatRepository
 import ecccomp.s2240788.mobile_android.data.result.ChatResult
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
@@ -56,6 +57,10 @@ class AICoachViewModel : ViewModel() {
     private val _isLoadingConversations = MutableLiveData<Boolean>()
     val isLoadingConversations: LiveData<Boolean> = _isLoadingConversations
 
+    // Created task from AI chat
+    private val _createdTask = MutableLiveData<Task?>()
+    val createdTask: LiveData<Task?> = _createdTask
+
     /**
      * Start a new conversation with initial message
      */
@@ -64,6 +69,24 @@ class AICoachViewModel : ViewModel() {
             _error.value = "メッセージを入力してください"
             return
         }
+
+        // Create temporary user message to show immediately
+        val tempUserMessage = ChatMessage(
+            id = -1, // Temporary ID
+            conversation_id = -1,
+            user_id = null,
+            role = "user",
+            content = message,
+            metadata = null,
+            token_count = null,
+            created_at = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", java.util.Locale.getDefault()).apply {
+                timeZone = java.util.TimeZone.getTimeZone("UTC")
+            }.format(java.util.Date()),
+            updated_at = null
+        )
+
+        // Add user message immediately for better UX
+        _messages.value = listOf(tempUserMessage)
 
         viewModelScope.launch {
             try {
@@ -75,11 +98,28 @@ class AICoachViewModel : ViewModel() {
 
                 when (result) {
                     is ChatResult.Success -> {
-                        _currentConversation.value = result.data
-                        _messages.value = result.data.messages ?: emptyList()
-                        _successMessage.value = "会話を開始しました"
+                        try {
+                            _currentConversation.value = result.data.conversation
+                            // Replace temporary message with real messages
+                            val realMessages = result.data.conversation.messages ?: emptyList()
+                            _messages.value = realMessages
+
+                            // Check if task was created
+                            if (result.data.created_task != null) {
+                                _createdTask.value = result.data.created_task
+                                _successMessage.value = "会話を開始し、タスクを作成しました！"
+                            } else {
+                                _successMessage.value = "会話を開始しました"
+                            }
+                        } catch (e: Exception) {
+                            android.util.Log.e("AICoachViewModel", "Error processing conversation response", e)
+                            _error.value = "レスポンスの処理に失敗しました: ${e.message}"
+                            // Keep temporary message on parse error
+                        }
                     }
                     is ChatResult.Error -> {
+                        // Remove temporary message on error
+                        _messages.value = emptyList()
                         _error.value = result.message
                     }
                     is ChatResult.Loading -> {
@@ -88,6 +128,9 @@ class AICoachViewModel : ViewModel() {
                 }
 
             } catch (e: Exception) {
+                android.util.Log.e("AICoachViewModel", "Exception in startNewConversation", e)
+                // Remove temporary message on exception
+                _messages.value = emptyList()
                 _error.value = "エラーが発生しました: ${e.message}"
             } finally {
                 _isLoading.value = false
@@ -112,6 +155,26 @@ class AICoachViewModel : ViewModel() {
             return
         }
 
+        // Create temporary user message to show immediately
+        val tempUserMessage = ChatMessage(
+            id = -1, // Temporary ID
+            conversation_id = conversationId,
+            user_id = null,
+            role = "user",
+            content = message,
+            metadata = null,
+            token_count = null,
+            created_at = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", java.util.Locale.getDefault()).apply {
+                timeZone = java.util.TimeZone.getTimeZone("UTC")
+            }.format(java.util.Date()),
+            updated_at = null
+        )
+
+        // Add user message immediately for better UX
+        val currentMessages = _messages.value?.toMutableList() ?: mutableListOf()
+        currentMessages.add(tempUserMessage)
+        _messages.value = currentMessages
+
         viewModelScope.launch {
             try {
                 _isSending.value = true
@@ -121,19 +184,36 @@ class AICoachViewModel : ViewModel() {
 
                 when (result) {
                     is ChatResult.Success -> {
-                        // Add both user and assistant messages to the list
-                        val currentMessages = _messages.value?.toMutableList() ?: mutableListOf()
-                        currentMessages.add(result.data.user_message)
-                        currentMessages.add(result.data.assistant_message)
-                        _messages.value = currentMessages
+                        // Replace temporary user message with real one and add assistant message
+                        val updatedMessages = _messages.value?.toMutableList() ?: mutableListOf()
+                        // Remove temporary message (last one should be the temp user message)
+                        if (updatedMessages.isNotEmpty() && updatedMessages.last().id == -1L) {
+                            updatedMessages.removeAt(updatedMessages.size - 1)
+                        }
+                        // Add real messages
+                        updatedMessages.add(result.data.user_message)
+                        updatedMessages.add(result.data.assistant_message)
+                        _messages.value = updatedMessages
 
                         // Update conversation
                         _currentConversation.value = _currentConversation.value?.copy(
-                            message_count = currentMessages.size,
+                            message_count = updatedMessages.size,
                             last_message_at = result.data.assistant_message.created_at
                         )
+
+                        // Check if task was created
+                        if (result.data.created_task != null) {
+                            _createdTask.value = result.data.created_task
+                            _successMessage.value = "タスクを作成しました！"
+                        }
                     }
                     is ChatResult.Error -> {
+                        // Remove temporary message on error
+                        val updatedMessages = _messages.value?.toMutableList() ?: mutableListOf()
+                        if (updatedMessages.isNotEmpty() && updatedMessages.last().id == -1L) {
+                            updatedMessages.removeAt(updatedMessages.size - 1)
+                            _messages.value = updatedMessages
+                        }
                         _error.value = result.message
                     }
                     is ChatResult.Loading -> {
@@ -142,6 +222,12 @@ class AICoachViewModel : ViewModel() {
                 }
 
             } catch (e: Exception) {
+                // Remove temporary message on exception
+                val updatedMessages = _messages.value?.toMutableList() ?: mutableListOf()
+                if (updatedMessages.isNotEmpty() && updatedMessages.last().id == -1L) {
+                    updatedMessages.removeAt(updatedMessages.size - 1)
+                    _messages.value = updatedMessages
+                }
                 _error.value = "エラーが発生しました: ${e.message}"
             } finally {
                 _isSending.value = false
@@ -200,6 +286,13 @@ class AICoachViewModel : ViewModel() {
      */
     fun clearSuccessMessage() {
         _successMessage.value = null
+    }
+
+    /**
+     * Clear created task
+     */
+    fun clearCreatedTask() {
+        _createdTask.value = null
     }
 
     /**

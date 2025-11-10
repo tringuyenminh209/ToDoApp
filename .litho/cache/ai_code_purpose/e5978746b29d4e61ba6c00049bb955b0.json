@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.86,
+    "reasoning": "从路径 ui/adapters 与文件名 SubtaskInputAdapter.kt 可见其位于UI层的适配器目录；代码包含 Android RecyclerView 的 ListAdapter 与 ViewHolder 模式，并使用视图绑定 ItemSubtaskInputBinding，处理输入监听(TextWatcher)与项移除等交互逻辑。其主要职责是为“添加/编辑任务”页面管理子任务输入项的展示与交互，属于前端UI组件（可复用的界面部件），而非业务Service、API、配置或通用工具。尽管文件内含一个用于该组件的数据类 SubtaskInput，但整体目的仍是UI组件适配器。"
+  },
+  "timestamp": 1762743198,
+  "prompt_hash": "e5978746b29d4e61ba6c00049bb955b0",
+  "token_usage": {
+    "input_tokens": 429,
+    "output_tokens": 195,
+    "total_tokens": 624
+  },
+  "model_name": null
+}

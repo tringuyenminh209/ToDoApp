@@ -386,7 +386,7 @@
     <string name="your_golden_hour">あなたのゴールデンタイム</string>
     <string name="golden_hour">ゴールデンタイム</string>
     <string name="this_month">今月</string>
-    <string name="golden_hour_insight">%sから%sはあなたの集中力が最も高い時間です。最も難しいタスクをこの時間帯にスケジュールしてください。</string>
+    <string name="golden_hour_insight">%1$sから%2$sはあなたの集中力が最も高い時間です。最も難しいタスクをこの時間帯にスケジュールしてください。</string>
     <string name="reschedule">スケジュールを再調整</string>
     
     <!-- Smart Insights -->
@@ -394,7 +394,7 @@
     <string name="positive_trend">ポジティブな傾向</string>
     <string name="deep_work_trend_message">ディープワークの時間が増加傾向にあります。この勢いを維持しましょう！</string>
     <string name="weekly_goal">週の目標</string>
-    <string name="weekly_goal_progress">週の目標の%d%%を達成しました。あと%d分で100%%達成です！</string>
+    <string name="weekly_goal_progress">週の目標の%1$d%%を達成しました。あと%2$d分で100%%達成です！</string>
     <string name="view_plan">計画を見る</string>
 
     <!-- Messages -->
@@ -712,7 +712,7 @@
     <string name="exercises">演習問題</string>
     <string name="output">出力</string>
     <string name="examples_count">%d個の例</string>
-    <string name="sections_and_examples">%d個のセクション • %d個の例</string>
+    <string name="sections_and_examples">%1$d個のセクション • %2$d個の例</string>
     <string name="error_invalid_language_data">無効な言語データです</string>
 
     <!-- Focus Enhancement Features -->

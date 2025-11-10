@@ -51,22 +51,27 @@ class ChatRepository(
     suspend fun createConversation(
         message: String,
         title: String? = null
-    ): ChatResult<ChatConversation> {
+    ): ChatResult<CreateConversationResponse> {
         return try {
             val request = CreateConversationRequest(title, message)
             val response = apiService.createChatConversation(request)
 
             if (response.isSuccessful) {
-                val data = response.body()?.data
+                val body = response.body()
+                val data = body?.data
                 if (data != null) {
                     ChatResult.Success(data)
                 } else {
-                    ChatResult.Error("会話の作成に失敗しました")
+                    // Log để debug
+                    android.util.Log.e("ChatRepository", "Response body is null or data is null. Body: $body")
+                    ChatResult.Error("会話の作成に失敗しました: レスポンスデータが無効です")
                 }
             } else {
+                val errorBody = response.errorBody()?.string()
+                android.util.Log.e("ChatRepository", "API error: ${response.code()}, body: $errorBody")
                 val errorMessage = when (response.code()) {
                     401 -> "認証に失敗しました"
-                    422 -> "入力データが無効です"
+                    422 -> "入力データが無効です: $errorBody"
                     429 -> "リクエストが多すぎます。しばらく待ってください"
                     500 -> "サーバーエラーが発生しました"
                     else -> "会話の作成に失敗しました: ${response.message()}"
@@ -74,6 +79,7 @@ class ChatRepository(
                 ChatResult.Error(errorMessage)
             }
         } catch (e: Exception) {
+            android.util.Log.e("ChatRepository", "Exception in createConversation", e)
             ChatResult.Error("ネットワークエラー: ${e.message}")
         }
     }

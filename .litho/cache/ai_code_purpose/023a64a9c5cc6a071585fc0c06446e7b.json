@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.9,
+    "reasoning": "- 路径与结构：位于 ui/activities 目录，典型 Android 界面层位置，表示一个屏幕页面（Activity）。\n- 文件名与扩展名：CheatCodeActivity.kt，Activity 明确是页面组件。\n- 代码结构：继承 BaseActivity，重写 onCreate，使用 ViewBinding 设置 setContentView，设置 RecyclerView(GridLayoutManager) 与 Adapter，添加 TextWatcher 等 UI 交互逻辑。\n- 导入模块：引入 ui.adapters、ui.viewmodels，体现 MVVM 展示层与数据层联动，但本文件自身承担展示与交互职责。\n- 类与函数：定义单一 Activity 类，没有对外 API、路由注册或服务实现，主要是生命周期与界面初始化。\n- 业务特征：不包含核心业务规则处理，仅负责页面展示与用户交互绑定，因此归类为前端/客户端“页面”组件。"
+  },
+  "timestamp": 1762741657,
+  "prompt_hash": "023a64a9c5cc6a071585fc0c06446e7b",
+  "token_usage": {
+    "input_tokens": 429,
+    "output_tokens": 245,
+    "total_tokens": 674
+  },
+  "model_name": null
+}

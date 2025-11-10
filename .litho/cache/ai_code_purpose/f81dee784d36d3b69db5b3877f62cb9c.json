@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.9,
+    "reasoning": "从路径 mobileandroid/app/src/main/java/.../ui/adapters 可见其位于UI层的适配器目录；文件名 SectionTitleAdapter.kt 表明是RecyclerView的适配器；代码继承 ListAdapter<CheatCodeSection, ViewHolder> 且使用 RecyclerView、DiffUtil、LayoutInflater，并绑定布局 R.layout.item_section_title 与 TextView，处理点击回调 onSectionClick 与选中态 selectedPosition，专注于将数据模型 CheatCodeSection 映射到界面列表项的展示与交互。这些特征表明它是前端UI的可复用组件而非业务逻辑或服务接口，因此归类为 widget。"
+  },
+  "timestamp": 1762743056,
+  "prompt_hash": "f81dee784d36d3b69db5b3877f62cb9c",
+  "token_usage": {
+    "input_tokens": 431,
+    "output_tokens": 201,
+    "total_tokens": 632
+  },
+  "model_name": null
+}

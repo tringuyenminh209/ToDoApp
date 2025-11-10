@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.86,
+    "reasoning": "从路径 ui/dialogs 和文件名 ContextSwitchWarningDialog.kt 可见其位于移动端UI层的对话框目录；类继承自 androidx.fragment.app.DialogFragment，使用 ViewBinding(DialogContextSwitchWarningBinding) 构建并展示界面，提供用户交互回调(onProceed/onBatchTasks/onCancel)。导入了数据模型 ContextSwitch 但未实现业务规则，仅用于展示警告与触发回调。因此这是一个前端/客户端的UI组件而非业务服务、API、配置或中间件。"
+  },
+  "timestamp": 1762743464,
+  "prompt_hash": "f38c3374287afe78d9a7c9e6ed7a3aac",
+  "token_usage": {
+    "input_tokens": 438,
+    "output_tokens": 178,
+    "total_tokens": 616
+  },
+  "model_name": null
+}

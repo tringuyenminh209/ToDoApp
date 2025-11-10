@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "service",
+    "confidence": 0.86,
+    "reasoning": "从路径与包名（services/）看属于服务层；文件名与类名为 FocusTimerService，继承 android.app.Service，作为前台服务在后台持续运行倒计时，并通过通知与 Activity 交互（ACTION_START/PAUSE/STOP）。不属于UI、通用工具或外部API/路由/数据库，明确是应用内部的服务组件。"
+  },
+  "timestamp": 1762741511,
+  "prompt_hash": "cf91f0c5db00600130e30153336f3dd4",
+  "token_usage": {
+    "input_tokens": 432,
+    "output_tokens": 138,
+    "total_tokens": 570
+  },
+  "model_name": null
+}
