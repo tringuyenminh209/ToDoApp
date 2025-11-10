@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.9,
+    "reasoning": "• 路径位于 ui/activities，表明是应用的界面层/页面组件。\n• 文件名 LoginActivity.kt，Android 中 Activity 通常代表一个界面页面。\n• 继承 BaseActivity/AppCompatActivity，使用 ViewBinding 设置 setContentView，包含点击事件与界面交互逻辑。\n• 导入 LoginViewModel、LocaleHelper 等用于界面逻辑与本地化切换，未涉及服务端API或数据模型定义。\n• 不属于通用工具、配置、路由或中间件，也不是测试/文档/库，最契合“前端UI页面”。"
+  },
+  "timestamp": 1762741985,
+  "prompt_hash": "cf5c903e488cada5efbccc70c4ed67b2",
+  "token_usage": {
+    "input_tokens": 427,
+    "output_tokens": 181,
+    "total_tokens": 608
+  },
+  "model_name": null
+}

@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "model",
+    "confidence": 0.93,
+    "reasoning": "1) 路径包含 data/models，典型的数据模型存放位置。2) 文件名 Task.kt，符合以实体名命名的数据模型惯例。3) 内容为 Kotlin data class，仅包含属性定义，无业务逻辑或行为。4) 导入 Gson 注解用于序列化/反序列化，表明该类用于数据映射。5) 没有控制器、服务或工具函数定义，仅为类型结构。6) 业务逻辑特征缺失，专注于描述任务实体字段。因此归类为 model。"
+  },
+  "timestamp": 1762741308,
+  "prompt_hash": "00f19050c7e442726ecf12e37e8867df",
+  "token_usage": {
+    "input_tokens": 422,
+    "output_tokens": 165,
+    "total_tokens": 587
+  },
+  "model_name": null
+}

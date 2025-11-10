@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.86,
+    "reasoning": "从路径与目录结构看位于 ui/adapters，属于UI层的适配器组件；文件名 StartTaskAdapter.kt 表明是用于开始任务对话框列表的适配器；代码内容继承自 ListAdapter<Task, RecyclerView.ViewHolder>，并使用 RecyclerView、DiffUtil、ViewBinding(ItemStartTaskBinding) 等典型UI适配器相关API，处理点击事件 onTaskClick/onStartClick，承担数据到视图的绑定与交互响应；导入了 R、binding、Task 模型，但不涉及业务服务、网络、数据库或路由；类定义为 StartTaskAdapter，核心职责是视图项渲染与交互，属于前端UI组件而非页面（Activity/Fragment）或通用工具。因此归类为 widget。"
+  },
+  "timestamp": 1762743087,
+  "prompt_hash": "f76e379c1020fec02930c2f9ac082421",
+  "token_usage": {
+    "input_tokens": 429,
+    "output_tokens": 218,
+    "total_tokens": 647
+  },
+  "model_name": null
+}

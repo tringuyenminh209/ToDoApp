@@ -393,7 +393,7 @@
     <string name="exercises">Bài tập</string>
     <string name="output">Kết quả</string>
     <string name="examples_count">%d ví dụ</string>
-    <string name="sections_and_examples">%d phần • %d ví dụ</string>
+    <string name="sections_and_examples">%1$d phần • %2$d ví dụ</string>
     <string name="error_invalid_language_data">Dữ liệu ngôn ngữ không hợp lệ</string>
     <string name="code_copied">Đã sao chép mã</string>
     <string name="copy_code">Sao chép mã</string>

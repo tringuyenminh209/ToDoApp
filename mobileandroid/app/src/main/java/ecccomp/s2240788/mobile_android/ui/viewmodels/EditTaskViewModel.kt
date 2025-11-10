@@ -146,6 +146,7 @@ class EditTaskViewModel : ViewModel() {
                 energy_level = map["energy_level"] as? String ?: "medium",
                 estimated_minutes = (map["estimated_minutes"] as? Number)?.toInt(),
                 deadline = map["deadline"] as? String,
+                scheduled_time = map["scheduled_time"] as? String,
                 created_at = map["created_at"] as? String ?: "",
                 updated_at = map["updated_at"] as? String ?: "",
                 user_id = (map["user_id"] as? Number)?.toInt() ?: 0,
@@ -174,6 +175,7 @@ class EditTaskViewModel : ViewModel() {
         description: String?,
         priority: Int, // 1-5
         dueDate: String?,
+        scheduledTime: String?,
         energyLevel: String?,
         estimatedMinutes: Int?,
         category: String?, // "study" | "work" | "personal" | "other"
@@ -207,6 +209,7 @@ class EditTaskViewModel : ViewModel() {
                     energy_level = energyLevel ?: _task.value?.energy_level ?: "medium",
                     estimated_minutes = estimatedMinutes ?: _task.value?.estimated_minutes,
                     deadline = dueDate ?: _task.value?.deadline,
+                    scheduled_time = scheduledTime ?: _task.value?.scheduled_time,
                     // Deep Work fields
                     requires_deep_focus = requiresDeepFocus,
                     allow_interruptions = allowInterruptions,

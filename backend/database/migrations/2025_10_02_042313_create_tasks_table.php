@@ -49,6 +49,9 @@ return new class extends Migration
                 ->comment('予想時間（分）');
             $table->timestamp('deadline')->nullable()
                 ->comment('締め切り');
+            $table->timestamp('scheduled_time')->nullable()
+                ->after('deadline')
+                ->comment('予定開始時刻 (タスクを開始する予定の時刻)');
 
             // Status
             $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled'])
@@ -92,6 +95,7 @@ return new class extends Migration
             $table->index('deadline');
             $table->index('priority');
             $table->index(['user_id', 'created_at']);
+            $table->index(['user_id', 'scheduled_time']);
         });
     }
 

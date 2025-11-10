@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.9,
+    "reasoning": "从路径 ui/activities、文件名 ResetPasswordActivity.kt、Kotlin/Android Activity 的定义以及对布局绑定和导航/交互（ViewModel、Intent、Binding）的使用来看，该文件实现的是一个应用界面页面逻辑（重置密码页面）。它不属于后端API或业务Service，也不是通用工具/模型/配置，而是移动端的UI页面入口之一。"
+  },
+  "timestamp": 1762742125,
+  "prompt_hash": "37ad8863c9279ac01c63d64f01e137d3",
+  "token_usage": {
+    "input_tokens": 434,
+    "output_tokens": 147,
+    "total_tokens": 581
+  },
+  "model_name": null
+}

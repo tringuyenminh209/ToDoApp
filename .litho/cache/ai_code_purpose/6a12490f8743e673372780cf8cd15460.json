@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.78,
+    "reasoning": "基于路径 ecccomp.s2240788.mobile_android.ui.activities、文件名 SplashActivity.kt（Kotlin/Android Activity）、内容包含 onCreate、ViewBinding、ViewModelProvider、UI观察者与导航逻辑，可判断这是Android前端UI层的页面组件（Activity）。导入均为Android UI与ViewModel相关；类职责是展示启动页并根据ViewModel状态导航至登录页，不包含业务规则或服务/API逻辑，因此归类为 UI 页面（page）。"
+  },
+  "timestamp": 1762742297,
+  "prompt_hash": "6a12490f8743e673372780cf8cd15460",
+  "token_usage": {
+    "input_tokens": 427,
+    "output_tokens": 167,
+    "total_tokens": 594
+  },
+  "model_name": null
+}

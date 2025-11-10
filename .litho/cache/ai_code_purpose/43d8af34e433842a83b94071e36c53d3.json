@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.88,
+    "reasoning": "该文件位于ui/activities目录下，文件名为KnowledgeActivity.kt，继承自BaseActivity，使用DataBinding、RecyclerView及ViewModel来渲染和控制一个具体的应用界面（知识管理/学习路径页面），负责页面生命周期(onCreate)与导航、列表适配器交互等UI层逻辑，符合前端/客户端的“页面”组件特征。"
+  },
+  "timestamp": 1762741900,
+  "prompt_hash": "43d8af34e433842a83b94071e36c53d3",
+  "token_usage": {
+    "input_tokens": 434,
+    "output_tokens": 143,
+    "total_tokens": 577
+  },
+  "model_name": null
+}

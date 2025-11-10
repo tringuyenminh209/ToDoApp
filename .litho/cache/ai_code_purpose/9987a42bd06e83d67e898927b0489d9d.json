@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.86,
+    "reasoning": "从路径 ui/adapters 可见其位于UI层适配器目录；文件名 MilestoneTemplateAdapter.kt 表明为RecyclerView适配器；代码继承 ListAdapter 并实现 ViewHolder、使用 ItemMilestoneTemplateBinding 和 DiffUtil，均为界面展示与列表渲染相关；导入均为Android视图与RecyclerView库以及数据模型，仅负责把 LearningMilestoneTemplate 显示为可展开任务列表的界面组件，不包含业务规则或服务接口。因此归类为前端UI组件（widget）。"
+  },
+  "timestamp": 1762742975,
+  "prompt_hash": "9987a42bd06e83d67e898927b0489d9d",
+  "token_usage": {
+    "input_tokens": 432,
+    "output_tokens": 178,
+    "total_tokens": 610
+  },
+  "model_name": null
+}

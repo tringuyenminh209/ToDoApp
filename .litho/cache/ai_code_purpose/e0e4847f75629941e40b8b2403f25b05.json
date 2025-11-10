@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.82,
+    "reasoning": "从路径 mobileandroid/app/src/main/java/.../ui/adapters 可以判断属于UI层的适配器；文件名 RoadmapAdapter.kt 典型RecyclerView适配器命名；代码继承 ListAdapter<PopularRoadmap, RecyclerView.ViewHolder>、使用 DiffUtil、RecyclerView、ViewHolder、R 资源与点击回调，负责列表项与“生成”按钮两种视图类型的呈现与交互绑定。导入主要是Android UI相关类与数据模型 PopularRoadmap，无业务规则或服务编排。其职责明确为界面组件的渲染和事件分发，符合前端/移动端UI组件的范畴，故归类为 widget。"
+  },
+  "timestamp": 1762743035,
+  "prompt_hash": "e0e4847f75629941e40b8b2403f25b05",
+  "token_usage": {
+    "input_tokens": 429,
+    "output_tokens": 199,
+    "total_tokens": 628
+  },
+  "model_name": null
+}

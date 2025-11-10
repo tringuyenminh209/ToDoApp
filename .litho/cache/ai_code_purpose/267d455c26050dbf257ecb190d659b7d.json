@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.9,
+    "reasoning": "该文件位于ui/adapters目录，Kotlin文件名为CheatCodeSectionAdapter，继承RecyclerView的ListAdapter并使用DiffUtil、ViewHolder、LayoutInflater等UI相关类，负责将CheatCodeSection与视图项绑定、处理点击事件等展示层逻辑。它不处理业务规则或数据存取，属于前端/客户端UI组件（Android界面适配器）。"
+  },
+  "timestamp": 1762742619,
+  "prompt_hash": "267d455c26050dbf257ecb190d659b7d",
+  "token_usage": {
+    "input_tokens": 431,
+    "output_tokens": 144,
+    "total_tokens": 575
+  },
+  "model_name": null
+}

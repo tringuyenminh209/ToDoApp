@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.78,
+    "reasoning": "从路径 ui/adapters 可见其位于UI层的适配器目录；文件名 TaskAdapter.kt 且为Kotlin；继承 ListAdapter<Task, TaskViewHolder> 并使用 RecyclerView、DiffUtil、ViewBinding(ItemTaskCardBinding)、R 资源与点击回调(onTaskClick/onTaskComplete/onTaskDelete)，典型用于列表项渲染与交互的前端UI组件；无业务规则处理、数据访问或服务接口逻辑。故归类为可复用的UI组件（widget）。"
+  },
+  "timestamp": 1762743233,
+  "prompt_hash": "c96e3bfad0bdc21bb6a1d6e57bb2d81a",
+  "token_usage": {
+    "input_tokens": 427,
+    "output_tokens": 164,
+    "total_tokens": 591
+  },
+  "model_name": null
+}

@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.86,
+    "reasoning": "该文件位于 ui/adapters 目录，文件名为 PathsAdapter.kt，继承自 RecyclerView 的 ListAdapter，负责将数据模型 LearningPath 绑定到界面列表项并处理点击事件回调（onPathClick/onCompleteClick/onDeleteClick）。其职责是前端展示层的列表适配与交互，不涉及业务规则或服务调用，符合前端UI组件（widget）的特征。"
+  },
+  "timestamp": 1762743002,
+  "prompt_hash": "cdd3c34ba5085460bf887238c9fae21d",
+  "token_usage": {
+    "input_tokens": 427,
+    "output_tokens": 149,
+    "total_tokens": 576
+  },
+  "model_name": null
+}

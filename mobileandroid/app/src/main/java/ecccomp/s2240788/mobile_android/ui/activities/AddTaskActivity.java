@@ -1,6 +1,7 @@
 package ecccomp.s2240788.mobile_android.ui.activities;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -39,7 +40,9 @@ public class AddTaskActivity extends BaseActivity {
     private String selectedEnergy = "medium";
     private String selectedCategory = "study"; // Default: study
     private String selectedDeadline = null;
+    private String selectedScheduledTime = null;
     private Calendar calendar = Calendar.getInstance();
+    private Calendar scheduledCalendar = Calendar.getInstance();
     private SubtaskInputAdapter subtaskAdapter;
     private final List<SubtaskInput> subtasks = new ArrayList<>();
 
@@ -147,6 +150,24 @@ public class AddTaskActivity extends BaseActivity {
         // Deadline input - show date picker
         binding.etDeadline.setOnClickListener(v -> {
             showDatePicker();
+        });
+
+        // Scheduled Time quick buttons
+        binding.btnMorning.setOnClickListener(v -> {
+            setScheduledTime(9, 0);
+        });
+
+        binding.btnAfternoon.setOnClickListener(v -> {
+            setScheduledTime(13, 0);
+        });
+
+        binding.btnEvening.setOnClickListener(v -> {
+            setScheduledTime(18, 0);
+        });
+
+        // Scheduled Time input - show time picker
+        binding.etScheduledTime.setOnClickListener(v -> {
+            showTimePicker();
         });
 
         // Time quick select buttons
@@ -351,6 +372,7 @@ public class AddTaskActivity extends BaseActivity {
             description,
             selectedPriority,
             selectedDeadline,
+            selectedScheduledTime,
             selectedEnergy,
             estimated,
             selectedCategory,
@@ -409,6 +431,41 @@ public class AddTaskActivity extends BaseActivity {
         // Format for API (yyyy-MM-dd)
         SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         selectedDeadline = apiFormat.format(calendar.getTime());
+    }
+
+    private void showTimePicker() {
+        int hour = scheduledCalendar.get(Calendar.HOUR_OF_DAY);
+        int minute = scheduledCalendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+            this,
+            (view, hourOfDay, minuteOfHour) -> {
+                scheduledCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                scheduledCalendar.set(Calendar.MINUTE, minuteOfHour);
+                updateScheduledTimeDisplay();
+            },
+            hour,
+            minute,
+            true // 24-hour format
+        );
+        timePickerDialog.show();
+    }
+
+    private void setScheduledTime(int hour, int minute) {
+        scheduledCalendar = Calendar.getInstance();
+        scheduledCalendar.set(Calendar.HOUR_OF_DAY, hour);
+        scheduledCalendar.set(Calendar.MINUTE, minute);
+        updateScheduledTimeDisplay();
+    }
+
+    private void updateScheduledTimeDisplay() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        String timeString = sdf.format(scheduledCalendar.getTime());
+        binding.etScheduledTime.setText(timeString);
+
+        // Format for API (yyyy-MM-dd HH:mm:ss)
+        SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        selectedScheduledTime = apiFormat.format(scheduledCalendar.getTime());
     }
 
     private void setupSubtaskRecyclerView() {

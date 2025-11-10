@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.82,
+    "reasoning": "该文件位于 ui/activities 目录，文件名为 CheatCodeDetailActivity.kt，定义了一个继承自 BaseActivity 的 Android Activity。通过 ViewBinding、RecyclerView 适配器（CheatCodeSectionAdapter、SectionTitleAdapter）和 ViewModel（CheatCodeDetailViewModel）进行界面初始化与数据展示，处理用户交互（如 Toast 提示）。导入的模块均为 UI 层相关（R、binding、adapters、viewmodels、data models）。整体职责是呈现“作弊码详情”页面的界面与交互，符合前端/客户端的页面组件性质，而非服务、API、库或工具等。"
+  },
+  "timestamp": 1762741739,
+  "prompt_hash": "42a60156f89ff9599865135e70f1099d",
+  "token_usage": {
+    "input_tokens": 432,
+    "output_tokens": 195,
+    "total_tokens": 627
+  },
+  "model_name": null
+}

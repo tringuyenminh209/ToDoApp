@@ -315,7 +315,7 @@ interface ApiService {
     ): Response<ApiResponse<ChatConversationsResponse>>
 
     @POST("ai/chat/conversations")
-    suspend fun createChatConversation(@Body request: CreateConversationRequest): Response<ApiResponse<ChatConversation>>
+    suspend fun createChatConversation(@Body request: CreateConversationRequest): Response<ApiResponse<CreateConversationResponse>>
 
     @GET("ai/chat/conversations/{id}")
     suspend fun getChatConversation(@Path("id") id: Long): Response<ApiResponse<ChatConversation>>

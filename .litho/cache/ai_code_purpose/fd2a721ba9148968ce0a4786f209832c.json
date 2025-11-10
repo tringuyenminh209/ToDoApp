@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.86,
+    "reasoning": "1) 路径与结构：位于 ui/adapters 目录，明显属于UI层的适配器组件。2) 文件名与扩展名：ChatMessageAdapter.kt，Kotlin语言实现的RecyclerView适配器命名惯例。3) 代码内容：继承 ListAdapter 并使用 RecyclerView.ViewHolder、DiffUtil、LayoutInflater 等UI相关类，处理多种视图类型（用户消息、AI消息、打字指示器），包含动画与视图绑定逻辑。4) 导入模块：大量Android UI库（RecyclerView、ObjectAnimator、R资源）与数据模型 ChatMessage，但无网络、路由、服务等后端相关导入。5) 定义：核心类为 ChatMessageAdapter，属于视图层组件，用于将数据绑定到列表项视图。6) 业务逻辑特征：仅涉及展示层与交互动画，不承载业务规则或服务调用。因此应归类为UI组件（widget）。"
+  },
+  "timestamp": 1762742535,
+  "prompt_hash": "fd2a721ba9148968ce0a4786f209832c",
+  "token_usage": {
+    "input_tokens": 432,
+    "output_tokens": 243,
+    "total_tokens": 675
+  },
+  "model_name": null
+}

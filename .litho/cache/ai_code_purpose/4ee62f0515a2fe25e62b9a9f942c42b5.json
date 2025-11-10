@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.86,
+    "reasoning": "从路径与包名 ui/fragments、文件名 CalendarFragment.kt 及 Kotlin Fragment 实现可以判断其为Android界面层组件。代码导入了视图绑定、RecyclerView适配器、ViewModel以及跳转到Activity等UI相关模块，主要实现日历界面展示与交互（日期选择、任务列表、跳转新增/详情）。其职责是承载并渲染一个功能页面而非通用控件或业务服务，因此归类为前端/客户端的页面（page）。"
+  },
+  "timestamp": 1762743678,
+  "prompt_hash": "4ee62f0515a2fe25e62b9a9f942c42b5",
+  "token_usage": {
+    "input_tokens": 434,
+    "output_tokens": 166,
+    "total_tokens": 600
+  },
+  "model_name": null
+}

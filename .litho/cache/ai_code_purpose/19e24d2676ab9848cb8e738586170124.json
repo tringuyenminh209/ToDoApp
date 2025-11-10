@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "config",
+    "confidence": 0.82,
+    "reasoning": "从路径 vendor/laravel/framework/src/Illuminate/Foundation/Configuration/ 可以看出该文件位于框架基础层的“Configuration”命名空间下，文件名为 Exceptions.php，定义了 Illuminate\\Foundation\\Configuration\\Exceptions 类。该类通过构造函数注入 Handler，并提供 report / reportable 等方法，将回调注册委派给异常处理器，用于配置异常处理行为。本文件不包含业务处理或路由、中间件逻辑，也非通用工具函数，而是提供应用在启动/引导阶段对异常处理进行声明式配置的接口，因此更符合“config（配置组件）”的分类。"
+  },
+  "timestamp": 1762743991,
+  "prompt_hash": "19e24d2676ab9848cb8e738586170124",
+  "token_usage": {
+    "input_tokens": 424,
+    "output_tokens": 206,
+    "total_tokens": 630
+  },
+  "model_name": null
+}

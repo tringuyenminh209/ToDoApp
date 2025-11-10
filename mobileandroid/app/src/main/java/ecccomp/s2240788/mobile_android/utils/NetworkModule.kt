@@ -22,6 +22,13 @@ object NetworkModule {
     private const val BASE_URL = "http://localhost:8080/api/"
     internal var contextRef: WeakReference<Context>? = null
 
+    // Timeout constants - Đồng bộ với backend
+    // Backend chat timeout: 15s, general API: 30s
+    // Android timeout nên cao hơn một chút để đảm bảo không timeout trước backend
+    private const val CONNECT_TIMEOUT_SECONDS = 20L    // Kết nối: 20s (đồng bộ với backend 15s + buffer)
+    private const val READ_TIMEOUT_SECONDS = 30L       // Đọc response: 30s (đồng bộ với backend general API)
+    private const val WRITE_TIMEOUT_SECONDS = 20L      // Ghi request: 20s
+
     /**
      * Contextを設定（Applicationから呼び出す）
      */
@@ -36,9 +43,9 @@ object NetworkModule {
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BASIC  // Changed from BODY to BASIC for better performance
             })                                              // Log request và response
-            .connectTimeout(10, TimeUnit.SECONDS)           // Reduced from 30s to 10s
-            .readTimeout(10, TimeUnit.SECONDS)              // Reduced from 30s to 10s
-            .writeTimeout(10, TimeUnit.SECONDS)             // Reduced from 30s to 10s
+            .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)  // 20s - Đồng bộ với backend chat timeout (15s) + buffer
+            .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)        // 30s - Đồng bộ với backend general API timeout
+            .writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)      // 20s - Đủ cho request lớn
             .build()
     }
 

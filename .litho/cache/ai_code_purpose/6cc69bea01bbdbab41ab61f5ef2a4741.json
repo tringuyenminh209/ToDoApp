@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.9,
+    "reasoning": "从路径 mobileandroid/app/src/main/java/.../ui/adapters 可见其位于UI层的适配器目录；文件名 SubtaskDisplayAdapter.kt 明确是用于显示子任务的适配器；代码继承 ListAdapter 并使用 RecyclerView、ViewHolder、DiffUtil 和 ViewBinding（ItemSubtaskBinding），提供 onToggle/onStart 回调处理界面交互，负责将 Subtask 模型渲染到列表项。无业务规则、无数据访问或路由行为，不是页面级（Activity/Fragment），而是可复用的界面组件。因此归类为前端UI组件（widget）。"
+  },
+  "timestamp": 1762743167,
+  "prompt_hash": "6cc69bea01bbdbab41ab61f5ef2a4741",
+  "token_usage": {
+    "input_tokens": 430,
+    "output_tokens": 188,
+    "total_tokens": 618
+  },
+  "model_name": null
+}

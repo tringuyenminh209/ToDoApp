@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.9,
+    "reasoning": "该文件位于 ui/activities 目录，文件名为 EditTaskActivity.kt，类 EditTaskActivity 继承自 BaseActivity（AppCompatActivity 风格），使用 ViewBinding、RecyclerView、DatePickerDialog 以及自定义对话框和适配器来构建和处理界面交互。其职责是呈现并处理“任务编辑”界面上的用户交互，调用 ViewModel 与适配器，而非提供底层工具或业务服务逻辑，符合前端页面级组件特征。"
+  },
+  "timestamp": 1762741813,
+  "prompt_hash": "8fbdfad2eef2f2a3811c6721edc48084",
+  "token_usage": {
+    "input_tokens": 430,
+    "output_tokens": 165,
+    "total_tokens": 595
+  },
+  "model_name": null
+}

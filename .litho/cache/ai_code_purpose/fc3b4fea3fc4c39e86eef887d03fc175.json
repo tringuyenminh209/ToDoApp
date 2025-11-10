@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.86,
+    "reasoning": "从路径 mobileandroid/app/src/main/java/.../ui/activities/ 与文件名 KnowledgeDetailActivity.kt 可见其位于 UI 层的 activities 目录，且类继承 BaseActivity，使用 ViewBinding(ActivityKnowledgeDetailBinding) 与 ViewModel(KnowledgeDetailViewModel) 管理界面与交互，包含菜单、对话框、剪贴板、Intent 跳转等用户操作处理，负责具体页面的展示与交互控制。该角色符合“页面”组件而非模型、工具、服务或控制器（后端语义）。"
+  },
+  "timestamp": 1762741927,
+  "prompt_hash": "fc3b4fea3fc4c39e86eef887d03fc175",
+  "token_usage": {
+    "input_tokens": 436,
+    "output_tokens": 177,
+    "total_tokens": 613
+  },
+  "model_name": null
+}

@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "page",
+    "confidence": 0.83,
+    "reasoning": "从路径 ui/activities 以及文件名 AICoachActivity.kt 可以判断这是一个Android界面Activity，属于应用的页面/屏幕。类继承自BaseActivity，使用ViewBinding、RecyclerView、ViewModel、Dialog等进行界面展示与交互，并且注释明确说明是“AIコーチ画面 - AIとのチャット機能”，体现典型的UI页面职责。无业务服务实现、无数据模型定义、无工具或配置特征，最符合“页面(page)”类别。"
+  },
+  "timestamp": 1762741583,
+  "prompt_hash": "e32332f4ee26cb3c06d4382ff284235f",
+  "token_usage": {
+    "input_tokens": 437,
+    "output_tokens": 163,
+    "total_tokens": 600
+  },
+  "model_name": null
+}

@@ -23,6 +23,7 @@ class Task extends Model
         'energy_level',
         'estimated_minutes',
         'deadline',
+        'scheduled_time',
         'status',
         'ai_breakdown_enabled',
         // Focus enhancement features
@@ -39,6 +40,7 @@ class Task extends Model
 
     protected $casts = [
         'deadline' => 'datetime',
+        'scheduled_time' => 'datetime',
         'priority' => 'integer',
         'estimated_minutes' => 'integer',
         'ai_breakdown_enabled' => 'boolean',

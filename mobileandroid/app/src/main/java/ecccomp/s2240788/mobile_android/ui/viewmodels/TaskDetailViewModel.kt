@@ -178,6 +178,7 @@ class TaskDetailViewModel : ViewModel() {
                 energy_level = map["energy_level"] as? String ?: "medium",
                 estimated_minutes = (map["estimated_minutes"] as? Number)?.toInt(),
                 deadline = map["deadline"] as? String,
+                scheduled_time = map["scheduled_time"] as? String,
                 created_at = map["created_at"] as? String ?: "",
                 updated_at = map["updated_at"] as? String ?: "",
                 user_id = (map["user_id"] as? Number)?.toInt() ?: 0,

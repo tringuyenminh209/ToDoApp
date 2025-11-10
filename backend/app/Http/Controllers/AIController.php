@@ -553,6 +553,57 @@ class AIController extends Controller
                 'content' => $request->message,
             ]);
 
+            // Parse task intent from user message
+            $taskData = $this->aiService->parseTaskIntent($request->message);
+            $createdTask = null;
+
+            // If task intent detected, create task
+            if ($taskData) {
+                try {
+                    $createdTask = Task::create([
+                        'user_id' => $request->user()->id,
+                        'title' => $taskData['title'],
+                        'description' => $taskData['description'] ?? null,
+                        'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
+                        'priority' => $taskData['priority'] ?? 'medium',
+                        'scheduled_time' => $taskData['scheduled_time'] ?? null,
+                        'status' => 'pending',
+                    ]);
+
+                    // Create subtasks if provided
+                    if (!empty($taskData['subtasks'])) {
+                        foreach ($taskData['subtasks'] as $index => $subtaskData) {
+                            $createdTask->subtasks()->create([
+                                'title' => $subtaskData['title'],
+                                'estimated_minutes' => $subtaskData['estimated_minutes'] ?? null,
+                                'sort_order' => $index + 1,
+                            ]);
+                        }
+                    }
+
+                    // Add tags if provided
+                    if (!empty($taskData['tags'])) {
+                        foreach ($taskData['tags'] as $tagName) {
+                            $tag = \App\Models\Tag::firstOrCreate([
+                                'user_id' => $request->user()->id,
+                                'name' => $tagName
+                            ]);
+                            $createdTask->tags()->attach($tag->id);
+                        }
+                    }
+
+                    $createdTask->load(['subtasks', 'tags']);
+
+                    Log::info('Task created from chat', [
+                        'task_id' => $createdTask->id,
+                        'conversation_id' => $conversation->id
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to create task from chat: ' . $e->getMessage());
+                    // Continue without task creation
+                }
+            }
+
             // Get AI response
             $aiResponse = $this->aiService->chat([
                 [
@@ -576,6 +627,15 @@ class AIController extends Controller
                     'error' => 'ai_service_unavailable',
                     'debug' => $aiResponse['debug_info'] ?? null
                 ], 503);
+            }
+
+            // If task was created, add confirmation to AI response
+            if ($createdTask) {
+                $taskConfirmation = "\n\n✅ タスクを作成しました: 「{$createdTask->title}」";
+                if ($createdTask->subtasks->count() > 0) {
+                    $taskConfirmation .= "\n📝 サブタスク: {$createdTask->subtasks->count()}個";
+                }
+                $aiResponse['message'] = $aiResponse['message'] . $taskConfirmation;
             }
 
             // Create assistant message
@@ -603,9 +663,18 @@ class AIController extends Controller
 
             $conversation->load('messages');
 
+            $responseData = [
+                'conversation' => $conversation,
+            ];
+
+            // Include created task if any
+            if ($createdTask) {
+                $responseData['created_task'] = $createdTask;
+            }
+
             return response()->json([
                 'success' => true,
-                'data' => $conversation,
+                'data' => $responseData,
                 'message' => '新しい会話を作成しました！'
             ], 201);
 
@@ -652,6 +721,57 @@ class AIController extends Controller
                 'content' => $request->message,
             ]);
 
+            // Parse task intent from user message
+            $taskData = $this->aiService->parseTaskIntent($request->message);
+            $createdTask = null;
+
+            // If task intent detected, create task
+            if ($taskData) {
+                try {
+                    $createdTask = Task::create([
+                        'user_id' => $request->user()->id,
+                        'title' => $taskData['title'],
+                        'description' => $taskData['description'] ?? null,
+                        'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
+                        'priority' => $taskData['priority'] ?? 'medium',
+                        'scheduled_time' => $taskData['scheduled_time'] ?? null,
+                        'status' => 'pending',
+                    ]);
+
+                    // Create subtasks if provided
+                    if (!empty($taskData['subtasks'])) {
+                        foreach ($taskData['subtasks'] as $index => $subtaskData) {
+                            $createdTask->subtasks()->create([
+                                'title' => $subtaskData['title'],
+                                'estimated_minutes' => $subtaskData['estimated_minutes'] ?? null,
+                                'sort_order' => $index + 1,
+                            ]);
+                        }
+                    }
+
+                    // Add tags if provided
+                    if (!empty($taskData['tags'])) {
+                        foreach ($taskData['tags'] as $tagName) {
+                            $tag = \App\Models\Tag::firstOrCreate([
+                                'user_id' => $request->user()->id,
+                                'name' => $tagName
+                            ]);
+                            $createdTask->tags()->attach($tag->id);
+                        }
+                    }
+
+                    $createdTask->load(['subtasks', 'tags']);
+
+                    Log::info('Task created from chat', [
+                        'task_id' => $createdTask->id,
+                        'conversation_id' => $conversation->id
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to create task from chat: ' . $e->getMessage());
+                    // Continue without task creation
+                }
+            }
+
             // Get conversation history (last 10 messages for context)
             $history = $conversation->messages()
                 ->orderBy('created_at', 'desc')
@@ -687,6 +807,15 @@ class AIController extends Controller
                 ], 503);
             }
 
+            // If task was created, add confirmation to AI response
+            if ($createdTask) {
+                $taskConfirmation = "\n\n✅ タスクを作成しました: 「{$createdTask->title}」";
+                if ($createdTask->subtasks->count() > 0) {
+                    $taskConfirmation .= "\n📝 サブタスク: {$createdTask->subtasks->count()}個";
+                }
+                $aiResponse['message'] = $aiResponse['message'] . $taskConfirmation;
+            }
+
             // Create assistant message
             $assistantMessage = ChatMessage::create([
                 'conversation_id' => $conversation->id,
@@ -705,12 +834,19 @@ class AIController extends Controller
 
             DB::commit();
 
+            $responseData = [
+                'user_message' => $userMessage,
+                'assistant_message' => $assistantMessage,
+            ];
+
+            // Include created task if any
+            if ($createdTask) {
+                $responseData['created_task'] = $createdTask;
+            }
+
             return response()->json([
                 'success' => true,
-                'data' => [
-                    'user_message' => $userMessage,
-                    'assistant_message' => $assistantMessage,
-                ],
+                'data' => $responseData,
                 'message' => 'メッセージを送信しました！'
             ], 201);
 

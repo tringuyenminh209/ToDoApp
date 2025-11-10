@@ -1,0 +1,15 @@
+{
+  "data": {
+    "code_purpose": "widget",
+    "confidence": 0.9,
+    "reasoning": "该文件位于ui/adapters目录，文件名为FocusKnowledgeAdapter.kt，属于Android UI层的RecyclerView适配器。代码继承ListAdapter并绑定ItemFocusKnowledgeBinding，处理点击、展开、复制、WebView代码高亮等视图交互逻辑，不涉及业务规则或数据层，明显是前端UI组件（在枚举中对应widget）。"
+  },
+  "timestamp": 1762742764,
+  "prompt_hash": "6510a569001072df9f310d45c2427b6b",
+  "token_usage": {
+    "input_tokens": 434,
+    "output_tokens": 141,
+    "total_tokens": 575
+  },
+  "model_name": null
+}
