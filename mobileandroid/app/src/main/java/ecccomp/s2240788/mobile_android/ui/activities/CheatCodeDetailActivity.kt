@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityCheatCodeDetailBinding
+import ecccomp.s2240788.mobile_android.data.models.CheatCodeSection
 import ecccomp.s2240788.mobile_android.ui.adapters.CheatCodeSectionAdapter
+import ecccomp.s2240788.mobile_android.ui.adapters.SectionTitleAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.CheatCodeDetailViewModel
 
 class CheatCodeDetailActivity : BaseActivity() {
@@ -15,9 +17,11 @@ class CheatCodeDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityCheatCodeDetailBinding
     private lateinit var viewModel: CheatCodeDetailViewModel
     private lateinit var adapter: CheatCodeSectionAdapter
+    private lateinit var sectionTitleAdapter: SectionTitleAdapter
 
     private var languageId: Int = -1
     private var languageName: String = ""
+    private var sectionsList: List<CheatCodeSection> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +52,7 @@ class CheatCodeDetailActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
+        // Setup sections RecyclerView
         adapter = CheatCodeSectionAdapter(languageName) { example ->
             Toast.makeText(this, example.title, Toast.LENGTH_SHORT).show()
         }
@@ -56,6 +61,16 @@ class CheatCodeDetailActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this@CheatCodeDetailActivity)
             adapter = this@CheatCodeDetailActivity.adapter
             isNestedScrollingEnabled = false
+        }
+
+        // Setup section titles RecyclerView (horizontal)
+        sectionTitleAdapter = SectionTitleAdapter { section, position ->
+            scrollToSection(section.id, position)
+        }
+
+        binding.rvSectionTitles.apply {
+            layoutManager = LinearLayoutManager(this@CheatCodeDetailActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = sectionTitleAdapter
         }
     }
 
@@ -86,7 +101,9 @@ class CheatCodeDetailActivity : BaseActivity() {
 
     private fun observeViewModel() {
         viewModel.sections.observe(this) { sections ->
+            sectionsList = sections
             adapter.submitList(sections)
+            sectionTitleAdapter.submitList(sections)
 
             // Update sections count
             val totalExamples = sections.sumOf { it.examples?.size ?: 0 }
@@ -95,6 +112,41 @@ class CheatCodeDetailActivity : BaseActivity() {
 
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
+    /**
+     * Scroll to section by section ID
+     * セクションIDでセクションまでスクロール
+     */
+    private fun scrollToSection(sectionId: Int, position: Int) {
+        // Update selected position in title adapter
+        sectionTitleAdapter.setSelectedPosition(position)
+        
+        // Scroll title list to show selected item
+        binding.rvSectionTitles.post {
+            val layoutManager = binding.rvSectionTitles.layoutManager as? LinearLayoutManager
+            layoutManager?.scrollToPositionWithOffset(position, 0)
+        }
+
+        // Find section view in RecyclerView and scroll to it
+        binding.rvSections.post {
+            val layoutManager = binding.rvSections.layoutManager as? LinearLayoutManager
+            val sectionPosition = sectionsList.indexOfFirst { it.id == sectionId }
+            
+            if (sectionPosition != -1) {
+                layoutManager?.scrollToPositionWithOffset(sectionPosition, 0)
+                
+                // Also scroll NestedScrollView to ensure section is visible
+                binding.nestedScrollView.post {
+                    val viewHolder = binding.rvSections.findViewHolderForAdapterPosition(sectionPosition)
+                    viewHolder?.itemView?.let { sectionView ->
+                        val scrollView = binding.nestedScrollView
+                        val scrollY = sectionView.top - scrollView.paddingTop
+                        scrollView.smoothScrollTo(0, scrollY)
+                    }
+                }
+            }
         }
     }
 }

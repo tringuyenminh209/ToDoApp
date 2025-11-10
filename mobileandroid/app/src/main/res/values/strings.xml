@@ -310,14 +310,92 @@
     <string name="language">言語</string>
     <string name="about">アプリについて</string>
     <string name="logout">ログアウト</string>
+    
+    <!-- Settings Profile Stats -->
+    <string name="streak_days">連続日数</string>
+    <string name="minutes_today">今日の分数</string>
+    <string name="tasks_completed">完了したタスク</string>
+    
+    <!-- Settings Notifications -->
+    <string name="push_notifications">プッシュ通知</string>
+    <string name="push_notifications_desc">タスクとリマインダーの通知を受け取る</string>
+    <string name="daily_reminders">毎日のリマインダー</string>
+    <string name="daily_reminders_desc">毎日午前7時30分に通知</string>
+    <string name="goal_reminders">目標リマインダー</string>
+    <string name="goal_reminders_desc">締め切りが近づいたときに通知</string>
+    
+    <!-- Settings Theme -->
+    <string name="theme_section">テーマ</string>
+    <string name="dark_mode">ダークモード</string>
+    <string name="dark_mode_desc">システム設定に従う</string>
+    <string name="language_section">言語</string>
+    <string name="language_current">日本語</string>
+    
+    <!-- Settings Focus Mode -->
+    <string name="focus_mode_section">集中モード</string>
+    <string name="pomodoro_time">ポモドーロ時間</string>
+    <string name="pomodoro_time_desc">25分作業、5分休憩</string>
+    <string name="block_notifications">通知をブロック</string>
+    <string name="block_notifications_desc">フォーカス中は自動的にブロック</string>
+    <string name="background_sound">背景音</string>
+    <string name="background_sound_desc">フォーカス中のホワイトノイズ</string>
+    
+    <!-- Settings Data & Privacy -->
+    <string name="data_privacy_section">データ &amp; プライバシー</string>
+    <string name="export_data">データをエクスポート</string>
+    <string name="export_data_desc">すべてのデータをダウンロード</string>
+    <string name="export">エクスポート</string>
+    <string name="delete_data">データを削除</string>
+    <string name="delete_data_desc">すべてのデータとアカウントを削除</string>
+    
+    <!-- Settings Account -->
+    <string name="account_section">アカウント</string>
+    <string name="personal_info">個人情報</string>
+    <string name="personal_info_desc">プロフィールを更新</string>
+    <string name="change_password">パスワードを変更</string>
+    <string name="change_password_desc">アカウントのパスワードを更新</string>
+    <string name="logout_desc">現在のアカウントからログアウト</string>
+    
+    <!-- Settings Actions -->
+    <string name="save_settings">設定を保存</string>
+    <string name="reset_settings">デフォルトに戻す</string>
 
     <!-- Stats -->
     <string name="stats_title">統計</string>
+    <string name="stats_subtitle">進捗と習慣を追跡</string>
     <string name="daily_stats">今日の統計</string>
     <string name="weekly_stats">週間統計</string>
     <string name="monthly_stats">月間統計</string>
     <string name="productivity_trend">生産性の傾向</string>
     <string name="focus_time_trend">フォーカス時間の傾向</string>
+    
+    <!-- Stats Details -->
+    <string name="streak_record">記録: %d日</string>
+    <string name="minutes_this_week">今週の分数</string>
+    <string name="completion_rate">完了率</string>
+    <string name="compared_to_yesterday">%s 昨日比</string>
+    <string name="compared_to_last_week">%s 先週比</string>
+    
+    <!-- Deep Work -->
+    <string name="deep_work">ディープワーク</string>
+    <string name="deep_work_past_days">ディープワーク（過去%d日間）</string>
+    <string name="this_week">今週</string>
+    <string name="focus_minutes">集中分数</string>
+    
+    <!-- Golden Hour -->
+    <string name="your_golden_hour">あなたのゴールデンタイム</string>
+    <string name="golden_hour">ゴールデンタイム</string>
+    <string name="this_month">今月</string>
+    <string name="golden_hour_insight">%sから%sはあなたの集中力が最も高い時間です。最も難しいタスクをこの時間帯にスケジュールしてください。</string>
+    <string name="reschedule">スケジュールを再調整</string>
+    
+    <!-- Smart Insights -->
+    <string name="smart_insights">スマートな提案</string>
+    <string name="positive_trend">ポジティブな傾向</string>
+    <string name="deep_work_trend_message">ディープワークの時間が増加傾向にあります。この勢いを維持しましょう！</string>
+    <string name="weekly_goal">週の目標</string>
+    <string name="weekly_goal_progress">週の目標の%d%%を達成しました。あと%d分で100%%達成です！</string>
+    <string name="view_plan">計画を見る</string>
 
     <!-- Messages -->
     <string name="loading">読み込み中...</string>

@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeLaravelSeeder extends Seeder
 {
     /**
-     * Seed Laravel cheat code data from quickref.me
-     * Reference: https://quickref.me/laravel
+     * Seed Laravel cheat code data from doleaf
+     * Reference: https://doleaf.com/laravel
      */
     public function run(): void
     {

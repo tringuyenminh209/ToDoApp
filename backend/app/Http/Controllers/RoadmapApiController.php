@@ -122,7 +122,30 @@ class RoadmapApiController extends Controller
             switch ($request->source) {
                 case 'popular':
                     $roadmaps = $this->roadmapService->getPopularRoadmaps();
-                    $roadmapData = collect($roadmaps)->firstWhere('id', $request->roadmap_id);
+                    $popularRoadmap = collect($roadmaps)->firstWhere('id', $request->roadmap_id);
+
+                    if (!$popularRoadmap) {
+                        DB::rollBack();
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'ロードマップが見つかりません'
+                        ], 404);
+                    }
+
+                    // Popular roadmaps chỉ có metadata, cần generate chi tiết bằng AI
+                    $topic = $popularRoadmap['title'];
+                    $level = $popularRoadmap['difficulty'] ?? 'beginner';
+                    $roadmapData = $this->roadmapService->generateRoadmapWithAI($topic, $level);
+
+                    // Merge metadata từ popular roadmap
+                    if (!empty($roadmapData)) {
+                        $roadmapData['title'] = $popularRoadmap['title'];
+                        $roadmapData['description'] = $popularRoadmap['description'] ?? $roadmapData['description'] ?? '';
+                        $roadmapData['category'] = $popularRoadmap['category'] ?? $roadmapData['category'] ?? 'programming';
+                        $roadmapData['difficulty'] = $popularRoadmap['difficulty'] ?? $roadmapData['difficulty'] ?? 'beginner';
+                        $roadmapData['estimated_hours'] = $popularRoadmap['estimated_hours'] ?? $roadmapData['estimated_hours'] ?? 0;
+                        $roadmapData['url'] = $popularRoadmap['url'] ?? null;
+                    }
                     break;
 
                 case 'ai':
@@ -145,11 +168,11 @@ class RoadmapApiController extends Controller
                     break;
             }
 
-            if (!$roadmapData) {
+            if (!$roadmapData || empty($roadmapData['milestones'])) {
                 DB::rollBack();
                 return response()->json([
                     'success' => false,
-                    'message' => 'ロードマップが見つかりません'
+                    'message' => 'ロードマップの詳細を取得できませんでした。もう一度お試しください。'
                 ], 404);
             }
 
@@ -177,8 +200,8 @@ class RoadmapApiController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $responseData,
-                'message' => $learningPath 
-                    ? 'ロードマップを学習パスとして追加しました' 
+                'message' => $learningPath
+                    ? 'ロードマップを学習パスとして追加しました'
                     : 'ロードマップをテンプレートとしてインポートしました'
             ], 201);
 
@@ -221,6 +244,20 @@ class RoadmapApiController extends Controller
                 // Create tasks
                 if (isset($milestoneData['tasks']) && is_array($milestoneData['tasks'])) {
                     foreach ($milestoneData['tasks'] as $index => $taskData) {
+                        // Đảm bảo có subtasks và knowledge_items
+                        $subtasks = $taskData['subtasks'] ?? [];
+                        $knowledgeItems = $taskData['knowledge_items'] ?? [];
+
+                        // Nếu không có subtasks, tự động tạo từ task description
+                        if (empty($subtasks) && !empty($taskData['description'])) {
+                            $subtasks = $this->generateDefaultSubtasks($taskData['title'], $taskData['description'], $taskData['estimated_minutes'] ?? 120);
+                        }
+
+                        // Nếu không có knowledge_items, tự động tạo từ task
+                        if (empty($knowledgeItems)) {
+                            $knowledgeItems = $this->generateDefaultKnowledgeItems($taskData['title'], $taskData['description']);
+                        }
+
                         TaskTemplate::create([
                             'milestone_template_id' => $milestone->id,
                             'title' => $taskData['title'] ?? 'Task',
@@ -228,10 +265,13 @@ class RoadmapApiController extends Controller
                             'estimated_minutes' => $taskData['estimated_minutes'] ?? 0,
                             'priority' => $taskData['priority'] ?? 3,
                             'sort_order' => $index + 1,
-                            'subtasks' => $taskData['subtasks'] ?? [],
-                            'knowledge_items' => $taskData['knowledge_items'] ?? [],
+                            'subtasks' => $subtasks,
+                            'knowledge_items' => $knowledgeItems,
                         ]);
                     }
+                } else {
+                    // Nếu milestone không có tasks, tạo default task
+                    $this->createDefaultTaskForMilestone($milestone, $milestoneData);
                 }
             }
         }
@@ -286,7 +326,8 @@ class RoadmapApiController extends Controller
                         ]);
 
                         // Create subtasks from template
-                        if (!empty($taskTemplate->subtasks) && is_array($taskTemplate->subtasks)) {
+                        // TaskTemplate casts subtasks to array, so check if it's array and not empty
+                        if (is_array($taskTemplate->subtasks) && count($taskTemplate->subtasks) > 0) {
                             foreach ($taskTemplate->subtasks as $subtaskData) {
                                 $task->subtasks()->create([
                                     'title' => $subtaskData['title'] ?? 'Subtask',
@@ -296,11 +337,35 @@ class RoadmapApiController extends Controller
                                     'sort_order' => $subtaskData['sort_order'] ?? 0,
                                 ]);
                             }
+                        } else {
+                            // Nếu không có subtasks trong template, tạo default subtasks
+                            $defaultSubtasks = $this->generateDefaultSubtasks(
+                                $taskTemplate->title,
+                                $taskTemplate->description ?? '',
+                                $taskTemplate->estimated_minutes ?? 120
+                            );
+                            foreach ($defaultSubtasks as $subtaskData) {
+                                $task->subtasks()->create([
+                                    'title' => $subtaskData['title'],
+                                    'description' => $subtaskData['description'] ?? null,
+                                    'estimated_minutes' => $subtaskData['estimated_minutes'] ?? 0,
+                                    'is_completed' => false,
+                                    'sort_order' => $subtaskData['sort_order'] ?? 0,
+                                ]);
+                            }
                         }
 
                         // Create knowledge items from template
-                        if (!empty($taskTemplate->knowledge_items) && is_array($taskTemplate->knowledge_items)) {
+                        // TaskTemplate casts knowledge_items to array, so check if it's array and not empty
+                        if (is_array($taskTemplate->knowledge_items) && count($taskTemplate->knowledge_items) > 0) {
                             $this->createKnowledgeItems($user->id, $learningPath->id, $task->id, $taskTemplate->knowledge_items);
+                        } else {
+                            // Nếu không có knowledge_items trong template, tạo default knowledge items
+                            $defaultKnowledgeItems = $this->generateDefaultKnowledgeItems(
+                                $taskTemplate->title,
+                                $taskTemplate->description ?? ''
+                            );
+                            $this->createKnowledgeItems($user->id, $learningPath->id, $task->id, $defaultKnowledgeItems);
                         }
                     }
                 }
@@ -378,6 +443,96 @@ class RoadmapApiController extends Controller
 
             KnowledgeItem::create($knowledgeItem);
         }
+    }
+
+    /**
+     * Generate default subtasks from task description
+     * タスクの説明からデフォルトのサブタスクを生成
+     */
+    private function generateDefaultSubtasks(string $taskTitle, string $description, int $estimatedMinutes): array
+    {
+        $subtasks = [];
+        $estimatedPerSubtask = max(30, intval($estimatedMinutes / 3)); // Chia thành 3 subtasks
+
+        // Tạo subtasks cơ bản dựa trên task title và description
+        $subtasks[] = [
+            'title' => $taskTitle . 'の基礎を学習',
+            'description' => '基本概念と理論を理解する',
+            'estimated_minutes' => $estimatedPerSubtask,
+            'sort_order' => 1,
+        ];
+
+        $subtasks[] = [
+            'title' => $taskTitle . 'を実践',
+            'description' => '実際にコードを書いて練習する',
+            'estimated_minutes' => $estimatedPerSubtask,
+            'sort_order' => 2,
+        ];
+
+        $subtasks[] = [
+            'title' => $taskTitle . 'を復習',
+            'description' => '学習内容を確認し、理解を深める',
+            'estimated_minutes' => $estimatedPerSubtask,
+            'sort_order' => 3,
+        ];
+
+        return $subtasks;
+    }
+
+    /**
+     * Generate default knowledge items for a task
+     * タスクのデフォルトナレッジアイテムを生成
+     */
+    private function generateDefaultKnowledgeItems(string $taskTitle, string $description): array
+    {
+        $knowledgeItems = [];
+
+        // Tạo note knowledge item
+        $knowledgeItems[] = [
+            'type' => 'note',
+            'title' => $taskTitle . 'のメモ',
+            'content' => $description . "\n\n## 学習ポイント\n\n- 基本概念を理解する\n- 実践を通じて習得する\n- 定期的に復習する",
+            'sort_order' => 1,
+        ];
+
+        // Tạo resource link knowledge item (nếu có description)
+        if (!empty($description)) {
+            $knowledgeItems[] = [
+                'type' => 'resource_link',
+                'title' => $taskTitle . 'の学習リソース',
+                'url' => '',
+                'description' => '公式ドキュメントやチュートリアルを参照してください',
+                'sort_order' => 2,
+            ];
+        }
+
+        return $knowledgeItems;
+    }
+
+    /**
+     * Create default task for milestone if no tasks exist
+     * マイルストーンにタスクがない場合のデフォルトタスクを作成
+     */
+    private function createDefaultTaskForMilestone($milestone, array $milestoneData): void
+    {
+        $taskTitle = $milestoneData['title'] ?? '学習タスク';
+        $description = $milestoneData['description'] ?? '';
+        $estimatedHours = $milestoneData['estimated_hours'] ?? 0;
+        $estimatedMinutes = $estimatedHours * 60;
+
+        $subtasks = $this->generateDefaultSubtasks($taskTitle, $description, $estimatedMinutes);
+        $knowledgeItems = $this->generateDefaultKnowledgeItems($taskTitle, $description);
+
+        TaskTemplate::create([
+            'milestone_template_id' => $milestone->id,
+            'title' => $taskTitle,
+            'description' => $description,
+            'estimated_minutes' => $estimatedMinutes,
+            'priority' => 3,
+            'sort_order' => 1,
+            'subtasks' => $subtasks,
+            'knowledge_items' => $knowledgeItems,
+        ]);
     }
 }
 

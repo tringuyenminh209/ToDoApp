@@ -48,6 +48,9 @@ class CheatCodeSectionAdapter(
         }
 
         fun bind(section: CheatCodeSection, onExampleClick: (CodeExample) -> Unit) {
+            // Set tag for scrolling to this section
+            itemView.tag = "section_${section.id}"
+            
             // Set section title
             tvSectionTitle.text = section.title
 
