@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeKotlinSeeder extends Seeder
 {
     /**
-     * Seed Kotlin cheat code data from quickref.me
-     * Reference: https://quickref.me/kotlin
+     * Seed Kotlin cheat code data from doleaf
+     * Reference: https://doleaf.com/kotlin
      */
     public function run(): void
     {
@@ -23,7 +23,7 @@ class CheatCodeKotlinSeeder extends Seeder
             'slug' => 'kotlin',
             'icon' => 'ic_kotlin',
             'color' => '#7F52FF',
-            'description' => '使用方法、例などを含むKotlinのクイックリファレンスチートシート。',
+            'description' => '使用方法、例などを含むKotlinのリファレンスチートシート。',
             'category' => 'programming',
             'popularity' => 88,
             'is_active' => true,
@@ -34,9 +34,9 @@ class CheatCodeKotlinSeeder extends Seeder
         $section1 = $this->createSection($kotlinLanguage, 'Kotlin入門', 1, 'Kotlinの基本と導入', 'kotlin-introduction');
 
         $this->createExample($section1, $kotlinLanguage, 'main()', 1,
-            "fun main() {\n  println(\"Greetings, QuickRef.ME!\")\n  // Code goes here\n}",
+            "fun main() {\n  println(\"Greetings, Doleaf!\")\n  // Code goes here\n}",
             'main()関数はすべてのKotlinプログラムの開始点です',
-            "Greetings, QuickRef.ME!",
+            "Greetings, Doleaf!",
             'easy'
         );
 

@@ -65,6 +65,10 @@ class RoadmapApiService
 トピック: {$topic}
 レベル: {$level}
 
+**重要**: 各タスクには必ず以下の要素を含めてください：
+1. **subtasks**: 少なくとも3つのサブタスク（基礎学習、実践、復習など）
+2. **knowledge_items**: 少なくとも2つのナレッジアイテム（note、resource_link、code_snippetなど）
+
 以下の形式で返してください：
 {
   \"title\": \"ロードマップタイトル\",
@@ -79,28 +83,54 @@ class RoadmapApiService
       \"tasks\": [
         {
           \"title\": \"タスク1\",
-          \"description\": \"説明\",
+          \"description\": \"詳細な説明\",
           \"estimated_minutes\": 120,
-          \"priority\": 1,
+          \"priority\": 3,
           \"subtasks\": [
             {
-              \"title\": \"サブタスク1\",
-              \"estimated_minutes\": 60
+              \"title\": \"サブタスク1: 基礎を学習\",
+              \"description\": \"基本概念と理論を理解する\",
+              \"estimated_minutes\": 40,
+              \"sort_order\": 1
+            },
+            {
+              \"title\": \"サブタスク2: 実践\",
+              \"description\": \"実際にコードを書いて練習する\",
+              \"estimated_minutes\": 40,
+              \"sort_order\": 2
+            },
+            {
+              \"title\": \"サブタスク3: 復習\",
+              \"description\": \"学習内容を確認し、理解を深める\",
+              \"estimated_minutes\": 40,
+              \"sort_order\": 3
             }
           ],
           \"knowledge_items\": [
             {
+              \"type\": \"note\",
+              \"title\": \"学習メモ\",
+              \"content\": \"重要なポイントや注意事項\",
+              \"sort_order\": 1
+            },
+            {
               \"type\": \"resource_link\",
-              \"title\": \"リソース名\",
-              \"url\": \"https://example.com\",
-              \"description\": \"説明\"
+              \"title\": \"公式ドキュメント\",
+              \"url\": \"https://example.com/docs\",
+              \"description\": \"公式リソースへのリンク\",
+              \"sort_order\": 2
             }
           ]
         }
       ]
     }
   ]
-}";
+}
+
+**注意**:
+- 各タスクには必ずsubtasksとknowledge_itemsを含めること
+- subtasksは少なくとも3つ、knowledge_itemsは少なくとも2つ作成すること
+- JSONのみを返し、説明文は含めないこと";
 
             $response = $aiService->chat([
                 [

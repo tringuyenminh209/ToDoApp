@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeCss3Seeder extends Seeder
 {
     /**
-     * Seed CSS3 cheat code data from quickref.me
-     * Reference: https://quickref.me/css3
+     * Seed CSS3 cheat code data from doleaf
+     * Reference: https://doleaf.com/css3
      */
     public function run(): void
     {
@@ -23,7 +23,7 @@ class CheatCodeCss3Seeder extends Seeder
             'slug' => 'css3',
             'icon' => 'ic_css',
             'color' => '#1572B6',
-            'description' => 'セレクタ構文、プロパティ、単位、その他の有用な情報をリストアップしたCSSのクイックリファレンスチートシート。',
+            'description' => 'セレクタ構文、プロパティ、単位、その他の有用な情報をリストアップしたCSSのリファレンスチートシート。',
             'category' => 'markup',
             'popularity' => 95,
             'is_active' => true,

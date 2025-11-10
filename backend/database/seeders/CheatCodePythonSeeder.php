@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodePythonSeeder extends Seeder
 {
     /**
-     * Seed Python cheat code data from quickref.me
-     * Reference: https://quickref.me/python
+     * Seed Python cheat code data from doleaf
+     * Reference: https://doleaf.com/python
      */
     public function run(): void
     {
@@ -111,9 +111,9 @@ class CheatCodePythonSeeder extends Seeder
         );
 
         $this->createExample($section1, $pythonLanguage, 'f-文字列（Python 3.6+）', 12,
-            ">>> website = 'Quickref.ME'\n>>> f\"Hello, {website}\"\n\"Hello, Quickref.ME\"\n\n>>> num = 10\n>>> f'{num} + 10 = {num + 10}'\n'10 + 10 = 20'",
+            ">>> website = 'Doleaf.com'\n>>> f\"Hello, {website}\"\n\"Hello, Doleaf.com\"\n\n>>> num = 10\n>>> f'{num} + 10 = {num + 10}'\n'10 + 10 = 20'",
             'フォーマット済み文字列リテラル',
-            "Hello, Quickref.ME\n10 + 10 = 20",
+            "Hello, Doleaf.com\n10 + 10 = 20",
             'easy'
         );
 

@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeJavaScriptSeeder extends Seeder
 {
     /**
-     * Seed JavaScript cheat code data from quickref.me
-     * Reference: https://quickref.me/javascript
+     * Seed JavaScript cheat code data from doleaf
+     * Reference: https://doleaf.com/javascript
      */
     public function run(): void
     {
@@ -23,7 +23,7 @@ class CheatCodeJavaScriptSeeder extends Seeder
             'slug' => 'javascript',
             'icon' => 'ic_js',
             'color' => '#F7DF1E',
-            'description' => 'JavaScriptは、軽量でインタープリタ型のプログラミング言語です。初心者向けの完全なクイックリファレンス。',
+            'description' => 'JavaScriptは、軽量でインタープリタ型のプログラミング言語です。初心者向けの完全なリファレンス。',
             'category' => 'programming',
             'popularity' => 95,
             'is_active' => true,
@@ -34,9 +34,9 @@ class CheatCodeJavaScriptSeeder extends Seeder
         $section1 = $this->createSection($jsLanguage, 'はじめに', 1, 'JavaScriptの基本と導入', 'getting-started');
 
         $this->createExample($section1, $jsLanguage, 'Console', 1,
-            "// => Hello world!\nconsole.log('Hello world!');\n\n// => Hello QuickRef.ME\nconsole.warn('hello %s', 'QuickRef.ME');\n\n// Prints error message to stderr\nconsole.error(new Error('Oops!'));",
+            "// => Hello world!\nconsole.log('Hello world!');\n\n// => Hello Doleaf\nconsole.warn('hello %s', 'Doleaf');\n\n// Prints error message to stderr\nconsole.error(new Error('Oops!'));",
             '出力用のコンソールメソッド',
-            "Hello world!\nHello QuickRef.ME\nError: Oops!",
+            "Hello world!\nHello Doleaf\nError: Oops!",
             'easy'
         );
 

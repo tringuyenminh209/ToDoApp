@@ -98,3 +98,6 @@ temp/
 # Demo and Documentation
 demo/
 docs/
+
+# Litho
+litho.docs/

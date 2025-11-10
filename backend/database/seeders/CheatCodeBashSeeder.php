@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeBashSeeder extends Seeder
 {
     /**
-     * Seed Bash cheat code data from quickref.me
-     * Reference: https://quickref.me/bash
+     * Seed Bash cheat code data from doleaf
+     * Reference: https://doleaf.com/bash
      */
     public function run(): void
     {
@@ -23,7 +23,7 @@ class CheatCodeBashSeeder extends Seeder
             'slug' => 'bash',
             'icon' => 'ic_bash',
             'color' => '#4EAA25',
-            'description' => 'Bashシェルスクリプトのクイックリファレンス。Linux/Unix環境でのシェルスクリプティングの基礎から応用まで。',
+            'description' => 'Bashシェルスクリプトのリファレンス。Linux/Unix環境でのシェルスクリプティングの基礎から応用まで。',
             'category' => 'shell',
             'popularity' => 85,
             'is_active' => true,

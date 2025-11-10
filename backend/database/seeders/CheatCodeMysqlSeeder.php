@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeMysqlSeeder extends Seeder
 {
     /**
-     * Seed MySQL cheat code data from quickref.me
-     * Reference: https://quickref.me/mysql
+     * Seed MySQL cheat code data from doleaf
+     * Reference: https://doleaf.com/mysql
      */
     public function run(): void
     {
@@ -23,7 +23,7 @@ class CheatCodeMysqlSeeder extends Seeder
             'slug' => 'mysql',
             'icon' => 'ic_mysql',
             'color' => '#4479A1',
-            'description' => 'MySQLのクイックリファレンス。最も一般的に使用されるSQLステートメントを参照できます。',
+            'description' => 'MySQLのリファレンス。最も一般的に使用されるSQLステートメントを参照できます。',
             'category' => 'database',
             'popularity' => 95,
             'is_active' => true,

@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeYamlSeeder extends Seeder
 {
     /**
-     * Seed YAML cheat code data from quickref.me
-     * Reference: https://quickref.me/yaml
+     * Seed YAML cheat code data from doleaf
+     * Reference: https://doleaf.com/yaml
      */
     public function run(): void
     {
@@ -23,7 +23,7 @@ class CheatCodeYamlSeeder extends Seeder
             'slug' => 'yaml',
             'icon' => 'ic_yaml',
             'color' => '#CB171E',
-            'description' => 'YAML形式の設定ファイルを理解し、記述するためのクイックリファレンス。',
+            'description' => 'YAML形式の設定ファイルを理解し、記述するためのリファレンス。',
             'category' => 'markup',
             'popularity' => 80,
             'is_active' => true,

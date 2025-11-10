@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeGoSeeder extends Seeder
 {
     /**
-     * Seed Go cheat code data from quickref.me
-     * Reference: https://quickref.me/go
+     * Seed Go cheat code data from doleaf
+     * Reference: https://doleaf.com/go
      */
     public function run(): void
     {

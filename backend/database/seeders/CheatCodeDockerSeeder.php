@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeDockerSeeder extends Seeder
 {
     /**
-     * Seed Docker cheat code data from quickref.me
-     * Reference: https://quickref.me/docker
+     * Seed Docker cheat code data from doleaf
+     * Reference: https://doleaf.com/docker
      */
     public function run(): void
     {
@@ -23,7 +23,7 @@ class CheatCodeDockerSeeder extends Seeder
             'slug' => 'docker',
             'icon' => 'ic_docker',
             'color' => '#2496ED',
-            'description' => 'Dockerのクイックリファレンス。最も一般的なDockerコマンドをここで見つけることができます。',
+            'description' => 'Dockerのリファレンス。最も一般的なDockerコマンドをここで見つけることができます。',
             'category' => 'devops',
             'popularity' => 90,
             'is_active' => true,
