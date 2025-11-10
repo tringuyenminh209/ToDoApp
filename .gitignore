@@ -101,3 +101,5 @@ docs/
 
 # Litho
 litho.docs/
+litho.log
+litho.toml
