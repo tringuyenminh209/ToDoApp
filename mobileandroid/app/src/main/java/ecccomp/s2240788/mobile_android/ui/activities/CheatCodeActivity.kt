@@ -23,6 +23,8 @@ class CheatCodeActivity : BaseActivity() {
         binding = ActivityCheatCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         setupViewModel()
         setupRecyclerView()
         setupUI()

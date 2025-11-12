@@ -32,6 +32,8 @@ class TimetableActivity : BaseActivity() {
         binding = ActivityTimetableBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         setupViewModel()
         setupUI()
         setupObservers()

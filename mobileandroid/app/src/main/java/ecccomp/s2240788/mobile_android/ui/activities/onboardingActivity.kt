@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -34,10 +32,9 @@ class onboardingActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Enable edge-to-edge display (full screen gradient)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        
         setContentView(R.layout.activity_onboarding)
+        
+        setupWindowInsets()
         
         initViews()
         setupViewPager()

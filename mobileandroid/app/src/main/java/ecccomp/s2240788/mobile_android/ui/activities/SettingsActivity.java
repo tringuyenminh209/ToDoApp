@@ -16,6 +16,8 @@ public class SettingsActivity extends BaseActivity {
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setupWindowInsets();
+
         setupClickListeners();
         setupBottomNavigation();
     }

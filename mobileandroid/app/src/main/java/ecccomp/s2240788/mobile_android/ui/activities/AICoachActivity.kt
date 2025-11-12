@@ -1,5 +1,6 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -7,11 +8,11 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityAiCoachBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.ChatMessageAdapter
-import ecccomp.s2240788.mobile_android.ui.viewmodels.AICoachViewModel
 import ecccomp.s2240788.mobile_android.ui.dialogs.ConversationHistoryDialog
-import ecccomp.s2240788.mobile_android.ui.adapters.ChatMessageAdapter.Companion.TYPING_INDICATOR
+import ecccomp.s2240788.mobile_android.ui.viewmodels.AICoachViewModel
 
 /**
  * AICoachActivity
@@ -30,6 +31,8 @@ class AICoachActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAiCoachBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         // Initialize ViewModel
         viewModel = ViewModelProvider(this)[AICoachViewModel::class.java]
@@ -214,6 +217,59 @@ class AICoachActivity : BaseActivity() {
                     .show()
 
                 viewModel.clearCreatedTask()
+            }
+        }
+
+        // Observe task suggestion
+        viewModel.taskSuggestion.observe(this) { suggestion ->
+            if (suggestion != null) {
+                // Show suggestion card
+                binding.taskSuggestionCard.visibility = View.VISIBLE
+
+                // Populate suggestion data
+                binding.tvSuggestionTitle.text = suggestion.title
+                binding.tvSuggestionDescription.text = suggestion.description ?: ""
+
+                // Format estimated time
+                val timeText = if (suggestion.estimated_minutes != null) {
+                    "${suggestion.estimated_minutes}分"
+                } else {
+                    "時間未設定"
+                }
+                binding.chipSuggestionTime.text = timeText
+
+                // Format priority
+                val priorityText = when (suggestion.priority.lowercase()) {
+                    "high" -> "高優先度"
+                    "medium" -> "中優先度"
+                    "low" -> "低優先度"
+                    else -> suggestion.priority
+                }
+                binding.chipSuggestionPriority.text = priorityText
+
+                // Set priority chip color
+                val priorityColor = when (suggestion.priority.lowercase()) {
+                    "high" -> R.color.error
+                    "medium" -> R.color.warning
+                    "low" -> R.color.success
+                    else -> R.color.text_secondary
+                }
+                binding.chipSuggestionPriority.setChipBackgroundColorResource(priorityColor)
+
+                // Show reason
+                binding.tvSuggestionReason.text = "💡 ${suggestion.reason}"
+
+                // Setup button listeners
+                binding.btnConfirmSuggestion.setOnClickListener {
+                    viewModel.confirmTaskSuggestion(suggestion)
+                }
+
+                binding.btnDismissSuggestion.setOnClickListener {
+                    viewModel.dismissTaskSuggestion()
+                }
+            } else {
+                // Hide suggestion card
+                binding.taskSuggestionCard.visibility = View.GONE
             }
         }
     }

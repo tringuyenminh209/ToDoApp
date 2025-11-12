@@ -31,6 +31,8 @@ class MilestoneKnowledgeActivity : BaseActivity() {
         binding = ActivityMilestoneKnowledgeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         viewModel = ViewModelProvider(this)[KnowledgeViewModel::class.java]
 
         // Get milestone info from intent

@@ -47,6 +47,7 @@ class EditTaskViewModel : ViewModel() {
 
     /**
      * タスクを読み込む
+     * Use getTask endpoint to get full task details including scheduled_time
      */
     fun loadTask(taskId: Int) {
         viewModelScope.launch {
@@ -54,23 +55,20 @@ class EditTaskViewModel : ViewModel() {
                 _isLoading.value = true
                 _error.value = null
 
-                val response = apiService.getTasks()
+                val response = apiService.getTask(taskId)
 
                 if (response.isSuccessful) {
                     val apiResponse = response.body()
-                    if (apiResponse != null && apiResponse.success) {
-                        // Extract and parse tasks from paginated response
-                        val tasks = extractTasksFromResponse(apiResponse.data)
-                        _task.value = tasks.find { it.id == taskId }
-
-                        if (_task.value == null) {
-                            _error.value = "タスクが見つかりません"
-                        }
+                    if (apiResponse != null && apiResponse.success && apiResponse.data != null) {
+                        _task.value = apiResponse.data
                     } else {
                         _error.value = "タスクの読み込みに失敗しました"
                     }
                 } else {
-                    _error.value = "タスクの読み込みに失敗しました: ${response.message()}"
+                    _error.value = when (response.code()) {
+                        404 -> "タスクが見つかりません"
+                        else -> "タスクの読み込みに失敗しました: ${response.message()}"
+                    }
                 }
 
             } catch (e: Exception) {
@@ -78,91 +76,6 @@ class EditTaskViewModel : ViewModel() {
             } finally {
                 _isLoading.value = false
             }
-        }
-    }
-
-    /**
-     * Extract tasks from paginated response
-     */
-    private fun extractTasksFromResponse(data: Any?): List<Task> {
-        return try {
-            if (data is Map<*, *>) {
-                val tasksData = data["data"] as? List<*>
-                tasksData?.mapNotNull { taskMap ->
-                    if (taskMap is Map<*, *>) {
-                        convertMapToTask(taskMap)
-                    } else {
-                        null
-                    }
-                } ?: emptyList()
-            } else if (data is List<*>) {
-                data.mapNotNull { taskMap ->
-                    if (taskMap is Map<*, *>) {
-                        convertMapToTask(taskMap)
-                    } else {
-                        null
-                    }
-                }
-            } else {
-                emptyList()
-            }
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    /**
-     * Convert Map to Task object
-     */
-    private fun convertMapToTask(map: Map<*, *>): Task? {
-        return try {
-            // Extract subtasks
-            val subtasksList = (map["subtasks"] as? List<*>)?.mapNotNull { subtaskMap ->
-                if (subtaskMap is Map<*, *>) {
-                    try {
-                        Subtask(
-                            id = (subtaskMap["id"] as? Number)?.toInt() ?: 0,
-                            task_id = (subtaskMap["task_id"] as? Number)?.toInt() ?: 0,
-                            title = subtaskMap["title"] as? String ?: "",
-                            is_completed = subtaskMap["is_completed"] as? Boolean ?: false,
-                            estimated_minutes = (subtaskMap["estimated_minutes"] as? Number)?.toInt(),
-                            sort_order = (subtaskMap["sort_order"] as? Number)?.toInt() ?: 0,
-                            created_at = subtaskMap["created_at"] as? String ?: "",
-                            updated_at = subtaskMap["updated_at"] as? String ?: ""
-                        )
-                    } catch (e: Exception) {
-                        null
-                    }
-                } else null
-            }
-
-            Task(
-                id = (map["id"] as? Number)?.toInt() ?: 0,
-                title = map["title"] as? String ?: "",
-                category = map["category"] as? String,
-                description = map["description"] as? String,
-                status = map["status"] as? String ?: "pending",
-                priority = (map["priority"] as? Number)?.toInt() ?: 3,
-                energy_level = map["energy_level"] as? String ?: "medium",
-                estimated_minutes = (map["estimated_minutes"] as? Number)?.toInt(),
-                deadline = map["deadline"] as? String,
-                scheduled_time = map["scheduled_time"] as? String,
-                created_at = map["created_at"] as? String ?: "",
-                updated_at = map["updated_at"] as? String ?: "",
-                user_id = (map["user_id"] as? Number)?.toInt() ?: 0,
-                project_id = (map["project_id"] as? Number)?.toInt(),
-                learning_milestone_id = (map["learning_milestone_id"] as? Number)?.toInt(),
-                ai_breakdown_enabled = map["ai_breakdown_enabled"] as? Boolean ?: false,
-                // Focus enhancement features
-                requires_deep_focus = map["requires_deep_focus"] as? Boolean ?: false,
-                allow_interruptions = map["allow_interruptions"] as? Boolean ?: true,
-                focus_difficulty = (map["focus_difficulty"] as? Number)?.toInt() ?: 3,
-                warmup_minutes = (map["warmup_minutes"] as? Number)?.toInt(),
-                cooldown_minutes = (map["cooldown_minutes"] as? Number)?.toInt(),
-                subtasks = subtasksList
-            )
-        } catch (e: Exception) {
-            null
         }
     }
 

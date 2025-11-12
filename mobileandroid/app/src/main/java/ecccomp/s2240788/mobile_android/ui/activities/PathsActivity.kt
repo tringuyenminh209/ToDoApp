@@ -30,6 +30,8 @@ class PathsActivity : BaseActivity() {
         binding = ActivityPathsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         viewModel = ViewModelProvider(this)[PathsViewModel::class.java]
 
         setupRecyclerView()

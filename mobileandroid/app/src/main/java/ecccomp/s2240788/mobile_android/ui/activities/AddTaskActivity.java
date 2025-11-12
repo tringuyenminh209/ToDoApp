@@ -3,6 +3,7 @@ package ecccomp.s2240788.mobile_android.ui.activities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -62,6 +63,8 @@ public class AddTaskActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAddTaskBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        setupWindowInsets();
 
         viewModel = new ViewModelProvider(this).get(AddTaskViewModel.class);
 

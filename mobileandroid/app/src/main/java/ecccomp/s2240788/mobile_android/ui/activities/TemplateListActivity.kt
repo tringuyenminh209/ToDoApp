@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.databinding.ActivityTemplateListBinding
 import ecccomp.s2240788.mobile_android.data.models.LearningPathTemplate
@@ -17,7 +16,7 @@ import ecccomp.s2240788.mobile_android.ui.viewmodels.TemplateViewModel
  * Template List Activity
  * テンプレート一覧画面
  */
-class TemplateListActivity : AppCompatActivity() {
+class TemplateListActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTemplateListBinding
     private val viewModel: TemplateViewModel by viewModels()
@@ -28,6 +27,8 @@ class TemplateListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTemplateListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         val type = intent.getStringExtra("TYPE")
         val category = intent.getStringExtra("CATEGORY")

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -287,6 +288,34 @@
                                 android:textSize="14sp" />
 
                         </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Scheduled Time Row -->
+                    <LinearLayout
+                        android:id="@+id/ll_scheduled_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_sm"
+                        android:layout_marginBottom="@dimen/spacing_xs"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_clock"
+                            android:contentDescription="@string/scheduled_time"
+                            app:tint="@color/text_muted" />
+
+                        <TextView
+                            android:id="@+id/tv_scheduled_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/spacing_xs"
+                            android:text="@string/scheduled_time"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 

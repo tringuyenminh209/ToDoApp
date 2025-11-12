@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.datepicker.MaterialDatePicker
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityCreateLearningPathBinding
@@ -17,7 +16,7 @@ import java.util.*
  * CreateLearningPathActivity
  * 手動で学習パスを作成する画面
  */
-class CreateLearningPathActivity : AppCompatActivity() {
+class CreateLearningPathActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCreateLearningPathBinding
     private val viewModel: CreateLearningPathViewModel by viewModels()
@@ -30,6 +29,8 @@ class CreateLearningPathActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateLearningPathBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         setupToolbar()
         setupGoalTypeSpinner()

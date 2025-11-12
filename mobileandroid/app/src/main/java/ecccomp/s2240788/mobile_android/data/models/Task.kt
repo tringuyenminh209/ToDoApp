@@ -370,10 +370,21 @@ data class CreateConversationResponse(
     val created_task: Task? = null
 )
 
+// Task Suggestion from AI (not auto-created, requires user confirmation)
+data class TaskSuggestion(
+    val title: String,
+    val description: String?,
+    val estimated_minutes: Int?,
+    val priority: String, // "high", "medium", "low"
+    val scheduled_time: String?,
+    val reason: String // Why AI suggests this task
+)
+
 data class SendMessageResponse(
     val user_message: ChatMessage,
     val assistant_message: ChatMessage,
-    val created_task: Task? = null
+    val created_task: Task? = null,
+    val task_suggestion: TaskSuggestion? = null // New field for AI suggestions
 )
 
 // ==================== Roadmap API Models ====================

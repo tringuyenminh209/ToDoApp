@@ -32,6 +32,8 @@ class TaskDetailActivity : BaseActivity() {
         binding = ActivityTaskDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         taskId = intent.getIntExtra("task_id", -1)
         if (taskId == -1) {
             Toast.makeText(this, "タスクIDが無効です", Toast.LENGTH_LONG).show()
@@ -164,6 +166,35 @@ class TaskDetailActivity : BaseActivity() {
                 } catch (_: Exception) {
                     binding.tvDueDate.text = getString(R.string.due_date) + ": " + deadlineStr
                 }
+            }
+
+            // Scheduled Time (yyyy-MM-dd HH:mm:ss -> MM/dd HH:mm)
+            val scheduledTimeStr = task.scheduled_time
+            if (!scheduledTimeStr.isNullOrEmpty()) {
+                try {
+                    val inFmt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    val outFmt = SimpleDateFormat("MM/dd HH:mm", Locale.getDefault())
+                    val datetime = inFmt.parse(scheduledTimeStr)
+                    val text = if (datetime != null) outFmt.format(datetime) else scheduledTimeStr
+                    binding.tvScheduledTime.text = getString(R.string.scheduled_time) + ": " + text
+                    binding.llScheduledTime.visibility = View.VISIBLE
+                } catch (e: Exception) {
+                    // Try alternative format (HH:mm only)
+                    try {
+                        val inFmt2 = SimpleDateFormat("HH:mm", Locale.getDefault())
+                        val time = inFmt2.parse(scheduledTimeStr)
+                        if (time != null) {
+                            binding.tvScheduledTime.text = getString(R.string.scheduled_time) + ": " + scheduledTimeStr
+                            binding.llScheduledTime.visibility = View.VISIBLE
+                        } else {
+                            binding.llScheduledTime.visibility = View.GONE
+                        }
+                    } catch (_: Exception) {
+                        binding.llScheduledTime.visibility = View.GONE
+                    }
+                }
+            } else {
+                binding.llScheduledTime.visibility = View.GONE
             }
 
             // Priority label

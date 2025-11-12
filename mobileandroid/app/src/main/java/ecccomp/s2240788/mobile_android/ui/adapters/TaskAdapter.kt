@@ -147,6 +147,32 @@ class TaskAdapter(
                     dateContainer.visibility = View.GONE
                 }
 
+                // Scheduled Time
+                if (!task.scheduled_time.isNullOrEmpty()) {
+                    scheduledTimeContainer.visibility = View.VISIBLE
+                    try {
+                        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                        val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                        val datetime = inputFormat.parse(task.scheduled_time)
+                        tvScheduledTime.text = if (datetime != null) outputFormat.format(datetime) else task.scheduled_time
+                    } catch (e: Exception) {
+                        // Try alternative format (HH:mm only)
+                        try {
+                            val inputFormat2 = SimpleDateFormat("HH:mm", Locale.getDefault())
+                            val time = inputFormat2.parse(task.scheduled_time)
+                            if (time != null) {
+                                tvScheduledTime.text = task.scheduled_time
+                            } else {
+                                scheduledTimeContainer.visibility = View.GONE
+                            }
+                        } catch (e2: Exception) {
+                            scheduledTimeContainer.visibility = View.GONE
+                        }
+                    }
+                } else {
+                    scheduledTimeContainer.visibility = View.GONE
+                }
+
                 // Subtasks - display compact (up to 3)
                 if (!task.subtasks.isNullOrEmpty()) {
                     subtasksContainer.visibility = View.VISIBLE

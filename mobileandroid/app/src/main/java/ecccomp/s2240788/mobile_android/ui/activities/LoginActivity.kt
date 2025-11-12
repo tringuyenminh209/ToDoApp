@@ -22,6 +22,8 @@ class LoginActivity : BaseActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         setupViewModel()
         setupLanguageSwitcher()
         setupClickListeners()

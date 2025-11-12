@@ -33,6 +33,8 @@ class TaskListActivity : BaseActivity() {
         binding = ActivityTaskListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         taskViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
 
         setupRecyclerView()

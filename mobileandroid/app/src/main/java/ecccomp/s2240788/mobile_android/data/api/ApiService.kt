@@ -335,6 +335,15 @@ interface ApiService {
         @Body request: SendMessageRequest
     ): Response<ApiResponse<SendMessageResponse>>
 
+    @POST("ai/chat/conversations/{id}/messages/context-aware")
+    suspend fun sendChatMessageWithContext(
+        @Path("id") id: Long,
+        @Body request: SendMessageRequest
+    ): Response<ApiResponse<SendMessageResponse>>
+
+    @POST("ai/chat/task-suggestions/confirm")
+    suspend fun confirmTaskSuggestion(@Body request: TaskSuggestion): Response<ApiResponse<Task>>
+
     // ==================== AI Task Breakdown Endpoint ====================
 
     @POST("ai/breakdown-task")

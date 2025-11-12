@@ -27,6 +27,8 @@ class KnowledgeActivity : BaseActivity() {
         binding = ActivityKnowledgeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         viewModel = ViewModelProvider(this)[PathsViewModel::class.java]
 
         setupUI()

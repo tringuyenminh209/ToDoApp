@@ -27,6 +27,8 @@ class StatsActivity : BaseActivity() {
         binding = ActivityStatsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         viewModel = ViewModelProvider(this)[StatsViewModel::class.java]
 
         setupClickListeners()

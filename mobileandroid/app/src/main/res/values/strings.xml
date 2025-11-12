@@ -118,7 +118,7 @@
     <string name="main_date_placeholder">木曜日, 18/10/2024</string>
     <string name="main_progress_today">今日の進捗</string>
     <string name="main_tasks_completed">タスク完了</string>
-    <string name="main_focus_time">フォーカス時間</string>
+    <string name="main_focus_time">集中時間</string>
     <string name="main_streak_days">連続日数</string>
     <string name="main_view_stats">統計</string>
     <string name="main_timetable">時間割</string>
@@ -171,6 +171,7 @@
     <!-- Deadline Section -->
     <string name="deadline">締め切り</string>
     <string name="deadline_hint">yyyy/mm/dd --:--</string>
+    <string name="scheduled_time">予定時刻</string>
     <string name="today">今日</string>
     <string name="tomorrow">明日</string>
     <string name="next_week">来週</string>
@@ -247,7 +248,7 @@
     <string name="review_mood_label">一日の終わりの気分</string>
     <string name="review_stats_label">今日の統計</string>
     <string name="review_tasks_completed">完了したタスク数</string>
-    <string name="review_focus_time">フォーカス時間合計（分）</string>
+    <string name="review_focus_time">集中時間合計（分）</string>
     <string name="review_scores_label">パフォーマンス評価</string>
     <string name="review_productivity_score">作業効率</string>
     <string name="review_focus_score">集中力</string>
@@ -278,7 +279,7 @@
     <string name="focus_sessions">フォーカスセッション</string>
     <string name="mark_complete">完了</string>
     <string name="start_focus">フォーカス開始</string>
-    <string name="total_focus_time">合計: %s</string>
+    <string name="total_focus_time">合計集中時間: %s分</string>
     
     <!-- Subtask Input -->
     <string name="drag_to_reorder">ドラッグして並び替え</string>
@@ -367,7 +368,7 @@
     <string name="weekly_stats">週間統計</string>
     <string name="monthly_stats">月間統計</string>
     <string name="productivity_trend">生産性の傾向</string>
-    <string name="focus_time_trend">フォーカス時間の傾向</string>
+    <string name="focus_time_trend">集中時間の傾向</string>
     
     <!-- Stats Details -->
     <string name="streak_record">記録: %d日</string>
@@ -791,5 +792,11 @@
     <string name="context_switches_this_week">今週のコンテキストスイッチ</string>
     <string name="significant_switches">重要なスイッチ</string>
     <string name="total_cost">合計コスト</string>
+
+    <!-- AI Task Suggestion -->
+    <string name="ai_task_suggestion">AIからのタスク提案</string>
+    <string name="task_suggestion">タスク提案</string>
+    <string name="create_task">タスクを作成</string>
+    <string name="dismiss">キャンセル</string>
 
 </resources>

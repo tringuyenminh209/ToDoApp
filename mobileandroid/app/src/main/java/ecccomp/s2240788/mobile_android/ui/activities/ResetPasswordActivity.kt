@@ -25,6 +25,8 @@ class ResetPasswordActivity : BaseActivity() {
         binding = ActivityResetPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         // Get email from ForgotPasswordActivity
         val email = intent.getStringExtra("email") ?: ""
         binding.etEmail.setText(email)
