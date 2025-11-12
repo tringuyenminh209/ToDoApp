@@ -21,6 +21,8 @@ class RegisterActivity : BaseActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         setupViewModel()
         setupLanguageSwitcher()
         setupClickListeners()

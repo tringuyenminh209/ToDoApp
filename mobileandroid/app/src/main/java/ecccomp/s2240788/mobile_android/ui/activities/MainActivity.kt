@@ -34,6 +34,8 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         setupViewModel()
         setupUI()
         setupObservers()  // Setup observers BEFORE loading data

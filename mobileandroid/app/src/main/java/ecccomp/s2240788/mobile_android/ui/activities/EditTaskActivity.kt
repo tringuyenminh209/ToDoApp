@@ -51,6 +51,8 @@ class EditTaskActivity : BaseActivity() {
         binding = ActivityEditTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         taskId = intent.getIntExtra("task_id", -1)
         if (taskId == -1) {
             showError("タスクIDが無効です")

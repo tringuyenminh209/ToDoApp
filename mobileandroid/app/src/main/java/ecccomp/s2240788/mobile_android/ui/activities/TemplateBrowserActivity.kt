@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.databinding.ActivityTemplateBrowserBinding
@@ -19,7 +18,7 @@ import ecccomp.s2240788.mobile_android.ui.viewmodels.TemplateViewModel
  * Template Browser Activity
  * テンプレートライブラリのブラウザ画面
  */
-class TemplateBrowserActivity : AppCompatActivity() {
+class TemplateBrowserActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTemplateBrowserBinding
     private val viewModel: TemplateViewModel by viewModels()
@@ -32,6 +31,8 @@ class TemplateBrowserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTemplateBrowserBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         setupToolbar()
         setupRecyclerViews()

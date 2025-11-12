@@ -34,6 +34,8 @@ class FocusSessionActivity : BaseActivity() {
         binding = ActivityFocusSessionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         viewModel = ViewModelProvider(this)[FocusSessionViewModel::class.java]
 
         // Get task ID and subtask index from intent

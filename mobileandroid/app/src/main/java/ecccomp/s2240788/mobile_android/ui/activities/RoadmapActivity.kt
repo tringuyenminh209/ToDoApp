@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputLayout
@@ -20,7 +19,7 @@ import ecccomp.s2240788.mobile_android.ui.viewmodels.RoadmapViewModel
  * RoadmapActivity
  * Roadmap一覧画面 - 人気のロードマップとAI生成機能
  */
-class RoadmapActivity : AppCompatActivity() {
+class RoadmapActivity : BaseActivity() {
 
     private lateinit var binding: ActivityRoadmapBinding
     private val viewModel: RoadmapViewModel by viewModels()
@@ -31,6 +30,8 @@ class RoadmapActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRoadmapBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         setupToolbar()
         setupRecyclerView()

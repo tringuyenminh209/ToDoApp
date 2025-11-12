@@ -2,8 +2,8 @@ package ecccomp.s2240788.mobile_android.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityCalendarBinding
@@ -29,6 +29,8 @@ class CalendarActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         viewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 

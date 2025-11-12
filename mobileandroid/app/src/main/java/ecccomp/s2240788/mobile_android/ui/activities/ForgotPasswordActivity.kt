@@ -20,6 +20,8 @@ class ForgotPasswordActivity : BaseActivity() {
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         setupViewModel()
         setupClickListeners()
         setupObservers()

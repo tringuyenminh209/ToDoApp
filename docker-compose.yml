@@ -13,6 +13,8 @@ services:
       - ./docker/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
     ports:
       - "8080:80"
+    env_file:
+      - ./backend/.env
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
@@ -28,8 +30,9 @@ services:
       - CACHE_DRIVER=redis
       - CACHE_STORE=redis
       - SESSION_DRIVER=redis
-      # OpenAI config - sẽ được load từ shell environment hoặc .env file
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # OpenAI config - sẽ được load từ .env file trong container
+      # Không override OPENAI_API_KEY để Laravel tự đọc từ .env file
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
       - OPENAI_MODEL=${OPENAI_MODEL:-gpt-5}
       - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://api.openai.com/v1}
       - OPENAI_FALLBACK_MODEL=${OPENAI_FALLBACK_MODEL:-gpt-4o-mini}

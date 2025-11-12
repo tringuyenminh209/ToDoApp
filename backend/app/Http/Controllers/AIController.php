@@ -901,4 +901,209 @@ class AIController extends Controller
             'message' => '会話を削除しました'
         ]);
     }
+
+    /**
+     * Send message with user context (tasks + timetable)
+     * This enables AI to give context-aware suggestions
+     * POST /api/ai/chat/conversations/{id}/messages/context-aware
+     */
+    public function sendMessageWithContext(Request $request, string $id): JsonResponse
+    {
+        $request->validate([
+            'message' => 'required|string|max:5000',
+        ]);
+
+        $conversation = ChatConversation::where('user_id', $request->user()->id)
+            ->findOrFail($id);
+
+        if ($conversation->status !== 'active') {
+            return response()->json([
+                'success' => false,
+                'message' => 'この会話は現在アクティブではありません'
+            ], 400);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $user = $request->user();
+
+            // Create user message
+            $userMessage = ChatMessage::create([
+                'conversation_id' => $conversation->id,
+                'user_id' => $user->id,
+                'role' => 'user',
+                'content' => $request->message,
+            ]);
+
+            // Load user context: tasks + timetable
+            $tasks = Task::where('user_id', $user->id)
+                ->where('status', '!=', 'completed')
+                ->where('status', '!=', 'cancelled')
+                ->with(['subtasks', 'tags'])
+                ->orderBy('priority', 'desc')
+                ->orderBy('deadline', 'asc')
+                ->limit(20) // Limit to avoid token overflow
+                ->get();
+
+            // Load today's timetable
+            $today = now();
+            $timetable = \App\Models\TimetableClass::where('user_id', $user->id)
+                ->where('day_of_week', $today->dayOfWeek)
+                ->orderBy('start_time', 'asc')
+                ->get();
+
+            // Build user context
+            $userContext = [
+                'tasks' => $tasks->toArray(),
+                'timetable' => $timetable->map(function($class) {
+                    return [
+                        'time' => $class->start_time,
+                        'title' => $class->class_name,
+                        'class_name' => $class->class_name,
+                    ];
+                })->toArray(),
+            ];
+
+            // Get conversation history (last 10 messages for context)
+            $history = $conversation->messages()
+                ->orderBy('created_at', 'desc')
+                ->limit(10)
+                ->get()
+                ->reverse()
+                ->map(function($msg) {
+                    return [
+                        'role' => $msg->role,
+                        'content' => $msg->content
+                    ];
+                })
+                ->toArray();
+
+            // Get AI response WITH CONTEXT
+            $aiResponse = $this->aiService->chatWithUserContext($history, $userContext);
+
+            // Check if AI service returned an error
+            if (!empty($aiResponse['error'])) {
+                DB::rollBack();
+                Log::warning('AI service error during context-aware message', [
+                    'user_id' => $user->id,
+                    'conversation_id' => $conversation->id,
+                    'message' => $aiResponse['message'] ?? 'Unknown error'
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $aiResponse['message'] ?? 'AIサービスに接続できませんでした',
+                    'error' => 'ai_service_unavailable'
+                ], 503);
+            }
+
+            // Create assistant message
+            $assistantMessage = ChatMessage::create([
+                'conversation_id' => $conversation->id,
+                'user_id' => $user->id,
+                'role' => 'assistant',
+                'content' => $aiResponse['message'] ?? '応答を生成できませんでした',
+                'token_count' => $aiResponse['tokens'] ?? null,
+                'metadata' => [
+                    'model' => $aiResponse['model'] ?? null,
+                    'finish_reason' => $aiResponse['finish_reason'] ?? null,
+                    'has_task_suggestion' => !empty($aiResponse['task_suggestion']),
+                ],
+            ]);
+
+            // Update conversation stats
+            $conversation->updateStats();
+
+            DB::commit();
+
+            $responseData = [
+                'user_message' => $userMessage,
+                'assistant_message' => $assistantMessage,
+                'task_suggestion' => $aiResponse['task_suggestion'] ?? null,
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $responseData,
+                'message' => 'メッセージを送信しました！'
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Context-aware chat message failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'メッセージの送信に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Confirm and create task from AI suggestion
+     * POST /api/ai/chat/task-suggestions/confirm
+     */
+    public function confirmTaskSuggestion(Request $request): JsonResponse
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+            'estimated_minutes' => 'nullable|integer|min:1|max:600',
+            'priority' => 'required|in:high,medium,low',
+            'scheduled_time' => 'nullable|date_format:Y-m-d H:i:s',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $user = $request->user();
+
+            // Convert priority string to integer
+            $priorityMap = [
+                'low' => 2,
+                'medium' => 3,
+                'high' => 5,
+            ];
+
+            $task = Task::create([
+                'user_id' => $user->id,
+                'title' => $request->title,
+                'description' => $request->description,
+                'estimated_minutes' => $request->estimated_minutes,
+                'priority' => $priorityMap[$request->priority] ?? 3,
+                'scheduled_time' => $request->scheduled_time,
+                'status' => 'pending',
+                'category' => 'other',
+                'energy_level' => 'medium',
+            ]);
+
+            DB::commit();
+
+            $task->load(['subtasks', 'tags']);
+
+            Log::info('Task created from AI suggestion', [
+                'task_id' => $task->id,
+                'user_id' => $user->id,
+                'title' => $task->title
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => $task,
+                'message' => 'タスクを作成しました！'
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Task suggestion confirmation failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'タスクの作成に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

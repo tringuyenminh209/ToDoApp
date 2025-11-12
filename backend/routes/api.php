@@ -131,6 +131,8 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::put('/conversations/{id}', [AIController::class, 'updateConversation']);
                     Route::delete('/conversations/{id}', [AIController::class, 'deleteConversation']);
                     Route::post('/conversations/{id}/messages', [AIController::class, 'sendMessage']);
+                    Route::post('/conversations/{id}/messages/context-aware', [AIController::class, 'sendMessageWithContext']);
+                    Route::post('/task-suggestions/confirm', [AIController::class, 'confirmTaskSuggestion']);
                 });
             });
 

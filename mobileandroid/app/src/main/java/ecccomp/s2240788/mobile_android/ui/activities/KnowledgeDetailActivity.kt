@@ -35,6 +35,8 @@ class KnowledgeDetailActivity : BaseActivity() {
         binding = ActivityKnowledgeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
+
         viewModel = ViewModelProvider(this)[KnowledgeDetailViewModel::class.java]
 
         // Get knowledge item ID from intent

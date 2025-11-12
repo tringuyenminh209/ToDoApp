@@ -8,6 +8,7 @@ import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.ChatConversation
 import ecccomp.s2240788.mobile_android.data.models.ChatMessage
 import ecccomp.s2240788.mobile_android.data.models.Task
+import ecccomp.s2240788.mobile_android.data.models.TaskSuggestion
 import ecccomp.s2240788.mobile_android.data.repository.ChatRepository
 import ecccomp.s2240788.mobile_android.data.result.ChatResult
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
@@ -60,6 +61,10 @@ class AICoachViewModel : ViewModel() {
     // Created task from AI chat
     private val _createdTask = MutableLiveData<Task?>()
     val createdTask: LiveData<Task?> = _createdTask
+
+    // Task suggestion from AI (not auto-created, requires user confirmation)
+    private val _taskSuggestion = MutableLiveData<TaskSuggestion?>()
+    val taskSuggestion: LiveData<TaskSuggestion?> = _taskSuggestion
 
     /**
      * Start a new conversation with initial message
@@ -180,7 +185,8 @@ class AICoachViewModel : ViewModel() {
                 _isSending.value = true
                 _error.value = null
 
-                val result = chatRepository.sendMessage(conversationId, message)
+                // Use context-aware endpoint instead of regular sendMessage
+                val result = chatRepository.sendMessageWithContext(conversationId, message)
 
                 when (result) {
                     is ChatResult.Success -> {
@@ -201,10 +207,15 @@ class AICoachViewModel : ViewModel() {
                             last_message_at = result.data.assistant_message.created_at
                         )
 
-                        // Check if task was created
+                        // Check if task was created (auto-created from old flow)
                         if (result.data.created_task != null) {
                             _createdTask.value = result.data.created_task
                             _successMessage.value = "タスクを作成しました！"
+                        }
+
+                        // Check if there's a task suggestion (new flow - requires user confirmation)
+                        if (result.data.task_suggestion != null) {
+                            _taskSuggestion.value = result.data.task_suggestion
                         }
                     }
                     is ChatResult.Error -> {
@@ -296,6 +307,46 @@ class AICoachViewModel : ViewModel() {
     }
 
     /**
+     * Confirm and create task from AI suggestion
+     */
+    fun confirmTaskSuggestion(suggestion: TaskSuggestion) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                val result = chatRepository.confirmTaskSuggestion(suggestion)
+
+                when (result) {
+                    is ChatResult.Success -> {
+                        _createdTask.value = result.data
+                        _taskSuggestion.value = null // Clear suggestion after confirmation
+                        _successMessage.value = "タスクを作成しました！"
+                    }
+                    is ChatResult.Error -> {
+                        _error.value = result.message
+                    }
+                    is ChatResult.Loading -> {
+                        // Already handled by _isLoading
+                    }
+                }
+
+            } catch (e: Exception) {
+                _error.value = "エラーが発生しました: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Dismiss task suggestion without creating
+     */
+    fun dismissTaskSuggestion() {
+        _taskSuggestion.value = null
+    }
+
+    /**
      * Reset conversation (start fresh)
      */
     fun resetConversation() {
@@ -303,6 +354,7 @@ class AICoachViewModel : ViewModel() {
         _messages.value = emptyList()
         _error.value = null
         _successMessage.value = null
+        _taskSuggestion.value = null
     }
 
     /**

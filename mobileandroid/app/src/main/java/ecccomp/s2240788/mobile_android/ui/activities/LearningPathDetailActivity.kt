@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityLearningPathDetailBinding
@@ -21,7 +20,7 @@ import ecccomp.s2240788.mobile_android.ui.viewmodels.PathsViewModel
  * - Milestones list with tasks
  * - Completion status
  */
-class LearningPathDetailActivity : AppCompatActivity() {
+class LearningPathDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLearningPathDetailBinding
     private val viewModel: PathsViewModel by viewModels()
@@ -33,6 +32,8 @@ class LearningPathDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLearningPathDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         // Get learning path ID from intent
         pathId = intent.getIntExtra("LEARNING_PATH_ID", 0)

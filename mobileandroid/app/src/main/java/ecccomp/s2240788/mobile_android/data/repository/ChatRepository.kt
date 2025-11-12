@@ -207,4 +207,69 @@ class ChatRepository(
             ChatResult.Error("ネットワークエラー: ${e.message}")
         }
     }
+
+    /**
+     * メッセージを送信（Context-Aware版 - tasks + timetable含む）
+     */
+    suspend fun sendMessageWithContext(
+        conversationId: Long,
+        message: String
+    ): ChatResult<SendMessageResponse> {
+        return try {
+            val request = SendMessageRequest(message)
+            val response = apiService.sendChatMessageWithContext(conversationId, request)
+
+            if (response.isSuccessful) {
+                val data = response.body()?.data
+                if (data != null) {
+                    ChatResult.Success(data)
+                } else {
+                    ChatResult.Error("メッセージの送信に失敗しました")
+                }
+            } else {
+                val errorMessage = when (response.code()) {
+                    400 -> "この会話は現在アクティブではありません"
+                    401 -> "認証に失敗しました"
+                    403 -> "この会話にアクセスする権限がありません"
+                    404 -> "会話が見つかりません"
+                    422 -> "メッセージが無効です"
+                    429 -> "リクエストが多すぎます。しばらく待ってください"
+                    500 -> "サーバーエラーが発生しました"
+                    503 -> "AIサービスに接続できません。しばらく待ってください"
+                    else -> "メッセージの送信に失敗しました: ${response.message()}"
+                }
+                ChatResult.Error(errorMessage)
+            }
+        } catch (e: Exception) {
+            ChatResult.Error("ネットワークエラー: ${e.message}")
+        }
+    }
+
+    /**
+     * タスク提案を確認して作成
+     */
+    suspend fun confirmTaskSuggestion(taskSuggestion: TaskSuggestion): ChatResult<Task> {
+        return try {
+            val response = apiService.confirmTaskSuggestion(taskSuggestion)
+
+            if (response.isSuccessful) {
+                val data = response.body()?.data
+                if (data != null) {
+                    ChatResult.Success(data)
+                } else {
+                    ChatResult.Error("タスクの作成に失敗しました")
+                }
+            } else {
+                val errorMessage = when (response.code()) {
+                    401 -> "認証に失敗しました"
+                    422 -> "入力データが無効です"
+                    500 -> "サーバーエラーが発生しました"
+                    else -> "タスクの作成に失敗しました: ${response.message()}"
+                }
+                ChatResult.Error(errorMessage)
+            }
+        } catch (e: Exception) {
+            ChatResult.Error("ネットワークエラー: ${e.message}")
+        }
+    }
 }

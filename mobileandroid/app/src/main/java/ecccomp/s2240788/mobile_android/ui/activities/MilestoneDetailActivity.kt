@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityMilestoneDetailBinding
@@ -21,7 +20,7 @@ import ecccomp.s2240788.mobile_android.ui.viewmodels.PathsViewModel
  * - Progress statistics
  * - Resources for learning
  */
-class MilestoneDetailActivity : AppCompatActivity() {
+class MilestoneDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMilestoneDetailBinding
     private val viewModel: PathsViewModel by viewModels()
@@ -34,6 +33,8 @@ class MilestoneDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMilestoneDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         // Get milestone ID and path ID from intent
         milestoneId = intent.getIntExtra("MILESTONE_ID", 0)

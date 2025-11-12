@@ -200,6 +200,7 @@
                 android:id="@+id/date_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_md"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="gone"
@@ -221,6 +222,35 @@
                     android:textSize="12sp"
                     android:textStyle="bold"
                     tools:text="Hôm nay 15:00" />
+
+            </LinearLayout>
+
+            <!-- Scheduled Time -->
+            <LinearLayout
+                android:id="@+id/scheduled_time_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_clock"
+                    android:contentDescription="@string/scheduled_time"
+                    app:tint="@color/accent" />
+
+                <TextView
+                    android:id="@+id/tv_scheduled_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="14:30" />
 
             </LinearLayout>
 

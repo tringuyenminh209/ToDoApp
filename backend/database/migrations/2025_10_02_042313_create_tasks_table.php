@@ -50,7 +50,6 @@ return new class extends Migration
             $table->timestamp('deadline')->nullable()
                 ->comment('締め切り');
             $table->timestamp('scheduled_time')->nullable()
-                ->after('deadline')
                 ->comment('予定開始時刻 (タスクを開始する予定の時刻)');
 
             // Status

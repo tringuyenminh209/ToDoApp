@@ -6,8 +6,8 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.R
-import ecccomp.s2240788.mobile_android.databinding.ActivityCheatCodeDetailBinding
 import ecccomp.s2240788.mobile_android.data.models.CheatCodeSection
+import ecccomp.s2240788.mobile_android.databinding.ActivityCheatCodeDetailBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.CheatCodeSectionAdapter
 import ecccomp.s2240788.mobile_android.ui.adapters.SectionTitleAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.CheatCodeDetailViewModel
@@ -27,6 +27,8 @@ class CheatCodeDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCheatCodeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         getIntentData()
         setupViewModel()

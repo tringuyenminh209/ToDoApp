@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -206,7 +207,7 @@
         android:layout_height="0dp"
         android:padding="@dimen/spacing_md"
         android:clipToPadding="false"
-        app:layout_constraintBottom_toTopOf="@id/input_container"
+        app:layout_constraintBottom_toTopOf="@id/task_suggestion_card"
         app:layout_constraintTop_toBottomOf="@id/quick_actions_card"
         tools:itemCount="3"
         tools:listitem="@android:layout/simple_list_item_2" />
@@ -271,6 +272,146 @@
             android:textStyle="italic" />
 
     </LinearLayout>
+
+    <!-- Task Suggestion Card (shown when AI suggests a task) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/task_suggestion_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_md"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/primary"
+        app:strokeWidth="2dp"
+        app:layout_constraintBottom_toTopOf="@id/input_container"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_lg">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/spacing_md">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_lightbulb"
+                    android:contentDescription="@string/task_suggestion"
+                    app:tint="@color/primary" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/spacing_sm"
+                    android:text="@string/ai_task_suggestion"
+                    android:textColor="@color/primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- Task Title -->
+            <TextView
+                android:id="@+id/tv_suggestion_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                tools:text="データベース設計を完成させる" />
+
+            <!-- Task Description -->
+            <TextView
+                android:id="@+id/tv_suggestion_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                tools:text="ユーザーテーブルとタスクテーブルのリレーションを確認し、正規化を行う" />
+
+            <!-- Task Metadata (Time, Priority) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/spacing_sm">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_suggestion_time"
+                    style="@style/Widget.Material3.Chip.Assist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_sm"
+                    app:chipIcon="@drawable/ic_timer"
+                    app:chipIconSize="16dp"
+                    tools:text="60分" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_suggestion_priority"
+                    style="@style/Widget.Material3.Chip.Assist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipIcon="@drawable/ic_flag"
+                    app:chipIconSize="16dp"
+                    tools:text="高優先度" />
+
+            </LinearLayout>
+
+            <!-- Reason -->
+            <TextView
+                android:id="@+id/tv_suggestion_reason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:layout_marginBottom="@dimen/spacing_md"
+                tools:text="💡 明日締切のプロジェクトに必要なタスクです" />
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_dismiss_suggestion"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dismiss"
+                    android:textColor="@color/text_muted"
+                    android:layout_marginEnd="@dimen/spacing_sm" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_confirm_suggestion"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_task"
+                    app:backgroundTint="@color/primary"
+                    app:icon="@drawable/ic_add"
+                    app:iconGravity="textStart" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Input Container -->
     <LinearLayout
