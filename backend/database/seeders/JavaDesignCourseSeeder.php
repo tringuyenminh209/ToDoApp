@@ -475,6 +475,27 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => '列挙型の実践', 'estimated_minutes' => 40, 'sort_order' => 3],
                     ['title' => '実践問題：じゃんけんゲーム', 'estimated_minutes' => 30, 'sort_order' => 4],
                 ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => '拡張for文（for-each）',
+                        'content' => "# 拡張for文とは\n\n配列やコレクションの全要素を簡単に処理できる構文。\n\n## 構文\n\n```java\nfor (型 変数名 : 配列orコレクション) {\n    // 処理\n}\n```\n\n## メリット\n\n- インデックス不要\n- シンプルで読みやすい\n- 範囲外エラーなし\n\n```java\nString[] names = {\"太郎\", \"花子\", \"次郎\"};\n\n// 従来のfor文\nfor (int i = 0; i < names.length; i++) {\n    System.out.println(names[i]);\n}\n\n// 拡張for文\nfor (String name : names) {\n    System.out.println(name);\n}\n```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => '列挙型（enum）とは',
+                        'content' => "# 列挙型（enum）\n\n関連する定数をグループ化した特殊なクラス。\n\n## 定義\n\n```java\npublic enum Season {\n    SPRING, SUMMER, AUTUMN, WINTER\n}\n```\n\n## メリット\n\n1. **型安全**: 定義された値のみ使用可能\n2. **可読性**: 意味が明確\n3. **保守性**: 一箇所で管理\n\n## 使用例\n\n```java\nSeason season = Season.SPRING;\n\nswitch (season) {\n    case SPRING:\n        System.out.println(\"春です\");\n        break;\n    case SUMMER:\n        System.out.println(\"夏です\");\n        break;\n}\n```",
+                        'sort_order' => 2
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'enum実践例：じゃんけん',
+                        'content' => "// じゃんけんenum\npublic enum Hand {\n    ROCK(\"グー\"),\n    SCISSORS(\"チョキ\"),\n    PAPER(\"パー\");\n    \n    private String name;\n    \n    Hand(String name) {\n        this.name = name;\n    }\n    \n    public String getName() {\n        return name;\n    }\n    \n    // 勝敗判定\n    public boolean beats(Hand other) {\n        return (this == ROCK && other == SCISSORS) ||\n               (this == SCISSORS && other == PAPER) ||\n               (this == PAPER && other == ROCK);\n    }\n}\n\n// 使用例\npublic class Main {\n    public static void main(String[] args) {\n        Hand player = Hand.ROCK;\n        Hand computer = Hand.SCISSORS;\n        \n        System.out.println(\"あなた: \" + player.getName());\n        System.out.println(\"相手: \" + computer.getName());\n        \n        if (player.beats(computer)) {\n            System.out.println(\"勝ち！\");\n        } else if (computer.beats(player)) {\n            System.out.println(\"負け！\");\n        } else {\n            System.out.println(\"引き分け！\");\n        }\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 3
+                    },
+                ],
             ],
         ]);
 
