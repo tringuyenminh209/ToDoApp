@@ -348,4 +348,52 @@ interface ApiService {
 
     @POST("ai/breakdown-task")
     suspend fun breakdownTask(@Body request: BreakdownTaskRequest): Response<ApiResponse<Task>>
+
+    // ==================== Daily Review Endpoints ====================
+
+    @POST("daily-review")
+    suspend fun createDailyReview(@Body request: CreateDailyReviewRequest): Response<ApiResponse<DailyReview>>
+
+    @GET("daily-review/today")
+    suspend fun getTodayReview(): Response<ApiResponse<DailyReview>>
+
+    @GET("daily-review/{date}")
+    suspend fun getReviewByDate(@Path("date") date: String): Response<ApiResponse<DailyReview>>
+
+    @PUT("daily-review/{id}")
+    suspend fun updateDailyReview(
+        @Path("id") id: Int,
+        @Body request: UpdateDailyReviewRequest
+    ): Response<ApiResponse<DailyReview>>
+
+    @DELETE("daily-review/{id}")
+    suspend fun deleteDailyReview(@Path("id") id: Int): Response<ApiResponse<Unit>>
+
+    @GET("daily-review")
+    suspend fun getDailyReviews(
+        @Query("start_date") startDate: String? = null,
+        @Query("end_date") endDate: String? = null,
+        @Query("mood") mood: String? = null,
+        @Query("min_score") minScore: Int? = null,
+        @Query("max_score") maxScore: Int? = null,
+        @Query("sort_by") sortBy: String = "date",
+        @Query("sort_order") sortOrder: String = "desc",
+        @Query("per_page") perPage: Int = 20
+    ): Response<ApiResponse<Any>>
+
+    @GET("daily-review/stats")
+    suspend fun getDailyReviewStats(
+        @Query("period") period: String = "month" // week, month, year, all
+    ): Response<ApiResponse<DailyReviewStats>>
+
+    @GET("daily-review/trends")
+    suspend fun getDailyReviewTrends(
+        @Query("period") period: String, // week, month, year
+        @Query("metric") metric: String = "productivity" // productivity, focus_time, task_completion, goal_achievement, work_life_balance
+    ): Response<ApiResponse<List<DailyReviewTrend>>>
+
+    @GET("daily-review/insights")
+    suspend fun getDailyReviewInsights(
+        @Query("period") period: String = "month" // week, month, year, all
+    ): Response<ApiResponse<DailyReviewInsights>>
 }
