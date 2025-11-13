@@ -645,6 +645,41 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => 'スレッドの同期', 'estimated_minutes' => 40, 'sort_order' => 3],
                     ['title' => '実践問題', 'estimated_minutes' => 60, 'sort_order' => 4],
                 ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'スレッド（マルチスレッド）とは',
+                        'content' => "# スレッドとは\n\n**スレッド**は、プログラムの実行単位です。1つのプログラム内で複数の処理を同時に実行することを**マルチスレッド**といいます。\n\n## スレッドのメリット\n- 複数の処理を並行実行できる\n- 時間のかかる処理中も他の処理を継続できる\n- CPUの複数コアを有効活用できる\n\n## スレッドの作成方法\nJavaでスレッドを作成するには2つの方法があります：\n1. **Threadクラスを継承**する方法\n2. **Runnableインターフェイスを実装**する方法",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'Threadクラスを継承する方法',
+                        'content' => "// Threadクラスを継承してスレッドを作成\npublic class MyThread extends Thread {\n    @Override\n    public void run() {\n        // スレッドで実行される処理\n        for (int i = 0; i < 5; i++) {\n            System.out.println(Thread.currentThread().getName() + \": \" + i);\n            try {\n                Thread.sleep(500); // 0.5秒待機\n            } catch (InterruptedException e) {\n                e.printStackTrace();\n            }\n        }\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        MyThread thread1 = new MyThread();\n        MyThread thread2 = new MyThread();\n        \n        thread1.start(); // スレッド開始\n        thread2.start(); // 別スレッド開始\n        \n        System.out.println(\"メインスレッド終了\");\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'Runnableインターフェイスを実装する方法',
+                        'content' => "// Runnableインターフェイスを実装（推奨）\npublic class MyRunnable implements Runnable {\n    @Override\n    public void run() {\n        for (int i = 0; i < 5; i++) {\n            System.out.println(Thread.currentThread().getName() + \": \" + i);\n            try {\n                Thread.sleep(500);\n            } catch (InterruptedException e) {\n                e.printStackTrace();\n            }\n        }\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // Runnableをインスタンス化\n        MyRunnable runnable = new MyRunnable();\n        \n        // ThreadにRunnableを渡す\n        Thread thread1 = new Thread(runnable);\n        Thread thread2 = new Thread(runnable);\n        \n        thread1.start();\n        thread2.start();\n    }\n}\n\n// Runnableは他のクラスを継承できるため、より柔軟です",
+                        'code_language' => 'java',
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'スレッドの同期（synchronized）',
+                        'content' => "# スレッドの同期\n\n複数のスレッドが同じリソース（変数、オブジェクト）にアクセスすると、**競合状態**が発生する可能性があります。\n\n## 同期化の必要性\n```java\nclass Counter {\n    private int count = 0;\n    \n    public void increment() {\n        count++; // 非アトミック操作：読み込み→加算→書き込み\n    }\n}\n// 複数スレッドから同時にincrement()を呼ぶと、期待通りの結果にならない可能性がある\n```\n\n## synchronizedキーワード\n**synchronized**を使うことで、同時に1つのスレッドだけがメソッドを実行できます。\n\n```java\nclass Counter {\n    private int count = 0;\n    \n    // メソッド全体を同期化\n    public synchronized void increment() {\n        count++;\n    }\n    \n    public synchronized int getCount() {\n        return count;\n    }\n}\n```\n\n## synchronizedブロック\n```java\npublic void increment() {\n    // 必要な部分だけ同期化\n    synchronized(this) {\n        count++;\n    }\n}\n```",
+                        'sort_order' => 4
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '同期化の実践例',
+                        'content' => "class BankAccount {\n    private int balance = 1000;\n    \n    // 預金（同期化）\n    public synchronized void deposit(int amount) {\n        balance += amount;\n        System.out.println(Thread.currentThread().getName() + \n                         \" deposited \" + amount + \", balance: \" + balance);\n    }\n    \n    // 引き出し（同期化）\n    public synchronized void withdraw(int amount) {\n        if (balance >= amount) {\n            balance -= amount;\n            System.out.println(Thread.currentThread().getName() + \n                             \" withdrew \" + amount + \", balance: \" + balance);\n        } else {\n            System.out.println(\"残高不足\");\n        }\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        BankAccount account = new BankAccount();\n        \n        // 複数のスレッドが同じ口座にアクセス\n        Thread t1 = new Thread(() -> account.deposit(500));\n        Thread t2 = new Thread(() -> account.withdraw(300));\n        Thread t3 = new Thread(() -> account.withdraw(800));\n        \n        t1.start();\n        t2.start();\n        t3.start();\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 5
+                    ],
+                ],
             ],
             [
                 'title' => '第16回：ファイル入出力',
@@ -657,6 +692,41 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => 'ファイルの読み込み', 'estimated_minutes' => 50, 'sort_order' => 1],
                     ['title' => 'ファイルの書き込み', 'estimated_minutes' => 50, 'sort_order' => 2],
                     ['title' => '実践問題', 'estimated_minutes' => 80, 'sort_order' => 3],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'ファイル入出力の基本',
+                        'content' => "# ファイル入出力とは\n\nJavaでファイルにデータを書き込んだり、ファイルからデータを読み込んだりする処理です。\n\n## 主なクラス\n\n### テキストファイル用\n- **FileReader**: ファイルから文字を読み込む\n- **FileWriter**: ファイルに文字を書き込む\n- **BufferedReader**: バッファを使って効率的に読み込む\n- **BufferedWriter**: バッファを使って効率的に書き込む\n\n### バイナリファイル用\n- **FileInputStream**: バイトデータを読み込む\n- **FileOutputStream**: バイトデータを書き込む\n\n## try-with-resources構文\nファイル操作では必ずリソースを閉じる必要があります。try-with-resources構文を使うと自動的にクローズされます。\n\n```java\ntry (FileReader fr = new FileReader(\"file.txt\")) {\n    // ファイル操作\n} catch (IOException e) {\n    e.printStackTrace();\n}\n// 自動的にfr.close()が呼ばれる\n```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'ファイルの読み込み（BufferedReader）',
+                        'content' => "import java.io.*;\n\npublic class FileReadExample {\n    public static void main(String[] args) {\n        // try-with-resources構文（自動クローズ）\n        try (BufferedReader br = new BufferedReader(\n                new FileReader(\"data.txt\"))) {\n            \n            String line;\n            // 1行ずつ読み込む\n            while ((line = br.readLine()) != null) {\n                System.out.println(line);\n            }\n            \n        } catch (FileNotFoundException e) {\n            System.out.println(\"ファイルが見つかりません: \" + e.getMessage());\n        } catch (IOException e) {\n            System.out.println(\"読み込みエラー: \" + e.getMessage());\n        }\n    }\n}\n\n// BufferedReaderを使うとreadLine()で1行ずつ効率的に読める",
+                        'code_language' => 'java',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'ファイルの書き込み（BufferedWriter）',
+                        'content' => "import java.io.*;\n\npublic class FileWriteExample {\n    public static void main(String[] args) {\n        // try-with-resources構文\n        try (BufferedWriter bw = new BufferedWriter(\n                new FileWriter(\"output.txt\"))) {\n            \n            // 文字列を書き込む\n            bw.write(\"Hello, World!\");\n            bw.newLine(); // 改行\n            \n            bw.write(\"これはテストファイルです。\");\n            bw.newLine();\n            \n            bw.write(\"Java ファイル入出力\");\n            \n            System.out.println(\"ファイルに書き込みました\");\n            \n        } catch (IOException e) {\n            System.out.println(\"書き込みエラー: \" + e.getMessage());\n        }\n    }\n}\n\n// FileWriter(\"file.txt\", true)の第2引数をtrueにすると追記モード",
+                        'code_language' => 'java',
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'ファイルのコピー（実践例）',
+                        'content' => "import java.io.*;\n\npublic class FileCopyExample {\n    public static void main(String[] args) {\n        String sourceFile = \"source.txt\";\n        String destFile = \"destination.txt\";\n        \n        // 読み込みと書き込みを同時に行う\n        try (BufferedReader br = new BufferedReader(new FileReader(sourceFile));\n             BufferedWriter bw = new BufferedWriter(new FileWriter(destFile))) {\n            \n            String line;\n            while ((line = br.readLine()) != null) {\n                bw.write(line);\n                bw.newLine();\n            }\n            \n            System.out.println(\"ファイルをコピーしました\");\n            \n        } catch (FileNotFoundException e) {\n            System.out.println(\"ファイルが見つかりません\");\n        } catch (IOException e) {\n            System.out.println(\"エラーが発生しました: \" + e.getMessage());\n        }\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 4
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'ファイル操作のベストプラクティス',
+                        'content' => "# ファイル操作のポイント\n\n## 1. 必ずtry-with-resourcesを使う\n```java\n// ❌ 古い方法（手動クローズ）\nFileReader fr = null;\ntry {\n    fr = new FileReader(\"file.txt\");\n    // 処理\n} finally {\n    if (fr != null) fr.close();\n}\n\n// ✅ 推奨方法（自動クローズ）\ntry (FileReader fr = new FileReader(\"file.txt\")) {\n    // 処理\n}\n```\n\n## 2. Bufferedクラスを使う\n- BufferedReaderとBufferedWriterを使うことで、I/O処理が高速化されます\n- readLine()で1行ずつ読める便利さもあります\n\n## 3. 例外処理を適切に行う\n- FileNotFoundException: ファイルが存在しない\n- IOException: 読み書き中のエラー\n\n## 4. ファイルパス\n- 相対パス: \"data.txt\" （プログラムの実行ディレクトリからの相対）\n- 絶対パス: \"/home/user/data.txt\" （ルートからの絶対）",
+                        'sort_order' => 5
+                    ],
                 ],
             ],
             [
@@ -671,6 +741,41 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => 'オブジェクトのシリアライズ', 'estimated_minutes' => 50, 'sort_order' => 2],
                     ['title' => '実践問題', 'estimated_minutes' => 80, 'sort_order' => 3],
                 ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'ストリームとは',
+                        'content' => "# ストリームとは\n\n**ストリーム**は、データの入出力を抽象化した概念です。データを「流れ」として扱います。\n\n## ストリームの種類\n\n### 1. バイトストリーム（バイナリデータ）\n- **InputStream**: バイトデータの入力\n- **OutputStream**: バイトデータの出力\n- 画像、音声、動画などのバイナリファイルを扱う\n\n### 2. キャラクタストリーム（テキストデータ）\n- **Reader**: 文字データの入力\n- **Writer**: 文字データの出力\n- テキストファイルを扱う（前回学習）\n\n## 主なバイトストリームクラス\n- **FileInputStream / FileOutputStream**: ファイル入出力\n- **ObjectInputStream / ObjectOutputStream**: オブジェクトの入出力（シリアライズ）\n- **DataInputStream / DataOutputStream**: プリミティブ型の入出力",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'バイナリファイルのコピー',
+                        'content' => "import java.io.*;\n\npublic class BinaryFileCopy {\n    public static void main(String[] args) {\n        // 画像ファイルなどのバイナリファイルをコピー\n        try (FileInputStream fis = new FileInputStream(\"input.jpg\");\n             FileOutputStream fos = new FileOutputStream(\"output.jpg\")) {\n            \n            int byteData;\n            // 1バイトずつ読み込んで書き込む\n            while ((byteData = fis.read()) != -1) {\n                fos.write(byteData);\n            }\n            \n            System.out.println(\"ファイルをコピーしました\");\n            \n        } catch (IOException e) {\n            System.out.println(\"エラー: \" + e.getMessage());\n        }\n    }\n}\n\n// 効率化：byte配列を使う\n// byte[] buffer = new byte[1024];\n// int length;\n// while ((length = fis.read(buffer)) != -1) {\n//     fos.write(buffer, 0, length);\n// }",
+                        'code_language' => 'java',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'シリアライズとは',
+                        'content' => "# シリアライズ（直列化）\n\n**シリアライズ**は、Javaオブジェクトをバイトストリームに変換し、ファイルやネットワークで送受信できるようにする技術です。\n\n## シリアライズの用途\n- オブジェクトをファイルに保存\n- ネットワーク経由でオブジェクトを送信\n- オブジェクトの状態を永続化\n\n## Serializableインターフェイス\nシリアライズ可能なクラスは**Serializable**インターフェイスを実装する必要があります。\n\n```java\nimport java.io.Serializable;\n\npublic class Person implements Serializable {\n    private String name;\n    private int age;\n    \n    // コンストラクタ、getter、setterなど\n}\n```\n\n## 重要な注意点\n- **transient**キーワードを付けたフィールドはシリアライズされない\n- **serialVersionUID**を定義することを推奨（クラスのバージョン管理）",
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'オブジェクトのシリアライズと復元',
+                        'content' => "import java.io.*;\n\n// シリアライズ可能なクラス\nclass Person implements Serializable {\n    private static final long serialVersionUID = 1L;\n    \n    private String name;\n    private int age;\n    \n    public Person(String name, int age) {\n        this.name = name;\n        this.age = age;\n    }\n    \n    @Override\n    public String toString() {\n        return \"Person{name='\" + name + \"', age=\" + age + \"}\";\n    }\n}\n\npublic class SerializeExample {\n    public static void main(String[] args) {\n        Person person = new Person(\"田中太郎\", 25);\n        \n        // オブジェクトをファイルに保存（シリアライズ）\n        try (ObjectOutputStream oos = new ObjectOutputStream(\n                new FileOutputStream(\"person.dat\"))) {\n            \n            oos.writeObject(person);\n            System.out.println(\"オブジェクトを保存しました\");\n            \n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n        \n        // ファイルからオブジェクトを復元（デシリアライズ）\n        try (ObjectInputStream ois = new ObjectInputStream(\n                new FileInputStream(\"person.dat\"))) {\n            \n            Person loadedPerson = (Person) ois.readObject();\n            System.out.println(\"復元: \" + loadedPerson);\n            \n        } catch (IOException | ClassNotFoundException e) {\n            e.printStackTrace();\n        }\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 4
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'transientキーワードの使用',
+                        'content' => "import java.io.*;\n\nclass User implements Serializable {\n    private static final long serialVersionUID = 1L;\n    \n    private String username;\n    private transient String password; // シリアライズしない\n    private int loginCount;\n    \n    public User(String username, String password, int loginCount) {\n        this.username = username;\n        this.password = password;\n        this.loginCount = loginCount;\n    }\n    \n    @Override\n    public String toString() {\n        return \"User{username='\" + username + \"', password='\" + \n               password + \"', loginCount=\" + loginCount + \"}\";\n    }\n}\n\npublic class TransientExample {\n    public static void main(String[] args) {\n        User user = new User(\"admin\", \"secret123\", 100);\n        System.out.println(\"保存前: \" + user);\n        \n        // シリアライズ\n        try (ObjectOutputStream oos = new ObjectOutputStream(\n                new FileOutputStream(\"user.dat\"))) {\n            oos.writeObject(user);\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n        \n        // デシリアライズ\n        try (ObjectInputStream ois = new ObjectInputStream(\n                new FileInputStream(\"user.dat\"))) {\n            User loaded = (User) ois.readObject();\n            System.out.println(\"復元後: \" + loaded);\n            // passwordはnullになる（transientなので保存されない）\n        } catch (IOException | ClassNotFoundException e) {\n            e.printStackTrace();\n        }\n    }\n}\n\n// 出力:\n// 保存前: User{username='admin', password='secret123', loginCount=100}\n// 復元後: User{username='admin', password='null', loginCount=100}",
+                        'code_language' => 'java',
+                        'sort_order' => 5
+                    ],
+                ],
             ],
             [
                 'title' => '第18回：例外処理（throw、throws）',
@@ -684,6 +789,47 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => 'throwsで例外を宣言', 'estimated_minutes' => 40, 'sort_order' => 2],
                     ['title' => 'カスタム例外クラスの作成', 'estimated_minutes' => 40, 'sort_order' => 3],
                     ['title' => '実践問題', 'estimated_minutes' => 30, 'sort_order' => 4],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'throwキーワード：例外を投げる',
+                        'content' => "# throwキーワード\n\n**throw**キーワードを使うと、プログラマが意図的に例外を発生させることができます。\n\n## throwの使い方\n```java\nthrow new 例外クラス(\"エラーメッセージ\");\n```\n\n## 使用場面\n- 不正な値や状態を検出したとき\n- ビジネスロジックのエラーを表現したいとき\n- 事前条件や事後条件が満たされないとき\n\n## 基本例\n```java\npublic void setAge(int age) {\n    if (age < 0) {\n        throw new IllegalArgumentException(\"年齢は0以上でなければなりません\");\n    }\n    this.age = age;\n}\n```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'throwの実践例',
+                        'content' => "public class BankAccount {\n    private int balance;\n    \n    public BankAccount(int initialBalance) {\n        if (initialBalance < 0) {\n            throw new IllegalArgumentException(\n                \"初期残高は0以上でなければなりません\");\n        }\n        this.balance = initialBalance;\n    }\n    \n    public void withdraw(int amount) {\n        if (amount < 0) {\n            throw new IllegalArgumentException(\n                \"引き出し金額は0以上でなければなりません\");\n        }\n        if (balance < amount) {\n            throw new IllegalStateException(\n                \"残高不足です。残高: \" + balance + \", 引き出し額: \" + amount);\n        }\n        balance -= amount;\n    }\n    \n    public int getBalance() {\n        return balance;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        try {\n            BankAccount account = new BankAccount(1000);\n            account.withdraw(1500); // IllegalStateException発生\n        } catch (IllegalStateException e) {\n            System.out.println(\"エラー: \" + e.getMessage());\n        }\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'throwsキーワード：例外を宣言する',
+                        'content' => "# throwsキーワード\n\n**throws**キーワードは、メソッドが例外を投げる可能性があることを宣言します。\n\n## throwsの使い方\n```java\npublic void メソッド名() throws 例外クラス {\n    // 例外を投げる可能性のある処理\n}\n```\n\n## checked例外とunchecked例外\n\n### Checked例外（検査例外）\n- **コンパイル時にチェックされる**例外\n- throwsで宣言するか、try-catchで処理する必要がある\n- 例: IOException, SQLException, ClassNotFoundException\n\n### Unchecked例外（非検査例外）\n- **実行時に発生する**例外（RuntimeException継承）\n- throwsで宣言する必要はない\n- 例: NullPointerException, IllegalArgumentException, ArithmeticException\n\n## 複数の例外を宣言\n```java\npublic void readFile() throws IOException, FileNotFoundException {\n    // ファイル読み込み処理\n}\n```",
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'throwsの実践例',
+                        'content' => "import java.io.*;\n\npublic class FileProcessor {\n    \n    // IOExceptionをthrowsで宣言\n    public String readFile(String filename) throws IOException {\n        BufferedReader br = new BufferedReader(new FileReader(filename));\n        StringBuilder content = new StringBuilder();\n        String line;\n        \n        while ((line = br.readLine()) != null) {\n            content.append(line).append(\"\\n\");\n        }\n        br.close();\n        return content.toString();\n    }\n    \n    // 呼び出し側で例外処理が必要\n    public void processFile(String filename) {\n        try {\n            String content = readFile(filename);\n            System.out.println(content);\n        } catch (FileNotFoundException e) {\n            System.out.println(\"ファイルが見つかりません: \" + filename);\n        } catch (IOException e) {\n            System.out.println(\"読み込みエラー: \" + e.getMessage());\n        }\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        FileProcessor processor = new FileProcessor();\n        processor.processFile(\"data.txt\");\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 4
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'カスタム例外クラスの作成',
+                        'content' => "# カスタム例外クラス\n\n独自の例外クラスを作成することで、アプリケーション固有のエラーを表現できます。\n\n## カスタム例外の作成方法\n\n### 1. Exceptionを継承（Checked例外）\n```java\npublic class MyException extends Exception {\n    public MyException(String message) {\n        super(message);\n    }\n}\n```\n\n### 2. RuntimeExceptionを継承（Unchecked例外）\n```java\npublic class MyRuntimeException extends RuntimeException {\n    public MyRuntimeException(String message) {\n        super(message);\n    }\n}\n```\n\n## カスタム例外を使う理由\n- ビジネスロジックのエラーを明確に表現\n- エラーの種類を区別しやすい\n- 適切な例外処理を促進\n\n## 命名規則\n- クラス名は「○○Exception」とする\n- エラーの内容が分かる名前にする",
+                        'sort_order' => 5
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'カスタム例外の実装例',
+                        'content' => "// カスタム例外クラス（Checked例外）\nclass InsufficientBalanceException extends Exception {\n    private int balance;\n    private int amount;\n    \n    public InsufficientBalanceException(int balance, int amount) {\n        super(\"残高不足: 残高=\" + balance + \", 引き出し額=\" + amount);\n        this.balance = balance;\n        this.amount = amount;\n    }\n    \n    public int getBalance() { return balance; }\n    public int getShortfall() { return amount - balance; }\n}\n\nclass BankAccount {\n    private int balance;\n    \n    public BankAccount(int balance) {\n        this.balance = balance;\n    }\n    \n    // カスタム例外を投げる\n    public void withdraw(int amount) throws InsufficientBalanceException {\n        if (balance < amount) {\n            throw new InsufficientBalanceException(balance, amount);\n        }\n        balance -= amount;\n    }\n    \n    public int getBalance() { return balance; }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        BankAccount account = new BankAccount(5000);\n        \n        try {\n            account.withdraw(7000);\n        } catch (InsufficientBalanceException e) {\n            System.out.println(\"エラー: \" + e.getMessage());\n            System.out.println(\"不足額: \" + e.getShortfall() + \"円\");\n        }\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 6
+                    ],
                 ],
             ],
         ]);
