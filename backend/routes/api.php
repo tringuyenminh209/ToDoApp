@@ -115,6 +115,10 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::post('/insights', [AIController::class, 'insights']);
                     Route::post('/learning-recommendations', [AIController::class, 'learningRecommendations']);
                     Route::post('/focus-analysis', [AIController::class, 'focusAnalysis']);
+
+                    // Proactive AI Planning & Insights
+                    Route::get('/daily-plan', [AIController::class, 'getDailyPlan']);
+                    Route::get('/weekly-insights', [AIController::class, 'getWeeklyInsights']);
                 });
 
                 // Lighter operations
