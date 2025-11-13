@@ -726,9 +726,15 @@ JSON形式で返してください：
                     $requestBody = [
                         'model' => $model,
                         'messages' => $apiMessages,
-                        'temperature' => $options['temperature'] ?? 0.7,
                         'stream' => false,
                     ];
+
+                    // Temperature support varies by model
+                    // GPT-5 and o1 series only support temperature=1 (default)
+                    $noTemperatureModels = ['gpt-5', 'o1', 'o1-preview', 'o1-mini'];
+                    if (!in_array($model, $noTemperatureModels)) {
+                        $requestBody['temperature'] = $options['temperature'] ?? 0.7;
+                    }
 
                     // Use appropriate parameter based on model
                     if ($useMaxCompletionTokens) {

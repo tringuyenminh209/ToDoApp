@@ -6,8 +6,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.Task
+import ecccomp.s2240788.mobile_android.data.models.StatsDashboard
+import ecccomp.s2240788.mobile_android.data.models.UserStats
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
+
+/**
+ * Today's statistics for main screen
+ */
+data class TodayStats(
+    val progressPercentage: Int,
+    val tasksCompleted: Int,
+    val focusTimeMinutes: Int,
+    val streakDays: Int
+)
 
 class MainViewModel : ViewModel() {
 
@@ -32,6 +45,12 @@ class MainViewModel : ViewModel() {
 
     private val _successMessage = MutableLiveData<String>()
     val successMessage: LiveData<String> = _successMessage
+
+    private val _todayProgress = MutableLiveData<Int>()
+    val todayProgress: LiveData<Int> = _todayProgress
+
+    private val _todayStats = MutableLiveData<TodayStats?>()
+    val todayStats: LiveData<TodayStats?> = _todayStats
 
     fun getTasks() {
         viewModelScope.launch {
@@ -161,8 +180,9 @@ class MainViewModel : ViewModel() {
                         _successMessage.postValue("タスクを開始しました！")
                         android.util.Log.d("MainViewModel", "Task started: $taskId")
 
-                        // Refresh task list
+                        // Refresh task list and progress
                         getTasks()
+                        getTodayProgress()
                     } else {
                         _error.postValue(apiResponse?.message ?: "タスクの開始に失敗しました")
                         _taskStarted.postValue(false)
@@ -205,8 +225,9 @@ class MainViewModel : ViewModel() {
                         _successMessage.postValue("タスクを削除しました")
                         android.util.Log.d("MainViewModel", "Task deleted: $taskId")
 
-                        // Refresh task list
+                        // Refresh task list and progress
                         getTasks()
+                        getTodayProgress()
                     } else {
                         _error.postValue(apiResponse?.message ?: "タスクの削除に失敗しました")
                     }
@@ -250,8 +271,9 @@ class MainViewModel : ViewModel() {
                         _successMessage.postValue("タスクを完了しました！")
                         android.util.Log.d("MainViewModel", "Task completed: $taskId")
 
-                        // Refresh task list
+                        // Refresh task list and progress
                         getTasks()
+                        getTodayProgress()
                     } else {
                         _error.postValue(apiResponse?.message ?: "タスクの完了に失敗しました")
                     }
@@ -268,6 +290,99 @@ class MainViewModel : ViewModel() {
                 android.util.Log.e("MainViewModel", "Error completing task", e)
             } finally {
                 _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Get today's progress and statistics
+     * 今日の進捗と統計を取得
+     */
+    fun getTodayProgress() {
+        viewModelScope.launch {
+            try {
+                // Fetch dashboard stats and user stats in parallel
+                val dashboardDeferred = async { apiService.getStatsDashboard() }
+                val userStatsDeferred = async { apiService.getUserStats() }
+
+                val dashboardResponse = dashboardDeferred.await()
+                val userStatsResponse = userStatsDeferred.await()
+
+                if (dashboardResponse.isSuccessful) {
+                    val apiResponse = dashboardResponse.body()
+                    if (apiResponse?.success == true) {
+                        val dashboard = apiResponse.data as? StatsDashboard
+                        if (dashboard != null) {
+                            // Calculate today's progress percentage
+                            val todayTasks = dashboard.tasks.today
+                            val totalTasks = todayTasks["total"] ?: 0
+                            val completedTasks = todayTasks["completed"] ?: 0
+                            
+                            // Progress = (completed / total) * 100
+                            // Handle edge cases:
+                            // - If total > 0: normal calculation
+                            // - If total == 0 but completed > 0: 100% (all tasks done)
+                            // - If total == 0 and completed == 0: 0% (no tasks)
+                            val progress = when {
+                                totalTasks > 0 -> {
+                                    ((completedTasks.toFloat() / totalTasks.toFloat()) * 100).toInt().coerceIn(0, 100)
+                                }
+                                completedTasks > 0 -> {
+                                    // Tasks completed today but not created today (e.g., from previous days)
+                                    100
+                                }
+                                else -> {
+                                    0
+                                }
+                            }
+
+                            // Get focus time from sessions
+                            val todaySessions = dashboard.sessions.today
+                            val focusTimeMinutes = todaySessions["minutes"] ?: 0
+
+                            // Get streak from user stats
+                            val streakDays = if (userStatsResponse.isSuccessful) {
+                                val userStatsApiResponse = userStatsResponse.body()
+                                if (userStatsApiResponse?.success == true) {
+                                    val userStats = userStatsApiResponse.data as? UserStats
+                                    userStats?.current_streak ?: 0
+                                } else {
+                                    0
+                                }
+                            } else {
+                                0
+                            }
+
+                            val stats = TodayStats(
+                                progressPercentage = progress,
+                                tasksCompleted = completedTasks,
+                                focusTimeMinutes = focusTimeMinutes,
+                                streakDays = streakDays
+                            )
+
+                            _todayProgress.postValue(progress)
+                            _todayStats.postValue(stats)
+                            
+                            android.util.Log.d("MainViewModel", "Today progress: $progress%, Tasks: $completedTasks/$totalTasks, Streak: $streakDays")
+                        } else {
+                            _todayProgress.postValue(0)
+                            _todayStats.postValue(null)
+                        }
+                    } else {
+                        _error.postValue(apiResponse?.message ?: "進捗データの取得に失敗しました")
+                        _todayProgress.postValue(0)
+                        _todayStats.postValue(null)
+                    }
+                } else {
+                    _error.postValue("API Error: ${dashboardResponse.message()}")
+                    _todayProgress.postValue(0)
+                    _todayStats.postValue(null)
+                }
+            } catch (e: Exception) {
+                _error.postValue("ネットワークエラー: ${e.message}")
+                _todayProgress.postValue(0)
+                _todayStats.postValue(null)
+                android.util.Log.e("MainViewModel", "Error loading today progress", e)
             }
         }
     }

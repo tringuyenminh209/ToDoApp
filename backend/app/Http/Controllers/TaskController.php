@@ -63,12 +63,23 @@ class TaskController extends Controller
         }
 
         // Sorting
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortOrder = $request->get('sort_order', 'desc');
+        // Default sorting: by date (scheduled_time or deadline), then by priority
+        if (!$request->has('sort_by')) {
+            // Use scheduled_time if available, otherwise use deadline
+            // Order by earliest date first (NULLs last), then by highest priority
+            $query->orderByRaw('CASE WHEN scheduled_time IS NULL AND deadline IS NULL THEN 1 ELSE 0 END')
+                  ->orderByRaw('COALESCE(scheduled_time, deadline) ASC')
+                  ->orderBy('priority', 'desc')
+                  ->orderBy('created_at', 'desc');
+        } else {
+            // Custom sorting if specified
+            $sortBy = $request->get('sort_by', 'created_at');
+            $sortOrder = $request->get('sort_order', 'desc');
 
-        $allowedSortFields = ['created_at', 'updated_at', 'priority', 'deadline', 'title'];
-        if (in_array($sortBy, $allowedSortFields)) {
-            $query->orderBy($sortBy, $sortOrder);
+            $allowedSortFields = ['created_at', 'updated_at', 'priority', 'deadline', 'title', 'scheduled_time'];
+            if (in_array($sortBy, $allowedSortFields)) {
+                $query->orderBy($sortBy, $sortOrder);
+            }
         }
 
         // Pagination

@@ -47,6 +47,11 @@ class StartTaskDialogFragment : DialogFragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, android.R.style.Theme_Material_Light_Dialog)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -164,8 +169,11 @@ class StartTaskDialogFragment : DialogFragment() {
             FilterType.TODAY -> {
                 val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
                     .format(java.util.Date())
-                allTasks.filter { 
-                    it.deadline?.startsWith(today) == true
+                allTasks.filter { task ->
+                    task.deadline?.let { deadline ->
+                        // Check if deadline starts with today's date (handles ISO format)
+                        deadline.startsWith(today) || deadline.contains(today)
+                    } ?: false
                 }
             }
         }

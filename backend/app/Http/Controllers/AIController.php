@@ -560,12 +560,26 @@ class AIController extends Controller
             // If task intent detected, create task
             if ($taskData) {
                 try {
+                    // Convert priority string to integer
+                    $priorityMap = [
+                        'low' => 2,
+                        'medium' => 3,
+                        'high' => 5,
+                    ];
+                    $priorityValue = $taskData['priority'] ?? 'medium';
+                    if (is_string($priorityValue)) {
+                        $priorityValue = strtolower($priorityValue);
+                        $priorityInt = $priorityMap[$priorityValue] ?? 3;
+                    } else {
+                        $priorityInt = $priorityValue;
+                    }
+
                     $createdTask = Task::create([
                         'user_id' => $request->user()->id,
                         'title' => $taskData['title'],
                         'description' => $taskData['description'] ?? null,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
-                        'priority' => $taskData['priority'] ?? 'medium',
+                        'priority' => $priorityInt,
                         'scheduled_time' => $taskData['scheduled_time'] ?? null,
                         'status' => 'pending',
                     ]);
@@ -728,12 +742,26 @@ class AIController extends Controller
             // If task intent detected, create task
             if ($taskData) {
                 try {
+                    // Convert priority string to integer
+                    $priorityMap = [
+                        'low' => 2,
+                        'medium' => 3,
+                        'high' => 5,
+                    ];
+                    $priorityValue = $taskData['priority'] ?? 'medium';
+                    if (is_string($priorityValue)) {
+                        $priorityValue = strtolower($priorityValue);
+                        $priorityInt = $priorityMap[$priorityValue] ?? 3;
+                    } else {
+                        $priorityInt = $priorityValue;
+                    }
+
                     $createdTask = Task::create([
                         'user_id' => $request->user()->id,
                         'title' => $taskData['title'],
                         'description' => $taskData['description'] ?? null,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
-                        'priority' => $taskData['priority'] ?? 'medium',
+                        'priority' => $priorityInt,
                         'scheduled_time' => $taskData['scheduled_time'] ?? null,
                         'status' => 'pending',
                     ]);
@@ -948,8 +976,11 @@ class AIController extends Controller
 
             // Load today's timetable
             $today = now();
+            $dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            $todayDayName = $dayNames[$today->dayOfWeek];
+
             $timetable = \App\Models\TimetableClass::where('user_id', $user->id)
-                ->where('day_of_week', $today->dayOfWeek)
+                ->where('day', $todayDayName)
                 ->orderBy('start_time', 'asc')
                 ->get();
 
@@ -959,8 +990,8 @@ class AIController extends Controller
                 'timetable' => $timetable->map(function($class) {
                     return [
                         'time' => $class->start_time,
-                        'title' => $class->class_name,
-                        'class_name' => $class->class_name,
+                        'title' => $class->name,
+                        'class_name' => $class->name,
                     ];
                 })->toArray(),
             ];
