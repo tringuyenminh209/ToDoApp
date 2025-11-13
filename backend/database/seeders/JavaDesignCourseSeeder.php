@@ -408,22 +408,23 @@ class JavaDesignCourseSeeder extends Seeder
                 'knowledge_items' => [
                     [
                         'type' => 'note',
-                        'title' => '抽象とは',
-                        'content' => "# 抽象とは\n\n多くの物や事柄や具体的な概念から、それらの範囲の全部に共通な属性を抜き出し、\nこれを一般的な概念としてとらえること。\n\n（例①）ピカチュウ・ヤドン・ヒトカゲ　→　ざっくり「モンスター」と抽象的にとらえられる。\n（例②）飛行機・船・車　→　ざっくり「乗り物」と抽象的にとらえられる。\n\nJavaにおける抽象的とは、【実態や処理を持たないもの】を指す。",
+                        'title' => '抽象クラスとは',
+                        'content' => "# 抽象クラスとは\n\n**抽象クラス**は、インスタンス化できない不完全なクラス。\n\n## 抽象の概念\n\n多くの物から共通属性を抜き出し、一般的概念としてとらえること。\n\n- ピカチュウ・ヒトカゲ → **モンスター**\n- 飛行機・船・車 → **乗り物**\n\n## 抽象クラスの特徴\n\n| 特徴 | 可否 |\n|------|------|\n| インスタンス化 | ❌ 不可 |\n| 継承 | ✅ 可能 |\n| 抽象メソッド | ✅ 持てる |\n| 具象メソッド | ✅ 持てる |\n| フィールド | ✅ 持てる |\n\n## 使う理由\n\n1. **共通処理の提供**\n2. **実装の強制**\n3. **実装忘れ防止**",
                         'sort_order' => 1
                     ],
                     [
-                        'type' => 'note',
-                        'title' => '抽象メソッドと抽象クラス',
-                        'content' => "# 抽象メソッドとは\n\n処理を持たせずに定義だけ行ったメソッドを抽象メソッドという。\nabstract修飾子をメソッドに記述することで、抽象化させることができる。\n\n```java\npublic abstract void attack();\n// 抽象メソッドは処理を持たない為、{}で開く（処理部を持つ）必要が無い。\n```\n\n# 抽象クラスとは\n\n抽象メソッドを１つ以上定義したクラスを抽象クラスという。\n抽象メソッドと同様に、abstract修飾子をクラスに記述することで、抽象化させることができる。\n抽象クラスから【インスタンス化（new）を行うことはできない】。\n\n```java\npublic abstract class RPGCharacter { ~ }\n```\n\n## なぜ抽象メソッド・抽象クラスを使うのか\n\n処理を持てないメソッドということでメソッドの下位互換に思えるかも知れないが、\n処理を持てない ＝ 持たせる必要の無いメソッドとして定義できるメリットにもなる。\n\nRPGのキャラクターは攻撃・防御という操作（メソッド）は必要だが、操作内容は個別のインスタンスに持たせたい為、\nスーパークラスには処理を持たせず【抽象的に定義だけ行い、それを継承したサブクラスでオーバーライドして】処理を持たせる。\n\nまた、抽象メソッドを持った抽象クラスを継承した具象クラスでは、\n【継承した抽象メソッドを必ずオーバーライドしなければならない】というルールがある為、\n処理の実装忘れという人為的ミスを防ぐこともメリットとなる。",
+                        'type' => 'code_snippet',
+                        'title' => '抽象クラスの定義と実装',
+                        'content' => "// 抽象クラス\npublic abstract class RPGCharacter {\n    protected String name;\n    protected int hp;\n    \n    public RPGCharacter(String name, int hp) {\n        this.name = name;\n        this.hp = hp;\n    }\n    \n    // 具象メソッド\n    public void showStatus() {\n        System.out.println(name + \" HP:\" + hp);\n    }\n    \n    // 抽象メソッド\n    public abstract void attack();\n    public abstract void specialSkill();\n}\n\n// 具象クラス\npublic class Warrior extends RPGCharacter {\n    public Warrior(String name) {\n        super(name, 150);\n    }\n    \n    @Override\n    public void attack() {\n        System.out.println(name + \"は剣で攻撃！\");\n    }\n    \n    @Override\n    public void specialSkill() {\n        System.out.println(name + \"の必殺技！\");\n    }\n}",
+                        'code_language' => 'java',
                         'sort_order' => 2
-                    ],
+                    },
                     [
                         'type' => 'note',
                         'title' => 'Template Methodパターン',
-                        'content' => "# Template Methodパターン\n\nオブジェクト指向言語におけるデザインパターン（設計手法）のひとつで、\nスーパークラスで処理の枠組みを定義し、サブクラスでその具体的な処理を定義する。\n\nメソッドを呼び出す順序だけを定義したメソッド（Template Method）をスーパークラスに定義し、\n各行動の処理をサブクラス側で定義すれば、mainメソッドではそのTemplate Methodを\n呼び出すだけとなり、スーパークラス側で行動パターンを管理することができる。",
+                        'content' => "# Template Methodパターン\n\n処理の枠組みを抽象クラスで定義し、具体処理をサブクラスで実装。\n\n## メリット\n\n1. 処理の流れを統一\n2. 共通処理の一元管理\n3. 実装の強制\n\n```java\npublic abstract class Game {\n    public final void play() {\n        start();     // 共通\n        doAction();  // 抽象\n        end();       // 共通\n    }\n    \n    protected abstract void doAction();\n}\n```",
                         'sort_order' => 3
-                    ],
+                    },
                 ],
             ],
             [
