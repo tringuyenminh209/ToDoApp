@@ -20,7 +20,7 @@ class LearningPathController extends Controller
             $user = Auth::user();
 
             $query = LearningPath::where('user_id', $user->id)
-                ->with(['milestones', 'knowledgeItems']);
+                ->with(['milestones', 'knowledgeItems', 'studySchedules']);
 
             // Filter by status
             if ($request->has('status')) {
@@ -66,7 +66,8 @@ class LearningPathController extends Controller
                     'milestones.tasks.knowledgeItems' => function($query) {
                         $query->orderBy('item_type')->orderBy('created_at');
                     },
-                    'knowledgeItems'
+                    'knowledgeItems',
+                    'studySchedules'
                 ])
                 ->findOrFail($id);
 
