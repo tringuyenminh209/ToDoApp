@@ -123,6 +123,9 @@ class FocusSessionViewModel : ViewModel() {
                         task.estimated_minutes?.let { minutes ->
                             setTimerDuration(minutes)
                         }
+
+                        // Load knowledge items for task and all subtasks after subtasks are loaded
+                        loadKnowledgeItemsInternal(taskId)
                     } else {
                         _toast.value = "タスクが見つかりません"
                     }
@@ -168,6 +171,9 @@ class FocusSessionViewModel : ViewModel() {
                             // Set timer duration based on subtask estimated minutes
                             val minutes = subtask.estimated_minutes ?: 60
                             setTimerDuration(minutes)
+
+                            // Load knowledge items for task and all subtasks after subtasks are loaded
+                            loadKnowledgeItemsInternal(taskId)
                         } else {
                             _toast.value = "サブタスクが見つかりません"
                         }
@@ -548,30 +554,51 @@ class FocusSessionViewModel : ViewModel() {
     }
 
     /**
-     * Load knowledge items for the current task
+     * Load knowledge items for the current task and all its subtasks
+     * Public method that can be called from Activity (for backward compatibility)
      */
     fun loadKnowledgeItems(taskId: Int) {
         viewModelScope.launch {
-            try {
-                _isLoadingKnowledge.value = true
+            loadKnowledgeItemsInternal(taskId)
+        }
+    }
 
-                // Load all knowledge items and filter by source_task_id
-                val response = apiService.getKnowledgeItems(null)
+    /**
+     * Internal method to load knowledge items (can be called within other suspend functions)
+     */
+    private suspend fun loadKnowledgeItemsInternal(taskId: Int) {
+        try {
+            _isLoadingKnowledge.value = true
 
-                if (response.isSuccessful) {
-                    val allItems = response.body()?.data ?: emptyList()
-                    val taskItems = allItems.filter { it.source_task_id == taskId }
-                    _knowledgeItems.postValue(taskItems)
-                } else {
-                    _knowledgeItems.postValue(emptyList())
-                    _toast.value = "学習内容の読み込みに失敗しました"
+            // Load all knowledge items and filter by source_task_id
+            val response = apiService.getKnowledgeItems(null)
+
+            if (response.isSuccessful) {
+                val allItems = response.body()?.data ?: emptyList()
+
+                // Get IDs to filter: task ID + all subtask IDs
+                val subtaskIds = _subtasks.value?.map { it.id } ?: emptyList()
+                val filterIds = listOf(taskId) + subtaskIds
+
+                android.util.Log.d("FocusSessionViewModel", "Loading knowledge items for taskId=$taskId, subtaskIds=$subtaskIds")
+
+                // Filter knowledge items for task and all subtasks
+                val taskItems = allItems.filter { item ->
+                    item.source_task_id in filterIds
                 }
-            } catch (e: Exception) {
+
+                android.util.Log.d("FocusSessionViewModel", "Found ${taskItems.size} knowledge items (total: ${allItems.size})")
+
+                _knowledgeItems.postValue(taskItems)
+            } else {
                 _knowledgeItems.postValue(emptyList())
-                _toast.value = "ネットワークエラー: ${e.message}"
-            } finally {
-                _isLoadingKnowledge.value = false
+                _toast.value = "学習内容の読み込みに失敗しました"
             }
+        } catch (e: Exception) {
+            _knowledgeItems.postValue(emptyList())
+            _toast.value = "ネットワークエラー: ${e.message}"
+        } finally {
+            _isLoadingKnowledge.value = false
         }
     }
 
