@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreignId('learning_milestone_id')
                 ->nullable()
                 ->constrained('learning_milestones')
-                ->onDelete('set null')
+                ->onDelete('cascade')
                 ->comment('学習マイルストーンID（Learning Path機能）');
 
             // Task Information
