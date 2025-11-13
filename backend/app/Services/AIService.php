@@ -721,7 +721,7 @@ JSON形式で返してください：
                     // Determine which parameter to use based on model
                     // Newer models (gpt-5, o1, etc.) use max_completion_tokens instead of max_tokens
                     $useMaxCompletionTokens = in_array($model, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
-                    $maxTokensValue = $options['max_tokens'] ?? 500;
+                    $maxTokensValue = $options['max_tokens'] ?? 16000;
 
                     $requestBody = [
                         'model' => $model,
