@@ -129,8 +129,8 @@ class RoadmapViewModel : ViewModel() {
 
                 result.onSuccess { data ->
                     _importedRoadmapData.value = data
-                    _importedLearningPathId.value = data.learning_path_id
-                    _successMessage.value = if (data.learning_path_id != null) {
+                    _importedLearningPathId.value = data.learningPathId
+                    _successMessage.value = if (data.learningPathId != null) {
                         "ロードマップを学習パスとして追加しました！"
                     } else {
                         "ロードマップをインポートしました！"
@@ -167,8 +167,8 @@ class RoadmapViewModel : ViewModel() {
 
                 result.onSuccess { data ->
                     _importedRoadmapData.value = data
-                    _importedLearningPathId.value = data.learning_path_id
-                    _successMessage.value = if (data.learning_path_id != null) {
+                    _importedLearningPathId.value = data.learningPathId
+                    _successMessage.value = if (data.learningPathId != null) {
                         "ロードマップを学習パスとして追加しました！"
                     } else {
                         "ロードマップをインポートしました！"
