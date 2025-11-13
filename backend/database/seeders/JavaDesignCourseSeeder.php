@@ -367,16 +367,29 @@ class JavaDesignCourseSeeder extends Seeder
                 'knowledge_items' => [
                     [
                         'type' => 'note',
-                        'title' => '型の互換性',
-                        'content' => "# 型の互換性\n\nスーパークラスを継承したサブクラスはスーパークラスの機能を引き継ぐ為、互換性を持つ。\nその為、サブクラスのインスタンスはスーパークラスのデータ型変数に格納することが可能である。\n\n```java\n// 例：MonsterクラスをFireMonsterクラスが継承している場合\nFireMonster hitokage = new FireMonster();\n// ↑ 型が一致している為、もちろん格納可能\n\nMonster hitokage = new FireMonster();\n// ↑ FireMonsterインスタンスはMonsterクラスの機能を保持している為、格納可能\n\nFireMonster hitokage = new Monster();\n// ↑ MonsterインスタンスはFireMonsterクラスの機能を持たない為、コンパイルエラーとなる\n```\n\n継承を行うことで、サブクラスはスーパークラスが持つフィールドやメソッドを引き継ぎます。\nよってサブクラスはスーパークラスが持つフィールドやメソッドを扱えますが、\n【スーパークラスはサブクラスのフィールドやメソッドを扱えません】",
+                        'title' => 'ポリモーフィズムとは',
+                        'content' => "# ポリモーフィズム（多態性）とは\n\n直訳では**多態性**を意味し、オブジェクト指向においては\n【同じ名称のメソッドを呼び出しても、オブジェクトによって異なる処理が実行されること】を指す。\n\n## ポリモーフィズムの3つのメリット\n\n1. **コードの簡潔性**: 同じコードで異なる処理を扱える\n2. **拡張性**: 新しいサブクラスを追加しても既存コードの変更が不要\n3. **保守性**: 処理の共通化により保守が容易\n\n## ポリモーフィズムが実現される条件\n\n1. 継承関係がある（サブクラスがスーパークラスを継承）\n2. メソッドがオーバーライドされている\n3. スーパークラス型の変数でサブクラスのインスタンスを参照\n\n```java\n// ポリモーフィズムの基本形\nMonster monster1 = new FireMonster();  // アップキャスト\nMonster monster2 = new WaterMonster(); // アップキャスト\n\nmonster1.attack();  // FireMonsterのattackが実行される\nmonster2.attack();  // WaterMonsterのattackが実行される\n// ↑ 同じメソッド名だが、実際の型に応じて異なる処理が実行される\n```",
                         'sort_order' => 1
                     ],
                     [
                         'type' => 'note',
-                        'title' => 'ポリモーフィズムとは',
-                        'content' => "# ポリモーフィズムとは\n\n直訳では多態性を意味し、オブジェクト指向においては\n【同じ名称のメソッドを呼び出しても、オブジェクトによって異なる処理が実行されること】を指す。\n\n前述したスーパークラスの参照と型の互換性を活かして、\nオブジェクトを【互換性のあるスーパークラスの型で定義し、サブクラスでオーバーライドした\n同名称のメソッドを呼び出す】ことにより、各オブジェクトに対して同じ操作で異なる処理を実現することが可能となる。\n\nポリモーフィズムを意識してプログラムを設計することで、コードを簡略化することができる。",
+                        'title' => '型の互換性とアップキャスト',
+                        'content' => "# 型の互換性\n\nスーパークラスを継承したサブクラスはスーパークラスの機能を引き継ぐ為、互換性を持つ。\nその為、サブクラスのインスタンスはスーパークラスのデータ型変数に格納することが可能である。\n\n```java\n// 例：MonsterクラスをFireMonsterクラスが継承している場合\nFireMonster hitokage = new FireMonster();\n// ↑ 型が一致している為、もちろん格納可能\n\nMonster hitokage = new FireMonster();\n// ↑ FireMonsterインスタンスはMonsterクラスの機能を保持している為、格納可能\n\nFireMonster hitokage = new Monster();\n// ↑ MonsterインスタンスはFireMonsterクラスの機能を持たない為、コンパイルエラーとなる\n```\n\n## アップキャスト（暗黙の型変換）\n\nサブクラス型からスーパークラス型への変換を**アップキャスト**という。\nアップキャストは**自動的に行われる**（明示的なキャストが不要）。\n\n```java\nFireMonster fire = new FireMonster(\"ヒトカゲ\", 80, 50, 30);\nMonster monster = fire;  // アップキャスト（自動）\n```\n\n## アップキャスト後のアクセス制限\n\n```java\nMonster monster = new FireMonster(\"ヒトカゲ\", 80, 50, 30);\nmonster.introduce();  // ✅ OK\n// monster.fireBreath();  // ❌ エラー: FireMonster固有のメソッドは呼び出せない\n```",
                         'sort_order' => 2
-                    ],
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'ポリモーフィズムの実践例',
+                        'content' => "public class Monster {\n    protected String name;\n    protected int hp;\n    \n    public Monster(String name, int hp) {\n        this.name = name;\n        this.hp = hp;\n    }\n    \n    public void attack() {\n        System.out.println(name + \"の攻撃！\");\n    }\n}\n\npublic class FireMonster extends Monster {\n    public FireMonster(String name, int hp) {\n        super(name, hp);\n    }\n    \n    @Override\n    public void attack() {\n        System.out.println(name + \"の火炎攻撃！！！\");\n    }\n}\n\npublic class WaterMonster extends Monster {\n    public WaterMonster(String name, int hp) {\n        super(name, hp);\n    }\n    \n    @Override\n    public void attack() {\n        System.out.println(name + \"の水鉄砲！\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // ポリモーフィズム：スーパークラス型の配列で管理\n        Monster[] party = new Monster[3];\n        party[0] = new FireMonster(\"ヒトカゲ\", 80);\n        party[1] = new WaterMonster(\"ゼニガメ\", 90);\n        party[2] = new Monster(\"ピカチュウ\", 85);\n        \n        // 同じコードで異なる処理を実行！\n        for (Monster m : party) {\n            m.attack();  // 実際の型に応じた攻撃が実行される\n        }\n        \n        /* 出力:\n        ヒトカゲの火炎攻撃！！！\n        ゼニガメの水鉄砲！\n        ピカチュウの攻撃！\n        */\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 3
+                    },
+                    [
+                        'type' => 'note',
+                        'title' => 'ダウンキャストとinstanceof',
+                        'content' => "# ダウンキャスト\n\nスーパークラス型からサブクラス型への変換を**ダウンキャスト**という。\nダウンキャストは**明示的にキャストが必要**で、実行時エラーのリスクがある。\n\n```java\nMonster monster = new FireMonster(\"ヒトカゲ\", 80, 50, 30);\nFireMonster fire = (FireMonster) monster;  // ダウンキャスト\nfire.fireBreath();  // OK\n```\n\n## ダウンキャストの危険性\n\n```java\nMonster monster = new WaterMonster(\"ゼニガメ\", 90);\nFireMonster fire = (FireMonster) monster;  // ❌ ClassCastException!\n```\n\n## instanceof演算子で安全にチェック\n\n```java\nMonster monster = new FireMonster(\"ヒトカゲ\", 80, 50, 30);\n\nif (monster instanceof FireMonster) {\n    FireMonster fire = (FireMonster) monster;\n    fire.fireBreath();  // 安全\n}\n```\n\n## instanceofの使用例\n\n```java\nfor (Monster m : monsters) {\n    if (m instanceof FireMonster) {\n        System.out.println(\"炎タイプ！\");\n    } else if (m instanceof WaterMonster) {\n        System.out.println(\"水タイプ！\");\n    }\n}\n```",
+                        'sort_order' => 4
+                    },
                 ],
             ],
             [
