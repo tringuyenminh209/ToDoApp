@@ -103,6 +103,11 @@ class RoadmapApiController extends Controller
             'level' => 'nullable|in:beginner,intermediate,advanced',
             'source' => 'required|in:popular,ai,microsoft_learn',
             'auto_clone' => 'nullable|boolean', // 自動的に学習パスにクローンするか
+            // Study schedule is REQUIRED when auto_clone is true
+            'study_schedules' => 'required_if:auto_clone,true|array|min:1',
+            'study_schedules.*.day_of_week' => 'required|integer|between:0,6',
+            'study_schedules.*.study_time' => 'required|date_format:H:i',
+            'study_schedules.*.duration_minutes' => 'nullable|integer|min:15|max:480',
         ]);
 
         try {
@@ -183,6 +188,22 @@ class RoadmapApiController extends Controller
             $learningPath = null;
             if ($request->boolean('auto_clone', true)) {
                 $learningPath = $this->cloneTemplateToLearningPath($user, $template);
+
+                // Create study schedules for the learning path
+                if ($request->has('study_schedules')) {
+                    foreach ($request->study_schedules as $scheduleData) {
+                        \App\Models\StudySchedule::create([
+                            'learning_path_id' => $learningPath->id,
+                            'day_of_week' => $scheduleData['day_of_week'],
+                            'study_time' => $scheduleData['study_time'] . ':00', // Convert HH:MM to HH:MM:SS
+                            'duration_minutes' => $scheduleData['duration_minutes'] ?? 60,
+                            'is_active' => true,
+                            'reminder_enabled' => $scheduleData['reminder_enabled'] ?? true,
+                            'reminder_before_minutes' => $scheduleData['reminder_before_minutes'] ?? 30,
+                        ]);
+                    }
+                }
+
                 $template->incrementUsage();
             }
 
@@ -193,8 +214,10 @@ class RoadmapApiController extends Controller
             ];
 
             if ($learningPath) {
-                $responseData['learning_path'] = $learningPath->load('milestones.tasks');
+                $responseData['learning_path'] = $learningPath->load('milestones.tasks', 'studySchedules');
                 $responseData['learning_path_id'] = $learningPath->id;
+                $responseData['study_schedules'] = $learningPath->studySchedules;
+                $responseData['weekly_schedule'] = $learningPath->getWeeklyScheduleSummary();
             }
 
             return response()->json([
