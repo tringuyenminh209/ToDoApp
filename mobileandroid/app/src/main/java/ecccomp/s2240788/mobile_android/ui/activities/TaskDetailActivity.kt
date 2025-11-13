@@ -166,6 +166,10 @@ class TaskDetailActivity : BaseActivity() {
                 } catch (_: Exception) {
                     binding.tvDueDate.text = getString(R.string.due_date) + ": " + deadlineStr
                 }
+            } else {
+                // When deadline is null or empty, show "Not set" instead of placeholder
+                binding.tvDueDate.text = getString(R.string.due_date) + ": 未設定"
+                binding.tvDueDate.setTextColor(ContextCompat.getColor(this, R.color.text_muted))
             }
 
             // Scheduled Time (yyyy-MM-dd HH:mm:ss -> MM/dd HH:mm)
