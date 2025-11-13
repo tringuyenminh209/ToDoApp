@@ -125,10 +125,12 @@
         android:id="@+id/quick_actions_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_md"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_marginEnd="@dimen/spacing_md"
+        android:layout_marginTop="@dimen/spacing_sm"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="2dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="1dp"
         app:strokeColor="@color/line"
         app:strokeWidth="0.5dp"
         app:layout_constraintTop_toBottomOf="@id/header_card">
@@ -137,15 +139,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_lg">
+            android:padding="@dimen/spacing_md">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_md"
+                android:layout_marginBottom="@dimen/spacing_sm"
                 android:text="@string/ai_coach_quick_actions"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.chip.ChipGroup
@@ -200,13 +202,17 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- AI Suggestions List -->
+    <!-- Chat Messages List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_suggestions"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="@dimen/spacing_md"
+        android:paddingStart="@dimen/spacing_md"
+        android:paddingEnd="@dimen/spacing_md"
+        android:paddingTop="@dimen/spacing_sm"
+        android:paddingBottom="@dimen/spacing_sm"
         android:clipToPadding="false"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@id/task_suggestion_card"
         app:layout_constraintTop_toBottomOf="@id/quick_actions_card"
         app:layout_constraintEnd_toEndOf="parent"
@@ -280,17 +286,19 @@
         android:id="@+id/task_suggestion_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_md"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_marginEnd="@dimen/spacing_md"
+        android:layout_marginBottom="@dimen/spacing_sm"
         android:visibility="gone"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
         app:strokeColor="@color/primary"
-        app:strokeWidth="2dp"
+        app:strokeWidth="1.5dp"
         app:layout_constraintBottom_toTopOf="@id/input_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -423,9 +431,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:elevation="4dp"
+        android:elevation="8dp"
         android:orientation="horizontal"
-        android:padding="@dimen/spacing_md"
+        android:paddingStart="@dimen/spacing_md"
+        android:paddingEnd="@dimen/spacing_md"
+        android:paddingTop="@dimen/spacing_sm"
+        android:paddingBottom="@dimen/spacing_sm"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -434,36 +445,42 @@
             android:layout_weight="1"
             android:hint="@string/ask_ai_coach"
             app:boxBackgroundMode="outline"
-            app:boxCornerRadiusBottomEnd="24dp"
-            app:boxCornerRadiusBottomStart="24dp"
-            app:boxCornerRadiusTopEnd="24dp"
-            app:boxCornerRadiusTopStart="24dp">
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxStrokeColor="@color/primary"
+            app:hintTextColor="@color/text_muted">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
-                android:maxLines="3"
-                android:imeOptions="actionSend" />
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLines="4"
+                android:minLines="1"
+                android:imeOptions="actionSend"
+                android:textSize="14sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_send"
             style="@style/Widget.Material3.Button.Icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_marginStart="8dp"
+            android:layout_gravity="bottom"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
             app:backgroundTint="@color/primary"
-            app:cornerRadius="28dp"
+            app:cornerRadius="26dp"
             app:icon="@drawable/ic_send"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
+            app:iconSize="20dp"
             app:iconTint="@color/white" />
 
     </LinearLayout>
