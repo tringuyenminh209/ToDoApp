@@ -159,6 +159,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Stats routes
     Route::prefix('stats')->group(function () {
+        Route::get('/user', [StatsController::class, 'getUserStats']);
         Route::get('/dashboard', [StatsController::class, 'dashboard']);
         Route::get('/tasks', [StatsController::class, 'tasks']);
         Route::get('/sessions', [StatsController::class, 'sessions']);
