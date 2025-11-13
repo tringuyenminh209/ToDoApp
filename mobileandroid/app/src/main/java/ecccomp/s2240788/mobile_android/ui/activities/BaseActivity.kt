@@ -69,7 +69,7 @@ open class BaseActivity : AppCompatActivity() {
         // Setup window insets for input container (if exists and no bottom navigation)
         // This handles cases like AICoachActivity where input is at the bottom
         if (bottomNav == null && inputContainer != null) {
-            // Store original padding values before any insets are applied
+            // Store original values before any insets are applied
             val originalPaddingLeft = inputContainer.paddingLeft
             val originalPaddingTop = inputContainer.paddingTop
             val originalPaddingRight = inputContainer.paddingRight
@@ -77,14 +77,30 @@ open class BaseActivity : AppCompatActivity() {
             
             ViewCompat.setOnApplyWindowInsetsListener(inputContainer) { v, insets ->
                 val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+                
                 // Apply bottom padding to input container to avoid system navigation bar overlap
-                // Use original padding + system bars bottom
                 v.setPadding(
                     originalPaddingLeft, 
                     originalPaddingTop, 
                     originalPaddingRight, 
                     originalPaddingBottom + systemBars.bottom
                 )
+                
+                // For adjustResize mode, we need to apply translationY to push input container above keyboard
+                // This ensures input container is always visible above the keyboard
+                // Use post to ensure layout is complete before applying translation
+                v.post {
+                    if (imeInsets.bottom > 0) {
+                        // Keyboard is visible, translate input container up by keyboard height
+                        // Add small offset to ensure it's fully visible
+                        v.translationY = -(imeInsets.bottom + systemBars.bottom).toFloat()
+                    } else {
+                        // Keyboard is hidden, reset translation
+                        v.translationY = 0f
+                    }
+                }
+                
                 insets
             }
         }
