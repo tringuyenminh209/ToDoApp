@@ -964,6 +964,71 @@ class AIController extends Controller
                 'content' => $request->message,
             ]);
 
+            // Parse task intent from user message
+            $taskData = $this->aiService->parseTaskIntent($request->message);
+            $createdTask = null;
+
+            // If task intent detected, create task
+            if ($taskData) {
+                try {
+                    // Convert priority string to integer
+                    $priorityMap = [
+                        'low' => 2,
+                        'medium' => 3,
+                        'high' => 5,
+                    ];
+                    $priorityValue = $taskData['priority'] ?? 'medium';
+                    if (is_string($priorityValue)) {
+                        $priorityValue = strtolower($priorityValue);
+                        $priorityInt = $priorityMap[$priorityValue] ?? 3;
+                    } else {
+                        $priorityInt = $priorityValue;
+                    }
+
+                    $createdTask = Task::create([
+                        'user_id' => $user->id,
+                        'title' => $taskData['title'],
+                        'description' => $taskData['description'] ?? null,
+                        'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
+                        'priority' => $priorityInt,
+                        'scheduled_time' => $taskData['scheduled_time'] ?? null,
+                        'status' => 'pending',
+                    ]);
+
+                    // Create subtasks if provided
+                    if (!empty($taskData['subtasks'])) {
+                        foreach ($taskData['subtasks'] as $index => $subtaskData) {
+                            $createdTask->subtasks()->create([
+                                'title' => $subtaskData['title'],
+                                'estimated_minutes' => $subtaskData['estimated_minutes'] ?? null,
+                                'sort_order' => $index + 1,
+                            ]);
+                        }
+                    }
+
+                    // Add tags if provided
+                    if (!empty($taskData['tags'])) {
+                        foreach ($taskData['tags'] as $tagName) {
+                            $tag = \App\Models\Tag::firstOrCreate([
+                                'user_id' => $user->id,
+                                'name' => $tagName
+                            ]);
+                            $createdTask->tags()->attach($tag->id);
+                        }
+                    }
+
+                    $createdTask->load(['subtasks', 'tags']);
+
+                    Log::info('Task created from context-aware chat', [
+                        'task_id' => $createdTask->id,
+                        'conversation_id' => $conversation->id
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to create task from context-aware chat: ' . $e->getMessage());
+                    // Continue without task creation
+                }
+            }
+
             // Load user context: tasks + timetable
             $tasks = Task::where('user_id', $user->id)
                 ->where('status', '!=', 'completed')
@@ -1029,6 +1094,15 @@ class AIController extends Controller
                 ], 503);
             }
 
+            // If task was created, add confirmation to AI response
+            if ($createdTask) {
+                $taskConfirmation = "\n\n✅ タスクを作成しました: 「{$createdTask->title}」";
+                if ($createdTask->subtasks->count() > 0) {
+                    $taskConfirmation .= "\n📝 サブタスク: {$createdTask->subtasks->count()}個";
+                }
+                $aiResponse['message'] = $aiResponse['message'] . $taskConfirmation;
+            }
+
             // Create assistant message
             $assistantMessage = ChatMessage::create([
                 'conversation_id' => $conversation->id,
@@ -1051,7 +1125,8 @@ class AIController extends Controller
             $responseData = [
                 'user_message' => $userMessage,
                 'assistant_message' => $assistantMessage,
-                'task_suggestion' => $aiResponse['task_suggestion'] ?? null,
+                'created_task' => $createdTask, // Auto-created task from parseTaskIntent
+                'task_suggestion' => $aiResponse['task_suggestion'] ?? null, // AI suggestion (requires user confirmation)
             ];
 
             return response()->json([
