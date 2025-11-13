@@ -57,16 +57,42 @@ class JavaDesignCourseSeeder extends Seeder
                     [
                         'type' => 'note',
                         'title' => 'フィールドとは',
-                        'content' => "# フィールドとは\n\nフィールドとは、クラスの直下、メソッドの外部に記述する変数のこと。\n同じクラス内の【全てのメソッド内】から参照できる。\nクラスに属する変数の為、クラス変数とも呼ばれる。\n\n## フィールドの特徴\n\n- static修飾子を付けるとクラス変数、付けないとインスタンス変数として扱われる\n- public修飾子を付けると他クラスやパッケージからも参照できるグローバル変数として扱われる\n- メソッド内で宣言した変数（ローカル変数）は宣言したブロック内でしか参照できない（スコープ）\n\n## スコープとは\n\n参照できる範囲をスコープという。\n- ローカル変数: 宣言したブロック内でしか参照できない\n- フィールド: 同じクラス内の全てのメソッド内から参照できる",
+                        'content' => "# フィールドとは\n\n**フィールド**とは、クラスの直下、メソッドの外部に記述する変数のこと。\n同じクラス内の【全てのメソッド内】から参照できる。\nクラスに属する変数の為、**クラス変数**とも呼ばれる。\n\n## フィールド vs ローカル変数\n\n| 項目 | フィールド | ローカル変数 |\n|------|-----------|-------------|\n| 宣言場所 | クラスの直下 | メソッド内 |\n| スコープ | クラス全体 | 宣言したブロック内のみ |\n| 初期値 | 自動的に初期化される | 初期化が必要 |\n| ライフタイム | クラス/インスタンスが存在する間 | メソッド実行中のみ |\n\n## フィールドの特徴\n\n- **static修飾子**を付けるとクラス変数、付けないとインスタンス変数として扱われる\n- **public修飾子**を付けると他クラスやパッケージからも参照できるグローバル変数として扱われる\n- メソッド内で宣言した変数（ローカル変数）は宣言したブロック内でしか参照できない（スコープ）\n- フィールドは宣言時に初期化しなくてもデフォルト値が設定される\n  - 数値型: 0\n  - boolean型: false\n  - 参照型: null",
                         'sort_order' => 1
                     ],
                     [
-                        'type' => 'code_snippet',
-                        'title' => 'フィールドの例',
-                        'content' => "public class Note01_Field {\n    // フィールドを定義\n    public static int sum = 100;    // 合計値\n    /*\n        ※補足\n        フィールドはstatic修飾子を付けるとクラス変数、付けないとインスタンス変数として扱われる。\n        更にpublic修飾子を付けると他クラスやパッケージからも参照できるグローバル変数として扱われる。\n        これらの意味は別の回で説明する為、現時点では一先ずpublic staticを前に記述しておいてください。\n     */\n    \n    /**\n     * 加算メソッド\n     * @param x 加算する値\n     * @return 加算後の合計値\n     */\n    public static int add(int x){ return sum += x; }\n    \n    public static void main(String[] args) {\n        // 入力用オブジェクト\n        Scanner in = new Scanner(System.in);\n        // 入力値用変数\n        int num;\n        /*\n            復習：これら（in,num）のメソッド内で宣言した変数はローカル変数といい、\n            宣言したブロック内でしか参照できない。参照できる範囲をスコープという。\n         */\n        \n        System.out.println(\"加算前の合計値：\" + sum);\n        System.out.print(\"加算する数値＞\");\n        num = in.nextInt();\n        System.out.println(\"加算後：\" + add(num));\n    }\n}",
-                        'code_language' => 'java',
+                        'type' => 'note',
+                        'title' => 'スコープ（変数の有効範囲）',
+                        'content' => "# スコープ（変数の有効範囲）\n\n**スコープ**とは、変数が参照できる範囲のこと。\n\n## 1. ローカル変数のスコープ\n\nメソッド内で宣言した変数は、**宣言したブロック（{ }）内**でしか参照できない。\n\n```java\npublic void method1() {\n    int x = 10;  // xのスコープはmethod1内のみ\n    System.out.println(x);  // OK\n}\n\npublic void method2() {\n    System.out.println(x);  // エラー！xは参照できない\n}\n```\n\n## 2. フィールドのスコープ\n\nクラスの直下で宣言したフィールドは、**同じクラス内の全てのメソッド**から参照できる。\n\n```java\npublic class Example {\n    private int count = 0;  // フィールド\n    \n    public void increment() {\n        count++;  // OK: フィールドを参照\n    }\n    \n    public void display() {\n        System.out.println(count);  // OK: フィールドを参照\n    }\n}\n```\n\n## 3. ブロックスコープ\n\nif文、for文などのブロック内で宣言した変数は、そのブロック内でのみ有効。\n\n```java\nif (condition) {\n    int temp = 5;  // tempのスコープはこのif文内のみ\n    System.out.println(temp);  // OK\n}\nSystem.out.println(temp);  // エラー！\n```\n\n## スコープのベストプラクティス\n\n- 変数のスコープは**できるだけ狭く**する\n- 必要な場所でのみ宣言する\n- グローバル変数の乱用は避ける",
                         'sort_order' => 2
-                    ],
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'フィールドとローカル変数の違い',
+                        'content' => "import java.util.Scanner;\n\npublic class FieldVsLocal {\n    // フィールド（クラス変数）\n    public static int fieldCount = 0;\n    \n    public static void method1() {\n        // ローカル変数\n        int localCount = 0;\n        \n        fieldCount++;  // フィールドは全メソッドから参照可能\n        localCount++;  // ローカル変数はこのメソッド内のみ\n        \n        System.out.println(\"method1 - fieldCount: \" + fieldCount);\n        System.out.println(\"method1 - localCount: \" + localCount);\n    }\n    \n    public static void method2() {\n        fieldCount++;  // OK: フィールドは参照可能\n        // localCount++;  // エラー！ローカル変数は参照できない\n        \n        System.out.println(\"method2 - fieldCount: \" + fieldCount);\n    }\n    \n    public static void main(String[] args) {\n        System.out.println(\"初期 - fieldCount: \" + fieldCount);\n        \n        method1();  // fieldCount: 1, localCount: 1\n        method1();  // fieldCount: 2, localCount: 1（毎回初期化される）\n        method2();  // fieldCount: 3\n        \n        System.out.println(\"最終 - fieldCount: \" + fieldCount);  // 3\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 3
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'フィールドの基本例',
+                        'content' => "import java.util.Scanner;\n\npublic class Note01_Field {\n    // フィールドを定義\n    public static int sum = 100;    // 合計値\n    /*\n        ※補足\n        フィールドはstatic修飾子を付けるとクラス変数、付けないとインスタンス変数として扱われる。\n        更にpublic修飾子を付けると他クラスやパッケージからも参照できるグローバル変数として扱われる。\n        これらの意味は別の回で説明する為、現時点では一先ずpublic staticを前に記述しておいてください。\n     */\n    \n    /**\n     * 加算メソッド\n     * @param x 加算する値\n     * @return 加算後の合計値\n     */\n    public static int add(int x){ \n        return sum += x; \n    }\n    \n    /**\n     * 減算メソッド\n     * @param x 減算する値\n     * @return 減算後の合計値\n     */\n    public static int subtract(int x){ \n        return sum -= x; \n    }\n    \n    public static void main(String[] args) {\n        // 入力用オブジェクト\n        Scanner in = new Scanner(System.in);\n        // 入力値用変数\n        int num;\n        /*\n            復習：これら（in,num）のメソッド内で宣言した変数はローカル変数といい、\n            宣言したブロック内でしか参照できない。参照できる範囲をスコープという。\n         */\n        \n        System.out.println(\"加算前の合計値：\" + sum);\n        System.out.print(\"加算する数値＞\");\n        num = in.nextInt();\n        System.out.println(\"加算後：\" + add(num));\n        \n        System.out.print(\"減算する数値＞\");\n        num = in.nextInt();\n        System.out.println(\"減算後：\" + subtract(num));\n        \n        in.close();\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 4
+                    },
+                    [
+                        'type' => 'note',
+                        'title' => 'フィールドのデフォルト値',
+                        'content' => "# フィールドのデフォルト値\n\nフィールドは初期化しなくても、**自動的にデフォルト値**が設定されます。\n\n## 基本型のデフォルト値\n\n| 型 | デフォルト値 |\n|---|------------|\n| byte | 0 |\n| short | 0 |\n| int | 0 |\n| long | 0L |\n| float | 0.0f |\n| double | 0.0d |\n| char | '\\u0000' |\n| boolean | false |\n\n## 参照型のデフォルト値\n\n- すべての参照型（String, 配列, オブジェクトなど）: **null**\n\n```java\npublic class DefaultValues {\n    private int number;        // 0\n    private boolean flag;      // false\n    private String text;       // null\n    private int[] array;       // null\n    \n    public void display() {\n        System.out.println(\"number: \" + number);  // 0\n        System.out.println(\"flag: \" + flag);      // false\n        System.out.println(\"text: \" + text);      // null\n    }\n}\n```\n\n## 注意点\n\n**ローカル変数**は自動初期化されません！\n使用前に必ず初期化が必要です。\n\n```java\npublic void method() {\n    int x;  // デフォルト値なし\n    System.out.println(x);  // コンパイルエラー！\n}\n```",
+                        'sort_order' => 5
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '実践例：のび太のおつかい',
+                        'content' => "import java.util.Scanner;\n\npublic class NobiMoney {\n    // フィールド：のび太の所持金\n    public static int money = 1000;\n    \n    /**\n     * 買い物メソッド\n     * @param itemName 商品名\n     * @param price 価格\n     */\n    public static void buy(String itemName, int price) {\n        if (money >= price) {\n            money -= price;\n            System.out.println(itemName + \"を\" + price + \"円で購入しました。\");\n            System.out.println(\"残金：\" + money + \"円\");\n        } else {\n            System.out.println(\"お金が足りません！\");\n            System.out.println(\"残金：\" + money + \"円、必要額：\" + price + \"円\");\n        }\n    }\n    \n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n        System.out.println(\"のび太のおつかいゲーム\");\n        System.out.println(\"所持金：\" + money + \"円\");\n        System.out.println(\"==================\");\n        \n        // ドラ焼きを買う\n        buy(\"ドラ焼き\", 150);\n        \n        // 漫画を買う  \n        buy(\"漫画\", 500);\n        \n        // ゲームを買おうとする\n        buy(\"ゲーム\", 5000);\n        \n        System.out.println(\"\\n最終残金：\" + money + \"円\");\n        in.close();\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 6
+                    },
                 ],
             ],
             [
