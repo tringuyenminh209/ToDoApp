@@ -14,6 +14,104 @@ use Carbon\Carbon;
 class StatsController extends Controller
 {
     /**
+     * Get user statistics (for mobile app)
+     * GET /api/stats/user
+     */
+    public function getUserStats(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            $userId = $user->id;
+
+            // Get task statistics
+            $totalTasks = Task::where('user_id', $userId)->count();
+            $completedTasks = Task::where('user_id', $userId)->where('status', 'completed')->count();
+            $pendingTasks = Task::where('user_id', $userId)->where('status', 'pending')->count();
+            $inProgressTasks = Task::where('user_id', $userId)->where('status', 'in_progress')->count();
+
+            // Calculate completion rate
+            $completionRate = $totalTasks > 0 ? ($completedTasks / $totalTasks) * 100 : 0;
+
+            // Get focus session statistics
+            $focusSessions = FocusSession::where('user_id', $userId)->where('status', 'completed')->get();
+            $totalFocusTime = $focusSessions->sum('actual_minutes');
+            $totalFocusSessions = $focusSessions->count();
+            $averageSessionDuration = $totalFocusSessions > 0
+                ? round($totalFocusTime / $totalFocusSessions)
+                : 0;
+
+            // Calculate streak (consecutive days with completed tasks)
+            $streaks = $this->calculateStreaks($userId);
+
+            // Get tasks by priority
+            $tasksByPriority = [
+                'high' => Task::where('user_id', $userId)->where('priority', '>=', 4)->count(),
+                'medium' => Task::where('user_id', $userId)->where('priority', 3)->count(),
+                'low' => Task::where('user_id', $userId)->where('priority', '<=', 2)->count(),
+            ];
+
+            // Get weekly stats (last 7 days)
+            $weekStart = Carbon::now()->subDays(6)->startOfDay();
+            $weeklyTasks = Task::where('user_id', $userId)
+                ->where('status', 'completed')
+                ->where('updated_at', '>=', $weekStart)
+                ->count();
+
+            $weeklyFocusSessions = FocusSession::where('user_id', $userId)
+                ->where('status', 'completed')
+                ->where('created_at', '>=', $weekStart)
+                ->get();
+            $weeklyFocusTime = $weeklyFocusSessions->sum('actual_minutes');
+
+            // Count days active in the week
+            $daysActive = FocusSession::where('user_id', $userId)
+                ->where('status', 'completed')
+                ->where('created_at', '>=', $weekStart)
+                ->select(DB::raw('DATE(created_at) as date'))
+                ->distinct()
+                ->count();
+
+            $weeklyStats = [
+                'tasks_completed' => $weeklyTasks,
+                'focus_time' => $weeklyFocusTime,
+                'days_active' => $daysActive,
+            ];
+
+            // Get monthly productivity (last 30 days)
+            $monthlyProductivity = $this->getMonthlyProductivity($userId);
+
+            $stats = [
+                'total_tasks' => $totalTasks,
+                'completed_tasks' => $completedTasks,
+                'pending_tasks' => $pendingTasks,
+                'in_progress_tasks' => $inProgressTasks,
+                'completion_rate' => round($completionRate, 1),
+                'total_focus_time' => $totalFocusTime,
+                'total_focus_sessions' => $totalFocusSessions,
+                'average_session_duration' => $averageSessionDuration,
+                'current_streak' => $streaks['current'],
+                'longest_streak' => $streaks['longest'],
+                'tasks_by_priority' => $tasksByPriority,
+                'weekly_stats' => $weeklyStats,
+                'monthly_productivity' => $monthlyProductivity,
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $stats,
+                'message' => 'Statistics retrieved successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve statistics',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Lấy dashboard stats tổng quan
      * GET /api/stats/dashboard
      */
@@ -622,5 +720,130 @@ class StatsController extends Controller
                     round($byType['streak_maintenance']->avg('metric_value'), 2) : 0,
             ];
         })->values();
+    }
+
+    /**
+     * Calculate current streak and longest streak
+     *
+     * @param int $userId
+     * @return array ['current' => int, 'longest' => int]
+     */
+    private function calculateStreaks(int $userId): array
+    {
+        // Get all dates with completed tasks, ordered by date descending
+        $completedDates = Task::where('user_id', $userId)
+            ->where('status', 'completed')
+            ->select(DB::raw('DATE(updated_at) as completion_date'))
+            ->distinct()
+            ->orderBy('completion_date', 'desc')
+            ->pluck('completion_date')
+            ->toArray();
+
+        if (empty($completedDates)) {
+            return ['current' => 0, 'longest' => 0];
+        }
+
+        $currentStreak = 0;
+        $longestStreak = 0;
+        $tempStreak = 1;
+
+        // Check if today or yesterday has a completion
+        $today = Carbon::today()->format('Y-m-d');
+        $yesterday = Carbon::yesterday()->format('Y-m-d');
+
+        // If most recent completion is not today or yesterday, current streak is 0
+        if ($completedDates[0] !== $today && $completedDates[0] !== $yesterday) {
+            $currentStreak = 0;
+        } else {
+            // Calculate current streak
+            $currentStreak = 1;
+            $lastDate = Carbon::parse($completedDates[0]);
+
+            for ($i = 1; $i < count($completedDates); $i++) {
+                $currentDate = Carbon::parse($completedDates[$i]);
+                $daysDiff = $lastDate->diffInDays($currentDate);
+
+                if ($daysDiff === 1) {
+                    $currentStreak++;
+                    $lastDate = $currentDate;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        // Calculate longest streak
+        for ($i = 0; $i < count($completedDates); $i++) {
+            if ($i === 0) {
+                continue;
+            }
+
+            $prevDate = Carbon::parse($completedDates[$i - 1]);
+            $currentDate = Carbon::parse($completedDates[$i]);
+            $daysDiff = $prevDate->diffInDays($currentDate);
+
+            if ($daysDiff === 1) {
+                $tempStreak++;
+            } else {
+                $longestStreak = max($longestStreak, $tempStreak);
+                $tempStreak = 1;
+            }
+        }
+
+        $longestStreak = max($longestStreak, $tempStreak, $currentStreak);
+
+        return [
+            'current' => $currentStreak,
+            'longest' => $longestStreak,
+        ];
+    }
+
+    /**
+     * Get monthly productivity data (last 30 days)
+     *
+     * @param int $userId
+     * @return array Array of daily productivity
+     */
+    private function getMonthlyProductivity(int $userId): array
+    {
+        $startDate = Carbon::now()->subDays(29)->startOfDay();
+        $endDate = Carbon::now()->endOfDay();
+
+        // Get completed tasks grouped by date
+        $completedTasks = Task::where('user_id', $userId)
+            ->where('status', 'completed')
+            ->whereBetween('updated_at', [$startDate, $endDate])
+            ->select(
+                DB::raw('DATE(updated_at) as date'),
+                DB::raw('COUNT(*) as count')
+            )
+            ->groupBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        // Get focus time grouped by date
+        $focusTime = FocusSession::where('user_id', $userId)
+            ->where('status', 'completed')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('SUM(actual_minutes) as minutes')
+            )
+            ->groupBy('date')
+            ->pluck('minutes', 'date')
+            ->toArray();
+
+        // Generate array for all 30 days
+        $productivity = [];
+        for ($i = 29; $i >= 0; $i--) {
+            $date = Carbon::now()->subDays($i)->format('Y-m-d');
+            $productivity[] = [
+                'date' => $date,
+                'tasks_completed' => $completedTasks[$date] ?? 0,
+                'focus_minutes' => (int)($focusTime[$date] ?? 0),
+            ];
+        }
+
+        return $productivity;
     }
 }

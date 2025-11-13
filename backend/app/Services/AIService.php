@@ -599,6 +599,7 @@ JSON形式で返してください：
 - 感想: 「楽しい」「嬉しい」「大変だ」
 - 確認: 「本当ですか？」「そうなんですか？」
 - 一般的な会話: 「はい」「いいえ」「わかりました」
+- **情報確認**: 「lịch học thứ 3を確認」「スケジュールを見せて」「予定を教えて」「時間割を確認」
 
 **重要な判断基準:**
 1. 具体的な行動が明示されているか？
@@ -610,8 +611,12 @@ JSON形式で返してください：
 ❌ \"疲れました\" → {\"has_task_intent\": false} (感想)
 ❌ \"ありがとう\" → {\"has_task_intent\": false} (雑談)
 ❌ \"タスクが多すぎる\" → {\"has_task_intent\": false} (相談)
+❌ \"Kiểm tra lịch học thứ 3\" → {\"has_task_intent\": false} (スケジュール確認の質問)
+❌ \"今日の予定を教えて\" → {\"has_task_intent\": false} (情報確認)
+❌ \"スケジュールを見せて\" → {\"has_task_intent\": false} (情報確認)
 ✅ \"英語を30分勉強する\" → {\"has_task_intent\": true} (明確な行動)
 ✅ \"レポートを書くタスクを作成\" → {\"has_task_intent\": true} (明確な意図)
+✅ \"Tạo task học tiếng anh 30 phút\" → {\"has_task_intent\": true} (明確なタスク作成)
 
 注意:
 - deadlineはユーザーが明示的に期限を指定した場合のみ含めてください
@@ -966,7 +971,13 @@ JSON形式で返してください：
 1. **通常の会話**: JSON形式を使わず、普通のテキストで返答してください。
    例: 「モチベーションを上げる方法を教えてください」→ 親切にアドバイスする
 
-2. **タスク提案時のみ**: メッセージの最後にJSON形式を追加
+2. **スケジュール/時間割の質問**: ユーザーがスケジュールや時間割について聞いた場合:
+   - 上記のスケジュール情報を参照して答えてください
+   - 「Kiểm tra lịch học thứ 3」「今日の予定は？」などの質問に対応
+   - タスク作成せず、スケジュール情報を表示してください
+   - 例: 「火曜日の授業は以下の通りです: [授業リスト]」
+
+3. **タスク提案時のみ**: メッセージの最後にJSON形式を追加
 ```json
 {
   \"message\": \"提案メッセージ\",
@@ -1049,27 +1060,40 @@ scheduled_timeは{$today}に時刻を組み合わせてください。";
     private function formatScheduleInfo(array $timetable): string
     {
         if (empty($timetable)) {
-            return "## スケジュール\n今日のスケジュールはありません。";
+            return "## スケジュール\n今週のスケジュールはありません。";
         }
 
-        $info = "## 今日のスケジュール\n";
+        $info = "## 週間スケジュール\n\n";
 
-        // If timetable has classes array
-        if (isset($timetable['classes']) && is_array($timetable['classes'])) {
-            foreach ($timetable['classes'] as $class) {
-                $time = $class['time'] ?? '';
-                $title = $class['title'] ?? $class['class_name'] ?? 'No title';
-                $info .= "- {$time}: {$title}\n";
-            }
-        } else {
-            // Simple format
-            foreach ($timetable as $item) {
-                if (is_array($item)) {
-                    $time = $item['time'] ?? $item['start_time'] ?? '';
-                    $title = $item['title'] ?? $item['name'] ?? 'Event';
-                    $info .= "- {$time}: {$title}\n";
+        // Map English day names to Japanese
+        $dayNameMap = [
+            'monday' => '月曜日',
+            'tuesday' => '火曜日',
+            'wednesday' => '水曜日',
+            'thursday' => '木曜日',
+            'friday' => '金曜日',
+            'saturday' => '土曜日',
+            'sunday' => '日曜日',
+        ];
+
+        // If timetable is grouped by day (new format)
+        $hasSchedule = false;
+        foreach (['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day) {
+            if (isset($timetable[$day]) && !empty($timetable[$day])) {
+                $hasSchedule = true;
+                $dayJp = $dayNameMap[$day] ?? $day;
+                $info .= "**{$dayJp}:**\n";
+                foreach ($timetable[$day] as $class) {
+                    $time = $class['time'] ?? '';
+                    $title = $class['title'] ?? $class['class_name'] ?? 'No title';
+                    $info .= "  - {$time}: {$title}\n";
                 }
+                $info .= "\n";
             }
+        }
+
+        if (!$hasSchedule) {
+            return "## スケジュール\n今週のスケジュールはありません。";
         }
 
         return $info;
