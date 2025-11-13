@@ -1,0 +1,19 @@
+name: Android CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+      - 'claude/**'  # All branches starting with claude/
+    pull_request:
+      branches:
+        - main
+        - master
+        - develop
+  
+  jobs:
+    build:
+      name: Build Android APK
+      runs-on: ubuntu-latest
