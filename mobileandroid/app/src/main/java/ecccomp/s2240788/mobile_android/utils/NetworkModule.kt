@@ -23,11 +23,11 @@ object NetworkModule {
     internal var contextRef: WeakReference<Context>? = null
 
     // Timeout constants - Đồng bộ với backend
-    // Backend chat timeout: 15s, general API: 30s
-    // Android timeout nên cao hơn một chút để đảm bảo không timeout trước backend
-    private const val CONNECT_TIMEOUT_SECONDS = 20L    // Kết nối: 20s (đồng bộ với backend 15s + buffer)
-    private const val READ_TIMEOUT_SECONDS = 30L       // Đọc response: 30s (đồng bộ với backend general API)
-    private const val WRITE_TIMEOUT_SECONDS = 20L      // Ghi request: 20s
+    // Backend chat timeout with GPT-5 can take 40-60s for complex context-aware responses
+    // Android timeout must be higher to avoid premature timeout
+    private const val CONNECT_TIMEOUT_SECONDS = 30L    // Kết nối: 30s
+    private const val READ_TIMEOUT_SECONDS = 90L       // Đọc response: 90s (đủ cho GPT-5 với context dài)
+    private const val WRITE_TIMEOUT_SECONDS = 30L      // Ghi request: 30s
 
     /**
      * Contextを設定（Applicationから呼び出す）
