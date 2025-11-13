@@ -58,25 +58,56 @@ class JavaBasicCourseSeeder extends Seeder
                 ],
                 'knowledge_items' => [
                     [
+                        'type' => 'note',
+                        'title' => 'Javaとは？',
+                        'content' => "# Javaとは？\n\n**Java**は、1995年にSun Microsystems（現Oracle）が開発したプログラミング言語です。\n\n## Javaの特徴\n\n1. **プラットフォーム独立性**: 「一度書けば、どこでも動く（Write Once, Run Anywhere）」\n2. **オブジェクト指向**: クラスとオブジェクトの概念\n3. **ガベージコレクション**: 自動メモリ管理\n4. **豊富なライブラリ**: 標準ライブラリが充実\n5. **堅牢性**: 強い型チェック、例外処理\n\n## Javaの用途\n- Androidアプリ開発\n- Webアプリケーション（Spring Framework）\n- 企業向けシステム\n- デスクトップアプリケーション\n- ビッグデータ処理（Hadoop）",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'Java開発環境の準備',
+                        'content' => "# Java開発環境の準備\n\n## 必要なもの\n\n### 1. JDK (Java Development Kit)\n- Javaプログラムを開発・実行するためのツール\n- Oracle JDK または OpenJDK\n- インストール確認: `java -version` および `javac -version`\n\n### 2. 統合開発環境（IDE）\n\n**IntelliJ IDEA** (推奨)\n- 高機能なJava IDE\n- コード補完、デバッグ機能が優秀\n- Community Edition（無料版）で十分\n\n**JCPad** (初心者向け)\n- シンプルで軽量\n- 日本語対応\n- すぐに使い始められる\n\n**Eclipse**\n- 無料でオープンソース\n- プラグインが豊富\n\n## インストール手順\n1. JDKをダウンロードしてインストール\n2. IDEをダウンロードしてインストール\n3. 環境変数の設定（JAVA_HOME, PATH）\n4. 動作確認（Hello Worldの実行）",
+                        'sort_order' => 2
+                    ],
+                    [
                         'type' => 'code_snippet',
                         'title' => 'Hello Worldの基本',
                         'content' => "public class JKad01S1 {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World!\");\n    }\n}",
                         'code_language' => 'java',
-                        'sort_order' => 1
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'Javaプログラムの構造',
+                        'content' => "# Javaプログラムの構造\n\n```java\npublic class ClassName {\n    public static void main(String[] args) {\n        // プログラムの処理\n    }\n}\n```\n\n## 構成要素の説明\n\n### 1. `public class ClassName`\n- **public**: アクセス修飾子（どこからでもアクセス可能）\n- **class**: クラスの宣言\n- **ClassName**: クラス名（ファイル名と一致する必要がある）\n\n### 2. `public static void main(String[] args)`\n- **public**: どこからでも呼び出し可能\n- **static**: インスタンス化せずに呼び出せる\n- **void**: 戻り値がない\n- **main**: プログラムのエントリーポイント\n- **String[] args**: コマンドライン引数\n\n## 重要なルール\n1. ファイル名とクラス名は一致させる（例: `JKad01S1.java` → `class JKad01S1`）\n2. 大文字小文字を区別する\n3. 文の最後にセミコロン（;）を付ける\n4. ブロックは波括弧（{}）で囲む",
+                        'sort_order' => 4
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'ASCIIアートの出力例',
+                        'content' => "public class JKad01S2 {\n    public static void main(String[] args) {\n        // 「E」の文字をASCIIアートで出力\n        System.out.println(\"EEEEEEEE\");\n        System.out.println(\"EE\");\n        System.out.println(\"EE\");\n        System.out.println(\"EEEEEEEE\");\n        System.out.println(\"EE\");\n        System.out.println(\"EE\");\n        System.out.println(\"EEEEEEEE\");\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 5
                     ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'メソッドを使った出力',
-                        'content' => "public class JSample01X {\n    public static void printHello() {\n        System.out.println(\"Hello\");\n    }\n    public static void printWorld() {\n        System.out.println(\"World!\");\n    }\n    public static void main(String[] args) {\n        printHello();\n        printWorld();\n    }\n}",
+                        'content' => "public class JSample01X {\n    // メソッドの定義\n    public static void printHello() {\n        System.out.println(\"Hello\");\n    }\n    \n    public static void printWorld() {\n        System.out.println(\"World!\");\n    }\n    \n    // メインメソッド\n    public static void main(String[] args) {\n        printHello();  // メソッドの呼び出し\n        printWorld();  // メソッドの呼び出し\n    }\n}",
                         'code_language' => 'java',
-                        'sort_order' => 2
+                        'sort_order' => 6
                     ],
                     [
                         'type' => 'note',
-                        'title' => 'System.out.println()の使い方',
-                        'content' => "# System.out.println()の使い方\n\n- `System.out.println()`: 改行付きで出力\n- `System.out.print()`: 改行なしで出力\n- 文字列はダブルクォートで囲む\n- 数値や変数も出力可能",
-                        'sort_order' => 3
-                    ],
+                        'title' => 'System.out.println()とSystem.out.print()の違い',
+                        'content' => "# System.out.println()とSystem.out.print()の違い\n\n## println()メソッド\n```java\nSystem.out.println(\"Hello\");\nSystem.out.println(\"World\");\n```\n**出力結果:**\n```\nHello\nWorld\n```\n- 出力後に改行される\n\n## print()メソッド\n```java\nSystem.out.print(\"Hello\");\nSystem.out.print(\"World\");\n```\n**出力結果:**\n```\nHelloWorld\n```\n- 改行されない\n\n## 使い分け\n- **println()**: 1行ずつ出力したい場合\n- **print()**: 同じ行に複数の内容を出力したい場合\n\n## エスケープシーケンス\n- `\\n`: 改行\n- `\\t`: タブ\n- `\\\"`: ダブルクォート\n- `\\\\`: バックスラッシュ\n\n```java\nSystem.out.println(\"Hello\\nWorld\");  // 改行を含む\nSystem.out.println(\"Name:\\tTaro\");   // タブを含む\n```",
+                        'sort_order' => 7
+                    },
+                    [
+                        'type' => 'note',
+                        'title' => 'コンパイルと実行',
+                        'content' => "# Javaプログラムのコンパイルと実行\n\n## コマンドラインでの実行\n\n### 1. コンパイル\n```bash\njavac JKad01S1.java\n```\n- `.java`ファイルから`.class`ファイル（バイトコード）を生成\n- エラーがあればコンパイルエラーが表示される\n\n### 2. 実行\n```bash\njava JKad01S1\n```\n- `.class`を指定する（拡張子は不要）\n- JVM（Java Virtual Machine）がバイトコードを実行\n\n## IDEでの実行\n- **IntelliJ IDEA**: 緑の再生ボタン または Shift+F10\n- **Eclipse**: Ctrl+F11\n- **JCPad**: F5 または 実行ボタン\n\n## よくあるエラー\n\n### コンパイルエラー\n```\nerror: class JKad01S1 is public, should be declared in a file named JKad01S1.java\n```\n→ ファイル名とクラス名が一致していない\n\n### 実行エラー\n```\nError: Could not find or load main class JKad01S1\n```\n→ mainメソッドが見つからない、またはクラス名が間違っている",
+                        'sort_order' => 8
+                    },
                 ],
             ],
             [
@@ -94,18 +125,50 @@ class JavaBasicCourseSeeder extends Seeder
                 ],
                 'knowledge_items' => [
                     [
-                        'type' => 'code_snippet',
-                        'title' => '変数と式の例',
-                        'content' => "public class JKad02A {\n    public static void main(String[] args) {\n        int apple = 20;\n        int person = 3;\n        int eat = apple / person;  // 6\n        int rest = apple % person;  // 2\n        System.out.println(\"食べた数: \" + eat);\n        System.out.println(\"残り: \" + rest);\n    }\n}",
-                        'code_language' => 'java',
+                        'type' => 'note',
+                        'title' => '変数とは？',
+                        'content' => "# 変数とは？\n\n**変数**は、データを格納する箱のようなものです。\n\n## 変数の3つの要素\n1. **型（Type）**: どんな種類のデータを入れるか\n2. **名前（Name）**: 変数を識別するための名前\n3. **値（Value）**: 実際に格納されているデータ\n\n## 変数の宣言と代入\n```java\nint age;        // 宣言（箱を用意）\nage = 20;       // 代入（値を入れる）\n\nint score = 100;  // 宣言と同時に代入（初期化）\n```\n\n## 変数の命名規則\n- 英数字とアンダースコア（_）が使える\n- 最初の文字は英字またはアンダースコア\n- 予約語（int, class, publicなど）は使えない\n- キャメルケースを使う（myScore, studentName）\n- 意味のある名前を付ける",
                         'sort_order' => 1
                     ],
                     [
                         'type' => 'note',
-                        'title' => 'int型の基本',
-                        'content' => "# int型の基本\n\n- 整数を格納する型\n- 範囲: -2,147,483,648 ～ 2,147,483,647\n- 演算子: +, -, *, /, %\n- 整数同士の割り算は整数になる（小数点以下切り捨て）",
+                        'title' => 'int型の詳細',
+                        'content' => "# int型の詳細\n\n**int型**は、整数を格納するデータ型です。\n\n## 基本情報\n- **サイズ**: 32ビット（4バイト）\n- **範囲**: -2,147,483,648 ～ 2,147,483,647\n- **デフォルト値**: 0\n\n## 使用例\n```java\nint count = 10;\nint temperature = -5;\nint maxValue = 2147483647;\n```\n\n## 注意点\n- 範囲を超えるとオーバーフローが発生\n- 小数点以下は格納できない（double型を使用）\n\n```java\nint x = 2147483647;\nx = x + 1;  // オーバーフロー: -2147483648になる\n```",
                         'sort_order' => 2
                     ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '変数の宣言と代入',
+                        'content' => "public class JKad02_Variables {\n    public static void main(String[] args) {\n        // 宣言のみ\n        int x;\n        \n        // 値を代入\n        x = 10;\n        System.out.println(\"x = \" + x);  // x = 10\n        \n        // 宣言と同時に初期化\n        int y = 20;\n        System.out.println(\"y = \" + y);  // y = 20\n        \n        // 値の更新\n        x = 30;\n        System.out.println(\"x = \" + x);  // x = 30\n        \n        // 複数の変数を一度に宣言\n        int a = 1, b = 2, c = 3;\n        System.out.println(\"a=\" + a + \", b=\" + b + \", c=\" + c);\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => '四則演算',
+                        'content' => "# 四則演算\n\nJavaでは、数値に対して以下の演算が可能です。\n\n## 基本演算子\n\n| 演算子 | 意味 | 例 | 結果 |\n|-------|------|-----|------|\n| + | 加算 | 10 + 3 | 13 |\n| - | 減算 | 10 - 3 | 7 |\n| * | 乗算 | 10 * 3 | 30 |\n| / | 除算 | 10 / 3 | 3 |\n| % | 剰余 | 10 % 3 | 1 |\n\n## 整数除算の注意点\n```java\nint a = 10;\nint b = 3;\nint result = a / b;  // 結果は3（小数点以下切り捨て）\n```\n\n整数同士の割り算は、結果も整数になります。\n\n## 演算の優先順位\n1. **括弧**: `( )`\n2. **乗除剰**: `*`, `/`, `%`（左から右へ）\n3. **加減**: `+`, `-`（左から右へ）\n\n```java\nint x = 2 + 3 * 4;      // 14 (3*4が先に計算される)\nint y = (2 + 3) * 4;    // 20 (括弧内が先に計算される)\n```",
+                        'sort_order' => 4
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '四則演算の例',
+                        'content' => "public class JKad02_Arithmetic {\n    public static void main(String[] args) {\n        int a = 10;\n        int b = 3;\n        \n        System.out.println(\"a + b = \" + (a + b));  // 13\n        System.out.println(\"a - b = \" + (a - b));  // 7\n        System.out.println(\"a * b = \" + (a * b));  // 30\n        System.out.println(\"a / b = \" + (a / b));  // 3（整数除算）\n        System.out.println(\"a % b = \" + (a % b));  // 1（剰余）\n        \n        // 括弧を使った計算\n        int result1 = (a + b) * 2;  // (10 + 3) * 2 = 26\n        int result2 = a + b * 2;    // 10 + (3 * 2) = 16\n        \n        System.out.println(\"(a + b) * 2 = \" + result1);\n        System.out.println(\"a + b * 2 = \" + result2);\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 5
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => '剰余演算（%）の使い道',
+                        'content' => "# 剰余演算（%）の使い道\n\n**剰余演算**は、割り算の余りを求める演算です。\n\n## 使用例\n\n### 1. 偶数・奇数の判定\n```java\nif (number % 2 == 0) {\n    System.out.println(\"偶数\");\n} else {\n    System.out.println(\"奇数\");\n}\n```\n\n### 2. 倍数の判定\n```java\nif (number % 3 == 0) {\n    System.out.println(\"3の倍数\");\n}\n```\n\n### 3. 分配問題\n```java\nint apples = 20;\nint people = 3;\nint perPerson = apples / people;  // 6個ずつ\nint remaining = apples % people;  // 2個余る\n```\n\n### 4. 桁の取得\n```java\nint number = 1234;\nint lastDigit = number % 10;  // 4（1の位）\n```\n\n### 5. 循環処理\n```java\n// 0, 1, 2, 0, 1, 2, ... と繰り返す\nint index = count % 3;\n```",
+                        'sort_order' => 6
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'リンゴの分配問題',
+                        'content' => "import java.util.Scanner;\n\npublic class JKad02A {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n        System.out.print(\"リンゴの個数を入力してください＞\");\n        int apple = in.nextInt();\n        \n        System.out.print(\"人数を入力してください＞\");\n        int person = in.nextInt();\n        \n        // 1人あたりの個数\n        int eat = apple / person;\n        \n        // 余りの個数\n        int rest = apple % person;\n        \n        System.out.println(\"1人\" + eat + \"個ずつ食べられます。\");\n        System.out.println(\"残りは\" + rest + \"個です。\");\n        \n        in.close();\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 7
+                    },
                 ],
             ],
             [
@@ -159,18 +222,50 @@ class JavaBasicCourseSeeder extends Seeder
                 ],
                 'knowledge_items' => [
                     [
-                        'type' => 'code_snippet',
-                        'title' => 'Scannerの基本',
-                        'content' => "import java.util.Scanner;\n\npublic class Example {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        System.out.print(\"名前を入力してください＞\");\n        String name = in.nextLine();\n        System.out.print(\"年齢を入力してください＞\");\n        int age = in.nextInt();\n        System.out.println(\"こんにちは、\" + name + \"さん（\" + age + \"歳）\");\n        in.close();\n    }\n}",
-                        'code_language' => 'java',
+                        'type' => 'note',
+                        'title' => 'String型とは？',
+                        'content' => "# String型とは？\n\n**String型**は、文字列（テキスト）を格納するデータ型です。\n\n## 特徴\n- 文字列はダブルクォート（\"\"）で囲む\n- 文字列は変更できない（イミュータブル）\n- +演算子で文字列を連結できる\n\n## 使用例\n```java\nString name = \"太郎\";\nString message = \"こんにちは\";\nString empty = \"\";  // 空文字列\n```\n\n## 文字列の連結\n```java\nString firstName = \"山田\";\nString lastName = \"太郎\";\nString fullName = firstName + lastName;  // \"山田太郎\"\n\nint age = 20;\nString text = \"年齢は\" + age + \"歳です\";  // \"年齢は20歳です\"\n```\n\n## エスケープシーケンス\n- `\\n`: 改行\n- `\\t`: タブ\n- `\\\"`: ダブルクォート\n- `\\\\`: バックスラッシュ\n\n```java\nString text = \"Hello\\nWorld\";  // 2行に分かれる\nString quote = \"彼は\\\"こんにちは\\\"と言った\";\n```",
                         'sort_order' => 1
                     ],
                     [
                         'type' => 'note',
-                        'title' => 'Scannerクラスのメソッド',
-                        'content' => "# Scannerクラスのメソッド\n\n- `nextInt()`: 整数を読み込む\n- `nextDouble()`: 実数を読み込む\n- `nextLine()`: 1行の文字列を読み込む\n- `next()`: 単語を読み込む\n- `close()`: Scannerを閉じる（リソース解放）",
+                        'title' => 'Scannerクラスとは？',
+                        'content' => "# Scannerクラスとは？\n\n**Scanner**は、キーボードから入力を受け取るためのクラスです。\n\n## 基本的な使い方\n\n### 1. インポート\n```java\nimport java.util.Scanner;\n```\n\n### 2. Scannerオブジェクトの作成\n```java\nScanner in = new Scanner(System.in);\n```\n\n### 3. 入力を受け取る\n```java\nint number = in.nextInt();      // 整数\nString text = in.nextLine();    // 文字列\n```\n\n### 4. Scannerを閉じる\n```java\nin.close();\n```\n\n## 注意点\n- `nextInt()`の後に`nextLine()`を使う場合は、余分な改行を読み飛ばす必要がある\n- プログラムの最後で必ず`close()`を呼ぶ",
                         'sort_order' => 2
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'Scannerの基本的な使い方',
+                        'content' => "import java.util.Scanner;\n\npublic class JKad04_Scanner {\n    public static void main(String[] args) {\n        // Scannerオブジェクトの作成\n        Scanner in = new Scanner(System.in);\n        \n        // 名前を入力\n        System.out.print(\"名前を入力してください＞\");\n        String name = in.nextLine();\n        \n        // 年齢を入力\n        System.out.print(\"年齢を入力してください＞\");\n        int age = in.nextInt();\n        \n        // 結果を表示\n        System.out.println(\"こんにちは、\" + name + \"さん（\" + age + \"歳）\");\n        \n        // Scannerを閉じる\n        in.close();\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 3
                     ],
+                    [
+                        'type' => 'note',
+                        'title' => 'Scannerクラスの主要メソッド',
+                        'content' => "# Scannerクラスの主要メソッド\n\n## 数値の入力\n```java\nint i = in.nextInt();        // int型\nlong l = in.nextLong();      // long型\ndouble d = in.nextDouble();  // double型\nfloat f = in.nextFloat();    // float型\n```\n\n## 文字列の入力\n```java\nString line = in.nextLine();  // 1行全体\nString word = in.next();      // 次の単語（空白まで）\n```\n\n## その他\n```java\nboolean b = in.nextBoolean();  // true/false\nboolean hasNext = in.hasNext();  // 次の入力があるか確認\n```\n\n## メソッドの違い\n\n| メソッド | 読み取り範囲 | 改行の扱い |\n|---------|------------|----------|\n| `next()` | 次の単語 | 空白で区切る |\n| `nextLine()` | 1行全体 | 改行まで |\n| `nextInt()` | 次の整数 | 数字以外で終了 |",
+                        'sort_order' => 4
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '複数の値を入力する',
+                        'content' => "import java.util.Scanner;\n\npublic class JKad04_MultipleInputs {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n        System.out.print(\"1つ目の数値を入力＞\");\n        int num1 = in.nextInt();\n        \n        System.out.print(\"2つ目の数値を入力＞\");\n        int num2 = in.nextInt();\n        \n        System.out.print(\"3つ目の数値を入力＞\");\n        int num3 = in.nextInt();\n        \n        int sum = num1 + num2 + num3;\n        double average = sum / 3.0;  // 3.0で割ると小数点以下も計算される\n        \n        System.out.println(\"合計: \" + sum);\n        System.out.println(\"平均: \" + average);\n        \n        in.close();\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 5
+                    },
+                    [
+                        'type' => 'note',
+                        'title' => 'nextInt()とnextLine()の組み合わせ',
+                        'content' => "# nextInt()とnextLine()の組み合わせ\n\n## 問題点\n`nextInt()`の後に`nextLine()`を使うと、改行文字が残ってしまう問題があります。\n\n```java\nScanner in = new Scanner(System.in);\n\nSystem.out.print(\"年齢＞\");\nint age = in.nextInt();  // 「20」と入力してEnter\n\nSystem.out.print(\"名前＞\");\nString name = in.nextLine();  // 改行文字を読み取ってしまい、空文字列になる\n```\n\n## 解決方法1: 余分な改行を読み飛ばす\n```java\nint age = in.nextInt();\nin.nextLine();  // 改行文字を読み飛ばす\n\nString name = in.nextLine();  // 正しく名前を入力できる\n```\n\n## 解決方法2: すべてnextLine()で読み取る\n```java\nSystem.out.print(\"年齢＞\");\nString ageStr = in.nextLine();\nint age = Integer.parseInt(ageStr);  // 文字列をintに変換\n\nSystem.out.print(\"名前＞\");\nString name = in.nextLine();\n```\n\n## 推奨方法\n基本的には**解決方法1**を使うことが多いです。",
+                        'sort_order' => 6
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '計算機プログラム',
+                        'content' => "import java.util.Scanner;\n\npublic class JKad04_Calculator {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n        System.out.println(\"簡単な計算機\");\n        System.out.println(\"==================\");\n        \n        System.out.print(\"1つ目の数を入力＞\");\n        int a = in.nextInt();\n        \n        System.out.print(\"2つ目の数を入力＞\");\n        int b = in.nextInt();\n        \n        System.out.println();\n        System.out.println(\"計算結果:\");\n        System.out.println(a + \" + \" + b + \" = \" + (a + b));\n        System.out.println(a + \" - \" + b + \" = \" + (a - b));\n        System.out.println(a + \" * \" + b + \" = \" + (a * b));\n        \n        if (b != 0) {\n            System.out.println(a + \" / \" + b + \" = \" + (a / b));\n            System.out.println(a + \" % \" + b + \" = \" + (a % b));\n        } else {\n            System.out.println(\"0で割ることはできません\");\n        }\n        \n        in.close();\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 7
+                    },
                 ],
             ],
         ]);
