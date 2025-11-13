@@ -78,15 +78,17 @@ class RoadmapRepository(
         roadmapId: String? = null,
         topic: String? = null,
         level: String? = null,
-        autoClone: Boolean = true
+        autoClone: Boolean = true,
+        studySchedules: List<StudyScheduleInput>
     ): Result<ImportRoadmapData> {
         return try {
             val request = ImportRoadmapRequest(
                 source = source,
-                roadmap_id = roadmapId,
+                roadmapId = roadmapId,
                 topic = topic,
                 level = level,
-                auto_clone = autoClone
+                autoClone = autoClone,
+                studySchedules = studySchedules
             )
             val response = apiService.importRoadmap(request)
 
