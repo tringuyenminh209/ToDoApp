@@ -112,7 +112,7 @@ class RoadmapViewModel : ViewModel() {
     /**
      * 人気のロードマップをインポート（自動的に学習パスにクローン）
      */
-    fun importPopularRoadmap(roadmapId: String) {
+    fun importPopularRoadmap(roadmapId: String, studySchedules: List<StudyScheduleInput>) {
         viewModelScope.launch {
             try {
                 _isImporting.value = true
@@ -123,7 +123,8 @@ class RoadmapViewModel : ViewModel() {
                 val result = roadmapRepository.importRoadmap(
                     source = "popular",
                     roadmapId = roadmapId,
-                    autoClone = true
+                    autoClone = true,
+                    studySchedules = studySchedules
                 )
 
                 result.onSuccess { data ->
@@ -148,7 +149,7 @@ class RoadmapViewModel : ViewModel() {
     /**
      * AI生成ロードマップをインポート（自動的に学習パスにクローン）
      */
-    fun importAIGeneratedRoadmap(topic: String, level: String = "beginner") {
+    fun importAIGeneratedRoadmap(topic: String, level: String = "beginner", studySchedules: List<StudyScheduleInput>) {
         viewModelScope.launch {
             try {
                 _isImporting.value = true
@@ -160,7 +161,8 @@ class RoadmapViewModel : ViewModel() {
                     source = "ai",
                     topic = topic,
                     level = level,
-                    autoClone = true
+                    autoClone = true,
+                    studySchedules = studySchedules
                 )
 
                 result.onSuccess { data ->
