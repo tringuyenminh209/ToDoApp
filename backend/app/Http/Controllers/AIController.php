@@ -1042,26 +1042,34 @@ class AIController extends Controller
                 ->limit(20) // Limit to avoid token overflow
                 ->get();
 
-            // Load today's timetable
+            // Load all timetable (entire week) so AI can answer questions about any day
             $today = now();
             $dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
             $todayDayName = $dayNames[$today->dayOfWeek];
 
-            $timetable = \App\Models\TimetableClass::where('user_id', $user->id)
-                ->where('day', $todayDayName)
+            $allTimetable = \App\Models\TimetableClass::where('user_id', $user->id)
+                ->orderBy('day', 'asc')
                 ->orderBy('start_time', 'asc')
                 ->get();
 
-            // Build user context
+            // Group timetable by day
+            $timetableByDay = [];
+            foreach ($allTimetable as $class) {
+                if (!isset($timetableByDay[$class->day])) {
+                    $timetableByDay[$class->day] = [];
+                }
+                $timetableByDay[$class->day][] = [
+                    'time' => $class->start_time,
+                    'title' => $class->name,
+                    'class_name' => $class->name,
+                ];
+            }
+
+            // Build user context with full week timetable
             $userContext = [
                 'tasks' => $tasks->toArray(),
-                'timetable' => $timetable->map(function($class) {
-                    return [
-                        'time' => $class->start_time,
-                        'title' => $class->name,
-                        'class_name' => $class->name,
-                    ];
-                })->toArray(),
+                'timetable' => $timetableByDay,
+                'today' => $todayDayName,
             ];
 
             // Get conversation history (last 10 messages for context)
@@ -1170,26 +1178,34 @@ class AIController extends Controller
                 ->limit(20)
                 ->get();
 
-            // Load today's timetable
+            // Load all timetable (entire week) so AI can answer questions about any day
             $today = now();
             $dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
             $todayDayName = $dayNames[$today->dayOfWeek];
 
-            $timetable = \App\Models\TimetableClass::where('user_id', $user->id)
-                ->where('day', $todayDayName)
+            $allTimetable = \App\Models\TimetableClass::where('user_id', $user->id)
+                ->orderBy('day', 'asc')
                 ->orderBy('start_time', 'asc')
                 ->get();
 
-            // Build user context
+            // Group timetable by day
+            $timetableByDay = [];
+            foreach ($allTimetable as $class) {
+                if (!isset($timetableByDay[$class->day])) {
+                    $timetableByDay[$class->day] = [];
+                }
+                $timetableByDay[$class->day][] = [
+                    'time' => $class->start_time,
+                    'title' => $class->name,
+                    'class_name' => $class->name,
+                ];
+            }
+
+            // Build user context with full week timetable
             $userContext = [
                 'tasks' => $tasks->toArray(),
-                'timetable' => $timetable->map(function($class) {
-                    return [
-                        'time' => $class->start_time,
-                        'title' => $class->name,
-                        'class_name' => $class->name,
-                    ];
-                })->toArray(),
+                'timetable' => $timetableByDay,
+                'today' => $todayDayName,
             ];
 
             // Create proactive prompt for daily planning
