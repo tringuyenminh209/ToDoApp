@@ -567,6 +567,35 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => 'MapインターフェイスとHashMap', 'estimated_minutes' => 40, 'sort_order' => 3],
                     ['title' => '実践問題', 'estimated_minutes' => 60, 'sort_order' => 4],
                 ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'コレクションフレームワーク',
+                        'content' => "# コレクションフレームワークとは\n\n複数のデータをまとめて管理するための仕組み。配列より柔軟で便利。\n\n## 主要インターフェイス\n\n| インターフェイス | 特徴 | 実装クラス |\n|---------------|------|----------|\n| **List** | 順序あり、重複可 | ArrayList, LinkedList |\n| **Set** | 順序なし、重複不可 | HashSet, TreeSet |\n| **Map** | キーと値のペア | HashMap, TreeMap |\n\n## 配列との違い\n\n```java\n// 配列: サイズ固定\nString[] array = new String[3];\n\n// ArrayList: サイズ可変\nArrayList<String> list = new ArrayList<>();\nlist.add(\"要素1\");\nlist.add(\"要素2\");\n```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'ArrayList（List）の使い方',
+                        'content' => "import java.util.ArrayList;\n\npublic class Main {\n    public static void main(String[] args) {\n        // ArrayList作成\n        ArrayList<String> names = new ArrayList<>();\n        \n        // 追加\n        names.add(\"太郎\");\n        names.add(\"花子\");\n        names.add(\"次郎\");\n        \n        // 取得\n        System.out.println(names.get(0));  // 太郎\n        \n        // サイズ\n        System.out.println(names.size());  // 3\n        \n        // 削除\n        names.remove(1);  // 花子を削除\n        \n        // 存在チェック\n        System.out.println(names.contains(\"太郎\"));  // true\n        \n        // 全要素表示\n        for (String name : names) {\n            System.out.println(name);\n        }\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 2
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'HashSet（Set）の使い方',
+                        'content' => "import java.util.HashSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        // HashSet作成（重複なし）\n        HashSet<String> set = new HashSet<>();\n        \n        // 追加\n        set.add(\"りんご\");\n        set.add(\"バナナ\");\n        set.add(\"りんご\");  // 重複は追加されない\n        \n        System.out.println(set.size());  // 2\n        \n        // 存在チェック\n        System.out.println(set.contains(\"りんご\"));  // true\n        \n        // 全要素表示（順序不定）\n        for (String fruit : set) {\n            System.out.println(fruit);\n        }\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 3
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'HashMap（Map）の使い方',
+                        'content' => "import java.util.HashMap;\n\npublic class Main {\n    public static void main(String[] args) {\n        // HashMap作成（キー→値）\n        HashMap<String, Integer> scores = new HashMap<>();\n        \n        // 追加\n        scores.put(\"太郎\", 85);\n        scores.put(\"花子\", 92);\n        scores.put(\"次郎\", 78);\n        \n        // 取得\n        System.out.println(scores.get(\"花子\"));  // 92\n        \n        // キー存在チェック\n        System.out.println(scores.containsKey(\"太郎\"));  // true\n        \n        // 全要素表示\n        for (String name : scores.keySet()) {\n            System.out.println(name + \": \" + scores.get(name));\n        }\n        \n        // または\n        for (var entry : scores.entrySet()) {\n            System.out.println(entry.getKey() + \": \" + entry.getValue());\n        }\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 4
+                    },
+                ],
             ],
             [
                 'title' => '第14回：例外処理（try～catch）',
