@@ -1,0 +1,107 @@
+name: Backend CI (Laravel)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+      - 'claude/**'
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+    paths:
+      - 'backend/**'
+
+jobs:
+  laravel-tests:
+    name: Laravel Tests (PHP ${{ matrix.php-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, dom, fileinfo, mysql, pdo_mysql
+          coverage: none
+
+      - name: Copy .env.example to .env
+        working-directory: ./backend
+        run: cp .env.example .env
+
+      - name: Install Composer Dependencies
+        working-directory: ./backend
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Generate Application Key
+        working-directory: ./backend
+        run: php artisan key:generate
+
+      - name: Create SQLite Database
+        working-directory: ./backend
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Set SQLite Database in .env
+        working-directory: ./backend
+        run: |
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=database/database.sqlite" >> .env
+
+      - name: Run Migrations
+        working-directory: ./backend
+        run: php artisan migrate --force
+
+      - name: Run PHPUnit Tests
+        working-directory: ./backend
+        run: php artisan test
+
+      - name: Run Laravel Pint (Code Style)
+        working-directory: ./backend
+        run: |
+          composer require laravel/pint --dev --no-interaction
+          ./vendor/bin/pint --test
+
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, dom, fileinfo
+          coverage: none
+
+      - name: Install Composer Dependencies
+        working-directory: ./backend
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Check PHP Syntax
+        working-directory: ./backend
+        run: find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
+
+      - name: Run PHPStan (Static Analysis)
+        working-directory: ./backend
+        continue-on-error: true
+        run: |
+          composer require phpstan/phpstan --dev --no-interaction
+          ./vendor/bin/phpstan analyse app --level=5

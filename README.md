@@ -1,5 +1,11 @@
 # To-Do AI App
 
+[![Android Build](https://github.com/tringuyenminh209/ToDoApp/actions/workflows/android-build.yml/badge.svg)](https://github.com/tringuyenminh209/ToDoApp/actions/workflows/android-build.yml)
+[![Backend CI](https://github.com/tringuyenminh209/ToDoApp/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/tringuyenminh209/ToDoApp/actions/workflows/backend-ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://www.android.com/)
+[![Laravel](https://img.shields.io/badge/Laravel-12-red.svg)](https://laravel.com/)
+
 A modern To-Do application with AI integration built with Laravel 12 backend and Android Studio mobile app.
 
 ## 🚀 Features
