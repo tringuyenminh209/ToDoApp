@@ -224,6 +224,20 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [LearningPathController::class, 'update']);
         Route::delete('/{id}', [LearningPathController::class, 'destroy']);
         Route::put('/{id}/complete', [LearningPathController::class, 'complete']);
+
+        // Study schedules for specific learning path
+        Route::get('/{id}/study-schedules', [\App\Http\Controllers\StudyScheduleController::class, 'index']);
+        Route::post('/{id}/study-schedules', [\App\Http\Controllers\StudyScheduleController::class, 'store']);
+    });
+
+    // Study Schedule routes
+    Route::prefix('study-schedules')->group(function () {
+        Route::get('/today', [\App\Http\Controllers\StudyScheduleController::class, 'todaySessions']);
+        Route::get('/stats', [\App\Http\Controllers\StudyScheduleController::class, 'stats']);
+        Route::put('/{id}', [\App\Http\Controllers\StudyScheduleController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\StudyScheduleController::class, 'destroy']);
+        Route::post('/{id}/complete', [\App\Http\Controllers\StudyScheduleController::class, 'markCompleted']);
+        Route::post('/{id}/missed', [\App\Http\Controllers\StudyScheduleController::class, 'markMissed']);
     });
 
     // Roadmap API routes - External roadmap integration (requires authentication)

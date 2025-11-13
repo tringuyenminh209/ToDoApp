@@ -396,4 +396,44 @@ interface ApiService {
     suspend fun getDailyReviewInsights(
         @Query("period") period: String = "month" // week, month, year, all
     ): Response<ApiResponse<DailyReviewInsights>>
+
+    // ==================== Study Schedule Endpoints ====================
+
+    // Get all schedules for a learning path
+    @GET("learning-paths/{id}/study-schedules")
+    suspend fun getStudySchedules(@Path("id") learningPathId: Int): Response<ApiResponse<Any>>
+
+    // Create new study schedule for a learning path
+    @POST("learning-paths/{id}/study-schedules")
+    suspend fun createStudySchedule(
+        @Path("id") learningPathId: Int,
+        @Body request: CreateStudyScheduleRequest
+    ): Response<ApiResponse<StudySchedule>>
+
+    // Update study schedule
+    @PUT("study-schedules/{id}")
+    suspend fun updateStudySchedule(
+        @Path("id") scheduleId: Int,
+        @Body request: UpdateStudyScheduleRequest
+    ): Response<ApiResponse<StudySchedule>>
+
+    // Delete study schedule
+    @DELETE("study-schedules/{id}")
+    suspend fun deleteStudySchedule(@Path("id") scheduleId: Int): Response<ApiResponse<Unit>>
+
+    // Mark session as completed
+    @POST("study-schedules/{id}/complete")
+    suspend fun markScheduleCompleted(@Path("id") scheduleId: Int): Response<ApiResponse<StudySchedule>>
+
+    // Mark session as missed
+    @POST("study-schedules/{id}/missed")
+    suspend fun markScheduleMissed(@Path("id") scheduleId: Int): Response<ApiResponse<StudySchedule>>
+
+    // Get today's scheduled sessions
+    @GET("study-schedules/today")
+    suspend fun getTodaySessions(): Response<ApiResponse<TodaySessionsResponse>>
+
+    // Get schedule statistics
+    @GET("study-schedules/stats")
+    suspend fun getStudyScheduleStats(): Response<ApiResponse<StudyScheduleStats>>
 }
