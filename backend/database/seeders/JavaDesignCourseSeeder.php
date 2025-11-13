@@ -610,6 +610,27 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => 'finallyブロック', 'estimated_minutes' => 40, 'sort_order' => 3],
                     ['title' => '実践問題', 'estimated_minutes' => 60, 'sort_order' => 4],
                 ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => '例外処理とは',
+                        'content' => "# 例外処理\n\nプログラム実行中のエラーを適切に処理する仕組み。\n\n## なぜ必要か\n\n```java\n// 例外処理なし → プログラムが異常終了\nint result = 10 / 0;  // ArithmeticException!\n\n// 例外処理あり → エラーを捕捉して処理継続\ntry {\n    int result = 10 / 0;\n} catch (ArithmeticException e) {\n    System.out.println(\"0で割れません\");\n}\nSystem.out.println(\"処理続行\");\n```\n\n## 基本構文\n\n```java\ntry {\n    // エラーが発生する可能性のある処理\n} catch (例外型 変数名) {\n    // エラー発生時の処理\n} finally {\n    // 必ず実行される処理（省略可）\n}\n```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'try-catch の実践例',
+                        'content' => "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        \n        try {\n            System.out.print(\"数値を入力: \");\n            String input = scanner.nextLine();\n            int num = Integer.parseInt(input);\n            \n            System.out.print(\"割る数: \");\n            int divisor = Integer.parseInt(scanner.nextLine());\n            \n            int result = num / divisor;\n            System.out.println(\"結果: \" + result);\n            \n        } catch (NumberFormatException e) {\n            System.out.println(\"数値を入力してください\");\n        } catch (ArithmeticException e) {\n            System.out.println(\"0では割れません\");\n        } catch (Exception e) {\n            System.out.println(\"エラー: \" + e.getMessage());\n        } finally {\n            System.out.println(\"処理終了\");\n            scanner.close();\n        }\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 2
+                    },
+                    [
+                        'type' => 'note',
+                        'title' => '例外の種類',
+                        'content' => "# 例外の階層\n\n```\nThrowable\n├── Error（システムエラー）\n└── Exception\n    ├── RuntimeException（実行時例外）\n    │   ├── NullPointerException\n    │   ├── ArithmeticException\n    │   └── ArrayIndexOutOfBoundsException\n    └── IOException等（チェック例外）\n```\n\n## 2種類の例外\n\n| 種類 | 説明 | 例 |\n|------|------|----|\n| **RuntimeException** | 実行時例外、try-catch不要 | NullPointerException |\n| **チェック例外** | コンパイル時チェック、try-catch必須 | IOException |\n\n```java\n// RuntimeException（try-catchなしでもOK）\nint[] arr = {1, 2, 3};\nSystem.out.println(arr[5]);  // 実行時エラー\n\n// チェック例外（try-catch必須）\nFileReader fr = new FileReader(\"file.txt\");  // ❌ コンパイルエラー\n\n// 正しい書き方\ntry {\n    FileReader fr = new FileReader(\"file.txt\");\n} catch (FileNotFoundException e) {\n    e.printStackTrace();\n}\n```",
+                        'sort_order' => 3
+                    },
+                ],
             ],
             [
                 'title' => '第15回：スレッド',
