@@ -898,39 +898,90 @@ JSON形式で返してください：
 
         $tasksInfo = $this->formatTasksInfo($tasks);
         $scheduleInfo = $this->formatScheduleInfo($timetable);
+        $freeTimeAnalysis = $this->analyzeFreeTime($timetable, $tasks);
+        $deadlineWarnings = $this->analyzeDeadlines($tasks);
 
-        return "あなたは親切で有能な生産性アシスタントです。日本語で応答してください。
+        $today = now()->format('Y-m-d');
+        $currentTime = now()->format('H:i');
+
+        return "あなたは親切で有能でproactiveな生産性アシスタントです。日本語で応答してください。
+
+現在の日時: {$today} {$currentTime}
 
 ユーザーの現在の状況:
 {$tasksInfo}
 
 {$scheduleInfo}
 
+{$freeTimeAnalysis}
+
+{$deadlineWarnings}
+
+あなたの役割と能力:
+1. **Proactive Assistant**: ユーザーが聞く前に、重要な情報や提案を自発的に提供する
+2. **Context-Aware**: スケジュールとタスクを総合的に分析して最適なアドバイスを提供
+3. **Time Management Expert**: 空き時間を見つけ、効率的なタスク配置を提案
+4. **Priority Advisor**: 緊急度と重要度を考慮して優先順位を提案
+
 重要な指示:
-1. ユーザーのスケジュールと既存のタスクを考慮してアドバイスしてください
-2. タスク提案する場合は、以下の条件をすべて満たす場合のみ提案してください:
-   - ユーザーが明確にタスク追加を希望している
-   - スケジュールに空き時間がある
-   - 既存タスクと重複しない
-3. タスク提案時は、以下のJSON形式を**メッセージの最後に追加**してください:
+
+【Proactive Behavior】
+- ユーザーが聞かなくても、以下の場合は積極的に提案する:
+  * 期限が近いタスクがある (24時間以内)
+  * 空き時間があり、タスクを入れられる
+  * スケジュールが詰まりすぎている (過負荷警告)
+  * タスクとスケジュールに衝突がある
+  * 未完了タスクが多すぎる
+
+【Task Analysis】
+- 既存タスクの進捗状況を把握
+- 期限切れタスクや緊急タスクを特定
+- タスク間の関連性を考慮
+- 適切な作業時間を計算
+
+【Schedule Analysis】
+- 授業/会議の前後の空き時間を活用
+- 連続作業時間を確保
+- 休憩時間を考慮
+- 移動時間を考慮
+
+【Smart Suggestions】
+タスク提案時は、以下の条件を考慮:
+1. スケジュールの空き時間に配置
+2. 既存タスクと重複しない
+3. タスクの優先度と期限を考慮
+4. ユーザーのエネルギーレベルに合わせる (朝は重要タスク、夜は軽いタスク)
+5. 十分な休憩時間を確保
+
+【Response Format】
+タスク提案する場合は、以下のJSON形式を**メッセージの最後に追加**:
 
 ```json
 {
-  \"message\": \"ここに通常の会話メッセージを書く\",
+  \"message\": \"[Proactiveな提案を含む親しみやすいメッセージ。期限警告や空き時間の活用提案など]\",
   \"task_suggestion\": {
     \"title\": \"タスク名\",
     \"description\": \"詳細な説明\",
     \"estimated_minutes\": 60,
     \"priority\": \"high\",
-    \"scheduled_time\": \"2025-11-12 14:00:00\",
-    \"reason\": \"このタスクを今提案する理由\"
+    \"scheduled_time\": \"{$today} 14:00:00\",
+    \"reason\": \"このタスクを今提案する具体的な理由 (空き時間、期限、優先度など)\"
   }
 }
 ```
 
-4. タスク提案しない場合は、通常の会話メッセージだけを返してください
-5. scheduled_timeは必ず今日の日付(" . now()->format('Y-m-d') . ")に時刻を組み合わせてください
-6. 優先度は high/medium/low のいずれかを選択してください";
+【会話のトーン】
+- 親しみやすく、励ましの言葉を添える
+- 批判的ではなく、建設的な提案をする
+- ユーザーの状況を理解し、共感を示す
+- 具体的で実行可能なアドバイスを提供
+
+例:
+❌ \"タスクが多すぎます\"
+✅ \"少し忙しそうですね！優先度の高いタスクから片付けていきましょう。まず〇〇から始めるのはいかがですか？\"
+
+scheduled_timeは必ず今日の日付({$today})に時刻を組み合わせてください。
+優先度は high/medium/low のいずれかを選択してください。";
     }
 
     /**
@@ -1018,5 +1069,161 @@ JSON形式で返してください：
         }
 
         return $info;
+    }
+
+    /**
+     * Analyze free time slots in schedule
+     *
+     * @param array $timetable User's timetable
+     * @param array $tasks User's tasks
+     * @return string Free time analysis
+     */
+    private function analyzeFreeTime(array $timetable, array $tasks): string
+    {
+        if (empty($timetable) && empty($tasks)) {
+            return "## 空き時間分析\n一日中自由な時間があります。タスクを計画的に配置できます。";
+        }
+
+        $analysis = "## 空き時間分析\n";
+
+        // Parse schedule items to get busy time slots
+        $busySlots = [];
+
+        // Add timetable classes to busy slots
+        if (!empty($timetable)) {
+            if (isset($timetable['classes']) && is_array($timetable['classes'])) {
+                foreach ($timetable['classes'] as $class) {
+                    $time = $class['time'] ?? $class['start_time'] ?? '';
+                    if ($time) {
+                        $busySlots[] = $time;
+                    }
+                }
+            } else {
+                foreach ($timetable as $item) {
+                    if (is_array($item)) {
+                        $time = $item['time'] ?? $item['start_time'] ?? '';
+                        if ($time) {
+                            $busySlots[] = $time;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Add scheduled tasks to busy slots
+        foreach ($tasks as $task) {
+            if (!empty($task['scheduled_time'])) {
+                $scheduledTime = $task['scheduled_time'];
+                // Extract time portion
+                try {
+                    $timeObj = new \DateTime($scheduledTime);
+                    $busySlots[] = $timeObj->format('H:i');
+                } catch (\Exception $e) {
+                    // Skip invalid dates
+                }
+            }
+        }
+
+        if (empty($busySlots)) {
+            $analysis .= "- 現在、予定されている授業やタスクはありません\n";
+            $analysis .= "- 一日を自由に使えます\n";
+        } else {
+            $analysis .= "- 予定がある時間帯: " . count($busySlots) . "個\n";
+            $analysis .= "- 空き時間を活用してタスクを進めましょう\n";
+
+            // Suggest optimal times for tasks
+            $currentHour = (int)now()->format('H');
+            if ($currentHour < 12) {
+                $analysis .= "- 💡 午前中は集中力が高い時間帯です。重要なタスクに最適です\n";
+            } elseif ($currentHour < 18) {
+                $analysis .= "- 💡 午後は作業を進めるのに良い時間です\n";
+            } else {
+                $analysis .= "- 💡 夕方以降は軽めのタスクや復習に適しています\n";
+            }
+        }
+
+        return $analysis;
+    }
+
+    /**
+     * Analyze task deadlines and provide warnings
+     *
+     * @param array $tasks User's tasks
+     * @return string Deadline warnings
+     */
+    private function analyzeDeadlines(array $tasks): string
+    {
+        if (empty($tasks)) {
+            return "";
+        }
+
+        $warnings = [];
+        $urgentTasks = [];
+        $overdueTasks = [];
+        $now = now();
+
+        foreach ($tasks as $task) {
+            $status = $task['status'] ?? 'pending';
+
+            // Skip completed or cancelled tasks
+            if (in_array($status, ['completed', 'cancelled'])) {
+                continue;
+            }
+
+            $deadline = $task['deadline'] ?? null;
+
+            if ($deadline) {
+                try {
+                    $deadlineDate = new \DateTime($deadline);
+                    $hoursUntilDeadline = $now->diffInHours($deadlineDate, false);
+
+                    if ($hoursUntilDeadline < 0) {
+                        // Overdue
+                        $overdueTasks[] = $task;
+                    } elseif ($hoursUntilDeadline <= 24) {
+                        // Due within 24 hours
+                        $urgentTasks[] = $task;
+                    }
+                } catch (\Exception $e) {
+                    // Skip invalid dates
+                }
+            }
+        }
+
+        if (empty($overdueTasks) && empty($urgentTasks)) {
+            return "";
+        }
+
+        $analysis = "## ⚠️ 期限警告\n";
+
+        if (!empty($overdueTasks)) {
+            $analysis .= "### 🔴 期限切れタスク (" . count($overdueTasks) . "個)\n";
+            foreach ($overdueTasks as $task) {
+                $title = $task['title'] ?? 'No title';
+                $deadline = $task['deadline'] ?? '';
+                $analysis .= "- **{$title}** (期限: {$deadline})\n";
+            }
+            $analysis .= "\n";
+        }
+
+        if (!empty($urgentTasks)) {
+            $analysis .= "### 🟡 緊急タスク - 24時間以内 (" . count($urgentTasks) . "個)\n";
+            foreach ($urgentTasks as $task) {
+                $title = $task['title'] ?? 'No title';
+                $deadline = $task['deadline'] ?? '';
+                try {
+                    $deadlineDate = new \DateTime($deadline);
+                    $hoursLeft = $now->diffInHours($deadlineDate);
+                    $analysis .= "- **{$title}** (残り: 約{$hoursLeft}時間)\n";
+                } catch (\Exception $e) {
+                    $analysis .= "- **{$title}** (期限: {$deadline})\n";
+                }
+            }
+            $analysis .= "\n";
+        }
+
+        $analysis .= "💡 これらのタスクを優先的に進めることをお勧めします。\n";
+
+        return $analysis;
     }
 }
