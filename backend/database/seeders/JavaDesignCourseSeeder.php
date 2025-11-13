@@ -444,15 +444,22 @@ class JavaDesignCourseSeeder extends Seeder
                     [
                         'type' => 'note',
                         'title' => 'インターフェイスとは',
-                        'content' => "# インターフェイスとは\n\nクラスが持つべきメソッドを記したルールブックのようなもの。\nimplements修飾子によってクラスにインターフェイスを実装することができ、実装したクラスは\nインターフェース内で定義されたメソッドを全て定義（オーバーライド）しなければならない。\n定義しなかった（人為的ミスした）場合にコンパイルエラーを出してくれるメリットがある。\n\n```java\n// インターフェースの定義例\npublic interface IFairy {\n    void intro();\n}\n// インターフェース内に定義するメソッドは抽象メソッドと同様に処理を持たない為{}で開く必要はない。\n// また、インターフェース内のメソッドは全て抽象化されている前提なので【public abstract】が省略されている。\n\n// クラスでインターフェースを実装する例\npublic class Light implements IFairy {\n    public void intro() {\n        System.out.println(\"わたしは光の妖精！この者に祝福を！！\");\n    }\n}\n```",
+                        'content' => "# インターフェイスとは\n\nクラスが持つべきメソッドを記した**契約書**・**ルールブック**。\n\n## 特徴\n\n| 項目 | 内容 |\n|------|------|\n| メソッド | 全て抽象（public abstract省略可） |\n| フィールド | 定数のみ（public static final省略可） |\n| 多重実装 | ✅ 可能 |\n| インスタンス化 | ❌ 不可 |\n\n```java\npublic interface Flyable {\n    void fly();  // public abstract省略\n}\n\npublic class Bird implements Flyable {\n    @Override\n    public void fly() {\n        System.out.println(\"飛んでいます\");\n    }\n}\n```",
                         'sort_order' => 1
-                    ],
+                    },
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '複数インターフェイスの実装',
+                        'content' => "// インターフェイス定義\npublic interface Flyable {\n    void fly();\n}\n\npublic interface Swimmable {\n    void swim();\n}\n\n// 複数実装（カンマ区切り）\npublic class Duck implements Flyable, Swimmable {\n    @Override\n    public void fly() {\n        System.out.println(\"アヒルが飛んでいます\");\n    }\n    \n    @Override\n    public void swim() {\n        System.out.println(\"アヒルが泳いでいます\");\n    }\n}\n\n// 使用例\npublic class Main {\n    public static void main(String[] args) {\n        Duck duck = new Duck();\n        duck.fly();\n        duck.swim();\n        \n        // ポリモーフィズム\n        Flyable flyer = new Duck();\n        flyer.fly();\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 2
+                    },
                     [
                         'type' => 'note',
-                        'title' => '抽象クラスとインターフェイスの違い',
-                        'content' => "# 抽象クラスとインターフェイスの違い\n\n## 抽象クラス\n\n- 抽象メソッドと具象メソッド（処理のあるメソッド）のどちらも定義可能\n- 多重継承が禁止されている\n\n## インターフェイス\n\n- 抽象メソッド（処理のないメソッド）しか定義できない\n- 多重継承（実装）が許可されている　※implementsの後にカンマ(,)区切りで記述できる\n\n## 使い分け方\n\n抽象クラスとインターフェイスはどちらも定義したものを継承・実装先に引き継がせるという用途としては同じなので\n使い分け方がわかりづらいが、要は【継承関連の中に必須なものかどうか】で判断すると良い。\n\nクラスはそのオブジェクトに対する設計図であり多重継承が禁止されている為、\n機能を引き継がせる必要がある継承関連の設計上で使用する。\nインターフェイスは継承関連上で必須ではないが、搭載したい機能を実装する場合に使用する。",
-                        'sort_order' => 2
-                    ],
+                        'title' => '抽象クラス vs インターフェイス',
+                        'content' => "# 比較表\n\n| 項目 | 抽象クラス | インターフェイス |\n|------|-----------|----------------|\n| 具象メソッド | ✅ 可 | ❌ 不可 |\n| フィールド | ✅ 可 | 定数のみ |\n| 多重継承 | ❌ 不可 | ✅ 可 |\n| コンストラクタ | ✅ 可 | ❌ 不可 |\n\n## 使い分け\n\n**抽象クラス**: is-a関係、共通実装あり  \n**インターフェイス**: can-do関係、契約のみ\n\n```java\n// 抽象クラス：共通実装\nabstract class Animal {\n    void eat() { /* 共通 */ }\n    abstract void move();\n}\n\n// インターフェイス：機能契約\ninterface Flyable {\n    void fly();\n}\n```",
+                        'sort_order' => 3
+                    },
                 ],
             ],
             [
