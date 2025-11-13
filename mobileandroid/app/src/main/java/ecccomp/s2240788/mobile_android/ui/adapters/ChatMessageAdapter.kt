@@ -200,6 +200,25 @@ class ChatMessageAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(ChatMessage
     }
     
     /**
+     * Update messages list without affecting typing indicator
+     */
+    fun updateMessages(messages: List<ChatMessage>) {
+        val currentList = currentList.toMutableList()
+        // Check if typing indicator is currently showing
+        val hasTypingIndicator = currentList.any { it === TYPING_INDICATOR }
+
+        // Create new list with messages only (as Any for adapter)
+        val newList = messages.map { it as Any }.toMutableList()
+
+        // Preserve typing indicator if it was showing
+        if (hasTypingIndicator) {
+            newList.add(TYPING_INDICATOR)
+        }
+
+        submitList(newList)
+    }
+
+    /**
      * Show typing indicator
      */
     fun showTypingIndicator() {
@@ -210,7 +229,7 @@ class ChatMessageAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(ChatMessage
         currentList.add(TYPING_INDICATOR)
         submitList(currentList)
     }
-    
+
     /**
      * Hide typing indicator
      */
