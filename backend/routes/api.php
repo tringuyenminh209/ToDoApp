@@ -16,6 +16,7 @@ use App\Http\Controllers\LearningPathTemplateController;
 use App\Http\Controllers\CheatCodeController;
 use App\Http\Controllers\KnowledgeController;
 use App\Http\Controllers\FocusEnhancementController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -257,6 +258,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}/favorite', [KnowledgeController::class, 'toggleFavorite']);
         Route::put('/{id}/archive', [KnowledgeController::class, 'toggleArchive']);
         Route::put('/{id}/review', [KnowledgeController::class, 'markReviewed']);
+    });
+
+    // Settings routes
+    Route::prefix('settings')->group(function () {
+        Route::get('/', [SettingsController::class, 'index']);
+        Route::put('/', [SettingsController::class, 'update']);
+        Route::post('/reset', [SettingsController::class, 'reset']);
+        Route::patch('/{key}', [SettingsController::class, 'updateSetting']);
     });
 
 });

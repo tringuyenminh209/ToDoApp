@@ -75,7 +75,13 @@ Class User extends Authenticatable{
 
     public function userSettings(): HasOne
     {
-        return $this->hasOne(UserSettings::class);
+        return $this->hasOne(UserSetting::class);
+    }
+
+    // Alias for convenience
+    public function settings(): HasOne
+    {
+        return $this->hasOne(UserSetting::class);
     }
 
     public function userStats(): HasOne
