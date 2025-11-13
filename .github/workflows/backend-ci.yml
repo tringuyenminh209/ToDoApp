@@ -1,0 +1,19 @@
+name: Backend CI (Laravel)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+      - 'claude/**'
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+    pull_request:
+      branches:
+        - main
+        - master
+        - develop
+      paths:
+        - 'backend/**'
