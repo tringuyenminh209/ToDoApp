@@ -745,7 +745,14 @@ JSON形式で返してください：
                     // Determine which parameter to use based on model
                     // Newer models (gpt-5, o1, etc.) use max_completion_tokens instead of max_tokens
                     $useMaxCompletionTokens = in_array($model, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
-                    $maxTokensValue = $options['max_tokens'] ?? 500;
+
+                    // Set appropriate max_tokens based on model and use case
+                    // For GPT-5 and o1 models, use higher token limits due to longer context and more detailed responses
+                    if ($useMaxCompletionTokens) {
+                        $maxTokensValue = $options['max_tokens'] ?? 8000; // Higher limit for GPT-5 and o1 models
+                    } else {
+                        $maxTokensValue = $options['max_tokens'] ?? 2000; // Standard limit for other models
+                    }
 
                     $requestBody = [
                         'model' => $model,
