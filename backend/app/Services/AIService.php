@@ -569,6 +569,7 @@ JSON形式で返してください：
     \"description\": \"タスクの説明（オプション）\",
     \"estimated_minutes\": 推定時間（分）,
     \"priority\": \"high/medium/low\",
+    \"deadline\": \"YYYY-MM-DD\" (オプション、期限が指定されている場合のみ),
     \"scheduled_time\": \"YYYY-MM-DD HH:MM:SS\" (オプション、開始時刻が指定されている場合),
     \"tags\": [\"タグ1\", \"タグ2\"],
     \"subtasks\": [
@@ -613,6 +614,9 @@ JSON形式で返してください：
 ✅ \"レポートを書くタスクを作成\" → {\"has_task_intent\": true} (明確な意図)
 
 注意:
+- deadlineはユーザーが明示的に期限を指定した場合のみ含めてください
+  例: 「明日まで」「来週の金曜日まで」「10月30日まで」など
+- deadlineが指定されていない場合は、フィールドを省略してください（バックエンドで自動的に今日の日付が設定されます）
 - scheduled_timeは今日の日付(" . now()->format('Y-m-d') . ")に時刻を組み合わせてください
 - 時刻指定がない場合は scheduled_time を省略してください
 - 疑わしい場合は false を返してください";
