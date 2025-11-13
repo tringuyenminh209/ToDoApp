@@ -42,14 +42,16 @@ class MainActivity : BaseActivity() {
         setupClickListeners()
         setupBottomNavigation()
 
-        // Load tasks
+        // Load tasks and today's progress
         viewModel.getTasks()
+        viewModel.getTodayProgress()
     }
 
     override fun onResume() {
         super.onResume()
-        // Refresh tasks when returning to this activity
+        // Refresh tasks and progress when returning to this activity
         viewModel.getTasks()
+        viewModel.getTodayProgress()
     }
 
     private fun setupViewModel() {
@@ -65,8 +67,7 @@ class MainActivity : BaseActivity() {
         // Update language button text
         updateLanguageButton()
         
-        // Set initial progress (45%)
-        binding.progressRing.progress = 45
+        // Initial progress will be set from ViewModel observer
 
         // Setup RecyclerView
         taskAdapter = MainTaskAdapter(
@@ -249,7 +250,38 @@ class MainActivity : BaseActivity() {
             // Submit as new list to trigger update
             taskAdapter.submitList(topTasks.toList())
             taskAdapter.notifyDataSetChanged()
-            Toast.makeText(this, "Tasks: ${topTasks.size}", Toast.LENGTH_SHORT).show()
+        }
+
+        // Observe today's progress
+        viewModel.todayProgress.observe(this) { progress ->
+            binding.progressRing.progress = progress
+            binding.tvProgressPercentage.text = "$progress%"
+        }
+
+        // Observe today's stats
+        viewModel.todayStats.observe(this) { stats ->
+            stats?.let {
+                // Update progress ring and percentage
+                binding.progressRing.progress = it.progressPercentage
+                binding.tvProgressPercentage.text = "${it.progressPercentage}%"
+
+                // Update tasks completed
+                binding.tvTasksCompleted.text = it.tasksCompleted.toString()
+
+                // Update focus time (format: "2h 15m")
+                val hours = it.focusTimeMinutes / 60
+                val minutes = it.focusTimeMinutes % 60
+                binding.tvFocusTime.text = if (hours > 0) {
+                    "${hours}h ${minutes}m"
+                } else {
+                    "${minutes}m"
+                }
+
+                // Update streak (if available)
+                if (it.streakDays > 0) {
+                    binding.tvStreak.text = it.streakDays.toString()
+                }
+            }
         }
     }
 

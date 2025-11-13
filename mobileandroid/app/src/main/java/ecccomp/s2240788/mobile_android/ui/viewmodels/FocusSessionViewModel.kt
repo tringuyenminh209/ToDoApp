@@ -379,12 +379,18 @@ class FocusSessionViewModel : ViewModel() {
     }
 
     /**
-     * タイマー表示を更新 (MM:SS形式)
+     * タイマー表示を更新
+     * - 60分未満: MM:SS形式 (例: 25:00)
+     * - 60分以上: MM:SS形式 (例: 119:57) - hiển thị tổng số phút
      */
     private fun updateTimerDisplay(millisUntilFinished: Long) {
-        val minutes = (millisUntilFinished / 1000) / 60
-        val seconds = (millisUntilFinished / 1000) % 60
-        _timerDisplay.value = String.format("%02d:%02d", minutes, seconds)
+        val totalSeconds = (millisUntilFinished / 1000).toInt()
+        val totalMinutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+        
+        // Hiển thị dạng MM:SS (tổng số phút:giây)
+        // Ví dụ: 119:57 (119 phút 57 giây)
+        _timerDisplay.value = String.format("%d:%02d", totalMinutes, seconds)
     }
 
     /**

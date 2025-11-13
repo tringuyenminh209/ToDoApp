@@ -12,6 +12,7 @@ import ecccomp.s2240788.mobile_android.data.models.Task
 import ecccomp.s2240788.mobile_android.databinding.ItemStartTaskBinding
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Date
 
 /**
  * StartTaskAdapter
@@ -119,24 +120,52 @@ class StartTaskAdapter(
 
         private fun formatDueDate(dueDate: String): String {
             return try {
-                val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                // Try multiple date formats
+                val formats = listOf(
+                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.getDefault()),
+                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()),
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()),
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                )
+                
+                var date: Date? = null
+                for (format in formats) {
+                    try {
+                        date = format.parse(dueDate)
+                        if (date != null) break
+                    } catch (e: Exception) {
+                        // Try next format
+                    }
+                }
+                
+                if (date == null) return dueDate
+                
                 val outputFormat = SimpleDateFormat("MM/dd", Locale.getDefault())
-                val date = inputFormat.parse(dueDate)
                 
                 // Check if today
                 val today = Calendar.getInstance()
                 val dueCalendar = Calendar.getInstance()
-                dueCalendar.time = date ?: return dueDate
+                dueCalendar.time = date
                 
                 when {
                     today.get(Calendar.YEAR) == dueCalendar.get(Calendar.YEAR) &&
                     today.get(Calendar.DAY_OF_YEAR) == dueCalendar.get(Calendar.DAY_OF_YEAR) -> {
                         itemView.context.getString(R.string.today)
                     }
-                    else -> outputFormat.format(date ?: return dueDate)
+                    else -> outputFormat.format(date)
                 }
             } catch (e: Exception) {
-                dueDate
+                // If all parsing fails, return original string or a simplified version
+                try {
+                    // Try to extract just the date part (yyyy-MM-dd)
+                    if (dueDate.contains("T")) {
+                        dueDate.substring(0, 10)
+                    } else {
+                        dueDate
+                    }
+                } catch (ex: Exception) {
+                    dueDate
+                }
             }
         }
     }

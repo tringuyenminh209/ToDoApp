@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Item for Start Task Dialog List -->
+<!-- Item for Start Task Dialog List - Improved Compact Design -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/task_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_md"
+    android:layout_marginBottom="@dimen/spacing_sm"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="@dimen/radius_lg"
-    app:cardElevation="0dp"
-    app:strokeWidth="1.5dp"
-    app:strokeColor="@color/line"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="1dp"
+    app:strokeWidth="0dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
@@ -19,12 +18,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_lg">
+        android:padding="@dimen/spacing_md">
 
         <!-- Priority Indicator -->
         <View
             android:id="@+id/priority_indicator"
-            android:layout_width="4dp"
+            android:layout_width="3dp"
             android:layout_height="0dp"
             android:background="@color/priority_high"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginStart="@dimen/spacing_sm"
             app:layout_constraintStart_toEndOf="@id/priority_indicator"
             app:layout_constraintEnd_toStartOf="@id/btn_start"
             app:layout_constraintTop_toTopOf="parent">
@@ -49,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="完成 Java OOP プログラミング課題"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:maxLines="2"
                 android:ellipsize="end"
@@ -61,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/spacing_sm">
+                android:layout_marginTop="6dp">
 
                 <!-- Priority Badge -->
                 <com.google.android.material.card.MaterialCardView
@@ -69,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/error_light"
-                    app:cardCornerRadius="4dp"
+                    app:cardCornerRadius="6dp"
                     app:cardElevation="0dp">
 
                     <TextView
@@ -80,8 +79,8 @@
                         android:textColor="@color/error"
                         android:textSize="10sp"
                         android:textStyle="bold"
-                        android:paddingHorizontal="6dp"
-                        android:paddingVertical="2dp" />
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="3dp" />
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -92,11 +91,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginStart="@dimen/spacing_sm">
+                    android:layout_marginStart="8dp">
 
                     <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
                         android:src="@drawable/ic_clock"
                         app:tint="@color/text_muted"
                         android:contentDescription="@string/estimated_time" />
@@ -107,8 +106,8 @@
                         android:layout_height="wrap_content"
                         android:text="45分"
                         android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:layout_marginStart="4dp"
+                        android:textSize="11sp"
+                        android:layout_marginStart="3dp"
                         tools:ignore="HardcodedText" />
 
                 </LinearLayout>
@@ -120,11 +119,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginStart="@dimen/spacing_sm">
+                    android:layout_marginStart="8dp">
 
                     <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
                         android:src="@drawable/ic_energy"
                         app:tint="@color/warning"
                         android:contentDescription="@string/energy_level" />
@@ -135,8 +134,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/energy_high"
                         android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:layout_marginStart="4dp" />
+                        android:textSize="11sp"
+                        android:layout_marginStart="3dp" />
 
                 </LinearLayout>
 
@@ -148,7 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/spacing_sm"
+                android:layout_marginTop="6dp"
                 android:visibility="visible">
 
                 <!-- Category Tag -->
@@ -156,7 +155,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/primary_light"
-                    app:cardCornerRadius="4dp"
+                    app:cardCornerRadius="6dp"
                     app:cardElevation="0dp"
                     android:layout_marginEnd="6dp">
 
@@ -167,8 +166,8 @@
                         android:text="学習"
                         android:textColor="@color/primary"
                         android:textSize="10sp"
-                        android:paddingHorizontal="6dp"
-                        android:paddingVertical="2dp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="3dp"
                         tools:ignore="HardcodedText" />
 
                 </com.google.android.material.card.MaterialCardView>
@@ -179,7 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/accent_light"
-                    app:cardCornerRadius="4dp"
+                    app:cardCornerRadius="6dp"
                     app:cardElevation="0dp"
                     android:visibility="visible">
 
@@ -188,12 +187,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:paddingHorizontal="6dp"
-                        android:paddingVertical="2dp">
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="3dp">
 
                         <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
+                            android:layout_width="11dp"
+                            android:layout_height="11dp"
                             android:src="@drawable/ic_calendar"
                             app:tint="@color/accent"
                             android:contentDescription="@string/due_date" />
@@ -205,7 +204,7 @@
                             android:text="今日"
                             android:textColor="@color/accent"
                             android:textSize="10sp"
-                            android:layout_marginStart="4dp"
+                            android:layout_marginStart="3dp"
                             tools:ignore="HardcodedText" />
 
                     </LinearLayout>
@@ -221,13 +220,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/spacing_sm"
+                android:layout_marginTop="6dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
                     android:src="@drawable/ic_checklist"
                     app:tint="@color/text_muted"
                     android:contentDescription="@string/subtasks" />
@@ -239,7 +238,7 @@
                     android:text="2/5 ステップ完了"
                     android:textColor="@color/text_muted"
                     android:textSize="11sp"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="3dp"
                     tools:ignore="HardcodedText" />
 
                 <View
@@ -266,14 +265,14 @@
             android:id="@+id/btn_start"
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="36dp"
             android:text="@string/start_task_start_btn"
             android:textSize="12sp"
-            android:paddingHorizontal="@dimen/spacing_lg"
+            android:paddingHorizontal="@dimen/spacing_md"
             app:icon="@drawable/ic_play"
             app:iconSize="14dp"
             app:backgroundTint="@color/primary"
-            app:cornerRadius="10dp"
+            app:cornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -284,7 +283,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/accent"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="10dp"
             app:cardElevation="0dp"
             android:visibility="gone"
             tools:visibility="visible"
@@ -296,12 +295,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp">
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="3dp">
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
                     android:src="@drawable/ic_sparkle"
                     app:tint="@color/white"
                     android:contentDescription="@string/ai_suggestion" />
@@ -311,9 +310,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/start_task_ai_recommended"
                     android:textColor="@color/white"
-                    android:textSize="10sp"
+                    android:textSize="9sp"
                     android:textStyle="bold"
-                    android:layout_marginStart="4dp" />
+                    android:layout_marginStart="3dp" />
 
             </LinearLayout>
 

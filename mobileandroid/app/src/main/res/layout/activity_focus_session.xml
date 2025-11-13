@@ -359,29 +359,47 @@
 
                     <!-- Circular Timer -->
                     <FrameLayout
-                        android:layout_width="200dp"
-                        android:layout_height="200dp">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:minWidth="240dp"
+                        android:minHeight="240dp"
+                        android:padding="20dp">
 
                         <com.google.android.material.progressindicator.CircularProgressIndicator
                             android:id="@+id/timer_progress"
                             android:layout_width="200dp"
                             android:layout_height="200dp"
+                            android:layout_gravity="center"
                             app:indicatorSize="200dp"
-                            app:trackThickness="10dp"
+                            app:indicatorInset="0dp"
+                            app:trackThickness="12dp"
                             app:trackColor="@color/line"
-                            app:trackCornerRadius="5dp"
+                            app:trackCornerRadius="6dp"
                             app:indicatorColor="@color/primary" />
 
-                        <TextView
-                            android:id="@+id/tv_timer_display"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="25:00"
-                            android:textColor="@color/text_primary"
-                            android:textSize="56sp"
-                            android:textStyle="bold"
-                            android:fontFamily="monospace" />
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/tv_timer_display"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="25:00"
+                                android:textColor="@color/text_primary"
+                                android:textSize="48sp"
+                                android:textStyle="bold"
+                                android:fontFamily="monospace"
+                                android:letterSpacing="0.1"
+                                android:includeFontPadding="false"
+                                android:lineSpacingExtra="0dp"
+                                android:lineSpacingMultiplier="1.0" />
+
+                        </LinearLayout>
 
                     </FrameLayout>
 
