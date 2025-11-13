@@ -555,9 +555,9 @@ JSON形式で返してください：
             return null;
         }
 
-        $prompt = "以下のメッセージを分析して、タスク作成の意図があるか判断してください。
+        $prompt = "以下のメッセージを分析して、**明確なタスク作成の意図があるか**判断してください。
 タスク作成の意図がある場合は、タスク情報を抽出してJSONで返してください。
-意図がない場合は、null を返してください。
+意図がない場合は、必ず false を返してください。
 
 メッセージ: {$message}
 
@@ -569,6 +569,7 @@ JSON形式で返してください：
     \"description\": \"タスクの説明（オプション）\",
     \"estimated_minutes\": 推定時間（分）,
     \"priority\": \"high/medium/low\",
+    \"deadline\": \"YYYY-MM-DD\" (オプション、期限が指定されている場合のみ),
     \"scheduled_time\": \"YYYY-MM-DD HH:MM:SS\" (オプション、開始時刻が指定されている場合),
     \"tags\": [\"タグ1\", \"タグ2\"],
     \"subtasks\": [
@@ -585,17 +586,40 @@ JSON形式で返してください：
   \"has_task_intent\": false
 }
 
-キーワード例:
-- タスクを追加、タスク作成、〜したい、〜をやる、勉強する、学習する
-- 「15分」「30分」などの時間指定
-- 「ちいさく」「分割」「サブタスク」などの分割指示
-- 「17時30分」「午後5時半」「17:30」などの開始時刻指定
-- 「朝9時から」「13時スタート」などの時刻表現
+**明確にタスク作成の意図があるキーワード:**
+- 「タスクを追加」「タスクを作る」「タスク作成」
+- 「〜したい」+時間指定 (例: 「英語を30分勉強したい」)
+- 「〜をやる」+具体的な行動 (例: 「レポートを書く」)
+- 「〜を始める」「〜を完成させる」
+
+**タスク作成の意図がないもの (必ず false を返す):**
+- 質問: 「どうすればいいですか？」「何をすべき？」「天気は？」
+- 雑談: 「こんにちは」「ありがとう」「疲れた」「おやすみ」
+- 相談: 「どう思いますか？」「アドバイスください」
+- 感想: 「楽しい」「嬉しい」「大変だ」
+- 確認: 「本当ですか？」「そうなんですか？」
+- 一般的な会話: 「はい」「いいえ」「わかりました」
+
+**重要な判断基準:**
+1. 具体的な行動が明示されているか？
+2. その行動を実行する意図が明確か？
+3. 単なる質問や相談ではないか？
+
+**例:**
+❌ \"今日は何をすべきですか？\" → {\"has_task_intent\": false} (質問)
+❌ \"疲れました\" → {\"has_task_intent\": false} (感想)
+❌ \"ありがとう\" → {\"has_task_intent\": false} (雑談)
+❌ \"タスクが多すぎる\" → {\"has_task_intent\": false} (相談)
+✅ \"英語を30分勉強する\" → {\"has_task_intent\": true} (明確な行動)
+✅ \"レポートを書くタスクを作成\" → {\"has_task_intent\": true} (明確な意図)
 
 注意:
-- 質問や雑談は「has_task_intent\": false にしてください
-- scheduled_timeは今日の日付に時刻を組み合わせてください (例: 今日が2025-11-10で「17時30分」なら「2025-11-10 17:30:00」)
-- 時刻指定がない場合は scheduled_time を省略してください";
+- deadlineはユーザーが明示的に期限を指定した場合のみ含めてください
+  例: 「明日まで」「来週の金曜日まで」「10月30日まで」など
+- deadlineが指定されていない場合は、フィールドを省略してください（バックエンドで自動的に今日の日付が設定されます）
+- scheduled_timeは今日の日付(" . now()->format('Y-m-d') . ")に時刻を組み合わせてください
+- 時刻指定がない場合は scheduled_time を省略してください
+- 疑わしい場合は false を返してください";
 
         try {
             // Parse task intent timeout: ngắn hơn general timeout (10s)
@@ -721,7 +745,14 @@ JSON形式で返してください：
                     // Determine which parameter to use based on model
                     // Newer models (gpt-5, o1, etc.) use max_completion_tokens instead of max_tokens
                     $useMaxCompletionTokens = in_array($model, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
-                    $maxTokensValue = $options['max_tokens'] ?? 16000;
+
+                    // Set appropriate max_tokens based on model and use case
+                    // For GPT-5 and o1 models, use higher token limits due to longer context and more detailed responses
+                    if ($useMaxCompletionTokens) {
+                        $maxTokensValue = $options['max_tokens'] ?? 16000; // Higher limit for GPT-5 and o1 models (increased from 8000)
+                    } else {
+                        $maxTokensValue = $options['max_tokens'] ?? 2000; // Standard limit for other models
+                    }
 
                     $requestBody = [
                         'model' => $model,
@@ -868,15 +899,32 @@ JSON形式で返してください：
         // Try to parse task_suggestion from response if exists
         $taskSuggestion = null;
         if (!empty($response['message']) && is_string($response['message'])) {
-            // Try to extract JSON from response
-            $jsonMatch = [];
-            if (preg_match('/\{.*"task_suggestion".*\}/s', $response['message'], $jsonMatch)) {
-                $parsed = json_decode($jsonMatch[0], true);
-                if (json_last_error() === JSON_ERROR_NONE && isset($parsed['task_suggestion'])) {
-                    $taskSuggestion = $parsed['task_suggestion'];
-                    // Replace message with clean message without JSON
-                    $response['message'] = $parsed['message'] ?? $response['message'];
+            try {
+                // Try to extract JSON code block first (```json ... ```)
+                $jsonMatch = [];
+                if (preg_match('/```json\s*(\{[\s\S]*?\})\s*```/i', $response['message'], $jsonMatch)) {
+                    $parsed = json_decode($jsonMatch[1], true);
+                    if (json_last_error() === JSON_ERROR_NONE && isset($parsed['task_suggestion'])) {
+                        $taskSuggestion = $parsed['task_suggestion'];
+                        // Replace message with clean message without JSON block
+                        $response['message'] = $parsed['message'] ?? trim(preg_replace('/```json[\s\S]*```/i', '', $response['message']));
+                    }
                 }
+                // If no code block, try to find JSON object at the end of message
+                elseif (preg_match('/\n\s*(\{[^{}]*"task_suggestion"[^{}]*\{[^{}]*\}[^{}]*\})\s*$/s', $response['message'], $jsonMatch)) {
+                    $parsed = json_decode($jsonMatch[1], true);
+                    if (json_last_error() === JSON_ERROR_NONE && isset($parsed['task_suggestion'])) {
+                        $taskSuggestion = $parsed['task_suggestion'];
+                        // Replace message with clean message without JSON
+                        $response['message'] = $parsed['message'] ?? trim(str_replace($jsonMatch[1], '', $response['message']));
+                    }
+                }
+            } catch (\Exception $e) {
+                // Log error but don't fail - just continue without task suggestion
+                Log::debug('Failed to parse task suggestion from AI response', [
+                    'error' => $e->getMessage(),
+                    'response_preview' => substr($response['message'], 0, 200)
+                ]);
             }
         }
 
@@ -898,39 +946,46 @@ JSON形式で返してください：
 
         $tasksInfo = $this->formatTasksInfo($tasks);
         $scheduleInfo = $this->formatScheduleInfo($timetable);
+        $freeTimeAnalysis = $this->analyzeFreeTime($timetable, $tasks);
+        $deadlineWarnings = $this->analyzeDeadlines($tasks);
+
+        $today = now()->format('Y-m-d');
+        $currentTime = now()->format('H:i');
 
         return "あなたは親切で有能な生産性アシスタントです。日本語で応答してください。
 
-ユーザーの現在の状況:
+現在: {$today} {$currentTime}
+
 {$tasksInfo}
-
 {$scheduleInfo}
+{$freeTimeAnalysis}
+{$deadlineWarnings}
 
-重要な指示:
-1. ユーザーのスケジュールと既存のタスクを考慮してアドバイスしてください
-2. タスク提案する場合は、以下の条件をすべて満たす場合のみ提案してください:
-   - ユーザーが明確にタスク追加を希望している
-   - スケジュールに空き時間がある
-   - 既存タスクと重複しない
-3. タスク提案時は、以下のJSON形式を**メッセージの最後に追加**してください:
+【重要な指示】
 
+1. **通常の会話**: JSON形式を使わず、普通のテキストで返答してください。
+   例: 「モチベーションを上げる方法を教えてください」→ 親切にアドバイスする
+
+2. **タスク提案時のみ**: メッセージの最後にJSON形式を追加
 ```json
 {
-  \"message\": \"ここに通常の会話メッセージを書く\",
+  \"message\": \"提案メッセージ\",
   \"task_suggestion\": {
     \"title\": \"タスク名\",
-    \"description\": \"詳細な説明\",
+    \"description\": \"説明\",
     \"estimated_minutes\": 60,
-    \"priority\": \"high\",
-    \"scheduled_time\": \"2025-11-12 14:00:00\",
-    \"reason\": \"このタスクを今提案する理由\"
+    \"priority\": \"high/medium/low\",
+    \"scheduled_time\": \"{$today} 14:00:00\",
+    \"reason\": \"提案理由\"
   }
 }
 ```
 
-4. タスク提案しない場合は、通常の会話メッセージだけを返してください
-5. scheduled_timeは必ず今日の日付(" . now()->format('Y-m-d') . ")に時刻を組み合わせてください
-6. 優先度は high/medium/low のいずれかを選択してください";
+3. **Proactive提案**: 期限が近い、空き時間がある場合は積極的に提案する
+
+4. **会話トーン**: 親しみやすく、具体的で実行可能なアドバイスを提供
+
+scheduled_timeは{$today}に時刻を組み合わせてください。";
     }
 
     /**
@@ -1018,5 +1073,161 @@ JSON形式で返してください：
         }
 
         return $info;
+    }
+
+    /**
+     * Analyze free time slots in schedule
+     *
+     * @param array $timetable User's timetable
+     * @param array $tasks User's tasks
+     * @return string Free time analysis
+     */
+    private function analyzeFreeTime(array $timetable, array $tasks): string
+    {
+        if (empty($timetable) && empty($tasks)) {
+            return "## 空き時間分析\n一日中自由な時間があります。タスクを計画的に配置できます。";
+        }
+
+        $analysis = "## 空き時間分析\n";
+
+        // Parse schedule items to get busy time slots
+        $busySlots = [];
+
+        // Add timetable classes to busy slots
+        if (!empty($timetable)) {
+            if (isset($timetable['classes']) && is_array($timetable['classes'])) {
+                foreach ($timetable['classes'] as $class) {
+                    $time = $class['time'] ?? $class['start_time'] ?? '';
+                    if ($time) {
+                        $busySlots[] = $time;
+                    }
+                }
+            } else {
+                foreach ($timetable as $item) {
+                    if (is_array($item)) {
+                        $time = $item['time'] ?? $item['start_time'] ?? '';
+                        if ($time) {
+                            $busySlots[] = $time;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Add scheduled tasks to busy slots
+        foreach ($tasks as $task) {
+            if (!empty($task['scheduled_time'])) {
+                $scheduledTime = $task['scheduled_time'];
+                // Extract time portion
+                try {
+                    $timeObj = new \DateTime($scheduledTime);
+                    $busySlots[] = $timeObj->format('H:i');
+                } catch (\Exception $e) {
+                    // Skip invalid dates
+                }
+            }
+        }
+
+        if (empty($busySlots)) {
+            $analysis .= "- 現在、予定されている授業やタスクはありません\n";
+            $analysis .= "- 一日を自由に使えます\n";
+        } else {
+            $analysis .= "- 予定がある時間帯: " . count($busySlots) . "個\n";
+            $analysis .= "- 空き時間を活用してタスクを進めましょう\n";
+
+            // Suggest optimal times for tasks
+            $currentHour = (int)now()->format('H');
+            if ($currentHour < 12) {
+                $analysis .= "- 💡 午前中は集中力が高い時間帯です。重要なタスクに最適です\n";
+            } elseif ($currentHour < 18) {
+                $analysis .= "- 💡 午後は作業を進めるのに良い時間です\n";
+            } else {
+                $analysis .= "- 💡 夕方以降は軽めのタスクや復習に適しています\n";
+            }
+        }
+
+        return $analysis;
+    }
+
+    /**
+     * Analyze task deadlines and provide warnings
+     *
+     * @param array $tasks User's tasks
+     * @return string Deadline warnings
+     */
+    private function analyzeDeadlines(array $tasks): string
+    {
+        if (empty($tasks)) {
+            return "";
+        }
+
+        $warnings = [];
+        $urgentTasks = [];
+        $overdueTasks = [];
+        $now = now();
+
+        foreach ($tasks as $task) {
+            $status = $task['status'] ?? 'pending';
+
+            // Skip completed or cancelled tasks
+            if (in_array($status, ['completed', 'cancelled'])) {
+                continue;
+            }
+
+            $deadline = $task['deadline'] ?? null;
+
+            if ($deadline) {
+                try {
+                    $deadlineDate = new \DateTime($deadline);
+                    $hoursUntilDeadline = $now->diffInHours($deadlineDate, false);
+
+                    if ($hoursUntilDeadline < 0) {
+                        // Overdue
+                        $overdueTasks[] = $task;
+                    } elseif ($hoursUntilDeadline <= 24) {
+                        // Due within 24 hours
+                        $urgentTasks[] = $task;
+                    }
+                } catch (\Exception $e) {
+                    // Skip invalid dates
+                }
+            }
+        }
+
+        if (empty($overdueTasks) && empty($urgentTasks)) {
+            return "";
+        }
+
+        $analysis = "## ⚠️ 期限警告\n";
+
+        if (!empty($overdueTasks)) {
+            $analysis .= "### 🔴 期限切れタスク (" . count($overdueTasks) . "個)\n";
+            foreach ($overdueTasks as $task) {
+                $title = $task['title'] ?? 'No title';
+                $deadline = $task['deadline'] ?? '';
+                $analysis .= "- **{$title}** (期限: {$deadline})\n";
+            }
+            $analysis .= "\n";
+        }
+
+        if (!empty($urgentTasks)) {
+            $analysis .= "### 🟡 緊急タスク - 24時間以内 (" . count($urgentTasks) . "個)\n";
+            foreach ($urgentTasks as $task) {
+                $title = $task['title'] ?? 'No title';
+                $deadline = $task['deadline'] ?? '';
+                try {
+                    $deadlineDate = new \DateTime($deadline);
+                    $hoursLeft = $now->diffInHours($deadlineDate);
+                    $analysis .= "- **{$title}** (残り: 約{$hoursLeft}時間)\n";
+                } catch (\Exception $e) {
+                    $analysis .= "- **{$title}** (期限: {$deadline})\n";
+                }
+            }
+            $analysis .= "\n";
+        }
+
+        $analysis .= "💡 これらのタスクを優先的に進めることをお勧めします。\n";
+
+        return $analysis;
     }
 }
