@@ -51,8 +51,7 @@ class FocusSessionActivity : BaseActivity() {
                 viewModel.loadTask(taskId)
             }
 
-            // Load knowledge items for this task
-            viewModel.loadKnowledgeItems(taskId)
+            // Knowledge items are automatically loaded in loadTask/loadTaskWithSubtask
         }
 
         setupKnowledgeRecyclerView()
