@@ -86,7 +86,7 @@ class RoadmapRepository(
                 source = source,
                 roadmapId = roadmapId,
                 topic = topic,
-                level = level,
+                level = level ?: "beginner",
                 autoClone = autoClone,
                 studySchedules = studySchedules
             )
