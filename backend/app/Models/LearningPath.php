@@ -55,6 +55,11 @@ class LearningPath extends Model
         return $this->hasMany(KnowledgeItem::class);
     }
 
+    public function studySchedules(): HasMany
+    {
+        return $this->hasMany(StudySchedule::class)->orderBy('day_of_week')->orderBy('study_time');
+    }
+
     // Scopes
     public function scopeActive($query)
     {
@@ -198,5 +203,53 @@ class LearningPath extends Model
     {
         return $this->is_overdue ||
                ($this->target_end_date && $this->target_end_date->isBefore(now()->addDays(7)));
+    }
+
+    /**
+     * Check if learning path has study schedules set up
+     */
+    public function hasStudySchedule(): bool
+    {
+        return $this->studySchedules()->where('is_active', true)->exists();
+    }
+
+    /**
+     * Get active study schedules
+     */
+    public function getActiveSchedules()
+    {
+        return $this->studySchedules()->where('is_active', true)->get();
+    }
+
+    /**
+     * Get weekly schedule summary
+     */
+    public function getWeeklyScheduleSummary(): array
+    {
+        $schedules = $this->getActiveSchedules();
+        $summary = [];
+
+        foreach ($schedules as $schedule) {
+            $day = $schedule->day_of_week;
+            if (!isset($summary[$day])) {
+                $summary[$day] = [];
+            }
+            $summary[$day][] = [
+                'time' => $schedule->study_time_formatted,
+                'duration' => $schedule->duration_minutes,
+                'day_name' => StudySchedule::getDayNameVietnamese($day),
+            ];
+        }
+
+        return $summary;
+    }
+
+    /**
+     * Calculate total study hours per week
+     */
+    public function getWeeklyStudyHours(): float
+    {
+        $totalMinutes = $this->getActiveSchedules()->sum('duration_minutes');
+        return round($totalMinutes / 60, 1);
     }
 }
