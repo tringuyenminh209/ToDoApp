@@ -190,32 +190,37 @@ class AICoachViewModel : ViewModel() {
 
                 when (result) {
                     is ChatResult.Success -> {
-                        // Replace temporary user message with real one and add assistant message
-                        val updatedMessages = _messages.value?.toMutableList() ?: mutableListOf()
-                        // Remove temporary message (last one should be the temp user message)
-                        if (updatedMessages.isNotEmpty() && updatedMessages.last().id == -1L) {
-                            updatedMessages.removeAt(updatedMessages.size - 1)
-                        }
-                        // Add real messages
-                        updatedMessages.add(result.data.user_message)
-                        updatedMessages.add(result.data.assistant_message)
-                        _messages.value = updatedMessages
+                        try {
+                            // Replace temporary user message with real one and add assistant message
+                            val updatedMessages = _messages.value?.toMutableList() ?: mutableListOf()
+                            // Remove temporary message (last one should be the temp user message)
+                            if (updatedMessages.isNotEmpty() && updatedMessages.last().id == -1L) {
+                                updatedMessages.removeAt(updatedMessages.size - 1)
+                            }
+                            // Add real messages
+                            updatedMessages.add(result.data.user_message)
+                            updatedMessages.add(result.data.assistant_message)
+                            _messages.value = updatedMessages
 
-                        // Update conversation
-                        _currentConversation.value = _currentConversation.value?.copy(
-                            message_count = updatedMessages.size,
-                            last_message_at = result.data.assistant_message.created_at
-                        )
+                            // Update conversation
+                            _currentConversation.value = _currentConversation.value?.copy(
+                                message_count = updatedMessages.size,
+                                last_message_at = result.data.assistant_message.created_at
+                            )
 
-                        // Check if task was created (auto-created from old flow)
-                        if (result.data.created_task != null) {
-                            _createdTask.value = result.data.created_task
-                            _successMessage.value = "タスクを作成しました！"
-                        }
+                            // Check if task was created (auto-created task)
+                            if (result.data.created_task != null) {
+                                _createdTask.value = result.data.created_task
+                                _successMessage.value = "タスクを作成しました！"
+                            }
 
-                        // Check if there's a task suggestion (new flow - requires user confirmation)
-                        if (result.data.task_suggestion != null) {
-                            _taskSuggestion.value = result.data.task_suggestion
+                            // Check if there's a task suggestion (requires user confirmation)
+                            if (result.data.task_suggestion != null) {
+                                _taskSuggestion.value = result.data.task_suggestion
+                            }
+                        } catch (e: Exception) {
+                            android.util.Log.e("AICoachViewModel", "Error processing sendMessage response", e)
+                            _error.value = "メッセージの処理に失敗しました: ${e.message}"
                         }
                     }
                     is ChatResult.Error -> {
