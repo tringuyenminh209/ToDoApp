@@ -61,8 +61,8 @@ class LearningPathDetailActivity : BaseActivity() {
     private fun setupRecyclerView() {
         milestoneAdapter = MilestoneAdapter(
             onMilestoneClick = { milestone ->
-                // Navigate directly to milestone knowledge/content (code + explanation)
-                val intent = Intent(this, MilestoneKnowledgeActivity::class.java)
+                // Navigate to milestone detail to view tasks and subtasks
+                val intent = Intent(this, MilestoneDetailActivity::class.java)
                 intent.putExtra("MILESTONE_ID", milestone.id)
                 intent.putExtra("MILESTONE_TITLE", milestone.title)
                 intent.putExtra("LEARNING_PATH_ID", pathId)
