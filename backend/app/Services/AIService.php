@@ -555,9 +555,9 @@ JSON形式で返してください：
             return null;
         }
 
-        $prompt = "以下のメッセージを分析して、タスク作成の意図があるか判断してください。
+        $prompt = "以下のメッセージを分析して、**明確なタスク作成の意図があるか**判断してください。
 タスク作成の意図がある場合は、タスク情報を抽出してJSONで返してください。
-意図がない場合は、null を返してください。
+意図がない場合は、必ず false を返してください。
 
 メッセージ: {$message}
 
@@ -585,17 +585,37 @@ JSON形式で返してください：
   \"has_task_intent\": false
 }
 
-キーワード例:
-- タスクを追加、タスク作成、〜したい、〜をやる、勉強する、学習する
-- 「15分」「30分」などの時間指定
-- 「ちいさく」「分割」「サブタスク」などの分割指示
-- 「17時30分」「午後5時半」「17:30」などの開始時刻指定
-- 「朝9時から」「13時スタート」などの時刻表現
+**明確にタスク作成の意図があるキーワード:**
+- 「タスクを追加」「タスクを作る」「タスク作成」
+- 「〜したい」+時間指定 (例: 「英語を30分勉強したい」)
+- 「〜をやる」+具体的な行動 (例: 「レポートを書く」)
+- 「〜を始める」「〜を完成させる」
+
+**タスク作成の意図がないもの (必ず false を返す):**
+- 質問: 「どうすればいいですか？」「何をすべき？」「天気は？」
+- 雑談: 「こんにちは」「ありがとう」「疲れた」「おやすみ」
+- 相談: 「どう思いますか？」「アドバイスください」
+- 感想: 「楽しい」「嬉しい」「大変だ」
+- 確認: 「本当ですか？」「そうなんですか？」
+- 一般的な会話: 「はい」「いいえ」「わかりました」
+
+**重要な判断基準:**
+1. 具体的な行動が明示されているか？
+2. その行動を実行する意図が明確か？
+3. 単なる質問や相談ではないか？
+
+**例:**
+❌ \"今日は何をすべきですか？\" → {\"has_task_intent\": false} (質問)
+❌ \"疲れました\" → {\"has_task_intent\": false} (感想)
+❌ \"ありがとう\" → {\"has_task_intent\": false} (雑談)
+❌ \"タスクが多すぎる\" → {\"has_task_intent\": false} (相談)
+✅ \"英語を30分勉強する\" → {\"has_task_intent\": true} (明確な行動)
+✅ \"レポートを書くタスクを作成\" → {\"has_task_intent\": true} (明確な意図)
 
 注意:
-- 質問や雑談は「has_task_intent\": false にしてください
-- scheduled_timeは今日の日付に時刻を組み合わせてください (例: 今日が2025-11-10で「17時30分」なら「2025-11-10 17:30:00」)
-- 時刻指定がない場合は scheduled_time を省略してください";
+- scheduled_timeは今日の日付(" . now()->format('Y-m-d') . ")に時刻を組み合わせてください
+- 時刻指定がない場合は scheduled_time を省略してください
+- 疑わしい場合は false を返してください";
 
         try {
             // Parse task intent timeout: ngắn hơn general timeout (10s)
@@ -868,15 +888,32 @@ JSON形式で返してください：
         // Try to parse task_suggestion from response if exists
         $taskSuggestion = null;
         if (!empty($response['message']) && is_string($response['message'])) {
-            // Try to extract JSON from response
-            $jsonMatch = [];
-            if (preg_match('/\{.*"task_suggestion".*\}/s', $response['message'], $jsonMatch)) {
-                $parsed = json_decode($jsonMatch[0], true);
-                if (json_last_error() === JSON_ERROR_NONE && isset($parsed['task_suggestion'])) {
-                    $taskSuggestion = $parsed['task_suggestion'];
-                    // Replace message with clean message without JSON
-                    $response['message'] = $parsed['message'] ?? $response['message'];
+            try {
+                // Try to extract JSON code block first (```json ... ```)
+                $jsonMatch = [];
+                if (preg_match('/```json\s*(\{[\s\S]*?\})\s*```/i', $response['message'], $jsonMatch)) {
+                    $parsed = json_decode($jsonMatch[1], true);
+                    if (json_last_error() === JSON_ERROR_NONE && isset($parsed['task_suggestion'])) {
+                        $taskSuggestion = $parsed['task_suggestion'];
+                        // Replace message with clean message without JSON block
+                        $response['message'] = $parsed['message'] ?? trim(preg_replace('/```json[\s\S]*```/i', '', $response['message']));
+                    }
                 }
+                // If no code block, try to find JSON object at the end of message
+                elseif (preg_match('/\n\s*(\{[^{}]*"task_suggestion"[^{}]*\{[^{}]*\}[^{}]*\})\s*$/s', $response['message'], $jsonMatch)) {
+                    $parsed = json_decode($jsonMatch[1], true);
+                    if (json_last_error() === JSON_ERROR_NONE && isset($parsed['task_suggestion'])) {
+                        $taskSuggestion = $parsed['task_suggestion'];
+                        // Replace message with clean message without JSON
+                        $response['message'] = $parsed['message'] ?? trim(str_replace($jsonMatch[1], '', $response['message']));
+                    }
+                }
+            } catch (\Exception $e) {
+                // Log error but don't fail - just continue without task suggestion
+                Log::debug('Failed to parse task suggestion from AI response', [
+                    'error' => $e->getMessage(),
+                    'response_preview' => substr($response['message'], 0, 200)
+                ]);
             }
         }
 
@@ -954,7 +991,10 @@ JSON形式で返してください：
 5. 十分な休憩時間を確保
 
 【Response Format】
-タスク提案する場合は、以下のJSON形式を**メッセージの最後に追加**:
+
+**重要: 通常の会話ではJSON形式を使わないでください。普通にテキストで返答してください。**
+
+タスク提案する場合**のみ**、以下のJSON形式を**メッセージの最後に追加**:
 
 ```json
 {
@@ -969,6 +1009,16 @@ JSON形式で返してください：
   }
 }
 ```
+
+タスク提案しない場合の例:
+ユーザー: \"今日の天気はどうですか？\"
+AI: \"申し訳ございませんが、私は天気予報の情報を持っていません。タスク管理に関することでしたら、お手伝いできます！\"
+
+ユーザー: \"ありがとう\"
+AI: \"どういたしまして！他に何かお手伝いできることがあればお気軽にどうぞ。\"
+
+ユーザー: \"疲れた...\"
+AI: \"お疲れ様です！少し休憩を取るのはいかがですか？今日は{$currentTime}ですね。リフレッシュしてから作業を続けると効率が上がりますよ。\"
 
 【会話のトーン】
 - 親しみやすく、励ましの言葉を添える
