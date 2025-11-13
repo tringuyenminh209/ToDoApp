@@ -580,6 +580,7 @@ class AIController extends Controller
                         'description' => $taskData['description'] ?? null,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
+                        'deadline' => $taskData['deadline'] ?? now()->format('Y-m-d'),
                         'scheduled_time' => $taskData['scheduled_time'] ?? null,
                         'status' => 'pending',
                     ]);
@@ -762,6 +763,7 @@ class AIController extends Controller
                         'description' => $taskData['description'] ?? null,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
+                        'deadline' => $taskData['deadline'] ?? now()->format('Y-m-d'),
                         'scheduled_time' => $taskData['scheduled_time'] ?? null,
                         'status' => 'pending',
                     ]);
@@ -991,6 +993,7 @@ class AIController extends Controller
                         'description' => $taskData['description'] ?? null,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
+                        'deadline' => $taskData['deadline'] ?? now()->format('Y-m-d'),
                         'scheduled_time' => $taskData['scheduled_time'] ?? null,
                         'status' => 'pending',
                     ]);
@@ -1367,6 +1370,7 @@ class AIController extends Controller
                 'description' => $request->description,
                 'estimated_minutes' => $request->estimated_minutes,
                 'priority' => $priorityMap[$request->priority] ?? 3,
+                'deadline' => now()->format('Y-m-d'),
                 'scheduled_time' => $request->scheduled_time,
                 'status' => 'pending',
                 'category' => 'other',
