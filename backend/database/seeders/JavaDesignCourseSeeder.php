@@ -895,6 +895,40 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => 'Stream APIの基礎', 'estimated_minutes' => 40, 'sort_order' => 3],
                     ['title' => '実践問題', 'estimated_minutes' => 40, 'sort_order' => 4],
                 ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'ガーベッジコレクションとは',
+                        'content' => "# ガーベッジコレクション（GC）\n\n**ガーベッジコレクション**は、Javaが自動的に不要になったメモリを解放する仕組みです。\n\n## メモリ管理\n\n### 他の言語（C言語など）\n```c\n// メモリを手動で確保\nint* ptr = malloc(sizeof(int));\n// 使用後に手動で解放が必要\nfree(ptr);\n```\n\n### Javaの場合\n```java\n// メモリは自動で確保される\nPerson person = new Person();\n// 解放は不要（GCが自動で行う）\n```\n\n## ガーベッジコレクションのタイミング\n- オブジェクトへの参照がなくなったとき\n- メモリが不足してきたとき\n- System.gc()を呼び出したとき（推奨されない）\n\n## メモリリーク防止\n```java\n// ❌ 静的コレクションに追加し続けるとメモリリーク\npublic class Cache {\n    private static List<Object> cache = new ArrayList<>();\n    public static void add(Object obj) {\n        cache.add(obj); // 参照が残り続ける\n    }\n}\n\n// ✅ 適切にクリアする\ncache.clear(); // 参照を削除\n```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'コレクションとラムダ式',
+                        'content' => "# コレクションとラムダ式の組み合わせ\n\nJava 8以降、コレクションにラムダ式を使った便利なメソッドが追加されました。\n\n## forEach()メソッド\n```java\nList<String> names = Arrays.asList(\"太郎\", \"花子\", \"次郎\");\n\n// 従来のfor文\nfor (String name : names) {\n    System.out.println(name);\n}\n\n// ラムダ式を使用\nnames.forEach(name -> System.out.println(name));\n\n// メソッド参照（さらに簡潔）\nnames.forEach(System.out::println);\n```\n\n## removeIf()メソッド\n```java\nList<Integer> numbers = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));\n\n// 偶数を削除\nnumbers.removeIf(n -> n % 2 == 0);\n// 結果: [1, 3, 5]\n```\n\n## sort()メソッド\n```java\nList<String> names = new ArrayList<>(Arrays.asList(\"佐藤\", \"田中\", \"鈴木\"));\n\n// 昇順ソート\nnames.sort((a, b) -> a.compareTo(b));\n\n// メソッド参照\nnames.sort(String::compareTo);\n```",
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'Stream APIの基礎',
+                        'content' => "import java.util.*;\nimport java.util.stream.*;\n\npublic class StreamExample {\n    public static void main(String[] args) {\n        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);\n        \n        // Stream APIを使った処理のパイプライン\n        List<Integer> result = numbers.stream()\n            .filter(n -> n % 2 == 0)        // 偶数のみフィルタ\n            .map(n -> n * 2)                // 2倍にする\n            .collect(Collectors.toList());  // リストに変換\n        \n        System.out.println(result); // [4, 8, 12, 16, 20]\n        \n        // 合計を計算\n        int sum = numbers.stream()\n            .filter(n -> n % 2 == 0)\n            .mapToInt(n -> n)\n            .sum();\n        \n        System.out.println(\"偶数の合計: \" + sum); // 30\n        \n        // 文字列のStream\n        List<String> names = Arrays.asList(\"田中\", \"佐藤\", \"鈴木\", \"高橋\");\n        \n        names.stream()\n            .filter(name -> name.startsWith(\"田\"))\n            .forEach(System.out::println); // 田中\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'Stream APIの主なメソッド',
+                        'content' => "# Stream APIの主なメソッド\n\n## 中間操作（Intermediate Operations）\nStreamを返すため、メソッドチェーンで繋げられます。\n\n- **filter()**: 条件に合う要素だけを残す\n- **map()**: 各要素を変換する\n- **sorted()**: ソートする\n- **distinct()**: 重複を除去する\n- **limit()**: 最初のN個だけ取得\n- **skip()**: 最初のN個をスキップ\n\n## 終端操作（Terminal Operations）\n結果を生成してStreamを終了します。\n\n- **forEach()**: 各要素に処理を実行\n- **collect()**: リストやマップに変換\n- **count()**: 要素数を数える\n- **anyMatch()**: 条件に合う要素があるか\n- **allMatch()**: 全ての要素が条件に合うか\n- **findFirst()**: 最初の要素を取得\n- **reduce()**: 要素を集約する\n\n## 例\n```java\nList<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);\n\n// 3より大きい数があるか\nboolean hasLarge = numbers.stream()\n    .anyMatch(n -> n > 3); // true\n\n// 全て10未満か\nboolean allSmall = numbers.stream()\n    .allMatch(n -> n < 10); // true\n\n// 要素数をカウント\nlong count = numbers.stream()\n    .filter(n -> n % 2 == 0)\n    .count(); // 2\n```",
+                        'sort_order' => 4
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'Stream APIの実践例',
+                        'content' => "import java.util.*;\nimport java.util.stream.*;\n\nclass Person {\n    private String name;\n    private int age;\n    \n    public Person(String name, int age) {\n        this.name = name;\n        this.age = age;\n    }\n    \n    public String getName() { return name; }\n    public int getAge() { return age; }\n}\n\npublic class StreamPractice {\n    public static void main(String[] args) {\n        List<Person> people = Arrays.asList(\n            new Person(\"田中\", 25),\n            new Person(\"佐藤\", 30),\n            new Person(\"鈴木\", 20),\n            new Person(\"高橋\", 35)\n        );\n        \n        // 25歳以上の人の名前を取得\n        List<String> names = people.stream()\n            .filter(p -> p.getAge() >= 25)\n            .map(Person::getName)\n            .collect(Collectors.toList());\n        \n        System.out.println(\"25歳以上: \" + names); // [田中, 佐藤, 高橋]\n        \n        // 平均年齢を計算\n        double avgAge = people.stream()\n            .mapToInt(Person::getAge)\n            .average()\n            .orElse(0.0);\n        \n        System.out.println(\"平均年齢: \" + avgAge); // 27.5\n        \n        // 最年長の人を取得\n        Optional<Person> oldest = people.stream()\n            .max(Comparator.comparing(Person::getAge));\n        \n        oldest.ifPresent(p -> \n            System.out.println(\"最年長: \" + p.getName() + \"(\" + p.getAge() + \"歳)\"));\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 5
+                    ],
+                ],
             ],
             [
                 'title' => '第21回：チャレンジ課題③（予備日）',
@@ -961,6 +995,21 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => 'Compositeパターンの実装', 'estimated_minutes' => 60, 'sort_order' => 2],
                     ['title' => '実践問題', 'estimated_minutes' => 60, 'sort_order' => 3],
                 ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'Compositeパターンとは',
+                        'content' => "# Compositeパターン（コンポジットパターン）\n\n**Compositeパターン**は、オブジェクトを木構造で表現し、個別のオブジェクトと複合オブジェクトを同じように扱えるようにするデザインパターンです。\n\n## 使用場面\n- ファイルシステム（ファイルとフォルダ）\n- 組織図（社員と部署）\n- GUIのコンポーネント（ボタンやパネル）\n- メニュー（メニュー項目とサブメニュー）\n\n## 構成要素\n1. **Component（共通インターフェイス）**: 葉と枝に共通の操作を定義\n2. **Leaf（葉）**: 子を持たない末端のオブジェクト\n3. **Composite（枝）**: 子を持つことができるオブジェクト\n\n## メリット\n- 単一オブジェクトと複合オブジェクトを同じ方法で扱える\n- 木構造を簡単に表現できる\n- 新しい種類のコンポーネントを追加しやすい",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'Compositeパターンの実装例（ファイルシステム）',
+                        'content' => "import java.util.*;\n\n// Component（共通インターフェイス）\nabstract class FileSystemComponent {\n    protected String name;\n    \n    public FileSystemComponent(String name) {\n        this.name = name;\n    }\n    \n    public abstract void print(String indent);\n    public abstract int getSize();\n}\n\n// Leaf（ファイル）\nclass File extends FileSystemComponent {\n    private int size;\n    \n    public File(String name, int size) {\n        super(name);\n        this.size = size;\n    }\n    \n    @Override\n    public void print(String indent) {\n        System.out.println(indent + \"📄 \" + name + \" (\" + size + \"KB)\");\n    }\n    \n    @Override\n    public int getSize() {\n        return size;\n    }\n}\n\n// Composite（フォルダ）\nclass Folder extends FileSystemComponent {\n    private List<FileSystemComponent> children = new ArrayList<>();\n    \n    public Folder(String name) {\n        super(name);\n    }\n    \n    public void add(FileSystemComponent component) {\n        children.add(component);\n    }\n    \n    @Override\n    public void print(String indent) {\n        System.out.println(indent + \"📁 \" + name);\n        for (FileSystemComponent child : children) {\n            child.print(indent + \"  \");\n        }\n    }\n    \n    @Override\n    public int getSize() {\n        int total = 0;\n        for (FileSystemComponent child : children) {\n            total += child.getSize();\n        }\n        return total;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // ルートフォルダ\n        Folder root = new Folder(\"root\");\n        \n        // ドキュメントフォルダ\n        Folder documents = new Folder(\"Documents\");\n        documents.add(new File(\"report.pdf\", 500));\n        documents.add(new File(\"memo.txt\", 10));\n        \n        // 画像フォルダ\n        Folder images = new Folder(\"Images\");\n        images.add(new File(\"photo1.jpg\", 2000));\n        images.add(new File(\"photo2.jpg\", 1800));\n        \n        root.add(documents);\n        root.add(images);\n        root.add(new File(\"readme.txt\", 5));\n        \n        root.print(\"\");\n        System.out.println(\"\\n合計サイズ: \" + root.getSize() + \"KB\");\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 2
+                    ],
+                ],
             ],
             [
                 'title' => '第24回：プログラム設計③（State）',
@@ -974,6 +1023,27 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => 'Stateパターンの実装', 'estimated_minutes' => 60, 'sort_order' => 2],
                     ['title' => '実践問題：ガチャマシン、ストップウォッチ', 'estimated_minutes' => 60, 'sort_order' => 3],
                 ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'Stateパターンとは',
+                        'content' => "# Stateパターン（ステートパターン）\n\n**Stateパターン**は、オブジェクトの状態によって振る舞いを変えるデザインパターンです。状態を表すクラスを作成し、状態の切り替えをカプセル化します。\n\n## 使用場面\n- 自動販売機（待機、商品選択、支払い、商品提供）\n- ゲームキャラクター（通常、攻撃、防御、死亡）\n- TCPコネクション（接続待ち、確立、切断）\n- ストップウォッチ（停止、実行中、一時停止）\n\n## 問題点：if-elseの乱用\n```java\nif (state == WAITING) {\n    // 待機中の処理\n} else if (state == RUNNING) {\n    // 実行中の処理\n} else if (state == PAUSED) {\n    // 一時停止中の処理\n}\n```\n状態が増えると複雑になり、メンテナンスが困難になります。\n\n## Stateパターンの解決策\n各状態をクラスとして独立させ、状態ごとの振る舞いをカプセル化します。",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'Stateパターンの実装例（信号機）',
+                        'content' => "// Stateインターフェイス\ninterface TrafficLightState {\n    void handle(TrafficLight light);\n    String getColor();\n}\n\n// 赤信号\nclass RedState implements TrafficLightState {\n    @Override\n    public void handle(TrafficLight light) {\n        System.out.println(\"赤 → 青に変更\");\n        light.setState(new GreenState());\n    }\n    \n    @Override\n    public String getColor() { return \"赤\"; }\n}\n\n// 青信号\nclass GreenState implements TrafficLightState {\n    @Override\n    public void handle(TrafficLight light) {\n        System.out.println(\"青 → 黄に変更\");\n        light.setState(new YellowState());\n    }\n    \n    @Override\n    public String getColor() { return \"青\"; }\n}\n\n// 黄信号\nclass YellowState implements TrafficLightState {\n    @Override\n    public void handle(TrafficLight light) {\n        System.out.println(\"黄 → 赤に変更\");\n        light.setState(new RedState());\n    }\n    \n    @Override\n    public String getColor() { return \"黄\"; }\n}\n\n// コンテキスト\nclass TrafficLight {\n    private TrafficLightState state;\n    \n    public TrafficLight() {\n        this.state = new RedState();\n    }\n    \n    public void setState(TrafficLightState state) {\n        this.state = state;\n    }\n    \n    public void change() {\n        state.handle(this);\n    }\n    \n    public String getCurrentColor() {\n        return state.getColor();\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        TrafficLight light = new TrafficLight();\n        \n        System.out.println(\"現在: \" + light.getCurrentColor());\n        light.change();\n        System.out.println(\"現在: \" + light.getCurrentColor());\n        light.change();\n        System.out.println(\"現在: \" + light.getCurrentColor());\n        light.change();\n        System.out.println(\"現在: \" + light.getCurrentColor());\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'Stateパターンのメリット',
+                        'content' => "# Stateパターンのメリット\n\n## 1. コードの整理\n- 各状態の処理が独立したクラスになる\n- if-elseの複雑な条件分岐が不要になる\n\n## 2. 新しい状態の追加が容易\n- 新しいStateクラスを追加するだけ\n- 既存のコードを変更する必要がない\n\n## 3. 状態遷移の管理が明確\n- 各状態クラスで次の状態を決定\n- 状態遷移のルールが分かりやすい\n\n## 4. 単一責任の原則\n- 各状態クラスは1つの状態のみを担当\n- 責任が明確に分離される\n\n## デメリット\n- クラス数が増える\n- 簡単な状態管理には複雑すぎる場合がある",
+                        'sort_order' => 3
+                    ],
+                ],
             ],
             [
                 'title' => '第25回：プログラム設計④（Iterator）',
@@ -986,6 +1056,27 @@ class JavaDesignCourseSeeder extends Seeder
                     ['title' => 'Iteratorパターンの概念', 'estimated_minutes' => 60, 'sort_order' => 1],
                     ['title' => 'Iteratorパターンの実装', 'estimated_minutes' => 60, 'sort_order' => 2],
                     ['title' => '実践問題：Menuクラス', 'estimated_minutes' => 60, 'sort_order' => 3],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'Iteratorパターンとは',
+                        'content' => "# Iteratorパターン（イテレータパターン）\n\n**Iteratorパターン**は、コレクション（集合体）の要素に順番にアクセスする方法を提供するデザインパターンです。内部構造を公開せずに要素を走査できます。\n\n## 使用場面\n- 配列やリストの要素を順番に処理\n- データベースのレコードを順番に読み込み\n- ファイルの行を順番に読み込み\n\n## Javaの拡張for文との関係\n```java\nfor (String item : list) {\n    System.out.println(item);\n}\n```\nこの構文は内部的にIteratorを使用しています。\n\n## 構成要素\n1. **Iterator**: 要素を走査するインターフェイス（hasNext, next）\n2. **ConcreteIterator**: Iteratorの具体的な実装\n3. **Aggregate**: コレクションのインターフェイス（iterator()メソッド）\n4. **ConcreteAggregate**: コレクションの具体的な実装",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'Iteratorパターンの実装例',
+                        'content' => "import java.util.*;\n\n// Iteratorインターフェイス\ninterface Iterator<T> {\n    boolean hasNext();\n    T next();\n}\n\n// Aggregateインターフェイス\ninterface Aggregate<T> {\n    Iterator<T> iterator();\n}\n\n// 本棚クラス（ConcreteAggregate）\nclass BookShelf implements Aggregate<String> {\n    private List<String> books = new ArrayList<>();\n    \n    public void addBook(String book) {\n        books.add(book);\n    }\n    \n    @Override\n    public Iterator<String> iterator() {\n        return new BookShelfIterator(this);\n    }\n    \n    public int getLength() {\n        return books.size();\n    }\n    \n    public String getBookAt(int index) {\n        return books.get(index);\n    }\n}\n\n// 本棚のIterator（ConcreteIterator）\nclass BookShelfIterator implements Iterator<String> {\n    private BookShelf bookShelf;\n    private int index;\n    \n    public BookShelfIterator(BookShelf bookShelf) {\n        this.bookShelf = bookShelf;\n        this.index = 0;\n    }\n    \n    @Override\n    public boolean hasNext() {\n        return index < bookShelf.getLength();\n    }\n    \n    @Override\n    public String next() {\n        String book = bookShelf.getBookAt(index);\n        index++;\n        return book;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        BookShelf shelf = new BookShelf();\n        shelf.addBook(\"Javaの基本\");\n        shelf.addBook(\"デザインパターン\");\n        shelf.addBook(\"アルゴリズム入門\");\n        shelf.addBook(\"データベース設計\");\n        \n        // Iteratorを使って走査\n        Iterator<String> it = shelf.iterator();\n        while (it.hasNext()) {\n            String book = it.next();\n            System.out.println(book);\n        }\n    }\n}",
+                        'code_language' => 'java',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'Iteratorパターンのメリット',
+                        'content' => "# Iteratorパターンのメリット\n\n## 1. 内部構造を隠蔽\n- コレクションの内部実装（配列、リストなど）を知る必要がない\n- 配列からリストに変更してもクライアントコードは変わらない\n\n## 2. 統一的なアクセス方法\n```java\n// どんなコレクションでも同じ方法で走査できる\nIterator<String> it = collection.iterator();\nwhile (it.hasNext()) {\n    String item = it.next();\n    // 処理\n}\n```\n\n## 3. 複数の走査を同時実行\n```java\nIterator<String> it1 = shelf.iterator();\nIterator<String> it2 = shelf.iterator();\n// 独立して走査できる\n```\n\n## 4. 拡張for文のサポート\nJavaの`Iterable`インターフェイスを実装すれば、拡張for文が使えます。\n```java\nfor (String book : shelf) {\n    System.out.println(book);\n}\n```",
+                        'sort_order' => 3
+                    ],
                 ],
             ],
         ]);
