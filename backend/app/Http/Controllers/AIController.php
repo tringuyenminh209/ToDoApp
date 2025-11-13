@@ -580,6 +580,7 @@ class AIController extends Controller
                         'description' => $taskData['description'] ?? null,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
+                        'deadline' => $taskData['deadline'] ?? now()->format('Y-m-d'),
                         'scheduled_time' => $taskData['scheduled_time'] ?? null,
                         'status' => 'pending',
                     ]);
@@ -762,6 +763,7 @@ class AIController extends Controller
                         'description' => $taskData['description'] ?? null,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
+                        'deadline' => $taskData['deadline'] ?? now()->format('Y-m-d'),
                         'scheduled_time' => $taskData['scheduled_time'] ?? null,
                         'status' => 'pending',
                     ]);
@@ -964,6 +966,72 @@ class AIController extends Controller
                 'content' => $request->message,
             ]);
 
+            // Parse task intent from user message
+            $taskData = $this->aiService->parseTaskIntent($request->message);
+            $createdTask = null;
+
+            // If task intent detected, create task
+            if ($taskData) {
+                try {
+                    // Convert priority string to integer
+                    $priorityMap = [
+                        'low' => 2,
+                        'medium' => 3,
+                        'high' => 5,
+                    ];
+                    $priorityValue = $taskData['priority'] ?? 'medium';
+                    if (is_string($priorityValue)) {
+                        $priorityValue = strtolower($priorityValue);
+                        $priorityInt = $priorityMap[$priorityValue] ?? 3;
+                    } else {
+                        $priorityInt = $priorityValue;
+                    }
+
+                    $createdTask = Task::create([
+                        'user_id' => $user->id,
+                        'title' => $taskData['title'],
+                        'description' => $taskData['description'] ?? null,
+                        'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
+                        'priority' => $priorityInt,
+                        'deadline' => $taskData['deadline'] ?? now()->format('Y-m-d'),
+                        'scheduled_time' => $taskData['scheduled_time'] ?? null,
+                        'status' => 'pending',
+                    ]);
+
+                    // Create subtasks if provided
+                    if (!empty($taskData['subtasks'])) {
+                        foreach ($taskData['subtasks'] as $index => $subtaskData) {
+                            $createdTask->subtasks()->create([
+                                'title' => $subtaskData['title'],
+                                'estimated_minutes' => $subtaskData['estimated_minutes'] ?? null,
+                                'sort_order' => $index + 1,
+                            ]);
+                        }
+                    }
+
+                    // Add tags if provided
+                    if (!empty($taskData['tags'])) {
+                        foreach ($taskData['tags'] as $tagName) {
+                            $tag = \App\Models\Tag::firstOrCreate([
+                                'user_id' => $user->id,
+                                'name' => $tagName
+                            ]);
+                            $createdTask->tags()->attach($tag->id);
+                        }
+                    }
+
+                    $createdTask->load(['subtasks', 'tags']);
+
+                    Log::info('Task created from context-aware chat', [
+                        'task_id' => $createdTask->id,
+                        'conversation_id' => $conversation->id
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to create task from context-aware chat: ' . $e->getMessage());
+                    // Continue without task creation
+                }
+            }
+
             // Load user context: tasks + timetable
             $tasks = Task::where('user_id', $user->id)
                 ->where('status', '!=', 'completed')
@@ -1029,6 +1097,15 @@ class AIController extends Controller
                 ], 503);
             }
 
+            // If task was created, add confirmation to AI response
+            if ($createdTask) {
+                $taskConfirmation = "\n\n✅ タスクを作成しました: 「{$createdTask->title}」";
+                if ($createdTask->subtasks->count() > 0) {
+                    $taskConfirmation .= "\n📝 サブタスク: {$createdTask->subtasks->count()}個";
+                }
+                $aiResponse['message'] = $aiResponse['message'] . $taskConfirmation;
+            }
+
             // Create assistant message
             $assistantMessage = ChatMessage::create([
                 'conversation_id' => $conversation->id,
@@ -1051,7 +1128,8 @@ class AIController extends Controller
             $responseData = [
                 'user_message' => $userMessage,
                 'assistant_message' => $assistantMessage,
-                'task_suggestion' => $aiResponse['task_suggestion'] ?? null,
+                'created_task' => $createdTask, // Auto-created task from parseTaskIntent
+                'task_suggestion' => $aiResponse['task_suggestion'] ?? null, // AI suggestion (requires user confirmation)
             ];
 
             return response()->json([
@@ -1067,6 +1145,194 @@ class AIController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'メッセージの送信に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get proactive daily planning from AI
+     * AI analyzes user's schedule, tasks, and provides proactive suggestions
+     * GET /api/ai/daily-plan
+     */
+    public function getDailyPlan(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Load user context: tasks + timetable
+            $tasks = Task::where('user_id', $user->id)
+                ->where('status', '!=', 'completed')
+                ->where('status', '!=', 'cancelled')
+                ->with(['subtasks', 'tags'])
+                ->orderBy('priority', 'desc')
+                ->orderBy('deadline', 'asc')
+                ->limit(20)
+                ->get();
+
+            // Load today's timetable
+            $today = now();
+            $dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            $todayDayName = $dayNames[$today->dayOfWeek];
+
+            $timetable = \App\Models\TimetableClass::where('user_id', $user->id)
+                ->where('day', $todayDayName)
+                ->orderBy('start_time', 'asc')
+                ->get();
+
+            // Build user context
+            $userContext = [
+                'tasks' => $tasks->toArray(),
+                'timetable' => $timetable->map(function($class) {
+                    return [
+                        'time' => $class->start_time,
+                        'title' => $class->name,
+                        'class_name' => $class->name,
+                    ];
+                })->toArray(),
+            ];
+
+            // Create proactive prompt for daily planning
+            $proactivePrompt = "今日の予定とタスクを分析して、最適な一日の計画を立ててください。以下の点に注目してください:
+
+1. **期限が近いタスク**: 優先的に取り組むべきタスクを特定
+2. **空き時間の活用**: スケジュールの隙間時間を効率的に使う方法
+3. **タスクの配置**: 各タスクに最適な時間帯を提案
+4. **バランス**: 作業と休憩のバランスを考慮
+5. **具体的なアクション**: 今すぐ始められる具体的なステップ
+
+可能であれば、最も重要なタスクをtask_suggestionとして提案してください。";
+
+            // Get AI response WITH CONTEXT
+            $aiResponse = $this->aiService->chatWithUserContext([
+                ['role' => 'user', 'content' => $proactivePrompt]
+            ], $userContext);
+
+            // Check if AI service returned an error
+            if (!empty($aiResponse['error'])) {
+                Log::warning('AI service error during daily plan generation', [
+                    'user_id' => $user->id,
+                    'message' => $aiResponse['message'] ?? 'Unknown error'
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $aiResponse['message'] ?? 'AIサービスに接続できませんでした',
+                    'error' => 'ai_service_unavailable'
+                ], 503);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'plan' => $aiResponse['message'],
+                    'task_suggestion' => $aiResponse['task_suggestion'] ?? null,
+                    'generated_at' => now()->toISOString(),
+                ],
+                'message' => '本日の計画を生成しました！'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Daily plan generation failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => '計画の生成に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get proactive weekly summary and suggestions
+     * AI analyzes past week and suggests improvements
+     * GET /api/ai/weekly-insights
+     */
+    public function getWeeklyInsights(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Get tasks from past week
+            $weekAgo = now()->subDays(7);
+            $tasks = Task::where('user_id', $user->id)
+                ->where('updated_at', '>=', $weekAgo)
+                ->with(['subtasks', 'tags'])
+                ->get();
+
+            $completedTasks = $tasks->where('status', 'completed');
+            $pendingTasks = $tasks->where('status', 'pending');
+            $inProgressTasks = $tasks->where('status', 'in_progress');
+
+            // Get focus sessions from past week
+            $sessions = \App\Models\FocusSession::where('user_id', $user->id)
+                ->where('started_at', '>=', $weekAgo)
+                ->where('status', 'completed')
+                ->get();
+
+            $totalFocusTime = $sessions->sum('actual_minutes');
+            $avgSessionLength = $sessions->avg('actual_minutes');
+
+            // Build insights prompt
+            $insightsPrompt = "過去1週間のデータを分析して、洞察と改善提案を提供してください:
+
+週間統計:
+- 完了タスク: " . $completedTasks->count() . "個
+- 進行中タスク: " . $inProgressTasks->count() . "個
+- 保留タスク: " . $pendingTasks->count() . "個
+- 総フォーカス時間: " . $totalFocusTime . "分
+- 平均セッション長: " . round($avgSessionLength, 1) . "分
+- フォーカスセッション数: " . $sessions->count() . "回
+
+以下の点について分析してください:
+1. **達成度**: タスク完了率とその評価
+2. **生産性パターン**: 最も生産的な時間帯や曜日
+3. **改善点**: 来週改善できること
+4. **強み**: 良かった点や継続すべきこと
+5. **推奨アクション**: 具体的な改善策
+
+励ましの言葉と共に、建設的なフィードバックを提供してください。";
+
+            // Get AI response
+            $aiResponse = $this->aiService->chat([
+                ['role' => 'user', 'content' => $insightsPrompt]
+            ], [
+                'system_prompt' => 'あなたは親切で励ましを与える生産性コーチです。ユーザーの努力を認め、建設的なアドバイスを提供してください。日本語で応答してください。',
+                'temperature' => 0.7,
+            ]);
+
+            // Check if AI service returned an error
+            if (!empty($aiResponse['error'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $aiResponse['message'] ?? 'AIサービスに接続できませんでした',
+                    'error' => 'ai_service_unavailable'
+                ], 503);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'insights' => $aiResponse['message'],
+                    'stats' => [
+                        'completed_tasks' => $completedTasks->count(),
+                        'pending_tasks' => $pendingTasks->count(),
+                        'in_progress_tasks' => $inProgressTasks->count(),
+                        'total_focus_time' => $totalFocusTime,
+                        'average_session_length' => round($avgSessionLength, 1),
+                        'total_sessions' => $sessions->count(),
+                    ],
+                    'generated_at' => now()->toISOString(),
+                ],
+                'message' => '週間インサイトを生成しました！'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Weekly insights generation failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'インサイトの生成に失敗しました',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -1104,6 +1370,7 @@ class AIController extends Controller
                 'description' => $request->description,
                 'estimated_minutes' => $request->estimated_minutes,
                 'priority' => $priorityMap[$request->priority] ?? 3,
+                'deadline' => now()->format('Y-m-d'),
                 'scheduled_time' => $request->scheduled_time,
                 'status' => 'pending',
                 'category' => 'other',
