@@ -1,10 +1,14 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -40,6 +44,8 @@ class AICoachActivity : BaseActivity() {
         setupRecyclerView()
         setupUI()
         setupClickListeners()
+        setupKeyboardListener()
+        setupRecyclerViewInsets()
         observeViewModel()
     }
 
@@ -86,6 +92,14 @@ class AICoachActivity : BaseActivity() {
                 true
             } else {
                 false
+            }
+        }
+
+        // Focus listener to ensure RecyclerView scrolls when keyboard appears
+        binding.etMessage.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                // Scroll to bottom when input field gets focus
+                scrollToBottom()
             }
         }
 
@@ -272,6 +286,88 @@ class AICoachActivity : BaseActivity() {
                 binding.taskSuggestionCard.visibility = View.GONE
             }
         }
+    }
+
+    /**
+     * Setup RecyclerView insets to handle keyboard and ensure messages are visible
+     */
+    private fun setupRecyclerViewInsets() {
+        val recyclerView = binding.rvSuggestions
+        val originalPaddingBottom = recyclerView.paddingBottom
+        val originalPaddingLeft = recyclerView.paddingLeft
+        val originalPaddingTop = recyclerView.paddingTop
+        val originalPaddingRight = recyclerView.paddingRight
+        
+        ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            
+            // When keyboard is visible, add bottom padding to RecyclerView
+            // This ensures messages can scroll above the keyboard
+            val bottomPadding = if (imeInsets.bottom > 0) {
+                // Keyboard is visible: add padding equal to keyboard height
+                // This allows RecyclerView content to scroll above the keyboard
+                originalPaddingBottom + imeInsets.bottom
+            } else {
+                // Keyboard is hidden: use original padding
+                originalPaddingBottom
+            }
+            
+            v.setPadding(
+                originalPaddingLeft,
+                originalPaddingTop,
+                originalPaddingRight,
+                bottomPadding
+            )
+            
+            // Scroll to bottom when keyboard appears
+            if (imeInsets.bottom > 0) {
+                scrollToBottom()
+            }
+            
+            insets
+        }
+    }
+
+    /**
+     * Setup keyboard listener to handle RecyclerView scrolling when keyboard appears/disappears
+     * Uses ViewTreeObserver to detect layout changes when keyboard appears
+     */
+    private fun setupKeyboardListener() {
+        val rootView = binding.root
+        
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            private var wasKeyboardVisible = false
+            
+            override fun onGlobalLayout() {
+                val rect = Rect()
+                rootView.getWindowVisibleDisplayFrame(rect)
+                val screenHeight = rootView.height
+                val keypadHeight = screenHeight - rect.bottom
+                
+                // Consider keyboard visible if keypad height is more than 15% of screen height
+                val isKeyboardVisible = keypadHeight > screenHeight * 0.15
+                
+                if (isKeyboardVisible && !wasKeyboardVisible) {
+                    // Keyboard just appeared, scroll RecyclerView to bottom
+                    scrollToBottom()
+                }
+                
+                wasKeyboardVisible = isKeyboardVisible
+            }
+        })
+    }
+
+    /**
+     * Scroll RecyclerView to the bottom
+     */
+    private fun scrollToBottom() {
+        binding.rvSuggestions.postDelayed({
+            val itemCount = chatAdapter.itemCount
+            if (itemCount > 0) {
+                binding.rvSuggestions.smoothScrollToPosition(itemCount - 1)
+            }
+        }, 100)
     }
 
     private fun sendMessage() {
