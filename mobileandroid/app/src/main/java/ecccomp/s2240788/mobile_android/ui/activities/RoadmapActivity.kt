@@ -12,7 +12,9 @@ import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityRoadmapBinding
 import ecccomp.s2240788.mobile_android.data.models.GeneratedRoadmap
 import ecccomp.s2240788.mobile_android.data.models.PopularRoadmap
+import ecccomp.s2240788.mobile_android.data.models.StudyScheduleInput
 import ecccomp.s2240788.mobile_android.ui.adapters.RoadmapAdapter
+import ecccomp.s2240788.mobile_android.ui.fragments.ScheduleSetupBottomSheet
 import ecccomp.s2240788.mobile_android.ui.viewmodels.RoadmapViewModel
 
 /**
@@ -116,7 +118,13 @@ class RoadmapActivity : BaseActivity() {
     }
 
     private fun importRoadmap(roadmap: PopularRoadmap) {
-        viewModel.importPopularRoadmap(roadmap.id)
+        // Show schedule setup dialog first
+        val scheduleDialog = ScheduleSetupBottomSheet.newInstance()
+        scheduleDialog.setOnConfirmListener { schedules ->
+            // Import roadmap with study schedules
+            viewModel.importPopularRoadmap(roadmap.id, schedules)
+        }
+        scheduleDialog.show(supportFragmentManager, "schedule_setup")
     }
 
     private fun showGenerateDialog() {
@@ -144,11 +152,17 @@ class RoadmapActivity : BaseActivity() {
                 
                 if (topic.isNotBlank()) {
                     viewModel.generateRoadmap(topic, level)
-                    
+
                     // Observe và auto-import sau khi generate thành công
                     generatedObserver = Observer<GeneratedRoadmap?> { generated ->
                         generated?.let {
-                            viewModel.importAIGeneratedRoadmap(topic, level)
+                            // Show schedule setup dialog before importing
+                            val scheduleDialog = ScheduleSetupBottomSheet.newInstance()
+                            scheduleDialog.setOnConfirmListener { schedules ->
+                                viewModel.importAIGeneratedRoadmap(topic, level, schedules)
+                            }
+                            scheduleDialog.show(supportFragmentManager, "schedule_setup_ai")
+
                             viewModel.resetGeneratedRoadmap()
                             generatedObserver?.let { observer ->
                                 viewModel.generatedRoadmap.removeObserver(observer)
