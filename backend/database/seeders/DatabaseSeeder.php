@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             CheatCodeCppSeeder::class,
             CheatCodeCppExerciseSeeder::class,
             CheatCodeKotlinSeeder::class,
+            CheatCodeKotlinExerciseSeeder::class,
             CheatCodeCss3Seeder::class,
             CheatCodeHtmlSeeder::class,
             CheatCodeBashSeeder::class,
