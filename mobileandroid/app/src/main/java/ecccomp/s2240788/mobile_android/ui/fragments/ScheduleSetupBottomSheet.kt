@@ -129,12 +129,12 @@ class ScheduleSetupBottomSheet : BottomSheetDialogFragment() {
     private fun setupDurationSelection() {
         // Set initial value (60 minutes = index 3)
         binding.seekbarDuration.progress = 3
-        binding.tvDuration.text = "60 phút"
+        binding.tvDuration.text = "60分"
 
         binding.seekbarDuration.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val minutes = durationMap.getOrElse(progress) { 60 }
-                binding.tvDuration.text = "$minutes phút"
+                binding.tvDuration.text = "${minutes}分"
                 viewModel.setDuration(minutes)
             }
 
@@ -157,10 +157,16 @@ class ScheduleSetupBottomSheet : BottomSheetDialogFragment() {
         // Validate
         val errorMessage = viewModel.validateSchedules()
         if (errorMessage != null) {
-            // Show error
+            // Show error - translate to Japanese
+            val japaneseError = when (errorMessage) {
+                "Vui lòng chọn ít nhất 1 ngày học" -> "少なくとも1日を選択してください"
+                "Vui lòng chọn giờ học" -> "学習時間を選択してください"
+                "Thời lượng tối thiểu là 15 phút" -> "最低15分が必要です"
+                else -> errorMessage
+            }
             com.google.android.material.snackbar.Snackbar.make(
                 binding.root,
-                errorMessage,
+                japaneseError,
                 com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
             ).show()
             return
