@@ -384,6 +384,366 @@ class CheatCodePhpExerciseSeeder extends Seeder
             ]
         );
 
+        // Exercise 21: array_map関数
+        $this->createExercise(
+            $phpLanguage,
+            '配列の各要素を2倍にする',
+            '配列関数 - array_map',
+            '配列[1, 2, 3, 4, 5]の各要素を2倍にして出力してください。array_map関数を使用します。出力形式: "2,4,6,8,10"',
+            "<?php\n\n\$numbers = [1, 2, 3, 4, 5];\n\n// array_mapで各要素を2倍にする\n",
+            "<?php\n\n\$numbers = [1, 2, 3, 4, 5];\n\$doubled = array_map(function(\$n) {\n    return \$n * 2;\n}, \$numbers);\necho implode(',', \$doubled);\n",
+            ['array_map(関数, 配列)で各要素に関数を適用', 'implodeで配列を文字列に結合'],
+            'medium',
+            25,
+            ['php', 'array', 'array_map', 'function'],
+            21,
+            [
+                ['', '2,4,6,8,10', '各要素を2倍', true, false, 1],
+            ]
+        );
+
+        // Exercise 22: array_filter関数
+        $this->createExercise(
+            $phpLanguage,
+            '偶数のみを抽出',
+            '配列関数 - array_filter',
+            '配列[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]から偶数のみを抽出して出力してください。出力形式: "2,4,6,8,10"',
+            "<?php\n\n\$numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\n\n// 偶数のみをフィルタリング\n",
+            "<?php\n\n\$numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\n\$evens = array_filter(\$numbers, function(\$n) {\n    return \$n % 2 === 0;\n});\necho implode(',', \$evens);\n",
+            ['array_filter(配列, 関数)で条件に合う要素のみ残す', '偶数は % 2 === 0で判定'],
+            'medium',
+            25,
+            ['php', 'array', 'array_filter', 'function'],
+            22,
+            [
+                ['', '2,4,6,8,10', '偶数のみ', true, false, 1],
+            ]
+        );
+
+        // Exercise 23: Date and Time
+        $this->createExercise(
+            $phpLanguage,
+            '現在の日付をフォーマット',
+            '日付と時刻',
+            '現在の日付を"2025-01-15"の形式(Y-m-d)で出力してください。date関数を使用します。',
+            "<?php\n\n// 現在の日付をY-m-d形式で出力\n",
+            "<?php\n\necho date('Y-m-d');\n",
+            ['date(\'Y-m-d\')で年-月-日形式', 'Y=4桁年、m=月、d=日'],
+            'easy',
+            15,
+            ['php', 'date', 'time'],
+            23,
+            [
+                ['', date('Y-m-d'), '今日の日付', true, false, 1],
+            ]
+        );
+
+        // Exercise 24: JSON encoding
+        $this->createExercise(
+            $phpLanguage,
+            '配列をJSONに変換',
+            'JSON処理',
+            '連想配列["name" => "John", "age" => 30]をJSON文字列に変換して出力してください。',
+            "<?php\n\n\$data = ['name' => 'John', 'age' => 30];\n\n// JSONに変換\n",
+            "<?php\n\n\$data = ['name' => 'John', 'age' => 30];\necho json_encode(\$data);\n",
+            ['json_encode()で配列をJSON文字列に変換'],
+            'easy',
+            20,
+            ['php', 'json', 'encoding'],
+            24,
+            [
+                ['', '{"name":"John","age":30}', 'JSONエンコード', true, false, 1],
+            ]
+        );
+
+        // Exercise 25: JSON decoding
+        $this->createExercise(
+            $phpLanguage,
+            'JSONから値を取得',
+            'JSON処理',
+            'JSON文字列"{\"name\":\"Alice\",\"age\":25}"をデコードして、nameの値を出力してください。',
+            "<?php\n\n\$json = '{\"name\":\"Alice\",\"age\":25}';\n\n// JSONをデコードしてnameを出力\n",
+            "<?php\n\n\$json = '{\"name\":\"Alice\",\"age\":25}';\n\$data = json_decode(\$json, true);\necho \$data['name'];\n",
+            ['json_decode(\$json, true)で連想配列に変換', '第2引数trueで連想配列に'],
+            'easy',
+            20,
+            ['php', 'json', 'decoding'],
+            25,
+            [
+                ['', 'Alice', 'nameの値を取得', true, false, 1],
+            ]
+        );
+
+        // Exercise 26: Class定義
+        $this->createExercise(
+            $phpLanguage,
+            'シンプルなクラスを作成',
+            'オブジェクト指向 - Class',
+            'nameプロパティとgetName()メソッドを持つPersonクラスを作成し、"John"という名前のインスタンスを作成して名前を出力してください。',
+            "<?php\n\n// Personクラスを定義\n\n// インスタンスを作成して名前を出力\n",
+            "<?php\n\nclass Person {\n    public \$name;\n    \n    public function __construct(\$name) {\n        \$this->name = \$name;\n    }\n    \n    public function getName() {\n        return \$this->name;\n    }\n}\n\n\$person = new Person('John');\necho \$person->getName();\n",
+            ['class クラス名 { ... }で定義', '__construct()はコンストラクタ', '\$this->でプロパティにアクセス'],
+            'medium',
+            30,
+            ['php', 'oop', 'class', 'object'],
+            26,
+            [
+                ['', 'John', 'クラスとオブジェクト', true, false, 1],
+            ]
+        );
+
+        // Exercise 27: 継承
+        $this->createExercise(
+            $phpLanguage,
+            'クラスの継承',
+            'オブジェクト指向 - Inheritance',
+            'Animalクラスにspeakメソッド、DogクラスがAnimalを継承してspeakメソッドをオーバーライドし"Woof!"と出力するようにしてください。',
+            "<?php\n\n// Animalクラスを定義\n\n// Dogクラスで継承\n\n// Dogインスタンスを作成してspeakを呼び出す\n",
+            "<?php\n\nclass Animal {\n    public function speak() {\n        return \"Some sound\";\n    }\n}\n\nclass Dog extends Animal {\n    public function speak() {\n        return \"Woof!\";\n    }\n}\n\n\$dog = new Dog();\necho \$dog->speak();\n",
+            ['class 子クラス extends 親クラス { ... }で継承', 'メソッドをオーバーライド可能'],
+            'medium',
+            35,
+            ['php', 'oop', 'inheritance', 'extends'],
+            27,
+            [
+                ['', 'Woof!', '継承とオーバーライド', true, false, 1],
+            ]
+        );
+
+        // Exercise 28: Static methods
+        $this->createExercise(
+            $phpLanguage,
+            '静的メソッドの使用',
+            'オブジェクト指向 - Static',
+            'MathUtilsクラスにstatic add(\$a, \$b)メソッドを作成し、5と10を足した結果を出力してください。',
+            "<?php\n\n// MathUtilsクラスを定義\n\n// static addメソッドを呼び出す\n",
+            "<?php\n\nclass MathUtils {\n    public static function add(\$a, \$b) {\n        return \$a + \$b;\n    }\n}\n\necho MathUtils::add(5, 10);\n",
+            ['public static function で静的メソッド定義', 'クラス名::メソッド名()で呼び出し'],
+            'medium',
+            25,
+            ['php', 'oop', 'static', 'method'],
+            28,
+            [
+                ['', '15', '静的メソッド', true, false, 1],
+            ]
+        );
+
+        // Exercise 29: Constants
+        $this->createExercise(
+            $phpLanguage,
+            '定数の定義と使用',
+            '定数',
+            'PIという名前の定数を3.14159で定義し、その値を出力してください。',
+            "<?php\n\n// 定数PIを定義\n\n// PIを出力\n",
+            "<?php\n\ndefine('PI', 3.14159);\necho PI;\n",
+            ['define(\'名前\', 値)で定数を定義', '定数名は大文字が慣例'],
+            'easy',
+            15,
+            ['php', 'constant', 'define'],
+            29,
+            [
+                ['', '3.14159', '定数の定義', true, false, 1],
+            ]
+        );
+
+        // Exercise 30: Type casting
+        $this->createExercise(
+            $phpLanguage,
+            '型キャスト',
+            'データ型変換',
+            '文字列"123"を整数に変換し、その値に10を足して出力してください。',
+            "<?php\n\n\$str = '123';\n\n// 整数に変換して10を足す\n",
+            "<?php\n\n\$str = '123';\n\$num = (int)\$str;\necho \$num + 10;\n",
+            ['(int)で整数に変換', '(string), (float), (bool)なども使用可能'],
+            'easy',
+            15,
+            ['php', 'type', 'casting', 'conversion'],
+            30,
+            [
+                ['', '133', '型変換', true, false, 1],
+            ]
+        );
+
+        // Exercise 31: Ternary operator
+        $this->createExercise(
+            $phpLanguage,
+            '三項演算子',
+            '三項演算子',
+            '変数\$age = 18があります。三項演算子を使って、18以上なら"Adult"、未満なら"Minor"と出力してください。',
+            "<?php\n\n\$age = 18;\n\n// 三項演算子で判定\n",
+            "<?php\n\n\$age = 18;\necho \$age >= 18 ? 'Adult' : 'Minor';\n",
+            ['条件 ? 真の値 : 偽の値', 'if-elseの短縮形'],
+            'easy',
+            20,
+            ['php', 'ternary', 'operator'],
+            31,
+            [
+                ['', 'Adult', '三項演算子', true, false, 1],
+            ]
+        );
+
+        // Exercise 32: Null coalescing operator
+        $this->createExercise(
+            $phpLanguage,
+            'Null合体演算子',
+            'Null合体演算子',
+            '変数\$name = nullがあります。Null合体演算子(??)を使って、\$nameがnullなら"Guest"、そうでなければ\$nameの値を出力してください。',
+            "<?php\n\n\$name = null;\n\n// Null合体演算子を使用\n",
+            "<?php\n\n\$name = null;\necho \$name ?? 'Guest';\n",
+            ['\$var ?? デフォルト値', 'nullまたは未定義の場合にデフォルト値を使用'],
+            'easy',
+            20,
+            ['php', 'null-coalescing', 'operator'],
+            32,
+            [
+                ['', 'Guest', 'Null合体演算子', true, false, 1],
+            ]
+        );
+
+        // Exercise 33: Spread operator
+        $this->createExercise(
+            $phpLanguage,
+            'スプレッド演算子',
+            'スプレッド演算子',
+            '配列\$arr1 = [1, 2]と\$arr2 = [3, 4]があります。スプレッド演算子(...)を使って結合し、カンマ区切りで出力してください。',
+            "<?php\n\n\$arr1 = [1, 2];\n\$arr2 = [3, 4];\n\n// スプレッド演算子で結合\n",
+            "<?php\n\n\$arr1 = [1, 2];\n\$arr2 = [3, 4];\n\$merged = [...\$arr1, ...\$arr2];\necho implode(',', \$merged);\n",
+            ['...\$arrayで配列を展開', 'PHP 7.4以降で使用可能'],
+            'medium',
+            25,
+            ['php', 'spread', 'operator', 'array'],
+            33,
+            [
+                ['', '1,2,3,4', 'スプレッド演算子', true, false, 1],
+            ]
+        );
+
+        // Exercise 34: Anonymous function
+        $this->createExercise(
+            $phpLanguage,
+            '無名関数（クロージャ）',
+            '無名関数',
+            '無名関数を使って、2つの数値を掛け算する関数を作成し、5と6を掛けた結果を出力してください。',
+            "<?php\n\n// 無名関数を定義\n\n// 関数を呼び出して結果を出力\n",
+            "<?php\n\n\$multiply = function(\$a, \$b) {\n    return \$a * \$b;\n};\n\necho \$multiply(5, 6);\n",
+            ['\$var = function() { ... };で無名関数を定義', '変数名()で呼び出し'],
+            'medium',
+            25,
+            ['php', 'anonymous', 'function', 'closure'],
+            34,
+            [
+                ['', '30', '無名関数', true, false, 1],
+            ]
+        );
+
+        // Exercise 35: Arrow function
+        $this->createExercise(
+            $phpLanguage,
+            'アロー関数',
+            'アロー関数',
+            'アロー関数(fn)を使って、数値を2乗する関数を作成し、7を2乗した結果を出力してください。',
+            "<?php\n\n// アロー関数を定義\n\n// 関数を呼び出して結果を出力\n",
+            "<?php\n\n\$square = fn(\$n) => \$n * \$n;\n\necho \$square(7);\n",
+            ['fn(\$param) => 式 でアロー関数定義', 'PHP 7.4以降で使用可能', '自動的にreturnされる'],
+            'medium',
+            25,
+            ['php', 'arrow', 'function', 'fn'],
+            35,
+            [
+                ['', '49', 'アロー関数', true, false, 1],
+            ]
+        );
+
+        // Exercise 36: in_array関数
+        $this->createExercise(
+            $phpLanguage,
+            '配列内の要素を検索',
+            '配列関数 - in_array',
+            '配列["apple", "banana", "orange"]に"banana"が含まれているか確認し、含まれていれば"Found"、なければ"Not found"と出力してください。',
+            "<?php\n\n\$fruits = ['apple', 'banana', 'orange'];\n\n// in_arrayで検索\n",
+            "<?php\n\n\$fruits = ['apple', 'banana', 'orange'];\necho in_array('banana', \$fruits) ? 'Found' : 'Not found';\n",
+            ['in_array(値, 配列)で存在チェック', '見つかればtrueを返す'],
+            'easy',
+            20,
+            ['php', 'array', 'in_array', 'search'],
+            36,
+            [
+                ['', 'Found', '配列検索', true, false, 1],
+            ]
+        );
+
+        // Exercise 37: array_reduce関数
+        $this->createExercise(
+            $phpLanguage,
+            '配列の合計を計算',
+            '配列関数 - array_reduce',
+            '配列[1, 2, 3, 4, 5]の合計をarray_reduce関数で計算して出力してください。',
+            "<?php\n\n\$numbers = [1, 2, 3, 4, 5];\n\n// array_reduceで合計を計算\n",
+            "<?php\n\n\$numbers = [1, 2, 3, 4, 5];\n\$sum = array_reduce(\$numbers, function(\$carry, \$item) {\n    return \$carry + \$item;\n}, 0);\necho \$sum;\n",
+            ['array_reduce(配列, 関数, 初期値)', '\$carryは累積値、\$itemは現在の要素'],
+            'medium',
+            30,
+            ['php', 'array', 'array_reduce', 'function'],
+            37,
+            [
+                ['', '15', '配列の合計', true, false, 1],
+            ]
+        );
+
+        // Exercise 38: count関数
+        $this->createExercise(
+            $phpLanguage,
+            '配列の要素数を数える',
+            '配列関数 - count',
+            '配列["red", "green", "blue", "yellow"]の要素数を数えて出力してください。',
+            "<?php\n\n\$colors = ['red', 'green', 'blue', 'yellow'];\n\n// 要素数を数える\n",
+            "<?php\n\n\$colors = ['red', 'green', 'blue', 'yellow'];\necho count(\$colors);\n",
+            ['count(\$array)で要素数を取得', 'sizeof()も同じ機能'],
+            'easy',
+            10,
+            ['php', 'array', 'count'],
+            38,
+            [
+                ['', '4', '配列の要素数', true, false, 1],
+            ]
+        );
+
+        // Exercise 39: str_replace関数
+        $this->createExercise(
+            $phpLanguage,
+            '複数の文字列を置換',
+            '文字列関数 - str_replace',
+            '文字列"I like apples and apples are good"の"apples"を"oranges"に置換して出力してください。',
+            "<?php\n\n\$text = 'I like apples and apples are good';\n\n// applesをorangesに置換\n",
+            "<?php\n\n\$text = 'I like apples and apples are good';\necho str_replace('apples', 'oranges', \$text);\n",
+            ['str_replace(検索, 置換, 文字列)', 'すべての出現箇所を置換'],
+            'easy',
+            15,
+            ['php', 'string', 'str_replace'],
+            39,
+            [
+                ['', 'I like oranges and oranges are good', '文字列置換', true, false, 1],
+            ]
+        );
+
+        // Exercise 40: isset関数
+        $this->createExercise(
+            $phpLanguage,
+            '変数が定義されているか確認',
+            '変数チェック - isset',
+            '変数\$value = "Hello"が定義されているか確認し、定義されていれば"Defined"、未定義なら"Undefined"と出力してください。',
+            "<?php\n\n\$value = 'Hello';\n\n// issetで確認\n",
+            "<?php\n\n\$value = 'Hello';\necho isset(\$value) ? 'Defined' : 'Undefined';\n",
+            ['isset(\$var)で変数の存在とnullでないことを確認'],
+            'easy',
+            15,
+            ['php', 'isset', 'variable'],
+            40,
+            [
+                ['', 'Defined', '変数の存在確認', true, false, 1],
+            ]
+        );
+
         // Update language counts
         $this->updateLanguageCounts($phpLanguage);
 
