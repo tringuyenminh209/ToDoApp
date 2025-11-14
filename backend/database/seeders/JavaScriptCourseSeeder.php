@@ -145,7 +145,7 @@ let num3 = -10;
 ```javascript
 let str1 = 'Hello';
 let str2 = \"World\";
-let str3 = \`Template \${num1}\`;  // テンプレートリテラル
+let str3 = \`Template \\x24{num1}\`;  // テンプレートリテラル
 ```
 
 3. **Boolean（真偽値）**
@@ -209,7 +209,7 @@ age = 26;  // OK
 // BIRTH_YEAR = 2000;  // エラー！constは再代入不可
 
 // テンプレートリテラル
-let message = \`\${name}さんは\${age}歳です。\`;
+let message = \`\\x24{name}さんは\\x24{age}歳です。\`;
 console.log(message);
 
 // 計算
@@ -428,15 +428,15 @@ if (purchaseAmount >= 10000) {
 }
 
 let finalAmount = purchaseAmount * (1 - discount);
-console.log(\`支払額: \${finalAmount}円\`);
+console.log(\`支払額: \\x24{finalAmount}円\`);
 
 // 偶数・奇数判定
 let number = 7;
 
 if (number % 2 === 0) {
-  console.log(\`\${number}は偶数です\`);
+  console.log(\`\\x24{number}は偶数です\`);
 } else {
-  console.log(\`\${number}は奇数です\`);
+  console.log(\`\\x24{number}は奇数です\`);
 }",
                         'code_language' => 'javascript',
                         'sort_order' => 6
@@ -598,7 +598,7 @@ switch (statusCode) {
     console.log('サーバーエラー');
     break;
   default:
-    console.log(\`ステータスコード: \${statusCode}\`);
+    console.log(\`ステータスコード: \\x24{statusCode}\`);
 }",
                         'code_language' => 'javascript',
                         'sort_order' => 8
@@ -752,11 +752,11 @@ todos.push('メールを送る');
 console.log('ToDoリスト:', todos);
 
 // タスク数の確認
-console.log(\`残りタスク: \${todos.length}件\`);
+console.log(\`残りタスク: \\x24{todos.length}件\`);
 
 // 最初のタスクを完了
 let completed = todos.shift();
-console.log(\`完了: \${completed}\`);
+console.log(\`完了: \\x24{completed}\`);
 console.log('残りのタスク:', todos);
 
 // 特定のタスクがあるか確認
@@ -810,7 +810,7 @@ let fruits = ['りんご', 'バナナ', 'オレンジ'];
 
 // インデックスを使う方法
 for (let i = 0; i < fruits.length; i++) {
-  console.log(\`\${i + 1}番目: \${fruits[i]}\`);
+  console.log(\`\\x24{i + 1}番目: \\x24{fruits[i]}\`);
 }
 
 // for...of（推奨）
@@ -907,14 +907,14 @@ let found = false;
 
 for (let i = 0; i < students.length; i++) {
   if (students[i] === searchName) {
-    console.log(\`\${searchName}は\${i + 1}番目にいます\`);
+    console.log(\`\\x24{searchName}は\\x24{i + 1}番目にいます\`);
     found = true;
     break;
   }
 }
 
 if (!found) {
-  console.log(\`\${searchName}は見つかりませんでした\`);
+  console.log(\`\\x24{searchName}は見つかりませんでした\`);
 }
 
 // 合計を計算（while文）
@@ -942,7 +942,7 @@ console.log('合計金額:', total + '円');",
 ### 1. 関数宣言（Function Declaration）
 ```javascript
 function greet(name) {
-  console.log(\`こんにちは、\${name}さん！\`);
+  console.log(\`こんにちは、\\x24{name}さん！\`);
 }
 
 greet('太郎');  // こんにちは、太郎さん！
@@ -951,7 +951,7 @@ greet('太郎');  // こんにちは、太郎さん！
 ### 2. 関数式（Function Expression）
 ```javascript
 const greet = function(name) {
-  console.log(\`こんにちは、\${name}さん！\`);
+  console.log(\`こんにちは、\\x24{name}さん！\`);
 };
 
 greet('花子');  // こんにちは、花子さん！
@@ -960,11 +960,11 @@ greet('花子');  // こんにちは、花子さん！
 ### 3. アロー関数（Arrow Function）- 推奨
 ```javascript
 const greet = (name) => {
-  console.log(\`こんにちは、\${name}さん！\`);
+  console.log(\`こんにちは、\\x24{name}さん！\`);
 };
 
 // 1行の場合は{}を省略可能
-const greet2 = (name) => console.log(\`こんにちは、\${name}さん！\`);
+const greet2 = (name) => console.log(\`こんにちは、\\x24{name}さん！\`);
 ```
 
 ## 引数（パラメータ）
@@ -982,7 +982,7 @@ console.log(result);  // 8
 ### デフォルト引数
 ```javascript
 const greet = (name = 'ゲスト') => {
-  console.log(\`こんにちは、\${name}さん！\`);
+  console.log(\`こんにちは、\\x24{name}さん！\`);
 };
 
 greet();        // こんにちは、ゲストさん！
@@ -1268,7 +1268,7 @@ console.log(allParagraphs.length);  // 2
 
 // 複数要素をループで処理
 messages.forEach((msg, index) => {
-  console.log(\`メッセージ\${index + 1}: \${msg.textContent}\`);
+  console.log(\`メッセージ\\x24{index + 1}: \\x24{msg.textContent}\`);
 });
 
 // CSSセレクタの活用
@@ -1374,13 +1374,13 @@ nameInput.value = '太郎';
 
 // input要素の値を取得して表示
 const display = document.getElementById('display');
-display.textContent = \`入力された名前: \${nameInput.value}\`;
+display.textContent = \`入力された名前: \\x24{nameInput.value}\`;
 
 // リストを動的に生成
 const fruits = ['りんご', 'バナナ', 'オレンジ'];
 let listHTML = '<ul>';
 fruits.forEach((fruit) => {
-  listHTML += \`<li>\${fruit}</li>\`;
+  listHTML += \`<li>\\x24{fruit}</li>\`;
 });
 listHTML += '</ul>';
 content.innerHTML = listHTML;",
@@ -1482,8 +1482,8 @@ let imageNumber = 1;
 
 setInterval(() => {
   imageNumber = imageNumber === 1 ? 2 : 1;
-  myImage.src = \`image\${imageNumber}.jpg\`;
-  myImage.alt = \`画像\${imageNumber}\`;
+  myImage.src = \`image\\x24{imageNumber}.jpg\`;
+  myImage.alt = \`画像\\x24{imageNumber}\`;
 }, 2000);  // 2秒ごとに切り替え
 
 // 条件に応じてスタイルを変更
@@ -1647,7 +1647,7 @@ let clickCount = 0;
 
 btn.addEventListener('click', () => {
   clickCount++;
-  output.textContent = \`クリック回数: \${clickCount}\`;
+  output.textContent = \`クリック回数: \\x24{clickCount}\`;
 });
 
 // 入力イベント
@@ -1656,7 +1656,7 @@ const textInput = document.getElementById('textInput');
 textInput.addEventListener('input', (event) => {
   const value = event.target.value;
   console.log('入力値:', value);
-  output.textContent = \`入力: \${value}\`;
+  output.textContent = \`入力: \\x24{value}\`;
 });
 
 // マウスイベント
@@ -1672,7 +1672,7 @@ box.addEventListener('mouseleave', () => {
 
 // キーボードイベント
 document.addEventListener('keydown', (event) => {
-  console.log(\`押されたキー: \${event.key}\`);
+  console.log(\`押されたキー: \\x24{event.key}\`);
 
   if (event.key === 'Enter') {
     console.log('Enterキーが押されました');
@@ -1798,7 +1798,7 @@ form.addEventListener('submit', (e) => {
   if (name === '') {
     alert('名前を入力してください');
   } else {
-    console.log(\`フォーム送信: \${name}\`);
+    console.log(\`フォーム送信: \\x24{name}\`);
     // ここでAjaxリクエストなど
   }
 });
@@ -1807,7 +1807,7 @@ form.addEventListener('submit', (e) => {
 const coordDisplay = document.getElementById('coordDisplay');
 
 document.addEventListener('mousemove', (e) => {
-  coordDisplay.textContent = \`X: \${e.clientX}, Y: \${e.clientY}\`;
+  coordDisplay.textContent = \`X: \\x24{e.clientX}, Y: \\x24{e.clientY}\`;
 });
 
 // クリックされた要素の情報を表示
@@ -1896,7 +1896,7 @@ const items = document.querySelectorAll('.item');
 
 items.forEach((item, index) => {
   item.addEventListener('click', () => {
-    console.log(\`\${index + 1}番目のアイテムがクリックされました\`);
+    console.log(\`\\x24{index + 1}番目のアイテムがクリックされました\`);
     item.classList.toggle('active');
   });
 });
@@ -1934,7 +1934,7 @@ colorButtons.forEach((button) => {
   button.addEventListener('click', () => {
     const color = button.getAttribute('data-color');
     display.style.backgroundColor = color;
-    display.textContent = \`選択された色: \${color}\`;
+    display.textContent = \`選択された色: \\x24{color}\`;
   });
 });
 
@@ -2050,7 +2050,7 @@ const addTodo = () => {
 
   const li = document.createElement('li');
   li.innerHTML = \`
-    <span class=\"task-text\">\${text}</span>
+    <span class=\"task-text\">\\x24{text}</span>
     <button class=\"delete-btn\">削除</button>
   \`;
 
@@ -2193,7 +2193,7 @@ const createCard = (title, description) => {
   const cardButton = document.createElement('button');
   cardButton.textContent = '詳細を見る';
   cardButton.addEventListener('click', () => {
-    alert(\`\${title}の詳細\`);
+    alert(\`\\x24{title}の詳細\`);
   });
 
   card.appendChild(cardTitle);
@@ -2223,7 +2223,7 @@ container.appendChild(createCard('タイトル2', '説明文2'));",
 // 悪い例：DOMに100回アクセス
 for (let i = 0; i < 100; i++) {
   const li = document.createElement('li');
-  li.textContent = \`アイテム\${i}\`;
+  li.textContent = \`アイテム\\x24{i}\`;
   ul.appendChild(li);  // 毎回リフロー発生！
 }
 ```
@@ -2235,7 +2235,7 @@ const fragment = document.createDocumentFragment();
 
 for (let i = 0; i < 100; i++) {
   const li = document.createElement('li');
-  li.textContent = \`アイテム\${i}\`;
+  li.textContent = \`アイテム\\x24{i}\`;
   fragment.appendChild(li);  // メモリ上で処理
 }
 
@@ -2280,10 +2280,10 @@ const renderProducts = (products) => {
     card.className = 'product-card';
 
     card.innerHTML = \`
-      <img src=\"\${product.image}\" alt=\"\${product.name}\">
-      <h3>\${product.name}</h3>
-      <p class=\"price\">¥\${product.price.toLocaleString()}</p>
-      <button class=\"add-to-cart\" data-id=\"\${product.id}\">
+      <img src=\"\\x24{product.image}\" alt=\"\\x24{product.name}\">
+      <h3>\\x24{product.name}</h3>
+      <p class=\"price\">¥\\x24{product.price.toLocaleString()}</p>
+      <button class=\"add-to-cart\" data-id=\"\\x24{product.id}\">
         カートに追加
       </button>
     \`;
@@ -2404,7 +2404,7 @@ paragraphs.forEach((p) => {
 const addListItem = (text) => {
   const li = document.createElement('li');
   li.innerHTML = \`
-    <span>\${text}</span>
+    <span>\\x24{text}</span>
     <button class=\"delete-btn\">削除</button>
   \`;
 
@@ -2524,11 +2524,11 @@ let fieldCount = 1;
 // フィールドを追加
 const addField = () => {
   const newField = template.cloneNode(true);
-  newField.id = \`field-\${fieldCount++}\`;
+  newField.id = \`field-\\x24{fieldCount++}\`;
 
   const input = newField.querySelector('input');
   input.value = '';
-  input.name = \`field\${fieldCount}\`;
+  input.name = \`field\\x24{fieldCount}\`;
 
   const removeBtn = newField.querySelector('.remove-field');
   removeBtn.addEventListener('click', () => {
@@ -2697,8 +2697,8 @@ const renderTodos = () => {
     const li = document.createElement('li');
     li.className = todo.completed ? 'completed' : '';
     li.innerHTML = \`
-      <input type=\"checkbox\" class=\"checkbox\" \${todo.completed ? 'checked' : ''}>
-      <span class=\"todo-text\">\${todo.text}</span>
+      <input type=\"checkbox\" class=\"checkbox\" \\x24{todo.completed ? 'checked' : ''}>
+      <span class=\"todo-text\">\\x24{todo.text}</span>
       <button class=\"delete-btn\">削除</button>
     \`;
     li.dataset.id = todo.id;
@@ -3120,7 +3120,7 @@ const users = JSON.parse(usersJson);
 
 // データを表示
 users.forEach(user => {
-  console.log(\`\${user.name} (\${user.age}歳)\`);
+  console.log(\`\\x24{user.name} (\\x24{user.age}歳)\`);
 });
 
 // フィルタリング
@@ -3223,7 +3223,7 @@ clearTimeout(timerId);
 let count = 0;
 const intervalId = setInterval(() => {
   count++;
-  console.log(`${count}秒経過`);
+  console.log(`\x24{count}秒経過`);
 
   if (count >= 5) {
     clearInterval(intervalId); // 5秒で停止
@@ -3269,7 +3269,7 @@ const intervalId = setInterval(() => {
 function wait(ms) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(`${ms}ミリ秒待ちました`);
+      resolve(`\x24{ms}ミリ秒待ちました`);
     }, ms);
   });
 }
@@ -3293,7 +3293,7 @@ fetch('https://api.example.com/user/1')
   .then(response => response.json())
   .then(user => {
     console.log('ユーザー名:', user.name);
-    return fetch(`https://api.example.com/user/${user.id}/posts`);
+    return fetch(`https://api.example.com/user/\x24{user.id}/posts`);
   })
   .then(response => response.json())
   .then(posts => {
@@ -3376,7 +3376,7 @@ async function loadUserData() {
     const response = await fetch('/api/user/1');
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: \x24{response.status}`);
     }
 
     const user = await response.json();
@@ -3398,8 +3398,8 @@ async function loadUserData() {
 ```javascript
 async function loadAllData() {
   const user = await fetch('/api/user/1').then(r => r.json());
-  const posts = await fetch(`/api/user/${user.id}/posts`).then(r => r.json());
-  const comments = await fetch(`/api/user/${user.id}/comments`).then(r => r.json());
+  const posts = await fetch(`/api/user/\x24{user.id}/posts`).then(r => r.json());
+  const comments = await fetch(`/api/user/\x24{user.id}/comments`).then(r => r.json());
 
   return { user, posts, comments };
 }
@@ -3444,8 +3444,8 @@ async function displayUserPosts() {
       const postEl = document.createElement('div');
       postEl.className = 'post';
       postEl.innerHTML = `
-        <h3>${post.title}</h3>
-        <p>${post.content}</p>
+        <h3>\x24{post.title}</h3>
+        <p>\x24{post.content}</p>
       `;
       postsEl.appendChild(postEl);
     });
@@ -3478,7 +3478,7 @@ async function showCountdown() {
   const messageEl = document.getElementById('message');
 
   for (let i = 3; i > 0; i--) {
-    messageEl.textContent = `${i}秒後に開始...`;
+    messageEl.textContent = `\x24{i}秒後に開始...`;
     await wait(1); // 1秒待つ
   }
 
@@ -3663,7 +3663,7 @@ async function getPosts() {
 
 // 特定の投稿を取得
 async function getPost(id) {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  const response = await fetch(`https://jsonplaceholder.typicode.com/posts/\x24{id}`);
   const post = await response.json();
   console.log('タイトル:', post.title);
   return post;
@@ -3724,9 +3724,9 @@ async function displayPosts() {
       const postEl = document.createElement('div');
       postEl.className = 'post';
       postEl.innerHTML = `
-        <h3>${post.title}</h3>
-        <p>${post.body}</p>
-        <small>User ID: ${post.userId}</small>
+        <h3>\x24{post.title}</h3>
+        <p>\x24{post.body}</p>
+        <small>User ID: \x24{post.userId}</small>
       `;
       postsContainer.appendChild(postEl);
     });
@@ -3772,7 +3772,7 @@ async function fetchWithErrorHandling(url) {
 
     // HTTPエラーのチェック
     if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+      throw new Error(`HTTP Error: \x24{response.status} \x24{response.statusText}`);
     }
 
     return await response.json();
@@ -3789,7 +3789,7 @@ async function fetchWithErrorHandling(url) {
 ```javascript
 async function getUser(id) {
   try {
-    const response = await fetch(`https://api.example.com/users/${id}`);
+    const response = await fetch(`https://api.example.com/users/\x24{id}`);
 
     switch (response.status) {
       case 200:
@@ -3802,7 +3802,7 @@ async function getUser(id) {
         throw new Error('サーバーエラーが発生しました');
 
       default:
-        throw new Error(`予期しないエラー: ${response.status}`);
+        throw new Error(`予期しないエラー: \x24{response.status}`);
     }
 
   } catch (error) {
@@ -3823,13 +3823,13 @@ async function fetchWithRetry(url, options = {}, maxRetries = 3) {
       const response = await fetch(url, options);
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        throw new Error(`HTTP \x24{response.status}`);
       }
 
       return await response.json();
 
     } catch (error) {
-      console.log(`試行 ${i + 1}/${maxRetries} 失敗:`, error.message);
+      console.log(`試行 \x24{i + 1}/\x24{maxRetries} 失敗:`, error.message);
 
       // 最後の試行で失敗したらエラーをスロー
       if (i === maxRetries - 1) {
@@ -3860,7 +3860,7 @@ async function fetchWithTimeout(url, timeout = 5000) {
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+      throw new Error(`HTTP \x24{response.status}`);
     }
 
     return await response.json();
@@ -3892,7 +3892,7 @@ async function loadAndDisplayUsers() {
     const response = await fetch('https://jsonplaceholder.typicode.com/users');
 
     if (!response.ok) {
-      throw new Error(`サーバーエラー (${response.status})`);
+      throw new Error(`サーバーエラー (\x24{response.status})`);
     }
 
     const users = await response.json();
@@ -3906,7 +3906,7 @@ async function loadAndDisplayUsers() {
 
   } catch (error) {
     // エラー表示
-    errorEl.textContent = `エラーが発生しました: ${error.message}`;
+    errorEl.textContent = `エラーが発生しました: \x24{error.message}`;
     errorEl.style.display = 'block';
 
     // リトライボタンを表示
@@ -3931,7 +3931,7 @@ async function loadAndDisplayUsers() {
 
 async function getWeather(city) {
   const API_KEY = 'YOUR_API_KEY'; // 実際のAPIキーに置き換え
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=ja`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=\x24{city}&appid=\x24{API_KEY}&units=metric&lang=ja`;
 
   try {
     const response = await fetch(url);
@@ -3942,7 +3942,7 @@ async function getWeather(city) {
       } else if (response.status === 401) {
         throw new Error('APIキーが無効です');
       } else {
-        throw new Error(`エラー: ${response.status}`);
+        throw new Error(`エラー: \x24{response.status}`);
       }
     }
 
@@ -3953,7 +3953,7 @@ async function getWeather(city) {
 
   } catch (error) {
     document.getElementById('weather').innerHTML =
-      `<p class=\"error\">エラー: ${error.message}</p>`;
+      `<p class=\"error\">エラー: \x24{error.message}</p>`;
   }
 }
 
@@ -3961,11 +3961,11 @@ function displayWeather(data) {
   const weatherEl = document.getElementById('weather');
 
   weatherEl.innerHTML = `
-    <h2>${data.name}の天気</h2>
-    <p>気温: ${data.main.temp}°C</p>
-    <p>天気: ${data.weather[0].description}</p>
-    <p>湿度: ${data.main.humidity}%</p>
-    <p>風速: ${data.wind.speed} m/s</p>
+    <h2>\x24{data.name}の天気</h2>
+    <p>気温: \x24{data.main.temp}°C</p>
+    <p>天気: \x24{data.weather[0].description}</p>
+    <p>湿度: \x24{data.main.humidity}%</p>
+    <p>風速: \x24{data.wind.speed} m/s</p>
   `;
 }
 
@@ -3984,10 +3984,10 @@ async function practiceWithJSONPlaceholder() {
     const users = await usersRes.json();
 
     // 最初のユーザーの投稿を取得
-    const postsRes = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${users[0].id}`);
+    const postsRes = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=\x24{users[0].id}`);
     const posts = await postsRes.json();
 
-    console.log(`${users[0].name}の投稿数: ${posts.length}`);
+    console.log(`\x24{users[0].name}の投稿数: \x24{posts.length}`);
 
   } catch (error) {
     console.error('データ取得エラー:', error);

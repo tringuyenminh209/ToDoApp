@@ -220,7 +220,7 @@ class PhpBasicCourseSeeder extends Seeder
                         'title' => '便利な配列関数',
                         'content' => "# 便利な配列関数\n\n## 情報取得\n- `count(\$array)`: 要素数を取得\n- `sizeof(\$array)`: count()のエイリアス\n- `empty(\$array)`: 空かチェック\n\n## 並べ替え\n- `sort(\$array)`: 昇順ソート（インデックス再割り当て）\n- `rsort(\$array)`: 降順ソート\n- `asort(\$array)`: 値で昇順ソート（キー保持）\n- `ksort(\$array)`: キーで昇順ソート\n- `usort(\$array, callable)`: カスタムソート\n\n## 変換\n- `array_keys(\$array)`: キーの配列を取得\n- `array_values(\$array)`: 値の配列を取得\n- `array_reverse(\$array)`: 逆順にする\n- `implode(', ', \$array)`: 配列を文字列に\n- `explode(', ', \$string)`: 文字列を配列に",
                         'sort_order' => 5
-                    },
+                    ],
                 ],
             ],
             [
@@ -253,33 +253,33 @@ class PhpBasicCourseSeeder extends Seeder
                         'title' => '定数の定義方法',
                         'content' => "# 定数の定義方法\n\n## define()関数\n```php\ndefine('CONSTANT_NAME', 'value');\ndefine('DB_HOST', 'localhost');\ndefine('MAX_SIZE', 1000);\n```\n- 関数なので条件分岐内でも使用可能\n- 大文字小文字を区別しないオプションあり（非推奨）\n\n## constキーワード\n```php\nconst CONSTANT_NAME = 'value';\nconst DB_HOST = 'localhost';\nconst MAX_SIZE = 1000;\n```\n- コンパイル時に評価される\n- クラス内でも使用可能\n- 読みやすい（推奨）\n\n## 定数の使用\n```php\necho CONSTANT_NAME;\necho DB_HOST;\n```\n\n## マジック定数\n- `__FILE__`: 現在のファイルパス\n- `__DIR__`: 現在のディレクトリ\n- `__LINE__`: 現在の行番号\n- `__FUNCTION__`: 現在の関数名\n- `__CLASS__`: 現在のクラス名",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'require vs include',
                         'content' => "# require vs include\n\n## require\n- ファイルが見つからない場合、致命的エラー（Fatal Error）\n- スクリプトが停止する\n- 必須ファイルに使用（設定ファイルなど）\n\n## include\n- ファイルが見つからない場合、警告（Warning）のみ\n- スクリプトは続行される\n- オプショナルなファイルに使用\n\n## require_once / include_once\n- 同じファイルを複数回読み込まない\n- クラス定義や関数定義の重複を防ぐ\n\n```php\nrequire 'config.php';        // 必須\nrequire_once 'functions.php'; // 1回のみ\ninclude 'header.php';        // オプショナル\ninclude_once 'utils.php';    // 1回のみ\n```",
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '$_GETと$_POSTの詳細',
                         'content' => "<?php\n// GETリクエスト（URL: page.php?name=田中&age=25）\n\$name = \$_GET['name'] ?? 'ゲスト';  // Null合体演算子\n\$age = \$_GET['age'] ?? 0;\n\n// POSTリクエスト（フォーム送信）\nif (\$_SERVER['REQUEST_METHOD'] === 'POST') {\n    \$username = \$_POST['username'] ?? '';\n    \$password = \$_POST['password'] ?? '';\n}\n\n// REQUESTスーパーグローバル（GET + POST + COOKIE）\n\$value = \$_REQUEST['key'] ?? '';\n\n// isset()で存在チェック\nif (isset(\$_GET['id'])) {\n    \$id = \$_GET['id'];\n}\n\n// empty()で空チェック\nif (!empty(\$_POST['email'])) {\n    \$email = \$_POST['email'];\n}\n\n// filter_input()でサニタイズ（推奨）\n\$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);\n\$age = filter_input(INPUT_GET, 'age', FILTER_VALIDATE_INT);\n?>",
                         'code_language' => 'php',
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'HTMLフォームの例',
                         'content' => "<!-- GETメソッド -->\n<form action=\"process.php\" method=\"GET\">\n    <input type=\"text\" name=\"search\" placeholder=\"検索\">\n    <button type=\"submit\">検索</button>\n</form>\n\n<!-- POSTメソッド -->\n<form action=\"login.php\" method=\"POST\">\n    <input type=\"text\" name=\"username\" required>\n    <input type=\"password\" name=\"password\" required>\n    <button type=\"submit\">ログイン</button>\n</form>\n\n<!-- 複数の値を送信 -->\n<form action=\"submit.php\" method=\"POST\">\n    <input type=\"checkbox\" name=\"hobbies[]\" value=\"reading\"> 読書<br>\n    <input type=\"checkbox\" name=\"hobbies[]\" value=\"sports\"> スポーツ<br>\n    <select name=\"country\">\n        <option value=\"jp\">日本</option>\n        <option value=\"us\">アメリカ</option>\n    </select>\n    <button type=\"submit\">送信</button>\n</form>",
                         'code_language' => 'html',
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'GETとPOSTの使い分け',
                         'content' => "# GETとPOSTの使い分け\n\n## GETメソッド\n**使用場面：**\n- 検索フォーム\n- フィルタリング\n- ページネーション\n- ブックマーク可能なURL\n\n**特徴：**\n- URLにパラメータが表示される\n- ブラウザ履歴に残る\n- データサイズに制限あり（約2KB）\n- キャッシュされる\n- べき等（何度実行しても同じ結果）\n\n## POSTメソッド\n**使用場面：**\n- ログインフォーム\n- ユーザー登録\n- データの作成・更新・削除\n- ファイルアップロード\n\n**特徴：**\n- URLにパラメータが表示されない\n- セキュアな情報の送信に適している\n- データサイズ制限なし（php.iniで設定可能）\n- キャッシュされない\n- べき等ではない（実行ごとに状態が変わる）",
                         'sort_order' => 6
-                    },
+                    ],
                 ],
             ],
             [
@@ -315,26 +315,26 @@ class PhpBasicCourseSeeder extends Seeder
                         'title' => 'バリデーションのパターン',
                         'content' => "# バリデーションのパターン\n\n## 必須チェック\n```php\nif (empty(\$value)) {\n    \$errors[] = 'この項目は必須です';\n}\n```\n\n## 文字数チェック\n```php\nif (mb_strlen(\$name) < 2 || mb_strlen(\$name) > 50) {\n    \$errors[] = '名前は2〜50文字で入力してください';\n}\n```\n\n## メールアドレス\n```php\nif (!filter_var(\$email, FILTER_VALIDATE_EMAIL)) {\n    \$errors[] = '正しいメールアドレスを入力してください';\n}\n```\n\n## 数値チェック\n```php\nif (!is_numeric(\$age) || \$age < 0 || \$age > 150) {\n    \$errors[] = '正しい年齢を入力してください';\n}\n```\n\n## 正規表現\n```php\n// 電話番号（ハイフンなし）\nif (!preg_match('/^0\\d{9,10}\$/', \$phone)) {\n    \$errors[] = '正しい電話番号を入力してください';\n}\n\n// パスワード（8文字以上、英数字含む）\nif (!preg_match('/^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}\$/', \$password)) {\n    \$errors[] = 'パスワードは8文字以上の英数字で入力してください';\n}\n```",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'XSS（クロスサイトスクリプティング）対策',
                         'content' => "# XSS対策\n\n## htmlspecialchars()の使用\n```php\n\$safe = htmlspecialchars(\$input, ENT_QUOTES, 'UTF-8');\n```\n\n**変換される文字：**\n- `&` → `&amp;`\n- `\"` → `&quot;`\n- `'` → `&#039;`\n- `<` → `&lt;`\n- `>` → `&gt;`\n\n## ENT_QUOTESフラグ\n- ダブルクォートとシングルクォートの両方をエスケープ\n- 必ず指定すること\n\n## UTF-8エンコーディング\n- 第3引数で文字エンコーディングを指定\n- 省略すると予期しない動作の可能性\n\n## 使用タイミング\n- **入力時ではなく出力時**にエスケープ\n- データベースには元の値を保存\n- HTMLに出力する直前にエスケープ",
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '完全なフォーム処理の例',
                         'content' => "<?php\n// フォーム処理\n\$errors = [];\n\$name = '';\n\$email = '';\n\$age = '';\n\nif (\$_SERVER['REQUEST_METHOD'] === 'POST') {\n    // 入力値の取得\n    \$name = trim(\$_POST['name'] ?? '');\n    \$email = trim(\$_POST['email'] ?? '');\n    \$age = trim(\$_POST['age'] ?? '');\n    \n    // バリデーション\n    if (empty(\$name)) {\n        \$errors['name'] = '名前を入力してください';\n    } elseif (mb_strlen(\$name) > 50) {\n        \$errors['name'] = '名前は50文字以内で入力してください';\n    }\n    \n    if (empty(\$email)) {\n        \$errors['email'] = 'メールアドレスを入力してください';\n    } elseif (!filter_var(\$email, FILTER_VALIDATE_EMAIL)) {\n        \$errors['email'] = '正しいメールアドレスを入力してください';\n    }\n    \n    if (empty(\$age)) {\n        \$errors['age'] = '年齢を入力してください';\n    } elseif (!is_numeric(\$age) || \$age < 0 || \$age > 150) {\n        \$errors['age'] = '正しい年齢を入力してください';\n    }\n    \n    // エラーがなければ処理実行\n    if (empty(\$errors)) {\n        // データベースへの保存など\n        header('Location: success.php');\n        exit;\n    }\n}\n?>\n\n<!-- HTMLフォーム -->\n<form method=\"POST\">\n    <div>\n        <label>名前:</label>\n        <input type=\"text\" name=\"name\" value=\"<?= htmlspecialchars(\$name, ENT_QUOTES, 'UTF-8') ?>\">\n        <?php if (isset(\$errors['name'])): ?>\n            <span class=\"error\"><?= htmlspecialchars(\$errors['name'], ENT_QUOTES, 'UTF-8') ?></span>\n        <?php endif; ?>\n    </div>\n    \n    <div>\n        <label>メールアドレス:</label>\n        <input type=\"email\" name=\"email\" value=\"<?= htmlspecialchars(\$email, ENT_QUOTES, 'UTF-8') ?>\">\n        <?php if (isset(\$errors['email'])): ?>\n            <span class=\"error\"><?= htmlspecialchars(\$errors['email'], ENT_QUOTES, 'UTF-8') ?></span>\n        <?php endif; ?>\n    </div>\n    \n    <button type=\"submit\">送信</button>\n</form>",
                         'code_language' => 'php',
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'セキュリティのベストプラクティス',
                         'content' => "# セキュリティのベストプラクティス\n\n## 1. 入力値の検証\n- **ホワイトリスト方式**を採用\n- 期待される値のみを受け入れる\n- サーバー側で必ず検証（クライアント側だけでは不十分）\n\n## 2. XSS対策\n- 出力時に `htmlspecialchars()` を使用\n- `ENT_QUOTES` フラグを指定\n- UTF-8エンコーディングを明示\n\n## 3. CSRF対策\n- トークンを生成してフォームに埋め込む\n- 送信時にトークンを検証\n\n## 4. SQLインジェクション対策\n- プリペアドステートメントを使用\n- 直接SQLに値を埋め込まない\n\n## 5. パスワードのハッシュ化\n- `password_hash()` を使用\n- `password_verify()` で検証\n\n## 6. HTTPSの使用\n- 機密情報の送信時は必須\n- Cookie に secure フラグを設定",
                         'sort_order' => 5
-                    },
+                    ],
                 ],
             ],
         ]);
@@ -385,7 +385,7 @@ class PhpBasicCourseSeeder extends Seeder
                         'title' => '$_FILES配列の構造',
                         'content' => "# \$_FILES配列の構造\n\nアップロードされたファイルは `\$_FILES` スーパーグローバル変数に格納されます。\n\n## \$_FILES['fieldname']の要素\n- **name**: 元のファイル名\n- **type**: MIMEタイプ（例: image/jpeg）\n- **tmp_name**: サーバー上の一時ファイルパス\n- **error**: エラーコード（0なら成功）\n- **size**: ファイルサイズ（バイト単位）\n\n## エラーコード\n- `UPLOAD_ERR_OK (0)`: 成功\n- `UPLOAD_ERR_INI_SIZE (1)`: php.iniのupload_max_filesizeを超過\n- `UPLOAD_ERR_FORM_SIZE (2)`: HTMLフォームのMAX_FILE_SIZEを超過\n- `UPLOAD_ERR_PARTIAL (3)`: 一部のみアップロード\n- `UPLOAD_ERR_NO_FILE (4)`: ファイルが選択されていない\n- `UPLOAD_ERR_NO_TMP_DIR (6)`: 一時フォルダがない\n- `UPLOAD_ERR_CANT_WRITE (7)`: ディスクへの書き込み失敗",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'セキュアなファイルアップロード',
@@ -399,20 +399,20 @@ class PhpBasicCourseSeeder extends Seeder
                         'content' => "<!-- enctype=\"multipart/form-data\" が必須 -->\n<form action=\"upload.php\" method=\"POST\" enctype=\"multipart/form-data\">\n    <!-- 最大ファイルサイズ（バイト単位）をHTMLで指定（任意） -->\n    <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"5242880\">\n    \n    <label for=\"image\">画像を選択:</label>\n    <input type=\"file\" name=\"image\" id=\"image\" accept=\"image/*\" required>\n    \n    <button type=\"submit\">アップロード</button>\n</form>\n\n<!-- 複数ファイルのアップロード -->\n<form action=\"upload_multi.php\" method=\"POST\" enctype=\"multipart/form-data\">\n    <input type=\"file\" name=\"images[]\" multiple accept=\"image/*\">\n    <button type=\"submit\">アップロード</button>\n</form>",
                         'code_language' => 'html',
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'ファイルアップロードのセキュリティ',
                         'content' => "# ファイルアップロードのセキュリティ\n\n## 1. ファイルタイプの検証\n- **拡張子だけでなくMIMEタイプも確認**\n- `finfo_file()` を使用して実際のファイルタイプを取得\n- ホワイトリスト方式で許可する形式を限定\n\n## 2. ファイルサイズの制限\n- `\$_FILES['file']['size']` でサイズチェック\n- php.iniの `upload_max_filesize` と `post_max_size` も設定\n\n## 3. ファイル名の処理\n- **元のファイル名をそのまま使わない**\n- ユニークな名前を生成（`uniqid()`, `time()` など）\n- パストラバーサル攻撃を防ぐ\n\n## 4. アップロード先の設定\n- Webルート外に保存（推奨）\n- または `.htaccess` でPHP実行を無効化\n- ディレクトリのパーミッション設定（0755など）\n\n## 5. 実行可能ファイルの防止\n- `.php`, `.exe`, `.sh` などの実行可能ファイルを拒否\n- ダブル拡張子（`.php.jpg`）に注意\n\n## php.ini設定\n```ini\nfile_uploads = On\nupload_max_filesize = 5M\npost_max_size = 8M\nmax_file_uploads = 20\n```",
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '画像のリサイズと表示',
                         'content' => "<?php\n// 画像のリサイズ（GDライブラリ使用）\nfunction resizeImage(\$sourcePath, \$targetPath, \$maxWidth, \$maxHeight) {\n    list(\$width, \$height, \$type) = getimagesize(\$sourcePath);\n    \n    // 元画像の読み込み\n    switch (\$type) {\n        case IMAGETYPE_JPEG:\n            \$source = imagecreatefromjpeg(\$sourcePath);\n            break;\n        case IMAGETYPE_PNG:\n            \$source = imagecreatefrompng(\$sourcePath);\n            break;\n        case IMAGETYPE_GIF:\n            \$source = imagecreatefromgif(\$sourcePath);\n            break;\n        default:\n            return false;\n    }\n    \n    // アスペクト比を保持してリサイズ\n    \$ratio = min(\$maxWidth / \$width, \$maxHeight / \$height);\n    \$newWidth = (int)(\$width * \$ratio);\n    \$newHeight = (int)(\$height * \$ratio);\n    \n    // 新しい画像を作成\n    \$resized = imagecreatetruecolor(\$newWidth, \$newHeight);\n    imagecopyresampled(\$resized, \$source, 0, 0, 0, 0, \$newWidth, \$newHeight, \$width, \$height);\n    \n    // 保存\n    imagejpeg(\$resized, \$targetPath, 90);\n    \n    // メモリ解放\n    imagedestroy(\$source);\n    imagedestroy(\$resized);\n    \n    return true;\n}\n\n// 使用例\n\$uploadedFile = \$_FILES['image']['tmp_name'];\n\$targetPath = 'uploads/resized_' . uniqid() . '.jpg';\nresizeImage(\$uploadedFile, \$targetPath, 800, 600);\n?>\n\n<!-- 画像の表示 -->\n<img src=\"<?= htmlspecialchars(\$targetPath, ENT_QUOTES, 'UTF-8') ?>\" alt=\"アップロードされた画像\">",
                         'code_language' => 'php',
                         'sort_order' => 6
-                    },
+                    ],
                 ],
             ],
             [
@@ -450,14 +450,14 @@ class PhpBasicCourseSeeder extends Seeder
                         'title' => 'クッキーとセッションの違い',
                         'content' => "# クッキーとセッションの違い\n\n## クッキー（Cookie）\n**保存場所:** クライアント側（ブラウザ）\n**容量制限:** 約4KB\n**有効期限:** 設定可能（長期保存可能）\n**セキュリティ:** 低い（ユーザーが閲覧・改ざん可能）\n**用途例:**\n- ログイン状態の記憶\n- ユーザー設定の保存\n- トラッキング\n\n## セッション（Session）\n**保存場所:** サーバー側\n**容量制限:** なし（サーバーのメモリ次第）\n**有効期限:** ブラウザを閉じるまで（デフォルト）\n**セキュリティ:** 高い（サーバー側で管理）\n**用途例:**\n- ログイン認証\n- ショッピングカート\n- フォームの一時データ\n\n## 組み合わせ\nセッションIDはクッキーに保存され、実際のデータはサーバーに保存される仕組み",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'クッキーの詳細な使い方',
                         'content' => "<?php\n// クッキーの設定（基本）\nsetcookie('username', '田中', time() + 86400); // 24時間有効\n\n// クッキーの設定（詳細）\nsetcookie(\n    'user_pref',           // 名前\n    'dark_mode',           // 値\n    time() + 86400 * 30,   // 有効期限（30日）\n    '/',                   // パス（サイト全体）\n    '',                    // ドメイン\n    true,                  // HTTPS接続のみ（secure）\n    true                   // JavaScriptからアクセス不可（httponly）\n);\n\n// PHP 7.3以降の配列構文（推奨）\nsetcookie('token', 'abc123', [\n    'expires' => time() + 3600,\n    'path' => '/',\n    'domain' => '',\n    'secure' => true,\n    'httponly' => true,\n    'samesite' => 'Strict'  // CSRF対策\n]);\n\n// クッキーの取得\nif (isset(\$_COOKIE['username'])) {\n    \$username = \$_COOKIE['username'];\n}\n\n// クッキーの削除（有効期限を過去に設定）\nsetcookie('username', '', time() - 3600);\n\n// 全クッキーの確認\nprint_r(\$_COOKIE);\n?>",
                         'code_language' => 'php',
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'セッションの完全な使い方',
@@ -471,13 +471,13 @@ class PhpBasicCourseSeeder extends Seeder
                         'content' => "<?php\n// login.php\nsession_start();\n\n\$error = '';\n\nif (\$_SERVER['REQUEST_METHOD'] === 'POST') {\n    \$username = \$_POST['username'] ?? '';\n    \$password = \$_POST['password'] ?? '';\n    \n    // データベースからユーザー情報を取得（例）\n    \$pdo = new PDO('mysql:host=localhost;dbname=mydb', 'user', 'pass');\n    \$stmt = \$pdo->prepare('SELECT id, username, password FROM users WHERE username = :username');\n    \$stmt->execute(['username' => \$username]);\n    \$user = \$stmt->fetch(PDO::FETCH_ASSOC);\n    \n    // パスワード検証\n    if (\$user && password_verify(\$password, \$user['password'])) {\n        // セッション固定攻撃対策\n        session_regenerate_id(true);\n        \n        // セッションに保存\n        \$_SESSION['user_id'] = \$user['id'];\n        \$_SESSION['username'] = \$user['username'];\n        \$_SESSION['logged_in'] = true;\n        \$_SESSION['last_activity'] = time();\n        \n        // 「ログイン状態を保持」オプション\n        if (isset(\$_POST['remember'])) {\n            \$token = bin2hex(random_bytes(32));\n            setcookie('remember_token', \$token, time() + 86400 * 30, '/', '', true, true);\n            // トークンをDBに保存\n        }\n        \n        header('Location: dashboard.php');\n        exit;\n    } else {\n        \$error = 'ユーザー名またはパスワードが正しくありません';\n    }\n}\n?>\n\n<!-- ログインフォーム -->\n<form method=\"POST\">\n    <input type=\"text\" name=\"username\" required>\n    <input type=\"password\" name=\"password\" required>\n    <label>\n        <input type=\"checkbox\" name=\"remember\"> ログイン状態を保持\n    </label>\n    <button type=\"submit\">ログイン</button>\n    <?php if (\$error): ?>\n        <p class=\"error\"><?= htmlspecialchars(\$error, ENT_QUOTES, 'UTF-8') ?></p>\n    <?php endif; ?>\n</form>\n\n<?php\n// logout.php\nsession_start();\n\$_SESSION = [];\nif (isset(\$_COOKIE[session_name()])) {\n    setcookie(session_name(), '', time() - 3600, '/');\n}\nif (isset(\$_COOKIE['remember_token'])) {\n    setcookie('remember_token', '', time() - 3600, '/');\n}\nsession_destroy();\nheader('Location: login.php');\nexit;\n\n// auth_check.php（インクルードファイル）\nsession_start();\nif (!isset(\$_SESSION['logged_in']) || \$_SESSION['logged_in'] !== true) {\n    header('Location: login.php');\n    exit;\n}\n?>",
                         'code_language' => 'php',
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'セッションのセキュリティ対策',
                         'content' => "# セッションのセキュリティ対策\n\n## 1. セッション固定攻撃対策\n```php\n// ログイン成功時にセッションIDを再生成\nsession_regenerate_id(true);\n```\n\n## 2. セッションハイジャック対策\n- **HTTPSを使用**（必須）\n- `session.cookie_secure = 1` を設定\n- `session.cookie_httponly = 1` を設定\n- IPアドレスやUser-Agentのチェック\n\n## 3. CSRF対策\n```php\n// トークン生成\n\$_SESSION['csrf_token'] = bin2hex(random_bytes(32));\n\n// フォームに埋め込み\necho '<input type=\"hidden\" name=\"csrf_token\" value=\"' . \$_SESSION['csrf_token'] . '\">';\n\n// 検証\nif (\$_POST['csrf_token'] !== \$_SESSION['csrf_token']) {\n    die('不正なリクエストです');\n}\n```\n\n## 4. タイムアウト設定\n- 一定時間操作がない場合は自動ログアウト\n- `\$_SESSION['last_activity']` で最終アクセス時刻を記録\n\n## 5. パスワードのハッシュ化\n```php\n// ハッシュ化\n\$hash = password_hash(\$password, PASSWORD_DEFAULT);\n\n// 検証\npassword_verify(\$inputPassword, \$hash);\n```\n\n## 6. セッション設定（php.ini）\n```ini\nsession.cookie_httponly = 1\nsession.cookie_secure = 1\nsession.use_strict_mode = 1\nsession.cookie_samesite = Strict\nsession.gc_maxlifetime = 1800\n```",
                         'sort_order' => 6
-                    },
+                    ],
                 ],
             ],
         ]);
@@ -540,7 +540,7 @@ class PhpBasicCourseSeeder extends Seeder
                         'title' => 'フェッチモードの種類',
                         'content' => "# フェッチモードの種類\n\n## PDO::FETCH_ASSOC\n連想配列として取得（カラム名がキー）\n```php\n['id' => 1, 'name' => '田中']\n```\n\n## PDO::FETCH_NUM\n数値添字配列として取得\n```php\n[0 => 1, 1 => '田中']\n```\n\n## PDO::FETCH_BOTH（デフォルト）\n連想配列と数値添字配列の両方\n```php\n['id' => 1, 0 => 1, 'name' => '田中', 1 => '田中']\n```\n\n## PDO::FETCH_OBJ\nオブジェクトとして取得\n```php\nobject { id = 1, name = '田中' }\n```\n\n## PDO::FETCH_CLASS\n指定したクラスのインスタンスとして取得\n\n推奨: **PDO::FETCH_ASSOC**（わかりやすく、メモリ効率が良い）",
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '様々なSELECT文',
@@ -586,7 +586,7 @@ class PhpBasicCourseSeeder extends Seeder
                         'title' => 'SQLインジェクションとは？',
                         'content' => "# SQLインジェクション攻撃\n\n## 危険なコード例\n```php\n// 絶対にやってはいけない！\n\$id = \$_GET['id'];\n\$sql = \"SELECT * FROM users WHERE id = '\$id'\";\n\$result = \$pdo->query(\$sql);\n```\n\n攻撃例: `?id=1' OR '1'='1`\n実行されるSQL: `SELECT * FROM users WHERE id = '1' OR '1'='1'`\n→ すべてのユーザー情報が取得される\n\n## 安全なコード（プリペアドステートメント）\n```php\n\$stmt = \$pdo->prepare('SELECT * FROM users WHERE id = :id');\n\$stmt->execute(['id' => \$_GET['id']]);\n```\n\nプレースホルダー（:id）を使用することで、値とSQLが分離され、SQLインジェクションを防げる。",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'プレースホルダーの種類',
@@ -599,7 +599,7 @@ class PhpBasicCourseSeeder extends Seeder
                         'title' => 'プレースホルダーの制限',
                         'content' => "# プレースホルダーで使えないもの\n\nプレースホルダーは**値**のみに使用可能です。以下は使用できません：\n\n## 使用できない例\n\n### テーブル名\n```php\n// NG\n\$stmt = \$pdo->prepare('SELECT * FROM :table');\n```\n\n### カラム名\n```php\n// NG\n\$stmt = \$pdo->prepare('SELECT :column FROM users');\n```\n\n### SQL構文\n```php\n// NG\n\$stmt = \$pdo->prepare('SELECT * FROM users :order');\n```\n\n## 対処方法\nテーブル名やカラム名を動的にする必要がある場合は、**ホワイトリスト方式**で検証：\n\n```php\n\$allowedColumns = ['name', 'email', 'created_at'];\n\$column = \$_GET['sort'] ?? 'id';\n\nif (!in_array(\$column, \$allowedColumns)) {\n    \$column = 'id';  // デフォルト値\n}\n\n\$stmt = \$pdo->query(\"SELECT * FROM users ORDER BY \$column\");\n```",
                         'sort_order' => 4
-                    },
+                    ],
                 ],
             ],
             [
@@ -642,13 +642,13 @@ class PhpBasicCourseSeeder extends Seeder
                         'content' => "<?php\n\$pdo = new PDO('mysql:host=localhost;dbname=mydb', 'user', 'pass');\n\n// 複数行を一度にINSERT（効率的）\n\$sql = 'INSERT INTO users (name, email) VALUES \n        (:name1, :email1),\n        (:name2, :email2),\n        (:name3, :email3)';\n\$stmt = \$pdo->prepare(\$sql);\n\$stmt->execute([\n    'name1' => '田中', 'email1' => 'tanaka@example.com',\n    'name2' => '佐藤', 'email2' => 'sato@example.com',\n    'name3' => '鈴木', 'email3' => 'suzuki@example.com'\n]);\n\n// ループでINSERT（トランザクション使用）\n\$users = [\n    ['name' => '田中', 'email' => 'tanaka@example.com'],\n    ['name' => '佐藤', 'email' => 'sato@example.com'],\n    ['name' => '鈴木', 'email' => 'suzuki@example.com']\n];\n\ntry {\n    \$pdo->beginTransaction();\n    \n    \$stmt = \$pdo->prepare('INSERT INTO users (name, email) VALUES (:name, :email)');\n    \n    foreach (\$users as \$user) {\n        \$stmt->execute(\$user);\n    }\n    \n    \$pdo->commit();\n    echo '全データの登録が完了しました';\n} catch (PDOException \$e) {\n    \$pdo->rollBack();\n    echo '登録に失敗しました: ' . \$e->getMessage();\n}\n?>",
                         'code_language' => 'php',
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'lastInsertId()とrowCount()',
                         'content' => "# 便利なPDOメソッド\n\n## lastInsertId()\nAUTO_INCREMENTで生成された最後のIDを取得\n\n```php\n\$stmt->execute(['name' => '田中']);\n\$id = \$pdo->lastInsertId();\necho \"挿入されたID: \$id\";\n```\n\n## rowCount()\n影響を受けた行数を取得（INSERT, UPDATE, DELETE）\n\n```php\n\$stmt = \$pdo->prepare('INSERT INTO users (name) VALUES (:name)');\n\$stmt->execute(['name' => '田中']);\n\$count = \$stmt->rowCount();\necho \"\$count 件挿入されました\";\n```\n\n**注意:** SELECT文でのrowCount()は推奨されません。COUNT(*)を使用してください。",
                         'sort_order' => 4
-                    },
+                    ],
                 ],
             ],
         ]);
@@ -707,14 +707,14 @@ class PhpBasicCourseSeeder extends Seeder
                         'title' => 'トランザクションとは？',
                         'content' => "# トランザクション処理\n\n## 概要\nトランザクションは、複数のSQL文を1つの処理単位としてまとめる仕組みです。\n\n## ACID特性\n- **Atomicity（原子性）**: 全て成功 or 全て失敗\n- **Consistency（一貫性）**: データの整合性を保つ\n- **Isolation（独立性）**: 他の処理と独立\n- **Durability（永続性）**: 完了後はデータが永続\n\n## 使用例\n- 銀行の送金処理（引き落としと入金は両方成功する必要がある）\n- ECサイトの注文処理（在庫減少と注文登録）\n- ユーザー登録（usersテーブルとprofilesテーブル）\n\n## 基本構文\n```php\n\$pdo->beginTransaction();  // 開始\ntry {\n    // SQL処理\n    \$pdo->commit();  // 確定\n} catch (Exception \$e) {\n    \$pdo->rollBack();  // 取り消し\n}\n```",
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'DELETE文の実践例',
                         'content' => "<?php\n\$pdo = new PDO('mysql:host=localhost;dbname=mydb', 'user', 'pass');\n\n// 単一レコードの削除\n\$stmt = \$pdo->prepare('DELETE FROM users WHERE id = :id');\n\$stmt->execute(['id' => 1]);\necho \$stmt->rowCount() . '件削除しました';\n\n// 複数レコードの削除\n\$stmt = \$pdo->prepare('DELETE FROM users WHERE age < :age');\n\$stmt->execute(['age' => 18]);\n\n// 論理削除（実際には削除せず、フラグを立てる）\n\$stmt = \$pdo->prepare('UPDATE users SET deleted_at = NOW() WHERE id = :id');\n\$stmt->execute(['id' => 1]);\n\n// 削除確認付き\nif (\$_SERVER['REQUEST_METHOD'] === 'POST') {\n    \$id = \$_POST['id'] ?? 0;\n    \$confirm = \$_POST['confirm'] ?? '';\n    \n    if (\$confirm === 'yes') {\n        try {\n            \$pdo->beginTransaction();\n            \n            // 関連データも削除（外部キー制約がない場合）\n            \$stmt = \$pdo->prepare('DELETE FROM user_profiles WHERE user_id = :id');\n            \$stmt->execute(['id' => \$id]);\n            \n            \$stmt = \$pdo->prepare('DELETE FROM users WHERE id = :id');\n            \$stmt->execute(['id' => \$id]);\n            \n            \$pdo->commit();\n            echo '削除しました';\n        } catch (PDOException \$e) {\n            \$pdo->rollBack();\n            echo '削除に失敗しました';\n        }\n    }\n}\n?>",
                         'code_language' => 'php',
                         'sort_order' => 4
-                    },
+                    ],
                 ],
             ],
             [
@@ -756,7 +756,7 @@ class PhpBasicCourseSeeder extends Seeder
                         'content' => "<?php\n\$jsonString = '{\"name\":\"田中\",\"age\":25,\"hobbies\":[\"読書\",\"スポーツ\"]}';\n\n// 連想配列として取得（推奨）\n\$data = json_decode(\$jsonString, true);\necho \$data['name'];      // 田中\necho \$data['age'];       // 25\necho \$data['hobbies'][0]; // 読書\n\n// オブジェクトとして取得\n\$data = json_decode(\$jsonString);\necho \$data->name;        // 田中\necho \$data->age;         // 25\necho \$data->hobbies[0];  // 読書\n\n// エラーハンドリング\n\$invalidJson = '{name: \"田中\"}';\n\$data = json_decode(\$invalidJson, true);\n\nif (json_last_error() !== JSON_ERROR_NONE) {\n    echo 'JSONデコードエラー: ' . json_last_error_msg();\n    // Syntax error など\n}\n\n// POSTリクエストのJSON解析\n\$input = file_get_contents('php://input');\n\$data = json_decode(\$input, true);\n\nif (json_last_error() === JSON_ERROR_NONE) {\n    // JSONが正常に解析された\n    \$name = \$data['name'] ?? '';\n    \$email = \$data['email'] ?? '';\n} else {\n    // エラー処理\n    http_response_code(400);\n    echo json_encode(['error' => 'Invalid JSON']);\n}\n?>",
                         'code_language' => 'php',
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'データベースとJSON',
@@ -769,7 +769,7 @@ class PhpBasicCourseSeeder extends Seeder
                         'title' => 'JSONのベストプラクティス',
                         'content' => "# JSONのベストプラクティス\n\n## 1. Content-Typeヘッダーを設定\n```php\nheader('Content-Type: application/json; charset=utf-8');\n```\n\n## 2. 日本語をエスケープしない\n```php\njson_encode(\$data, JSON_UNESCAPED_UNICODE);\n```\n\n## 3. エラーハンドリング\n```php\nif (json_last_error() !== JSON_ERROR_NONE) {\n    // エラー処理\n}\n```\n\n## 4. HTTPステータスコードを適切に設定\n- 200: 成功\n- 201: 作成成功\n- 400: リクエストエラー\n- 404: 見つからない\n- 500: サーバーエラー\n\n## 5. 統一されたレスポンス形式\n```php\n[\n    'success' => true/false,\n    'data' => [...],\n    'error' => 'エラーメッセージ'\n]\n```\n\n## 6. CORSヘッダー（必要に応じて）\n```php\nheader('Access-Control-Allow-Origin: *');\n```",
                         'sort_order' => 5
-                    },
+                    ],
                 ],
             ],
         ]);
@@ -828,26 +828,26 @@ class PhpBasicCourseSeeder extends Seeder
                         'content' => "<?php\n// api/users.php\nheader('Content-Type: application/json; charset=utf-8');\nheader('Access-Control-Allow-Origin: *');\nheader('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');\nheader('Access-Control-Allow-Headers: Content-Type');\n\n// OPTIONSリクエストへの対応（CORS preflight）\nif (\$_SERVER['REQUEST_METHOD'] === 'OPTIONS') {\n    http_response_code(200);\n    exit;\n}\n\ntry {\n    \$pdo = new PDO(\n        'mysql:host=localhost;dbname=mydb;charset=utf8mb4',\n        'user',\n        'pass',\n        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]\n    );\n    \n    \$method = \$_SERVER['REQUEST_METHOD'];\n    \$path = \$_SERVER['PATH_INFO'] ?? '/';\n    \$segments = explode('/', trim(\$path, '/'));\n    \$id = \$segments[0] ?? null;\n    \n    switch (\$method) {\n        case 'GET':\n            if (\$id) {\n                // 1件取得\n                \$stmt = \$pdo->prepare('SELECT * FROM users WHERE id = :id');\n                \$stmt->execute(['id' => \$id]);\n                \$user = \$stmt->fetch(PDO::FETCH_ASSOC);\n                \n                if (\$user) {\n                    echo json_encode(['success' => true, 'data' => \$user], JSON_UNESCAPED_UNICODE);\n                } else {\n                    http_response_code(404);\n                    echo json_encode(['success' => false, 'error' => 'User not found']);\n                }\n            } else {\n                // 全件取得\n                \$stmt = \$pdo->query('SELECT * FROM users ORDER BY id DESC');\n                \$users = \$stmt->fetchAll(PDO::FETCH_ASSOC);\n                echo json_encode(['success' => true, 'data' => \$users], JSON_UNESCAPED_UNICODE);\n            }\n            break;\n        \n        case 'POST':\n            // 新規作成\n            \$input = json_decode(file_get_contents('php://input'), true);\n            \n            if (!isset(\$input['name']) || !isset(\$input['email'])) {\n                http_response_code(400);\n                echo json_encode(['success' => false, 'error' => 'Name and email are required']);\n                exit;\n            }\n            \n            \$stmt = \$pdo->prepare('INSERT INTO users (name, email) VALUES (:name, :email)');\n            \$stmt->execute([\n                'name' => \$input['name'],\n                'email' => \$input['email']\n            ]);\n            \n            http_response_code(201);\n            echo json_encode([\n                'success' => true,\n                'data' => ['id' => \$pdo->lastInsertId()]\n            ]);\n            break;\n        \n        case 'PUT':\n        case 'PATCH':\n            // 更新\n            if (!\$id) {\n                http_response_code(400);\n                echo json_encode(['success' => false, 'error' => 'ID is required']);\n                exit;\n            }\n            \n            \$input = json_decode(file_get_contents('php://input'), true);\n            \n            \$stmt = \$pdo->prepare('UPDATE users SET name = :name, email = :email WHERE id = :id');\n            \$stmt->execute([\n                'name' => \$input['name'],\n                'email' => \$input['email'],\n                'id' => \$id\n            ]);\n            \n            echo json_encode(['success' => true, 'message' => 'User updated']);\n            break;\n        \n        case 'DELETE':\n            // 削除\n            if (!\$id) {\n                http_response_code(400);\n                echo json_encode(['success' => false, 'error' => 'ID is required']);\n                exit;\n            }\n            \n            \$stmt = \$pdo->prepare('DELETE FROM users WHERE id = :id');\n            \$stmt->execute(['id' => \$id]);\n            \n            echo json_encode(['success' => true, 'message' => 'User deleted']);\n            break;\n        \n        default:\n            http_response_code(405);\n            echo json_encode(['success' => false, 'error' => 'Method not allowed']);\n    }\n    \n} catch (PDOException \$e) {\n    http_response_code(500);\n    echo json_encode(['success' => false, 'error' => 'Database error']);\n    error_log(\$e->getMessage());\n}\n?>",
                         'code_language' => 'php',
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'HTTPメソッドとステータスコード',
                         'content' => "# HTTPメソッド\n\n## GET\n- リソースの取得\n- `/api/users` - 全ユーザー取得\n- `/api/users/1` - ID=1のユーザー取得\n\n## POST\n- 新規リソースの作成\n- `/api/users` - 新規ユーザー作成\n\n## PUT / PATCH\n- リソースの更新\n- PUT: 完全な更新\n- PATCH: 部分的な更新\n- `/api/users/1` - ID=1のユーザー更新\n\n## DELETE\n- リソースの削除\n- `/api/users/1` - ID=1のユーザー削除\n\n# HTTPステータスコード\n\n## 2xx 成功\n- **200 OK**: 成功\n- **201 Created**: 作成成功\n- **204 No Content**: 成功（レスポンスなし）\n\n## 4xx クライアントエラー\n- **400 Bad Request**: リクエストエラー\n- **401 Unauthorized**: 認証エラー\n- **403 Forbidden**: 権限エラー\n- **404 Not Found**: リソースが見つからない\n- **405 Method Not Allowed**: メソッドが許可されていない\n\n## 5xx サーバーエラー\n- **500 Internal Server Error**: サーバーエラー\n- **503 Service Unavailable**: サービス利用不可",
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'JavaScriptからAPIを呼び出す',
                         'content' => "// GET - 全件取得\nfetch('http://localhost/api/users.php')\n    .then(response => response.json())\n    .then(data => {\n        console.log(data);\n        if (data.success) {\n            displayUsers(data.data);\n        }\n    })\n    .catch(error => console.error('Error:', error));\n\n// GET - 1件取得\nfetch('http://localhost/api/users.php/1')\n    .then(response => response.json())\n    .then(data => console.log(data));\n\n// POST - 新規作成\nfetch('http://localhost/api/users.php', {\n    method: 'POST',\n    headers: {\n        'Content-Type': 'application/json',\n    },\n    body: JSON.stringify({\n        name: '田中太郎',\n        email: 'tanaka@example.com'\n    })\n})\n.then(response => response.json())\n.then(data => {\n    if (data.success) {\n        console.log('ユーザー作成成功:', data.data.id);\n    }\n});\n\n// PUT - 更新\nfetch('http://localhost/api/users.php/1', {\n    method: 'PUT',\n    headers: {\n        'Content-Type': 'application/json',\n    },\n    body: JSON.stringify({\n        name: '新田中',\n        email: 'newtanaka@example.com'\n    })\n})\n.then(response => response.json())\n.then(data => console.log(data));\n\n// DELETE - 削除\nfetch('http://localhost/api/users.php/1', {\n    method: 'DELETE'\n})\n.then(response => response.json())\n.then(data => console.log(data));\n\n// async/await版\nasync function getUsers() {\n    try {\n        const response = await fetch('http://localhost/api/users.php');\n        const data = await response.json();\n        \n        if (data.success) {\n            return data.data;\n        } else {\n            throw new Error(data.error);\n        }\n    } catch (error) {\n        console.error('エラー:', error);\n    }\n}",
                         'code_language' => 'javascript',
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'API開発のセキュリティ',
                         'content' => "# API開発のセキュリティ\n\n## 1. 認証・認可\n```php\n// JWTトークン検証\n\$headers = getallheaders();\n\$token = \$headers['Authorization'] ?? '';\n\nif (!\$token || !validateToken(\$token)) {\n    http_response_code(401);\n    echo json_encode(['error' => 'Unauthorized']);\n    exit;\n}\n```\n\n## 2. レート制限\n- 同一IPからのリクエスト数を制限\n- DoS攻撃の防止\n\n## 3. 入力値の検証\n```php\n\$input = json_decode(file_get_contents('php://input'), true);\n\nif (!isset(\$input['email']) || !filter_var(\$input['email'], FILTER_VALIDATE_EMAIL)) {\n    http_response_code(400);\n    echo json_encode(['error' => 'Invalid email']);\n    exit;\n}\n```\n\n## 4. SQLインジェクション対策\n- プリペアドステートメントを必ず使用\n\n## 5. XSS対策\n- APIはJSONを返すので基本的に不要\n- HTMLを返す場合は htmlspecialchars() を使用\n\n## 6. CORS設定\n```php\n// 特定のオリジンのみ許可\n\$allowedOrigins = ['https://example.com'];\n\$origin = \$_SERVER['HTTP_ORIGIN'] ?? '';\n\nif (in_array(\$origin, \$allowedOrigins)) {\n    header('Access-Control-Allow-Origin: ' . \$origin);\n}\n```\n\n## 7. HTTPSの使用\n- 本番環境では必ずHTTPSを使用",
                         'sort_order' => 6
-                    },
+                    ],
                 ],
             ],
         ]);
