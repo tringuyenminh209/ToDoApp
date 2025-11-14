@@ -1,12 +1,16 @@
 package ecccomp.s2240788.mobile_android.ui.fragments
 
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.SeekBar
 import androidx.fragment.app.viewModels
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.data.models.DayItemHelper
@@ -38,6 +42,27 @@ class ScheduleSetupBottomSheet : BottomSheetDialogFragment() {
 
     // Duration mapping: seekbar position to minutes
     private val durationMap = listOf(15, 30, 45, 60, 90, 120, 180, 240, 360, 480)
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+
+        dialog.setOnShowListener { dialogInterface ->
+            val bottomSheetDialog = dialogInterface as BottomSheetDialog
+            val bottomSheet = bottomSheetDialog.findViewById<FrameLayout>(
+                com.google.android.material.R.id.design_bottom_sheet
+            )
+
+            bottomSheet?.let {
+                val behavior = BottomSheetBehavior.from(it)
+                // Make bottom sheet fully expanded and scrollable
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                behavior.isDraggable = true
+                behavior.skipCollapsed = true
+            }
+        }
+
+        return dialog
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
