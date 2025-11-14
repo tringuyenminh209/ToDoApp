@@ -14,6 +14,7 @@ use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\LearningPathController;
 use App\Http\Controllers\LearningPathTemplateController;
 use App\Http\Controllers\CheatCodeController;
+use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\KnowledgeController;
 use App\Http\Controllers\FocusEnhancementController;
 use App\Http\Controllers\SettingsController;
@@ -56,6 +57,14 @@ Route::prefix('cheat-code')->group(function () {
     Route::get('/languages/{languageId}/sections/{sectionId}/examples', [CheatCodeController::class, 'getExamples']);
     Route::get('/languages/{languageId}/sections/{sectionId}/examples/{exampleId}', [CheatCodeController::class, 'getExample']);
     Route::get('/categories', [CheatCodeController::class, 'getCategories']);
+
+    // Exercise routes
+    Route::get('/languages/{languageId}/exercises', [ExerciseController::class, 'getExercises']);
+    Route::get('/languages/{languageId}/exercises/{exerciseId}', [ExerciseController::class, 'getExercise']);
+    Route::get('/languages/{languageId}/exercises/{exerciseId}/solution', [ExerciseController::class, 'getSolution']);
+    Route::get('/languages/{languageId}/exercises/{exerciseId}/statistics', [ExerciseController::class, 'getStatistics']);
+    Route::post('/languages/{languageId}/exercises/{exerciseId}/submit', [ExerciseController::class, 'submitSolution'])
+        ->middleware('throttle:10,1'); // 10 submissions per minute
 });
 
 // Roadmap API routes - Public endpoint for browsing popular roadmaps
