@@ -90,6 +90,13 @@
             android:name=".ui.activities.CheatCodeDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activities.ExerciseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.ExerciseDetailActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".ui.activities.TimetableActivity"
             android:exported="false" />
 

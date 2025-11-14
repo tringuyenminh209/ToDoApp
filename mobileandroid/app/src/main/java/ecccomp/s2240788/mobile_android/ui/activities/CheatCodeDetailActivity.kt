@@ -1,5 +1,6 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -85,13 +86,13 @@ class CheatCodeDetailActivity : BaseActivity() {
             finish()
         }
 
-        // Exercises button
+        // Exercises button - Navigate to Exercise List
         binding.btnExercises.setOnClickListener {
-            Toast.makeText(this, "演習機能は開発中です", Toast.LENGTH_SHORT).show()
-            // TODO: Navigate to exercises activity
-            // val intent = Intent(this, CheatCodeExercisesActivity::class.java)
-            // intent.putExtra("LANGUAGE_ID", languageId)
-            // startActivity(intent)
+            val intent = Intent(this, ExerciseListActivity::class.java).apply {
+                putExtra("LANGUAGE_ID", languageId)
+                putExtra("LANGUAGE_NAME", languageName)
+            }
+            startActivity(intent)
         }
     }
 
