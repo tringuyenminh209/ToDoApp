@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="12dp"
-            android:text="Thiết lập lịch học"
+            android:text="学習スケジュール設定"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="Chọn ngày và giờ học để rèn luyện tính kỷ luật"
+        android:text="学習日時を選択して規律を身につけましょう"
         android:textColor="@color/text_muted"
         android:textSize="14sp" />
 
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:text="⏰ Giờ học"
+                android:text="⏰ 学習時間"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -102,7 +102,7 @@
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chọn giờ"
+                    android:text="時間選択"
                     app:strokeColor="@color/primary"
                     app:icon="@drawable/ic_timer"
                     app:iconTint="@color/primary" />
@@ -133,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:text="📅 Chọn các ngày học"
+                android:text="📅 学習曜日を選択"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -177,7 +177,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="⏱️ Thời lượng"
+                    android:text="⏱️ 学習時間"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -186,7 +186,7 @@
                     android:id="@+id/tv_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="60 phút"
+                    android:text="60分"
                     android:textColor="@color/primary"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -206,7 +206,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="15 phút → 480 phút"
+                android:text="15分 → 480分"
                 android:textColor="@color/text_muted"
                 android:textSize="12sp"
                 android:gravity="center" />
@@ -235,7 +235,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tổng kết"
+                android:text="サマリー"
                 android:textColor="@color/text_muted"
                 android:textSize="12sp" />
 
@@ -244,7 +244,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="0 buổi/tuần • 0.0 giờ/tuần"
+                android:text="週0回 • 週0.0時間"
                 android:textColor="@color/primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -258,15 +258,15 @@
         android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="Xác nhận lịch học"
+        android:text="スケジュールを確認"
         android:textAllCaps="false"
         android:textSize="16sp"
         android:textStyle="bold"
         app:backgroundTint="@color/primary"
         app:cornerRadius="16dp"
         app:icon="@drawable/ic_check"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp" />
+        app:iconGravity="start"
+        app:iconPadding="12dp" />
 
 </LinearLayout>
 
