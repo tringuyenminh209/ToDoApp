@@ -1855,6 +1855,704 @@ emailInput.addEventListener('input', (e) => {
                     ],
                 ],
             ],
+            [
+                'title' => '第5週：ループとイベント',
+                'description' => 'ループ処理とイベント処理の組み合わせ、動的なイベント登録',
+                'sort_order' => 5,
+                'estimated_minutes' => 540,
+                'priority' => 5,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => '配列とループの復習', 'estimated_minutes' => 90, 'sort_order' => 1],
+                    ['title' => 'ループで複数要素にイベントを追加', 'estimated_minutes' => 150, 'sort_order' => 2],
+                    ['title' => 'イベント委譲（Event Delegation）', 'estimated_minutes' => 150, 'sort_order' => 3],
+                    ['title' => '実践：ToDoリストアプリ', 'estimated_minutes' => 150, 'sort_order' => 4],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'ループで複数要素にイベントを追加',
+                        'content' => "# ループで複数要素にイベントを追加
+
+複数の要素に同じイベント処理を追加する場合、ループを使うと効率的です。
+
+## querySelectorAll + forEach
+
+```javascript
+// すべてのボタンにクリックイベントを追加
+const buttons = document.querySelectorAll('.btn');
+
+buttons.forEach((button) => {
+  button.addEventListener('click', () => {
+    console.log('ボタンがクリックされました');
+  });
+});
+```
+
+## 個別の処理を追加
+
+```javascript
+const items = document.querySelectorAll('.item');
+
+items.forEach((item, index) => {
+  item.addEventListener('click', () => {
+    console.log(\`\${index + 1}番目のアイテムがクリックされました\`);
+    item.classList.toggle('active');
+  });
+});
+```
+
+## イベントハンドラを関数として定義
+
+```javascript
+const handleClick = (event) => {
+  const element = event.target;
+  element.style.backgroundColor = 'yellow';
+  console.log('クリックされた要素:', element.textContent);
+};
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+  button.addEventListener('click', handleClick);
+});
+```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '複数ボタンのイベント処理例',
+                        'content' => "// HTML
+// <button class=\"color-btn\" data-color=\"red\">赤</button>
+// <button class=\"color-btn\" data-color=\"blue\">青</button>
+// <button class=\"color-btn\" data-color=\"green\">緑</button>
+// <div id=\"display\"></div>
+
+const colorButtons = document.querySelectorAll('.color-btn');
+const display = document.getElementById('display');
+
+colorButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const color = button.getAttribute('data-color');
+    display.style.backgroundColor = color;
+    display.textContent = \`選択された色: \${color}\`;
+  });
+});
+
+// リストアイテムの削除
+const deleteButtons = document.querySelectorAll('.delete-btn');
+
+deleteButtons.forEach((button) => {
+  button.addEventListener('click', (e) => {
+    const listItem = e.target.closest('li');
+    listItem.remove();
+  });
+});",
+                        'code_language' => 'javascript',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'イベント委譲（Event Delegation）',
+                        'content' => "# イベント委譲（Event Delegation）
+
+**イベント委譲**は、親要素にイベントリスナーを設定し、子要素のイベントを処理する手法です。
+
+## なぜイベント委譲を使うのか？
+
+### 問題：動的に追加された要素
+```javascript
+// 最初からある要素にはイベントが追加される
+const buttons = document.querySelectorAll('button');
+buttons.forEach((btn) => {
+  btn.addEventListener('click', handleClick);
+});
+
+// 後から追加されたボタンにはイベントがない！
+const newButton = document.createElement('button');
+newButton.textContent = '新しいボタン';
+document.body.appendChild(newButton);
+// このボタンをクリックしても反応しない
+```
+
+### 解決策：イベント委譲
+```javascript
+// 親要素にイベントリスナーを設定
+document.body.addEventListener('click', (e) => {
+  // クリックされた要素がボタンかチェック
+  if (e.target.tagName === 'BUTTON') {
+    handleClick(e);
+  }
+});
+
+// 後から追加されたボタンもちゃんと動く！
+```
+
+## イベントバブリング
+
+イベントは子要素から親要素へ伝播します（バブリング）。
+
+```
+<div id=\"parent\">
+  <button id=\"child\">クリック</button>
+</div>
+```
+
+ボタンをクリック → buttonのイベント → divのイベント → bodyのイベント...
+
+## 実践例
+
+```javascript
+const list = document.getElementById('todoList');
+
+// ul要素にイベントを設定
+list.addEventListener('click', (e) => {
+  // クリックされたのが削除ボタンか確認
+  if (e.target.classList.contains('delete-btn')) {
+    const li = e.target.closest('li');
+    li.remove();
+  }
+
+  // クリックされたのがチェックボックスか確認
+  if (e.target.classList.contains('checkbox')) {
+    const li = e.target.closest('li');
+    li.classList.toggle('completed');
+  }
+});
+```
+
+## メリット
+
+1. **パフォーマンス向上**: イベントリスナーが1つだけ
+2. **動的要素に対応**: 後から追加された要素も自動的に対応
+3. **メモリ効率**: 大量の要素でもメモリを節約",
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'ToDoリストの実装例',
+                        'content' => "// HTML
+// <input type=\"text\" id=\"todoInput\" placeholder=\"新しいタスク\">
+// <button id=\"addBtn\">追加</button>
+// <ul id=\"todoList\"></ul>
+
+const todoInput = document.getElementById('todoInput');
+const addBtn = document.getElementById('addBtn');
+const todoList = document.getElementById('todoList');
+
+// タスクを追加
+const addTodo = () => {
+  const text = todoInput.value.trim();
+
+  if (text === '') {
+    alert('タスクを入力してください');
+    return;
+  }
+
+  const li = document.createElement('li');
+  li.innerHTML = \`
+    <span class=\"task-text\">\${text}</span>
+    <button class=\"delete-btn\">削除</button>
+  \`;
+
+  todoList.appendChild(li);
+  todoInput.value = '';
+};
+
+// 追加ボタンのクリック
+addBtn.addEventListener('click', addTodo);
+
+// Enterキーで追加
+todoInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    addTodo();
+  }
+});
+
+// イベント委譲で削除ボタンを処理
+todoList.addEventListener('click', (e) => {
+  if (e.target.classList.contains('delete-btn')) {
+    e.target.closest('li').remove();
+  }
+
+  if (e.target.classList.contains('task-text')) {
+    e.target.classList.toggle('completed');
+  }
+});",
+                        'code_language' => 'javascript',
+                        'sort_order' => 4
+                    ],
+                ],
+            ],
+            [
+                'title' => '第6週：Elementの作成・追加',
+                'description' => 'DOM要素の動的な作成と追加、documentFragment',
+                'sort_order' => 6,
+                'estimated_minutes' => 540,
+                'priority' => 5,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => 'createElement()で要素を作成', 'estimated_minutes' => 120, 'sort_order' => 1],
+                    ['title' => 'appendChild(), insertBefore()', 'estimated_minutes' => 120, 'sort_order' => 2],
+                    ['title' => 'documentFragmentの活用', 'estimated_minutes' => 120, 'sort_order' => 3],
+                    ['title' => '実践：動的なカード生成', 'estimated_minutes' => 180, 'sort_order' => 4],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => '要素の作成と追加',
+                        'content' => "# 要素の作成と追加
+
+## createElement() - 要素の作成
+
+```javascript
+const newDiv = document.createElement('div');
+const newP = document.createElement('p');
+const newButton = document.createElement('button');
+```
+
+## 要素の内容を設定
+
+```javascript
+const p = document.createElement('p');
+
+// テキストを設定
+p.textContent = 'これは段落です';
+
+// HTMLを設定
+p.innerHTML = 'これは<strong>太字</strong>の段落です';
+
+// 属性を設定
+p.id = 'myParagraph';
+p.className = 'text-content';
+p.setAttribute('data-info', 'important');
+```
+
+## appendChild() - 末尾に追加
+
+```javascript
+const container = document.getElementById('container');
+const newP = document.createElement('p');
+newP.textContent = '新しい段落';
+
+// containerの末尾に追加
+container.appendChild(newP);
+```
+
+## insertBefore() - 指定位置に挿入
+
+```javascript
+const container = document.getElementById('container');
+const newP = document.createElement('p');
+newP.textContent = '新しい段落';
+
+const referenceNode = container.firstChild;
+// referenceNodeの前に挿入
+container.insertBefore(newP, referenceNode);
+```
+
+## append() / prepend() - 便利なメソッド
+
+```javascript
+const container = document.getElementById('container');
+
+// 末尾に追加（appendChildと似ているが、複数追加可能）
+container.append('テキスト', newElement, 'もっとテキスト');
+
+// 先頭に追加
+container.prepend(newElement);
+```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '要素作成の実践例',
+                        'content' => "// 新しいリストアイテムを作成して追加
+const createListItem = (text) => {
+  const li = document.createElement('li');
+  li.textContent = text;
+  li.className = 'list-item';
+  return li;
+};
+
+const ul = document.getElementById('myList');
+ul.appendChild(createListItem('アイテム1'));
+ul.appendChild(createListItem('アイテム2'));
+ul.appendChild(createListItem('アイテム3'));
+
+// カードコンポーネントを作成
+const createCard = (title, description) => {
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const cardTitle = document.createElement('h3');
+  cardTitle.textContent = title;
+
+  const cardDesc = document.createElement('p');
+  cardDesc.textContent = description;
+
+  const cardButton = document.createElement('button');
+  cardButton.textContent = '詳細を見る';
+  cardButton.addEventListener('click', () => {
+    alert(\`\${title}の詳細\`);
+  });
+
+  card.appendChild(cardTitle);
+  card.appendChild(cardDesc);
+  card.appendChild(cardButton);
+
+  return card;
+};
+
+const container = document.getElementById('cardContainer');
+container.appendChild(createCard('タイトル1', '説明文1'));
+container.appendChild(createCard('タイトル2', '説明文2'));",
+                        'code_language' => 'javascript',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'DocumentFragmentの活用',
+                        'content' => "# DocumentFragment
+
+**DocumentFragment**は、複数の要素を一度にDOMに追加する際に使用する軽量なコンテナです。
+
+## なぜDocumentFragmentを使うのか？
+
+### 問題：パフォーマンス
+```javascript
+// 悪い例：DOMに100回アクセス
+for (let i = 0; i < 100; i++) {
+  const li = document.createElement('li');
+  li.textContent = \`アイテム\${i}\`;
+  ul.appendChild(li);  // 毎回リフロー発生！
+}
+```
+
+### 解決策：DocumentFragment
+```javascript
+// 良い例：DOMには1回だけアクセス
+const fragment = document.createDocumentFragment();
+
+for (let i = 0; i < 100; i++) {
+  const li = document.createElement('li');
+  li.textContent = \`アイテム\${i}\`;
+  fragment.appendChild(li);  // メモリ上で処理
+}
+
+ul.appendChild(fragment);  // 一度にDOMに追加！
+```
+
+## メリット
+
+1. **パフォーマンス向上**: DOMへのアクセスを最小限に
+2. **リフローの削減**: 画面の再描画を1回だけに
+3. **メモリ効率**: 軽量なコンテナ
+
+## 使い方
+
+```javascript
+// DocumentFragmentを作成
+const fragment = document.createDocumentFragment();
+
+// 複数の要素を追加
+const items = ['りんご', 'バナナ', 'オレンジ'];
+items.forEach((item) => {
+  const li = document.createElement('li');
+  li.textContent = item;
+  fragment.appendChild(li);
+});
+
+// 一度にDOMに追加
+document.getElementById('list').appendChild(fragment);
+```",
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'DocumentFragmentの実践例',
+                        'content' => "// 大量のデータを効率的に表示
+const renderProducts = (products) => {
+  const fragment = document.createDocumentFragment();
+  const container = document.getElementById('productList');
+
+  products.forEach((product) => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+
+    card.innerHTML = \`
+      <img src=\"\${product.image}\" alt=\"\${product.name}\">
+      <h3>\${product.name}</h3>
+      <p class=\"price\">¥\${product.price.toLocaleString()}</p>
+      <button class=\"add-to-cart\" data-id=\"\${product.id}\">
+        カートに追加
+      </button>
+    \`;
+
+    fragment.appendChild(card);
+  });
+
+  // 一度に追加
+  container.appendChild(fragment);
+};
+
+// サンプルデータ
+const products = [
+  { id: 1, name: '商品A', price: 1000, image: 'a.jpg' },
+  { id: 2, name: '商品B', price: 2000, image: 'b.jpg' },
+  { id: 3, name: '商品C', price: 1500, image: 'c.jpg' },
+  // ... 100個以上でも高速
+];
+
+renderProducts(products);
+
+// テーブルの動的生成
+const createTable = (data) => {
+  const fragment = document.createDocumentFragment();
+
+  data.forEach((row) => {
+    const tr = document.createElement('tr');
+
+    Object.values(row).forEach((value) => {
+      const td = document.createElement('td');
+      td.textContent = value;
+      tr.appendChild(td);
+    });
+
+    fragment.appendChild(tr);
+  });
+
+  document.querySelector('tbody').appendChild(fragment);
+};",
+                        'code_language' => 'javascript',
+                        'sort_order' => 4
+                    ],
+                ],
+            ],
+            [
+                'title' => '第7週：Elementの削除・動的なElementへのイベント追加',
+                'description' => '要素の削除、クローン、動的要素へのイベント処理',
+                'sort_order' => 7,
+                'estimated_minutes' => 540,
+                'priority' => 5,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => '要素の削除（remove, removeChild）', 'estimated_minutes' => 120, 'sort_order' => 1],
+                    ['title' => '要素のクローン（cloneNode）', 'estimated_minutes' => 120, 'sort_order' => 2],
+                    ['title' => '動的要素へのイベント追加', 'estimated_minutes' => 150, 'sort_order' => 3],
+                    ['title' => '実践：動的フォーム生成', 'estimated_minutes' => 150, 'sort_order' => 4],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => '要素の削除',
+                        'content' => "# 要素の削除
+
+## remove() - 自分自身を削除（推奨）
+
+```javascript
+const element = document.getElementById('myElement');
+element.remove();  // 要素を削除
+```
+
+## removeChild() - 子要素を削除
+
+```javascript
+const parent = document.getElementById('parent');
+const child = document.getElementById('child');
+
+parent.removeChild(child);  // 親から子を削除
+```
+
+## すべての子要素を削除
+
+```javascript
+const container = document.getElementById('container');
+
+// 方法1: innerHTML（速いが注意が必要）
+container.innerHTML = '';
+
+// 方法2: whileループ（より安全）
+while (container.firstChild) {
+  container.removeChild(container.firstChild);
+}
+
+// 方法3: replaceChildren()（モダンな方法）
+container.replaceChildren();
+```
+
+## 条件付き削除
+
+```javascript
+// クラスを持つ要素をすべて削除
+const elements = document.querySelectorAll('.remove-me');
+elements.forEach((el) => el.remove());
+
+// 空の<p>タグを削除
+const paragraphs = document.querySelectorAll('p');
+paragraphs.forEach((p) => {
+  if (p.textContent.trim() === '') {
+    p.remove();
+  }
+});
+```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '削除の実践例',
+                        'content' => "// リストアイテムに削除ボタンを追加
+const addListItem = (text) => {
+  const li = document.createElement('li');
+  li.innerHTML = \`
+    <span>\${text}</span>
+    <button class=\"delete-btn\">削除</button>
+  \`;
+
+  const deleteBtn = li.querySelector('.delete-btn');
+  deleteBtn.addEventListener('click', () => {
+    li.remove();  // このli要素を削除
+  });
+
+  document.getElementById('list').appendChild(li);
+};
+
+addListItem('タスク1');
+addListItem('タスク2');
+addListItem('タスク3');
+
+// 複数選択して一括削除
+const deleteSelected = () => {
+  const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+
+  checkboxes.forEach((checkbox) => {
+    const listItem = checkbox.closest('li');
+    listItem.remove();
+  });
+};
+
+// すべてクリアボタン
+const clearAllBtn = document.getElementById('clearAll');
+clearAllBtn.addEventListener('click', () => {
+  if (confirm('本当にすべて削除しますか？')) {
+    document.getElementById('list').innerHTML = '';
+  }
+});",
+                        'code_language' => 'javascript',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'cloneNode() - 要素の複製',
+                        'content' => "# cloneNode() - 要素の複製
+
+**cloneNode()**は、要素のコピーを作成するメソッドです。
+
+## 基本的な使い方
+
+```javascript
+const original = document.getElementById('template');
+
+// 浅いコピー（子要素はコピーされない）
+const clone1 = original.cloneNode(false);
+
+// 深いコピー（子要素もすべてコピーされる）
+const clone2 = original.cloneNode(true);
+```
+
+## 注意点
+
+1. **イベントリスナーはコピーされない**
+```javascript
+original.addEventListener('click', handleClick);
+const clone = original.cloneNode(true);
+// cloneにはイベントリスナーがない！
+```
+
+2. **IDは重複に注意**
+```javascript
+const clone = original.cloneNode(true);
+// IDが重複するので、変更が必要
+clone.id = 'newId';
+```
+
+## テンプレートパターン
+
+```html
+<!-- HTML: 非表示のテンプレート -->
+<div id=\"card-template\" style=\"display: none;\">
+  <div class=\"card\">
+    <h3 class=\"title\"></h3>
+    <p class=\"description\"></p>
+  </div>
+</div>
+```
+
+```javascript
+const createCard = (title, description) => {
+  const template = document.getElementById('card-template');
+  const clone = template.cloneNode(true);
+
+  clone.style.display = 'block';
+  clone.querySelector('.title').textContent = title;
+  clone.querySelector('.description').textContent = description;
+
+  return clone;
+};
+
+document.body.appendChild(createCard('タイトル', '説明文'));
+```",
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '動的フォームフィールドの追加',
+                        'content' => "// HTML
+// <div id=\"formFields\">
+//   <div class=\"field-group\" id=\"field-template\">
+//     <input type=\"text\" placeholder=\"入力してください\">
+//     <button class=\"remove-field\">削除</button>
+//   </div>
+// </div>
+// <button id=\"addField\">フィールドを追加</button>
+
+const formFields = document.getElementById('formFields');
+const addFieldBtn = document.getElementById('addField');
+const template = document.getElementById('field-template');
+
+let fieldCount = 1;
+
+// フィールドを追加
+const addField = () => {
+  const newField = template.cloneNode(true);
+  newField.id = \`field-\${fieldCount++}\`;
+
+  const input = newField.querySelector('input');
+  input.value = '';
+  input.name = \`field\${fieldCount}\`;
+
+  const removeBtn = newField.querySelector('.remove-field');
+  removeBtn.addEventListener('click', () => {
+    newField.remove();
+  });
+
+  formFields.appendChild(newField);
+};
+
+addFieldBtn.addEventListener('click', addField);
+
+// 初期フィールドの削除ボタンも設定
+template.querySelector('.remove-field').addEventListener('click', () => {
+  if (formFields.children.length > 1) {
+    template.remove();
+  } else {
+    alert('最低1つのフィールドが必要です');
+  }
+});",
+                        'code_language' => 'javascript',
+                        'sort_order' => 4
+                    ],
+                ],
+            ],
         ]);
 
         // Milestone 3: 中間評価 (第8週)
