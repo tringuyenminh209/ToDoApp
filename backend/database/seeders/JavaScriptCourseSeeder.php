@@ -2567,6 +2567,181 @@ template.querySelector('.remove-field').addEventListener('click', () => {
             ],
         ]);
 
+        $milestone3->tasks()->createMany([
+            [
+                'title' => '第8週：予備日（中間評価週）',
+                'description' => '第1週～第7週の総合復習と中間課題',
+                'sort_order' => 8,
+                'estimated_minutes' => 540,
+                'priority' => 4,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => '基礎知識の復習', 'estimated_minutes' => 120, 'sort_order' => 1],
+                    ['title' => 'DOM操作の復習', 'estimated_minutes' => 120, 'sort_order' => 2],
+                    ['title' => '中間課題：ToDoアプリの完成', 'estimated_minutes' => 300, 'sort_order' => 3],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => '第1週～第7週の復習ポイント',
+                        'content' => "# 復習ポイント
+
+## 第1週～第2週: JavaScript基礎
+- 変数宣言（let, const）
+- データ型（Number, String, Boolean, Array, Object）
+- 演算子（算術、比較、論理）
+- 条件分岐（if, switch）
+- ループ（for, while, forEach）
+- 関数（アロー関数、引数、戻り値）
+
+## 第3週: DOM基礎
+- 要素の取得（getElementById, querySelector）
+- 内容の変更（textContent, innerHTML）
+- スタイルの変更（style, classList）
+- 属性の操作（getAttribute, setAttribute）
+
+## 第4週: イベント処理
+- addEventListener()
+- 各種イベント（click, input, keydown）
+- イベントオブジェクト（event.target, event.key）
+- preventDefault(), stopPropagation()
+
+## 第5週～第7週: DOM応用
+- イベント委譲（Event Delegation）
+- 要素の作成（createElement）
+- 要素の追加（appendChild, append）
+- 要素の削除（remove, removeChild）
+- DocumentFragment
+- cloneNode()
+
+## よくあるミス
+
+1. **querySelector vs querySelectorAll**
+```javascript
+// ❌ querySelector()は最初の1つだけ
+const button = document.querySelector('.btn');
+button.addEventListener('click', handler);
+
+// ✅ 複数の要素にはquerySelectorAll() + forEach
+const buttons = document.querySelectorAll('.btn');
+buttons.forEach(btn => btn.addEventListener('click', handler));
+```
+
+2. **動的要素へのイベント**
+```javascript
+// ❌ 後から追加された要素には反応しない
+document.querySelector('.delete-btn').addEventListener('click', handler);
+
+// ✅ イベント委譲を使う
+document.getElementById('list').addEventListener('click', (e) => {
+  if (e.target.classList.contains('delete-btn')) {
+    handler(e);
+  }
+});
+```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '中間課題：ToDoアプリ完全版',
+                        'content' => "// 完全なToDoアプリケーション
+const todoInput = document.getElementById('todoInput');
+const addBtn = document.getElementById('addBtn');
+const todoList = document.getElementById('todoList');
+const filterBtns = document.querySelectorAll('.filter-btn');
+
+let todos = [];
+let filter = 'all';  // 'all', 'active', 'completed'
+
+// ToDoを追加
+const addTodo = () => {
+  const text = todoInput.value.trim();
+  if (text === '') return;
+
+  const todo = {
+    id: Date.now(),
+    text: text,
+    completed: false
+  };
+
+  todos.push(todo);
+  todoInput.value = '';
+  renderTodos();
+};
+
+// ToDoを削除
+const deleteTodo = (id) => {
+  todos = todos.filter(todo => todo.id !== id);
+  renderTodos();
+};
+
+// 完了状態をトグル
+const toggleTodo = (id) => {
+  todos = todos.map(todo =>
+    todo.id === id ? { ...todo, completed: !todo.completed } : todo
+  );
+  renderTodos();
+};
+
+// ToDoを表示
+const renderTodos = () => {
+  const fragment = document.createDocumentFragment();
+
+  const filteredTodos = todos.filter(todo => {
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+    return true;
+  });
+
+  filteredTodos.forEach(todo => {
+    const li = document.createElement('li');
+    li.className = todo.completed ? 'completed' : '';
+    li.innerHTML = \`
+      <input type=\"checkbox\" class=\"checkbox\" \${todo.completed ? 'checked' : ''}>
+      <span class=\"todo-text\">\${todo.text}</span>
+      <button class=\"delete-btn\">削除</button>
+    \`;
+    li.dataset.id = todo.id;
+    fragment.appendChild(li);
+  });
+
+  todoList.innerHTML = '';
+  todoList.appendChild(fragment);
+};
+
+// イベントリスナー
+addBtn.addEventListener('click', addTodo);
+todoInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') addTodo();
+});
+
+todoList.addEventListener('click', (e) => {
+  const id = parseInt(e.target.closest('li').dataset.id);
+
+  if (e.target.classList.contains('delete-btn')) {
+    deleteTodo(id);
+  } else if (e.target.classList.contains('checkbox')) {
+    toggleTodo(id);
+  }
+});
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filter = btn.dataset.filter;
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTodos();
+  });
+});
+
+renderTodos();",
+                        'code_language' => 'javascript',
+                        'sort_order' => 2
+                    ],
+                ],
+            ],
+        ]);
+
         // Milestone 4: データ管理と非同期処理 (第9週～第12週)
         $milestone4 = $template->milestones()->create([
             'title' => 'データ管理と非同期処理',
@@ -2578,6 +2753,411 @@ template.querySelector('.remove-field').addEventListener('click', () => {
                 'JSONデータを扱える',
                 '非同期処理を理解',
                 '外部APIと連携できる',
+            ],
+        ]);
+
+        $milestone4->tasks()->createMany([
+            [
+                'title' => '第9週：WebStorageの利用',
+                'description' => 'localStorage、sessionStorageを使ったデータの永続化',
+                'sort_order' => 9,
+                'estimated_minutes' => 540,
+                'priority' => 5,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => 'WebStorageとは', 'estimated_minutes' => 60, 'sort_order' => 1],
+                    ['title' => 'localStorage, sessionStorageの使い方', 'estimated_minutes' => 150, 'sort_order' => 2],
+                    ['title' => 'ToDoアプリにストレージ機能を追加', 'estimated_minutes' => 330, 'sort_order' => 3],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'WebStorageとは',
+                        'content' => "# WebStorage
+
+**WebStorage**は、ブラウザにデータを保存する仕組みです。
+
+## 2種類のWebStorage
+
+### localStorage
+- **永続的**: ブラウザを閉じてもデータが残る
+- **容量**: 約5MB
+- **用途**: 設定、ユーザーデータの保存
+
+```javascript
+// データを保存
+localStorage.setItem('username', '太郎');
+
+// データを取得
+const username = localStorage.getItem('username');
+
+// データを削除
+localStorage.removeItem('username');
+
+// すべて削除
+localStorage.clear();
+```
+
+### sessionStorage
+- **一時的**: タブやウィンドウを閉じると削除される
+- **容量**: 約5MB
+- **用途**: 一時的なデータ、セッション情報
+
+```javascript
+// 使い方はlocalStorageと同じ
+sessionStorage.setItem('tempData', 'value');
+const data = sessionStorage.getItem('tempData');
+```
+
+## 注意点
+
+1. **文字列のみ保存可能**
+   - 数値やオブジェクトは文字列に変換が必要
+
+2. **同期的な処理**
+   - 大量のデータを扱うと遅くなる可能性
+
+3. **ドメインごとに独立**
+   - 異なるドメインからはアクセスできない
+
+4. **セキュリティ**
+   - パスワードなどの機密情報は保存しない",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'localStorageの基本的な使い方',
+                        'content' => "// 文字列の保存と取得
+localStorage.setItem('name', '田中太郎');
+const name = localStorage.getItem('name');
+console.log(name);  // '田中太郎'
+
+// 数値の保存（文字列に変換される）
+localStorage.setItem('age', 25);
+const age = parseInt(localStorage.getItem('age'));
+console.log(age);  // 25
+
+// 配列の保存（JSONに変換）
+const fruits = ['りんご', 'バナナ', 'オレンジ'];
+localStorage.setItem('fruits', JSON.stringify(fruits));
+
+// 配列の取得
+const storedFruits = JSON.parse(localStorage.getItem('fruits'));
+console.log(storedFruits);  // ['りんご', 'バナナ', 'オレンジ']
+
+// オブジェクトの保存
+const user = {
+  name: '太郎',
+  age: 25,
+  email: 'taro@example.com'
+};
+localStorage.setItem('user', JSON.stringify(user));
+
+// オブジェクトの取得
+const storedUser = JSON.parse(localStorage.getItem('user'));
+console.log(storedUser.name);  // '太郎'
+
+// 存在確認
+if (localStorage.getItem('username') !== null) {
+  console.log('usernameが保存されています');
+}
+
+// 削除
+localStorage.removeItem('name');
+
+// すべて削除
+// localStorage.clear();",
+                        'code_language' => 'javascript',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'ToDoアプリ with localStorage',
+                        'content' => "// localStorageを使ったToDoアプリ
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
+
+// ToDoを保存
+const saveTodos = () => {
+  localStorage.setItem('todos', JSON.stringify(todos));
+};
+
+// ToDoを追加
+const addTodo = (text) => {
+  const todo = {
+    id: Date.now(),
+    text: text,
+    completed: false
+  };
+  todos.push(todo);
+  saveTodos();
+  renderTodos();
+};
+
+// ToDoを削除
+const deleteTodo = (id) => {
+  todos = todos.filter(todo => todo.id !== id);
+  saveTodos();
+  renderTodos();
+};
+
+// 完了状態をトグル
+const toggleTodo = (id) => {
+  todos = todos.map(todo =>
+    todo.id === id ? { ...todo, completed: !todo.completed } : todo
+  );
+  saveTodos();
+  renderTodos();
+};
+
+// 設定の保存
+const settings = {
+  theme: 'dark',
+  showCompleted: true
+};
+localStorage.setItem('settings', JSON.stringify(settings));
+
+// 設定の読み込み
+const loadSettings = () => {
+  const saved = localStorage.getItem('settings');
+  return saved ? JSON.parse(saved) : { theme: 'light', showCompleted: true };
+};
+
+// ページロード時に復元
+window.addEventListener('DOMContentLoaded', () => {
+  renderTodos();
+  const settings = loadSettings();
+  applySettings(settings);
+});",
+                        'code_language' => 'javascript',
+                        'sort_order' => 3
+                    ],
+                ],
+            ],
+            [
+                'title' => '第10週：JSONについて',
+                'description' => 'JSONデータの扱い方、JSON.stringify()、JSON.parse()',
+                'sort_order' => 10,
+                'estimated_minutes' => 540,
+                'priority' => 5,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => 'JSONとは', 'estimated_minutes' => 90, 'sort_order' => 1],
+                    ['title' => 'JSON.stringify(), JSON.parse()', 'estimated_minutes' => 150, 'sort_order' => 2],
+                    ['title' => 'JSONデータの操作', 'estimated_minutes' => 300, 'sort_order' => 3],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'JSONとは',
+                        'content' => "# JSON (JavaScript Object Notation)
+
+**JSON**は、データを表現するための軽量なフォーマットです。
+
+## JSONの特徴
+
+1. **軽量**: テキストベースで読みやすい
+2. **言語非依存**: 多くのプログラミング言語で使える
+3. **広く使われている**: Web API、設定ファイルなど
+
+## JSONの構文
+
+### オブジェクト
+```json
+{
+  \"name\": \"田中太郎\",
+  \"age\": 25,
+  \"email\": \"taro@example.com\"
+}
+```
+
+### 配列
+```json
+[
+  \"りんご\",
+  \"バナナ\",
+  \"オレンジ\"
+]
+```
+
+### ネストされた構造
+```json
+{
+  \"user\": {
+    \"name\": \"太郎\",
+    \"age\": 25,
+    \"hobbies\": [\"読書\", \"音楽\", \"スポーツ\"]
+  },
+  \"isActive\": true
+}
+```
+
+## JSONで使えるデータ型
+
+- **文字列**: \"hello\" (ダブルクォート必須)
+- **数値**: 42, 3.14
+- **真偽値**: true, false
+- **null**: null
+- **配列**: []
+- **オブジェクト**: {}
+
+## 注意点
+
+1. **キーは必ずダブルクォート**
+```json
+// ✅ 正しい
+{\"name\": \"太郎\"}
+
+// ❌ 間違い（シングルクォート不可）
+{'name': '太郎'}
+```
+
+2. **末尾のカンマは不可**
+```json
+// ❌ 間違い
+{
+  \"name\": \"太郎\",
+  \"age\": 25,
+}
+```
+
+3. **コメント不可**",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'JSON.stringify() と JSON.parse()',
+                        'content' => "# JSON変換メソッド
+
+## JSON.stringify() - オブジェクト → JSON文字列
+
+```javascript
+const user = {
+  name: '太郎',
+  age: 25,
+  hobbies: ['読書', '音楽']
+};
+
+const jsonString = JSON.stringify(user);
+console.log(jsonString);
+// '{\"name\":\"太郎\",\"age\":25,\"hobbies\":[\"読書\",\"音楽\"]}'
+
+// 読みやすく整形（インデント2スペース）
+const formatted = JSON.stringify(user, null, 2);
+console.log(formatted);
+/*
+{
+  \"name\": \"太郎\",
+  \"age\": 25,
+  \"hobbies\": [
+    \"読書\",
+    \"音楽\"
+  ]
+}
+*/
+```
+
+## JSON.parse() - JSON文字列 → オブジェクト
+
+```javascript
+const jsonString = '{\"name\":\"太郎\",\"age\":25}';
+const user = JSON.parse(jsonString);
+
+console.log(user.name);  // '太郎'
+console.log(user.age);   // 25
+```
+
+## エラーハンドリング
+
+```javascript
+try {
+  const data = JSON.parse(invalidJsonString);
+} catch (error) {
+  console.error('JSONのパースに失敗:', error);
+}
+```
+
+## よくある使い方
+
+### localStorageとの連携
+```javascript
+// 保存
+const todos = [{id: 1, text: 'タスク1'}];
+localStorage.setItem('todos', JSON.stringify(todos));
+
+// 読み込み
+const storedTodos = JSON.parse(localStorage.getItem('todos')) || [];
+```
+
+### オブジェクトのコピー（Deep Copy）
+```javascript
+const original = {name: '太郎', scores: [85, 90]};
+const copy = JSON.parse(JSON.stringify(original));
+// 注意: 関数やundefinedは失われる
+```",
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'JSONデータの実践例',
+                        'content' => "// APIレスポンスのようなJSON データ
+const usersJson = \`[
+  {
+    \"id\": 1,
+    \"name\": \"田中太郎\",
+    \"email\": \"taro@example.com\",
+    \"age\": 25
+  },
+  {
+    \"id\": 2,
+    \"name\": \"佐藤花子\",
+    \"email\": \"hanako@example.com\",
+    \"age\": 30
+  }
+]\`;
+
+// JSONをパース
+const users = JSON.parse(usersJson);
+
+// データを表示
+users.forEach(user => {
+  console.log(\`\${user.name} (\${user.age}歳)\`);
+});
+
+// フィルタリング
+const adults = users.filter(user => user.age >= 20);
+
+// 新しいデータを追加
+users.push({
+  id: 3,
+  name: '鈴木次郎',
+  email: 'jiro@example.com',
+  age: 28
+});
+
+// JSON文字列に変換
+const updatedJson = JSON.stringify(users, null, 2);
+console.log(updatedJson);
+
+// 設定データの管理
+const config = {
+  apiUrl: 'https://api.example.com',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer token123'
+  }
+};
+
+// 設定を保存
+localStorage.setItem('config', JSON.stringify(config));
+
+// 設定を読み込み
+const loadedConfig = JSON.parse(localStorage.getItem('config'));
+console.log(loadedConfig.apiUrl);",
+                        'code_language' => 'javascript',
+                        'sort_order' => 3
+                    ],
+                ],
             ],
         ]);
 
@@ -2593,7 +3173,874 @@ template.querySelector('.remove-field').addEventListener('click', () => {
             ],
         ]);
 
-        // Note: Due to file length constraints, tasks for weeks 5-15 will be added separately
-        // The structure above creates the necessary milestones for the complete course
+        $milestone5->tasks()->createMany([
+            [
+                'title' => '第11週：非同期処理・タイマー関数',
+                'description' => 'setTimeout, setInterval, Promise, async/await',
+                'sort_order' => 11,
+                'estimated_minutes' => 540,
+                'priority' => 5,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => 'setTimeout, setInterval', 'estimated_minutes' => 120, 'sort_order' => 1],
+                    ['title' => 'Promiseの基礎', 'estimated_minutes' => 180, 'sort_order' => 2],
+                    ['title' => 'async/await', 'estimated_minutes' => 240, 'sort_order' => 3],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'タイマー関数とは',
+                        'content' => "# タイマー関数
+
+**タイマー関数**は、一定時間後や一定間隔で処理を実行するための関数です。
+
+## setTimeout()
+
+**一定時間後に一度だけ**実行します。
+
+```javascript
+setTimeout(() => {
+  console.log('3秒後に実行されます');
+}, 3000); // 3000ミリ秒 = 3秒
+```
+
+### タイマーのキャンセル
+
+```javascript
+const timerId = setTimeout(() => {
+  console.log('これは実行されません');
+}, 5000);
+
+// タイマーをキャンセル
+clearTimeout(timerId);
+```
+
+## setInterval()
+
+**一定間隔で繰り返し**実行します。
+
+```javascript
+let count = 0;
+const intervalId = setInterval(() => {
+  count++;
+  console.log(`${count}秒経過`);
+
+  if (count >= 5) {
+    clearInterval(intervalId); // 5秒で停止
+  }
+}, 1000); // 1秒ごと
+```
+
+## 実用例：カウントダウンタイマー
+
+```javascript
+let seconds = 10;
+const countdownEl = document.getElementById('countdown');
+
+const intervalId = setInterval(() => {
+  countdownEl.textContent = seconds;
+  seconds--;
+
+  if (seconds < 0) {
+    clearInterval(intervalId);
+    countdownEl.textContent = '終了！';
+  }
+}, 1000);
+```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'Promiseとは',
+                        'content' => "# Promise（プロミス）
+
+**Promise**は、非同期処理の結果を表すオブジェクトです。
+
+## Promiseの3つの状態
+
+1. **Pending（待機中）**: 処理が完了していない
+2. **Fulfilled（成功）**: 処理が成功した
+3. **Rejected（失敗）**: 処理が失敗した
+
+## Promiseの基本的な使い方
+
+```javascript
+// Promiseを返す関数
+function wait(ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(`${ms}ミリ秒待ちました`);
+    }, ms);
+  });
+}
+
+// then()で成功時の処理
+wait(2000)
+  .then(result => {
+    console.log(result); // '2000ミリ秒待ちました'
+  })
+  .catch(error => {
+    console.error('エラー:', error);
+  });
+```
+
+## Promiseチェーン
+
+複数の非同期処理を順番に実行できます。
+
+```javascript
+fetch('https://api.example.com/user/1')
+  .then(response => response.json())
+  .then(user => {
+    console.log('ユーザー名:', user.name);
+    return fetch(`https://api.example.com/user/${user.id}/posts`);
+  })
+  .then(response => response.json())
+  .then(posts => {
+    console.log('投稿数:', posts.length);
+  })
+  .catch(error => {
+    console.error('エラーが発生:', error);
+  });
+```
+
+## Promise.all()
+
+複数のPromiseを並列実行し、すべて完了するまで待ちます。
+
+```javascript
+const promise1 = fetch('/api/users');
+const promise2 = fetch('/api/posts');
+const promise3 = fetch('/api/comments');
+
+Promise.all([promise1, promise2, promise3])
+  .then(([users, posts, comments]) => {
+    console.log('すべてのデータ取得完了');
+  })
+  .catch(error => {
+    console.error('いずれかの取得に失敗:', error);
+  });
+```",
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'async/awaitとは',
+                        'content' => "# async/await
+
+**async/await**は、Promiseをより読みやすく書くための構文です。
+
+## async関数
+
+`async`キーワードを付けた関数は、必ずPromiseを返します。
+
+```javascript
+async function fetchUser() {
+  return { id: 1, name: '田中太郎' };
+}
+
+// これは以下と同じ
+function fetchUser() {
+  return Promise.resolve({ id: 1, name: '田中太郎' });
+}
+```
+
+## await
+
+`await`は**Promiseの完了を待つ**キーワードです。
+
+```javascript
+async function getUser() {
+  // fetch()の完了を待つ
+  const response = await fetch('/api/user/1');
+
+  // レスポンスのJSON解析を待つ
+  const user = await response.json();
+
+  return user;
+}
+
+// 使用例
+getUser().then(user => {
+  console.log(user.name);
+});
+```
+
+## エラーハンドリング
+
+try-catchでエラーを捕捉できます。
+
+```javascript
+async function loadUserData() {
+  try {
+    const response = await fetch('/api/user/1');
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const user = await response.json();
+    console.log('ユーザー:', user.name);
+    return user;
+
+  } catch (error) {
+    console.error('データ取得エラー:', error.message);
+    // フォールバック処理
+    return null;
+  }
+}
+```
+
+## 複数の非同期処理
+
+### 順次実行
+
+```javascript
+async function loadAllData() {
+  const user = await fetch('/api/user/1').then(r => r.json());
+  const posts = await fetch(`/api/user/${user.id}/posts`).then(r => r.json());
+  const comments = await fetch(`/api/user/${user.id}/comments`).then(r => r.json());
+
+  return { user, posts, comments };
+}
+```
+
+### 並列実行
+
+```javascript
+async function loadAllDataParallel() {
+  const [userRes, postsRes, commentsRes] = await Promise.all([
+    fetch('/api/user/1'),
+    fetch('/api/posts'),
+    fetch('/api/comments')
+  ]);
+
+  const user = await userRes.json();
+  const posts = await postsRes.json();
+  const comments = await commentsRes.json();
+
+  return { user, posts, comments };
+}
+```
+
+## 実用例：ローディング表示付きデータ取得
+
+```javascript
+async function displayUserPosts() {
+  const loadingEl = document.getElementById('loading');
+  const postsEl = document.getElementById('posts');
+
+  try {
+    // ローディング表示
+    loadingEl.style.display = 'block';
+    postsEl.innerHTML = '';
+
+    // データ取得
+    const response = await fetch('/api/posts');
+    const posts = await response.json();
+
+    // 投稿を表示
+    posts.forEach(post => {
+      const postEl = document.createElement('div');
+      postEl.className = 'post';
+      postEl.innerHTML = `
+        <h3>${post.title}</h3>
+        <p>${post.content}</p>
+      `;
+      postsEl.appendChild(postEl);
+    });
+
+  } catch (error) {
+    postsEl.innerHTML = '<p class=\"error\">データの取得に失敗しました</p>';
+
+  } finally {
+    // 必ずローディングを非表示
+    loadingEl.style.display = 'none';
+  }
+}
+```",
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '実践例：カウントダウン付きメッセージ表示',
+                        'content' => "// カウントダウン後にメッセージを表示する例
+
+// 指定秒数待つPromise
+function wait(seconds) {
+  return new Promise(resolve => {
+    setTimeout(resolve, seconds * 1000);
+  });
+}
+
+// カウントダウン表示
+async function showCountdown() {
+  const messageEl = document.getElementById('message');
+
+  for (let i = 3; i > 0; i--) {
+    messageEl.textContent = `${i}秒後に開始...`;
+    await wait(1); // 1秒待つ
+  }
+
+  messageEl.textContent = '開始！';
+}
+
+// ボタンクリックで実行
+document.getElementById('startBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('startBtn');
+  btn.disabled = true; // ボタンを無効化
+
+  await showCountdown();
+
+  // 何か処理を実行
+  console.log('処理実行中...');
+  await wait(2);
+
+  document.getElementById('message').textContent = '完了！';
+  btn.disabled = false; // ボタンを有効化
+});",
+                        'code_language' => 'javascript',
+                        'sort_order' => 4
+                    ],
+                ],
+            ],
+            [
+                'title' => '第12週：外部APIと非同期通信',
+                'description' => 'fetch API、REST API連携、エラーハンドリング',
+                'sort_order' => 12,
+                'estimated_minutes' => 540,
+                'priority' => 5,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => 'fetch APIの基礎', 'estimated_minutes' => 150, 'sort_order' => 1],
+                    ['title' => 'REST APIとの連携', 'estimated_minutes' => 210, 'sort_order' => 2],
+                    ['title' => 'エラーハンドリング', 'estimated_minutes' => 180, 'sort_order' => 3],
+                ],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'fetch APIとは',
+                        'content' => "# fetch API
+
+**fetch API**は、サーバーとHTTP通信を行うための最新のJavaScript APIです。
+
+## 基本的な使い方
+
+```javascript
+fetch('https://api.example.com/users')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('エラー:', error);
+  });
+```
+
+## async/awaitを使った書き方
+
+```javascript
+async function getUsers() {
+  try {
+    const response = await fetch('https://api.example.com/users');
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('エラー:', error);
+  }
+}
+```
+
+## HTTPメソッド
+
+### GET（データ取得）
+
+```javascript
+// デフォルトはGET
+const response = await fetch('https://api.example.com/users/1');
+const user = await response.json();
+```
+
+### POST（データ送信）
+
+```javascript
+const newUser = {
+  name: '田中太郎',
+  email: 'taro@example.com'
+};
+
+const response = await fetch('https://api.example.com/users', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(newUser)
+});
+
+const result = await response.json();
+console.log('作成されたユーザー:', result);
+```
+
+### PUT（データ更新）
+
+```javascript
+const updatedUser = {
+  name: '田中次郎',
+  email: 'jiro@example.com'
+};
+
+const response = await fetch('https://api.example.com/users/1', {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(updatedUser)
+});
+```
+
+### DELETE（データ削除）
+
+```javascript
+const response = await fetch('https://api.example.com/users/1', {
+  method: 'DELETE'
+});
+
+if (response.ok) {
+  console.log('削除成功');
+}
+```
+
+## レスポンスの処理
+
+```javascript
+const response = await fetch('https://api.example.com/users');
+
+// ステータスコードの確認
+console.log(response.status); // 200, 404, 500など
+console.log(response.ok); // 200-299ならtrue
+
+// 様々な形式でデータを取得
+const json = await response.json(); // JSON
+const text = await response.text(); // テキスト
+const blob = await response.blob(); // バイナリデータ
+```",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'REST APIとは',
+                        'content' => "# REST API
+
+**REST API**は、HTTPプロトコルを使ってデータをやり取りする設計パターンです。
+
+## RESTの基本概念
+
+### リソースとURL
+
+- **リソース**: データの単位（ユーザー、投稿など）
+- **URL**: リソースを指し示す住所
+
+```
+GET    /api/users      → ユーザー一覧取得
+GET    /api/users/1    → ID=1のユーザー取得
+POST   /api/users      → 新規ユーザー作成
+PUT    /api/users/1    → ID=1のユーザー更新
+DELETE /api/users/1    → ID=1のユーザー削除
+```
+
+## JSONPlaceholder（練習用API）
+
+無料で使える練習用REST APIです。
+
+```javascript
+// 投稿一覧を取得
+async function getPosts() {
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const posts = await response.json();
+  console.log('投稿数:', posts.length);
+  return posts;
+}
+
+// 特定の投稿を取得
+async function getPost(id) {
+  const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  const post = await response.json();
+  console.log('タイトル:', post.title);
+  return post;
+}
+
+// 新規投稿を作成
+async function createPost() {
+  const newPost = {
+    title: 'テスト投稿',
+    body: 'これはテストです',
+    userId: 1
+  };
+
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newPost)
+  });
+
+  const created = await response.json();
+  console.log('作成された投稿ID:', created.id);
+  return created;
+}
+```
+
+## クエリパラメータ
+
+URLにパラメータを付けてデータをフィルタリングできます。
+
+```javascript
+// ユーザーID=1の投稿のみ取得
+const response = await fetch('https://jsonplaceholder.typicode.com/posts?userId=1');
+const posts = await response.json();
+
+// 複数のパラメータ
+const url = new URL('https://jsonplaceholder.typicode.com/comments');
+url.searchParams.append('postId', '1');
+url.searchParams.append('_limit', '5');
+
+const response = await fetch(url);
+const comments = await response.json();
+```
+
+## 実用例：投稿一覧の表示
+
+```javascript
+async function displayPosts() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=10');
+    const posts = await response.json();
+
+    const postsContainer = document.getElementById('posts');
+    postsContainer.innerHTML = '';
+
+    posts.forEach(post => {
+      const postEl = document.createElement('div');
+      postEl.className = 'post';
+      postEl.innerHTML = `
+        <h3>${post.title}</h3>
+        <p>${post.body}</p>
+        <small>User ID: ${post.userId}</small>
+      `;
+      postsContainer.appendChild(postEl);
+    });
+
+  } catch (error) {
+    console.error('投稿の取得に失敗:', error);
+  }
+}
+```",
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'エラーハンドリング',
+                        'content' => "# エラーハンドリング
+
+fetch APIでは、**ネットワークエラー**と**HTTPエラー**の両方を適切に処理する必要があります。
+
+## エラーの種類
+
+### 1. ネットワークエラー
+
+インターネット接続がない、サーバーが応答しないなど。
+
+```javascript
+try {
+  const response = await fetch('https://api.example.com/users');
+  const data = await response.json();
+} catch (error) {
+  // ネットワークエラーはここで捕捉
+  console.error('ネットワークエラー:', error.message);
+}
+```
+
+### 2. HTTPエラー
+
+サーバーは応答したが、エラーステータス（404, 500など）を返した。
+
+```javascript
+async function fetchWithErrorHandling(url) {
+  try {
+    const response = await fetch(url);
+
+    // HTTPエラーのチェック
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    console.error('エラー:', error.message);
+    throw error; // 呼び出し元に再スロー
+  }
+}
+```
+
+## ステータスコード別の処理
+
+```javascript
+async function getUser(id) {
+  try {
+    const response = await fetch(`https://api.example.com/users/${id}`);
+
+    switch (response.status) {
+      case 200:
+        return await response.json();
+
+      case 404:
+        throw new Error('ユーザーが見つかりません');
+
+      case 500:
+        throw new Error('サーバーエラーが発生しました');
+
+      default:
+        throw new Error(`予期しないエラー: ${response.status}`);
+    }
+
+  } catch (error) {
+    console.error('ユーザー取得エラー:', error.message);
+    return null;
+  }
+}
+```
+
+## リトライ処理
+
+一時的なエラーに対して再試行を行います。
+
+```javascript
+async function fetchWithRetry(url, options = {}, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      return await response.json();
+
+    } catch (error) {
+      console.log(`試行 ${i + 1}/${maxRetries} 失敗:`, error.message);
+
+      // 最後の試行で失敗したらエラーをスロー
+      if (i === maxRetries - 1) {
+        throw error;
+      }
+
+      // 次の試行まで待機（指数バックオフ）
+      await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
+    }
+  }
+}
+```
+
+## タイムアウト処理
+
+長時間待たないようにタイムアウトを設定します。
+
+```javascript
+async function fetchWithTimeout(url, timeout = 5000) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    return await response.json();
+
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      throw new Error('リクエストがタイムアウトしました');
+    }
+    throw error;
+  }
+}
+```
+
+## 実用例：ユーザーフレンドリーなエラー表示
+
+```javascript
+async function loadAndDisplayUsers() {
+  const container = document.getElementById('users');
+  const errorEl = document.getElementById('error');
+  const loadingEl = document.getElementById('loading');
+
+  try {
+    // ローディング表示
+    loadingEl.style.display = 'block';
+    errorEl.style.display = 'none';
+    container.innerHTML = '';
+
+    // データ取得
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+
+    if (!response.ok) {
+      throw new Error(`サーバーエラー (${response.status})`);
+    }
+
+    const users = await response.json();
+
+    // ユーザー表示
+    users.forEach(user => {
+      const userEl = document.createElement('div');
+      userEl.textContent = user.name;
+      container.appendChild(userEl);
+    });
+
+  } catch (error) {
+    // エラー表示
+    errorEl.textContent = `エラーが発生しました: ${error.message}`;
+    errorEl.style.display = 'block';
+
+    // リトライボタンを表示
+    const retryBtn = document.createElement('button');
+    retryBtn.textContent = '再試行';
+    retryBtn.onclick = () => loadAndDisplayUsers();
+    errorEl.appendChild(retryBtn);
+
+  } finally {
+    // ローディング非表示
+    loadingEl.style.display = 'none';
+  }
+}
+```",
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '実践例：天気情報の取得と表示',
+                        'content' => "// OpenWeatherMap APIを使った天気情報取得の例
+// （実際に使用する場合は、APIキーを取得してください）
+
+async function getWeather(city) {
+  const API_KEY = 'YOUR_API_KEY'; // 実際のAPIキーに置き換え
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=ja`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('都市が見つかりません');
+      } else if (response.status === 401) {
+        throw new Error('APIキーが無効です');
+      } else {
+        throw new Error(`エラー: ${response.status}`);
+      }
+    }
+
+    const data = await response.json();
+
+    // 天気情報を表示
+    displayWeather(data);
+
+  } catch (error) {
+    document.getElementById('weather').innerHTML =
+      `<p class=\"error\">エラー: ${error.message}</p>`;
+  }
+}
+
+function displayWeather(data) {
+  const weatherEl = document.getElementById('weather');
+
+  weatherEl.innerHTML = `
+    <h2>${data.name}の天気</h2>
+    <p>気温: ${data.main.temp}°C</p>
+    <p>天気: ${data.weather[0].description}</p>
+    <p>湿度: ${data.main.humidity}%</p>
+    <p>風速: ${data.wind.speed} m/s</p>
+  `;
+}
+
+// 検索フォームのイベントリスナー
+document.getElementById('searchForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const city = document.getElementById('cityInput').value;
+  getWeather(city);
+});
+
+// 使用例（JSONPlaceholderで練習）
+async function practiceWithJSONPlaceholder() {
+  try {
+    // ユーザー一覧を取得
+    const usersRes = await fetch('https://jsonplaceholder.typicode.com/users');
+    const users = await usersRes.json();
+
+    // 最初のユーザーの投稿を取得
+    const postsRes = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${users[0].id}`);
+    const posts = await postsRes.json();
+
+    console.log(`${users[0].name}の投稿数: ${posts.length}`);
+
+  } catch (error) {
+    console.error('データ取得エラー:', error);
+  }
+}",
+                        'code_language' => 'javascript',
+                        'sort_order' => 4
+                    ],
+                ],
+            ],
+            [
+                'title' => '第13週：総合課題①',
+                'description' => '天気予報アプリまたはタスク管理アプリの作成',
+                'sort_order' => 13,
+                'estimated_minutes' => 540,
+                'priority' => 5,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => 'プロジェクト計画', 'estimated_minutes' => 60, 'sort_order' => 1],
+                    ['title' => 'UI設計と実装', 'estimated_minutes' => 240, 'sort_order' => 2],
+                    ['title' => '機能実装', 'estimated_minutes' => 240, 'sort_order' => 3],
+                ],
+                'knowledge_items' => [],
+            ],
+            [
+                'title' => '第14週：総合課題②',
+                'description' => '総合課題の機能追加とブラッシュアップ',
+                'sort_order' => 14,
+                'estimated_minutes' => 540,
+                'priority' => 5,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => 'データ永続化の実装', 'estimated_minutes' => 180, 'sort_order' => 1],
+                    ['title' => 'エラーハンドリング', 'estimated_minutes' => 180, 'sort_order' => 2],
+                    ['title' => 'UI/UXの改善', 'estimated_minutes' => 180, 'sort_order' => 3],
+                ],
+                'knowledge_items' => [],
+            ],
+            [
+                'title' => '第15週：総合課題③（最終発表）',
+                'description' => '最終調整、コードレビュー、発表準備',
+                'sort_order' => 15,
+                'estimated_minutes' => 540,
+                'priority' => 5,
+                'resources' => [],
+                'subtasks' => [
+                    ['title' => 'コードのリファクタリング', 'estimated_minutes' => 180, 'sort_order' => 1],
+                    ['title' => 'テストとデバッグ', 'estimated_minutes' => 180, 'sort_order' => 2],
+                    ['title' => 'ドキュメント作成', 'estimated_minutes' => 90, 'sort_order' => 3],
+                    ['title' => '発表準備', 'estimated_minutes' => 90, 'sort_order' => 4],
+                ],
+                'knowledge_items' => [],
+            ],
+        ]);
     }
 }
