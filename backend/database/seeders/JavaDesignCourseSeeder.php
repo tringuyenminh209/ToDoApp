@@ -65,34 +65,34 @@ class JavaDesignCourseSeeder extends Seeder
                         'title' => 'スコープ（変数の有効範囲）',
                         'content' => "# スコープ（変数の有効範囲）\n\n**スコープ**とは、変数が参照できる範囲のこと。\n\n## 1. ローカル変数のスコープ\n\nメソッド内で宣言した変数は、**宣言したブロック（{ }）内**でしか参照できない。\n\n```java\npublic void method1() {\n    int x = 10;  // xのスコープはmethod1内のみ\n    System.out.println(x);  // OK\n}\n\npublic void method2() {\n    System.out.println(x);  // エラー！xは参照できない\n}\n```\n\n## 2. フィールドのスコープ\n\nクラスの直下で宣言したフィールドは、**同じクラス内の全てのメソッド**から参照できる。\n\n```java\npublic class Example {\n    private int count = 0;  // フィールド\n    \n    public void increment() {\n        count++;  // OK: フィールドを参照\n    }\n    \n    public void display() {\n        System.out.println(count);  // OK: フィールドを参照\n    }\n}\n```\n\n## 3. ブロックスコープ\n\nif文、for文などのブロック内で宣言した変数は、そのブロック内でのみ有効。\n\n```java\nif (condition) {\n    int temp = 5;  // tempのスコープはこのif文内のみ\n    System.out.println(temp);  // OK\n}\nSystem.out.println(temp);  // エラー！\n```\n\n## スコープのベストプラクティス\n\n- 変数のスコープは**できるだけ狭く**する\n- 必要な場所でのみ宣言する\n- グローバル変数の乱用は避ける",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'フィールドとローカル変数の違い',
                         'content' => "import java.util.Scanner;\n\npublic class FieldVsLocal {\n    // フィールド（クラス変数）\n    public static int fieldCount = 0;\n    \n    public static void method1() {\n        // ローカル変数\n        int localCount = 0;\n        \n        fieldCount++;  // フィールドは全メソッドから参照可能\n        localCount++;  // ローカル変数はこのメソッド内のみ\n        \n        System.out.println(\"method1 - fieldCount: \" + fieldCount);\n        System.out.println(\"method1 - localCount: \" + localCount);\n    }\n    \n    public static void method2() {\n        fieldCount++;  // OK: フィールドは参照可能\n        // localCount++;  // エラー！ローカル変数は参照できない\n        \n        System.out.println(\"method2 - fieldCount: \" + fieldCount);\n    }\n    \n    public static void main(String[] args) {\n        System.out.println(\"初期 - fieldCount: \" + fieldCount);\n        \n        method1();  // fieldCount: 1, localCount: 1\n        method1();  // fieldCount: 2, localCount: 1（毎回初期化される）\n        method2();  // fieldCount: 3\n        \n        System.out.println(\"最終 - fieldCount: \" + fieldCount);  // 3\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'フィールドの基本例',
                         'content' => "import java.util.Scanner;\n\npublic class Note01_Field {\n    // フィールドを定義\n    public static int sum = 100;    // 合計値\n    /*\n        ※補足\n        フィールドはstatic修飾子を付けるとクラス変数、付けないとインスタンス変数として扱われる。\n        更にpublic修飾子を付けると他クラスやパッケージからも参照できるグローバル変数として扱われる。\n        これらの意味は別の回で説明する為、現時点では一先ずpublic staticを前に記述しておいてください。\n     */\n    \n    /**\n     * 加算メソッド\n     * @param x 加算する値\n     * @return 加算後の合計値\n     */\n    public static int add(int x){ \n        return sum += x; \n    }\n    \n    /**\n     * 減算メソッド\n     * @param x 減算する値\n     * @return 減算後の合計値\n     */\n    public static int subtract(int x){ \n        return sum -= x; \n    }\n    \n    public static void main(String[] args) {\n        // 入力用オブジェクト\n        Scanner in = new Scanner(System.in);\n        // 入力値用変数\n        int num;\n        /*\n            復習：これら（in,num）のメソッド内で宣言した変数はローカル変数といい、\n            宣言したブロック内でしか参照できない。参照できる範囲をスコープという。\n         */\n        \n        System.out.println(\"加算前の合計値：\" + sum);\n        System.out.print(\"加算する数値＞\");\n        num = in.nextInt();\n        System.out.println(\"加算後：\" + add(num));\n        \n        System.out.print(\"減算する数値＞\");\n        num = in.nextInt();\n        System.out.println(\"減算後：\" + subtract(num));\n        \n        in.close();\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'フィールドのデフォルト値',
                         'content' => "# フィールドのデフォルト値\n\nフィールドは初期化しなくても、**自動的にデフォルト値**が設定されます。\n\n## 基本型のデフォルト値\n\n| 型 | デフォルト値 |\n|---|------------|\n| byte | 0 |\n| short | 0 |\n| int | 0 |\n| long | 0L |\n| float | 0.0f |\n| double | 0.0d |\n| char | '\\u0000' |\n| boolean | false |\n\n## 参照型のデフォルト値\n\n- すべての参照型（String, 配列, オブジェクトなど）: **null**\n\n```java\npublic class DefaultValues {\n    private int number;        // 0\n    private boolean flag;      // false\n    private String text;       // null\n    private int[] array;       // null\n    \n    public void display() {\n        System.out.println(\"number: \" + number);  // 0\n        System.out.println(\"flag: \" + flag);      // false\n        System.out.println(\"text: \" + text);      // null\n    }\n}\n```\n\n## 注意点\n\n**ローカル変数**は自動初期化されません！\n使用前に必ず初期化が必要です。\n\n```java\npublic void method() {\n    int x;  // デフォルト値なし\n    System.out.println(x);  // コンパイルエラー！\n}\n```",
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '実践例：のび太のおつかい',
                         'content' => "import java.util.Scanner;\n\npublic class NobiMoney {\n    // フィールド：のび太の所持金\n    public static int money = 1000;\n    \n    /**\n     * 買い物メソッド\n     * @param itemName 商品名\n     * @param price 価格\n     */\n    public static void buy(String itemName, int price) {\n        if (money >= price) {\n            money -= price;\n            System.out.println(itemName + \"を\" + price + \"円で購入しました。\");\n            System.out.println(\"残金：\" + money + \"円\");\n        } else {\n            System.out.println(\"お金が足りません！\");\n            System.out.println(\"残金：\" + money + \"円、必要額：\" + price + \"円\");\n        }\n    }\n    \n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n        System.out.println(\"のび太のおつかいゲーム\");\n        System.out.println(\"所持金：\" + money + \"円\");\n        System.out.println(\"==================\");\n        \n        // ドラ焼きを買う\n        buy(\"ドラ焼き\", 150);\n        \n        // 漫画を買う  \n        buy(\"漫画\", 500);\n        \n        // ゲームを買おうとする\n        buy(\"ゲーム\", 5000);\n        \n        System.out.println(\"\\n最終残金：\" + money + \"円\");\n        in.close();\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 6
-                    },
+                    ],
                 ],
             ],
             [
@@ -209,7 +209,7 @@ class JavaDesignCourseSeeder extends Seeder
                         'content' => "// 秘密の数字を扱うクラス（読み取り専用フィールドの例）\npublic class SecretNumber {\n    private int secretNumber;  // 秘密の数字\n    private int attemptCount;  // 試行回数\n    \n    public SecretNumber(int max) {\n        // 1からmaxまでのランダムな数字を生成\n        this.secretNumber = (int)(Math.random() * max) + 1;\n        this.attemptCount = 0;\n    }\n    \n    // getterのみ提供（setterは提供しない = 読み取り専用）\n    public int getAttemptCount() {\n        return this.attemptCount;\n    }\n    \n    // secretNumberにはgetterも提供しない（完全に隠蔽）\n    \n    // ビジネスロジック：予想が当たっているかチェック\n    public boolean guess(int number) {\n        this.attemptCount++;\n        \n        if (number == this.secretNumber) {\n            System.out.println(\"正解！ \" + attemptCount + \"回で当てました！\");\n            return true;\n        } else if (number < this.secretNumber) {\n            System.out.println(\"もっと大きいです\");\n            return false;\n        } else {\n            System.out.println(\"もっと小さいです\");\n            return false;\n        }\n    }\n    \n    // 答えを表示（ゲームオーバー時のみ使用）\n    public void reveal() {\n        System.out.println(\"答えは \" + this.secretNumber + \" でした\");\n    }\n}\n\n// 使用例：数当てゲーム\nimport java.util.Scanner;\n\npublic class NumberGuessGame {\n    public static void main(String[] args) {\n        SecretNumber game = new SecretNumber(100);  // 1-100の数字\n        Scanner scanner = new Scanner(System.in);\n        \n        System.out.println(\"1から100の数字を当ててください！\");\n        \n        while (true) {\n            System.out.print(\"予想 > \");\n            int guess = scanner.nextInt();\n            \n            if (game.guess(guess)) {\n                break;  // 正解したら終了\n            }\n            \n            if (game.getAttemptCount() >= 10) {\n                System.out.println(\"ゲームオーバー！\");\n                game.reveal();\n                break;\n            }\n        }\n        \n        scanner.close();\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'getter/setterのベストプラクティス',
@@ -257,20 +257,20 @@ class JavaDesignCourseSeeder extends Seeder
                         'content' => "public class Card {\n    // クラス定数（全カードで共通）\n    private static final String[] SUITS = {\"♠\", \"♥\", \"♦\", \"♣\"};\n    private static final String[] RANKS = {\"A\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", \"8\", \"9\", \"10\", \"J\", \"Q\", \"K\"};\n    \n    // クラス変数（全カードで共有）\n    private static int totalCardsCreated = 0;\n    \n    // インスタンス変数（各カード固有）\n    private String suit;  // スート（マーク）\n    private String rank;  // ランク（数字・記号）\n    private int value;    // 値\n    \n    // コンストラクタ\n    public Card(String suit, String rank) {\n        this.suit = suit;\n        this.rank = rank;\n        this.value = calculateValue(rank);\n        totalCardsCreated++;\n    }\n    \n    // 静的メソッド：デッキ（52枚）を生成するファクトリーメソッド\n    public static Card[] createDeck() {\n        Card[] deck = new Card[52];\n        int index = 0;\n        \n        for (String suit : SUITS) {\n            for (String rank : RANKS) {\n                deck[index++] = new Card(suit, rank);\n            }\n        }\n        \n        return deck;\n    }\n    \n    // 静的メソッド：生成されたカード総数を取得\n    public static int getTotalCardsCreated() {\n        return totalCardsCreated;\n    }\n    \n    // 静的メソッド：ランクから値を計算（ユーティリティ）\n    private static int calculateValue(String rank) {\n        switch (rank) {\n            case \"A\": return 11;\n            case \"J\":\n            case \"Q\":\n            case \"K\": return 10;\n            default: return Integer.parseInt(rank);\n        }\n    }\n    \n    // インスタンスメソッド\n    public String toString() {\n        return suit + rank;\n    }\n    \n    public int getValue() {\n        return this.value;\n    }\n}\n\n// 使用例\npublic class CardGame {\n    public static void main(String[] args) {\n        // ファクトリーメソッドでデッキを生成\n        Card[] deck = Card.createDeck();\n        \n        System.out.println(\"デッキを生成しました（52枚）\");\n        System.out.println(\"生成されたカード総数: \" + Card.getTotalCardsCreated());\n        \n        // 最初の5枚を表示\n        System.out.println(\"\\n最初の5枚:\");\n        for (int i = 0; i < 5; i++) {\n            System.out.println(deck[i] + \" (値: \" + deck[i].getValue() + \")\");\n        }\n    }\n}\n\n// 出力例:\n// デッキを生成しました（52枚）\n// 生成されたカード総数: 52\n//\n// 最初の5枚:\n// ♠A (値: 11)\n// ♠2 (値: 2)\n// ♠3 (値: 3)\n// ♠4 (値: 4)\n// ♠5 (値: 5)",
                         'code_language' => 'java',
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'staticフィールドとメソッドの制約',
                         'content' => "# staticメソッドからのアクセス制約\n\n## ❌ 静的メソッドからできないこと\n\n```java\npublic class Example {\n    private String instanceVar = \"インスタンス変数\";\n    private static String classVar = \"クラス変数\";\n    \n    public static void staticMethod() {\n        // ❌ インスタンス変数にアクセスできない\n        // System.out.println(instanceVar);  // コンパイルエラー\n        \n        // ❌ thisキーワードは使えない\n        // this.classVar = \"変更\";  // コンパイルエラー\n        \n        // ❌ インスタンスメソッドを呼び出せない\n        // instanceMethod();  // コンパイルエラー\n    }\n    \n    public void instanceMethod() {\n        System.out.println(\"インスタンスメソッド\");\n    }\n}\n```\n\n## ✅ 静的メソッドからできること\n\n```java\npublic class Example {\n    private static String classVar = \"クラス変数\";\n    \n    public static void staticMethod1() {\n        // ✅ クラス変数にアクセスできる\n        System.out.println(classVar);\n        \n        // ✅ 他の静的メソッドを呼び出せる\n        staticMethod2();\n        \n        // ✅ インスタンスを生成すればインスタンスメンバにアクセスできる\n        Example obj = new Example();\n        obj.instanceMethod();\n    }\n    \n    public static void staticMethod2() {\n        System.out.println(\"静的メソッド2\");\n    }\n    \n    public void instanceMethod() {\n        System.out.println(\"インスタンスメソッド\");\n    }\n}\n```\n\n## なぜこのような制約があるのか\n\n```\nプログラム起動\n    ↓\n【静的メンバがメモリに配置】← この時点で使える\n    ↓\nクラスのロード\n    ↓\nnew でインスタンス化\n    ↓\n【インスタンスメンバがメモリに配置】← この時点で使える\n```\n\n静的メソッドは**インスタンス化前から存在**しているため、\nまだ存在しないインスタンスメンバにはアクセスできない。\n\n## staticの誤用例\n\n```java\n// ❌ 悪い例：全てをstaticにする\npublic class BadExample {\n    private static String name;\n    private static int age;\n    \n    public static void setName(String n) {\n        name = n;  // 全インスタンスで共有されてしまう！\n    }\n}\n\n// ✅ 良い例：インスタンスごとに異なる値はstaticにしない\npublic class GoodExample {\n    private String name;  // インスタンス変数\n    private int age;      // インスタンス変数\n    \n    public void setName(String name) {\n        this.name = name;  // 各インスタンス固有\n    }\n}",
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'インスタンス配列の使用例',
                         'content' => "// インスタンス配列とは：インスタンスを配列で管理する\npublic class Monster {\n    private String name;\n    private int hp;\n    \n    public Monster(String name, int hp) {\n        this.name = name;\n        this.hp = hp;\n    }\n    \n    public void introduce() {\n        System.out.println(name + \" (HP: \" + hp + \")\");\n    }\n    \n    public String getName() {\n        return name;\n    }\n}\n\npublic class MonsterParty {\n    public static void main(String[] args) {\n        // インスタンス配列の宣言と生成\n        Monster[] party = new Monster[3];\n        \n        // 注意：配列を作っただけでは各要素はnull\n        // System.out.println(party[0].getName());  // NullPointerException!\n        \n        // 各要素をインスタンス化する必要がある\n        party[0] = new Monster(\"ピカチュウ\", 100);\n        party[1] = new Monster(\"リザードン\", 150);\n        party[2] = new Monster(\"カビゴン\", 200);\n        \n        // 配列をループで処理\n        System.out.println(\"=== パーティメンバー ===\");\n        for (int i = 0; i < party.length; i++) {\n            System.out.print((i + 1) + \". \");\n            party[i].introduce();\n        }\n        \n        // 拡張for文（for-each）でも処理可能\n        System.out.println(\"\\n=== 拡張for文 ===\");\n        for (Monster monster : party) {\n            monster.introduce();\n        }\n        \n        // 配列の初期化を同時に行う方法\n        Monster[] enemies = {\n            new Monster(\"スライム\", 50),\n            new Monster(\"ゴブリン\", 80),\n            new Monster(\"ドラゴン\", 300)\n        };\n        \n        System.out.println(\"\\n=== 敵モンスター ===\");\n        for (Monster enemy : enemies) {\n            enemy.introduce();\n        }\n    }\n}\n\n// 出力:\n// === パーティメンバー ===\n// 1. ピカチュウ (HP: 100)\n// 2. リザードン (HP: 150)\n// 3. カビゴン (HP: 200)\n//\n// === 拡張for文 ===\n// ピカチュウ (HP: 100)\n// リザードン (HP: 150)\n// カビゴン (HP: 200)\n//\n// === 敵モンスター ===\n// スライム (HP: 50)\n// ゴブリン (HP: 80)\n// ドラゴン (HP: 300)",
                         'code_language' => 'java',
                         'sort_order' => 6
-                    },
+                    ],
                 ],
             ],
         ]);
@@ -316,7 +316,7 @@ class JavaDesignCourseSeeder extends Seeder
                         'content' => "// スーパークラス（親クラス）\npublic class Monster {\n    protected String name;  // protectedでサブクラスからアクセス可能\n    protected int hp;\n    protected int attack;\n    \n    public Monster(String name, int hp, int attack) {\n        this.name = name;\n        this.hp = hp;\n        this.attack = attack;\n    }\n    \n    public void introduce() {\n        System.out.println(\"私は\" + name + \"です。HP:\" + hp);\n    }\n    \n    public void normalAttack() {\n        System.out.println(name + \"の通常攻撃！ダメージ:\" + attack);\n    }\n}\n\n// サブクラス（子クラス）- 炎タイプのモンスター\npublic class FireMonster extends Monster {\n    private int firepower;  // サブクラス独自のフィールド\n    \n    public FireMonster(String name, int hp, int attack, int firepower) {\n        super(name, hp, attack);  // スーパークラスのコンストラクタ呼び出し\n        this.firepower = firepower;\n    }\n    \n    // サブクラス独自のメソッド\n    public void fireAttack() {\n        System.out.println(name + \"の火炎放射！ダメージ:\" + (attack + firepower));\n    }\n}\n\n// サブクラス - 水タイプのモンスター\npublic class WaterMonster extends Monster {\n    private int waterpower;\n    \n    public WaterMonster(String name, int hp, int attack, int waterpower) {\n        super(name, hp, attack);\n        this.waterpower = waterpower;\n    }\n    \n    public void waterAttack() {\n        System.out.println(name + \"のハイドロポンプ！ダメージ:\" + (attack + waterpower));\n    }\n}\n\n// 使用例\npublic class Main {\n    public static void main(String[] args) {\n        FireMonster charmander = new FireMonster(\"ヒトカゲ\", 80, 50, 30);\n        WaterMonster squirtle = new WaterMonster(\"ゼニガメ\", 90, 45, 35);\n        \n        // スーパークラスから継承したメソッド\n        charmander.introduce();      // 私はヒトカゲです。HP:80\n        charmander.normalAttack();   // ヒトカゲの通常攻撃！ダメージ:50\n        \n        // サブクラス独自のメソッド\n        charmander.fireAttack();     // ヒトカゲの火炎放射！ダメージ:80\n        \n        squirtle.introduce();\n        squirtle.waterAttack();      // ゼニガメのハイドロポンプ！ダメージ:80\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'superキーワード',
@@ -329,26 +329,26 @@ class JavaDesignCourseSeeder extends Seeder
                         'content' => "public class Monster {\n    protected String name;\n    protected int hp;\n    protected int level;\n    \n    public Monster(String name, int hp, int level) {\n        this.name = name;\n        this.hp = hp;\n        this.level = level;\n        System.out.println(\"Monsterのコンストラクタが実行されました\");\n    }\n    \n    public void showStatus() {\n        System.out.println(\"[\" + name + \"] HP:\" + hp + \" Level:\" + level);\n    }\n}\n\npublic class FireMonster extends Monster {\n    private int firepower;\n    \n    public FireMonster(String name, int hp, int level, int firepower) {\n        // super()でスーパークラスのコンストラクタを呼び出す\n        super(name, hp, level);  // 必ず最初の行\n        this.firepower = firepower;\n        System.out.println(\"FireMonsterのコンストラクタが実行されました\");\n    }\n    \n    // メソッドのオーバーライド\n    @Override\n    public void showStatus() {\n        // super.メソッド名()でスーパークラスのメソッドを呼び出す\n        super.showStatus();  // Monsterクラスのshow Statusを実行\n        System.out.println(\"火力:\" + firepower);\n    }\n    \n    public void levelUp() {\n        // super.フィールド名でスーパークラスのフィールドにアクセス\n        super.level++;  // protectedなのでアクセス可能\n        this.firepower += 10;\n        System.out.println(name + \"がレベルアップした！ Level:\" + level);\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        FireMonster charmander = new FireMonster(\"ヒトカゲ\", 80, 5, 50);\n        // 出力:\n        // Monsterのコンストラクタが実行されました\n        // FireMonsterのコンストラクタが実行されました\n        \n        charmander.showStatus();\n        // 出力:\n        // [ヒトカゲ] HP:80 Level:5\n        // 火力:50\n        \n        charmander.levelUp();\n        // 出力: ヒトカゲがレベルアップした！ Level:6\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'メソッドのオーバーライド',
                         'content' => "# オーバーライドとは\n\nスーパークラスに定義しているメソッドと**同一のシグネチャ**を持つメソッドをサブクラスに定義すること。\n\n**シグネチャ** = メソッド名 + 引数の型 + 引数の数\n\nサブクラスのオブジェクトに対してメソッドを呼び出した場合、【サブクラス側のメソッドが優先して実行される】\n\n## オーバーライドの条件\n\n| 項目 | 条件 |\n|------|------|\n| メソッド名 | 同じ |\n| 引数の型・数・順序 | 同じ |\n| 戻り値の型 | 同じ（または共変戻り値型） |\n| アクセス修飾子 | 同じか、より広い範囲 |\n\n## @Overrideアノテーション\n\n```java\n@Override\npublic void attack() {\n    // オーバーライドしていることを明示\n}\n```\n\n- オーバーライドの意図を明示する\n- シグネチャが一致しない場合、コンパイルエラーを出してくれる\n- **必須ではないが、使用を強く推奨**\n\n## オーバーライドできるもの・できないもの\n\n### ✅ オーバーライドできる\n- publicメソッド\n- protectedメソッド\n- デフォルト（package-private）メソッド\n\n### ❌ オーバーライドできない\n- privateメソッド（サブクラスから見えない）\n- staticメソッド（クラスに属するため）\n- finalメソッド（変更不可として宣言されているため）\n- コンストラクタ（継承されないため）\n\n## オーバーライドの例\n\n```java\npublic class Monster {\n    public void attack() {\n        System.out.println(\"通常攻撃！\");\n    }\n}\n\npublic class FireMonster extends Monster {\n    @Override\n    public void attack() {\n        System.out.println(\"火炎攻撃！\");  // 上書き\n    }\n    \n    // ❌ エラー：戻り値の型が異なる\n    // @Override\n    // public int attack() { return 0; }\n    \n    // ❌ エラー：アクセス修飾子を狭くできない\n    // @Override\n    // private void attack() { }\n    \n    // ✅ OK：アクセス修飾子を広くするのはOK\n    @Override\n    public void attack() { }\n}",
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '実践例：Monsterクラスの継承階層',
                         'content' => "// 基底クラス\npublic class Monster {\n    protected String name;\n    protected int hp;\n    protected int attack;\n    protected String type;\n    \n    public Monster(String name, int hp, int attack, String type) {\n        this.name = name;\n        this.hp = hp;\n        this.attack = attack;\n        this.type = type;\n    }\n    \n    public void introduce() {\n        System.out.println(\"名前:\" + name + \" / タイプ:\" + type);\n    }\n    \n    public void attack(Monster target) {\n        System.out.println(name + \"の攻撃！\");\n        target.receiveDamage(this.attack);\n    }\n    \n    public void receiveDamage(int damage) {\n        this.hp -= damage;\n        System.out.println(name + \"は\" + damage + \"のダメージを受けた！ 残りHP:\" + hp);\n        if (this.hp <= 0) {\n            System.out.println(name + \"は倒れた...\");\n        }\n    }\n}\n\n// 炎タイプ\npublic class FireMonster extends Monster {\n    private int firepower;\n    \n    public FireMonster(String name, int hp, int attack, int firepower) {\n        super(name, hp, attack, \"炎\");\n        this.firepower = firepower;\n    }\n    \n    @Override\n    public void attack(Monster target) {\n        System.out.println(name + \"の火炎攻撃！\");\n        int totalDamage = this.attack + this.firepower;\n        target.receiveDamage(totalDamage);\n    }\n    \n    public void fireBreath() {\n        System.out.println(name + \"の大火炎！威力:\" + (attack + firepower * 2));\n    }\n}\n\n// 水タイプ\npublic class WaterMonster extends Monster {\n    private int waterpower;\n    \n    public WaterMonster(String name, int hp, int attack, int waterpower) {\n        super(name, hp, attack, \"水\");\n        this.waterpower = waterpower;\n    }\n    \n    @Override\n    public void attack(Monster target) {\n        System.out.println(name + \"の水鉄砲！\");\n        int totalDamage = this.attack + this.waterpower;\n        \n        // 相手が炎タイプなら2倍ダメージ\n        if (target instanceof FireMonster) {\n            totalDamage *= 2;\n            System.out.println(\"効果は抜群だ！\");\n        }\n        \n        target.receiveDamage(totalDamage);\n    }\n}\n\n// 使用例\npublic class Battle {\n    public static void main(String[] args) {\n        FireMonster lizardon = new FireMonster(\"リザードン\", 150, 50, 40);\n        WaterMonster kamex = new WaterMonster(\"カメックス\", 160, 45, 45);\n        \n        lizardon.introduce();  // 名前:リザードン / タイプ:炎\n        kamex.introduce();     // 名前:カメックス / タイプ:水\n        \n        System.out.println(\"\\n=== バトル開始！ ===\");\n        \n        // ラウンド1\n        lizardon.attack(kamex);  // リザードンの火炎攻撃！\n        // カメックスは90のダメージを受けた！ 残りHP:70\n        \n        // ラウンド2\n        kamex.attack(lizardon);  // カメックスの水鉄砲！\n        // 効果は抜群だ！\n        // リザードンは180のダメージを受けた！ 残りHP:-30\n        // リザードンは倒れた...\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 6
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => '継承の設計原則',
                         'content' => "# is-a関係とhas-a関係\n\n## is-a関係（継承を使う）\n\n「FireMonster **は** Monster **である**」という関係\n\n```java\npublic class FireMonster extends Monster { }\n// FireMonsterはMonsterの一種\n```\n\n適切な例：\n- 犬 is-a 動物 ✅\n- リンゴ is-a 果物 ✅\n- 正社員 is-a 従業員 ✅\n\n## has-a関係（コンポジションを使う）\n\n「Monster **は** Weapon を**持っている**」という関係\n\n```java\npublic class Monster {\n    private Weapon weapon;  // MonsterはWeaponを持つ\n}\n```\n\n適切な例：\n- 車 has-a エンジン ✅\n- 人 has-a 住所 ✅\n- モンスター has-a 武器 ✅\n\n## 継承を使うべき場合・使うべきでない場合\n\n### ✅ 継承を使うべき場合\n- 明確なis-a関係がある\n- スーパークラスのメソッドをサブクラスでオーバーライドする必要がある\n- ポリモーフィズムを活用したい\n\n### ❌ 継承を使うべきでない場合\n```java\n// 悪い例：Stackは Vectorではない（実装の継承）\nclass Stack extends Vector { }  // ❌\n\n// 良い例：Stackは Vectorを持つ（コンポジション）\nclass Stack {\n    private Vector data;  // ✅\n}\n```\n\n```java\n// 悪い例：コードを再利用したいだけで継承\nclass Employee extends Person { }  // Personの機能が欲しいだけ ❌\n\n// 良い例：本当にis-a関係があるときだけ継承\nclass Manager extends Employee { }  // ManagerはEmployeeの一種 ✅\n```\n\n## 継承階層の深さ\n\n```\n深すぎる継承階層は避ける：\nAnimal → Mammal → Carnivore → Feline → Cat → DomesticCat → ペルシャ猫 ❌\n\n適切な深さ：\nAnimal → Mammal → Cat ✅\n```\n\n一般的には**3～4階層まで**が管理しやすい。",
                         'sort_order' => 7
-                    },
+                    ],
                 ],
             ],
             [
@@ -376,20 +376,20 @@ class JavaDesignCourseSeeder extends Seeder
                         'title' => '型の互換性とアップキャスト',
                         'content' => "# 型の互換性\n\nスーパークラスを継承したサブクラスはスーパークラスの機能を引き継ぐ為、互換性を持つ。\nその為、サブクラスのインスタンスはスーパークラスのデータ型変数に格納することが可能である。\n\n```java\n// 例：MonsterクラスをFireMonsterクラスが継承している場合\nFireMonster hitokage = new FireMonster();\n// ↑ 型が一致している為、もちろん格納可能\n\nMonster hitokage = new FireMonster();\n// ↑ FireMonsterインスタンスはMonsterクラスの機能を保持している為、格納可能\n\nFireMonster hitokage = new Monster();\n// ↑ MonsterインスタンスはFireMonsterクラスの機能を持たない為、コンパイルエラーとなる\n```\n\n## アップキャスト（暗黙の型変換）\n\nサブクラス型からスーパークラス型への変換を**アップキャスト**という。\nアップキャストは**自動的に行われる**（明示的なキャストが不要）。\n\n```java\nFireMonster fire = new FireMonster(\"ヒトカゲ\", 80, 50, 30);\nMonster monster = fire;  // アップキャスト（自動）\n```\n\n## アップキャスト後のアクセス制限\n\n```java\nMonster monster = new FireMonster(\"ヒトカゲ\", 80, 50, 30);\nmonster.introduce();  // ✅ OK\n// monster.fireBreath();  // ❌ エラー: FireMonster固有のメソッドは呼び出せない\n```",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'ポリモーフィズムの実践例',
                         'content' => "public class Monster {\n    protected String name;\n    protected int hp;\n    \n    public Monster(String name, int hp) {\n        this.name = name;\n        this.hp = hp;\n    }\n    \n    public void attack() {\n        System.out.println(name + \"の攻撃！\");\n    }\n}\n\npublic class FireMonster extends Monster {\n    public FireMonster(String name, int hp) {\n        super(name, hp);\n    }\n    \n    @Override\n    public void attack() {\n        System.out.println(name + \"の火炎攻撃！！！\");\n    }\n}\n\npublic class WaterMonster extends Monster {\n    public WaterMonster(String name, int hp) {\n        super(name, hp);\n    }\n    \n    @Override\n    public void attack() {\n        System.out.println(name + \"の水鉄砲！\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // ポリモーフィズム：スーパークラス型の配列で管理\n        Monster[] party = new Monster[3];\n        party[0] = new FireMonster(\"ヒトカゲ\", 80);\n        party[1] = new WaterMonster(\"ゼニガメ\", 90);\n        party[2] = new Monster(\"ピカチュウ\", 85);\n        \n        // 同じコードで異なる処理を実行！\n        for (Monster m : party) {\n            m.attack();  // 実際の型に応じた攻撃が実行される\n        }\n        \n        /* 出力:\n        ヒトカゲの火炎攻撃！！！\n        ゼニガメの水鉄砲！\n        ピカチュウの攻撃！\n        */\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'ダウンキャストとinstanceof',
                         'content' => "# ダウンキャスト\n\nスーパークラス型からサブクラス型への変換を**ダウンキャスト**という。\nダウンキャストは**明示的にキャストが必要**で、実行時エラーのリスクがある。\n\n```java\nMonster monster = new FireMonster(\"ヒトカゲ\", 80, 50, 30);\nFireMonster fire = (FireMonster) monster;  // ダウンキャスト\nfire.fireBreath();  // OK\n```\n\n## ダウンキャストの危険性\n\n```java\nMonster monster = new WaterMonster(\"ゼニガメ\", 90);\nFireMonster fire = (FireMonster) monster;  // ❌ ClassCastException!\n```\n\n## instanceof演算子で安全にチェック\n\n```java\nMonster monster = new FireMonster(\"ヒトカゲ\", 80, 50, 30);\n\nif (monster instanceof FireMonster) {\n    FireMonster fire = (FireMonster) monster;\n    fire.fireBreath();  // 安全\n}\n```\n\n## instanceofの使用例\n\n```java\nfor (Monster m : monsters) {\n    if (m instanceof FireMonster) {\n        System.out.println(\"炎タイプ！\");\n    } else if (m instanceof WaterMonster) {\n        System.out.println(\"水タイプ！\");\n    }\n}\n```",
                         'sort_order' => 4
-                    },
+                    ],
                 ],
             ],
             [
@@ -418,13 +418,13 @@ class JavaDesignCourseSeeder extends Seeder
                         'content' => "// 抽象クラス\npublic abstract class RPGCharacter {\n    protected String name;\n    protected int hp;\n    \n    public RPGCharacter(String name, int hp) {\n        this.name = name;\n        this.hp = hp;\n    }\n    \n    // 具象メソッド\n    public void showStatus() {\n        System.out.println(name + \" HP:\" + hp);\n    }\n    \n    // 抽象メソッド\n    public abstract void attack();\n    public abstract void specialSkill();\n}\n\n// 具象クラス\npublic class Warrior extends RPGCharacter {\n    public Warrior(String name) {\n        super(name, 150);\n    }\n    \n    @Override\n    public void attack() {\n        System.out.println(name + \"は剣で攻撃！\");\n    }\n    \n    @Override\n    public void specialSkill() {\n        System.out.println(name + \"の必殺技！\");\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'Template Methodパターン',
                         'content' => "# Template Methodパターン\n\n処理の枠組みを抽象クラスで定義し、具体処理をサブクラスで実装。\n\n## メリット\n\n1. 処理の流れを統一\n2. 共通処理の一元管理\n3. 実装の強制\n\n```java\npublic abstract class Game {\n    public final void play() {\n        start();     // 共通\n        doAction();  // 抽象\n        end();       // 共通\n    }\n    \n    protected abstract void doAction();\n}\n```",
                         'sort_order' => 3
-                    },
+                    ],
                 ],
             ],
             [
@@ -446,20 +446,20 @@ class JavaDesignCourseSeeder extends Seeder
                         'title' => 'インターフェイスとは',
                         'content' => "# インターフェイスとは\n\nクラスが持つべきメソッドを記した**契約書**・**ルールブック**。\n\n## 特徴\n\n| 項目 | 内容 |\n|------|------|\n| メソッド | 全て抽象（public abstract省略可） |\n| フィールド | 定数のみ（public static final省略可） |\n| 多重実装 | ✅ 可能 |\n| インスタンス化 | ❌ 不可 |\n\n```java\npublic interface Flyable {\n    void fly();  // public abstract省略\n}\n\npublic class Bird implements Flyable {\n    @Override\n    public void fly() {\n        System.out.println(\"飛んでいます\");\n    }\n}\n```",
                         'sort_order' => 1
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '複数インターフェイスの実装',
                         'content' => "// インターフェイス定義\npublic interface Flyable {\n    void fly();\n}\n\npublic interface Swimmable {\n    void swim();\n}\n\n// 複数実装（カンマ区切り）\npublic class Duck implements Flyable, Swimmable {\n    @Override\n    public void fly() {\n        System.out.println(\"アヒルが飛んでいます\");\n    }\n    \n    @Override\n    public void swim() {\n        System.out.println(\"アヒルが泳いでいます\");\n    }\n}\n\n// 使用例\npublic class Main {\n    public static void main(String[] args) {\n        Duck duck = new Duck();\n        duck.fly();\n        duck.swim();\n        \n        // ポリモーフィズム\n        Flyable flyer = new Duck();\n        flyer.fly();\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => '抽象クラス vs インターフェイス',
                         'content' => "# 比較表\n\n| 項目 | 抽象クラス | インターフェイス |\n|------|-----------|----------------|\n| 具象メソッド | ✅ 可 | ❌ 不可 |\n| フィールド | ✅ 可 | 定数のみ |\n| 多重継承 | ❌ 不可 | ✅ 可 |\n| コンストラクタ | ✅ 可 | ❌ 不可 |\n\n## 使い分け\n\n**抽象クラス**: is-a関係、共通実装あり  \n**インターフェイス**: can-do関係、契約のみ\n\n```java\n// 抽象クラス：共通実装\nabstract class Animal {\n    void eat() { /* 共通 */ }\n    abstract void move();\n}\n\n// インターフェイス：機能契約\ninterface Flyable {\n    void fly();\n}\n```",
                         'sort_order' => 3
-                    },
+                    ],
                 ],
             ],
             [
@@ -487,14 +487,14 @@ class JavaDesignCourseSeeder extends Seeder
                         'title' => '列挙型（enum）とは',
                         'content' => "# 列挙型（enum）\n\n関連する定数をグループ化した特殊なクラス。\n\n## 定義\n\n```java\npublic enum Season {\n    SPRING, SUMMER, AUTUMN, WINTER\n}\n```\n\n## メリット\n\n1. **型安全**: 定義された値のみ使用可能\n2. **可読性**: 意味が明確\n3. **保守性**: 一箇所で管理\n\n## 使用例\n\n```java\nSeason season = Season.SPRING;\n\nswitch (season) {\n    case SPRING:\n        System.out.println(\"春です\");\n        break;\n    case SUMMER:\n        System.out.println(\"夏です\");\n        break;\n}\n```",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'enum実践例：じゃんけん',
                         'content' => "// じゃんけんenum\npublic enum Hand {\n    ROCK(\"グー\"),\n    SCISSORS(\"チョキ\"),\n    PAPER(\"パー\");\n    \n    private String name;\n    \n    Hand(String name) {\n        this.name = name;\n    }\n    \n    public String getName() {\n        return name;\n    }\n    \n    // 勝敗判定\n    public boolean beats(Hand other) {\n        return (this == ROCK && other == SCISSORS) ||\n               (this == SCISSORS && other == PAPER) ||\n               (this == PAPER && other == ROCK);\n    }\n}\n\n// 使用例\npublic class Main {\n    public static void main(String[] args) {\n        Hand player = Hand.ROCK;\n        Hand computer = Hand.SCISSORS;\n        \n        System.out.println(\"あなた: \" + player.getName());\n        System.out.println(\"相手: \" + computer.getName());\n        \n        if (player.beats(computer)) {\n            System.out.println(\"勝ち！\");\n        } else if (computer.beats(player)) {\n            System.out.println(\"負け！\");\n        } else {\n            System.out.println(\"引き分け！\");\n        }\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 3
-                    },
+                    ],
                 ],
             ],
         ]);
@@ -580,21 +580,21 @@ class JavaDesignCourseSeeder extends Seeder
                         'content' => "import java.util.ArrayList;\n\npublic class Main {\n    public static void main(String[] args) {\n        // ArrayList作成\n        ArrayList<String> names = new ArrayList<>();\n        \n        // 追加\n        names.add(\"太郎\");\n        names.add(\"花子\");\n        names.add(\"次郎\");\n        \n        // 取得\n        System.out.println(names.get(0));  // 太郎\n        \n        // サイズ\n        System.out.println(names.size());  // 3\n        \n        // 削除\n        names.remove(1);  // 花子を削除\n        \n        // 存在チェック\n        System.out.println(names.contains(\"太郎\"));  // true\n        \n        // 全要素表示\n        for (String name : names) {\n            System.out.println(name);\n        }\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'HashSet（Set）の使い方',
                         'content' => "import java.util.HashSet;\n\npublic class Main {\n    public static void main(String[] args) {\n        // HashSet作成（重複なし）\n        HashSet<String> set = new HashSet<>();\n        \n        // 追加\n        set.add(\"りんご\");\n        set.add(\"バナナ\");\n        set.add(\"りんご\");  // 重複は追加されない\n        \n        System.out.println(set.size());  // 2\n        \n        // 存在チェック\n        System.out.println(set.contains(\"りんご\"));  // true\n        \n        // 全要素表示（順序不定）\n        for (String fruit : set) {\n            System.out.println(fruit);\n        }\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'HashMap（Map）の使い方',
                         'content' => "import java.util.HashMap;\n\npublic class Main {\n    public static void main(String[] args) {\n        // HashMap作成（キー→値）\n        HashMap<String, Integer> scores = new HashMap<>();\n        \n        // 追加\n        scores.put(\"太郎\", 85);\n        scores.put(\"花子\", 92);\n        scores.put(\"次郎\", 78);\n        \n        // 取得\n        System.out.println(scores.get(\"花子\"));  // 92\n        \n        // キー存在チェック\n        System.out.println(scores.containsKey(\"太郎\"));  // true\n        \n        // 全要素表示\n        for (String name : scores.keySet()) {\n            System.out.println(name + \": \" + scores.get(name));\n        }\n        \n        // または\n        for (var entry : scores.entrySet()) {\n            System.out.println(entry.getKey() + \": \" + entry.getValue());\n        }\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 4
-                    },
+                    ],
                 ],
             ],
             [
@@ -623,13 +623,13 @@ class JavaDesignCourseSeeder extends Seeder
                         'content' => "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        \n        try {\n            System.out.print(\"数値を入力: \");\n            String input = scanner.nextLine();\n            int num = Integer.parseInt(input);\n            \n            System.out.print(\"割る数: \");\n            int divisor = Integer.parseInt(scanner.nextLine());\n            \n            int result = num / divisor;\n            System.out.println(\"結果: \" + result);\n            \n        } catch (NumberFormatException e) {\n            System.out.println(\"数値を入力してください\");\n        } catch (ArithmeticException e) {\n            System.out.println(\"0では割れません\");\n        } catch (Exception e) {\n            System.out.println(\"エラー: \" + e.getMessage());\n        } finally {\n            System.out.println(\"処理終了\");\n            scanner.close();\n        }\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => '例外の種類',
                         'content' => "# 例外の階層\n\n```\nThrowable\n├── Error（システムエラー）\n└── Exception\n    ├── RuntimeException（実行時例外）\n    │   ├── NullPointerException\n    │   ├── ArithmeticException\n    │   └── ArrayIndexOutOfBoundsException\n    └── IOException等（チェック例外）\n```\n\n## 2種類の例外\n\n| 種類 | 説明 | 例 |\n|------|------|----|\n| **RuntimeException** | 実行時例外、try-catch不要 | NullPointerException |\n| **チェック例外** | コンパイル時チェック、try-catch必須 | IOException |\n\n```java\n// RuntimeException（try-catchなしでもOK）\nint[] arr = {1, 2, 3};\nSystem.out.println(arr[5]);  // 実行時エラー\n\n// チェック例外（try-catch必須）\nFileReader fr = new FileReader(\"file.txt\");  // ❌ コンパイルエラー\n\n// 正しい書き方\ntry {\n    FileReader fr = new FileReader(\"file.txt\");\n} catch (FileNotFoundException e) {\n    e.printStackTrace();\n}\n```",
                         'sort_order' => 3
-                    },
+                    ],
                 ],
             ],
             [
