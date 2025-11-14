@@ -122,17 +122,17 @@ class StudyScheduleViewModel : ViewModel() {
     fun validateSchedules(): String? {
         val days = _selectedDays.value ?: emptySet()
         if (days.isEmpty()) {
-            return "Vui lòng chọn ít nhất 1 ngày học"
+            return "少なくとも1日を選択してください"
         }
 
         val time = _selectedTime.value
         if (time.isNullOrBlank()) {
-            return "Vui lòng chọn giờ học"
+            return "学習時間を選択してください"
         }
 
         val duration = _durationMinutes.value ?: 0
         if (duration < 15) {
-            return "Thời lượng tối thiểu là 15 phút"
+            return "最低15分が必要です"
         }
 
         return null // Valid
@@ -154,7 +154,7 @@ class StudyScheduleViewModel : ViewModel() {
     fun getSummaryText(): String {
         val days = _selectedDays.value?.size ?: 0
         val hours = getWeeklyStudyHours()
-        return "$days buổi/tuần • ${String.format("%.1f", hours)} giờ/tuần"
+        return "週${days}回 • 週${String.format("%.1f", hours)}時間"
     }
 
     /**
