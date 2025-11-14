@@ -3374,7 +3374,821 @@ divは**意味がない**汎用的なコンテナです。
                     ['title' => 'details と summary', 'estimated_minutes' => 120, 'sort_order' => 3],
                     ['title' => 'その他のHTML5要素', 'estimated_minutes' => 120, 'sort_order' => 4],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'figure と figcaption',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>figure と figcaption</title>
+    <style>
+        figure {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+        }
+        figcaption {
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>figure と figcaption の使い方</h1>
+
+    <!-- 基本的な使い方：画像 + キャプション -->
+    <figure>
+        <img src=\"sunset.jpg\" alt=\"美しい夕焼けの風景\">
+        <figcaption>図1: 海に沈む夕日（2024年1月撮影）</figcaption>
+    </figure>
+
+    <!-- コードスニペット -->
+    <figure>
+        <pre><code>
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+        </code></pre>
+        <figcaption>リスト1: JavaScriptの挨拶関数</figcaption>
+    </figure>
+
+    <!-- 引用文 -->
+    <figure>
+        <blockquote>
+            <p>「シンプルであることは究極の洗練である。」</p>
+        </blockquote>
+        <figcaption>— レオナルド・ダ・ヴィンチ</figcaption>
+    </figure>
+
+    <!-- 複数の画像 -->
+    <figure>
+        <img src=\"photo1.jpg\" alt=\"写真1\">
+        <img src=\"photo2.jpg\" alt=\"写真2\">
+        <img src=\"photo3.jpg\" alt=\"写真3\">
+        <figcaption>図2: プロジェクトの進行状況（3枚組）</figcaption>
+    </figure>
+
+    <!-- 表 -->
+    <figure>
+        <table border=\"1\">
+            <thead>
+                <tr>
+                    <th>年度</th>
+                    <th>売上</th>
+                    <th>利益</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2022</td>
+                    <td>1000万円</td>
+                    <td>200万円</td>
+                </tr>
+                <tr>
+                    <td>2023</td>
+                    <td>1500万円</td>
+                    <td>350万円</td>
+                </tr>
+            </tbody>
+        </table>
+        <figcaption>表1: 年度別売上と利益の推移</figcaption>
+    </figure>
+
+    <!-- SVGグラフ -->
+    <figure>
+        <svg width=\"200\" height=\"100\">
+            <rect x=\"10\" y=\"10\" width=\"40\" height=\"80\" fill=\"#4CAF50\" />
+            <rect x=\"60\" y=\"30\" width=\"40\" height=\"60\" fill=\"#2196F3\" />
+            <rect x=\"110\" y=\"20\" width=\"40\" height=\"70\" fill=\"#FF9800\" />
+        </svg>
+        <figcaption>図3: 四半期別売上グラフ</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>ポイント</h2>
+    <ul>
+        <li><strong>figure</strong>: 自己完結型のコンテンツ（画像、図表、コード、引用など）</li>
+        <li><strong>figcaption</strong>: figureの説明文（キャプション）</li>
+        <li>figcaptionは figure の最初または最後に配置</li>
+        <li>figcaption は省略可能だが、あると分かりやすい</li>
+    </ul>
+
+    <h2>いつ使うか</h2>
+    <ul>
+        <li>画像に説明が必要な場合</li>
+        <li>コードスニペットに番号やタイトルを付ける場合</li>
+        <li>引用文の出典を明記する場合</li>
+        <li>図表に番号やキャプションを付ける場合</li>
+    </ul>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'time、mark、progress',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>time、mark、progress</title>
+    <style>
+        mark {
+            background-color: yellow;
+            padding: 2px 4px;
+        }
+        .highlight-blue {
+            background-color: lightblue;
+        }
+        progress {
+            width: 300px;
+            height: 30px;
+        }
+        .progress-container {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML5の新要素：time、mark、progress</h1>
+
+    <!-- ========== time 要素 ========== -->
+    <h2>1. time 要素</h2>
+    <p>日付や時刻を機械可読形式でマークアップします。</p>
+
+    <h3>基本的な使い方</h3>
+
+    <!-- 日付 -->
+    <p>公開日: <time datetime=\"2024-01-15\">2024年1月15日</time></p>
+
+    <!-- 時刻 -->
+    <p>イベント開始: <time datetime=\"14:30\">14:30</time></p>
+
+    <!-- 日付 + 時刻 -->
+    <p>次回ミーティング: <time datetime=\"2024-02-20T10:00\">2024年2月20日 10:00</time></p>
+
+    <!-- タイムゾーン付き -->
+    <p>
+        グローバル会議:
+        <time datetime=\"2024-03-01T09:00:00+09:00\">
+            2024年3月1日 9:00（日本時間）
+        </time>
+    </p>
+
+    <!-- 期間 -->
+    <p>セール期間: <time datetime=\"2024-01-01\">1月1日</time> ～ <time datetime=\"2024-01-31\">1月31日</time></p>
+
+    <!-- 年 -->
+    <p><time datetime=\"2024\">2024年</time>の目標</p>
+
+    <!-- 月 -->
+    <p><time datetime=\"2024-06\">2024年6月</time>にリリース予定</p>
+
+    <h3>実用例</h3>
+    <article>
+        <h4>ブログ記事タイトル</h4>
+        <p>
+            投稿: <time datetime=\"2024-01-10T15:30:00+09:00\" pubdate>2024年1月10日 15:30</time>
+            <br>
+            更新: <time datetime=\"2024-01-12T09:00:00+09:00\">2024年1月12日 9:00</time>
+        </p>
+    </article>
+
+    <hr>
+
+    <!-- ========== mark 要素 ========== -->
+    <h2>2. mark 要素</h2>
+    <p>テキストをハイライト（強調表示）します。</p>
+
+    <h3>基本的な使い方</h3>
+
+    <!-- デフォルトのハイライト -->
+    <p>検索結果: HTMLの<mark>セマンティック要素</mark>について解説します。</p>
+
+    <!-- 検索キーワードのハイライト -->
+    <p>「<mark>JavaScript</mark>」の検索結果を3件見つけました。</p>
+
+    <!-- 重要な部分の強調 -->
+    <p>
+        注意: <mark>この機能は2024年12月31日でサポート終了</mark>となります。
+    </p>
+
+    <!-- カスタムスタイル -->
+    <p>
+        お知らせ:
+        <mark class=\"highlight-blue\">新機能が追加されました！</mark>
+    </p>
+
+    <h3>markとstrongの違い</h3>
+    <ul>
+        <li><code>&lt;mark&gt;</code>: <mark>視覚的なハイライト</mark>（検索結果など）</li>
+        <li><code>&lt;strong&gt;</code>: <strong>重要性の強調</strong>（意味的に重要）</li>
+    </ul>
+
+    <hr>
+
+    <!-- ========== progress 要素 ========== -->
+    <h2>3. progress 要素</h2>
+    <p>タスクの進行状況を表示します。</p>
+
+    <h3>基本的な使い方</h3>
+
+    <!-- 確定的な進行状況 -->
+    <div class=\"progress-container\">
+        <label for=\"file-progress\">ファイルアップロード:</label><br>
+        <progress id=\"file-progress\" value=\"70\" max=\"100\">70%</progress>
+        <span>70%</span>
+    </div>
+
+    <!-- 0%（開始前） -->
+    <div class=\"progress-container\">
+        <label>ダウンロード待機中:</label><br>
+        <progress value=\"0\" max=\"100\">0%</progress>
+        <span>0%</span>
+    </div>
+
+    <!-- 50%（半分完了） -->
+    <div class=\"progress-container\">
+        <label>インストール中:</label><br>
+        <progress value=\"50\" max=\"100\">50%</progress>
+        <span>50%</span>
+    </div>
+
+    <!-- 100%（完了） -->
+    <div class=\"progress-container\">
+        <label>アップロード完了:</label><br>
+        <progress value=\"100\" max=\"100\">100%</progress>
+        <span>100%</span>
+    </div>
+
+    <!-- 不確定な進行状況（value属性なし） -->
+    <div class=\"progress-container\">
+        <label>処理中（時間不明）:</label><br>
+        <progress max=\"100\">処理中...</progress>
+    </div>
+
+    <h3>JavaScriptで動的に更新</h3>
+    <div class=\"progress-container\">
+        <label>ダウンロード進行状況:</label><br>
+        <progress id=\"dynamic-progress\" value=\"0\" max=\"100\">0%</progress>
+        <span id=\"progress-text\">0%</span>
+        <br><br>
+        <button onclick=\"startProgress()\">開始</button>
+        <button onclick=\"stopProgress()\">停止</button>
+        <button onclick=\"resetProgress()\">リセット</button>
+    </div>
+
+    <script>
+        let progressValue = 0;
+        let interval;
+
+        function startProgress() {
+            interval = setInterval(() => {
+                if (progressValue < 100) {
+                    progressValue += 5;
+                    document.getElementById('dynamic-progress').value = progressValue;
+                    document.getElementById('progress-text').textContent = progressValue + '%';
+                } else {
+                    clearInterval(interval);
+                }
+            }, 200);
+        }
+
+        function stopProgress() {
+            clearInterval(interval);
+        }
+
+        function resetProgress() {
+            clearInterval(interval);
+            progressValue = 0;
+            document.getElementById('dynamic-progress').value = 0;
+            document.getElementById('progress-text').textContent = '0%';
+        }
+    </script>
+
+    <hr>
+
+    <h2>まとめ</h2>
+    <table border=\"1\" style=\"width: 100%; border-collapse: collapse;\">
+        <thead>
+            <tr>
+                <th>要素</th>
+                <th>用途</th>
+                <th>主な属性</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>&lt;time&gt;</code></td>
+                <td>日付・時刻のマークアップ</td>
+                <td><code>datetime</code></td>
+            </tr>
+            <tr>
+                <td><code>&lt;mark&gt;</code></td>
+                <td>テキストのハイライト</td>
+                <td>なし（CSSでスタイリング）</td>
+            </tr>
+            <tr>
+                <td><code>&lt;progress&gt;</code></td>
+                <td>進行状況の表示</td>
+                <td><code>value</code>, <code>max</code></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'details と summary',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>details と summary</title>
+    <style>
+        details {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            padding: 10px;
+            background: #e9e9e9;
+            border-radius: 4px;
+            user-select: none;
+        }
+        summary:hover {
+            background: #d9d9d9;
+        }
+        details[open] summary {
+            margin-bottom: 10px;
+            background: #4CAF50;
+            color: white;
+        }
+        .faq details {
+            background: white;
+            border-left: 4px solid #2196F3;
+        }
+        .nested-details {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>details と summary の使い方</h1>
+
+    <!-- 基本的な使い方 -->
+    <h2>1. 基本的な使い方</h2>
+    <details>
+        <summary>詳細を表示</summary>
+        <p>ここに詳細な内容が表示されます。クリックすると開閉できます。</p>
+    </details>
+
+    <!-- デフォルトで開いた状態 -->
+    <h2>2. デフォルトで開く（open属性）</h2>
+    <details open>
+        <summary>この項目は最初から開いています</summary>
+        <p>open属性を付けると、ページ読み込み時に開いた状態になります。</p>
+    </details>
+
+    <!-- FAQ例 -->
+    <h2>3. よくある質問（FAQ）</h2>
+    <div class=\"faq\">
+        <details>
+            <summary>Q1: アカウントの作成方法は？</summary>
+            <p>
+                A: トップページの「新規登録」ボタンをクリックし、メールアドレスとパスワードを入力してください。
+                確認メールが送信されますので、リンクをクリックして登録を完了してください。
+            </p>
+        </details>
+
+        <details>
+            <summary>Q2: パスワードを忘れた場合は？</summary>
+            <p>
+                A: ログイン画面の「パスワードを忘れた方」リンクをクリックし、登録済みのメールアドレスを入力してください。
+                パスワード再設定用のリンクが送信されます。
+            </p>
+        </details>
+
+        <details>
+            <summary>Q3: 支払い方法は何がありますか？</summary>
+            <p>A: 以下の支払い方法に対応しています：</p>
+            <ul>
+                <li>クレジットカード（Visa、MasterCard、JCB）</li>
+                <li>デビットカード</li>
+                <li>銀行振込</li>
+                <li>コンビニ決済</li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Q4: 退会方法は？</summary>
+            <p>
+                A: 設定画面から「アカウント削除」を選択してください。
+                ただし、削除後はデータの復元ができませんのでご注意ください。
+            </p>
+        </details>
+    </div>
+
+    <!-- ネスト（入れ子） -->
+    <h2>4. ネストした詳細表示</h2>
+    <details>
+        <summary>📁 プログラミング言語</summary>
+        <div class=\"nested-details\">
+            <details>
+                <summary>📄 JavaScript</summary>
+                <p>Webブラウザで動作するスクリプト言語です。</p>
+                <ul>
+                    <li>ES6の新機能</li>
+                    <li>非同期処理</li>
+                    <li>フレームワーク（React、Vue、Angular）</li>
+                </ul>
+            </details>
+
+            <details>
+                <summary>📄 Python</summary>
+                <p>汎用プログラミング言語で、データ分析やAIに強いです。</p>
+                <ul>
+                    <li>データサイエンス</li>
+                    <li>機械学習</li>
+                    <li>Web開発（Django、Flask）</li>
+                </ul>
+            </details>
+
+            <details>
+                <summary>📄 Java</summary>
+                <p>オブジェクト指向言語で、エンタープライズシステムに使われます。</p>
+            </details>
+        </div>
+    </details>
+
+    <!-- 長文の折りたたみ -->
+    <h2>5. 長文の折りたたみ</h2>
+    <details>
+        <summary>利用規約を読む（クリックして展開）</summary>
+        <article>
+            <h3>第1条（適用）</h3>
+            <p>
+                本規約は、本サービスの利用に関する条件を定めるものです。
+                ユーザーは本規約に同意した上で本サービスを利用するものとします。
+            </p>
+
+            <h3>第2条（アカウント）</h3>
+            <p>
+                ユーザーは、本サービスを利用するためにアカウントを作成する必要があります。
+                アカウント情報は正確かつ最新の状態に保つ責任があります。
+            </p>
+
+            <h3>第3条（禁止事項）</h3>
+            <p>ユーザーは以下の行為を行ってはなりません：</p>
+            <ul>
+                <li>法令または公序良俗に違反する行為</li>
+                <li>犯罪行為に関連する行為</li>
+                <li>他のユーザーに対する迷惑行為</li>
+                <li>知的財産権を侵害する行為</li>
+            </ul>
+        </article>
+    </details>
+
+    <!-- コードの折りたたみ -->
+    <h2>6. コードスニペットの折りたたみ</h2>
+    <details>
+        <summary>JavaScriptのサンプルコードを表示</summary>
+        <pre><code>
+// ユーザー情報を取得する関数
+async function fetchUserData(userId) {
+    try {
+        const response = await fetch(`/api/users/${userId}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        return null;
+    }
+}
+
+// 使用例
+fetchUserData(123).then(user => {
+    console.log(user);
+});
+        </code></pre>
+    </details>
+
+    <!-- 画像の折りたたみ -->
+    <h2>7. 画像ギャラリーの折りたたみ</h2>
+    <details>
+        <summary>写真ギャラリーを表示（3枚）</summary>
+        <div style=\"display: flex; gap: 10px;\">
+            <img src=\"https://via.placeholder.com/150\" alt=\"写真1\">
+            <img src=\"https://via.placeholder.com/150\" alt=\"写真2\">
+            <img src=\"https://via.placeholder.com/150\" alt=\"写真3\">
+        </div>
+    </details>
+
+    <hr>
+
+    <h2>まとめ</h2>
+    <ul>
+        <li><code>&lt;details&gt;</code>: 折りたたみ可能なコンテナ</li>
+        <li><code>&lt;summary&gt;</code>: クリック可能な見出し</li>
+        <li><code>open</code>属性: デフォルトで開いた状態にする</li>
+        <li>JavaScriptなしで動作する</li>
+        <li>FAQ、長文、コード、画像などの折りたたみに便利</li>
+    </ul>
+
+    <h2>JavaScriptで制御</h2>
+    <details id=\"controlled-details\">
+        <summary>JavaScriptで開閉制御</summary>
+        <p>ボタンをクリックして、この詳細を開閉できます。</p>
+    </details>
+
+    <button onclick=\"document.getElementById('controlled-details').open = true\">開く</button>
+    <button onclick=\"document.getElementById('controlled-details').open = false\">閉じる</button>
+    <button onclick=\"document.getElementById('controlled-details').toggleAttribute('open')\">切り替え</button>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'その他のHTML5要素',
+                        'content' => "# その他のHTML5要素
+
+HTML5では、さまざまな便利な要素が追加されました。
+
+---
+
+## 1. meter（メーター）
+
+**用途**: 既知の範囲内での数値を表示（ディスクの使用量、評価など）
+
+```html
+<!-- ディスク使用量 -->
+<label for=\"disk\">ディスク使用量:</label>
+<meter id=\"disk\" value=\"75\" min=\"0\" max=\"100\" low=\"30\" high=\"80\" optimum=\"20\">
+    75%
+</meter>
+<span>75GB / 100GB</span>
+
+<!-- 評価 -->
+<label>商品評価:</label>
+<meter value=\"4.5\" min=\"0\" max=\"5\" optimum=\"5\">4.5点</meter>
+
+<!-- バッテリー残量 -->
+<label>バッテリー:</label>
+<meter value=\"25\" min=\"0\" max=\"100\" low=\"20\" high=\"80\" optimum=\"100\">25%</meter>
+```
+
+### 属性
+- `value`: 現在の値
+- `min`: 最小値（デフォルト: 0）
+- `max`: 最大値（デフォルト: 1）
+- `low`: 低い範囲の閾値
+- `high`: 高い範囲の閾値
+- `optimum`: 最適な値
+
+### progress vs meter
+- **progress**: タスクの進行状況（0% → 100%へ進む）
+- **meter**: 既知の範囲内の測定値（常に変動）
+
+---
+
+## 2. datalist（データリスト）
+
+**用途**: 入力候補のリストを提供（オートコンプリート）
+
+```html
+<label for=\"browser\">お気に入りのブラウザ:</label>
+<input list=\"browsers\" id=\"browser\" name=\"browser\" placeholder=\"選択または入力\">
+
+<datalist id=\"browsers\">
+    <option value=\"Chrome\">
+    <option value=\"Firefox\">
+    <option value=\"Safari\">
+    <option value=\"Edge\">
+    <option value=\"Opera\">
+</datalist>
+```
+
+### 実用例：都道府県選択
+
+```html
+<label for=\"prefecture\">都道府県:</label>
+<input list=\"prefectures\" id=\"prefecture\" name=\"prefecture\" placeholder=\"都道府県を入力\">
+
+<datalist id=\"prefectures\">
+    <option value=\"北海道\">
+    <option value=\"青森県\">
+    <option value=\"東京都\">
+    <option value=\"大阪府\">
+    <option value=\"福岡県\">
+    <option value=\"沖縄県\">
+</datalist>
+```
+
+### URLの候補
+
+```html
+<label for=\"website\">Webサイト:</label>
+<input type=\"url\" list=\"websites\" id=\"website\" name=\"website\">
+
+<datalist id=\"websites\">
+    <option value=\"https://www.google.com\" label=\"Google\">
+    <option value=\"https://www.github.com\" label=\"GitHub\">
+    <option value=\"https://www.stackoverflow.com\" label=\"Stack Overflow\">
+</datalist>
+```
+
+---
+
+## 3. output（計算結果の出力）
+
+**用途**: フォームの計算結果を表示
+
+```html
+<form oninput=\"result.value = parseInt(a.value) + parseInt(b.value)\">
+    <label>数値1:</label>
+    <input type=\"number\" id=\"a\" name=\"a\" value=\"0\">
+    +
+    <label>数値2:</label>
+    <input type=\"number\" id=\"b\" name=\"b\" value=\"0\">
+    =
+    <output name=\"result\" for=\"a b\">0</output>
+</form>
+```
+
+### 価格計算の例
+
+```html
+<form oninput=\"total.value = parseInt(quantity.value) * parseInt(price.value)\">
+    <label for=\"quantity\">数量:</label>
+    <input type=\"number\" id=\"quantity\" name=\"quantity\" value=\"1\" min=\"1\">
+    <br>
+
+    <label for=\"price\">単価:</label>
+    <input type=\"number\" id=\"price\" name=\"price\" value=\"1000\" min=\"0\">円
+    <br>
+
+    <label>合計金額:</label>
+    <output name=\"total\" for=\"quantity price\">1000</output>円
+</form>
+```
+
+---
+
+## 4. dialog（ダイアログ）
+
+**用途**: モーダルダイアログやポップアップの表示
+
+```html
+<button onclick=\"document.getElementById('myDialog').showModal()\">
+    ダイアログを開く
+</button>
+
+<dialog id=\"myDialog\">
+    <h2>確認</h2>
+    <p>本当に削除しますか？</p>
+    <form method=\"dialog\">
+        <button value=\"cancel\">キャンセル</button>
+        <button value=\"confirm\">OK</button>
+    </form>
+</dialog>
+
+<script>
+const dialog = document.getElementById('myDialog');
+dialog.addEventListener('close', () => {
+    console.log('ダイアログが閉じられました:', dialog.returnValue);
+});
+</script>
+```
+
+### モーダルとモードレスの違い
+
+```html
+<!-- モーダル（背景がブロックされる） -->
+<button onclick=\"document.getElementById('modal').showModal()\">モーダルを開く</button>
+
+<!-- モードレス（背景操作可能） -->
+<button onclick=\"document.getElementById('modeless').show()\">モードレスを開く</button>
+
+<dialog id=\"modal\">
+    <p>これはモーダルダイアログです。</p>
+    <button onclick=\"this.closest('dialog').close()\">閉じる</button>
+</dialog>
+
+<dialog id=\"modeless\">
+    <p>これはモードレスダイアログです。</p>
+    <button onclick=\"this.closest('dialog').close()\">閉じる</button>
+</dialog>
+```
+
+---
+
+## 5. wbr（改行の推奨位置）
+
+**用途**: 長い単語の改行位置を指定
+
+```html
+<!-- 長いURLの改行 -->
+<p>
+    アクセス先:
+    https://<wbr>www.<wbr>example.<wbr>com/<wbr>very/<wbr>long/<wbr>path/<wbr>to/<wbr>resource
+</p>
+
+<!-- 長いファイル名 -->
+<p>
+    ファイル名:
+    super<wbr>_long<wbr>_file<wbr>_name<wbr>_with<wbr>_many<wbr>_words.pdf
+</p>
+```
+
+### wbr と br の違い
+- `<br>`: **必ず改行**する
+- `<wbr>`: **必要に応じて改行**できる
+
+---
+
+## 6. template（テンプレート）
+
+**用途**: JavaScriptで動的に複製するHTML片を定義
+
+```html
+<template id=\"user-card-template\">
+    <div class=\"user-card\">
+        <h3 class=\"name\"></h3>
+        <p class=\"email\"></p>
+        <button class=\"delete-btn\">削除</button>
+    </div>
+</template>
+
+<div id=\"users-container\"></div>
+
+<script>
+const template = document.getElementById('user-card-template');
+const container = document.getElementById('users-container');
+
+// ユーザーデータ
+const users = [
+    { name: '田中太郎', email: 'tanaka@example.com' },
+    { name: '佐藤花子', email: 'sato@example.com' }
+];
+
+// テンプレートから要素を複製
+users.forEach(user => {
+    const clone = template.content.cloneNode(true);
+    clone.querySelector('.name').textContent = user.name;
+    clone.querySelector('.email').textContent = user.email;
+    container.appendChild(clone);
+});
+</script>
+```
+
+---
+
+## まとめ
+
+| 要素 | 用途 | 主な属性 |
+|------|------|---------|
+| `<meter>` | 範囲内の測定値 | `value`, `min`, `max`, `low`, `high`, `optimum` |
+| `<datalist>` | 入力候補リスト | `id`（inputのlist属性と紐付け） |
+| `<output>` | 計算結果の表示 | `for`, `name` |
+| `<dialog>` | ダイアログ/モーダル | なし（JavaScriptで制御） |
+| `<wbr>` | 改行推奨位置 | なし |
+| `<template>` | 再利用可能なHTML片 | なし（JavaScriptで複製） |
+
+---
+
+## ベストプラクティス
+
+1. **meter**: 進行状況には`<progress>`、測定値には`<meter>`を使う
+2. **datalist**: ユーザーが自由入力もできる選択肢として使う
+3. **output**: フォーム内の計算結果を動的に表示する
+4. **dialog**: モーダルには`showModal()`、モードレスには`show()`を使う
+5. **wbr**: 長いURL、ファイル名、コードの改行位置に使う
+6. **template**: 同じHTML構造を繰り返し生成する際に使う",
+                        'sort_order' => 4
+                    ],
+                ],
             ],
             [
                 'title' => '第9週：アクセシビリティ',
