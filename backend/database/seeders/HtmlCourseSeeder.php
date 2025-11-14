@@ -1540,7 +1540,431 @@ ul {
                     ['title' => 'ボタンとsubmit', 'estimated_minutes' => 120, 'sort_order' => 3],
                     ['title' => 'labelとの関連付け', 'estimated_minutes' => 120, 'sort_order' => 4],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'フォームの基本構造',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>フォームの基本</title>
+</head>
+<body>
+    <h1>お問い合わせフォーム</h1>
+
+    <!-- 基本的なフォーム -->
+    <form action=\"/submit\" method=\"POST\">
+        <!-- テキスト入力 -->
+        <label for=\"name\">お名前：</label>
+        <input type=\"text\" id=\"name\" name=\"name\" required>
+        <br><br>
+
+        <!-- メールアドレス -->
+        <label for=\"email\">メールアドレス：</label>
+        <input type=\"email\" id=\"email\" name=\"email\" required>
+        <br><br>
+
+        <!-- パスワード -->
+        <label for=\"password\">パスワード：</label>
+        <input type=\"password\" id=\"password\" name=\"password\" required>
+        <br><br>
+
+        <!-- 送信ボタン -->
+        <button type=\"submit\">送信</button>
+        <button type=\"reset\">リセット</button>
+    </form>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'form要素の属性',
+                        'content' => "# form要素の属性
+
+## 基本構文
+
+```html
+<form action=\"送信先URL\" method=\"送信方法\">
+    <!-- フォームの内容 -->
+</form>
+```
+
+## 主な属性
+
+### action
+
+フォームデータの送信先URLを指定
+
+```html
+<form action=\"/contact\" method=\"POST\">
+    <!-- ... -->
+</form>
+```
+
+- サーバー側のエンドポイントを指定
+- 省略すると現在のページに送信
+
+### method
+
+データの送信方法を指定
+
+```html
+<!-- GETメソッド（デフォルト） -->
+<form action=\"/search\" method=\"GET\">
+    <input type=\"text\" name=\"q\">
+    <button type=\"submit\">検索</button>
+</form>
+<!-- URL: /search?q=検索キーワード -->
+
+<!-- POSTメソッド -->
+<form action=\"/login\" method=\"POST\">
+    <input type=\"email\" name=\"email\">
+    <input type=\"password\" name=\"password\">
+    <button type=\"submit\">ログイン</button>
+</form>
+```
+
+**GET vs POST**:
+- **GET**: URLにデータが表示される、ブックマーク可能、検索フォーム向き
+- **POST**: URLに表示されない、セキュア、ログインや登録向き
+
+### name
+
+フォーム全体に名前を付ける（任意）
+
+```html
+<form name=\"contactForm\" action=\"/submit\" method=\"POST\">
+    <!-- ... -->
+</form>
+```
+
+### autocomplete
+
+自動補完の有効/無効
+
+```html
+<!-- 自動補完を有効 -->
+<form autocomplete=\"on\">
+
+<!-- 自動補完を無効 -->
+<form autocomplete=\"off\">
+```
+
+### novalidate
+
+HTML5のバリデーションを無効化
+
+```html
+<form novalidate>
+    <input type=\"email\" required>
+    <!-- ブラウザの検証が行われない -->
+</form>
+```
+
+### enctype
+
+ファイルアップロード時に必要
+
+```html
+<form action=\"/upload\" method=\"POST\" enctype=\"multipart/form-data\">
+    <input type=\"file\" name=\"document\">
+    <button type=\"submit\">アップロード</button>
+</form>
+```
+
+**enctypeの種類**:
+- `application/x-www-form-urlencoded`: デフォルト
+- `multipart/form-data`: ファイルアップロード時
+- `text/plain`: テキストのみ（メール送信時など）
+
+### target
+
+送信結果の表示先
+
+```html
+<!-- 新しいタブで開く -->
+<form action=\"/submit\" method=\"POST\" target=\"_blank\">
+
+<!-- iframe内で開く -->
+<form action=\"/submit\" method=\"POST\" target=\"myIframe\">
+```",
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'input要素の種類',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>様々なinput要素</title>
+</head>
+<body>
+    <h1>入力フォーム</h1>
+
+    <form>
+        <!-- テキスト -->
+        <label>名前: <input type=\"text\" name=\"name\" placeholder=\"山田太郎\"></label><br><br>
+
+        <!-- メール -->
+        <label>メール: <input type=\"email\" name=\"email\" placeholder=\"example@mail.com\"></label><br><br>
+
+        <!-- パスワード -->
+        <label>パスワード: <input type=\"password\" name=\"password\"></label><br><br>
+
+        <!-- 電話番号 -->
+        <label>電話: <input type=\"tel\" name=\"phone\" placeholder=\"090-1234-5678\"></label><br><br>
+
+        <!-- URL -->
+        <label>Website: <input type=\"url\" name=\"website\" placeholder=\"https://example.com\"></label><br><br>
+
+        <!-- 数値 -->
+        <label>年齢: <input type=\"number\" name=\"age\" min=\"0\" max=\"120\"></label><br><br>
+
+        <!-- 日付 -->
+        <label>生年月日: <input type=\"date\" name=\"birthday\"></label><br><br>
+
+        <!-- 時刻 -->
+        <label>時刻: <input type=\"time\" name=\"time\"></label><br><br>
+
+        <!-- 日時 -->
+        <label>予約日時: <input type=\"datetime-local\" name=\"appointment\"></label><br><br>
+
+        <!-- 色 -->
+        <label>好きな色: <input type=\"color\" name=\"color\"></label><br><br>
+
+        <!-- 範囲 -->
+        <label>満足度: <input type=\"range\" name=\"satisfaction\" min=\"1\" max=\"5\"></label><br><br>
+
+        <!-- 検索 -->
+        <label>検索: <input type=\"search\" name=\"query\" placeholder=\"検索キーワード\"></label><br><br>
+
+        <!-- ファイル -->
+        <label>ファイル: <input type=\"file\" name=\"document\"></label><br><br>
+
+        <!-- 非表示 -->
+        <input type=\"hidden\" name=\"user_id\" value=\"12345\">
+
+        <button type=\"submit\">送信</button>
+    </form>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'label要素とアクセシビリティ',
+                        'content' => "# label要素とアクセシビリティ
+
+`<label>`は入力フィールドのラベルを表し、アクセシビリティとUXを向上させます。
+
+## labelの書き方
+
+### 方法1: for属性で関連付け
+
+```html
+<label for=\"username\">ユーザー名：</label>
+<input type=\"text\" id=\"username\" name=\"username\">
+```
+
+- `for`属性とinputの`id`を一致させる
+- labelとinputが離れていてもOK
+
+### 方法2: labelで囲む
+
+```html
+<label>
+    ユーザー名：
+    <input type=\"text\" name=\"username\">
+</label>
+```
+
+- inputをlabelで囲む
+- `for`と`id`は不要
+
+## labelを使うメリット
+
+### 1. クリック領域が広がる
+
+```html
+<label for=\"agree\">
+    <input type=\"checkbox\" id=\"agree\" name=\"agree\">
+    利用規約に同意する
+</label>
+```
+
+- テキスト部分をクリックしてもチェックボックスが反応
+- 特にスマホで押しやすくなる
+
+### 2. スクリーンリーダー対応
+
+```html
+<label for=\"email\">メールアドレス</label>
+<input type=\"email\" id=\"email\" name=\"email\">
+```
+
+- 視覚障害者向けにフィールドの説明を読み上げ
+- アクセシビリティが向上
+
+### 3. フォーカス管理
+
+labelをクリックすると、関連するinputにフォーカスが移動します。
+
+## 複数のinputがある場合
+
+```html
+<fieldset>
+    <legend>お名前</legend>
+
+    <label for=\"lastName\">姓：</label>
+    <input type=\"text\" id=\"lastName\" name=\"lastName\">
+
+    <label for=\"firstName\">名：</label>
+    <input type=\"text\" id=\"firstName\" name=\"firstName\">
+</fieldset>
+```
+
+## ラジオボタンとチェックボックス
+
+```html
+<!-- ラジオボタン -->
+<fieldset>
+    <legend>性別</legend>
+
+    <label>
+        <input type=\"radio\" name=\"gender\" value=\"male\">
+        男性
+    </label>
+
+    <label>
+        <input type=\"radio\" name=\"gender\" value=\"female\">
+        女性
+    </label>
+</fieldset>
+
+<!-- チェックボックス -->
+<fieldset>
+    <legend>趣味</legend>
+
+    <label>
+        <input type=\"checkbox\" name=\"hobby\" value=\"sports\">
+        スポーツ
+    </label>
+
+    <label>
+        <input type=\"checkbox\" name=\"hobby\" value=\"music\">
+        音楽
+    </label>
+</fieldset>
+```
+
+## ベストプラクティス
+
+```html
+<!-- 良い例 ✓ -->
+<label for=\"email\">メールアドレス</label>
+<input type=\"email\" id=\"email\" name=\"email\" required>
+
+<!-- 悪い例 ✗ -->
+<span>メールアドレス</span>
+<input type=\"email\" name=\"email\"> <!-- labelがない -->
+```
+
+**必ずlabelを使う理由**:
+- アクセシビリティの向上
+- UXの改善
+- SEO効果",
+                        'sort_order' => 4
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'ボタンの種類',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>ボタンの種類</title>
+</head>
+<body>
+    <h1>ボタンの種類</h1>
+
+    <form action=\"/submit\" method=\"POST\">
+        <input type=\"text\" name=\"username\" placeholder=\"ユーザー名\">
+
+        <!-- submit: フォームを送信 -->
+        <button type=\"submit\">送信する</button>
+
+        <!-- reset: フォームをリセット -->
+        <button type=\"reset\">リセット</button>
+
+        <!-- button: 何もしない（JavaScriptで制御） -->
+        <button type=\"button\" onclick=\"alert('クリックされました')\">
+            クリック
+        </button>
+    </form>
+
+    <hr>
+
+    <!-- inputタグのボタン -->
+    <form action=\"/login\" method=\"POST\">
+        <input type=\"text\" name=\"email\" placeholder=\"メールアドレス\">
+
+        <!-- input type=\"submit\" -->
+        <input type=\"submit\" value=\"ログイン\">
+
+        <!-- input type=\"reset\" -->
+        <input type=\"reset\" value=\"クリア\">
+
+        <!-- input type=\"button\" -->
+        <input type=\"button\" value=\"キャンセル\" onclick=\"history.back()\">
+    </form>
+
+    <hr>
+
+    <!-- 画像ボタン -->
+    <form action=\"/search\" method=\"GET\">
+        <input type=\"text\" name=\"q\" placeholder=\"検索キーワード\">
+        <input type=\"image\" src=\"search-icon.png\" alt=\"検索\">
+    </form>
+
+    <hr>
+
+    <!-- disabledボタン -->
+    <form>
+        <button type=\"submit\" disabled>送信不可</button>
+        <button type=\"submit\">送信可能</button>
+    </form>
+
+    <hr>
+
+    <!-- カスタムボタン（CSSでスタイリング） -->
+    <style>
+        .primary-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .primary-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <form>
+        <button type=\"submit\" class=\"primary-btn\">登録する</button>
+    </form>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 5
+                    ],
+                ],
             ],
             [
                 'title' => '第6週：フォーム要素応用',
