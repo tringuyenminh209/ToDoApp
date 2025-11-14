@@ -1121,7 +1121,411 @@ ul {
                     ['title' => 'セルの結合', 'estimated_minutes' => 120, 'sort_order' => 3],
                     ['title' => 'テーブルのスタイリング', 'estimated_minutes' => 120, 'sort_order' => 4],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'テーブルの基本構造',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>テーブルの基本</title>
+</head>
+<body>
+    <h1>基本的なテーブル</h1>
+
+    <table border=\"1\">
+        <!-- ヘッダー行 -->
+        <tr>
+            <th>名前</th>
+            <th>年齢</th>
+            <th>職業</th>
+        </tr>
+
+        <!-- データ行 -->
+        <tr>
+            <td>田中太郎</td>
+            <td>25</td>
+            <td>エンジニア</td>
+        </tr>
+
+        <tr>
+            <td>佐藤花子</td>
+            <td>30</td>
+            <td>デザイナー</td>
+        </tr>
+
+        <tr>
+            <td>鈴木一郎</td>
+            <td>28</td>
+            <td>マーケター</td>
+        </tr>
+    </table>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'テーブルの要素',
+                        'content' => "# テーブルの要素
+
+## 基本要素
+
+### `<table>`
+テーブル全体を囲む親要素
+
+```html
+<table>
+    <!-- テーブルの内容 -->
+</table>
+```
+
+### `<tr>` (Table Row)
+テーブルの**行**を表す
+
+```html
+<tr>
+    <td>セル1</td>
+    <td>セル2</td>
+</tr>
+```
+
+### `<td>` (Table Data)
+データ**セル**を表す
+
+```html
+<td>データ</td>
+```
+
+### `<th>` (Table Header)
+**見出しセル**を表す（太字・中央揃えで表示）
+
+```html
+<th>見出し</th>
+```
+
+## テーブルの構造化
+
+### `<thead>` (Table Head)
+テーブルのヘッダー部分をグループ化
+
+```html
+<thead>
+    <tr>
+        <th>列1</th>
+        <th>列2</th>
+    </tr>
+</thead>
+```
+
+### `<tbody>` (Table Body)
+テーブルのメインデータ部分をグループ化
+
+```html
+<tbody>
+    <tr>
+        <td>データ1</td>
+        <td>データ2</td>
+    </tr>
+</tbody>
+```
+
+### `<tfoot>` (Table Footer)
+テーブルのフッター部分をグループ化（合計行など）
+
+```html
+<tfoot>
+    <tr>
+        <td>合計</td>
+        <td>100</td>
+    </tr>
+</tfoot>
+```
+
+## 完全な構造の例
+
+```html
+<table>
+    <thead>
+        <tr>
+            <th>商品名</th>
+            <th>価格</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>りんご</td>
+            <td>100円</td>
+        </tr>
+        <tr>
+            <td>バナナ</td>
+            <td>150円</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>合計</th>
+            <td>250円</td>
+        </tr>
+    </tfoot>
+</table>
+```
+
+## その他の要素
+
+### `<caption>`
+テーブルのキャプション（タイトル）
+
+```html
+<table>
+    <caption>2024年売上データ</caption>
+    <!-- ... -->
+</table>
+```
+
+### `<col>` と `<colgroup>`
+列のグループ化とスタイル適用
+
+```html
+<table>
+    <colgroup>
+        <col style=\"background-color: #f0f0f0;\">
+        <col span=\"2\" style=\"background-color: #e0e0e0;\">
+    </colgroup>
+    <!-- ... -->
+</table>
+```",
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'セルの結合',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>セルの結合</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>セルの結合</h1>
+
+    <!-- colspan: 横方向の結合 -->
+    <h2>横方向の結合（colspan）</h2>
+    <table>
+        <tr>
+            <th colspan=\"3\">2024年 第1四半期売上</th>
+        </tr>
+        <tr>
+            <th>1月</th>
+            <th>2月</th>
+            <th>3月</th>
+        </tr>
+        <tr>
+            <td>100万円</td>
+            <td>120万円</td>
+            <td>110万円</td>
+        </tr>
+    </table>
+
+    <!-- rowspan: 縦方向の結合 -->
+    <h2>縦方向の結合（rowspan）</h2>
+    <table>
+        <tr>
+            <th rowspan=\"2\">製品</th>
+            <th colspan=\"2\">販売数</th>
+        </tr>
+        <tr>
+            <th>国内</th>
+            <th>海外</th>
+        </tr>
+        <tr>
+            <td>製品A</td>
+            <td>1,000</td>
+            <td>500</td>
+        </tr>
+        <tr>
+            <td>製品B</td>
+            <td>800</td>
+            <td>300</td>
+        </tr>
+    </table>
+
+    <!-- 複雑な結合 -->
+    <h2>複雑な結合</h2>
+    <table>
+        <tr>
+            <th rowspan=\"2\">部門</th>
+            <th rowspan=\"2\">社員名</th>
+            <th colspan=\"2\">売上（万円）</th>
+        </tr>
+        <tr>
+            <th>前期</th>
+            <th>今期</th>
+        </tr>
+        <tr>
+            <td rowspan=\"2\">営業部</td>
+            <td>田中</td>
+            <td>100</td>
+            <td>120</td>
+        </tr>
+        <tr>
+            <td>佐藤</td>
+            <td>90</td>
+            <td>110</td>
+        </tr>
+    </table>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'セル結合の属性',
+                        'content' => "# セル結合の属性
+
+## colspan（列の結合）
+
+**横方向**に複数のセルを結合します。
+
+```html
+<table border=\"1\">
+    <tr>
+        <!-- 3列分のセルを結合 -->
+        <th colspan=\"3\">見出し</th>
+    </tr>
+    <tr>
+        <td>A</td>
+        <td>B</td>
+        <td>C</td>
+    </tr>
+</table>
+```
+
+**結果**:
+```
++---------------+
+|   見出し       |
++-----+-----+-----+
+|  A  |  B  |  C  |
++-----+-----+-----+
+```
+
+### 注意点
+- colspan の値は結合するセルの数
+- 結合した分、その行の他の`<td>`は削除する
+
+## rowspan（行の結合）
+
+**縦方向**に複数のセルを結合します。
+
+```html
+<table border=\"1\">
+    <tr>
+        <!-- 2行分のセルを結合 -->
+        <th rowspan=\"2\">部門</th>
+        <td>田中</td>
+    </tr>
+    <tr>
+        <!-- ここには部門のセルは不要 -->
+        <td>佐藤</td>
+    </tr>
+</table>
+```
+
+**結果**:
+```
++------+------+
+| 部門 | 田中 |
+|      +------+
+|      | 佐藤 |
++------+------+
+```
+
+### 注意点
+- rowspan の値は結合する行の数
+- 結合した分、次の行の`<td>`を減らす
+
+## colspan と rowspan の組み合わせ
+
+```html
+<table border=\"1\">
+    <tr>
+        <th rowspan=\"2\" colspan=\"2\">左上</th>
+        <th>右上1</th>
+    </tr>
+    <tr>
+        <th>右上2</th>
+    </tr>
+    <tr>
+        <td>A</td>
+        <td>B</td>
+        <td>C</td>
+    </tr>
+</table>
+```
+
+**結果**:
+```
++------------+------+
+|            |右上1 |
+|    左上     +------+
+|            |右上2 |
++------+-----+------+
+|  A   |  B  |  C   |
++------+-----+------+
+```
+
+## よくある間違い
+
+### ❌ 間違い: セルの数が合わない
+
+```html
+<table border=\"1\">
+    <tr>
+        <th colspan=\"3\">見出し</th>
+    </tr>
+    <tr>
+        <td>A</td>
+        <td>B</td>
+        <!-- Cが足りない！ -->
+    </tr>
+</table>
+```
+
+### ✅ 正しい
+
+```html
+<table border=\"1\">
+    <tr>
+        <th colspan=\"3\">見出し</th>
+    </tr>
+    <tr>
+        <td>A</td>
+        <td>B</td>
+        <td>C</td>
+    </tr>
+</table>
+```",
+                        'sort_order' => 4
+                    ],
+                ],
             ],
             [
                 'title' => '第5週：フォームの基本',
