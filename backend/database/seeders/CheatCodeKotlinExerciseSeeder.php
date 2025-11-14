@@ -759,7 +759,8 @@ class CheatCodeKotlinExerciseSeeder extends Seeder
         int $sortOrder,
         array $testCases
     ): void {
-        $slug = Str::slug($title) ?: $language->slug . '-exercise-' . $sortOrder;
+        // Generate unique slug by combining language slug with sort order
+        $slug = $language->slug . '-exercise-' . $sortOrder;
 
         $exercise = Exercise::create([
             'cheat_code_language_id' => $language->id,
