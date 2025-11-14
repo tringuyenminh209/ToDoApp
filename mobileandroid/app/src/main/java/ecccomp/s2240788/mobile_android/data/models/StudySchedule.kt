@@ -203,13 +203,13 @@ data class DayItem(
 object DayItemHelper {
     fun getAllDays(): List<DayItem> {
         return listOf(
-            DayItem(1, "Thứ Hai", "T2"),
-            DayItem(2, "Thứ Ba", "T3"),
-            DayItem(3, "Thứ Tư", "T4"),
-            DayItem(4, "Thứ Năm", "T5"),
-            DayItem(5, "Thứ Sáu", "T6"),
-            DayItem(6, "Thứ Bảy", "T7"),
-            DayItem(0, "Chủ Nhật", "CN")
+            DayItem(1, "月曜日", "月"),
+            DayItem(2, "火曜日", "火"),
+            DayItem(3, "水曜日", "水"),
+            DayItem(4, "木曜日", "木"),
+            DayItem(5, "金曜日", "金"),
+            DayItem(6, "土曜日", "土"),
+            DayItem(0, "日曜日", "日")
         )
     }
 }
