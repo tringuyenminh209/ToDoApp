@@ -262,11 +262,9 @@
         android:textAllCaps="false"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:textColor="@android:color/white"
         app:backgroundTint="@color/primary"
-        app:cornerRadius="16dp"
-        app:icon="@drawable/ic_check"
-        app:iconGravity="start"
-        app:iconPadding="12dp" />
+        app:cornerRadius="16dp" />
 
 </LinearLayout>
 
