@@ -1979,7 +1979,874 @@ labelをクリックすると、関連するinputにフォーカスが移動し�
                     ['title' => 'テキストエリア', 'estimated_minutes' => 120, 'sort_order' => 3],
                     ['title' => 'フォームのバリデーション', 'estimated_minutes' => 120, 'sort_order' => 4],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'セレクトボックス（select）',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>セレクトボックス</title>
+</head>
+<body>
+    <h1>セレクトボックスの使い方</h1>
+
+    <form action=\"/submit\" method=\"POST\">
+        <!-- 基本的なセレクトボックス -->
+        <label for=\"country\">国を選択：</label>
+        <select id=\"country\" name=\"country\" required>
+            <option value=\"\">-- 選択してください --</option>
+            <option value=\"jp\">日本</option>
+            <option value=\"us\">アメリカ</option>
+            <option value=\"uk\">イギリス</option>
+            <option value=\"cn\">中国</option>
+        </select>
+        <br><br>
+
+        <!-- デフォルト選択 -->
+        <label for=\"language\">言語：</label>
+        <select id=\"language\" name=\"language\">
+            <option value=\"ja\" selected>日本語</option>
+            <option value=\"en\">English</option>
+            <option value=\"zh\">中文</option>
+        </select>
+        <br><br>
+
+        <!-- optgroupでグループ化 -->
+        <label for=\"food\">好きな食べ物：</label>
+        <select id=\"food\" name=\"food\">
+            <optgroup label=\"和食\">
+                <option value=\"sushi\">寿司</option>
+                <option value=\"ramen\">ラーメン</option>
+                <option value=\"tempura\">天ぷら</option>
+            </optgroup>
+            <optgroup label=\"洋食\">
+                <option value=\"pasta\">パスタ</option>
+                <option value=\"pizza\">ピザ</option>
+                <option value=\"steak\">ステーキ</option>
+            </optgroup>
+            <optgroup label=\"中華\">
+                <option value=\"mapo\">麻婆豆腐</option>
+                <option value=\"gyoza\">餃子</option>
+            </optgroup>
+        </select>
+        <br><br>
+
+        <!-- 複数選択可能 -->
+        <label for=\"skills\">スキル（複数選択可）：</label>
+        <select id=\"skills\" name=\"skills[]\" multiple size=\"5\">
+            <option value=\"html\">HTML</option>
+            <option value=\"css\">CSS</option>
+            <option value=\"js\">JavaScript</option>
+            <option value=\"php\">PHP</option>
+            <option value=\"python\">Python</option>
+            <option value=\"java\">Java</option>
+        </select>
+        <br>
+        <small>Ctrl/Cmd + クリックで複数選択</small>
+        <br><br>
+
+        <!-- 無効化されたオプション -->
+        <label for=\"plan\">プラン：</label>
+        <select id=\"plan\" name=\"plan\">
+            <option value=\"free\">無料プラン</option>
+            <option value=\"basic\">ベーシック</option>
+            <option value=\"pro\">プロ</option>
+            <option value=\"enterprise\" disabled>エンタープライズ（準備中）</option>
+        </select>
+        <br><br>
+
+        <button type=\"submit\">送信</button>
+    </form>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'チェックボックスとラジオボタン',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>チェックボックスとラジオボタン</title>
+    <style>
+        fieldset {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 2px solid #ddd;
+        }
+        legend {
+            font-weight: bold;
+            padding: 0 10px;
+        }
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>チェックボックスとラジオボタン</h1>
+
+    <form action=\"/submit\" method=\"POST\">
+        <!-- ラジオボタン（単一選択） -->
+        <fieldset>
+            <legend>性別（必須）</legend>
+            <label>
+                <input type=\"radio\" name=\"gender\" value=\"male\" required>
+                男性
+            </label>
+            <label>
+                <input type=\"radio\" name=\"gender\" value=\"female\" required>
+                女性
+            </label>
+            <label>
+                <input type=\"radio\" name=\"gender\" value=\"other\" required>
+                その他
+            </label>
+        </fieldset>
+
+        <!-- デフォルト選択されたラジオボタン -->
+        <fieldset>
+            <legend>メール受信設定</legend>
+            <label>
+                <input type=\"radio\" name=\"email_opt\" value=\"yes\" checked>
+                受け取る
+            </label>
+            <label>
+                <input type=\"radio\" name=\"email_opt\" value=\"no\">
+                受け取らない
+            </label>
+        </fieldset>
+
+        <!-- チェックボックス（複数選択可） -->
+        <fieldset>
+            <legend>趣味（複数選択可）</legend>
+            <label>
+                <input type=\"checkbox\" name=\"hobby[]\" value=\"sports\">
+                スポーツ
+            </label>
+            <label>
+                <input type=\"checkbox\" name=\"hobby[]\" value=\"music\">
+                音楽
+            </label>
+            <label>
+                <input type=\"checkbox\" name=\"hobby[]\" value=\"reading\" checked>
+                読書
+            </label>
+            <label>
+                <input type=\"checkbox\" name=\"hobby[]\" value=\"travel\">
+                旅行
+            </label>
+            <label>
+                <input type=\"checkbox\" name=\"hobby[]\" value=\"cooking\">
+                料理
+            </label>
+        </fieldset>
+
+        <!-- 単一のチェックボックス（同意確認） -->
+        <fieldset>
+            <legend>確認事項</legend>
+            <label>
+                <input type=\"checkbox\" name=\"terms\" value=\"agreed\" required>
+                利用規約に同意する（必須）
+            </label>
+            <label>
+                <input type=\"checkbox\" name=\"newsletter\" value=\"yes\">
+                ニュースレターを受け取る（任意）
+            </label>
+        </fieldset>
+
+        <!-- 無効化されたチェックボックス -->
+        <fieldset>
+            <legend>プレミアム機能（アップグレード必要）</legend>
+            <label>
+                <input type=\"checkbox\" name=\"premium1\" value=\"feature1\" disabled>
+                高度な分析機能（プレミアム限定）
+            </label>
+            <label>
+                <input type=\"checkbox\" name=\"premium2\" value=\"feature2\" disabled>
+                優先サポート（プレミアム限定）
+            </label>
+        </fieldset>
+
+        <button type=\"submit\">送信</button>
+        <button type=\"reset\">リセット</button>
+    </form>
+
+    <hr>
+
+    <h2>ポイント</h2>
+    <ul>
+        <li><strong>ラジオボタン</strong>: 同じ name 属性のグループから1つだけ選択</li>
+        <li><strong>チェックボックス</strong>: 複数選択可能。配列として送信する場合は name=\"hobby[]\"</li>
+        <li><strong>checked</strong>: デフォルトで選択状態にする</li>
+        <li><strong>required</strong>: 必須項目にする</li>
+        <li><strong>disabled</strong>: 選択不可にする</li>
+    </ul>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'テキストエリア（textarea）',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>テキストエリア</title>
+    <style>
+        textarea {
+            font-family: sans-serif;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .char-counter {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>テキストエリアの使い方</h1>
+
+    <form action=\"/submit\" method=\"POST\">
+        <!-- 基本的なテキストエリア -->
+        <label for=\"message\">メッセージ：</label><br>
+        <textarea id=\"message\" name=\"message\" rows=\"5\" cols=\"50\" required>
+        </textarea>
+        <br><br>
+
+        <!-- デフォルトテキスト入り -->
+        <label for=\"bio\">自己紹介：</label><br>
+        <textarea id=\"bio\" name=\"bio\" rows=\"4\" cols=\"60\">
+ここに自己紹介を入力してください。
+趣味や特技などを自由に書いてください。
+        </textarea>
+        <br><br>
+
+        <!-- 最大文字数制限 -->
+        <label for=\"review\">商品レビュー（最大200文字）：</label><br>
+        <textarea
+            id=\"review\"
+            name=\"review\"
+            rows=\"6\"
+            cols=\"60\"
+            maxlength=\"200\"
+            placeholder=\"商品の感想を入力してください...\"
+        ></textarea>
+        <div class=\"char-counter\">残り文字数: 200</div>
+        <br>
+
+        <!-- 最小文字数制限 -->
+        <label for=\"feedback\">フィードバック（最低50文字）：</label><br>
+        <textarea
+            id=\"feedback\"
+            name=\"feedback\"
+            rows=\"5\"
+            cols=\"60\"
+            minlength=\"50\"
+            required
+            placeholder=\"詳しいフィードバックをお願いします（50文字以上）\"
+        ></textarea>
+        <br><br>
+
+        <!-- リサイズ不可 -->
+        <label for=\"comment\">コメント：</label><br>
+        <textarea
+            id=\"comment\"
+            name=\"comment\"
+            rows=\"3\"
+            cols=\"60\"
+            style=\"resize: none;\"
+            placeholder=\"リサイズできません\"
+        ></textarea>
+        <br><br>
+
+        <!-- 横リサイズのみ -->
+        <label for=\"note\">メモ：</label><br>
+        <textarea
+            id=\"note\"
+            name=\"note\"
+            rows=\"4\"
+            cols=\"60\"
+            style=\"resize: horizontal;\"
+            placeholder=\"横方向のみリサイズ可能\"
+        ></textarea>
+        <br><br>
+
+        <!-- 無効化されたテキストエリア -->
+        <label for=\"disabled_text\">編集不可：</label><br>
+        <textarea
+            id=\"disabled_text\"
+            name=\"disabled_text\"
+            rows=\"3\"
+            cols=\"60\"
+            disabled
+        >このテキストエリアは編集できません。</textarea>
+        <br><br>
+
+        <!-- 読み取り専用 -->
+        <label for=\"readonly_text\">読み取り専用：</label><br>
+        <textarea
+            id=\"readonly_text\"
+            name=\"readonly_text\"
+            rows=\"3\"
+            cols=\"60\"
+            readonly
+        >このテキストエリアは読み取り専用です。フォーム送信時にデータは送られます。</textarea>
+        <br><br>
+
+        <button type=\"submit\">送信</button>
+    </form>
+
+    <hr>
+
+    <h2>属性の説明</h2>
+    <ul>
+        <li><strong>rows</strong>: 表示行数</li>
+        <li><strong>cols</strong>: 表示列数（文字数）</li>
+        <li><strong>maxlength</strong>: 最大文字数</li>
+        <li><strong>minlength</strong>: 最小文字数</li>
+        <li><strong>placeholder</strong>: プレースホルダーテキスト</li>
+        <li><strong>required</strong>: 必須項目</li>
+        <li><strong>disabled</strong>: 無効化（送信されない）</li>
+        <li><strong>readonly</strong>: 読み取り専用（送信される）</li>
+    </ul>
+
+    <h2>CSSでのリサイズ制御</h2>
+    <ul>
+        <li><code>resize: none;</code> - リサイズ不可</li>
+        <li><code>resize: vertical;</code> - 縦方向のみ</li>
+        <li><code>resize: horizontal;</code> - 横方向のみ</li>
+        <li><code>resize: both;</code> - 両方向（デフォルト）</li>
+    </ul>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'フォームのバリデーション',
+                        'content' => "# フォームのバリデーション
+
+HTMLには、フォーム入力を検証するための**組み込みバリデーション機能**があります。
+
+## 1. 必須入力（required）
+
+```html
+<input type=\"text\" name=\"username\" required>
+<textarea name=\"message\" required></textarea>
+<select name=\"country\" required>
+    <option value=\"\">選択してください</option>
+    <option value=\"jp\">日本</option>
+</select>
+```
+
+**効果**: 未入力の場合、送信時にブラウザがエラーメッセージを表示
+
+---
+
+## 2. 文字数制限
+
+### minlength / maxlength
+
+```html
+<!-- 最小5文字、最大20文字 -->
+<input type=\"text\" name=\"username\" minlength=\"5\" maxlength=\"20\" required>
+
+<!-- パスワードは8文字以上 -->
+<input type=\"password\" name=\"password\" minlength=\"8\" required>
+
+<!-- テキストエリアの文字数制限 -->
+<textarea name=\"bio\" minlength=\"50\" maxlength=\"500\"></textarea>
+```
+
+---
+
+## 3. 数値の範囲指定（min / max）
+
+```html
+<!-- 年齢: 18歳以上、100歳以下 -->
+<input type=\"number\" name=\"age\" min=\"18\" max=\"100\" required>
+
+<!-- 評価: 1～5の範囲 -->
+<input type=\"number\" name=\"rating\" min=\"1\" max=\"5\" step=\"1\" required>
+
+<!-- 価格: 0以上、小数点2桁まで -->
+<input type=\"number\" name=\"price\" min=\"0\" step=\"0.01\">
+
+<!-- 日付: 今日以降のみ選択可能 -->
+<input type=\"date\" name=\"reservation\" min=\"2025-11-14\" required>
+```
+
+---
+
+## 4. パターン検証（pattern）
+
+正規表現を使ってカスタム検証ができます。
+
+```html
+<!-- 郵便番号（日本）: 123-4567 -->
+<input
+    type=\"text\"
+    name=\"zipcode\"
+    pattern=\"\\d{3}-\\d{4}\"
+    placeholder=\"123-4567\"
+    title=\"郵便番号は 123-4567 の形式で入力してください\"
+    required
+>
+
+<!-- 電話番号: 090-1234-5678 または 03-1234-5678 -->
+<input
+    type=\"tel\"
+    name=\"phone\"
+    pattern=\"\\d{2,4}-\\d{3,4}-\\d{4}\"
+    placeholder=\"090-1234-5678\"
+    title=\"電話番号は 090-1234-5678 の形式で入力してください\"
+    required
+>
+
+<!-- ユーザー名: 半角英数字とアンダースコアのみ、3～15文字 -->
+<input
+    type=\"text\"
+    name=\"username\"
+    pattern=\"[A-Za-z0-9_]{3,15}\"
+    placeholder=\"user_name\"
+    title=\"ユーザー名は半角英数字とアンダースコアで3～15文字\"
+    required
+>
+
+<!-- パスワード: 最低8文字、英大文字・小文字・数字を含む -->
+<input
+    type=\"password\"
+    name=\"password\"
+    pattern=\"(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}\"
+    title=\"8文字以上、英大文字・小文字・数字を含む\"
+    required
+>
+
+<!-- URL: https:// で始まる -->
+<input
+    type=\"url\"
+    name=\"website\"
+    pattern=\"https://.*\"
+    placeholder=\"https://example.com\"
+    title=\"URLは https:// で始まる必要があります\"
+>
+```
+
+### title 属性の重要性
+- `pattern` を使う場合、**必ず title 属性でルールを説明**する
+- ユーザーがエラーの理由を理解できる
+
+---
+
+## 5. 入力タイプによる自動バリデーション
+
+### email
+```html
+<input type=\"email\" name=\"email\" required>
+```
+- メール形式（`user@example.com`）を自動検証
+- スマホでは @ キーボードが表示される
+
+### url
+```html
+<input type=\"url\" name=\"website\" required>
+```
+- URL形式（`https://example.com`）を自動検証
+
+### tel
+```html
+<input type=\"tel\" name=\"phone\">
+```
+- スマホで数字キーボードが表示される
+- 形式の自動検証はないため、`pattern` との併用推奨
+
+### number
+```html
+<input type=\"number\" name=\"quantity\" min=\"1\" max=\"100\">
+```
+- 数値のみ入力可能
+- `min`, `max`, `step` で範囲指定
+
+---
+
+## 6. カスタムエラーメッセージ（JavaScript）
+
+```html
+<form id=\"myForm\">
+    <input type=\"text\" id=\"username\" name=\"username\" required minlength=\"5\">
+    <button type=\"submit\">送信</button>
+</form>
+
+<script>
+const input = document.getElementById('username');
+
+input.addEventListener('invalid', function(e) {
+    if (input.validity.valueMissing) {
+        input.setCustomValidity('ユーザー名を入力してください');
+    } else if (input.validity.tooShort) {
+        input.setCustomValidity('ユーザー名は5文字以上で入力してください');
+    }
+});
+
+input.addEventListener('input', function(e) {
+    input.setCustomValidity(''); // エラーをリセット
+});
+</script>
+```
+
+---
+
+## 7. novalidate 属性
+
+フォームのHTML5バリデーションを**無効化**します。
+
+```html
+<!-- バリデーションを無効化（JavaScriptで独自検証する場合） -->
+<form action=\"/submit\" method=\"POST\" novalidate>
+    <input type=\"email\" name=\"email\" required>
+    <button type=\"submit\">送信</button>
+</form>
+```
+
+---
+
+## 8. 実践例: 会員登録フォーム
+
+```html
+<form action=\"/register\" method=\"POST\">
+    <h2>会員登録</h2>
+
+    <!-- ユーザー名 -->
+    <label for=\"username\">ユーザー名：</label>
+    <input
+        type=\"text\"
+        id=\"username\"
+        name=\"username\"
+        pattern=\"[A-Za-z0-9_]{3,15}\"
+        title=\"半角英数字とアンダースコアで3～15文字\"
+        required
+    >
+    <br><br>
+
+    <!-- メールアドレス -->
+    <label for=\"email\">メールアドレス：</label>
+    <input
+        type=\"email\"
+        id=\"email\"
+        name=\"email\"
+        required
+    >
+    <br><br>
+
+    <!-- パスワード -->
+    <label for=\"password\">パスワード：</label>
+    <input
+        type=\"password\"
+        id=\"password\"
+        name=\"password\"
+        minlength=\"8\"
+        pattern=\"(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}\"
+        title=\"8文字以上、英大文字・小文字・数字を含む\"
+        required
+    >
+    <br><br>
+
+    <!-- 年齢 -->
+    <label for=\"age\">年齢：</label>
+    <input
+        type=\"number\"
+        id=\"age\"
+        name=\"age\"
+        min=\"18\"
+        max=\"120\"
+        required
+    >
+    <br><br>
+
+    <!-- 利用規約 -->
+    <label>
+        <input type=\"checkbox\" name=\"terms\" value=\"agreed\" required>
+        利用規約に同意する
+    </label>
+    <br><br>
+
+    <button type=\"submit\">登録</button>
+</form>
+```
+
+---
+
+## まとめ
+
+| 属性 | 用途 |
+|------|------|
+| `required` | 必須入力 |
+| `minlength` / `maxlength` | 文字数制限 |
+| `min` / `max` | 数値・日付の範囲 |
+| `pattern` | 正規表現による検証 |
+| `type=\"email\"` | メール形式の検証 |
+| `type=\"url\"` | URL形式の検証 |
+| `title` | エラーメッセージのヒント |
+
+**ベストプラクティス**:
+- HTML5バリデーションは**クライアント側の検証**なので、必ず**サーバー側でも検証**する
+- `title` 属性でユーザーに分かりやすいメッセージを提供する
+- モバイルユーザーのために適切な `type` を使う（`email`, `tel`, `number` など）",
+                        'sort_order' => 4
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '実践: お問い合わせフォーム',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>お問い合わせフォーム</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .required {
+            color: red;
+            margin-left: 5px;
+        }
+        input[type=\"text\"],
+        input[type=\"email\"],
+        input[type=\"tel\"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        input:invalid,
+        select:invalid,
+        textarea:invalid {
+            border-color: #ff6b6b;
+        }
+        .radio-group,
+        .checkbox-group {
+            margin-top: 10px;
+        }
+        .radio-group label,
+        .checkbox-group label {
+            display: inline-block;
+            margin-right: 15px;
+            font-weight: normal;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+        .hint {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class=\"container\">
+        <h1>お問い合わせフォーム</h1>
+
+        <form action=\"/submit\" method=\"POST\">
+            <!-- お名前 -->
+            <div class=\"form-group\">
+                <label for=\"name\">
+                    お名前<span class=\"required\">*</span>
+                </label>
+                <input
+                    type=\"text\"
+                    id=\"name\"
+                    name=\"name\"
+                    placeholder=\"山田 太郎\"
+                    minlength=\"2\"
+                    maxlength=\"50\"
+                    required
+                >
+            </div>
+
+            <!-- メールアドレス -->
+            <div class=\"form-group\">
+                <label for=\"email\">
+                    メールアドレス<span class=\"required\">*</span>
+                </label>
+                <input
+                    type=\"email\"
+                    id=\"email\"
+                    name=\"email\"
+                    placeholder=\"example@example.com\"
+                    required
+                >
+            </div>
+
+            <!-- 電話番号 -->
+            <div class=\"form-group\">
+                <label for=\"phone\">電話番号</label>
+                <input
+                    type=\"tel\"
+                    id=\"phone\"
+                    name=\"phone\"
+                    pattern=\"\\d{2,4}-\\d{3,4}-\\d{4}\"
+                    placeholder=\"090-1234-5678\"
+                    title=\"電話番号は 090-1234-5678 の形式で入力してください\"
+                >
+                <div class=\"hint\">例: 090-1234-5678</div>
+            </div>
+
+            <!-- お問い合わせ種別 -->
+            <div class=\"form-group\">
+                <label for=\"category\">
+                    お問い合わせ種別<span class=\"required\">*</span>
+                </label>
+                <select id=\"category\" name=\"category\" required>
+                    <option value=\"\">-- 選択してください --</option>
+                    <option value=\"product\">商品について</option>
+                    <option value=\"service\">サービスについて</option>
+                    <option value=\"technical\">技術的な質問</option>
+                    <option value=\"billing\">料金・請求について</option>
+                    <option value=\"other\">その他</option>
+                </select>
+            </div>
+
+            <!-- 優先度 -->
+            <div class=\"form-group\">
+                <label>
+                    優先度<span class=\"required\">*</span>
+                </label>
+                <div class=\"radio-group\">
+                    <label>
+                        <input type=\"radio\" name=\"priority\" value=\"low\" required>
+                        低
+                    </label>
+                    <label>
+                        <input type=\"radio\" name=\"priority\" value=\"medium\" checked>
+                        中
+                    </label>
+                    <label>
+                        <input type=\"radio\" name=\"priority\" value=\"high\">
+                        高
+                    </label>
+                </div>
+            </div>
+
+            <!-- お問い合わせ内容 -->
+            <div class=\"form-group\">
+                <label for=\"message\">
+                    お問い合わせ内容<span class=\"required\">*</span>
+                </label>
+                <textarea
+                    id=\"message\"
+                    name=\"message\"
+                    rows=\"6\"
+                    minlength=\"10\"
+                    maxlength=\"1000\"
+                    placeholder=\"お問い合わせ内容を詳しくご記入ください（10文字以上）\"
+                    required
+                ></textarea>
+                <div class=\"hint\">10～1000文字で入力してください</div>
+            </div>
+
+            <!-- 希望する連絡方法 -->
+            <div class=\"form-group\">
+                <label>希望する連絡方法（複数選択可）</label>
+                <div class=\"checkbox-group\">
+                    <label>
+                        <input type=\"checkbox\" name=\"contact_method[]\" value=\"email\" checked>
+                        メール
+                    </label>
+                    <label>
+                        <input type=\"checkbox\" name=\"contact_method[]\" value=\"phone\">
+                        電話
+                    </label>
+                    <label>
+                        <input type=\"checkbox\" name=\"contact_method[]\" value=\"chat\">
+                        チャット
+                    </label>
+                </div>
+            </div>
+
+            <!-- 個人情報の取り扱い -->
+            <div class=\"form-group\">
+                <div class=\"checkbox-group\">
+                    <label>
+                        <input type=\"checkbox\" name=\"privacy\" value=\"agreed\" required>
+                        <a href=\"/privacy\" target=\"_blank\">個人情報の取り扱い</a>に同意する<span class=\"required\">*</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 送信ボタン -->
+            <button type=\"submit\" class=\"btn-submit\">送信する</button>
+        </form>
+    </div>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 5
+                    ],
+                ],
             ],
         ]);
 
