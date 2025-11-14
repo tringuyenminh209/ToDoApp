@@ -225,7 +225,10 @@ interface ApiService {
     suspend fun getTemplateDetail(@Path("id") id: Long): Response<TemplateDetailResponse>
     
     @POST("learning-path-templates/{id}/clone")
-    suspend fun cloneTemplate(@Path("id") id: Long): Response<CloneTemplateResponse>
+    suspend fun cloneTemplate(
+        @Path("id") id: Long,
+        @Body request: CloneTemplateRequest
+    ): Response<CloneTemplateResponse>
 
     // Roadmap API endpoints
     @GET("roadmaps/popular")

@@ -14,6 +14,8 @@ import ecccomp.s2240788.mobile_android.data.models.getTotalMilestones
 import ecccomp.s2240788.mobile_android.data.models.getTotalTasks
 import ecccomp.s2240788.mobile_android.ui.adapters.MilestoneTemplateAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.TemplateViewModel
+import ecccomp.s2240788.mobile_android.ui.fragments.ScheduleSetupBottomSheet
+import ecccomp.s2240788.mobile_android.data.models.StudyScheduleInput
 
 /**
  * Template Detail Activity
@@ -179,15 +181,13 @@ class TemplateDetailActivity : BaseActivity() {
 
     private fun setupClickListeners() {
         binding.fabClone.setOnClickListener {
-            // Show confirmation dialog
-            androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("テンプレートを使用")
-                .setMessage("このテンプレートから学習パスを作成しますか？\n\n作成後、自由にカスタマイズできます。")
-                .setPositiveButton("作成") { _, _ ->
-                    viewModel.cloneTemplate(templateId)
-                }
-                .setNegativeButton("キャンセル", null)
-                .show()
+            // Show schedule setup dialog FIRST - enforce discipline
+            val scheduleDialog = ScheduleSetupBottomSheet.newInstance()
+            scheduleDialog.setOnConfirmListener { schedules ->
+                // Clone template with study schedules
+                viewModel.cloneTemplate(templateId, schedules)
+            }
+            scheduleDialog.show(supportFragmentManager, "schedule_setup")
         }
     }
 
