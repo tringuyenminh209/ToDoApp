@@ -39,12 +39,17 @@ class DatabaseSeeder extends Seeder
             CheatCodePhpSeeder::class,
             CheatCodePhpExerciseSeeder::class,
             CheatCodeJavaSeeder::class,
+            CheatCodeJavaExerciseSeeder::class,
             CheatCodeGoSeeder::class,
+            CheatCodeGoExerciseSeeder::class,
             CheatCodeJavaScriptSeeder::class,
+            CheatCodeJavaScriptExerciseSeeder::class,
             CheatCodePythonSeeder::class,
             CheatCodePythonExerciseSeeder::class,
             CheatCodeCppSeeder::class,
+            CheatCodeCppExerciseSeeder::class,
             CheatCodeKotlinSeeder::class,
+            CheatCodeKotlinExerciseSeeder::class,
             CheatCodeCss3Seeder::class,
             CheatCodeHtmlSeeder::class,
             CheatCodeBashSeeder::class,
@@ -53,6 +58,7 @@ class DatabaseSeeder extends Seeder
             CheatCodeDockerSeeder::class,
             CheatCodeYamlSeeder::class,
             CheatCodeMysqlSeeder::class,
+            CheatCodeMysqlExerciseSeeder::class,
         ]);
     }
 }
