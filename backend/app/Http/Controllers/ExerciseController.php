@@ -297,78 +297,85 @@ class ExerciseController extends Controller
     {
         // Create temporary file for code
         $filename = 'exercise_' . Str::random(10);
+        $filepath = null;
+        $inputFile = null;
 
-        switch (strtolower($languageName)) {
-            case 'bash':
-                $filepath = "/tmp/{$filename}.sh";
-                file_put_contents($filepath, $code);
-                chmod($filepath, 0755);
+        try {
+            switch (strtolower($languageName)) {
+                case 'bash':
+                    $filepath = "/tmp/{$filename}.sh";
+                    file_put_contents($filepath, $code);
+                    chmod($filepath, 0755);
 
-                // Execute with input
-                if (!empty($input)) {
-                    $inputLines = explode("\n", $input);
-                    $command = $filepath . ' ' . implode(' ', array_map('escapeshellarg', $inputLines));
-                } else {
-                    $command = $filepath;
-                }
+                    // Execute with input
+                    if (!empty($input)) {
+                        $inputLines = explode("\n", $input);
+                        $command = $filepath . ' ' . implode(' ', array_map('escapeshellarg', $inputLines));
+                    } else {
+                        $command = $filepath;
+                    }
 
-                $result = Process::timeout(5)->run($command);
+                    $result = Process::timeout(5)->run($command);
+
+                    if ($result->failed()) {
+                        throw new \Exception('Execution error: ' . $result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'python':
+                    $filepath = "/tmp/{$filename}.py";
+                    file_put_contents($filepath, $code);
+
+                    // Create input file if needed
+                    if (!empty($input)) {
+                        $inputFile = "/tmp/{$filename}_input.txt";
+                        file_put_contents($inputFile, $input);
+                        $command = "python3 {$filepath} < {$inputFile}";
+                    } else {
+                        $command = "python3 {$filepath}";
+                    }
+
+                    $result = Process::timeout(5)->run($command);
+
+                    if ($result->failed()) {
+                        throw new \Exception('Execution error: ' . $result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'php':
+                    $filepath = "/tmp/{$filename}.php";
+                    file_put_contents($filepath, $code);
+
+                    // PHP scripts can read from argv or stdin
+                    if (!empty($input)) {
+                        $inputFile = "/tmp/{$filename}_input.txt";
+                        file_put_contents($inputFile, $input);
+                        $command = "php {$filepath} < {$inputFile}";
+                    } else {
+                        $command = "php {$filepath}";
+                    }
+
+                    $result = Process::timeout(5)->run($command);
+
+                    if ($result->failed()) {
+                        throw new \Exception('Execution error: ' . $result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                default:
+                    throw new \Exception("Language {$languageName} is not supported for execution");
+            }
+        } finally {
+            // Always clean up temp files
+            if ($filepath && file_exists($filepath)) {
                 @unlink($filepath);
-
-                if ($result->failed()) {
-                    throw new \Exception('Execution error: ' . $result->errorOutput());
-                }
-
-                return $result->output();
-
-            case 'python':
-                $filepath = "/tmp/{$filename}.py";
-                file_put_contents($filepath, $code);
-
-                // Create input file if needed
-                if (!empty($input)) {
-                    $inputFile = "/tmp/{$filename}_input.txt";
-                    file_put_contents($inputFile, $input);
-                    $command = "python3 {$filepath} < {$inputFile}";
-                } else {
-                    $command = "python3 {$filepath}";
-                }
-
-                $result = Process::timeout(5)->run($command);
-                @unlink($filepath);
-                if (isset($inputFile)) @unlink($inputFile);
-
-                if ($result->failed()) {
-                    throw new \Exception('Execution error: ' . $result->errorOutput());
-                }
-
-                return $result->output();
-
-            case 'php':
-                $filepath = "/tmp/{$filename}.php";
-                file_put_contents($filepath, $code);
-
-                // PHP scripts can read from argv or stdin
-                if (!empty($input)) {
-                    $inputFile = "/tmp/{$filename}_input.txt";
-                    file_put_contents($inputFile, $input);
-                    $command = "php {$filepath} < {$inputFile}";
-                } else {
-                    $command = "php {$filepath}";
-                }
-
-                $result = Process::timeout(5)->run($command);
-                @unlink($filepath);
-                if (isset($inputFile)) @unlink($inputFile);
-
-                if ($result->failed()) {
-                    throw new \Exception('Execution error: ' . $result->errorOutput());
-                }
-
-                return $result->output();
-
-            default:
-                throw new \Exception("Language {$languageName} is not supported for execution");
+            }
+            if ($inputFile && file_exists($inputFile)) {
+                @unlink($inputFile);
+            }
         }
     }
 
