@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             GoCourseSeeder::class,
             JavaScriptCourseSeeder::class,
             HtmlCourseSeeder::class,
+            DockerCourseSeeder::class,
 
             // CheatCode Data
             CheatCodePhpSeeder::class,
