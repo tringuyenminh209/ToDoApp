@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             CheatCodePhpSeeder::class,
             CheatCodePhpExerciseSeeder::class,
             CheatCodeJavaSeeder::class,
+            CheatCodeJavaExerciseSeeder::class,
             CheatCodeGoSeeder::class,
             CheatCodeJavaScriptSeeder::class,
             CheatCodePythonSeeder::class,
