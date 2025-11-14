@@ -16,7 +16,7 @@ class DockerCourseSeeder extends Seeder
         $template = LearningPathTemplate::create([
             'title' => 'Docker実践マスターコース',
             'description' => 'WSL2 + Docker Desktop環境で学ぶ、初心者から実践まで完全対応のDockerコース。コンテナ化からCI/CD、セキュリティ、監視まで12週間で習得します。',
-            'category' => 'devops',
+            'category' => 'programming',
             'difficulty' => 'beginner',
             'estimated_hours_total' => 96,
             'tags' => ['docker', 'container', 'devops', 'microservices', 'ci/cd', 'kubernetes'],
