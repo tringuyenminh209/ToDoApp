@@ -246,15 +246,16 @@ class TemplateViewModel : ViewModel() {
     }
 
     /**
-     * Clone template to user's learning path
+     * Clone template to user's learning path with study schedules
      */
-    fun cloneTemplate(templateId: Long) {
+    fun cloneTemplate(templateId: Long, studySchedules: List<StudyScheduleInput>) {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
                 _error.value = null
 
-                val response = apiService.cloneTemplate(templateId)
+                val request = CloneTemplateRequest(studySchedules = studySchedules)
+                val response = apiService.cloneTemplate(templateId, request)
 
                 if (response.isSuccessful) {
                     val body = response.body()
