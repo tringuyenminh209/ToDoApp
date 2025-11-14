@@ -276,6 +276,41 @@ interface ApiService {
     @GET("cheat-code/categories")
     suspend fun getCheatCodeCategories(): Response<ApiResponse<List<String>>>
 
+    // Exercise endpoints
+    @GET("cheat-code/languages/{languageId}/exercises")
+    suspend fun getExercises(
+        @Path("languageId") languageId: Int,
+        @Query("difficulty") difficulty: String? = null,
+        @Query("search") search: String? = null,
+        @Query("sort_by") sortBy: String? = null,
+        @Query("sort_order") sortOrder: String? = null
+    ): Response<ExerciseListResponse>
+
+    @GET("cheat-code/languages/{languageId}/exercises/{exerciseId}")
+    suspend fun getExercise(
+        @Path("languageId") languageId: Int,
+        @Path("exerciseId") exerciseId: Int
+    ): Response<ApiResponse<ExerciseDetail>>
+
+    @POST("cheat-code/languages/{languageId}/exercises/{exerciseId}/submit")
+    suspend fun submitExerciseSolution(
+        @Path("languageId") languageId: Int,
+        @Path("exerciseId") exerciseId: Int,
+        @Body request: SubmitSolutionRequest
+    ): Response<ApiResponse<SubmitSolutionResponse>>
+
+    @GET("cheat-code/languages/{languageId}/exercises/{exerciseId}/solution")
+    suspend fun getExerciseSolution(
+        @Path("languageId") languageId: Int,
+        @Path("exerciseId") exerciseId: Int
+    ): Response<ApiResponse<SolutionResponse>>
+
+    @GET("cheat-code/languages/{languageId}/exercises/{exerciseId}/statistics")
+    suspend fun getExerciseStatistics(
+        @Path("languageId") languageId: Int,
+        @Path("exerciseId") exerciseId: Int
+    ): Response<ApiResponse<ExerciseStatistics>>
+
     // Focus Enhancement endpoints
     // Environment Checklist
     @POST("focus/environment/check")
