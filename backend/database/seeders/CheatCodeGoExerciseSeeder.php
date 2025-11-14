@@ -767,10 +767,13 @@ class CheatCodeGoExerciseSeeder extends Seeder
         int $sortOrder,
         array $testCases
     ): Exercise {
+        // Generate unique slug by combining language slug with sort order
+        $slug = $language->slug . '-exercise-' . $sortOrder;
+
         $exercise = Exercise::create([
             'language_id' => $language->id,
             'title' => $title,
-            'slug' => Str::slug($title) ?: $language->slug . '-exercise-' . $sortOrder,
+            'slug' => $slug,
             'description' => $description,
             'question' => $question,
             'starter_code' => $starterCode,
