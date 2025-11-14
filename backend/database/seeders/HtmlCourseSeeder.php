@@ -5216,7 +5216,473 @@ function closeModal() {
                     ['title' => 'picture要素とsrcset', 'estimated_minutes' => 180, 'sort_order' => 2],
                     ['title' => '画像フォーマットの選択', 'estimated_minutes' => 180, 'sort_order' => 3],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'レスポンシブ画像の必要性',
+                        'content' => "# レスポンシブ画像とは
+
+**レスポンシブ画像**とは、デバイスの画面サイズや解像度に応じて、最適な画像を表示する技術です。
+
+---
+
+## なぜレスポンシブ画像が必要か
+
+### 1. パフォーマンスの向上
+
+スマホで巨大な画像をダウンロードする必要はありません。
+
+- **悪い例**: 4Kモニター用の画像（5MB）をスマホでも読み込む
+- **良い例**: スマホには軽量版（300KB）を配信
+
+### 2. ユーザー体験の改善
+
+- モバイルユーザーのデータ通信量を節約
+- 読み込み時間の短縮
+- バッテリー消費の削減
+
+### 3. Retina/高解像度ディスプレイへの対応
+
+- 通常の1x画像は高解像度ディスプレイでぼやける
+- 2x, 3x画像を用意することで鮮明に表示
+
+---
+
+## レスポンシブ画像の3つのユースケース
+
+### 1. 解像度の切り替え（Resolution Switching）
+
+**目的**: 同じ画像の異なるサイズ版を提供
+
+```html
+<img
+    src=\"image-800w.jpg\"
+    srcset=\"
+        image-400w.jpg 400w,
+        image-800w.jpg 800w,
+        image-1200w.jpg 1200w
+    \"
+    sizes=\"(max-width: 600px) 400px, 800px\"
+    alt=\"商品画像\"
+>
+```
+
+### 2. アートディレクション（Art Direction）
+
+**目的**: デバイスに応じて異なる画像（トリミングやレイアウト変更）を表示
+
+```html
+<picture>
+    <source media=\"(max-width: 600px)\" srcset=\"image-mobile.jpg\">
+    <source media=\"(max-width: 1200px)\" srcset=\"image-tablet.jpg\">
+    <img src=\"image-desktop.jpg\" alt=\"ヒーロー画像\">
+</picture>
+```
+
+### 3. フォーマットの切り替え
+
+**目的**: WebPなどの最新フォーマットに対応しつつ、フォールバックを提供
+
+```html
+<picture>
+    <source srcset=\"image.avif\" type=\"image/avif\">
+    <source srcset=\"image.webp\" type=\"image/webp\">
+    <img src=\"image.jpg\" alt=\"画像\">
+</picture>
+```
+
+---
+
+## 従来の問題点
+
+### ❌ 固定サイズの画像
+
+```html
+<img src=\"large-image.jpg\" width=\"1200\" alt=\"画像\">
+```
+
+**問題**:
+- スマホでも1200pxの画像をダウンロード（無駄）
+- 小さい画面で表示するのに大きな画像は不要
+- データ通信量とロード時間の増加
+
+### ❌ CSSだけでのリサイズ
+
+```html
+<img src=\"large-image.jpg\" style=\"max-width: 100%; height: auto;\" alt=\"画像\">
+```
+
+**問題**:
+- 表示サイズは小さくなるが、ダウンロードサイズは変わらない
+- 不要に大きな画像をダウンロードしている
+
+---
+
+## 解決策: srcset と sizes
+
+### srcset 属性
+
+ブラウザに複数の画像候補を提供します。
+
+```html
+<img
+    src=\"image-800w.jpg\"
+    srcset=\"
+        image-400w.jpg 400w,
+        image-800w.jpg 800w,
+        image-1200w.jpg 1200w
+    \"
+    alt=\"商品画像\"
+>
+```
+
+**説明**:
+- `400w`, `800w`, `1200w` は画像の実際の幅（ピクセル）
+- `w` は\"width\"の略
+- ブラウザが最適な画像を自動選択
+
+### sizes 属性
+
+画像が表示される幅をブラウザに伝えます。
+
+```html
+<img
+    src=\"image.jpg\"
+    srcset=\"
+        image-400w.jpg 400w,
+        image-800w.jpg 800w
+    \"
+    sizes=\"(max-width: 600px) 100vw, 50vw\"
+    alt=\"画像\"
+>
+```
+
+**説明**:
+- `(max-width: 600px) 100vw`: 画面幅600px以下では画像が100vw（画面幅いっぱい）
+- `50vw`: それ以外では画像が50vw（画面幅の半分）
+
+---
+
+## Retina対応（高解像度ディスプレイ）
+
+### x記法
+
+デバイスピクセル比（DPR）で画像を指定します。
+
+```html
+<img
+    src=\"image-1x.jpg\"
+    srcset=\"
+        image-1x.jpg 1x,
+        image-2x.jpg 2x,
+        image-3x.jpg 3x
+    \"
+    alt=\"ロゴ\"
+>
+```
+
+**説明**:
+- `1x`: 標準ディスプレイ
+- `2x`: Retina、高解像度ディスプレイ（iPhoneなど）
+- `3x`: 超高解像度ディスプレイ（iPhone Pro Maxなど）
+
+---
+
+## まとめ
+
+| 手法 | 用途 |
+|------|------|
+| `srcset + sizes` | 同じ画像の異なるサイズ版を提供 |
+| `<picture>` | デバイスに応じて異なる画像を表示 |
+| `x記法` | Retina対応（高解像度ディスプレイ） |
+
+**ベストプラクティス**:
+1. 常に `src` 属性を指定（フォールバック）
+2. 複数のサイズを用意（最低3つ: 小・中・大）
+3. WebPなどの最新フォーマットを優先
+4. `alt` 属性を必ず設定",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'picture要素とsrcset',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>picture要素とsrcset</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+        .example {
+            margin: 40px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>レスポンシブ画像の実装例</h1>
+
+    <!-- ========== 1. srcset（解像度の切り替え） ========== -->
+    <div class=\"example\">
+        <h2>1. srcset - 解像度の切り替え</h2>
+        <p>ブラウザが画面サイズに応じて最適な画像を自動選択します。</p>
+
+        <img
+            src=\"https://via.placeholder.com/800x400\"
+            srcset=\"
+                https://via.placeholder.com/400x200 400w,
+                https://via.placeholder.com/800x400 800w,
+                https://via.placeholder.com/1200x600 1200w
+            \"
+            sizes=\"(max-width: 600px) 400px, (max-width: 1000px) 800px, 1200px\"
+            alt=\"レスポンシブ画像の例\"
+        >
+
+        <details>
+            <summary>コード例</summary>
+            <pre><code>&lt;img
+    src=\"image-800w.jpg\"
+    srcset=\"
+        image-400w.jpg 400w,
+        image-800w.jpg 800w,
+        image-1200w.jpg 1200w
+    \"
+    sizes=\"(max-width: 600px) 400px, (max-width: 1000px) 800px, 1200px\"
+    alt=\"画像\"
+&gt;</code></pre>
+        </details>
+    </div>
+
+    <!-- ========== 2. Retina対応（x記法） ========== -->
+    <div class=\"example\">
+        <h2>2. Retina対応（x記法）</h2>
+        <p>高解像度ディスプレイに対応します。</p>
+
+        <img
+            src=\"https://via.placeholder.com/200x100\"
+            srcset=\"
+                https://via.placeholder.com/200x100 1x,
+                https://via.placeholder.com/400x200 2x,
+                https://via.placeholder.com/600x300 3x
+            \"
+            alt=\"Retina対応画像\"
+            width=\"200\"
+        >
+
+        <details>
+            <summary>コード例</summary>
+            <pre><code>&lt;img
+    src=\"logo-1x.png\"
+    srcset=\"
+        logo-1x.png 1x,
+        logo-2x.png 2x,
+        logo-3x.png 3x
+    \"
+    alt=\"ロゴ\"
+    width=\"200\"
+&gt;</code></pre>
+        </details>
+    </div>
+
+    <!-- ========== 3. picture要素（アートディレクション） ========== -->
+    <div class=\"example\">
+        <h2>3. picture要素 - アートディレクション</h2>
+        <p>デバイスに応じて異なる画像（トリミングやレイアウト）を表示します。</p>
+
+        <picture>
+            <!-- スマホ（縦長画像） -->
+            <source
+                media=\"(max-width: 600px)\"
+                srcset=\"https://via.placeholder.com/600x800\"
+            >
+            <!-- タブレット（正方形） -->
+            <source
+                media=\"(max-width: 1000px)\"
+                srcset=\"https://via.placeholder.com/800x800\"
+            >
+            <!-- デスクトップ（横長画像） -->
+            <img
+                src=\"https://via.placeholder.com/1200x600\"
+                alt=\"アートディレクションの例\"
+            >
+        </picture>
+
+        <details>
+            <summary>コード例</summary>
+            <pre><code>&lt;picture&gt;
+    &lt;source media=\"(max-width: 600px)\" srcset=\"image-mobile.jpg\"&gt;
+    &lt;source media=\"(max-width: 1000px)\" srcset=\"image-tablet.jpg\"&gt;
+    &lt;img src=\"image-desktop.jpg\" alt=\"画像\"&gt;
+&lt;/picture&gt;</code></pre>
+        </details>
+    </div>
+
+    <!-- ========== 4. フォーマットの切り替え ========== -->
+    <div class=\"example\">
+        <h2>4. フォーマットの切り替え（WebP対応）</h2>
+        <p>最新フォーマットに対応しつつ、古いブラウザのためのフォールバックも提供。</p>
+
+        <picture>
+            <!-- AVIF（最新・最高圧縮） -->
+            <source srcset=\"https://via.placeholder.com/800x400\" type=\"image/avif\">
+            <!-- WebP（広くサポート・高圧縮） -->
+            <source srcset=\"https://via.placeholder.com/800x400\" type=\"image/webp\">
+            <!-- JPEG（フォールバック） -->
+            <img src=\"https://via.placeholder.com/800x400\" alt=\"フォーマット切り替え\">
+        </picture>
+
+        <details>
+            <summary>コード例</summary>
+            <pre><code>&lt;picture&gt;
+    &lt;source srcset=\"image.avif\" type=\"image/avif\"&gt;
+    &lt;source srcset=\"image.webp\" type=\"image/webp\"&gt;
+    &lt;img src=\"image.jpg\" alt=\"画像\"&gt;
+&lt;/picture&gt;</code></pre>
+        </details>
+    </div>
+
+    <!-- ========== 5. 複合例（フォーマット + レスポンシブ） ========== -->
+    <div class=\"example\">
+        <h2>5. 複合例（フォーマット + レスポンシブ + Retina）</h2>
+        <p>フォーマット切り替え、解像度切り替え、Retina対応をすべて組み合わせた例。</p>
+
+        <picture>
+            <!-- WebP（モバイル・Retina対応） -->
+            <source
+                media=\"(max-width: 600px)\"
+                srcset=\"
+                    https://via.placeholder.com/400x200 1x,
+                    https://via.placeholder.com/800x400 2x
+                \"
+                type=\"image/webp\"
+            >
+            <!-- WebP（デスクトップ・Retina対応） -->
+            <source
+                srcset=\"
+                    https://via.placeholder.com/800x400 1x,
+                    https://via.placeholder.com/1600x800 2x
+                \"
+                type=\"image/webp\"
+            >
+            <!-- JPEG（フォールバック） -->
+            <img src=\"https://via.placeholder.com/800x400\" alt=\"複合例\">
+        </picture>
+
+        <details>
+            <summary>コード例</summary>
+            <pre><code>&lt;picture&gt;
+    &lt;!-- WebP（モバイル・Retina） --&gt;
+    &lt;source
+        media=\"(max-width: 600px)\"
+        srcset=\"
+            image-400w.webp 1x,
+            image-800w.webp 2x
+        \"
+        type=\"image/webp\"
+    &gt;
+    &lt;!-- WebP（デスクトップ・Retina） --&gt;
+    &lt;source
+        srcset=\"
+            image-800w.webp 1x,
+            image-1600w.webp 2x
+        \"
+        type=\"image/webp\"
+    &gt;
+    &lt;!-- JPEG（フォールバック） --&gt;
+    &lt;img src=\"image-800w.jpg\" alt=\"画像\"&gt;
+&lt;/picture&gt;</code></pre>
+        </details>
+    </div>
+
+    <!-- ========== 6. 実践例：ECサイトの商品画像 ========== -->
+    <div class=\"example\">
+        <h2>6. 実践例：ECサイトの商品画像</h2>
+
+        <picture>
+            <!-- モバイル: 正方形の商品画像 -->
+            <source
+                media=\"(max-width: 600px)\"
+                srcset=\"
+                    https://via.placeholder.com/300x300 1x,
+                    https://via.placeholder.com/600x600 2x
+                \"
+                type=\"image/webp\"
+            >
+            <!-- タブレット: 4:3の比率 -->
+            <source
+                media=\"(max-width: 1000px)\"
+                srcset=\"
+                    https://via.placeholder.com/400x300 1x,
+                    https://via.placeholder.com/800x600 2x
+                \"
+                type=\"image/webp\"
+            >
+            <!-- デスクトップ: 16:9の横長画像 -->
+            <source
+                srcset=\"
+                    https://via.placeholder.com/800x450 1x,
+                    https://via.placeholder.com/1600x900 2x
+                \"
+                type=\"image/webp\"
+            >
+            <!-- フォールバック -->
+            <img src=\"https://via.placeholder.com/800x450\" alt=\"商品画像\">
+        </picture>
+    </div>
+
+    <!-- まとめ -->
+    <h2>まとめ</h2>
+    <table border=\"1\" style=\"width: 100%; border-collapse: collapse;\">
+        <thead>
+            <tr>
+                <th>手法</th>
+                <th>用途</th>
+                <th>記法</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>srcset</code> (w記法)</td>
+                <td>画面サイズに応じた画像切り替え</td>
+                <td><code>image.jpg 800w</code></td>
+            </tr>
+            <tr>
+                <td><code>srcset</code> (x記法)</td>
+                <td>Retina対応</td>
+                <td><code>image.jpg 2x</code></td>
+            </tr>
+            <tr>
+                <td><code>&lt;picture&gt;</code></td>
+                <td>アートディレクション、フォーマット切り替え</td>
+                <td><code>&lt;source&gt;</code>と<code>&lt;img&gt;</code></td>
+            </tr>
+            <tr>
+                <td><code>sizes</code></td>
+                <td>画像の表示幅を指定</td>
+                <td><code>(max-width: 600px) 100vw</code></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 2
+                    ],
+                ],
             ],
             [
                 'title' => '第11週：Audio と Video',
@@ -5231,7 +5697,213 @@ function closeModal() {
                     ['title' => 'メディアの制御', 'estimated_minutes' => 120, 'sort_order' => 3],
                     ['title' => '字幕とトラック', 'estimated_minutes' => 120, 'sort_order' => 4],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'audio と video の基本',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>Audio と Video の基本</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        video, audio {
+            max-width: 100%;
+            margin: 20px 0;
+        }
+        .example {
+            margin: 40px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML5 Audio と Video</h1>
+
+    <!-- ========== 1. audio要素の基本 ========== -->
+    <div class=\"example\">
+        <h2>1. audio要素の基本</h2>
+
+        <!-- 基本的な音声プレイヤー -->
+        <audio controls>
+            <source src=\"audio.mp3\" type=\"audio/mpeg\">
+            <source src=\"audio.ogg\" type=\"audio/ogg\">
+            お使いのブラウザはaudio要素をサポートしていません。
+        </audio>
+
+        <pre><code>&lt;audio controls&gt;
+    &lt;source src=\"audio.mp3\" type=\"audio/mpeg\"&gt;
+    &lt;source src=\"audio.ogg\" type=\"audio/ogg\"&gt;
+    お使いのブラウザはaudio要素をサポートしていません。
+&lt;/audio&gt;</code></pre>
+
+        <h3>主な属性</h3>
+        <ul>
+            <li><code>controls</code>: 再生コントロールを表示</li>
+            <li><code>autoplay</code>: 自動再生（非推奨・ユーザー体験が悪い）</li>
+            <li><code>loop</code>: ループ再生</li>
+            <li><code>muted</code>: ミュート状態で開始</li>
+            <li><code>preload</code>: 事前読み込み（auto/metadata/none）</li>
+        </ul>
+    </div>
+
+    <!-- ========== 2. video要素の基本 ========== -->
+    <div class=\"example\">
+        <h2>2. video要素の基本</h2>
+
+        <!-- 基本的な動画プレイヤー -->
+        <video controls width=\"640\" height=\"360\">
+            <source src=\"video.mp4\" type=\"video/mp4\">
+            <source src=\"video.webm\" type=\"video/webm\">
+            お使いのブラウザはvideo要素をサポートしていません。
+        </video>
+
+        <pre><code>&lt;video controls width=\"640\" height=\"360\"&gt;
+    &lt;source src=\"video.mp4\" type=\"video/mp4\"&gt;
+    &lt;source src=\"video.webm\" type=\"video/webm\"&gt;
+    お使いのブラウザはvideo要素をサポートしていません。
+&lt;/video&gt;</code></pre>
+    </div>
+
+    <!-- ========== 3. ポスター画像付き動画 ========== -->
+    <div class=\"example\">
+        <h2>3. ポスター画像（サムネイル）</h2>
+
+        <video controls width=\"640\" height=\"360\" poster=\"thumbnail.jpg\">
+            <source src=\"video.mp4\" type=\"video/mp4\">
+        </video>
+
+        <pre><code>&lt;video controls poster=\"thumbnail.jpg\"&gt;
+    &lt;source src=\"video.mp4\" type=\"video/mp4\"&gt;
+&lt;/video&gt;</code></pre>
+
+        <p><code>poster</code>属性で再生前に表示する画像を指定できます。</p>
+    </div>
+
+    <!-- ========== 4. 字幕とキャプション ========== -->
+    <div class=\"example\">
+        <h2>4. 字幕とキャプション（track要素）</h2>
+
+        <video controls width=\"640\" height=\"360\">
+            <source src=\"video.mp4\" type=\"video/mp4\">
+            <!-- 日本語字幕 -->
+            <track kind=\"subtitles\" src=\"subtitles_ja.vtt\" srclang=\"ja\" label=\"日本語\" default>
+            <!-- 英語字幕 -->
+            <track kind=\"subtitles\" src=\"subtitles_en.vtt\" srclang=\"en\" label=\"English\">
+            <!-- 音声解説 -->
+            <track kind=\"descriptions\" src=\"descriptions.vtt\" srclang=\"ja\" label=\"音声解説\">
+        </video>
+
+        <pre><code>&lt;video controls&gt;
+    &lt;source src=\"video.mp4\" type=\"video/mp4\"&gt;
+    &lt;track kind=\"subtitles\" src=\"subtitles_ja.vtt\" srclang=\"ja\" label=\"日本語\" default&gt;
+    &lt;track kind=\"subtitles\" src=\"subtitles_en.vtt\" srclang=\"en\" label=\"English\"&gt;
+&lt;/video&gt;</code></pre>
+
+        <h3>trackのkind属性</h3>
+        <ul>
+            <li><code>subtitles</code>: 字幕</li>
+            <li><code>captions</code>: キャプション（聴覚障害者向け）</li>
+            <li><code>descriptions</code>: 音声解説</li>
+            <li><code>chapters</code>: チャプター</li>
+            <li><code>metadata</code>: メタデータ</li>
+        </ul>
+    </div>
+
+    <!-- ========== 5. JavaScriptで制御 ========== -->
+    <div class=\"example\">
+        <h2>5. JavaScriptで制御</h2>
+
+        <video id=\"myVideo\" width=\"640\" height=\"360\">
+            <source src=\"video.mp4\" type=\"video/mp4\">
+        </video>
+
+        <div>
+            <button onclick=\"document.getElementById('myVideo').play()\">▶ 再生</button>
+            <button onclick=\"document.getElementById('myVideo').pause()\">⏸ 一時停止</button>
+            <button onclick=\"document.getElementById('myVideo').currentTime = 0\">⏮ 最初に戻る</button>
+            <button onclick=\"document.getElementById('myVideo').muted = !document.getElementById('myVideo').muted\">🔇 ミュート切替</button>
+        </div>
+
+        <p>現在の時間: <span id=\"currentTime\">0</span>秒</p>
+
+        <script>
+            const video = document.getElementById('myVideo');
+            video.addEventListener('timeupdate', function() {
+                document.getElementById('currentTime').textContent = Math.floor(video.currentTime);
+            });
+        </script>
+    </div>
+
+    <!-- ========== 6. レスポンシブ動画 ========== -->
+    <div class=\"example\">
+        <h2>6. レスポンシブ動画（幅100%）</h2>
+
+        <video controls style=\"width: 100%; height: auto;\">
+            <source src=\"video.mp4\" type=\"video/mp4\">
+        </video>
+
+        <pre><code>&lt;video controls style=\"width: 100%; height: auto;\"&gt;
+    &lt;source src=\"video.mp4\" type=\"video/mp4\"&gt;
+&lt;/video&gt;</code></pre>
+    </div>
+
+    <!-- まとめ -->
+    <h2>まとめ</h2>
+    <table border=\"1\" style=\"width: 100%; border-collapse: collapse;\">
+        <thead>
+            <tr>
+                <th>属性</th>
+                <th>用途</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>controls</code></td>
+                <td>再生コントロールを表示</td>
+            </tr>
+            <tr>
+                <td><code>autoplay</code></td>
+                <td>自動再生（非推奨）</td>
+            </tr>
+            <tr>
+                <td><code>loop</code></td>
+                <td>ループ再生</td>
+            </tr>
+            <tr>
+                <td><code>muted</code></td>
+                <td>ミュート状態で開始</td>
+            </tr>
+            <tr>
+                <td><code>poster</code></td>
+                <td>サムネイル画像（videoのみ）</td>
+            </tr>
+            <tr>
+                <td><code>preload</code></td>
+                <td>事前読み込み（auto/metadata/none）</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>対応フォーマット</h3>
+    <ul>
+        <li><strong>Audio</strong>: MP3, OGG, WAV</li>
+        <li><strong>Video</strong>: MP4 (H.264), WebM, OGG</li>
+    </ul>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 1
+                    ],
+                ],
             ],
             [
                 'title' => '第12週：Canvas と SVG',
