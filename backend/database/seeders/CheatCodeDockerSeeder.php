@@ -24,7 +24,7 @@ class CheatCodeDockerSeeder extends Seeder
             'icon' => 'ic_docker',
             'color' => '#2496ED',
             'description' => 'Dockerのリファレンス。最も一般的なDockerコマンドをここで見つけることができます。',
-            'category' => 'devops',
+            'category' => 'programming',
             'popularity' => 90,
             'is_active' => true,
             'sort_order' => 12,
