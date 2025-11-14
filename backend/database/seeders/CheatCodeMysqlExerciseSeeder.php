@@ -764,19 +764,20 @@ class CheatCodeMysqlExerciseSeeder extends Seeder
         $slug = $language->slug . '-exercise-' . $sortOrder;
 
         $exercise = Exercise::create([
-            'cheat_code_language_id' => $language->id,
+            'language_id' => $language->id,
             'title' => $title,
             'slug' => $slug,
-            'category' => $category,
-            'description' => $description,
+            'description' => $category,
+            'question' => $description,
             'starter_code' => $starterCode,
             'solution' => $solution,
             'hints' => $hints,
             'difficulty' => $difficulty,
             'points' => $points,
             'tags' => $tags,
+            'time_limit' => 30,
+            'is_published' => true,
             'sort_order' => $sortOrder,
-            'is_active' => true,
         ]);
 
         foreach ($testCases as $testCase) {
