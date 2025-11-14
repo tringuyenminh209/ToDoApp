@@ -4202,7 +4202,991 @@ users.forEach(user => {
                     ['title' => 'ARIAロールと属性', 'estimated_minutes' => 180, 'sort_order' => 2],
                     ['title' => 'キーボード操作とフォーカス', 'estimated_minutes' => 180, 'sort_order' => 3],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'アクセシビリティの重要性',
+                        'content' => "# Webアクセシビリティとは
+
+**Webアクセシビリティ**とは、障害の有無に関わらず、すべてのユーザーがWebサイトを利用できるようにすることです。
+
+---
+
+## なぜアクセシビリティが重要か
+
+### 1. 法的義務
+
+多くの国で、Webアクセシビリティは法律で義務付けられています。
+
+- 日本: 障害者差別解消法
+- アメリカ: ADA (Americans with Disabilities Act)
+- EU: 欧州アクセシビリティ法
+
+### 2. ビジネス上のメリット
+
+- **ユーザー層の拡大**: 障害者、高齢者、一時的な障害を持つ人も利用可能
+- **SEO向上**: アクセシブルなサイトは検索エンジンにも理解されやすい
+- **ブランドイメージ向上**: 社会的責任を果たす企業として評価される
+
+### 3. すべてのユーザーに恩恵
+
+アクセシビリティの向上は、障害者だけでなく**すべてのユーザー**に役立ちます。
+
+- **高齢者**: 視力・聴力の低下
+- **一時的な障害**: 怪我で片手が使えない、明るい場所で画面が見にくい
+- **状況的制約**: 騒がしい環境、低速なネットワーク、古いデバイス
+
+---
+
+## 障害の種類と対応
+
+### 1. 視覚障害
+
+**症状**:
+- 全盲（完全に見えない）
+- 弱視（部分的に見える）
+- 色覚異常（色の識別が困難）
+
+**対応**:
+- スクリーンリーダー対応
+- 適切なコントラスト比
+- 色だけに依存しない情報提供
+
+```html
+<!-- 悪い例 ✗ -->
+<button style=\"background: red;\">エラー</button>
+
+<!-- 良い例 ✓ -->
+<button style=\"background: red;\">
+    <span aria-label=\"エラー\">❌ エラー</span>
+</button>
+```
+
+### 2. 聴覚障害
+
+**症状**:
+- 全聾（完全に聞こえない）
+- 難聴（部分的に聞こえる）
+
+**対応**:
+- 動画に字幕を提供
+- 音声情報の文字化
+- 視覚的なフィードバック
+
+```html
+<!-- 動画に字幕を付ける -->
+<video controls>
+    <source src=\"video.mp4\" type=\"video/mp4\">
+    <track kind=\"subtitles\" src=\"subtitles_ja.vtt\" srclang=\"ja\" label=\"日本語\">
+</video>
+```
+
+### 3. 運動障害
+
+**症状**:
+- マウスが使えない
+- 細かい操作が困難
+
+**対応**:
+- キーボード操作のサポート
+- 大きなクリックエリア
+- 音声入力のサポート
+
+```html
+<!-- 十分な大きさのボタン -->
+<button style=\"min-width: 44px; min-height: 44px; padding: 10px;\">
+    送信
+</button>
+```
+
+### 4. 認知障害
+
+**症状**:
+- 複雑な内容の理解が困難
+- 集中力の維持が困難
+
+**対応**:
+- シンプルな言葉遣い
+- 明確なナビゲーション
+- 一貫したデザイン
+
+---
+
+## WCAG（Web Content Accessibility Guidelines）
+
+**WCAG**は、Webアクセシビリティの国際標準です。
+
+### 4つの原則（POUR）
+
+1. **Perceivable（知覚可能）**
+   - 情報とUIコンポーネントは、ユーザーが知覚できる方法で提示される
+
+2. **Operable（操作可能）**
+   - UIコンポーネントとナビゲーションは操作可能である
+
+3. **Understandable（理解可能）**
+   - 情報とUIの操作は理解可能である
+
+4. **Robust（堅牢）**
+   - コンテンツは、支援技術を含む様々なユーザーエージェントで解釈できる
+
+### 適合レベル
+
+- **Level A**: 最低限の要件
+- **Level AA**: 中程度の要件（推奨）
+- **Level AAA**: 最高レベルの要件
+
+---
+
+## 基本的なアクセシビリティのチェックリスト
+
+### ✅ 画像
+
+- [ ] すべての画像に`alt`属性を設定
+- [ ] 装飾的な画像は`alt=\"\"`（空）にする
+- [ ] 重要な情報を画像だけで提供しない
+
+```html
+<!-- 良い例 -->
+<img src=\"logo.png\" alt=\"ABC株式会社\">
+<img src=\"decoration.png\" alt=\"\" role=\"presentation\">
+```
+
+### ✅ リンクとボタン
+
+- [ ] リンクテキストは目的が明確
+- [ ] \"こちら\"だけのリンクを避ける
+- [ ] ボタンは`<button>`タグを使う
+
+```html
+<!-- 悪い例 ✗ -->
+<a href=\"/products\">こちら</a>
+
+<!-- 良い例 ✓ -->
+<a href=\"/products\">製品一覧を見る</a>
+```
+
+### ✅ フォーム
+
+- [ ] すべての入力欄に`<label>`を設定
+- [ ] エラーメッセージは分かりやすく
+- [ ] 必須項目を明示
+
+```html
+<label for=\"email\">メールアドレス（必須）</label>
+<input type=\"email\" id=\"email\" name=\"email\" required aria-required=\"true\">
+```
+
+### ✅ 見出し
+
+- [ ] 見出しタグ（h1～h6）を適切に使う
+- [ ] 見出しの階層をスキップしない
+
+```html
+<!-- 悪い例 ✗ -->
+<h1>タイトル</h1>
+<h3>セクション</h3> <!-- h2をスキップ -->
+
+<!-- 良い例 ✓ -->
+<h1>タイトル</h1>
+<h2>セクション</h2>
+<h3>サブセクション</h3>
+```
+
+### ✅ コントラスト比
+
+- [ ] 文字と背景のコントラスト比は4.5:1以上（通常テキスト）
+- [ ] 大きな文字は3:1以上
+
+```css
+/* 悪い例 ✗ */
+color: #999; /* 背景が白の場合、コントラスト不足 */
+
+/* 良い例 ✓ */
+color: #333; /* 十分なコントラスト */
+```
+
+### ✅ キーボード操作
+
+- [ ] すべての機能をキーボードで操作可能
+- [ ] フォーカスの順序が論理的
+- [ ] フォーカスの視覚的インジケーターがある
+
+```css
+/* フォーカススタイルを削除しない！ */
+button:focus {
+    outline: 2px solid blue;
+}
+```
+
+---
+
+## アクセシビリティ検証ツール
+
+### 自動検証ツール
+
+1. **Lighthouse**（Chrome DevTools）
+2. **axe DevTools**（ブラウザ拡張）
+3. **WAVE**（Web Accessibility Evaluation Tool）
+
+### 手動検証
+
+1. キーボードのみで操作してみる
+2. スクリーンリーダーで確認（NVDA、JAWS、VoiceOverなど）
+3. ブラウザのズーム機能で200%表示してみる
+
+---
+
+## まとめ
+
+アクセシビリティは**すべてのユーザー**のためのものです。
+
+- 法的義務であり、ビジネス上のメリットもある
+- 基本的なHTML要素を正しく使うことが第一歩
+- 自動ツールと手動テストを組み合わせて検証する
+- 継続的な改善が重要",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'ARIAロールと属性',
+                        'content' => "# WAI-ARIA（Accessible Rich Internet Applications）
+
+**ARIA**は、動的なWebアプリケーションをアクセシブルにするための技術仕様です。
+
+---
+
+## ARIAの3つの主要機能
+
+### 1. Role（役割）
+
+要素の役割を支援技術に伝えます。
+
+```html
+<div role=\"button\" tabindex=\"0\">クリック</div>
+```
+
+### 2. Property（プロパティ）
+
+要素の性質や関係を示します（変化しない属性）。
+
+```html
+<input type=\"text\" aria-label=\"検索\" aria-required=\"true\">
+```
+
+### 3. State（状態）
+
+要素の現在の状態を示します（変化する属性）。
+
+```html
+<button aria-pressed=\"true\">選択中</button>
+```
+
+---
+
+## ARIAの5つのルール
+
+### ルール1: ARIAを使わずに済むなら使わない
+
+ネイティブHTMLが最優先です。
+
+```html
+<!-- 悪い例 ✗ -->
+<div role=\"button\" tabindex=\"0\" onclick=\"submit()\">送信</div>
+
+<!-- 良い例 ✓ -->
+<button onclick=\"submit()\">送信</button>
+```
+
+### ルール2: ネイティブのセマンティクスを変更しない
+
+```html
+<!-- 悪い例 ✗ -->
+<h1 role=\"button\">見出しがボタン？</h1>
+
+<!-- 良い例 ✓ -->
+<h1>見出し</h1>
+<button>ボタン</button>
+```
+
+### ルール3: すべてのARIA要素はキーボード操作可能にする
+
+```html
+<!-- ARIAを使った要素には tabindex が必要 -->
+<div role=\"button\" tabindex=\"0\" onkeypress=\"handleKey(event)\">
+    クリック
+</div>
+```
+
+### ルール4: フォーカス可能な要素を role=\"presentation\" にしない
+
+```html
+<!-- 悪い例 ✗ -->
+<button role=\"presentation\">ボタン</button>
+
+<!-- 良い例 ✓ -->
+<button>ボタン</button>
+```
+
+### ルール5: すべてのインタラクティブ要素にアクセシブルな名前を付ける
+
+```html
+<button aria-label=\"閉じる\">✕</button>
+```
+
+---
+
+## 主要なARIAロール
+
+### ランドマークロール
+
+ページの主要な領域を示します。
+
+```html
+<!-- ヘッダー -->
+<header role=\"banner\">
+    <h1>サイト名</h1>
+</header>
+
+<!-- メインナビゲーション -->
+<nav role=\"navigation\" aria-label=\"メインメニュー\">
+    <ul>
+        <li><a href=\"/\">ホーム</a></li>
+        <li><a href=\"/about\">概要</a></li>
+    </ul>
+</nav>
+
+<!-- メインコンテンツ -->
+<main role=\"main\">
+    <h2>記事タイトル</h2>
+    <p>本文...</p>
+</main>
+
+<!-- サイドバー -->
+<aside role=\"complementary\">
+    <h3>関連記事</h3>
+</aside>
+
+<!-- フッター -->
+<footer role=\"contentinfo\">
+    <p>&copy; 2024</p>
+</footer>
+
+<!-- 検索フォーム -->
+<form role=\"search\">
+    <input type=\"search\" aria-label=\"サイト内検索\">
+    <button type=\"submit\">検索</button>
+</form>
+```
+
+### ウィジェットロール
+
+インタラクティブなコンポーネントの役割を示します。
+
+```html
+<!-- タブ -->
+<div role=\"tablist\">
+    <button role=\"tab\" aria-selected=\"true\" aria-controls=\"panel1\">タブ1</button>
+    <button role=\"tab\" aria-selected=\"false\" aria-controls=\"panel2\">タブ2</button>
+</div>
+<div id=\"panel1\" role=\"tabpanel\">内容1</div>
+<div id=\"panel2\" role=\"tabpanel\" hidden>内容2</div>
+
+<!-- アラート -->
+<div role=\"alert\" aria-live=\"assertive\">
+    エラーが発生しました。
+</div>
+
+<!-- ダイアログ -->
+<div role=\"dialog\" aria-labelledby=\"dialog-title\" aria-modal=\"true\">
+    <h2 id=\"dialog-title\">確認</h2>
+    <p>削除しますか？</p>
+    <button>OK</button>
+    <button>キャンセル</button>
+</div>
+```
+
+---
+
+## 主要なARIA属性
+
+### aria-label
+
+要素のラベルを直接指定します。
+
+```html
+<button aria-label=\"メニューを閉じる\">
+    ✕
+</button>
+
+<nav aria-label=\"パンくずリスト\">
+    <a href=\"/\">ホーム</a> &gt; <a href=\"/products\">製品</a>
+</nav>
+```
+
+### aria-labelledby
+
+別の要素のIDを参照してラベルを指定します。
+
+```html
+<h2 id=\"section-title\">設定</h2>
+<div aria-labelledby=\"section-title\">
+    <p>設定項目...</p>
+</div>
+```
+
+### aria-describedby
+
+要素の詳細な説明を別の要素から参照します。
+
+```html
+<input
+    type=\"password\"
+    id=\"password\"
+    aria-describedby=\"password-hint\"
+>
+<div id=\"password-hint\">
+    パスワードは8文字以上で、英大文字・小文字・数字を含む必要があります。
+</div>
+```
+
+### aria-hidden
+
+要素をスクリーンリーダーから隠します。
+
+```html
+<!-- 装飾的なアイコンを隠す -->
+<button>
+    <span aria-hidden=\"true\">🔍</span>
+    検索
+</button>
+```
+
+### aria-live
+
+動的に変化するコンテンツを通知します。
+
+```html
+<!-- polite: 現在の読み上げが終わってから通知 -->
+<div aria-live=\"polite\">
+    検索結果: 15件
+</div>
+
+<!-- assertive: すぐに通知（重要な情報） -->
+<div role=\"alert\" aria-live=\"assertive\">
+    エラー: 入力内容を確認してください
+</div>
+```
+
+### aria-expanded
+
+折りたたみ可能な要素の状態を示します。
+
+```html
+<button
+    aria-expanded=\"false\"
+    aria-controls=\"menu\"
+    onclick=\"toggleMenu()\"
+>
+    メニュー
+</button>
+<ul id=\"menu\" hidden>
+    <li>項目1</li>
+    <li>項目2</li>
+</ul>
+```
+
+### aria-pressed
+
+トグルボタンの状態を示します。
+
+```html
+<button aria-pressed=\"false\" onclick=\"toggleBold()\">
+    太字
+</button>
+
+<script>
+function toggleBold() {
+    const button = event.target;
+    const pressed = button.getAttribute('aria-pressed') === 'true';
+    button.setAttribute('aria-pressed', !pressed);
+}
+</script>
+```
+
+### aria-checked
+
+チェックボックスやラジオボタンの状態を示します。
+
+```html
+<div role=\"checkbox\" aria-checked=\"false\" tabindex=\"0\">
+    利用規約に同意する
+</div>
+```
+
+### aria-invalid
+
+フォーム入力のエラー状態を示します。
+
+```html
+<input
+    type=\"email\"
+    id=\"email\"
+    aria-invalid=\"true\"
+    aria-describedby=\"email-error\"
+>
+<div id=\"email-error\" role=\"alert\">
+    有効なメールアドレスを入力してください
+</div>
+```
+
+### aria-required
+
+必須項目を示します。
+
+```html
+<label for=\"username\">ユーザー名（必須）</label>
+<input
+    type=\"text\"
+    id=\"username\"
+    required
+    aria-required=\"true\"
+>
+```
+
+---
+
+## 実践例
+
+### アクセシブルなモーダルダイアログ
+
+```html
+<button onclick=\"openModal()\">ダイアログを開く</button>
+
+<div
+    id=\"modal\"
+    role=\"dialog\"
+    aria-labelledby=\"modal-title\"
+    aria-describedby=\"modal-description\"
+    aria-modal=\"true\"
+    hidden
+>
+    <h2 id=\"modal-title\">確認</h2>
+    <p id=\"modal-description\">この操作を実行しますか？</p>
+    <button onclick=\"confirm()\">はい</button>
+    <button onclick=\"closeModal()\">いいえ</button>
+</div>
+
+<script>
+function openModal() {
+    const modal = document.getElementById('modal');
+    modal.hidden = false;
+    modal.querySelector('button').focus(); // フォーカスを移動
+}
+
+function closeModal() {
+    document.getElementById('modal').hidden = true;
+}
+</script>
+```
+
+### アクセシブルなタブパネル
+
+```html
+<div class=\"tabs\">
+    <div role=\"tablist\" aria-label=\"設定タブ\">
+        <button
+            role=\"tab\"
+            aria-selected=\"true\"
+            aria-controls=\"panel-general\"
+            id=\"tab-general\"
+        >
+            一般
+        </button>
+        <button
+            role=\"tab\"
+            aria-selected=\"false\"
+            aria-controls=\"panel-privacy\"
+            id=\"tab-privacy\"
+        >
+            プライバシー
+        </button>
+    </div>
+
+    <div
+        id=\"panel-general\"
+        role=\"tabpanel\"
+        aria-labelledby=\"tab-general\"
+    >
+        一般設定の内容...
+    </div>
+
+    <div
+        id=\"panel-privacy\"
+        role=\"tabpanel\"
+        aria-labelledby=\"tab-privacy\"
+        hidden
+    >
+        プライバシー設定の内容...
+    </div>
+</div>
+```
+
+---
+
+## まとめ
+
+| 属性 | 用途 |
+|------|------|
+| `aria-label` | 要素の名前を直接指定 |
+| `aria-labelledby` | 別の要素から名前を参照 |
+| `aria-describedby` | 詳細な説明を参照 |
+| `aria-hidden` | スクリーンリーダーから隠す |
+| `aria-live` | 動的変化を通知 |
+| `aria-expanded` | 展開/折りたたみ状態 |
+| `aria-pressed` | トグルボタンの状態 |
+| `aria-invalid` | 入力エラー状態 |
+
+**重要**: ARIAは、ネイティブHTMLで実現できない場合のみ使用してください。",
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'キーボード操作とフォーカス管理',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>キーボード操作とフォーカス</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        /* フォーカススタイル */
+        *:focus {
+            outline: 3px solid #4CAF50;
+            outline-offset: 2px;
+        }
+        button, a {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #000;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+        .custom-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #2196F3;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 2px solid #333;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        .modal.active {
+            display: block;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        .overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- スキップリンク -->
+    <a href=\"#main-content\" class=\"skip-link\">メインコンテンツへスキップ</a>
+
+    <h1>キーボード操作とフォーカス管理</h1>
+
+    <!-- ========== 1. 基本的なキーボード操作 ========== -->
+    <section>
+        <h2>1. 基本的なキーボード操作</h2>
+        <p>以下のキーでページを操作できます：</p>
+        <ul>
+            <li><kbd>Tab</kbd>: 次の要素へフォーカス移動</li>
+            <li><kbd>Shift + Tab</kbd>: 前の要素へフォーカス移動</li>
+            <li><kbd>Enter</kbd>: リンクやボタンを実行</li>
+            <li><kbd>Space</kbd>: チェックボックスやボタンを実行</li>
+            <li><kbd>↑↓←→</kbd>: ラジオボタンやメニューの選択</li>
+        </ul>
+
+        <button>ボタン1</button>
+        <button>ボタン2</button>
+        <a href=\"#\">リンク</a>
+        <input type=\"text\" placeholder=\"テキスト入力\">
+    </section>
+
+    <!-- ========== 2. tabindex の使い方 ========== -->
+    <section id=\"main-content\">
+        <h2>2. tabindex の使い方</h2>
+
+        <!-- tabindex=\"0\": フォーカス可能にする（自然な順序） -->
+        <div
+            class=\"custom-button\"
+            tabindex=\"0\"
+            role=\"button\"
+            onclick=\"alert('クリックされました')\"
+            onkeypress=\"if(event.key === 'Enter' || event.key === ' ') alert('押されました')\"
+        >
+            カスタムボタン（tabindex=\"0\"）
+        </div>
+
+        <!-- tabindex=\"-1\": JavaScriptでのみフォーカス可能 -->
+        <div id=\"programmatic-focus\" tabindex=\"-1\" style=\"padding: 10px; border: 1px solid #ddd;\">
+            プログラムでフォーカス可能（tabindex=\"-1\"）
+        </div>
+        <button onclick=\"document.getElementById('programmatic-focus').focus()\">
+            上の要素にフォーカスを移動
+        </button>
+
+        <!-- tabindex=\"1以上\": 使用非推奨（自然な順序を壊す） -->
+        <p><strong>注意</strong>: tabindex=\"1\"以上は避けてください。フォーカス順序が不自然になります。</p>
+    </section>
+
+    <!-- ========== 3. フォーカストラップ（モーダル） ========== -->
+    <section>
+        <h2>3. フォーカストラップ（モーダル）</h2>
+        <p>モーダル内でフォーカスを閉じ込めます。</p>
+        <button onclick=\"openModal()\">モーダルを開く</button>
+    </section>
+
+    <!-- モーダルダイアログ -->
+    <div class=\"overlay\" id=\"overlay\" onclick=\"closeModal()\"></div>
+    <div class=\"modal\" id=\"modal\" role=\"dialog\" aria-labelledby=\"modal-title\" aria-modal=\"true\">
+        <h3 id=\"modal-title\">確認ダイアログ</h3>
+        <p>この操作を実行しますか？</p>
+        <button id=\"modal-confirm\">はい</button>
+        <button id=\"modal-cancel\" onclick=\"closeModal()\">いいえ</button>
+        <button onclick=\"closeModal()\">閉じる</button>
+    </div>
+
+    <!-- ========== 4. キーボードイベント処理 ========== -->
+    <section>
+        <h2>4. キーボードイベント処理</h2>
+        <div
+            class=\"custom-button\"
+            tabindex=\"0\"
+            role=\"button\"
+            id=\"keyboard-button\"
+        >
+            EnterまたはSpaceで実行
+        </div>
+        <p id=\"key-output\"></p>
+    </section>
+
+    <!-- ========== 5. カスタムコンポーネント ========== -->
+    <section>
+        <h2>5. カスタムチェックボックス</h2>
+        <div
+            role=\"checkbox\"
+            aria-checked=\"false\"
+            tabindex=\"0\"
+            id=\"custom-checkbox\"
+            style=\"display: inline-block; width: 20px; height: 20px; border: 2px solid #333; cursor: pointer;\"
+        ></div>
+        <label for=\"custom-checkbox\" style=\"margin-left: 10px;\">利用規約に同意する</label>
+    </section>
+
+    <!-- ========== 6. フォーカス可視化 ========== -->
+    <section>
+        <h2>6. フォーカス可視化</h2>
+        <p>フォーカスインジケーターを削除してはいけません。</p>
+
+        <style>
+            .good-focus:focus {
+                outline: 3px solid #FF5722;
+                outline-offset: 2px;
+            }
+        </style>
+
+        <button class=\"good-focus\">良いフォーカススタイル</button>
+
+        <p><strong>悪い例</strong>（絶対にやらないでください）:</p>
+        <pre><code>button:focus {
+    outline: none; /* これは絶対ダメ！ */
+}</code></pre>
+    </section>
+
+    <script>
+        // ========== モーダルのフォーカストラップ ==========
+        let previousFocus;
+
+        function openModal() {
+            previousFocus = document.activeElement; // 現在のフォーカスを保存
+
+            const modal = document.getElementById('modal');
+            const overlay = document.getElementById('overlay');
+
+            modal.classList.add('active');
+            overlay.classList.add('active');
+
+            // モーダル内の最初のフォーカス可能要素にフォーカス
+            const firstFocusable = modal.querySelector('button');
+            firstFocusable.focus();
+
+            // フォーカストラップを設定
+            modal.addEventListener('keydown', trapFocus);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            const overlay = document.getElementById('overlay');
+
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+
+            modal.removeEventListener('keydown', trapFocus);
+
+            // 元のフォーカスに戻す
+            if (previousFocus) {
+                previousFocus.focus();
+            }
+        }
+
+        function trapFocus(e) {
+            const modal = document.getElementById('modal');
+            const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex=\"-1\"])');
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            // Escで閉じる
+            if (e.key === 'Escape') {
+                closeModal();
+                return;
+            }
+
+            // Tabキーでのフォーカストラップ
+            if (e.key === 'Tab') {
+                if (e.shiftKey) { // Shift + Tab
+                    if (document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    }
+                } else { // Tab
+                    if (document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            }
+        }
+
+        // ========== キーボードイベント処理 ==========
+        const keyboardButton = document.getElementById('keyboard-button');
+        const keyOutput = document.getElementById('key-output');
+
+        keyboardButton.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault(); // Spaceのデフォルト動作（スクロール）を防ぐ
+                keyOutput.textContent = `${e.key} キーが押されました！`;
+
+                // ボタンを押した視覚的フィードバック
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            }
+        });
+
+        // ========== カスタムチェックボックス ==========
+        const customCheckbox = document.getElementById('custom-checkbox');
+
+        customCheckbox.addEventListener('click', toggleCheckbox);
+        customCheckbox.addEventListener('keydown', function(e) {
+            if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                toggleCheckbox();
+            }
+        });
+
+        function toggleCheckbox() {
+            const checked = customCheckbox.getAttribute('aria-checked') === 'true';
+            customCheckbox.setAttribute('aria-checked', !checked);
+            customCheckbox.style.backgroundColor = !checked ? '#4CAF50' : 'transparent';
+        }
+
+        // ========== フォーカス管理のユーティリティ ==========
+
+        // すべてのフォーカス可能な要素を取得
+        function getFocusableElements(container = document) {
+            return container.querySelectorAll(
+                'a[href], button:not([disabled]), textarea:not([disabled]), ' +
+                'input:not([disabled]), select:not([disabled]), ' +
+                '[tabindex]:not([tabindex=\"-1\"])'
+            );
+        }
+
+        // 次のフォーカス可能要素にフォーカス
+        function focusNext() {
+            const focusable = Array.from(getFocusableElements());
+            const currentIndex = focusable.indexOf(document.activeElement);
+            const nextElement = focusable[currentIndex + 1] || focusable[0];
+            nextElement.focus();
+        }
+
+        // 前のフォーカス可能要素にフォーカス
+        function focusPrevious() {
+            const focusable = Array.from(getFocusableElements());
+            const currentIndex = focusable.indexOf(document.activeElement);
+            const prevElement = focusable[currentIndex - 1] || focusable[focusable.length - 1];
+            prevElement.focus();
+        }
+    </script>
+
+    <hr>
+
+    <h2>まとめ</h2>
+    <ul>
+        <li><strong>Tab</strong>でフォーカス移動、<strong>Enter/Space</strong>で実行</li>
+        <li><code>tabindex=\"0\"</code>: カスタム要素をフォーカス可能にする</li>
+        <li><code>tabindex=\"-1\"</code>: プログラムでのみフォーカス可能</li>
+        <li>モーダルではフォーカストラップを実装する</li>
+        <li>フォーカススタイル（outline）を削除しない</li>
+        <li>Escキーでモーダルを閉じる</li>
+        <li>閉じた後は元のフォーカスに戻す</li>
+    </ul>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 3
+                    ],
+                ],
             ],
         ]);
 
