@@ -138,6 +138,14 @@ class LearningPathTemplateController extends Controller
      */
     public function clone(Request $request, $id)
     {
+        // Validate study schedules - REQUIRED for discipline
+        $request->validate([
+            'study_schedules' => 'required|array|min:1',
+            'study_schedules.*.day_of_week' => 'required|integer|between:0,6',
+            'study_schedules.*.study_time' => 'required|date_format:H:i',
+            'study_schedules.*.duration_minutes' => 'nullable|integer|min:15|max:480',
+        ]);
+
         try {
             // Validate user
             $user = $request->user();
@@ -212,17 +220,37 @@ class LearningPathTemplateController extends Controller
                 }
             }
 
+            // Create study schedules for the learning path
+            if ($request->has('study_schedules')) {
+                foreach ($request->study_schedules as $scheduleData) {
+                    \App\Models\StudySchedule::create([
+                        'learning_path_id' => $learningPath->id,
+                        'day_of_week' => $scheduleData['day_of_week'],
+                        'study_time' => $scheduleData['study_time'] . ':00', // Convert HH:MM to HH:MM:SS
+                        'duration_minutes' => $scheduleData['duration_minutes'] ?? 60,
+                        'is_active' => true,
+                        'reminder_enabled' => $scheduleData['reminder_enabled'] ?? true,
+                        'reminder_before_minutes' => $scheduleData['reminder_before_minutes'] ?? 30,
+                    ]);
+                }
+            }
+
             // Increment template usage count
             $template->incrementUsage();
 
             DB::commit();
+
+            // Load relationships including study schedules
+            $learningPath->load('milestones.tasks', 'studySchedules');
 
             return response()->json([
                 'success' => true,
                 'message' => 'テンプレートから学習パスを作成しました',
                 'data' => [
                     'learning_path_id' => $learningPath->id,
-                    'learning_path' => $learningPath->load('milestones.tasks')
+                    'learning_path' => $learningPath,
+                    'study_schedules' => $learningPath->studySchedules,
+                    'weekly_schedule' => $learningPath->getWeeklyScheduleSummary()
                 ]
             ]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
