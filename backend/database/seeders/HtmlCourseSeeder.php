@@ -3416,7 +3416,7 @@ divは**意味がない**汎用的なコンテナです。
     <figure>
         <pre><code>
 function greet(name) {
-    return `Hello, ${name}!`;
+    return `Hello, \${name}!`;
 }
         </code></pre>
         <figcaption>リスト1: JavaScriptの挨拶関数</figcaption>
@@ -3877,7 +3877,7 @@ function greet(name) {
 // ユーザー情報を取得する関数
 async function fetchUserData(userId) {
     try {
-        const response = await fetch(`/api/users/${userId}`);
+        const response = await fetch(`/api/users/\${userId}`);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -5114,7 +5114,7 @@ function closeModal() {
         keyboardButton.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault(); // Spaceのデフォルト動作（スクロール）を防ぐ
-                keyOutput.textContent = `${e.key} キーが押されました！`;
+                keyOutput.textContent = `\${e.key} キーが押されました！`;
 
                 // ボタンを押した視覚的フィードバック
                 this.style.transform = 'scale(0.95)';
