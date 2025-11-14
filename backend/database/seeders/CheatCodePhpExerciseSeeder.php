@@ -410,7 +410,7 @@ class CheatCodePhpExerciseSeeder extends Seeder
         $exercise = Exercise::create([
             'language_id' => $language->id,
             'title' => $title,
-            'slug' => Str::slug($title),
+            'slug' => Str::slug($title) ?: $language->slug . '-exercise-' . $sortOrder,
             'description' => $description,
             'question' => $question,
             'starter_code' => $starterCode,
