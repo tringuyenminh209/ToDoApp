@@ -50,6 +50,7 @@ class DatabaseSeeder extends Seeder
             CheatCodeDockerSeeder::class,
             CheatCodeYamlSeeder::class,
             CheatCodeMysqlSeeder::class,
+            CheatCodeMysqlExerciseSeeder::class,
         ]);
     }
 }
