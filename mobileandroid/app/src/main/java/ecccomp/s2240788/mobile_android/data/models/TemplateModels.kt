@@ -108,6 +108,11 @@ data class TemplateDetailResponse(
     @SerializedName("data") val data: LearningPathTemplate
 )
 
+// Clone Template Request (WITH MANDATORY STUDY SCHEDULE)
+data class CloneTemplateRequest(
+    @SerializedName("study_schedules") val studySchedules: List<StudyScheduleInput> // REQUIRED for discipline
+)
+
 data class CloneTemplateResponse(
     @SerializedName("success") val success: Boolean,
     @SerializedName("message") val message: String,
