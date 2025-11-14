@@ -5918,7 +5918,155 @@ function closeModal() {
                     ['title' => 'CanvasとSVGの使い分け', 'estimated_minutes' => 120, 'sort_order' => 3],
                     ['title' => 'アイコンとグラフィックス', 'estimated_minutes' => 120, 'sort_order' => 4],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'Canvas と SVG の違い',
+                        'content' => "# Canvas と SVG の違い
+
+HTMLでグラフィックスを描画する方法として、**Canvas**と**SVG**があります。
+
+---
+
+## Canvas（キャンバス）
+
+**Canvas**は、JavaScriptで図形やグラフィックを描画するための**ビットマップベース**の描画領域です。
+
+### 特徴
+
+- **ビットマップ（ラスター）**: ピクセル単位で描画
+- **JavaScriptで制御**: HTML要素を作らず、コードで描画
+- **高速**: 大量の要素を描画する場合に有利
+- **動的**: アニメーションやゲームに適している
+
+### 使用例
+
+```html
+<canvas id=\"myCanvas\" width=\"400\" height=\"200\"></canvas>
+
+<script>
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// 長方形を描画
+ctx.fillStyle = '#FF0000';
+ctx.fillRect(50, 50, 150, 100);
+
+// 円を描画
+ctx.beginPath();
+ctx.arc(300, 100, 50, 0, 2 * Math.PI);
+ctx.fillStyle = '#0000FF';
+ctx.fill();
+</script>
+```
+
+---
+
+## SVG（Scalable Vector Graphics）
+
+**SVG**は、XML形式で記述される**ベクターベース**のグラフィックスです。
+
+### 特徴
+
+- **ベクター**: 数式で図形を表現（拡大しても劣化しない）
+- **DOM要素**: HTMLの一部として扱える
+- **CSSとJavaScriptで制御可能**: スタイリングやイベント処理が簡単
+- **アクセシブル**: テキストとして読み上げ可能
+
+### 使用例
+
+```html
+<svg width=\"400\" height=\"200\">
+    <!-- 長方形 -->
+    <rect x=\"50\" y=\"50\" width=\"150\" height=\"100\" fill=\"#FF0000\" />
+
+    <!-- 円 -->
+    <circle cx=\"300\" cy=\"100\" r=\"50\" fill=\"#0000FF\" />
+
+    <!-- テキスト -->
+    <text x=\"200\" y=\"180\" font-size=\"20\" text-anchor=\"middle\">SVGテキスト</text>
+</svg>
+```
+
+---
+
+## Canvas vs SVG の比較表
+
+| 特徴 | Canvas | SVG |
+|------|--------|-----|
+| **形式** | ビットマップ（ラスター） | ベクター |
+| **描画方法** | JavaScriptで描画 | XMLマークアップ |
+| **DOM** | 単一の`<canvas>`要素のみ | 各図形がDOM要素 |
+| **拡大縮小** | ぼやける（ピクセルベース） | 劣化しない（ベクター） |
+| **イベント** | Canvas全体にのみ | 各図形に個別に設定可能 |
+| **パフォーマンス** | 大量の要素で高速 | 少数の要素で高速 |
+| **適した用途** | ゲーム、アニメーション、大量描画 | アイコン、図表、少数の図形 |
+| **アクセシビリティ** | 低い | 高い（テキストとして扱える） |
+
+---
+
+## 使い分けの目安
+
+### Canvas を使う場合
+
+- **ゲーム開発**: リアルタイムで大量の要素を描画
+- **データ可視化**: 数万点のプロット
+- **画像編集**: ピクセル単位の操作が必要
+- **アニメーション**: 60fpsの高速描画
+
+### SVG を使う場合
+
+- **アイコン**: 拡大しても劣化しない
+- **ロゴ**: ベクターで管理したい
+- **インタラクティブな図**: クリック可能な図形
+- **少数の図形**: DOM操作が便利
+
+---
+
+## 実践例
+
+### Canvasでのアニメーション
+
+```javascript
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+let x = 0;
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(x, 50, 50, 50);
+    x += 2;
+    if (x > canvas.width) x = 0;
+    requestAnimationFrame(animate);
+}
+animate();
+```
+
+### SVGでのインタラクティブ図形
+
+```html
+<svg width=\"200\" height=\"200\">
+    <circle
+        cx=\"100\"
+        cy=\"100\"
+        r=\"50\"
+        fill=\"blue\"
+        onclick=\"this.setAttribute('fill', 'red')\"
+        style=\"cursor: pointer;\"
+    />
+</svg>
+```
+
+---
+
+## まとめ
+
+- **Canvas**: JavaScriptで描画、高速、大量の要素に向いている
+- **SVG**: XML形式、拡大しても劣化しない、少数の図形に向いている
+- **選択基準**: 用途とパフォーマンス要件で判断",
+                        'sort_order' => 1
+                    ],
+                ],
             ],
         ]);
 
@@ -5948,7 +6096,105 @@ function closeModal() {
                     ['title' => 'ビューポートとメディアクエリ', 'estimated_minutes' => 180, 'sort_order' => 2],
                     ['title' => 'モバイルファーストの考え方', 'estimated_minutes' => 180, 'sort_order' => 3],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'レスポンシブデザインの基礎',
+                        'content' => "# レスポンシブデザインの基礎
+
+**レスポンシブデザイン**とは、デバイスの画面サイズに応じて、最適なレイアウトを提供するWeb design手法です。
+
+---
+
+## viewport メタタグ
+
+レスポンシブデザインの基本は、**viewport**の設定です。
+
+```html
+<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>レスポンシブサイト</title>
+</head>
+<body>
+    <!-- コンテンツ -->
+</body>
+</html>
+```
+
+### viewportの属性
+
+- `width=device-width`: デバイスの画面幅に合わせる
+- `initial-scale=1.0`: 初期のズーム倍率を1に設定
+
+**この設定がないと**、スマホでもPC版のレイアウトが表示されます。
+
+---
+
+## モバイルファーストの考え方
+
+**モバイルファースト**とは、まずスマホ向けのデザインを作り、その後デスクトップ向けに拡張する手法です。
+
+### なぜモバイルファーストか
+
+1. **モバイルユーザーが多い**: Webトラフィックの50%以上
+2. **シンプルさの強制**: 小さい画面では本当に必要なものだけを表示
+3. **パフォーマンス**: 軽量なモバイル版から始める
+
+### 実装例
+
+```html
+<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>モバイルファースト</title>
+    <style>
+        /* モバイル（デフォルト） */
+        .container {
+            width: 100%;
+            padding: 10px;
+        }
+
+        /* タブレット（768px以上） */
+        @media (min-width: 768px) {
+            .container {
+                width: 750px;
+                margin: 0 auto;
+            }
+        }
+
+        /* デスクトップ（1024px以上） */
+        @media (min-width: 1024px) {
+            .container {
+                width: 960px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class=\"container\">
+        <h1>レスポンシブコンテンツ</h1>
+        <p>画面サイズに応じてレイアウトが変わります。</p>
+    </div>
+</body>
+</html>
+```
+
+---
+
+## まとめ
+
+- **viewport**を設定して、デバイスの画面幅を正しく認識させる
+- **モバイルファースト**で、まずスマホ向けのデザインを作る
+- **メディアクエリ**で、画面サイズに応じたスタイルを適用
+- HTML自体はシンプルに保ち、CSSでレイアウトを制御",
+                        'sort_order' => 1
+                    ],
+                ],
             ],
             [
                 'title' => '第14週：総合課題①',
@@ -5962,7 +6208,127 @@ function closeModal() {
                     ['title' => 'HTML構造の実装', 'estimated_minutes' => 240, 'sort_order' => 2],
                     ['title' => 'コンテンツの追加', 'estimated_minutes' => 120, 'sort_order' => 3],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'プロジェクト課題: ポートフォリオサイト',
+                        'content' => "# 総合課題①: ポートフォリオサイト制作
+
+これまで学習したHTMLの知識を活かして、**ポートフォリオサイト**または**ブログサイト**を制作します。
+
+---
+
+## 必須要件
+
+### 1. セマンティックHTML
+
+- `<header>`, `<nav>`, `<main>`, `<article>`, `<section>`, `<aside>`, `<footer>`を適切に使用
+- 見出しタグ（h1～h6）を階層的に使用
+
+### 2. フォーム
+
+- お問い合わせフォームまたはコメントフォームを実装
+- 適切なバリデーション（required, pattern, minlength等）
+
+### 3. マルチメディア
+
+- 画像（レスポンシブ対応）
+- 可能であればvideoまたはaudioを含める
+
+### 4. アクセシビリティ
+
+- すべての画像にalt属性
+- フォームにlabel要素
+- 適切なARIA属性（必要に応じて）
+
+### 5. レスポンシブデザイン
+
+- viewport設定
+- モバイル、タブレット、デスクトップに対応
+
+---
+
+## 推奨ページ構成
+
+### ポートフォリオサイトの場合
+
+1. **トップページ（index.html）**
+   - 自己紹介
+   - スキル一覧
+   - ポートフォリオ（作品）へのリンク
+
+2. **作品詳細ページ（works.html）**
+   - プロジェクト説明
+   - 使用技術
+   - スクリーンショット
+
+3. **お問い合わせページ（contact.html）**
+   - フォーム
+
+### ブログサイトの場合
+
+1. **トップページ（index.html）**
+   - 記事一覧
+
+2. **記事詳細ページ（article.html）**
+   - 記事本文
+   - 投稿日、著者情報
+
+3. **概要ページ（about.html）**
+   - ブログの説明
+   - 著者プロフィール
+
+---
+
+## チェックリスト
+
+### HTML構造
+
+- [ ] DOCTYPE宣言がある
+- [ ] lang属性を設定（`<html lang=\"ja\">`）
+- [ ] charset設定（UTF-8）
+- [ ] viewport設定
+- [ ] 適切なtitle要素
+
+### セマンティック
+
+- [ ] セマンティック要素を適切に使用
+- [ ] 見出しの階層が正しい
+- [ ] リストを適切に使用（ul, ol, dl）
+
+### アクセシビリティ
+
+- [ ] すべての画像にalt属性
+- [ ] フォームのlabel要素
+- [ ] 十分なコントラスト比
+- [ ] キーボードで操作可能
+
+### バリデーション
+
+- [ ] W3C Validator でエラーなし
+- [ ] HTMLの構文が正しい
+
+---
+
+## 提出物
+
+1. **HTMLファイル**（複数可）
+2. **READMEファイル**
+   - サイトの概要
+   - 使用した技術
+   - 工夫した点
+
+---
+
+## 評価ポイント
+
+- セマンティックHTMLの理解度
+- アクセシビリティへの配慮
+- レスポンシブ対応
+- コードの可読性と保守性",
+                        'sort_order' => 1
+                    ],
+                ],
             ],
             [
                 'title' => '第15週：総合課題②（最終発表）',
@@ -5977,7 +6343,193 @@ function closeModal() {
                     ['title' => 'SEO最適化', 'estimated_minutes' => 120, 'sort_order' => 3],
                     ['title' => '発表準備とドキュメント作成', 'estimated_minutes' => 120, 'sort_order' => 4],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => '最終チェックリストとSEO基礎',
+                        'content' => "# 最終チェックリストとSEO基礎
+
+プロジェクトを公開する前の最終確認事項です。
+
+---
+
+## 1. HTMLバリデーション
+
+### W3C Markup Validation Service
+
+https://validator.w3.org/
+
+**使い方**:
+1. サイトにアクセス
+2. HTMLファイルをアップロードまたはURLを入力
+3. エラーと警告を確認
+4. すべて修正する
+
+### よくあるエラー
+
+- 閉じタグの欠落
+- 属性値のクォート忘れ
+- ネストの誤り
+- 非推奨の要素の使用
+
+---
+
+## 2. アクセシビリティチェック
+
+### Lighthouse（Chrome DevTools）
+
+1. Chrome DevToolsを開く（F12）
+2. Lighthouseタブを選択
+3. \"Accessibility\"にチェック
+4. \"Generate report\"をクリック
+
+### チェック項目
+
+- [ ] すべての画像にalt属性
+- [ ] フォームのlabel要素
+- [ ] 色のコントラスト比（4.5:1以上）
+- [ ] 見出しの階層
+- [ ] キーボード操作可能
+- [ ] ARIAロールと属性の適切な使用
+
+---
+
+## 3. SEO基礎
+
+### 必須のmetaタグ
+
+```html
+<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+
+    <!-- タイトル（55文字以内推奨） -->
+    <title>私のポートフォリオ | Web開発者</title>
+
+    <!-- 説明（155文字以内推奨） -->
+    <meta name=\"description\" content=\"Web開発者のポートフォリオサイト。HTMLCSSJavaScriptを使ったプロジェクト事例を紹介します。\">
+
+    <!-- キーワード（現在はあまり重要でない） -->
+    <meta name=\"keywords\" content=\"Web開発, HTML, CSS, JavaScript, ポートフォリオ\">
+
+    <!-- 著者 -->
+    <meta name=\"author\" content=\"山田太郎\">
+
+    <!-- OGP（SNS共有時の表示） -->
+    <meta property=\"og:title\" content=\"私のポートフォリオ\">
+    <meta property=\"og:description\" content=\"Web開発者のポートフォリオサイト\">
+    <meta property=\"og:image\" content=\"https://example.com/image.jpg\">
+    <meta property=\"og:url\" content=\"https://example.com\">
+    <meta property=\"og:type\" content=\"website\">
+
+    <!-- Twitter Card -->
+    <meta name=\"twitter:card\" content=\"summary_large_image\">
+    <meta name=\"twitter:title\" content=\"私のポートフォリオ\">
+    <meta name=\"twitter:description\" content=\"Web開発者のポートフォリオサイト\">
+    <meta name=\"twitter:image\" content=\"https://example.com/image.jpg\">
+</head>
+<body>
+    <!-- コンテンツ -->
+</body>
+</html>
+```
+
+### SEOチェックリスト
+
+- [ ] `<title>`タグが適切（55文字以内、ページごとにユニーク）
+- [ ] `description`メタタグが適切（155文字以内）
+- [ ] 見出しタグ（h1～h6）を階層的に使用
+- [ ] `alt`属性を全画像に設定
+- [ ] 内部リンクが適切
+- [ ] URLが分かりやすい
+- [ ] ページの読み込み速度が速い
+
+---
+
+## 4. パフォーマンス最適化
+
+### 画像最適化
+
+- [ ] 適切な画像フォーマット（WebP推奨）
+- [ ] 画像サイズの最適化（必要以上に大きくしない）
+- [ ] レスポンシブ画像（srcset, picture）の使用
+- [ ] 遅延読み込み（loading=\"lazy\"）
+
+```html
+<img src=\"image.jpg\" alt=\"説明\" loading=\"lazy\">
+```
+
+### HTMLの最適化
+
+- [ ] 不要な空白やコメントを削除
+- [ ] CSSやJavaScriptの外部化
+- [ ] 不要なタグの削除
+
+---
+
+## 5. 最終発表準備
+
+### 発表内容
+
+1. **サイトの概要**（1分）
+   - 何を作ったか
+   - 誰に向けたサイトか
+
+2. **技術的な説明**（2分）
+   - 使用したHTML要素
+   - 工夫した点
+   - 苦労した点
+
+3. **デモンストレーション**（2分）
+   - 実際の動作を見せる
+   - レスポンシブ対応の確認
+
+4. **質疑応答**（1分）
+
+### ドキュメント作成
+
+**README.md**
+
+```markdown
+# プロジェクト名
+
+## 概要
+このサイトは...
+
+## 使用技術
+- HTML5
+- セマンティック要素（header, nav, main, article, section, footer）
+- レスポンシブ画像（picture, srcset）
+- フォームバリデーション
+
+## 工夫した点
+1. セマンティックHTMLを徹底
+2. アクセシビリティに配慮（WAI-ARIA使用）
+3. レスポンシブ対応（モバイルファースト）
+
+## 苦労した点
+...
+
+## 今後の改善点
+...
+```
+
+---
+
+## まとめ
+
+- **バリデーション**: HTMLの構文エラーをゼロにする
+- **アクセシビリティ**: Lighthouse スコア90以上を目指す
+- **SEO**: title, descriptionメタタグを適切に設定
+- **パフォーマンス**: 画像最適化、遅延読み込み
+- **発表**: 自分の作品を自信を持って説明できるように準備
+
+**お疲れ様でした！15週間のHTML学習を完走しました！**",
+                        'sort_order' => 1
+                    ],
+                ],
             ],
         ]);
     }
