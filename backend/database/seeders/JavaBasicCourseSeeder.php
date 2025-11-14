@@ -101,13 +101,13 @@ class JavaBasicCourseSeeder extends Seeder
                         'title' => 'System.out.println()とSystem.out.print()の違い',
                         'content' => "# System.out.println()とSystem.out.print()の違い\n\n## println()メソッド\n```java\nSystem.out.println(\"Hello\");\nSystem.out.println(\"World\");\n```\n**出力結果:**\n```\nHello\nWorld\n```\n- 出力後に改行される\n\n## print()メソッド\n```java\nSystem.out.print(\"Hello\");\nSystem.out.print(\"World\");\n```\n**出力結果:**\n```\nHelloWorld\n```\n- 改行されない\n\n## 使い分け\n- **println()**: 1行ずつ出力したい場合\n- **print()**: 同じ行に複数の内容を出力したい場合\n\n## エスケープシーケンス\n- `\\n`: 改行\n- `\\t`: タブ\n- `\\\"`: ダブルクォート\n- `\\\\`: バックスラッシュ\n\n```java\nSystem.out.println(\"Hello\\nWorld\");  // 改行を含む\nSystem.out.println(\"Name:\\tTaro\");   // タブを含む\n```",
                         'sort_order' => 7
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'コンパイルと実行',
                         'content' => "# Javaプログラムのコンパイルと実行\n\n## コマンドラインでの実行\n\n### 1. コンパイル\n```bash\njavac JKad01S1.java\n```\n- `.java`ファイルから`.class`ファイル（バイトコード）を生成\n- エラーがあればコンパイルエラーが表示される\n\n### 2. 実行\n```bash\njava JKad01S1\n```\n- `.class`を指定する（拡張子は不要）\n- JVM（Java Virtual Machine）がバイトコードを実行\n\n## IDEでの実行\n- **IntelliJ IDEA**: 緑の再生ボタン または Shift+F10\n- **Eclipse**: Ctrl+F11\n- **JCPad**: F5 または 実行ボタン\n\n## よくあるエラー\n\n### コンパイルエラー\n```\nerror: class JKad01S1 is public, should be declared in a file named JKad01S1.java\n```\n→ ファイル名とクラス名が一致していない\n\n### 実行エラー\n```\nError: Could not find or load main class JKad01S1\n```\n→ mainメソッドが見つからない、またはクラス名が間違っている",
                         'sort_order' => 8
-                    },
+                    ],
                 ],
             ],
             [
@@ -148,7 +148,7 @@ class JavaBasicCourseSeeder extends Seeder
                         'title' => '四則演算',
                         'content' => "# 四則演算\n\nJavaでは、数値に対して以下の演算が可能です。\n\n## 基本演算子\n\n| 演算子 | 意味 | 例 | 結果 |\n|-------|------|-----|------|\n| + | 加算 | 10 + 3 | 13 |\n| - | 減算 | 10 - 3 | 7 |\n| * | 乗算 | 10 * 3 | 30 |\n| / | 除算 | 10 / 3 | 3 |\n| % | 剰余 | 10 % 3 | 1 |\n\n## 整数除算の注意点\n```java\nint a = 10;\nint b = 3;\nint result = a / b;  // 結果は3（小数点以下切り捨て）\n```\n\n整数同士の割り算は、結果も整数になります。\n\n## 演算の優先順位\n1. **括弧**: `( )`\n2. **乗除剰**: `*`, `/`, `%`（左から右へ）\n3. **加減**: `+`, `-`（左から右へ）\n\n```java\nint x = 2 + 3 * 4;      // 14 (3*4が先に計算される)\nint y = (2 + 3) * 4;    // 20 (括弧内が先に計算される)\n```",
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '四則演算の例',
@@ -161,14 +161,14 @@ class JavaBasicCourseSeeder extends Seeder
                         'title' => '剰余演算（%）の使い道',
                         'content' => "# 剰余演算（%）の使い道\n\n**剰余演算**は、割り算の余りを求める演算です。\n\n## 使用例\n\n### 1. 偶数・奇数の判定\n```java\nif (number % 2 == 0) {\n    System.out.println(\"偶数\");\n} else {\n    System.out.println(\"奇数\");\n}\n```\n\n### 2. 倍数の判定\n```java\nif (number % 3 == 0) {\n    System.out.println(\"3の倍数\");\n}\n```\n\n### 3. 分配問題\n```java\nint apples = 20;\nint people = 3;\nint perPerson = apples / people;  // 6個ずつ\nint remaining = apples % people;  // 2個余る\n```\n\n### 4. 桁の取得\n```java\nint number = 1234;\nint lastDigit = number % 10;  // 4（1の位）\n```\n\n### 5. 循環処理\n```java\n// 0, 1, 2, 0, 1, 2, ... と繰り返す\nint index = count % 3;\n```",
                         'sort_order' => 6
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'リンゴの分配問題',
                         'content' => "import java.util.Scanner;\n\npublic class JKad02A {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n        System.out.print(\"リンゴの個数を入力してください＞\");\n        int apple = in.nextInt();\n        \n        System.out.print(\"人数を入力してください＞\");\n        int person = in.nextInt();\n        \n        // 1人あたりの個数\n        int eat = apple / person;\n        \n        // 余りの個数\n        int rest = apple % person;\n        \n        System.out.println(\"1人\" + eat + \"個ずつ食べられます。\");\n        System.out.println(\"残りは\" + rest + \"個です。\");\n        \n        in.close();\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 7
-                    },
+                    ],
                 ],
             ],
             [
@@ -232,7 +232,7 @@ class JavaBasicCourseSeeder extends Seeder
                         'title' => 'Scannerクラスとは？',
                         'content' => "# Scannerクラスとは？\n\n**Scanner**は、キーボードから入力を受け取るためのクラスです。\n\n## 基本的な使い方\n\n### 1. インポート\n```java\nimport java.util.Scanner;\n```\n\n### 2. Scannerオブジェクトの作成\n```java\nScanner in = new Scanner(System.in);\n```\n\n### 3. 入力を受け取る\n```java\nint number = in.nextInt();      // 整数\nString text = in.nextLine();    // 文字列\n```\n\n### 4. Scannerを閉じる\n```java\nin.close();\n```\n\n## 注意点\n- `nextInt()`の後に`nextLine()`を使う場合は、余分な改行を読み飛ばす必要がある\n- プログラムの最後で必ず`close()`を呼ぶ",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'Scannerの基本的な使い方',
@@ -245,27 +245,27 @@ class JavaBasicCourseSeeder extends Seeder
                         'title' => 'Scannerクラスの主要メソッド',
                         'content' => "# Scannerクラスの主要メソッド\n\n## 数値の入力\n```java\nint i = in.nextInt();        // int型\nlong l = in.nextLong();      // long型\ndouble d = in.nextDouble();  // double型\nfloat f = in.nextFloat();    // float型\n```\n\n## 文字列の入力\n```java\nString line = in.nextLine();  // 1行全体\nString word = in.next();      // 次の単語（空白まで）\n```\n\n## その他\n```java\nboolean b = in.nextBoolean();  // true/false\nboolean hasNext = in.hasNext();  // 次の入力があるか確認\n```\n\n## メソッドの違い\n\n| メソッド | 読み取り範囲 | 改行の扱い |\n|---------|------------|----------|\n| `next()` | 次の単語 | 空白で区切る |\n| `nextLine()` | 1行全体 | 改行まで |\n| `nextInt()` | 次の整数 | 数字以外で終了 |",
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '複数の値を入力する',
                         'content' => "import java.util.Scanner;\n\npublic class JKad04_MultipleInputs {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n        System.out.print(\"1つ目の数値を入力＞\");\n        int num1 = in.nextInt();\n        \n        System.out.print(\"2つ目の数値を入力＞\");\n        int num2 = in.nextInt();\n        \n        System.out.print(\"3つ目の数値を入力＞\");\n        int num3 = in.nextInt();\n        \n        int sum = num1 + num2 + num3;\n        double average = sum / 3.0;  // 3.0で割ると小数点以下も計算される\n        \n        System.out.println(\"合計: \" + sum);\n        System.out.println(\"平均: \" + average);\n        \n        in.close();\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'nextInt()とnextLine()の組み合わせ',
                         'content' => "# nextInt()とnextLine()の組み合わせ\n\n## 問題点\n`nextInt()`の後に`nextLine()`を使うと、改行文字が残ってしまう問題があります。\n\n```java\nScanner in = new Scanner(System.in);\n\nSystem.out.print(\"年齢＞\");\nint age = in.nextInt();  // 「20」と入力してEnter\n\nSystem.out.print(\"名前＞\");\nString name = in.nextLine();  // 改行文字を読み取ってしまい、空文字列になる\n```\n\n## 解決方法1: 余分な改行を読み飛ばす\n```java\nint age = in.nextInt();\nin.nextLine();  // 改行文字を読み飛ばす\n\nString name = in.nextLine();  // 正しく名前を入力できる\n```\n\n## 解決方法2: すべてnextLine()で読み取る\n```java\nSystem.out.print(\"年齢＞\");\nString ageStr = in.nextLine();\nint age = Integer.parseInt(ageStr);  // 文字列をintに変換\n\nSystem.out.print(\"名前＞\");\nString name = in.nextLine();\n```\n\n## 推奨方法\n基本的には**解決方法1**を使うことが多いです。",
                         'sort_order' => 6
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '計算機プログラム',
                         'content' => "import java.util.Scanner;\n\npublic class JKad04_Calculator {\n    public static void main(String[] args) {\n        Scanner in = new Scanner(System.in);\n        \n        System.out.println(\"簡単な計算機\");\n        System.out.println(\"==================\");\n        \n        System.out.print(\"1つ目の数を入力＞\");\n        int a = in.nextInt();\n        \n        System.out.print(\"2つ目の数を入力＞\");\n        int b = in.nextInt();\n        \n        System.out.println();\n        System.out.println(\"計算結果:\");\n        System.out.println(a + \" + \" + b + \" = \" + (a + b));\n        System.out.println(a + \" - \" + b + \" = \" + (a - b));\n        System.out.println(a + \" * \" + b + \" = \" + (a * b));\n        \n        if (b != 0) {\n            System.out.println(a + \" / \" + b + \" = \" + (a / b));\n            System.out.println(a + \" % \" + b + \" = \" + (a % b));\n        } else {\n            System.out.println(\"0で割ることはできません\");\n        }\n        \n        in.close();\n    }\n}",
                         'code_language' => 'java',
                         'sort_order' => 7
-                    },
+                    ],
                 ],
             ],
         ]);
