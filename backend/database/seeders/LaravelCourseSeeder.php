@@ -82,27 +82,27 @@ class LaravelCourseSeeder extends Seeder
                         'title' => '詳細なディレクトリ構造',
                         'content' => "# Laravelの詳細なディレクトリ構造\n\n## app/ - アプリケーションコア\n- **Http/Controllers/**: コントローラ\n- **Http/Middleware/**: ミドルウェア\n- **Http/Requests/**: フォームリクエスト\n- **Models/**: Eloquentモデル\n- **Providers/**: サービスプロバイダー\n\n## routes/ - ルーティング\n- **web.php**: Webルート（セッション、CSRF保護あり）\n- **api.php**: APIルート（ステートレス）\n- **console.php**: Artisanコマンド\n- **channels.php**: ブロードキャストチャンネル\n\n## resources/ - リソース\n- **views/**: Bladeテンプレート\n- **css/**: CSSファイル\n- **js/**: JavaScriptファイル\n\n## database/ - データベース\n- **migrations/**: マイグレーションファイル\n- **seeders/**: シーダー\n- **factories/**: モデルファクトリ\n\n## config/ - 設定\n各種設定ファイル（app.php, database.php, など）\n\n## storage/ - ストレージ\n- **app/**: アプリケーションが生成するファイル\n- **framework/**: フレームワークが使用\n- **logs/**: ログファイル\n\n## public/ - 公開ディレクトリ\n- **index.php**: エントリーポイント\n- CSS、JavaScript、画像などの公開ファイル",
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '環境設定（.env）',
                         'content' => "# .env ファイルの設定例\n\nAPP_NAME=Laravel\nAPP_ENV=local\nAPP_KEY=base64:xxx... # php artisan key:generate で生成\nAPP_DEBUG=true\nAPP_URL=http://localhost\n\n# データベース設定\nDB_CONNECTION=mysql\nDB_HOST=127.0.0.1\nDB_PORT=3306\nDB_DATABASE=your_database\nDB_USERNAME=your_username\nDB_PASSWORD=your_password\n\n# メール設定\nMAIL_MAILER=smtp\nMAIL_HOST=smtp.mailtrap.io\nMAIL_PORT=2525\n\n# セッション設定\nSESSION_DRIVER=file\n\n# キャッシュ設定\nCACHE_DRIVER=file",
                         'code_language' => 'bash',
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'よく使うArtisanコマンド',
                         'content' => "# プロジェクト管理\nphp artisan serve              # 開発サーバー起動\nphp artisan key:generate       # アプリケーションキー生成\nphp artisan config:cache       # 設定をキャッシュ\nphp artisan config:clear       # 設定キャッシュをクリア\nphp artisan cache:clear        # キャッシュをクリア\n\n# データベース\nphp artisan migrate            # マイグレーション実行\nphp artisan migrate:rollback   # ロールバック\nphp artisan migrate:fresh      # すべて削除して再マイグレーション\nphp artisan db:seed            # シーダー実行\n\n# コード生成\nphp artisan make:controller UserController  # コントローラ作成\nphp artisan make:model User                  # モデル作成\nphp artisan make:migration create_users_table # マイグレーション作成\nphp artisan make:seeder UserSeeder          # シーダー作成\nphp artisan make:request StoreUserRequest   # リクエスト作成\nphp artisan make:middleware CheckAge        # ミドルウェア作成\n\n# その他\nphp artisan route:list         # ルート一覧表示\nphp artisan tinker             # REPLを起動",
                         'code_language' => 'bash',
                         'sort_order' => 6
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'トラブルシューティング',
                         'content' => "# よくある問題と解決方法\n\n## 1. Composerのインストールエラー\n- PHPのバージョンを確認（Laravel 10は PHP 8.1以上が必要）\n- `php -v` でバージョン確認\n\n## 2. パーミッションエラー\n```bash\nchmod -R 775 storage\nchmod -R 775 bootstrap/cache\n```\n\n## 3. APP_KEYが設定されていない\n```bash\nphp artisan key:generate\n```\n\n## 4. データベース接続エラー\n- .envファイルのDB設定を確認\n- データベースが起動しているか確認\n- 接続情報が正しいか確認\n\n## 5. キャッシュの問題\n```bash\nphp artisan cache:clear\nphp artisan config:clear\nphp artisan route:clear\nphp artisan view:clear\ncomposer dump-autoload\n```\n\n## 6. ポート8000が使用中\n```bash\nphp artisan serve --port=8001\n```",
                         'sort_order' => 7
-                    },
+                    ],
                 ],
             ],
             [
@@ -142,34 +142,34 @@ class LaravelCourseSeeder extends Seeder
                         'title' => 'MVCアーキテクチャ',
                         'content' => "# MVCアーキテクチャ（Model-View-Controller）\n\nLaravelはMVCアーキテクチャを採用しています。\n\n## Model（モデル）\n- データベースとのやり取りを担当\n- ビジネスロジックを含む\n- Eloquent ORMを使用\n- 場所: `app/Models/`\n\n## View（ビュー）\n- ユーザーに表示される画面\n- HTMLを生成\n- Bladeテンプレートエンジンを使用\n- 場所: `resources/views/`\n\n## Controller（コントローラ）\n- リクエストを処理\n- ModelとViewを橋渡し\n- ビジネスロジックを調整\n- 場所: `app/Http/Controllers/`\n\n## フロー\n1. **リクエスト** → ルーティング\n2. **ルーティング** → コントローラ\n3. **コントローラ** → モデルでデータ取得\n4. **コントローラ** → ビューにデータを渡す\n5. **ビュー** → HTMLを生成\n6. **レスポンス** → ユーザーに返す",
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'ルーティングの詳細',
                         'content' => "<?php\n// routes/web.php\n\n// HTTPメソッド\nRoute::get('/posts', [PostController::class, 'index']);\nRoute::post('/posts', [PostController::class, 'store']);\nRoute::put('/posts/{id}', [PostController::class, 'update']);\nRoute::delete('/posts/{id}', [PostController::class, 'destroy']);\n\n// Resourceルート（RESTful）\nRoute::resource('posts', PostController::class);\n// 上記は以下と同等：\n// GET    /posts          index\n// GET    /posts/create   create\n// POST   /posts          store\n// GET    /posts/{id}     show\n// GET    /posts/{id}/edit edit\n// PUT    /posts/{id}     update\n// DELETE /posts/{id}     destroy\n\n// ルートグループ\nRoute::prefix('admin')->group(function () {\n    Route::get('/users', [AdminController::class, 'users']);\n    Route::get('/posts', [AdminController::class, 'posts']);\n});\n\n// ミドルウェア\nRoute::middleware(['auth'])->group(function () {\n    Route::get('/dashboard', [DashboardController::class, 'index']);\n});\n\n// ルート名\nRoute::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');\n// Bladeで使用: route('posts.show', ['id' => 1])  // /posts/1",
                         'code_language' => 'php',
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'コントローラの詳細パターン',
                         'content' => "<?php\n// app/Http/Controllers/PostController.php\n\nnamespace App\\Http\\Controllers;\n\nuse App\\Models\\Post;\nuse Illuminate\\Http\\Request;\n\nclass PostController extends Controller\n{\n    // 一覧表示\n    public function index()\n    {\n        \$posts = Post::all();\n        return view('posts.index', compact('posts'));\n    }\n    \n    // 作成フォーム表示\n    public function create()\n    {\n        return view('posts.create');\n    }\n    \n    // データ保存\n    public function store(Request \$request)\n    {\n        \$validated = \$request->validate([\n            'title' => 'required|max:255',\n            'content' => 'required',\n        ]);\n        \n        Post::create(\$validated);\n        \n        return redirect()->route('posts.index')\n            ->with('success', '投稿を作成しました');\n    }\n    \n    // 詳細表示\n    public function show(\$id)\n    {\n        \$post = Post::findOrFail(\$id);\n        return view('posts.show', compact('post'));\n    }\n    \n    // 編集フォーム表示\n    public function edit(\$id)\n    {\n        \$post = Post::findOrFail(\$id);\n        return view('posts.edit', compact('post'));\n    }\n    \n    // データ更新\n    public function update(Request \$request, \$id)\n    {\n        \$validated = \$request->validate([\n            'title' => 'required|max:255',\n            'content' => 'required',\n        ]);\n        \n        \$post = Post::findOrFail(\$id);\n        \$post->update(\$validated);\n        \n        return redirect()->route('posts.show', \$id)\n            ->with('success', '投稿を更新しました');\n    }\n    \n    // データ削除\n    public function destroy(\$id)\n    {\n        \$post = Post::findOrFail(\$id);\n        \$post->delete();\n        \n        return redirect()->route('posts.index')\n            ->with('success', '投稿を削除しました');\n    }\n}",
                         'code_language' => 'php',
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'コントローラ作成のオプション',
                         'content' => "# コントローラ作成コマンド\n\n## 基本的なコントローラ\n```bash\nphp artisan make:controller PostController\n```\n\n## リソースコントローラ（CRUD メソッド付き）\n```bash\nphp artisan make:controller PostController --resource\n```\n以下のメソッドが自動生成されます：\n- index()\n- create()\n- store()\n- show()\n- edit()\n- update()\n- destroy()\n\n## モデルと同時に作成\n```bash\nphp artisan make:controller PostController --resource --model=Post\n```\n\n## APIリソースコントローラ（create, edit なし）\n```bash\nphp artisan make:controller Api/PostController --api\n```\n\n## 単一アクションコントローラ\n```bash\nphp artisan make:controller ShowProfileController --invokable\n```\n`__invoke()` メソッドのみを持つコントローラ",
                         'sort_order' => 6
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'ルートパラメータの詳細',
                         'content' => "<?php\n// routes/web.php\n\n// 必須パラメータ\nRoute::get('/user/{id}', function (\$id) {\n    return \"User ID: \$id\";\n});\n\n// オプショナルパラメータ\nRoute::get('/user/{name?}', function (\$name = 'Guest') {\n    return \"Hello, \$name\";\n});\n\n// 正規表現制約\nRoute::get('/user/{id}', function (\$id) {\n    return \"User ID: \$id\";\n})->where('id', '[0-9]+');\n\nRoute::get('/user/{name}', function (\$name) {\n    return \"User: \$name\";\n})->where('name', '[A-Za-z]+');\n\n// 複数の制約\nRoute::get('/post/{id}/{slug}', function (\$id, \$slug) {\n    return \"Post \$id: \$slug\";\n})->where(['id' => '[0-9]+', 'slug' => '[a-z-]+']);\n\n// グローバル制約（RouteServiceProvider）\nRoute::pattern('id', '[0-9]+');\n\n// コントローラでの受け取り\npublic function show(\$id, \$slug)\n{\n    return \"ID: \$id, Slug: \$slug\";\n}",
                         'code_language' => 'php',
                         'sort_order' => 7
-                    },
+                    ],
                 ],
             ],
         ]);
@@ -225,21 +225,21 @@ class LaravelCourseSeeder extends Seeder
                         'content' => "{{-- 条件分岐 --}}\n@if (\$count > 0)\n    <p>データがあります</p>\n@elseif (\$count === 0)\n    <p>データがありません</p>\n@else\n    <p>エラー</p>\n@endif\n\n@unless (\$user->isAdmin())\n    <p>管理者ではありません</p>\n@endunless\n\n@isset(\$variable)\n    <p>変数が設定されています</p>\n@endisset\n\n@empty(\$array)\n    <p>配列が空です</p>\n@endempty\n\n{{-- ループ --}}\n@foreach (\$users as \$user)\n    <p>{{ \$user->name }}</p>\n@endforeach\n\n@forelse (\$posts as \$post)\n    <p>{{ \$post->title }}</p>\n@empty\n    <p>投稿がありません</p>\n@endforelse\n\n@for (\$i = 0; \$i < 10; \$i++)\n    <p>{{ \$i }}</p>\n@endfor\n\n@while (true)\n    <p>無限ループ</p>\n    @break\n@endwhile\n\n{{-- ループ変数 --}}\n@foreach (\$users as \$user)\n    @if (\$loop->first)\n        <p>最初の要素</p>\n    @endif\n    \n    <p>{{ \$loop->index }}: {{ \$user->name }}</p>\n    \n    @if (\$loop->last)\n        <p>最後の要素</p>\n    @endif\n@endforeach",
                         'code_language' => 'php',
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'レイアウトと継承',
                         'content' => "{{-- resources/views/layouts/app.blade.php --}}\n<!DOCTYPE html>\n<html>\n<head>\n    <title>@yield('title', 'デフォルトタイトル')</title>\n    @stack('styles')\n</head>\n<body>\n    <header>\n        @include('partials.header')\n    </header>\n    \n    <main>\n        @yield('content')\n    </main>\n    \n    <footer>\n        @include('partials.footer')\n    </footer>\n    \n    @stack('scripts')\n</body>\n</html>\n\n{{-- resources/views/posts/index.blade.php --}}\n@extends('layouts.app')\n\n@section('title', '投稿一覧')\n\n@push('styles')\n    <link rel=\"stylesheet\" href=\"/css/posts.css\">\n@endpush\n\n@section('content')\n    <h1>投稿一覧</h1>\n    @foreach (\$posts as \$post)\n        <article>\n            <h2>{{ \$post->title }}</h2>\n            <p>{{ \$post->content }}</p>\n        </article>\n    @endforeach\n@endsection\n\n@push('scripts')\n    <script src=\"/js/posts.js\"></script>\n@endpush",
                         'code_language' => 'php',
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'セキュリティとエスケープ',
                         'content' => "{{-- 自動エスケープ（推奨） --}}\n<p>{{ \$userInput }}</p>\n{{-- <script>alert('XSS')</script> → &lt;script&gt;alert('XSS')&lt;/script&gt; --}}\n\n{{-- エスケープなし（信頼できるHTMLのみ） --}}\n<div>{!! \$trustedHtml !!}</div>\n\n{{-- 古い構文（Laravel 5.2以前） --}}\n<?php echo htmlspecialchars(\$variable); ?>\n\n{{-- 生のPHPコード --}}\n@php\n    \$myVariable = 'test';\n    echo \$myVariable;\n@endphp\n\n{{-- コメント（HTML出力されない） --}}\n{{-- これはBladeコメントです --}}\n\n<!-- これはHTMLコメント（出力される） -->",
                         'code_language' => 'php',
                         'sort_order' => 5
-                    },
+                    ],
                 ],
             ],
             [
@@ -330,7 +330,7 @@ class LaravelCourseSeeder extends Seeder
                         'title' => 'よく使うバリデーションルール',
                         'content' => "# よく使うバリデーションルール\n\n## 基本\n- `required`: 必須\n- `nullable`: NULL可能\n- `string`: 文字列\n- `integer`: 整数\n- `numeric`: 数値\n- `boolean`: 真偽値\n- `array`: 配列\n\n## 文字列\n- `min:3`: 最小文字数\n- `max:255`: 最大文字数\n- `between:3,10`: 3〜10文字\n- `alpha`: 英字のみ\n- `alpha_num`: 英数字のみ\n- `alpha_dash`: 英数字とダッシュ、アンダースコア\n\n## 数値\n- `min:18`: 最小値\n- `max:100`: 最大値\n- `between:18,100`: 18〜100\n- `digits:4`: 4桁\n- `digits_between:3,5`: 3〜5桁\n\n## 形式\n- `email`: メールアドレス\n- `url`: URL形式\n- `ip`: IPアドレス\n- `date`: 日付形式\n- `date_format:Y-m-d`: 指定形式\n- `before:tomorrow`: 明日より前\n- `after:yesterday`: 昨日より後\n\n## ファイル\n- `file`: ファイル\n- `image`: 画像ファイル\n- `mimes:jpeg,png`: MIME type\n- `max:2048`: 最大サイズ(KB)\n\n## データベース\n- `unique:users,email`: テーブル内で一意\n- `exists:users,id`: テーブルに存在\n\n## その他\n- `confirmed`: xxx_confirmationフィールドと一致\n- `same:field`: 指定フィールドと同じ\n- `different:field`: 指定フィールドと異なる\n- `in:foo,bar`: 指定値のいずれか\n- `not_in:foo,bar`: 指定値以外\n- `regex:/pattern/`: 正規表現",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'FormRequestクラス',
@@ -417,7 +417,7 @@ class LaravelCourseSeeder extends Seeder
                         'content' => "<?php\n// php artisan make:model Article -mfs\n// -m: migration, -f: factory, -s: seeder\n\n// app/Models/Article.php\nnamespace App\\Models;\n\nuse Illuminate\\Database\\Eloquent\\Model;\nuse Illuminate\\Database\\Eloquent\\SoftDeletes;\n\nclass Article extends Model\n{\n    use SoftDeletes;\n    \n    protected \$fillable = ['title', 'content', 'user_id', 'status'];\n    protected \$guarded = ['id'];\n    protected \$hidden = ['password'];\n    protected \$casts = [\n        'published_at' => 'datetime',\n        'is_active' => 'boolean',\n        'metadata' => 'array',\n    ];\n    protected \$dates = ['published_at', 'deleted_at'];\n    \n    // リレーション\n    public function user()\n    {\n        return \$this->belongsTo(User::class);\n    }\n}\n\n// database/factories/ArticleFactory.php\nnamespace Database\\Factories;\n\nuse Illuminate\\Database\\Eloquent\\Factories\\Factory;\n\nclass ArticleFactory extends Factory\n{\n    public function definition(): array\n    {\n        return [\n            'title' => fake()->sentence(),\n            'content' => fake()->paragraph(),\n            'user_id' => 1,\n            'status' => 'published',\n        ];\n    }\n}\n\n// 使用例\nArticle::factory()->count(50)->create();",
                         'code_language' => 'php',
                         'sort_order' => 5
-                    },
+                    ],
                 ],
             ],
             [
@@ -594,7 +594,7 @@ class LaravelCourseSeeder extends Seeder
                         'title' => 'ソフトデリート（論理削除）',
                         'content' => "# ソフトデリート（Soft Delete）\n\n**ソフトデリート**は、データを物理的に削除せず、`deleted_at`カラムにタイムスタンプを記録する方法です。\n\n## メリット\n- データを完全に削除しない（復元可能）\n- 監査ログとして使用可能\n- 誤削除からの復旧が可能\n\n## 実装方法\n\n### 1. マイグレーションにカラム追加\n```php\nSchema::table('articles', function (Blueprint \$table) {\n    \$table->softDeletes();  // deleted_at カラムを追加\n});\n```\n\n### 2. モデルにトレイト追加\n```php\nuse Illuminate\\Database\\Eloquent\\SoftDeletes;\n\nclass Article extends Model\n{\n    use SoftDeletes;\n}\n```\n\n## 使用方法\n\n### 削除（論理削除）\n```php\n\$article->delete();  // deleted_at に現在時刻が記録される\n```\n\n### 取得時の挙動\n```php\nArticle::all();  // 削除されていないデータのみ\nArticle::withTrashed()->get();  // 削除されたデータも含む\nArticle::onlyTrashed()->get();  // 削除されたデータのみ\n```\n\n### 復元\n```php\n\$article = Article::withTrashed()->find(1);\n\$article->restore();  // deleted_at を NULL に戻す\n\n// 条件付き復元\nArticle::onlyTrashed()\n    ->where('user_id', 1)\n    ->restore();\n```\n\n### 完全削除\n```php\n\$article->forceDelete();  // 物理的に削除\n```",
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'ソフトデリートの実装例',
@@ -614,7 +614,7 @@ class LaravelCourseSeeder extends Seeder
                         'title' => 'DELETE操作の注意点',
                         'content' => "# DELETE操作の注意点\n\n## 1. 削除前の確認\nJavaScriptで確認ダイアログを表示\n```html\n<form onsubmit=\"return confirm('本当に削除しますか？');\">\n```\n\n## 2. 認可チェック\n```php\n\$this->authorize('delete', \$article);\n```\n\n## 3. トランザクション\n複数テーブルを削除する場合\n```php\nDB::transaction(function () use (\$article) {\n    \$article->comments()->delete();\n    \$article->delete();\n});\n```\n\n## 4. 外部キー制約\n- `onDelete('cascade')`: 親削除時に子も削除\n- `onDelete('set null')`: 親削除時に子の外部キーをNULLに\n- `onDelete('restrict')`: 子が存在する場合は親を削除不可\n\n## 5. ファイルの削除\n```php\nStorage::delete(\$article->image_path);\n```\n\n## 6. ソフトデリートの判定\n```php\nif (\$article->trashed()) {\n    // 削除済み\n}\n```\n\n## 7. 削除とセキュリティ\n- CSRFトークンを必ず使用（@csrf）\n- DELETEメソッドを使用（@method('DELETE')）\n- 認証・認可を実装",
                         'sort_order' => 6
-                    },
+                    ],
                 ],
             ],
         ]);
@@ -656,7 +656,7 @@ class LaravelCourseSeeder extends Seeder
                         'title' => 'RESTful APIとは',
                         'content' => "# RESTful API\n\n**REST (Representational State Transfer)** は、Webサービスのアーキテクチャスタイルです。\n\n## HTTPメソッドとCRUD操作\n\n| HTTPメソッド | CRUD操作 | エンドポイント例 | 説明 |\n|------------|---------|----------------|------|\n| GET | Read | GET /api/articles | 一覧取得 |\n| GET | Read | GET /api/articles/1 | 詳細取得 |\n| POST | Create | POST /api/articles | 新規作成 |\n| PUT/PATCH | Update | PUT /api/articles/1 | 更新 |\n| DELETE | Delete | DELETE /api/articles/1 | 削除 |\n\n## RESTful API の原則\n\n1. **ステートレス**: サーバーはクライアントの状態を保持しない\n2. **統一インターフェース**: 一貫したURLとHTTPメソッド\n3. **リソース指向**: URLはリソースを表す\n4. **JSONフォーマット**: データはJSON形式で送受信\n\n## ステータスコード\n\n- **200 OK**: 成功\n- **201 Created**: 作成成功\n- **204 No Content**: 成功（レスポンスなし）\n- **400 Bad Request**: リクエストエラー\n- **401 Unauthorized**: 認証エラー\n- **403 Forbidden**: 権限エラー\n- **404 Not Found**: リソース未発見\n- **422 Unprocessable Entity**: バリデーションエラー\n- **500 Internal Server Error**: サーバーエラー",
                         'sort_order' => 1
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'RESTful APIの基本実装',
@@ -684,21 +684,21 @@ class LaravelCourseSeeder extends Seeder
                         'content' => "<?php\n// app/Http/Controllers/Api/ArticleController.php\n\nuse Illuminate\\Database\\Eloquent\\ModelNotFoundException;\nuse Illuminate\\Validation\\ValidationException;\n\npublic function show(\$id)\n{\n    try {\n        \$article = Article::findOrFail(\$id);\n        return response()->json(\$article);\n    } catch (ModelNotFoundException \$e) {\n        return response()->json([\n            'error' => '記事が見つかりません'\n        ], 404);\n    }\n}\n\n// app/Exceptions/Handler.php でグローバルエラーハンドリング\n\npublic function render(\$request, Throwable \$exception)\n{\n    if (\$request->is('api/*')) {\n        if (\$exception instanceof ModelNotFoundException) {\n            return response()->json([\n                'error' => 'リソースが見つかりません'\n            ], 404);\n        }\n        \n        if (\$exception instanceof ValidationException) {\n            return response()->json([\n                'error' => 'バリデーションエラー',\n                'errors' => \$exception->errors()\n            ], 422);\n        }\n        \n        return response()->json([\n            'error' => 'サーバーエラー'\n        ], 500);\n    }\n    \n    return parent::render(\$request, \$exception);\n}",
                         'code_language' => 'php',
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'API認証（Sanctum）',
                         'content' => "<?php\n// Sanctumのインストール\n// composer require laravel/sanctum\n// php artisan vendor:publish --provider=\"Laravel\\Sanctum\\SanctumServiceProvider\"\n// php artisan migrate\n\n// routes/api.php\n\nuse Illuminate\\Support\\Facades\\Route;\n\n// 認証不要\nRoute::post('register', [AuthController::class, 'register']);\nRoute::post('login', [AuthController::class, 'login']);\n\n// 認証が必要\nRoute::middleware('auth:sanctum')->group(function () {\n    Route::post('logout', [AuthController::class, 'logout']);\n    Route::apiResource('articles', ArticleController::class);\n});\n\n// app/Http/Controllers/Api/AuthController.php\n\npublic function login(Request \$request)\n{\n    \$credentials = \$request->validate([\n        'email' => 'required|email',\n        'password' => 'required',\n    ]);\n    \n    if (!Auth::attempt(\$credentials)) {\n        return response()->json([\n            'error' => '認証に失敗しました'\n        ], 401);\n    }\n    \n    \$user = Auth::user();\n    \$token = \$user->createToken('api-token')->plainTextToken;\n    \n    return response()->json([\n        'token' => \$token,\n        'user' => \$user\n    ]);\n}\n\npublic function logout(Request \$request)\n{\n    \$request->user()->currentAccessToken()->delete();\n    \n    return response()->json([\n        'message' => 'ログアウトしました'\n    ]);\n}",
                         'code_language' => 'php',
                         'sort_order' => 6
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'JavaScriptでAPIを呼び出す',
                         'content' => "// Fetch API を使用\n\n// GET リクエスト\nfetch('/api/articles')\n    .then(response => response.json())\n    .then(data => console.log(data))\n    .catch(error => console.error('Error:', error));\n\n// POST リクエスト\nfetch('/api/articles', {\n    method: 'POST',\n    headers: {\n        'Content-Type': 'application/json',\n        'Accept': 'application/json',\n        'X-CSRF-TOKEN': document.querySelector('meta[name=\"csrf-token\"]').content\n    },\n    body: JSON.stringify({\n        title: '新しい記事',\n        content: '記事の内容'\n    })\n})\n.then(response => response.json())\n.then(data => console.log(data));\n\n// 認証トークンを使用（Sanctum）\nconst token = 'your-api-token';\n\nfetch('/api/articles', {\n    method: 'GET',\n    headers: {\n        'Authorization': `Bearer \${token}`,\n        'Accept': 'application/json'\n    }\n})\n.then(response => response.json())\n.then(data => console.log(data));\n\n// Axios を使用（推奨）\nimport axios from 'axios';\n\n// GET\naxios.get('/api/articles')\n    .then(response => console.log(response.data))\n    .catch(error => console.error(error));\n\n// POST\naxios.post('/api/articles', {\n    title: '新しい記事',\n    content: '記事の内容'\n})\n.then(response => console.log(response.data));\n\n// 認証トークン設定\naxios.defaults.headers.common['Authorization'] = `Bearer \${token}`;",
                         'code_language' => 'javascript',
                         'sort_order' => 7
-                    },
+                    ],
                 ],
             ],
             [
@@ -725,55 +725,55 @@ class LaravelCourseSeeder extends Seeder
                         'title' => 'Laravelストレージシステム',
                         'content' => "# Laravelストレージシステム\n\nLaravelは、ファイル操作のために統一されたAPIを提供しています。\n\n## ストレージディスク\n\n### 1. local（デフォルト）\n- 場所: `storage/app/`\n- 用途: 非公開ファイル\n\n### 2. public\n- 場所: `storage/app/public/`\n- 用途: 公開ファイル（画像など）\n- シンボリックリンク作成: `php artisan storage:link`\n- アクセス: `public/storage/` 経由\n\n### 3. s3（オプション）\n- Amazon S3\n- 本番環境で推奨\n\n## 設定ファイル\n`config/filesystems.php` で設定を管理\n\n```php\n'default' => env('FILESYSTEM_DISK', 'local'),\n\n'disks' => [\n    'local' => [\n        'driver' => 'local',\n        'root' => storage_path('app'),\n    ],\n    'public' => [\n        'driver' => 'local',\n        'root' => storage_path('app/public'),\n        'url' => env('APP_URL').'/storage',\n        'visibility' => 'public',\n    ],\n],\n```",
                         'sort_order' => 1
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'ファイルアップロードの基本',
                         'content' => "<?php\n// app/Http/Controllers/ArticleController.php\n\nuse Illuminate\\Http\\Request;\nuse Illuminate\\Support\\Facades\\Storage;\n\npublic function store(Request \$request)\n{\n    // バリデーション\n    \$validated = \$request->validate([\n        'title' => 'required|string|max:255',\n        'content' => 'required',\n        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 最大2MB\n    ]);\n    \n    // ファイルを保存（自動的にユニークな名前を生成）\n    \$imagePath = \$request->file('image')->store('images', 'public');\n    \n    // 元のファイル名を保持して保存\n    \$originalName = \$request->file('image')->getClientOriginalName();\n    \$imagePath = \$request->file('image')->storeAs('images', \$originalName, 'public');\n    \n    // データベースに保存\n    \$article = Article::create([\n        'title' => \$validated['title'],\n        'content' => \$validated['content'],\n        'image_path' => \$imagePath,\n    ]);\n    \n    return redirect()->route('articles.index')\n        ->with('success', '記事を作成しました');\n}\n\n// ファイルの削除\npublic function destroy(\$id)\n{\n    \$article = Article::findOrFail(\$id);\n    \n    // ストレージからファイルを削除\n    if (\$article->image_path) {\n        Storage::disk('public')->delete(\$article->image_path);\n    }\n    \n    \$article->delete();\n    \n    return redirect()->route('articles.index');\n}",
                         'code_language' => 'php',
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'アップロードフォーム',
                         'content' => "{{-- resources/views/articles/create.blade.php --}}\n\n@extends('layouts.app')\n\n@section('content')\n<div class=\"container\">\n    <h1>記事作成</h1>\n    \n    {{-- enctype=\"multipart/form-data\" が必須 --}}\n    <form action=\"{{ route('articles.store') }}\" method=\"POST\" enctype=\"multipart/form-data\">\n        @csrf\n        \n        <div class=\"form-group\">\n            <label for=\"title\">タイトル</label>\n            <input type=\"text\" \n                   name=\"title\" \n                   value=\"{{ old('title') }}\"\n                   class=\"form-control @error('title') is-invalid @enderror\">\n            @error('title')\n                <div class=\"invalid-feedback\">{{ \$message }}</div>\n            @enderror\n        </div>\n        \n        <div class=\"form-group\">\n            <label for=\"image\">画像</label>\n            <input type=\"file\" \n                   name=\"image\" \n                   accept=\"image/*\"\n                   class=\"form-control @error('image') is-invalid @enderror\"\n                   id=\"imageInput\">\n            @error('image')\n                <div class=\"invalid-feedback\">{{ \$message }}</div>\n            @enderror\n            \n            {{-- プレビュー --}}\n            <div id=\"imagePreview\" class=\"mt-2\"></div>\n        </div>\n        \n        <button type=\"submit\" class=\"btn btn-primary\">作成</button>\n    </form>\n</div>\n\n<script>\n// 画像プレビュー\ndocument.getElementById('imageInput').addEventListener('change', function(e) {\n    const file = e.target.files[0];\n    const preview = document.getElementById('imagePreview');\n    \n    if (file) {\n        const reader = new FileReader();\n        reader.onload = function(e) {\n            preview.innerHTML = `<img src=\"\${e.target.result}\" style=\"max-width: 300px;\" class=\"img-thumbnail\">`;\n        }\n        reader.readAsDataURL(file);\n    } else {\n        preview.innerHTML = '';\n    }\n});\n</script>\n@endsection",
                         'code_language' => 'php',
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '画像の表示',
                         'content' => "{{-- resources/views/articles/show.blade.php --}}\n\n@extends('layouts.app')\n\n@section('content')\n<div class=\"container\">\n    <h1>{{ \$article->title }}</h1>\n    \n    @if(\$article->image_path)\n        {{-- Storage::url() でURLを取得 --}}\n        <img src=\"{{ Storage::url(\$article->image_path) }}\" \n             alt=\"{{ \$article->title }}\"\n             class=\"img-fluid\">\n        \n        {{-- または asset() ヘルパー --}}\n        <img src=\"{{ asset('storage/' . \$article->image_path) }}\" \n             alt=\"{{ \$article->title }}\">\n    @endif\n    \n    <div class=\"content\">\n        {{ \$article->content }}\n    </div>\n</div>\n@endsection\n\n{{-- 一覧でサムネイル表示 --}}\n@foreach(\$articles as \$article)\n    <div class=\"article-card\">\n        @if(\$article->image_path)\n            <img src=\"{{ Storage::url(\$article->image_path) }}\" \n                 alt=\"{{ \$article->title }}\"\n                 style=\"width: 200px; height: 150px; object-fit: cover;\">\n        @else\n            <img src=\"{{ asset('images/no-image.png') }}\" \n                 alt=\"No Image\">\n        @endif\n        <h3>{{ \$article->title }}</h3>\n    </div>\n@endforeach",
                         'code_language' => 'php',
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'Storage ファサードの使い方',
                         'content' => "<?php\nuse Illuminate\\Support\\Facades\\Storage;\n\n// ファイル保存\nStorage::put('file.txt', 'Contents');  // storage/app/file.txt\nStorage::disk('public')->put('file.txt', 'Contents');  // storage/app/public/file.txt\n\n// ファイルアップロード\n\$path = Storage::putFile('images', \$request->file('image'));\n\$path = Storage::putFileAs('images', \$request->file('image'), 'filename.jpg');\n\n// ファイル読み取り\n\$contents = Storage::get('file.txt');\n\n// ファイル存在確認\nif (Storage::exists('file.txt')) {\n    // ファイルが存在する\n}\n\n// ファイル削除\nStorage::delete('file.txt');\nStorage::delete(['file1.txt', 'file2.txt']);  // 複数削除\n\n// ファイルコピー・移動\nStorage::copy('old.txt', 'new.txt');\nStorage::move('old.txt', 'new.txt');\n\n// ファイルサイズ取得\n\$size = Storage::size('file.txt');\n\n// 最終更新日時\n\$time = Storage::lastModified('file.txt');\n\n// ディレクトリ内のファイル一覧\n\$files = Storage::files('images');\n\$allFiles = Storage::allFiles('images');  // サブディレクトリも含む\n\n// ディレクトリ一覧\n\$directories = Storage::directories('images');\n\$allDirectories = Storage::allDirectories('images');\n\n// ディレクトリ作成・削除\nStorage::makeDirectory('new-folder');\nStorage::deleteDirectory('folder');\n\n// URLを取得（publicディスクのみ）\n\$url = Storage::url('images/photo.jpg');\n// 結果: /storage/images/photo.jpg\n\n// 一時的なURL（S3など）\n\$url = Storage::temporaryUrl(\n    'file.jpg', \n    now()->addMinutes(5)\n);",
                         'code_language' => 'php',
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '画像のリサイズ（Intervention Image）',
                         'content' => "<?php\n// Intervention Imageのインストール\n// composer require intervention/image\n\nuse Intervention\\Image\\Facades\\Image;\n\npublic function store(Request \$request)\n{\n    \$validated = \$request->validate([\n        'title' => 'required',\n        'image' => 'required|image|max:5120',  // 最大5MB\n    ]);\n    \n    if (\$request->hasFile('image')) {\n        \$image = \$request->file('image');\n        \$filename = time() . '.' . \$image->getClientOriginalExtension();\n        \n        // 画像をリサイズ\n        \$img = Image::make(\$image->path());\n        \n        // 幅を800pxにリサイズ（アスペクト比維持）\n        \$img->resize(800, null, function (\$constraint) {\n            \$constraint->aspectRatio();\n            \$constraint->upsize();  // 元画像より大きくしない\n        });\n        \n        // 保存\n        \$path = 'images/' . \$filename;\n        Storage::disk('public')->put(\$path, (string) \$img->encode());\n        \n        // サムネイルも作成\n        \$thumbnail = Image::make(\$image->path())\n            ->fit(300, 300)  // 300x300の正方形にトリミング\n            ->encode();\n        \n        \$thumbnailPath = 'thumbnails/' . \$filename;\n        Storage::disk('public')->put(\$thumbnailPath, (string) \$thumbnail);\n        \n        // データベースに保存\n        \$article = Article::create([\n            'title' => \$validated['title'],\n            'image_path' => \$path,\n            'thumbnail_path' => \$thumbnailPath,\n        ]);\n    }\n    \n    return redirect()->route('articles.index');\n}",
                         'code_language' => 'php',
                         'sort_order' => 6
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'ファイルアップロードのベストプラクティス',
                         'content' => "# ファイルアップロードのベストプラクティス\n\n## 1. バリデーション\n```php\n'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',\n'document' => 'required|file|mimes:pdf,doc,docx|max:10240',\n```\n\n## 2. セキュリティ\n- **ファイルタイプをチェック**: MIMEタイプを検証\n- **ファイルサイズを制限**: max:2048 (KB)\n- **ファイル名をサニタイズ**: ユニークな名前を生成\n- **実行可能ファイルを拒否**: .php, .exe など\n\n## 3. ストレージリンク\n```bash\nphp artisan storage:link\n```\n`public/storage` → `storage/app/public` のシンボリックリンク作成\n\n## 4. ファイル名の処理\n```php\n// ユニークな名前を自動生成\n\$path = \$request->file('image')->store('images', 'public');\n\n// カスタム名\n\$filename = time() . '_' . \$request->file('image')->getClientOriginalName();\n\$path = \$request->file('image')->storeAs('images', \$filename, 'public');\n\n// UUIDを使用\nuse Illuminate\\Support\\Str;\n\$filename = Str::uuid() . '.' . \$request->file('image')->extension();\n```\n\n## 5. 古いファイルの削除\n更新時は古いファイルを削除\n```php\nif (\$article->image_path) {\n    Storage::disk('public')->delete(\$article->image_path);\n}\n```\n\n## 6. エラーハンドリング\n```php\ntry {\n    \$path = \$request->file('image')->store('images', 'public');\n} catch (\\Exception \$e) {\n    return back()->with('error', 'ファイルアップロードに失敗しました');\n}\n```\n\n## 7. プログレス表示\nJavaScriptで進捗を表示\n\n## 8. 本番環境\n- S3などのクラウドストレージを使用\n- CDNで配信\n- バックアップを設定",
                         'sort_order' => 7
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => '複数ファイルのアップロード',
                         'content' => "<?php\n// コントローラ\npublic function store(Request \$request)\n{\n    \$validated = \$request->validate([\n        'title' => 'required',\n        'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',\n    ]);\n    \n    \$article = Article::create([\n        'title' => \$validated['title'],\n    ]);\n    \n    // 複数画像を処理\n    if (\$request->hasFile('images')) {\n        foreach (\$request->file('images') as \$image) {\n            \$path = \$image->store('images', 'public');\n            \n            // 中間テーブルに保存\n            \$article->images()->create([\n                'path' => \$path,\n                'filename' => \$image->getClientOriginalName(),\n                'size' => \$image->getSize(),\n            ]);\n        }\n    }\n    \n    return redirect()->route('articles.show', \$article);\n}\n\n// Blade\n<form action=\"{{ route('articles.store') }}\" method=\"POST\" enctype=\"multipart/form-data\">\n    @csrf\n    \n    <input type=\"text\" name=\"title\">\n    \n    {{-- multiple属性で複数選択可能 --}}\n    <input type=\"file\" name=\"images[]\" multiple accept=\"image/*\">\n    \n    <button type=\"submit\">送信</button>\n</form>\n\n// Model\nclass Article extends Model\n{\n    public function images()\n    {\n        return \$this->hasMany(ArticleImage::class);\n    }\n}",
                         'code_language' => 'php',
                         'sort_order' => 8
-                    },
+                    ],
                 ],
             ],
         ]);
@@ -822,47 +822,47 @@ class LaravelCourseSeeder extends Seeder
                         'title' => '開発手順',
                         'content' => "# 開発手順\n\n## ステップ1: 要件定義（30分）\n- 作成するアプリケーションの仕様を決定\n- 必要な機能をリストアップ\n- データ構造を設計\n\n## ステップ2: データベース設計（30分）\n- ER図を作成\n- テーブル構造を決定\n- リレーションを定義\n\n## ステップ3: 環境構築（30分）\n```bash\n# プロジェクト作成\ncomposer create-project laravel/laravel project-name\ncd project-name\n\n# .env設定\nDB_DATABASE=your_database\nDB_USERNAME=your_username\nDB_PASSWORD=your_password\n\n# マイグレーション作成\nphp artisan make:model Article -mfs\nphp artisan make:model Category -mfs\n\n# マイグレーション実行\nphp artisan migrate\n\n# シーダー実行\nphp artisan db:seed\n```\n\n## ステップ4: ルーティング設計（30分）\n```php\n// routes/web.php\nRoute::resource('articles', ArticleController::class);\nRoute::get('articles/search', [ArticleController::class, 'search']);\n```\n\n## ステップ5: コントローラ実装（90分）\n- index(), create(), store(), show(), edit(), update(), destroy()\n- バリデーション\n- エラーハンドリング\n\n## ステップ6: ビュー作成（90分）\n- レイアウトファイル\n- 一覧画面\n- 詳細画面\n- 作成・編集フォーム\n\n## ステップ7: テスト（30分）\n- 各機能の動作確認\n- エラーケースの確認\n- レスポンシブ確認\n\n## ステップ8: リファクタリング（30分）\n- コードの整理\n- コメント追加\n- パフォーマンス最適化",
                         'sort_order' => 2
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'サンプル：記事管理システムのマイグレーション',
                         'content' => "<?php\n// database/migrations/xxxx_create_categories_table.php\n\nSchema::create('categories', function (Blueprint \$table) {\n    \$table->id();\n    \$table->string('name');\n    \$table->string('slug')->unique();\n    \$table->text('description')->nullable();\n    \$table->timestamps();\n});\n\n// database/migrations/xxxx_create_articles_table.php\n\nSchema::create('articles', function (Blueprint \$table) {\n    \$table->id();\n    \$table->string('title');\n    \$table->string('slug')->unique();\n    \$table->text('content');\n    \$table->text('excerpt')->nullable();\n    \$table->string('image_path')->nullable();\n    \$table->foreignId('category_id')->constrained()->onDelete('cascade');\n    \$table->foreignId('user_id')->constrained()->onDelete('cascade');\n    \$table->enum('status', ['draft', 'published', 'archived'])->default('draft');\n    \$table->integer('views')->default(0);\n    \$table->timestamp('published_at')->nullable();\n    \$table->timestamps();\n    \$table->softDeletes();\n    \n    \$table->index(['status', 'published_at']);\n    \$table->index('created_at');\n});\n\n// database/migrations/xxxx_create_tags_table.php\n\nSchema::create('tags', function (Blueprint \$table) {\n    \$table->id();\n    \$table->string('name');\n    \$table->string('slug')->unique();\n    \$table->timestamps();\n});\n\n// 多対多の中間テーブル\nSchema::create('article_tag', function (Blueprint \$table) {\n    \$table->foreignId('article_id')->constrained()->onDelete('cascade');\n    \$table->foreignId('tag_id')->constrained()->onDelete('cascade');\n    \$table->primary(['article_id', 'tag_id']);\n});",
                         'code_language' => 'php',
                         'sort_order' => 3
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'サンプル：モデルとリレーション',
                         'content' => "<?php\n// app/Models/Article.php\n\nnamespace App\\Models;\n\nuse Illuminate\\Database\\Eloquent\\Model;\nuse Illuminate\\Database\\Eloquent\\SoftDeletes;\n\nclass Article extends Model\n{\n    use SoftDeletes;\n    \n    protected \$fillable = [\n        'title', 'slug', 'content', 'excerpt', \n        'image_path', 'category_id', 'user_id',\n        'status', 'published_at'\n    ];\n    \n    protected \$casts = [\n        'published_at' => 'datetime',\n    ];\n    \n    // リレーション\n    public function category()\n    {\n        return \$this->belongsTo(Category::class);\n    }\n    \n    public function user()\n    {\n        return \$this->belongsTo(User::class);\n    }\n    \n    public function tags()\n    {\n        return \$this->belongsToMany(Tag::class);\n    }\n    \n    // スコープ\n    public function scopePublished(\$query)\n    {\n        return \$query->where('status', 'published')\n            ->whereNotNull('published_at')\n            ->where('published_at', '<=', now());\n    }\n    \n    public function scopeLatest(\$query)\n    {\n        return \$query->orderBy('published_at', 'desc');\n    }\n    \n    // アクセサ\n    public function getExcerptAttribute(\$value)\n    {\n        return \$value ?: Str::limit(\$this->content, 150);\n    }\n}\n\n// app/Models/Category.php\n\nclass Category extends Model\n{\n    protected \$fillable = ['name', 'slug', 'description'];\n    \n    public function articles()\n    {\n        return \$this->hasMany(Article::class);\n    }\n}",
                         'code_language' => 'php',
                         'sort_order' => 4
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'サンプル：完全なCRUDコントローラ',
                         'content' => "<?php\n// app/Http/Controllers/ArticleController.php\n\nnamespace App\\Http\\Controllers;\n\nuse App\\Models\\Article;\nuse App\\Models\\Category;\nuse App\\Http\\Requests\\StoreArticleRequest;\nuse Illuminate\\Http\\Request;\nuse Illuminate\\Support\\Facades\\Storage;\nuse Illuminate\\Support\\Str;\n\nclass ArticleController extends Controller\n{\n    // 一覧表示（検索・フィルタ・ページネーション）\n    public function index(Request \$request)\n    {\n        \$query = Article::with('category', 'user')\n            ->published()\n            ->latest();\n        \n        // 検索\n        if (\$search = \$request->get('search')) {\n            \$query->where('title', 'like', \"%\$search%\")\n                ->orWhere('content', 'like', \"%\$search%\");\n        }\n        \n        // カテゴリフィルタ\n        if (\$categoryId = \$request->get('category')) {\n            \$query->where('category_id', \$categoryId);\n        }\n        \n        \$articles = \$query->paginate(12);\n        \$categories = Category::all();\n        \n        return view('articles.index', compact('articles', 'categories'));\n    }\n    \n    // 作成フォーム\n    public function create()\n    {\n        \$categories = Category::all();\n        return view('articles.create', compact('categories'));\n    }\n    \n    // 保存\n    public function store(StoreArticleRequest \$request)\n    {\n        \$data = \$request->validated();\n        \$data['slug'] = Str::slug(\$data['title']);\n        \$data['user_id'] = auth()->id();\n        \n        // 画像アップロード\n        if (\$request->hasFile('image')) {\n            \$data['image_path'] = \$request->file('image')\n                ->store('articles', 'public');\n        }\n        \n        \$article = Article::create(\$data);\n        \n        // タグを同期\n        if (\$request->has('tags')) {\n            \$article->tags()->sync(\$request->tags);\n        }\n        \n        return redirect()->route('articles.show', \$article)\n            ->with('success', '記事を作成しました');\n    }\n    \n    // 詳細表示\n    public function show(Article \$article)\n    {\n        \$article->load('category', 'user', 'tags');\n        \$article->increment('views');\n        \n        return view('articles.show', compact('article'));\n    }\n    \n    // 編集フォーム\n    public function edit(Article \$article)\n    {\n        \$categories = Category::all();\n        return view('articles.edit', compact('article', 'categories'));\n    }\n    \n    // 更新\n    public function update(StoreArticleRequest \$request, Article \$article)\n    {\n        \$data = \$request->validated();\n        \$data['slug'] = Str::slug(\$data['title']);\n        \n        // 画像アップロード\n        if (\$request->hasFile('image')) {\n            // 古い画像を削除\n            if (\$article->image_path) {\n                Storage::disk('public')->delete(\$article->image_path);\n            }\n            \n            \$data['image_path'] = \$request->file('image')\n                ->store('articles', 'public');\n        }\n        \n        \$article->update(\$data);\n        \n        if (\$request->has('tags')) {\n            \$article->tags()->sync(\$request->tags);\n        }\n        \n        return redirect()->route('articles.show', \$article)\n            ->with('success', '記事を更新しました');\n    }\n    \n    // 削除\n    public function destroy(Article \$article)\n    {\n        if (\$article->image_path) {\n            Storage::disk('public')->delete(\$article->image_path);\n        }\n        \n        \$article->delete();\n        \n        return redirect()->route('articles.index')\n            ->with('success', '記事を削除しました');\n    }\n}",
                         'code_language' => 'php',
                         'sort_order' => 5
-                    },
+                    ],
                     [
                         'type' => 'code_snippet',
                         'title' => 'サンプル：FormRequest',
                         'content' => "<?php\n// app/Http/Requests/StoreArticleRequest.php\n\nnamespace App\\Http\\Requests;\n\nuse Illuminate\\Foundation\\Http\\FormRequest;\n\nclass StoreArticleRequest extends FormRequest\n{\n    public function authorize(): bool\n    {\n        return true;\n    }\n    \n    public function rules(): array\n    {\n        \$articleId = \$this->route('article')?->id;\n        \n        return [\n            'title' => 'required|string|max:255',\n            'content' => 'required|string|min:100',\n            'excerpt' => 'nullable|string|max:500',\n            'category_id' => 'required|exists:categories,id',\n            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',\n            'status' => 'required|in:draft,published,archived',\n            'published_at' => 'nullable|date',\n            'tags' => 'nullable|array',\n            'tags.*' => 'exists:tags,id',\n        ];\n    }\n    \n    public function messages(): array\n    {\n        return [\n            'title.required' => 'タイトルは必須です',\n            'title.max' => 'タイトルは255文字以内で入力してください',\n            'content.required' => '本文は必須です',\n            'content.min' => '本文は100文字以上で入力してください',\n            'category_id.required' => 'カテゴリは必須です',\n            'category_id.exists' => '選択されたカテゴリが存在しません',\n            'image.image' => '画像ファイルを選択してください',\n            'image.max' => '画像は2MB以下にしてください',\n        ];\n    }\n    \n    public function attributes(): array\n    {\n        return [\n            'title' => 'タイトル',\n            'content' => '本文',\n            'excerpt' => '概要',\n            'category_id' => 'カテゴリ',\n            'image' => '画像',\n            'status' => 'ステータス',\n            'published_at' => '公開日時',\n            'tags' => 'タグ',\n        ];\n    }\n}",
                         'code_language' => 'php',
                         'sort_order' => 6
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'チェックリスト',
                         'content' => "# 総合問題チェックリスト\n\n## データベース\n- [ ] マイグレーションファイルが正しく作成されている\n- [ ] 外部キー制約が適切に設定されている\n- [ ] インデックスが必要な箇所に設定されている\n- [ ] シーダーでテストデータが作成できる\n\n## モデル\n- [ ] \$fillable または \$guarded が設定されている\n- [ ] リレーションが正しく定義されている\n- [ ] 日時のキャストが設定されている\n- [ ] スコープが適切に実装されている\n\n## ルーティング\n- [ ] RESTful なルート定義になっている\n- [ ] ルート名が設定されている\n- [ ] 必要に応じてミドルウェアが設定されている\n\n## コントローラ\n- [ ] 単一責任の原則に従っている\n- [ ] バリデーションが実装されている\n- [ ] エラーハンドリングが適切\n- [ ] リダイレクト時にフラッシュメッセージを設定\n\n## ビュー\n- [ ] レイアウトファイルで共通部分を管理\n- [ ] CSRF トークンが設定されている\n- [ ] old() ヘルパーで入力値を保持\n- [ ] エラーメッセージが表示される\n- [ ] レスポンシブデザインになっている\n\n## セキュリティ\n- [ ] CSRF 保護が有効\n- [ ] XSS 対策（{{ }} でエスケープ）\n- [ ] SQL インジェクション対策（Eloquent 使用）\n- [ ] ファイルアップロードのバリデーション\n- [ ] 認証・認可の実装（必要に応じて）\n\n## パフォーマンス\n- [ ] N+1 問題を回避（Eager Loading）\n- [ ] ページネーションを実装\n- [ ] 不要なクエリを削減\n\n## ユーザー体験\n- [ ] 検索機能が動作する\n- [ ] フィルタリングが動作する\n- [ ] ソート機能が動作する\n- [ ] ページネーションが動作する\n- [ ] 成功・エラーメッセージが表示される\n\n## コード品質\n- [ ] コードが読みやすい\n- [ ] 適切なコメントがある\n- [ ] 命名規則に従っている\n- [ ] DRY 原則に従っている\n\n## テスト\n- [ ] すべての機能が動作する\n- [ ] エラーケースも確認済み\n- [ ] 各ブラウザで動作確認\n- [ ] モバイルでの動作確認",
                         'sort_order' => 7
-                    },
+                    ],
                     [
                         'type' => 'note',
                         'title' => 'よくあるエラーと解決方法',
                         'content' => "# よくあるエラーと解決方法\n\n## 1. 「Class not found」\n```bash\ncomposer dump-autoload\n```\n\n## 2. 「SQLSTATE[HY000] [2002] Connection refused」\n- .env のDB設定を確認\n- データベースが起動しているか確認\n\n## 3. 「The POST method is not supported for this route」\n- ルートとフォームのメソッドが一致しているか確認\n- @csrf トークンが設定されているか確認\n\n## 4. 「CSRF token mismatch」\n```blade\n@csrf\n```\nを忘れずに追加\n\n## 5. 「419 Page Expired」\n- セッションが切れた\n- ページをリロード\n\n## 6. 「Mass Assignment Exception」\n- \$fillable に追加\n```php\nprotected \$fillable = ['column_name'];\n```\n\n## 7. 「Column not found」\n- マイグレーションを確認\n```bash\nphp artisan migrate:fresh\n```\n\n## 8. 「Call to undefined relationship」\n- モデルにリレーションメソッドを定義\n\n## 9. 「File not found」\n```bash\nphp artisan storage:link\n```\n\n## 10. 「N+1 Query Problem」\n```php\n// 悪い例\n\$articles = Article::all();\nforeach (\$articles as \$article) {\n    echo \$article->user->name;  // N+1\n}\n\n// 良い例\n\$articles = Article::with('user')->get();\nforeach (\$articles as \$article) {\n    echo \$article->user->name;\n}\n```",
                         'sort_order' => 8
-                    },
+                    ],
                 ],
             ],
         ]);
