@@ -64,6 +64,12 @@ class ScheduleSetupBottomSheet : BottomSheetDialogFragment() {
         dayAdapter = DaySelectionAdapter(days) { dayItem ->
             viewModel.toggleDay(dayItem.dayOfWeek)
         }
+
+        // Set GridLayoutManager with 4 columns
+        binding.rvDays.layoutManager = androidx.recyclerview.widget.GridLayoutManager(
+            requireContext(),
+            4 // 4 columns for grid layout
+        )
         binding.rvDays.adapter = dayAdapter
     }
 
