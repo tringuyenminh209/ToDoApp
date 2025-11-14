@@ -89,11 +89,6 @@ class ExerciseDetailActivity : BaseActivity() {
             submitSolution()
         }
 
-        // Run button (same as submit)
-        binding.btnRun.setOnClickListener {
-            submitSolution()
-        }
-
         // Reset button
         binding.btnReset.setOnClickListener {
             viewModel.exercise.value?.starterCode?.let { starterCode ->
@@ -132,10 +127,7 @@ class ExerciseDetailActivity : BaseActivity() {
                 }
 
                 // Set points
-                binding.tvPoints.text = "${it.points} pt"
-
-                // Set time limit
-                binding.tvTimeLimit.text = "${it.timeLimit} min"
+                binding.tvPoints.text = "${it.points}pt"
 
                 // Set success rate
                 binding.tvSuccessRate.text = if (it.submissionsCount > 0) {
@@ -150,7 +142,6 @@ class ExerciseDetailActivity : BaseActivity() {
                 // Show test cases
                 it.testCases?.let { testCases ->
                     testCaseAdapter.submitList(testCases)
-                    binding.tvTestCaseCount.text = "Sample Test Cases (${testCases.size}/${it.totalTestCases})"
                 }
 
                 // Show/hide hints button
@@ -185,13 +176,11 @@ class ExerciseDetailActivity : BaseActivity() {
         // Observe submitting state
         viewModel.isSubmitting.observe(this) { isSubmitting ->
             binding.btnSubmit.isEnabled = !isSubmitting
-            binding.btnRun.isEnabled = !isSubmitting
-            binding.progressSubmit.visibility = if (isSubmitting) View.VISIBLE else View.GONE
 
             if (isSubmitting) {
-                binding.btnSubmit.text = "Submitting..."
+                binding.btnSubmit.text = "提出中..."
             } else {
-                binding.btnSubmit.text = "Submit Solution"
+                binding.btnSubmit.text = "提出"
             }
         }
 
