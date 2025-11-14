@@ -2009,7 +2009,490 @@ labelをクリックすると、関連するinputにフォーカスが移動し�
                     ['title' => 'ページ構造要素', 'estimated_minutes' => 180, 'sort_order' => 2],
                     ['title' => 'コンテンツ構造要素', 'estimated_minutes' => 180, 'sort_order' => 3],
                 ],
-                'knowledge_items' => [],
+                'knowledge_items' => [
+                    [
+                        'type' => 'note',
+                        'title' => 'セマンティックHTMLとは',
+                        'content' => "# セマンティックHTML
+
+**セマンティックHTML**は、HTMLタグに**意味**を持たせるアプローチです。
+
+## なぜセマンティックHTMLが重要か
+
+### 1. アクセシビリティの向上
+
+スクリーンリーダーなどの支援技術が、ページ構造を正しく理解できます。
+
+```html
+<!-- 悪い例 ✗ -->
+<div class=\"header\">ヘッダー</div>
+<div class=\"nav\">ナビゲーション</div>
+<div class=\"content\">コンテンツ</div>
+
+<!-- 良い例 ✓ -->
+<header>ヘッダー</header>
+<nav>ナビゲーション</nav>
+<main>コンテンツ</main>
+```
+
+### 2. SEO効果
+
+検索エンジンがページの構造と内容を理解しやすくなります。
+
+### 3. コードの可読性
+
+開発者が見て、各部分の役割がすぐわかります。
+
+### 4. メンテナンス性
+
+意味のあるタグを使うことで、後から修正しやすくなります。
+
+## div vs セマンティック要素
+
+### divを使った構造（非セマンティック）
+
+```html
+<div class=\"page\">
+    <div class=\"header\">
+        <div class=\"logo\">サイト名</div>
+        <div class=\"menu\">メニュー</div>
+    </div>
+    <div class=\"main-content\">
+        <div class=\"article\">記事</div>
+        <div class=\"sidebar\">サイドバー</div>
+    </div>
+    <div class=\"footer\">フッター</div>
+</div>
+```
+
+### セマンティック要素を使った構造
+
+```html
+<div class=\"page\">
+    <header>
+        <h1>サイト名</h1>
+        <nav>メニュー</nav>
+    </header>
+    <main>
+        <article>記事</article>
+        <aside>サイドバー</aside>
+    </main>
+    <footer>フッター</footer>
+</div>
+```
+
+## 主なセマンティック要素
+
+- `<header>`: ヘッダー（ページまたはセクションの導入部）
+- `<nav>`: ナビゲーション
+- `<main>`: メインコンテンツ
+- `<article>`: 独立したコンテンツ
+- `<section>`: セクション（関連するコンテンツのまとまり）
+- `<aside>`: 補足情報（サイドバーなど）
+- `<footer>`: フッター（ページまたはセクションの末尾）
+
+## いつdivを使うか
+
+divは**意味がない**汎用的なコンテナです。
+
+```html
+<!-- divを使うべき場合 -->
+<div class=\"container\">  <!-- レイアウト用のラッパー -->
+<div class=\"card\">       <!-- スタイリング用のグループ -->
+<div class=\"flex-box\">   <!-- CSSレイアウト用 -->
+```
+
+**原則**: 適切なセマンティック要素があればそれを使い、なければdivを使う",
+                        'sort_order' => 1
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => 'ページ構造の基本',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <title>セマンティックHTML</title>
+    <style>
+        header { background: #333; color: white; padding: 20px; }
+        nav { background: #666; padding: 10px; }
+        nav a { color: white; margin: 0 10px; }
+        main { display: flex; padding: 20px; }
+        article { flex: 3; padding: 20px; background: #f9f9f9; }
+        aside { flex: 1; padding: 20px; background: #e9e9e9; margin-left: 20px; }
+        footer { background: #333; color: white; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー：サイト全体の導入部 -->
+    <header>
+        <h1>私のWebサイト</h1>
+        <p>セマンティックHTMLのサンプル</p>
+    </header>
+
+    <!-- ナビゲーション：サイト内リンク -->
+    <nav>
+        <a href=\"#home\">ホーム</a>
+        <a href=\"#about\">概要</a>
+        <a href=\"#services\">サービス</a>
+        <a href=\"#contact\">お問い合わせ</a>
+    </nav>
+
+    <!-- メインコンテンツ：ページの主要部分 -->
+    <main>
+        <!-- 記事：独立したコンテンツ -->
+        <article>
+            <h2>記事のタイトル</h2>
+            <p>公開日: <time datetime=\"2024-01-15\">2024年1月15日</time></p>
+            <p>これは記事の本文です。articleタグは、それ単体で意味をなすコンテンツに使用します。</p>
+
+            <!-- 記事内のセクション -->
+            <section>
+                <h3>セクション1</h3>
+                <p>記事内の関連するコンテンツをグループ化します。</p>
+            </section>
+
+            <section>
+                <h3>セクション2</h3>
+                <p>見出しと内容のセットで使用します。</p>
+            </section>
+        </article>
+
+        <!-- サイドバー：補足情報 -->
+        <aside>
+            <h3>関連情報</h3>
+            <ul>
+                <li>関連記事1</li>
+                <li>関連記事2</li>
+                <li>人気記事</li>
+            </ul>
+        </aside>
+    </main>
+
+    <!-- フッター：サイト全体の末尾 -->
+    <footer>
+        <p>&copy; 2024 私のWebサイト. All rights reserved.</p>
+        <p>お問い合わせ: info@example.com</p>
+    </footer>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 2
+                    ],
+                    [
+                        'type' => 'note',
+                        'title' => 'セマンティック要素の使い分け',
+                        'content' => "# セマンティック要素の使い分け
+
+## header
+
+ページやセクションの**導入部**を表します。
+
+```html
+<!-- ページ全体のheader -->
+<header>
+    <h1>サイト名</h1>
+    <nav><!-- ナビゲーション --></nav>
+</header>
+
+<!-- article内のheader -->
+<article>
+    <header>
+        <h2>記事タイトル</h2>
+        <p>著者: 田中太郎</p>
+        <time datetime=\"2024-01-15\">2024年1月15日</time>
+    </header>
+    <p>記事の本文...</p>
+</article>
+```
+
+**用途**: ロゴ、サイト名、ナビゲーション、記事のメタ情報
+
+## nav
+
+**ナビゲーションリンク**のセクション。
+
+```html
+<nav>
+    <ul>
+        <li><a href=\"/\">ホーム</a></li>
+        <li><a href=\"/about\">会社概要</a></li>
+        <li><a href=\"/products\">製品</a></li>
+        <li><a href=\"/contact\">お問い合わせ</a></li>
+    </ul>
+</nav>
+```
+
+**注意**: すべてのリンク集がnavではない。主要なナビゲーションのみに使用。
+
+```html
+<!-- 良い例 ✓ -->
+<nav><!-- メインメニュー --></nav>
+
+<!-- 悪い例 ✗ -->
+<nav><!-- フッターのSNSリンク --></nav>  <!-- navほど重要でないリンク集 -->
+```
+
+## main
+
+ページの**メインコンテンツ**。1ページに1つだけ。
+
+```html
+<body>
+    <header><!-- ヘッダー --></header>
+    <nav><!-- ナビゲーション --></nav>
+
+    <main>
+        <!-- ページの主要コンテンツ -->
+        <h1>ページタイトル</h1>
+        <p>メインコンテンツ...</p>
+    </main>
+
+    <footer><!-- フッター --></footer>
+</body>
+```
+
+**ルール**:
+- 1ページに1つのみ
+- `<header>`, `<nav>`, `<footer>`, `<aside>`の中には入れない
+
+## article
+
+**独立したコンテンツ**。それ単体で意味をなす。
+
+```html
+<!-- ブログ記事 -->
+<article>
+    <h2>HTMLの基礎</h2>
+    <p>HTMLについて...</p>
+</article>
+
+<!-- フォーラムの投稿 -->
+<article>
+    <h3>投稿タイトル</h3>
+    <p>投稿者: 田中</p>
+    <p>投稿内容...</p>
+</article>
+
+<!-- 商品カード -->
+<article class=\"product\">
+    <h3>商品A</h3>
+    <p>価格: 1,000円</p>
+</article>
+```
+
+**判断基準**: RSSフィードに含められるか？ 単体で配信できるか？
+
+## section
+
+**関連するコンテンツのまとまり**。見出しを持つべき。
+
+```html
+<article>
+    <h1>HTML完全ガイド</h1>
+
+    <section>
+        <h2>第1章: HTMLとは</h2>
+        <p>HTMLの基礎...</p>
+    </section>
+
+    <section>
+        <h2>第2章: タグの使い方</h2>
+        <p>タグについて...</p>
+    </section>
+</article>
+```
+
+**section vs div**:
+- section: 論理的なセクション（見出しがある）
+- div: スタイリング用のグループ（見出し不要）
+
+## aside
+
+**補足情報**や**関連コンテンツ**。
+
+```html
+<!-- サイドバー -->
+<aside>
+    <h3>関連記事</h3>
+    <ul>
+        <li><a href=\"/article1\">記事1</a></li>
+        <li><a href=\"/article2\">記事2</a></li>
+    </ul>
+</aside>
+
+<!-- 記事内の補足 -->
+<article>
+    <p>メインの内容...</p>
+
+    <aside>
+        <h4>豆知識</h4>
+        <p>補足情報...</p>
+    </aside>
+</article>
+```
+
+**用途**: サイドバー、広告、関連リンク、注釈
+
+## footer
+
+ページやセクションの**末尾**。
+
+```html
+<!-- ページ全体のfooter -->
+<footer>
+    <p>&copy; 2024 My Company</p>
+    <nav>
+        <a href=\"/privacy\">プライバシーポリシー</a>
+        <a href=\"/terms\">利用規約</a>
+    </nav>
+</footer>
+
+<!-- article内のfooter -->
+<article>
+    <h2>記事タイトル</h2>
+    <p>記事本文...</p>
+
+    <footer>
+        <p>著者: 田中太郎</p>
+        <p>カテゴリ: Web開発</p>
+    </footer>
+</article>
+```
+
+**用途**: 著作権表示、連絡先、関連リンク、著者情報",
+                        'sort_order' => 3
+                    ],
+                    [
+                        'type' => 'code_snippet',
+                        'title' => '実践的なページ構造',
+                        'content' => "<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>ブログサイト</title>
+</head>
+<body>
+    <!-- サイト全体のヘッダー -->
+    <header>
+        <h1>テックブログ</h1>
+        <p>Web開発の最新情報</p>
+
+        <!-- メインナビゲーション -->
+        <nav aria-label=\"メインメニュー\">
+            <ul>
+                <li><a href=\"/\">ホーム</a></li>
+                <li><a href=\"/articles\">記事一覧</a></li>
+                <li><a href=\"/about\">このブログについて</a></li>
+                <li><a href=\"/contact\">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main>
+        <!-- ブログ記事 -->
+        <article>
+            <!-- 記事のヘッダー -->
+            <header>
+                <h2>HTMLセマンティック要素の使い方</h2>
+                <p>
+                    投稿日: <time datetime=\"2024-01-15\">2024年1月15日</time> |
+                    著者: 田中太郎 |
+                    カテゴリ: <a href=\"/category/html\">HTML</a>
+                </p>
+            </header>
+
+            <!-- 記事本文 -->
+            <section>
+                <h3>はじめに</h3>
+                <p>この記事では、HTMLのセマンティック要素について解説します。</p>
+            </section>
+
+            <section>
+                <h3>セマンティック要素とは</h3>
+                <p>セマンティック要素は、タグに意味を持たせる...</p>
+
+                <!-- セクション内の補足 -->
+                <aside>
+                    <h4>💡 ポイント</h4>
+                    <p>divよりもセマンティック要素を優先しましょう。</p>
+                </aside>
+            </section>
+
+            <section>
+                <h3>まとめ</h3>
+                <p>セマンティックHTMLを使うことで...</p>
+            </section>
+
+            <!-- 記事のフッター -->
+            <footer>
+                <p>タグ: <a href=\"/tag/html\">#HTML</a> <a href=\"/tag/semantic\">#セマンティック</a></p>
+                <p>この記事が役に立ちましたか？</p>
+            </footer>
+        </article>
+
+        <!-- 別の記事 -->
+        <article>
+            <header>
+                <h2>CSSグリッドレイアウト入門</h2>
+                <p>投稿日: <time datetime=\"2024-01-10\">2024年1月10日</time></p>
+            </header>
+            <p>CSSグリッドの基本的な使い方を紹介します...</p>
+            <a href=\"/articles/css-grid\">続きを読む</a>
+        </article>
+
+        <!-- サイドバー（補足情報） -->
+        <aside>
+            <section>
+                <h3>人気記事</h3>
+                <ul>
+                    <li><a href=\"/articles/1\">JavaScriptの基礎</a></li>
+                    <li><a href=\"/articles/2\">Reactを始めよう</a></li>
+                    <li><a href=\"/articles/3\">レスポンシブデザイン</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>カテゴリ</h3>
+                <nav aria-label=\"カテゴリー\">
+                    <ul>
+                        <li><a href=\"/category/html\">HTML</a></li>
+                        <li><a href=\"/category/css\">CSS</a></li>
+                        <li><a href=\"/category/javascript\">JavaScript</a></li>
+                    </ul>
+                </nav>
+            </section>
+        </aside>
+    </main>
+
+    <!-- サイト全体のフッター -->
+    <footer>
+        <section>
+            <h3>このサイトについて</h3>
+            <p>Web開発に関する情報を発信しています。</p>
+        </section>
+
+        <section>
+            <h3>リンク</h3>
+            <nav aria-label=\"フッターリンク\">
+                <ul>
+                    <li><a href=\"/privacy\">プライバシーポリシー</a></li>
+                    <li><a href=\"/terms\">利用規約</a></li>
+                    <li><a href=\"/sitemap\">サイトマップ</a></li>
+                </ul>
+            </nav>
+        </section>
+
+        <p><small>&copy; 2024 テックブログ. All rights reserved.</small></p>
+    </footer>
+</body>
+</html>",
+                        'code_language' => 'html',
+                        'sort_order' => 4
+                    ],
+                ],
             ],
             [
                 'title' => '第8週：HTML5の新要素',
