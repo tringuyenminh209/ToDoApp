@@ -373,11 +373,24 @@ class CalendarFragment : Fragment() {
 
     /**
      * タスク詳細画面を開く
+     * If task is a study schedule (negative ID), open learning path detail instead
      */
     private fun openTaskDetail(task: Task) {
-        val intent = Intent(requireContext(), TaskDetailActivity::class.java)
-        intent.putExtra("task_id", task.id)
-        startActivity(intent)
+        if (task.id < 0) {
+            // This is a study schedule (converted from StudySchedule)
+            // learning_milestone_id contains the learning_path_id
+            val learningPathId = task.learning_milestone_id
+            if (learningPathId != null) {
+                val intent = Intent(requireContext(), ecccomp.s2240788.mobile_android.ui.activities.LearningPathDetailActivity::class.java)
+                intent.putExtra("LEARNING_PATH_ID", learningPathId)
+                startActivity(intent)
+            }
+        } else {
+            // Regular task
+            val intent = Intent(requireContext(), TaskDetailActivity::class.java)
+            intent.putExtra("task_id", task.id)
+            startActivity(intent)
+        }
     }
 
     /**

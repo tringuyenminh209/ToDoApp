@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
 
         // Seed Learning Path Templates and CheatCode Data
         $this->call([
-            LearningPathTemplateSeeder::class,
 
             // Programming Courses
             JavaBasicCourseSeeder::class,
