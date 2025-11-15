@@ -39,7 +39,8 @@ class Task extends Model
     ];
 
     protected $casts = [
-        'deadline' => 'date', // Use 'date' instead of 'datetime' to avoid timezone conversion
+        // deadline is cast as 'datetime' but will be formatted as date-only in serialization
+        'deadline' => 'datetime',
         // scheduled_time is TIME type (HH:MM:SS) - no casting needed, returns as string
         'priority' => 'integer',
         'estimated_minutes' => 'integer',
@@ -55,6 +56,14 @@ class Task extends Model
         'total_focus_minutes' => 'integer',
         'distraction_count' => 'integer',
     ];
+
+    /**
+     * Serialize deadline as date-only (Y-m-d) to avoid timezone issues
+     */
+    protected function serializeDate(\DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d');
+    }
 
     // Relationships
     public function user(): BelongsTo
