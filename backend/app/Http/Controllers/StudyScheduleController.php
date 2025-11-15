@@ -287,6 +287,38 @@ class StudyScheduleController extends Controller
     }
 
     /**
+     * Get all study schedules for the user (for calendar view)
+     * GET /api/study-schedules
+     */
+    public function allSchedules(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            $schedules = StudySchedule::whereHas('learningPath', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+                ->where('is_active', true)
+                ->with('learningPath')
+                ->orderBy('day_of_week')
+                ->orderBy('study_time')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $schedules,
+                'message' => 'スケジュールを取得しました'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error fetching all schedules: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'スケジュールの取得に失敗しました'
+            ], 500);
+        }
+    }
+
+    /**
      * Get today's scheduled sessions for the user
      * GET /api/study-schedules/today
      */
