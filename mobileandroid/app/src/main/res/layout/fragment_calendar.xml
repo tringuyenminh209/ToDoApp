@@ -188,6 +188,35 @@
 
             </LinearLayout>
 
+            <!-- View Mode Toggle -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/view_mode_chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                app:chipSpacingHorizontal="8dp"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_list_view"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="リスト"
+                    app:chipIcon="@drawable/ic_inbox" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_timeline_view"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="タイムライン"
+                    app:chipIcon="@drawable/ic_clock" />
+
+            </com.google.android.material.chip.ChipGroup>
+
             <!-- Filter Chips -->
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/filter_chip_group"
@@ -225,7 +254,7 @@
 
             </com.google.android.material.chip.ChipGroup>
 
-            <!-- Tasks RecyclerView -->
+            <!-- Tasks RecyclerView (List View) -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_tasks"
                 android:layout_width="match_parent"
@@ -233,7 +262,19 @@
                 android:nestedScrollingEnabled="false"
                 android:paddingBottom="80dp"
                 android:clipToPadding="false"
+                android:visibility="visible"
                 tools:listitem="@layout/item_calendar_task" />
+
+            <!-- Timeline RecyclerView (Timeline View) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_timeline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="80dp"
+                android:clipToPadding="false"
+                android:visibility="gone"
+                tools:listitem="@layout/item_timeline_hour" />
 
             <!-- Empty State -->
             <LinearLayout
