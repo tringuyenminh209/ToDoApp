@@ -647,15 +647,14 @@ class RoadmapApiController extends Controller
                 $scheduleIndex = $taskIndex % $schedulesCount;
                 $schedule = $studySchedules[$scheduleIndex];
 
-                // Set scheduled_time for this task
-                $scheduledDateTime = $currentSessionDate->copy();
-                $timeParts = explode(':', $schedule->study_time);
-                $scheduledDateTime->setTime((int)$timeParts[0], (int)$timeParts[1], 0);
+                // Set scheduled_time for this task (only time, no date)
+                // scheduled_time is now TIME type (HH:MM:SS) instead of TIMESTAMP
+                $scheduledTime = $schedule->study_time;
 
                 // Update the task
                 try {
                     $updated = $task->update([
-                        'scheduled_time' => $scheduledDateTime
+                        'scheduled_time' => $scheduledTime
                     ]);
 
                     if (!$updated) {
@@ -668,7 +667,7 @@ class RoadmapApiController extends Controller
                     Log::info('Assigned task to schedule', [
                         'task_id' => $task->id,
                         'task_title' => $task->title,
-                        'scheduled_time' => $scheduledDateTime->toDateTimeString(),
+                        'scheduled_time' => $scheduledTime,
                         'day_of_week' => $schedule->day_of_week,
                         'study_time' => $schedule->study_time,
                         'update_success' => $updated

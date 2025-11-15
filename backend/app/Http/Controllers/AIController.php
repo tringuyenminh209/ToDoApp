@@ -1365,7 +1365,7 @@ class AIController extends Controller
             'description' => 'nullable|string|max:1000',
             'estimated_minutes' => 'nullable|integer|min:1|max:600',
             'priority' => 'required|in:high,medium,low',
-            'scheduled_time' => 'nullable|date_format:Y-m-d H:i:s',
+            'scheduled_time' => 'nullable|date_format:H:i:s,H:i',
         ]);
 
         try {
