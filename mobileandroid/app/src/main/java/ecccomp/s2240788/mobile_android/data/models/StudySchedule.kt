@@ -176,6 +176,22 @@ data class StudyScheduleWithPath(
             else -> "Không xác định"
         }
     }
+
+    /**
+     * Get day name in Japanese
+     */
+    fun getDayNameJapanese(): String {
+        return when (day_of_week) {
+            0 -> "日"
+            1 -> "月"
+            2 -> "火"
+            3 -> "水"
+            4 -> "木"
+            5 -> "金"
+            6 -> "土"
+            else -> "?"
+        }
+    }
 }
 
 /**

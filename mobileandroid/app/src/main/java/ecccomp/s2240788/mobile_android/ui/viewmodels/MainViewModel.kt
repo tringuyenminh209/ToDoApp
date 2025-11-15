@@ -52,29 +52,56 @@ class MainViewModel : ViewModel() {
     private val _todayStats = MutableLiveData<TodayStats?>()
     val todayStats: LiveData<TodayStats?> = _todayStats
 
+    private val _studySessions = MutableLiveData<List<ecccomp.s2240788.mobile_android.data.models.StudyScheduleWithPath>>()
+    val studySessions: LiveData<List<ecccomp.s2240788.mobile_android.data.models.StudyScheduleWithPath>> = _studySessions
+
     fun getTasks() {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
 
-                val response = apiService.getTasks()
+                // Fetch both tasks and study sessions in parallel
+                val tasksDeferred = async { apiService.getTasks() }
+                val studySessionsDeferred = async { apiService.getTodaySessions() }
 
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
+                val tasksResponse = tasksDeferred.await()
+                val studySessionsResponse = studySessionsDeferred.await()
+
+                // Process tasks
+                val tasks = if (tasksResponse.isSuccessful) {
+                    val apiResponse = tasksResponse.body()
                     if (apiResponse?.success == true) {
-                        val tasks = extractTasksFromResponse(apiResponse.data)
-                        val sortedTasks = sortTasksForMainDisplay(tasks)
-                        // Always post value to trigger observer
-                        _tasks.postValue(sortedTasks)
-                        android.util.Log.d("MainViewModel", "Tasks loaded: ${tasks.size}, sorted: ${sortedTasks.size}")
+                        extractTasksFromResponse(apiResponse.data)
                     } else {
-                        _error.value = apiResponse?.message ?: "Failed to get tasks"
-                        _tasks.postValue(emptyList()) // Post empty list on error
+                        emptyList()
                     }
                 } else {
-                    _error.value = "API Error: ${response.message()}"
-                    _tasks.postValue(emptyList())
+                    emptyList()
                 }
+
+                // Process study sessions
+                val studySessions = if (studySessionsResponse.isSuccessful) {
+                    val apiResponse = studySessionsResponse.body()
+                    if (apiResponse?.success == true) {
+                        apiResponse.data?.upcoming_sessions ?: emptyList()
+                    } else {
+                        emptyList()
+                    }
+                } else {
+                    emptyList()
+                }
+
+                _studySessions.postValue(studySessions)
+
+                // Convert study sessions to Task objects and merge
+                val studySessionTasks = studySessions.map { convertStudySessionToTask(it) }
+                val allTasks = tasks + studySessionTasks
+
+                // Sort and display
+                val sortedTasks = sortTasksForMainDisplay(allTasks)
+                _tasks.postValue(sortedTasks)
+
+                android.util.Log.d("MainViewModel", "Tasks: ${tasks.size}, Study sessions: ${studySessions.size}, Total: ${allTasks.size}, Sorted: ${sortedTasks.size}")
 
             } catch (e: Exception) {
                 _error.value = "Network error: ${e.message}"
@@ -84,6 +111,36 @@ class MainViewModel : ViewModel() {
                 _isLoading.value = false
             }
         }
+    }
+
+    /**
+     * Convert StudyScheduleWithPath to Task for unified display
+     */
+    private fun convertStudySessionToTask(session: ecccomp.s2240788.mobile_android.data.models.StudyScheduleWithPath): Task {
+        val pathTitle = session.learning_path?.title ?: "学習"
+        val dayName = session.getDayNameJapanese()
+        val time = session.getFormattedTime()
+
+        return Task(
+            id = -session.id, // Negative ID to distinguish from regular tasks
+            title = "📚 学習スケジュール: $pathTitle",
+            category = "study",
+            description = "$dayName曜日 $time - ${session.duration_minutes}分",
+            status = "pending",
+            priority = 5, // High priority for study schedules
+            energy_level = "high",
+            estimated_minutes = session.duration_minutes,
+            deadline = null, // No specific deadline, it's today
+            scheduled_time = session.study_time,
+            created_at = "",
+            updated_at = "",
+            user_id = 0,
+            project_id = null,
+            learning_milestone_id = session.learning_path_id, // Mark as roadmap task
+            ai_breakdown_enabled = false,
+            subtasks = null,
+            knowledge_items = null
+        )
     }
 
     private fun extractTasksFromResponse(data: Any?): List<Task> {
