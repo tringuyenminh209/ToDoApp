@@ -439,7 +439,7 @@ interface ApiService {
 
     // Get all study schedules for the user (for calendar)
     @GET("study-schedules")
-    suspend fun getAllStudySchedules(): Response<ApiResponse<Any>>
+    suspend fun getAllStudySchedules(): Response<ApiResponse<List<StudyScheduleWithPath>>>
 
     // Get all schedules for a learning path
     @GET("learning-paths/{id}/study-schedules")
