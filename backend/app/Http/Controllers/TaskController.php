@@ -99,6 +99,15 @@ class TaskController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        // Normalize scheduled_time: add :00 if only HH:mm format
+        if ($request->has('scheduled_time') && $request->scheduled_time) {
+            $time = $request->scheduled_time;
+            // If format is HH:mm (only 2 colons), add :00 for seconds
+            if (substr_count($time, ':') === 1) {
+                $request->merge(['scheduled_time' => $time . ':00']);
+            }
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'category' => 'nullable|in:study,work,personal,other',
@@ -107,7 +116,7 @@ class TaskController extends Controller
             'energy_level' => 'required|in:low,medium,high',
             'estimated_minutes' => 'nullable|integer|min:1|max:600',
             'deadline' => 'nullable|date|after_or_equal:today',
-            'scheduled_time' => 'nullable|date_format:H:i:s,H:i',
+            'scheduled_time' => 'nullable|date_format:H:i:s',
             'project_id' => 'nullable|exists:projects,id',
             'learning_milestone_id' => 'nullable|exists:learning_milestones,id',
             'tag_ids' => 'nullable|array',
@@ -206,6 +215,15 @@ class TaskController extends Controller
     {
         $task = Task::where('user_id', $request->user()->id)->findOrFail($id);
 
+        // Normalize scheduled_time: add :00 if only HH:mm format
+        if ($request->has('scheduled_time') && $request->scheduled_time) {
+            $time = $request->scheduled_time;
+            // If format is HH:mm (only 1 colon), add :00 for seconds
+            if (substr_count($time, ':') === 1) {
+                $request->merge(['scheduled_time' => $time . ':00']);
+            }
+        }
+
         $request->validate([
             'title' => 'sometimes|string|max:255',
             'category' => 'nullable|in:study,work,personal,other',
@@ -214,7 +232,7 @@ class TaskController extends Controller
             'energy_level' => 'sometimes|in:low,medium,high',
             'estimated_minutes' => 'nullable|integer|min:1|max:600',
             'deadline' => 'nullable|date',
-            'scheduled_time' => 'nullable|date_format:H:i:s,H:i',
+            'scheduled_time' => 'nullable|date_format:H:i:s',
             'status' => 'sometimes|in:pending,in_progress,completed,cancelled',
             'project_id' => 'nullable|exists:projects,id',
             'learning_milestone_id' => 'nullable|exists:learning_milestones,id',
@@ -233,7 +251,7 @@ class TaskController extends Controller
 
             $updateData = $request->only([
                 'title', 'category', 'description', 'priority', 'energy_level',
-                'estimated_minutes', 'deadline', 'status', 'project_id',
+                'estimated_minutes', 'deadline', 'scheduled_time', 'status', 'project_id',
                 'learning_milestone_id',
                 // Deep Work fields
                 'requires_deep_focus', 'allow_interruptions', 'focus_difficulty',
