@@ -763,7 +763,7 @@ class RoadmapApiController extends Controller
             }
 
             // Assign tasks to schedules
-            $this->assignTasksToSchedules($learningPath);
+            $this->assignTasksToStudySchedules($learningPath);
 
             // Reload learning path with updated tasks
             $learningPath->load(['milestones.tasks', 'studySchedules']);
