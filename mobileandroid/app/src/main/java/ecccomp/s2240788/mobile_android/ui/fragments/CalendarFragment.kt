@@ -16,6 +16,7 @@ import ecccomp.s2240788.mobile_android.databinding.FragmentCalendarBinding
 import ecccomp.s2240788.mobile_android.ui.activities.AddTaskActivity
 import ecccomp.s2240788.mobile_android.ui.activities.TaskDetailActivity
 import ecccomp.s2240788.mobile_android.ui.adapters.TaskAdapter
+import ecccomp.s2240788.mobile_android.ui.adapters.TimelineAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.CalendarViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,6 +36,8 @@ class CalendarFragment : Fragment() {
     // Share ViewModel with Activity
     private val viewModel: CalendarViewModel by activityViewModels()
     private lateinit var adapter: TaskAdapter
+    private lateinit var timelineAdapter: TimelineAdapter
+    private var isTimelineView = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,14 +67,21 @@ class CalendarFragment : Fragment() {
      * RecyclerView のセットアップ
      */
     private fun setupRecyclerView() {
+        // List view adapter
         adapter = TaskAdapter(
             onTaskClick = { task -> openTaskDetail(task) },
             onTaskComplete = { task -> handleTaskComplete(task) },
             onTaskDelete = { task -> handleTaskOptions(task) }
         )
-
         binding.rvTasks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTasks.adapter = adapter
+
+        // Timeline view adapter
+        timelineAdapter = TimelineAdapter(
+            onTaskClick = { task -> openTaskDetail(task) }
+        )
+        binding.rvTimeline.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvTimeline.adapter = timelineAdapter
     }
 
     /**
@@ -97,6 +107,20 @@ class CalendarFragment : Fragment() {
      * フィルターチップのセットアップ
      */
     private fun setupFilters() {
+        // View mode toggle
+        binding.chipListView.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                switchToListView()
+            }
+        }
+
+        binding.chipTimelineView.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                switchToTimelineView()
+            }
+        }
+
+        // Filter chips
         binding.chipAllTasks.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 viewModel.setFilter(CalendarViewModel.FilterType.ALL)
@@ -114,6 +138,26 @@ class CalendarFragment : Fragment() {
                 viewModel.setFilter(CalendarViewModel.FilterType.COMPLETED)
             }
         }
+    }
+
+    /**
+     * リストビューに切り替え
+     */
+    private fun switchToListView() {
+        isTimelineView = false
+        binding.rvTasks.visibility = View.VISIBLE
+        binding.rvTimeline.visibility = View.GONE
+        binding.filterChipGroup.visibility = View.VISIBLE
+    }
+
+    /**
+     * タイムラインビューに切り替え
+     */
+    private fun switchToTimelineView() {
+        isTimelineView = true
+        binding.rvTasks.visibility = View.GONE
+        binding.rvTimeline.visibility = View.VISIBLE
+        binding.filterChipGroup.visibility = View.GONE
     }
 
     /**
@@ -181,6 +225,9 @@ class CalendarFragment : Fragment() {
 
         // タスク数バッジの更新
         binding.tvTaskCount.text = tasks.size.toString()
+
+        // Update timeline adapter with all tasks (not filtered)
+        timelineAdapter.submitList(tasks)
     }
 
     /**
@@ -202,6 +249,7 @@ class CalendarFragment : Fragment() {
     private fun showEmptyState() {
         binding.emptyState.visibility = View.VISIBLE
         binding.rvTasks.visibility = View.GONE
+        binding.rvTimeline.visibility = View.GONE
         Log.d("CalendarFragment", "Empty state visible")
     }
 
@@ -210,7 +258,16 @@ class CalendarFragment : Fragment() {
      */
     private fun showTasks(tasks: List<Task>) {
         binding.emptyState.visibility = View.GONE
-        binding.rvTasks.visibility = View.VISIBLE
+
+        // Show appropriate view based on mode
+        if (isTimelineView) {
+            binding.rvTasks.visibility = View.GONE
+            binding.rvTimeline.visibility = View.VISIBLE
+        } else {
+            binding.rvTasks.visibility = View.VISIBLE
+            binding.rvTimeline.visibility = View.GONE
+        }
+
         adapter.submitList(tasks)
         Log.d("CalendarFragment", "Showing ${tasks.size} tasks")
     }
