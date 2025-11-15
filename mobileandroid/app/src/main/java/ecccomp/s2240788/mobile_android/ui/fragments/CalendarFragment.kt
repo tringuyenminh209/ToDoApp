@@ -165,16 +165,24 @@ class CalendarFragment : Fragment() {
      */
     private fun setupClickListeners() {
         binding.btnToday.setOnClickListener {
-            // カレンダービューも今日に移動
-            val todayMillis = System.currentTimeMillis()
-            binding.calendarView.date = todayMillis
-            
-            // ViewModelの日付も更新
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = todayMillis
-            viewModel.selectDate(calendar.time)
-            
-            Log.d("CalendarFragment", "Selected today: ${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)}")
+            selectToday()
+        }
+
+        // Quick date shortcuts
+        binding.chipDateToday.setOnClickListener {
+            selectToday()
+        }
+
+        binding.chipTomorrow.setOnClickListener {
+            selectTomorrow()
+        }
+
+        binding.chipNextMonday.setOnClickListener {
+            selectNextMonday()
+        }
+
+        binding.chipNextWeek.setOnClickListener {
+            selectNextWeek()
         }
 
         binding.btnAddTaskEmpty.setOnClickListener {
@@ -184,6 +192,60 @@ class CalendarFragment : Fragment() {
         binding.fabAddTask.setOnClickListener {
             openAddTask()
         }
+    }
+
+    /**
+     * Select today's date
+     */
+    private fun selectToday() {
+        val calendar = Calendar.getInstance()
+        binding.calendarView.date = calendar.timeInMillis
+        viewModel.selectDate(calendar.time)
+        Log.d("CalendarFragment", "Selected today: ${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)}")
+    }
+
+    /**
+     * Select tomorrow's date
+     */
+    private fun selectTomorrow() {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+        binding.calendarView.date = calendar.timeInMillis
+        viewModel.selectDate(calendar.time)
+        Log.d("CalendarFragment", "Selected tomorrow: ${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)}")
+    }
+
+    /**
+     * Select next Monday
+     */
+    private fun selectNextMonday() {
+        val calendar = Calendar.getInstance()
+        val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+
+        // Calculate days until next Monday (Monday = 2 in Calendar)
+        val daysUntilMonday = if (currentDayOfWeek == Calendar.MONDAY) {
+            7 // If today is Monday, select next Monday
+        } else if (currentDayOfWeek < Calendar.MONDAY) {
+            Calendar.MONDAY - currentDayOfWeek
+        } else {
+            7 - (currentDayOfWeek - Calendar.MONDAY)
+        }
+
+        calendar.add(Calendar.DAY_OF_MONTH, daysUntilMonday)
+        binding.calendarView.date = calendar.timeInMillis
+        viewModel.selectDate(calendar.time)
+        Log.d("CalendarFragment", "Selected next Monday: ${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)}")
+    }
+
+    /**
+     * Select 7 days from now
+     */
+    private fun selectNextWeek() {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, 7)
+        binding.calendarView.date = calendar.timeInMillis
+        viewModel.selectDate(calendar.time)
+        Log.d("CalendarFragment", "Selected next week: ${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)}")
     }
 
     /**
@@ -238,9 +300,31 @@ class CalendarFragment : Fragment() {
         val monthYearFormat = SimpleDateFormat("MMMM, yyyy", Locale.getDefault())
         binding.tvMonthYear.text = monthYearFormat.format(date)
 
-        // 選択された日付表示
+        // 選択された日付表示 (Header)
         val selectedDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         binding.tvSelectedDate.text = selectedDateFormat.format(date)
+
+        // 選択された日付表示 (Card) - 日本語形式
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        // 曜日を取得
+        val dayOfWeek = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> "日"
+            Calendar.MONDAY -> "月"
+            Calendar.TUESDAY -> "火"
+            Calendar.WEDNESDAY -> "水"
+            Calendar.THURSDAY -> "木"
+            Calendar.FRIDAY -> "金"
+            Calendar.SATURDAY -> "土"
+            else -> ""
+        }
+
+        binding.tvSelectedDateDisplay.text = "${year}年${month}月${day}日（${dayOfWeek}）"
     }
 
     /**

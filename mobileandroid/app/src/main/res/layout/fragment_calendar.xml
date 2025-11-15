@@ -130,6 +130,134 @@
                     android:orientation="vertical"
                     android:padding="@dimen/spacing_md">
 
+                    <!-- Calendar Instruction -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_sm"
+                        android:background="@color/primary_light"
+                        android:layout_marginBottom="@dimen/spacing_sm">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_info"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/spacing_sm"
+                            android:text="カレンダーの日付をタップして選択してください"
+                            android:textColor="@color/primary"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!-- Quick Date Shortcuts -->
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/quick_date_chip_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_sm"
+                        app:chipSpacingHorizontal="6dp"
+                        app:singleSelection="false">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_date_today"
+                            style="@style/Widget.Material3.Chip.Assist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="今日"
+                            app:chipIcon="@drawable/ic_calendar"
+                            app:chipIconSize="16dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_tomorrow"
+                            style="@style/Widget.Material3.Chip.Assist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="明日"
+                            app:chipIcon="@drawable/ic_arrow_forward"
+                            app:chipIconSize="16dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_next_monday"
+                            style="@style/Widget.Material3.Chip.Assist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="次の月曜"
+                            app:chipIcon="@drawable/ic_clock"
+                            app:chipIconSize="16dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_next_week"
+                            style="@style/Widget.Material3.Chip.Assist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="来週"
+                            app:chipIcon="@drawable/ic_arrow_forward"
+                            app:chipIconSize="16dp" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <!-- Selected Date Display -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/selected_date_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_sm"
+                        app:cardBackgroundColor="@color/accent_light"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="@color/accent"
+                        app:strokeWidth="2dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_calendar"
+                                app:tint="@color/accent" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="@dimen/spacing_sm"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="選択中の日付"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_selected_date_display"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/accent"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    tools:text="2025年1月15日（月）" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
                     <!-- Calendar View -->
                     <CalendarView
                         android:id="@+id/calendar_view"
