@@ -252,9 +252,14 @@ class CalendarFragment : Fragment() {
      * ViewModelの監視
      */
     private fun observeViewModel() {
-        // フィルタリングされたタスク
-        viewModel.filteredTasks.observe(viewLifecycleOwner) { tasks ->
-            updateUI(tasks)
+        // List view: regular tasks filtered by deadline
+        viewModel.listTasks.observe(viewLifecycleOwner) { tasks ->
+            updateListView(tasks)
+        }
+
+        // Timeline view: study schedules only
+        viewModel.timelineTasks.observe(viewLifecycleOwner) { tasks ->
+            updateTimelineView(tasks)
         }
 
         // 選択された日付
@@ -276,20 +281,49 @@ class CalendarFragment : Fragment() {
     }
 
     /**
-     * UI 表示状態の更新
+     * Update list view with regular tasks
      */
-    private fun updateUI(tasks: List<Task>) {
-        if (tasks.isEmpty()) {
-            showEmptyState()
-        } else {
-            showTasks(tasks)
+    private fun updateListView(tasks: List<Task>) {
+        adapter.submitList(tasks)
+
+        // Update UI visibility if currently in list view
+        if (!isTimelineView) {
+            if (tasks.isEmpty()) {
+                showEmptyState()
+            } else {
+                binding.emptyState.visibility = View.GONE
+                binding.rvTasks.visibility = View.VISIBLE
+                binding.rvTimeline.visibility = View.GONE
+            }
+
+            // タスク数バッジの更新
+            binding.tvTaskCount.text = tasks.size.toString()
         }
 
-        // タスク数バッジの更新
-        binding.tvTaskCount.text = tasks.size.toString()
+        Log.d("CalendarFragment", "List view updated with ${tasks.size} tasks")
+    }
 
-        // Update timeline adapter with all tasks (not filtered)
+    /**
+     * Update timeline view with study schedules
+     */
+    private fun updateTimelineView(tasks: List<Task>) {
         timelineAdapter.submitList(tasks)
+
+        // Update UI visibility if currently in timeline view
+        if (isTimelineView) {
+            if (tasks.isEmpty()) {
+                showEmptyState()
+            } else {
+                binding.emptyState.visibility = View.GONE
+                binding.rvTasks.visibility = View.GONE
+                binding.rvTimeline.visibility = View.VISIBLE
+            }
+
+            // タスク数バッジの更新 (study schedules count)
+            binding.tvTaskCount.text = tasks.size.toString()
+        }
+
+        Log.d("CalendarFragment", "Timeline view updated with ${tasks.size} study schedules")
     }
 
     /**
@@ -335,25 +369,6 @@ class CalendarFragment : Fragment() {
         binding.rvTasks.visibility = View.GONE
         binding.rvTimeline.visibility = View.GONE
         Log.d("CalendarFragment", "Empty state visible")
-    }
-
-    /**
-     * RecyclerView を表示
-     */
-    private fun showTasks(tasks: List<Task>) {
-        binding.emptyState.visibility = View.GONE
-
-        // Show appropriate view based on mode
-        if (isTimelineView) {
-            binding.rvTasks.visibility = View.GONE
-            binding.rvTimeline.visibility = View.VISIBLE
-        } else {
-            binding.rvTasks.visibility = View.VISIBLE
-            binding.rvTimeline.visibility = View.GONE
-        }
-
-        adapter.submitList(tasks)
-        Log.d("CalendarFragment", "Showing ${tasks.size} tasks")
     }
 
     /**
