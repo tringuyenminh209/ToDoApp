@@ -174,6 +174,9 @@ class TaskDetailActivity : BaseActivity() {
 
             // Scheduled Time (now TIME type: HH:MM:SS or HH:MM)
             val scheduledTimeStr = task.scheduled_time
+            var hasScheduledTime = false
+            var scheduledTimeDisplay = ""
+
             if (!scheduledTimeStr.isNullOrEmpty()) {
                 try {
                     // Backend returns HH:MM:SS or HH:MM format
@@ -189,16 +192,38 @@ class TaskDetailActivity : BaseActivity() {
                         displayFmt.parse(scheduledTimeStr)
                     }
 
-                    val text = if (time != null) displayFmt.format(time) else scheduledTimeStr
-                    binding.tvScheduledTime.text = getString(R.string.scheduled_time) + ": " + text
-                    binding.llScheduledTime.visibility = View.VISIBLE
+                    // Display only time (HH:mm) in large, prominent text
+                    scheduledTimeDisplay = if (time != null) displayFmt.format(time) else scheduledTimeStr
+                    binding.tvScheduledTime.text = scheduledTimeDisplay
+                    binding.cardScheduledTime.visibility = View.VISIBLE
+                    hasScheduledTime = true
                 } catch (e: Exception) {
                     // Fallback: display as-is
-                    binding.tvScheduledTime.text = getString(R.string.scheduled_time) + ": " + scheduledTimeStr
-                    binding.llScheduledTime.visibility = View.VISIBLE
+                    scheduledTimeDisplay = scheduledTimeStr
+                    binding.tvScheduledTime.text = scheduledTimeStr
+                    binding.cardScheduledTime.visibility = View.VISIBLE
+                    hasScheduledTime = true
                 }
             } else {
-                binding.llScheduledTime.visibility = View.GONE
+                binding.cardScheduledTime.visibility = View.GONE
+            }
+
+            // Task Timeline Card - Show if has both scheduled_time and deadline
+            if (hasScheduledTime && !deadlineStr.isNullOrEmpty()) {
+                binding.cardTaskTimeline.visibility = View.VISIBLE
+                binding.tvTimelineStart.text = scheduledTimeDisplay
+
+                // Format deadline for timeline (MM/dd)
+                try {
+                    val deadlineFmt = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val timelineFmt = SimpleDateFormat("MM/dd", Locale.getDefault())
+                    val deadlineDate = deadlineFmt.parse(deadlineStr.substring(0, 10))
+                    binding.tvTimelineDeadline.text = if (deadlineDate != null) timelineFmt.format(deadlineDate) else deadlineStr
+                } catch (e: Exception) {
+                    binding.tvTimelineDeadline.text = deadlineStr
+                }
+            } else {
+                binding.cardTaskTimeline.visibility = View.GONE
             }
 
             // Priority label
