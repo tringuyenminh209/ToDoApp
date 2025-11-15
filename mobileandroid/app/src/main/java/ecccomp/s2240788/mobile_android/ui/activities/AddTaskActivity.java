@@ -334,6 +334,25 @@ public class AddTaskActivity extends BaseActivity {
         }
 
         binding.tilTaskTitle.setError(null);
+
+        // Validate deadline (required)
+        if (selectedDeadline == null || selectedDeadline.isEmpty()) {
+            binding.tilDeadline.setError("期限日は必須です");
+            Toast.makeText(this, "期限日を選択してください", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        binding.tilDeadline.setError(null);
+
+        // Validate scheduled time (required)
+        if (selectedScheduledTime == null || selectedScheduledTime.isEmpty()) {
+            binding.tilScheduledTime.setError("実行時間は必須です");
+            Toast.makeText(this, "実行時間を選択してください", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        binding.tilScheduledTime.setError(null);
+
         return true;
     }
 
