@@ -410,6 +410,25 @@ class EditTaskActivity : BaseActivity() {
         }
 
         binding.tilTaskTitle?.error = null
+
+        // Validate deadline (required)
+        if (selectedDeadline == null || selectedDeadline?.isEmpty() == true) {
+            binding.tilDeadline?.error = "期限日は必須です"
+            Toast.makeText(this, "期限日を選択してください", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        binding.tilDeadline?.error = null
+
+        // Validate scheduled time (required)
+        if (selectedScheduledTime == null || selectedScheduledTime?.isEmpty() == true) {
+            binding.tilScheduledTime?.error = "実行時間は必須です"
+            Toast.makeText(this, "実行時間を選択してください", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        binding.tilScheduledTime?.error = null
+
         return true
     }
 
