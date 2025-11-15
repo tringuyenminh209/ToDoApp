@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:minHeight="60dp"
+    android:paddingVertical="4dp">
+
+    <!-- Time Label -->
+    <LinearLayout
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="top"
+        android:paddingEnd="8dp">
+
+        <TextView
+            android:id="@+id/tv_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_muted"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="09:00" />
+
+    </LinearLayout>
+
+    <!-- Timeline Line and Content -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <!-- Vertical Line -->
+        <View
+            android:id="@+id/timeline_line"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:background="@color/line" />
+
+        <!-- Current Time Indicator (hidden by default) -->
+        <View
+            android:id="@+id/current_time_indicator"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="-7dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="@color/error"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <!-- Tasks Container -->
+        <LinearLayout
+            android:id="@+id/tasks_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical"
+            android:paddingBottom="8dp">
+
+            <!-- Tasks will be added dynamically here -->
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
