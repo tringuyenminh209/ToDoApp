@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.Task
+import ecccomp.s2240788.mobile_android.data.models.StudyScheduleWithPath
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,6 +27,9 @@ class CalendarViewModel : ViewModel() {
 
     private val _allTasks = MutableLiveData<List<Task>>()
     val allTasks: LiveData<List<Task>> = _allTasks
+
+    private val _allStudySchedules = MutableLiveData<List<StudyScheduleWithPath>>()
+    val allStudySchedules: LiveData<List<StudyScheduleWithPath>> = _allStudySchedules
 
     private val _filteredTasks = MutableLiveData<List<Task>>()
     val filteredTasks: LiveData<List<Task>> = _filteredTasks
@@ -52,6 +57,7 @@ class CalendarViewModel : ViewModel() {
 
     /**
      * タスク一覧を取得
+     * Fetch both regular tasks and study schedules
      */
     fun fetchTasks() {
         viewModelScope.launch {
@@ -59,39 +65,52 @@ class CalendarViewModel : ViewModel() {
                 _isLoading.value = true
                 _error.value = null
 
-                // Request all tasks (request up to 100 tasks for calendar view)
-                val response = apiService.getTasks(perPage = 100)
+                // Fetch tasks and study schedules in parallel
+                val tasksDeferred = async { apiService.getTasks(perPage = 100) }
+                val studySchedulesDeferred = async { apiService.getStudySchedules() }
 
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
+                val tasksResponse = tasksDeferred.await()
+                val studySchedulesResponse = studySchedulesDeferred.await()
+
+                // Process regular tasks
+                if (tasksResponse.isSuccessful) {
+                    val apiResponse = tasksResponse.body()
                     android.util.Log.d("CalendarViewModel", "API Response: success=${apiResponse?.success}, data type=${apiResponse?.data?.javaClass?.simpleName}")
-                    
+
                     if (apiResponse?.success == true) {
                         val tasks = parseTasksFromResponse(apiResponse.data)
                         android.util.Log.d("CalendarViewModel", "Loaded ${tasks.size} tasks from API")
-                        
-                        // Debug: Log tasks with deadlines
-                        tasks.forEach { task ->
-                            if (!task.deadline.isNullOrEmpty()) {
-                                android.util.Log.d("CalendarViewModel", 
-                                    "Task '${task.title}' has deadline: ${task.deadline}")
-                            }
-                        }
-                        
+
                         _allTasks.value = tasks
-                        applyFilter()
                     } else {
                         val errorMsg = apiResponse?.message ?: "タスクの取得に失敗しました"
                         android.util.Log.e("CalendarViewModel", "API Error: $errorMsg")
                         _error.value = errorMsg
                     }
                 } else {
-                    val errorMsg = "ネットワークエラー: ${response.code()} - ${response.message()}"
+                    val errorMsg = "ネットワークエラー: ${tasksResponse.code()} - ${tasksResponse.message()}"
                     android.util.Log.e("CalendarViewModel", errorMsg)
                     _error.value = errorMsg
                 }
+
+                // Process study schedules
+                if (studySchedulesResponse.isSuccessful) {
+                    val apiResponse = studySchedulesResponse.body()
+                    if (apiResponse?.success == true) {
+                        val data = apiResponse.data
+                        val schedules = when (data) {
+                            is List<*> -> data.mapNotNull { it as? StudyScheduleWithPath }
+                            else -> emptyList()
+                        }
+                        android.util.Log.d("CalendarViewModel", "Loaded ${schedules.size} study schedules from API")
+                        _allStudySchedules.value = schedules
+                    }
+                }
+
+                applyFilter()
             } catch (e: Exception) {
                 _error.value = "エラーが発生しました: ${e.message}"
+                android.util.Log.e("CalendarViewModel", "Error fetching tasks", e)
             } finally {
                 _isLoading.value = false
             }
@@ -130,20 +149,29 @@ class CalendarViewModel : ViewModel() {
 
     /**
      * フィルターを適用してタスクをフィルタリング
+     * Apply filter including study schedules for the selected day of week
      */
     private fun applyFilter() {
         val tasks = _allTasks.value ?: emptyList()
+        val studySchedules = _allStudySchedules.value ?: emptyList()
         val selectedDateValue = _selectedDate.value ?: Calendar.getInstance().time
+        val today = Calendar.getInstance().time
 
         // 日付フォーマッター
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val selectedDateString = dateFormat.format(selectedDateValue)
+        val todayString = dateFormat.format(today)
+
+        // Calculate day of week for selected date (0=Sunday, 1=Monday, ...)
+        val calendar = Calendar.getInstance()
+        calendar.time = selectedDateValue
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1 // 0=Sunday, 1=Monday, ..., 6=Saturday
 
         // 日付でフィルタリング
         var filtered = tasks.filter { task ->
             if (task.deadline.isNullOrEmpty()) {
                 // Tasks without deadline: show for today only if not completed
-                val isToday = dateFormat.format(Calendar.getInstance().time) == selectedDateString
+                val isToday = todayString == selectedDateString
                 if (isToday && task.status != "completed") {
                     true // Show pending tasks without deadline for today
                 } else {
@@ -158,23 +186,31 @@ class CalendarViewModel : ViewModel() {
                     } else {
                         deadlineStr
                     }
-                    
+
                     // Match exact date
-                    val matches = taskDate == selectedDateString
-                    
-                    // Debug logging (can be removed later)
-                    if (!matches && taskDate.isNotEmpty()) {
-                        android.util.Log.d("CalendarViewModel", 
-                            "Task '${task.title}' deadline '$taskDate' != selected '$selectedDateString'")
-                    }
-                    
-                    matches
+                    taskDate == selectedDateString
                 } catch (e: Exception) {
                     android.util.Log.e("CalendarViewModel", "Error parsing deadline: ${task.deadline}", e)
                     false
                 }
             }
         }
+
+        // Filter study schedules by day of week
+        // Only show for dates >= today
+        val studyScheduleTasks = if (selectedDateValue >= today || isSameDay(selectedDateValue, today)) {
+            studySchedules
+                .filter { schedule -> schedule.day_of_week == dayOfWeek && schedule.is_active }
+                .map { schedule -> convertStudyScheduleToTask(schedule, selectedDateValue) }
+        } else {
+            emptyList() // Don't show study schedules for past dates
+        }
+
+        android.util.Log.d("CalendarViewModel",
+            "Selected date: $selectedDateString, Day of week: $dayOfWeek, Study schedule tasks: ${studyScheduleTasks.size}")
+
+        // Merge regular tasks with study schedule tasks
+        filtered = filtered + studyScheduleTasks
 
         // ステータスでフィルタリング
         filtered = when (currentFilter) {
@@ -183,10 +219,71 @@ class CalendarViewModel : ViewModel() {
             FilterType.COMPLETED -> filtered.filter { it.status == "completed" }
         }
 
-        android.util.Log.d("CalendarViewModel", 
-            "Filtered ${filtered.size} tasks for date $selectedDateString (from ${tasks.size} total tasks)")
+        android.util.Log.d("CalendarViewModel",
+            "Filtered ${filtered.size} tasks for date $selectedDateString (${tasks.size} regular + ${studyScheduleTasks.size} study schedules)")
 
         _filteredTasks.value = filtered
+    }
+
+    /**
+     * Check if two dates are the same day
+     */
+    private fun isSameDay(date1: Date, date2: Date): Boolean {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(date1) == dateFormat.format(date2)
+    }
+
+    /**
+     * Convert StudyScheduleWithPath to Task for unified display
+     */
+    private fun convertStudyScheduleToTask(schedule: StudyScheduleWithPath, selectedDate: Date): Task {
+        val pathTitle = schedule.learning_path?.title ?: "学習"
+        val dayName = schedule.getDayNameJapanese()
+        val time = schedule.getFormattedTime()
+
+        // Format deadline as the selected date
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val deadline = dateFormat.format(selectedDate)
+
+        // Format scheduled_time as selected date + time
+        val datetimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val scheduledCalendar = Calendar.getInstance()
+        scheduledCalendar.time = selectedDate
+
+        // Parse time (HH:mm format)
+        try {
+            val timeParts = time.split(":")
+            val hour = timeParts.getOrNull(0)?.toIntOrNull() ?: 0
+            val minute = timeParts.getOrNull(1)?.toIntOrNull() ?: 0
+            scheduledCalendar.set(Calendar.HOUR_OF_DAY, hour)
+            scheduledCalendar.set(Calendar.MINUTE, minute)
+            scheduledCalendar.set(Calendar.SECOND, 0)
+        } catch (e: Exception) {
+            // Keep default time if parsing fails
+        }
+
+        val scheduledTime = datetimeFormat.format(scheduledCalendar.time)
+
+        return Task(
+            id = -schedule.id, // Negative ID to distinguish from regular tasks
+            title = "📚 学習スケジュール: $pathTitle",
+            category = "study",
+            description = "${dayName}曜日 $time - ${schedule.duration_minutes}分",
+            status = "pending",
+            priority = 5, // High priority for study schedules
+            energy_level = "high",
+            estimated_minutes = schedule.duration_minutes,
+            deadline = deadline,
+            scheduled_time = scheduledTime,
+            created_at = "",
+            updated_at = "",
+            user_id = 0,
+            project_id = null,
+            learning_milestone_id = schedule.learning_path_id, // Mark as roadmap task
+            ai_breakdown_enabled = false,
+            subtasks = null,
+            knowledge_items = null
+        )
     }
 
     /**
