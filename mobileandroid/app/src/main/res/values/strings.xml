@@ -172,6 +172,7 @@
     <string name="deadline">締め切り</string>
     <string name="deadline_hint">yyyy/mm/dd --:--</string>
     <string name="scheduled_time">予定時刻</string>
+    <string name="scheduled_time_label">実行時刻</string>
     <string name="today">今日</string>
     <string name="tomorrow">明日</string>
     <string name="next_week">来週</string>
