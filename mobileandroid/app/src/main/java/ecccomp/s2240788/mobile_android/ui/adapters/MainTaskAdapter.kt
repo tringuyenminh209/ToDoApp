@@ -147,6 +147,32 @@ class MainTaskAdapter(
                     dateContainer.visibility = View.GONE
                 }
 
+                // Scheduled Time - show if available
+                if (!task.scheduled_time.isNullOrEmpty()) {
+                    scheduledTimeContainer.visibility = View.VISIBLE
+                    try {
+                        // scheduled_time format: HH:mm:ss or HH:mm
+                        val parts = task.scheduled_time.split(":")
+                        val hour = parts.getOrNull(0)?.toIntOrNull() ?: 0
+                        val minute = parts.getOrNull(1)?.toIntOrNull() ?: 0
+                        val formattedTime = String.format("%02d:%02d", hour, minute)
+
+                        // Check if today
+                        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().time)
+                        val isToday = task.deadline == today
+
+                        tvScheduledTime.text = if (isToday) {
+                            "今日 $formattedTime"
+                        } else {
+                            formattedTime
+                        }
+                    } catch (e: Exception) {
+                        tvScheduledTime.text = task.scheduled_time
+                    }
+                } else {
+                    scheduledTimeContainer.visibility = View.GONE
+                }
+
                 // Subtasks - display dynamically
                 if (!task.subtasks.isNullOrEmpty()) {
                     subtasksContainer.visibility = View.VISIBLE
