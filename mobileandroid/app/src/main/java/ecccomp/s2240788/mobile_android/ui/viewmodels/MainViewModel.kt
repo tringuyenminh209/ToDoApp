@@ -63,9 +63,10 @@ class MainViewModel : ViewModel() {
                     val apiResponse = response.body()
                     if (apiResponse?.success == true) {
                         val tasks = extractTasksFromResponse(apiResponse.data)
+                        val sortedTasks = sortTasksForMainDisplay(tasks)
                         // Always post value to trigger observer
-                        _tasks.postValue(tasks)
-                        android.util.Log.d("MainViewModel", "Tasks loaded: ${tasks.size}")
+                        _tasks.postValue(sortedTasks)
+                        android.util.Log.d("MainViewModel", "Tasks loaded: ${tasks.size}, sorted: ${sortedTasks.size}")
                     } else {
                         _error.value = apiResponse?.message ?: "Failed to get tasks"
                         _tasks.postValue(emptyList()) // Post empty list on error
@@ -110,6 +111,36 @@ class MainViewModel : ViewModel() {
         } catch (e: Exception) {
             emptyList()
         }
+    }
+
+    /**
+     * Smart task sorting for main display:
+     * 1. Prioritize roadmap tasks (learning_milestone_id != null)
+     * 2. Sort by scheduled_time (earliest first)
+     * 3. Sort by priority (highest first)
+     * 4. Filter out completed tasks
+     * 5. Take top 3
+     */
+    private fun sortTasksForMainDisplay(tasks: List<Task>): List<Task> {
+        return tasks
+            .filter { it.status != "completed" } // Exclude completed tasks
+            .sortedWith(compareByDescending<Task> { it.learning_milestone_id != null } // Roadmap tasks first
+                .thenBy { task ->
+                    // Parse scheduled_time for sorting (HH:mm:ss format)
+                    task.scheduled_time?.let { time ->
+                        try {
+                            val parts = time.split(":")
+                            val hour = parts.getOrNull(0)?.toIntOrNull() ?: 24
+                            val minute = parts.getOrNull(1)?.toIntOrNull() ?: 0
+                            hour * 60 + minute // Convert to minutes for comparison
+                        } catch (e: Exception) {
+                            Int.MAX_VALUE // Put at end if parsing fails
+                        }
+                    } ?: Int.MAX_VALUE // Tasks without scheduled_time go to end
+                }
+                .thenByDescending { it.priority } // Higher priority first
+            )
+            .take(3) // Take top 3
     }
 
     private fun convertMapToTask(map: Map<*, *>): Task? {
