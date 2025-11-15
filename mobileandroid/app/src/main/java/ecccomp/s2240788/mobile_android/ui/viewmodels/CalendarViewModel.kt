@@ -102,14 +102,18 @@ class CalendarViewModel : ViewModel() {
                 if (studySchedulesResponse.isSuccessful) {
                     val apiResponse = studySchedulesResponse.body()
                     if (apiResponse?.success == true) {
-                        val data = apiResponse.data
-                        val schedules = when (data) {
-                            is List<*> -> data.mapNotNull { it as? StudyScheduleWithPath }
-                            else -> emptyList()
-                        }
+                        val schedules = apiResponse.data ?: emptyList()
                         android.util.Log.d("CalendarViewModel", "Loaded ${schedules.size} study schedules from API")
                         _allStudySchedules.value = schedules
+                    } else {
+                        val errorMsg = apiResponse?.message ?: "スケジュールの取得に失敗しました"
+                        android.util.Log.e("CalendarViewModel", "Study schedules API error: $errorMsg")
+                        _allStudySchedules.value = emptyList()
                     }
+                } else {
+                    val errorMsg = "ネットワークエラー: ${studySchedulesResponse.code()} - ${studySchedulesResponse.message()}"
+                    android.util.Log.e("CalendarViewModel", "Study schedules network error: $errorMsg")
+                    _allStudySchedules.value = emptyList()
                 }
 
                 applyFilter()
