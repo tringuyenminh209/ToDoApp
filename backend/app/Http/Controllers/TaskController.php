@@ -101,13 +101,23 @@ class TaskController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        // Normalize scheduled_time: add :00 if only HH:mm format
+        // Normalize scheduled_time: handle different formats
         if ($request->has('scheduled_time') && $request->scheduled_time) {
             $time = $request->scheduled_time;
-            // If format is HH:mm (only 2 colons), add :00 for seconds
-            if (substr_count($time, ':') === 1) {
-                $request->merge(['scheduled_time' => $time . ':00']);
+
+            // If format is DATETIME (contains space or T), extract time part only
+            if (strpos($time, ' ') !== false || strpos($time, 'T') !== false) {
+                // Extract time from "2025-11-15 09:00:27" or "2025-11-15T09:00:27"
+                $parts = preg_split('/[\sT]/', $time);
+                $time = end($parts); // Get the last part (time)
             }
+
+            // If format is HH:mm (only 1 colon), add :00 for seconds
+            if (substr_count($time, ':') === 1) {
+                $time = $time . ':00';
+            }
+
+            $request->merge(['scheduled_time' => $time]);
         }
 
         $validator = Validator::make($request->all(), [
@@ -135,8 +145,7 @@ class TaskController extends Controller
         if ($validator->fails()) {
             Log::error('Task validation failed', [
                 'errors' => $validator->errors()->toArray(),
-                'input' => $request->all(),  // Log all input for debugging
-                'user_id' => $request->user()->id
+                'input' => $request->except(['password'])
             ]);
             return response()->json([
                 'success' => false,
@@ -230,13 +239,23 @@ class TaskController extends Controller
     {
         $task = Task::where('user_id', $request->user()->id)->findOrFail($id);
 
-        // Normalize scheduled_time: add :00 if only HH:mm format
+        // Normalize scheduled_time: handle different formats
         if ($request->has('scheduled_time') && $request->scheduled_time) {
             $time = $request->scheduled_time;
+
+            // If format is DATETIME (contains space or T), extract time part only
+            if (strpos($time, ' ') !== false || strpos($time, 'T') !== false) {
+                // Extract time from "2025-11-15 09:00:27" or "2025-11-15T09:00:27"
+                $parts = preg_split('/[\sT]/', $time);
+                $time = end($parts); // Get the last part (time)
+            }
+
             // If format is HH:mm (only 1 colon), add :00 for seconds
             if (substr_count($time, ':') === 1) {
-                $request->merge(['scheduled_time' => $time . ':00']);
+                $time = $time . ':00';
             }
+
+            $request->merge(['scheduled_time' => $time]);
         }
 
         $request->validate([
