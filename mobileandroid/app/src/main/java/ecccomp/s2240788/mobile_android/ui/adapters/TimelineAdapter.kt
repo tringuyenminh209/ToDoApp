@@ -69,12 +69,27 @@ class TimelineAdapter(
 
     /**
      * タスクの時間を取得（scheduled_timeから）
+     * Supports both formats:
+     * - "HH:mm:ss" (time only)
+     * - "yyyy-MM-dd HH:mm:ss" (datetime)
      */
     private fun getTaskHour(task: Task): Int {
         return try {
             if (!task.scheduled_time.isNullOrEmpty()) {
-                val parts = task.scheduled_time.split(":")
-                parts.getOrNull(0)?.toIntOrNull() ?: -1
+                val scheduledTime = task.scheduled_time
+
+                // Check if it's a full datetime format (contains space and dash)
+                if (scheduledTime.contains(" ") && scheduledTime.contains("-")) {
+                    // Format: "yyyy-MM-dd HH:mm:ss"
+                    // Extract time part after space
+                    val timePart = scheduledTime.split(" ").getOrNull(1) ?: return -1
+                    val hourStr = timePart.split(":").getOrNull(0) ?: return -1
+                    hourStr.toIntOrNull() ?: -1
+                } else {
+                    // Format: "HH:mm:ss" or "HH:mm"
+                    val parts = scheduledTime.split(":")
+                    parts.getOrNull(0)?.toIntOrNull() ?: -1
+                }
             } else {
                 -1 // 時間指定なし
             }
