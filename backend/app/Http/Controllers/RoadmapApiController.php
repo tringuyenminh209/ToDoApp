@@ -567,71 +567,115 @@ class RoadmapApiController extends Controller
      */
     private function assignTasksToStudySchedules(LearningPath $learningPath): void
     {
-        // Load study schedules and tasks
-        $learningPath->load([
-            'studySchedules' => function ($query) {
-                $query->where('is_active', true)
-                    ->orderBy('day_of_week')
-                    ->orderBy('study_time');
-            },
-            'milestones.tasks' => function ($query) {
-                $query->orderBy('id');
-            }
-        ]);
-
-        $studySchedules = $learningPath->studySchedules;
-
-        // If no study schedules, skip assignment
-        if ($studySchedules->isEmpty()) {
-            return;
-        }
-
-        // Collect all tasks from all milestones in order
-        $allTasks = collect();
-        foreach ($learningPath->milestones as $milestone) {
-            $allTasks = $allTasks->merge($milestone->tasks);
-        }
-
-        // If no tasks, nothing to assign
-        if ($allTasks->isEmpty()) {
-            return;
-        }
-
-        // Get current date and time
-        $now = now();
-        $currentDate = $now->copy()->startOfDay();
-
-        // Find the next study session starting from today
-        $nextStudyDate = $this->findNextStudyDate($currentDate, $studySchedules);
-
-        // Distribute tasks across study schedules
-        $taskIndex = 0;
-        $tasksCount = $allTasks->count();
-        $schedulesCount = $studySchedules->count();
-        $currentSessionDate = $nextStudyDate;
-
-        foreach ($allTasks as $task) {
-            // Get the schedule for this task (round-robin through schedules)
-            $scheduleIndex = $taskIndex % $schedulesCount;
-            $schedule = $studySchedules[$scheduleIndex];
-
-            // Set scheduled_time for this task
-            $scheduledDateTime = $currentSessionDate->copy();
-            $timeParts = explode(':', $schedule->study_time);
-            $scheduledDateTime->setTime((int)$timeParts[0], (int)$timeParts[1], 0);
-
-            // Update the task
-            $task->update([
-                'scheduled_time' => $scheduledDateTime
+        try {
+            // Refresh and load study schedules and tasks
+            $learningPath->refresh();
+            $learningPath->load([
+                'studySchedules' => function ($query) {
+                    $query->where('is_active', true)
+                        ->orderBy('day_of_week')
+                        ->orderBy('study_time');
+                },
+                'milestones.tasks' => function ($query) {
+                    $query->orderBy('id');
+                }
             ]);
 
-            // Move to next schedule slot
-            $taskIndex++;
+            $studySchedules = $learningPath->studySchedules;
 
-            // If we've cycled through all schedules, move to next week
-            if ($taskIndex % $schedulesCount === 0) {
-                $currentSessionDate = $this->findNextStudyDate($currentSessionDate->addDay(), $studySchedules);
+            Log::info('Assigning tasks to study schedules', [
+                'learning_path_id' => $learningPath->id,
+                'schedules_count' => $studySchedules->count(),
+            ]);
+
+            // If no study schedules, skip assignment
+            if ($studySchedules->isEmpty()) {
+                Log::warning('No study schedules found for learning path', ['learning_path_id' => $learningPath->id]);
+                return;
             }
+
+            // Collect all tasks from all milestones in order
+            $allTasks = collect();
+            foreach ($learningPath->milestones as $milestone) {
+                $allTasks = $allTasks->merge($milestone->tasks);
+            }
+
+            Log::info('Collected tasks from milestones', [
+                'tasks_count' => $allTasks->count(),
+                'milestones_count' => $learningPath->milestones->count()
+            ]);
+
+            // If no tasks, nothing to assign
+            if ($allTasks->isEmpty()) {
+                Log::warning('No tasks found in learning path', ['learning_path_id' => $learningPath->id]);
+                return;
+            }
+
+            // Get current date and time
+            $now = now();
+            $currentDate = $now->copy()->startOfDay();
+
+            // Find the next study session starting from today
+            $nextStudyDate = $this->findNextStudyDate($currentDate, $studySchedules);
+
+            Log::info('Starting task assignment', [
+                'next_study_date' => $nextStudyDate->toDateString(),
+                'schedules' => $studySchedules->map(fn($s) => [
+                    'day' => $s->day_of_week,
+                    'time' => $s->study_time
+                ])->toArray()
+            ]);
+
+            // Distribute tasks across study schedules
+            $taskIndex = 0;
+            $tasksCount = $allTasks->count();
+            $schedulesCount = $studySchedules->count();
+            $currentSessionDate = $nextStudyDate;
+
+            foreach ($allTasks as $task) {
+                // Get the schedule for this task (round-robin through schedules)
+                $scheduleIndex = $taskIndex % $schedulesCount;
+                $schedule = $studySchedules[$scheduleIndex];
+
+                // Set scheduled_time for this task
+                $scheduledDateTime = $currentSessionDate->copy();
+                $timeParts = explode(':', $schedule->study_time);
+                $scheduledDateTime->setTime((int)$timeParts[0], (int)$timeParts[1], 0);
+
+                // Update the task
+                $task->update([
+                    'scheduled_time' => $scheduledDateTime
+                ]);
+
+                Log::info('Assigned task to schedule', [
+                    'task_id' => $task->id,
+                    'task_title' => $task->title,
+                    'scheduled_time' => $scheduledDateTime->toDateTimeString(),
+                    'day_of_week' => $schedule->day_of_week,
+                    'study_time' => $schedule->study_time,
+                ]);
+
+                // Move to next schedule slot
+                $taskIndex++;
+
+                // If we've cycled through all schedules, move to next week
+                if ($taskIndex % $schedulesCount === 0) {
+                    $currentSessionDate = $this->findNextStudyDate($currentSessionDate->addDay(), $studySchedules);
+                }
+            }
+
+            Log::info('Task assignment completed', [
+                'learning_path_id' => $learningPath->id,
+                'tasks_assigned' => $tasksCount
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error assigning tasks to study schedules', [
+                'learning_path_id' => $learningPath->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            // Don't throw - let the import continue even if assignment fails
         }
     }
 
