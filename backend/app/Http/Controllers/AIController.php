@@ -1360,12 +1360,21 @@ class AIController extends Controller
      */
     public function confirmTaskSuggestion(Request $request): JsonResponse
     {
+        // Normalize scheduled_time: add :00 if only HH:mm format
+        if ($request->has('scheduled_time') && $request->scheduled_time) {
+            $time = $request->scheduled_time;
+            // If format is HH:mm (only 1 colon), add :00 for seconds
+            if (substr_count($time, ':') === 1) {
+                $request->merge(['scheduled_time' => $time . ':00']);
+            }
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
             'estimated_minutes' => 'nullable|integer|min:1|max:600',
             'priority' => 'required|in:high,medium,low',
-            'scheduled_time' => 'nullable|date_format:H:i:s,H:i',
+            'scheduled_time' => 'nullable|date_format:H:i:s',
         ]);
 
         try {
