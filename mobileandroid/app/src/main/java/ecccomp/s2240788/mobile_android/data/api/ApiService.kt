@@ -471,6 +471,10 @@ interface ApiService {
     @POST("study-schedules/{id}/missed")
     suspend fun markScheduleMissed(@Path("id") scheduleId: Int): Response<ApiResponse<StudySchedule>>
 
+    // Assign tasks to study schedules for a learning path
+    @POST("learning-paths/{id}/assign-schedules")
+    suspend fun assignTasksToSchedules(@Path("id") learningPathId: Int): Response<ApiResponse<Any>>
+
     // Get today's scheduled sessions
     @GET("study-schedules/today")
     suspend fun getTodaySessions(): Response<ApiResponse<TodaySessionsResponse>>

@@ -113,5 +113,35 @@ class RoadmapRepository(
             Result.failure(Exception("ネットワークエラー: ${e.message}"))
         }
     }
+
+    /**
+     * Assign tasks to study schedules for a learning path
+     * 学習パスのタスクをスケジュールに割り当てる
+     */
+    suspend fun assignTasksToSchedules(learningPathId: Int): Result<Unit> {
+        return try {
+            val response = apiService.assignTasksToSchedules(learningPathId)
+
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null && body.success) {
+                    Result.success(Unit)
+                } else {
+                    Result.failure(Exception("タスクの割り当てに失敗しました"))
+                }
+            } else {
+                val errorMessage = when (response.code()) {
+                    400 -> "スケジュールが見つかりません"
+                    401 -> "認証に失敗しました"
+                    404 -> "学習パスが見つかりません"
+                    500 -> "サーバーエラーが発生しました"
+                    else -> "タスクの割り当てに失敗しました: ${response.message()}"
+                }
+                Result.failure(Exception(errorMessage))
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception("ネットワークエラー: ${e.message}"))
+        }
+    }
 }
 
