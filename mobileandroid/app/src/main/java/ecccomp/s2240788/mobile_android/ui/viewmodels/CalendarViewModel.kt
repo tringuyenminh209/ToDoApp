@@ -173,37 +173,26 @@ class CalendarViewModel : ViewModel() {
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1 // 0=Sunday, 1=Monday, ..., 6=Saturday
 
         // ===== LIST VIEW: Regular tasks filtered by deadline =====
+        // ONLY show tasks that have deadline matching the selected date
         var listFiltered = tasks.filter { task ->
-            // Primary: Check deadline
-            val matchesDeadline = if (!task.deadline.isNullOrEmpty()) {
-                try {
-                    // Handle different deadline formats: "yyyy-MM-dd" or "yyyy-MM-dd HH:mm:ss"
-                    val deadlineStr = task.deadline.trim()
-                    val taskDate = if (deadlineStr.length >= 10) {
-                        deadlineStr.substring(0, 10) // Extract YYYY-MM-DD part
-                    } else {
-                        deadlineStr
-                    }
-                    taskDate == selectedDateString
-                } catch (e: Exception) {
-                    android.util.Log.e("CalendarViewModel", "Error parsing deadline: ${task.deadline}", e)
-                    false
-                }
-            } else {
-                false
+            if (task.deadline.isNullOrEmpty()) {
+                // Tasks without deadline are NOT shown
+                return@filter false
             }
 
-            // Task matches if deadline matches selected date
-            if (matchesDeadline) {
-                true
-            } else {
-                // Tasks without deadline: show for today only if not completed
-                if (task.deadline.isNullOrEmpty()) {
-                    val isToday = todayString == selectedDateString
-                    isToday && task.status != "completed"
+            try {
+                // Handle different deadline formats: "yyyy-MM-dd" or "yyyy-MM-dd HH:mm:ss"
+                val deadlineStr = task.deadline.trim()
+                val taskDate = if (deadlineStr.length >= 10) {
+                    deadlineStr.substring(0, 10) // Extract YYYY-MM-DD part
                 } else {
-                    false
+                    deadlineStr
                 }
+                // Only return true if deadline matches selected date EXACTLY
+                taskDate == selectedDateString
+            } catch (e: Exception) {
+                android.util.Log.e("CalendarViewModel", "Error parsing deadline: ${task.deadline}", e)
+                false
             }
         }
 
