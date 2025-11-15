@@ -3,6 +3,7 @@ package ecccomp.s2240788.mobile_android.ui.activities
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -232,30 +233,30 @@ class EditTaskActivity : BaseActivity() {
                     }
                 }
 
-                // Scheduled Time
+                // Scheduled Time (now TIME type: HH:MM:SS or HH:MM)
                 it.scheduled_time?.let { timeStr ->
                     try {
-                        val inFmt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                        val outFmt = SimpleDateFormat("HH:mm", Locale.getDefault())
-                        val datetime = inFmt.parse(timeStr)
-                        if (datetime != null) {
-                            scheduledCalendar.time = datetime
-                            binding.etScheduledTime?.setText(outFmt.format(datetime))
-                            selectedScheduledTime = timeStr
+                        // Backend returns HH:MM:SS or HH:MM format
+                        val displayFmt = SimpleDateFormat("HH:mm", Locale.getDefault())
+                        val apiFmt = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+
+                        // Parse time string
+                        val time = if (timeStr.count { it == ':' } == 2) {
+                            // HH:MM:SS format
+                            apiFmt.parse(timeStr)
+                        } else {
+                            // HH:MM format
+                            displayFmt.parse(timeStr)
+                        }
+
+                        if (time != null) {
+                            scheduledCalendar.time = time
+                            binding.etScheduledTime?.setText(displayFmt.format(time))
+                            selectedScheduledTime = apiFmt.format(time) // Always send HH:MM:SS to API
                         }
                     } catch (e: Exception) {
-                        // Try alternative format
-                        try {
-                            val inFmt2 = SimpleDateFormat("HH:mm", Locale.getDefault())
-                            val time = inFmt2.parse(timeStr)
-                            if (time != null) {
-                                scheduledCalendar.time = time
-                                binding.etScheduledTime?.setText(timeStr)
-                                selectedScheduledTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(time)
-                            }
-                        } catch (e2: Exception) {
-                            // Ignore parsing errors
-                        }
+                        // Ignore parsing errors
+                        Log.e("EditTaskActivity", "Error parsing scheduled_time: ${e.message}")
                     }
                 }
 
@@ -397,7 +398,8 @@ class EditTaskActivity : BaseActivity() {
     private fun updateScheduledTimeDisplay() {
         val viewFmt = SimpleDateFormat("HH:mm", Locale.getDefault())
         binding.etScheduledTime?.setText(viewFmt.format(scheduledCalendar.time))
-        val apiFmt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        // API now expects only time (HH:mm:ss) not datetime
+        val apiFmt = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         selectedScheduledTime = apiFmt.format(scheduledCalendar.time)
     }
 
