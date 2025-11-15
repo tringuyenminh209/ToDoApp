@@ -67,7 +67,7 @@ class CalendarViewModel : ViewModel() {
 
                 // Fetch tasks and study schedules in parallel
                 val tasksDeferred = async { apiService.getTasks(perPage = 100) }
-                val studySchedulesDeferred = async { apiService.getStudySchedules() }
+                val studySchedulesDeferred = async { apiService.getAllStudySchedules() }
 
                 val tasksResponse = tasksDeferred.await()
                 val studySchedulesResponse = studySchedulesDeferred.await()
