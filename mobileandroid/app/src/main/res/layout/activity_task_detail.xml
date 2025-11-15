@@ -179,6 +179,126 @@
             android:orientation="vertical"
             android:padding="@dimen/spacing_lg">
 
+            <!-- Task Timeline Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_task_timeline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_md"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/line"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_md">
+
+                    <!-- Title -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_sm"
+                        android:text="Task Timeline"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <!-- Timeline Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <!-- Start Time -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="@dimen/spacing_sm">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_clock"
+                                android:contentDescription="Start time"
+                                app:tint="@color/primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Start"
+                                android:textColor="@color/text_muted"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/tv_timeline_start"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="14:30"
+                                android:textColor="@color/primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <!-- Arrow -->
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_arrow_forward"
+                            android:contentDescription="To"
+                            app:tint="@color/text_muted" />
+
+                        <!-- End Time (Deadline) -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="@dimen/spacing_sm">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_calendar"
+                                android:contentDescription="Deadline"
+                                app:tint="@color/error" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Deadline"
+                                android:textColor="@color/text_muted"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/tv_timeline_deadline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="11/15"
+                                android:textColor="@color/text_primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Task Info Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -291,33 +411,71 @@
 
                     </LinearLayout>
 
-                    <!-- Scheduled Time Row -->
-                    <LinearLayout
-                        android:id="@+id/ll_scheduled_time"
+                    <!-- Scheduled Time Row - Highlighted -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_scheduled_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_sm"
-                        android:layout_marginBottom="@dimen/spacing_xs"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:layout_marginTop="@dimen/spacing_md"
+                        android:layout_marginBottom="@dimen/spacing_sm"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@color/primary_light"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="@color/primary"
+                        app:strokeWidth="1dp">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_clock"
-                            android:contentDescription="@string/scheduled_time"
-                            app:tint="@color/text_muted" />
-
-                        <TextView
-                            android:id="@+id/tv_scheduled_time"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/spacing_xs"
-                            android:text="@string/scheduled_time"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_md">
 
-                    </LinearLayout>
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_clock"
+                                android:contentDescription="@string/scheduled_time"
+                                app:tint="@color/primary" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="@dimen/spacing_sm"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/scheduled_time_label"
+                                    android:textColor="@color/text_muted"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_scheduled_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="14:30"
+                                    android:textColor="@color/primary"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <com.google.android.material.chip.Chip
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Today"
+                                android:textColor="@color/white"
+                                app:chipBackgroundColor="@color/primary"
+                                app:chipCornerRadius="8dp"
+                                app:chipMinHeight="28dp" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
 
                     <!-- Task Type Chip -->
                     <com.google.android.material.chip.Chip
