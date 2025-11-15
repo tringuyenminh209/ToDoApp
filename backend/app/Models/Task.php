@@ -40,7 +40,7 @@ class Task extends Model
 
     protected $casts = [
         'deadline' => 'datetime',
-        'scheduled_time' => 'datetime',
+        // scheduled_time is TIME type (HH:MM:SS) - no casting needed, returns as string
         'priority' => 'integer',
         'estimated_minutes' => 'integer',
         'ai_breakdown_enabled' => 'boolean',

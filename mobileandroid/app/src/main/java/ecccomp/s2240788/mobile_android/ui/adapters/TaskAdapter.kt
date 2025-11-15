@@ -147,27 +147,27 @@ class TaskAdapter(
                     dateContainer.visibility = View.GONE
                 }
 
-                // Scheduled Time
+                // Scheduled Time (now TIME type: HH:MM:SS or HH:MM)
                 if (!task.scheduled_time.isNullOrEmpty()) {
                     scheduledTimeContainer.visibility = View.VISIBLE
                     try {
-                        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                        val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-                        val datetime = inputFormat.parse(task.scheduled_time)
-                        tvScheduledTime.text = if (datetime != null) outputFormat.format(datetime) else task.scheduled_time
-                    } catch (e: Exception) {
-                        // Try alternative format (HH:mm only)
-                        try {
-                            val inputFormat2 = SimpleDateFormat("HH:mm", Locale.getDefault())
-                            val time = inputFormat2.parse(task.scheduled_time)
-                            if (time != null) {
-                                tvScheduledTime.text = task.scheduled_time
-                            } else {
-                                scheduledTimeContainer.visibility = View.GONE
-                            }
-                        } catch (e2: Exception) {
-                            scheduledTimeContainer.visibility = View.GONE
+                        // Backend returns HH:MM:SS or HH:MM format
+                        val displayFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                        val apiFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+
+                        // Parse time string
+                        val time = if (task.scheduled_time.count { it == ':' } == 2) {
+                            // HH:MM:SS format
+                            apiFormat.parse(task.scheduled_time)
+                        } else {
+                            // HH:MM format
+                            displayFormat.parse(task.scheduled_time)
                         }
+
+                        tvScheduledTime.text = if (time != null) displayFormat.format(time) else task.scheduled_time
+                    } catch (e: Exception) {
+                        // If parsing fails, just display as-is or hide
+                        tvScheduledTime.text = task.scheduled_time
                     }
                 } else {
                     scheduledTimeContainer.visibility = View.GONE
