@@ -568,6 +568,10 @@ class RoadmapApiController extends Controller
     private function assignTasksToStudySchedules(LearningPath $learningPath): void
     {
         try {
+            // Clear any previously loaded relationships to ensure fresh data
+            $learningPath->unsetRelation('studySchedules');
+            $learningPath->unsetRelation('milestones');
+
             // Refresh and load study schedules and tasks
             $learningPath->refresh();
             $learningPath->load([
@@ -597,12 +601,18 @@ class RoadmapApiController extends Controller
             // Collect all tasks from all milestones in order
             $allTasks = collect();
             foreach ($learningPath->milestones as $milestone) {
+                Log::info('Processing milestone', [
+                    'milestone_id' => $milestone->id,
+                    'milestone_title' => $milestone->title,
+                    'tasks_in_milestone' => $milestone->tasks->count()
+                ]);
                 $allTasks = $allTasks->merge($milestone->tasks);
             }
 
             Log::info('Collected tasks from milestones', [
                 'tasks_count' => $allTasks->count(),
-                'milestones_count' => $learningPath->milestones->count()
+                'milestones_count' => $learningPath->milestones->count(),
+                'task_ids' => $allTasks->pluck('id')->toArray()
             ]);
 
             // If no tasks, nothing to assign
@@ -643,17 +653,33 @@ class RoadmapApiController extends Controller
                 $scheduledDateTime->setTime((int)$timeParts[0], (int)$timeParts[1], 0);
 
                 // Update the task
-                $task->update([
-                    'scheduled_time' => $scheduledDateTime
-                ]);
+                try {
+                    $updated = $task->update([
+                        'scheduled_time' => $scheduledDateTime
+                    ]);
 
-                Log::info('Assigned task to schedule', [
-                    'task_id' => $task->id,
-                    'task_title' => $task->title,
-                    'scheduled_time' => $scheduledDateTime->toDateTimeString(),
-                    'day_of_week' => $schedule->day_of_week,
-                    'study_time' => $schedule->study_time,
-                ]);
+                    if (!$updated) {
+                        Log::error('Failed to update task scheduled_time', [
+                            'task_id' => $task->id,
+                            'task_title' => $task->title
+                        ]);
+                    }
+
+                    Log::info('Assigned task to schedule', [
+                        'task_id' => $task->id,
+                        'task_title' => $task->title,
+                        'scheduled_time' => $scheduledDateTime->toDateTimeString(),
+                        'day_of_week' => $schedule->day_of_week,
+                        'study_time' => $schedule->study_time,
+                        'update_success' => $updated
+                    ]);
+                } catch (\Exception $updateError) {
+                    Log::error('Exception updating task scheduled_time', [
+                        'task_id' => $task->id,
+                        'error' => $updateError->getMessage(),
+                        'trace' => $updateError->getTraceAsString()
+                    ]);
+                }
 
                 // Move to next schedule slot
                 $taskIndex++;
