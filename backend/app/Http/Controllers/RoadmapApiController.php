@@ -731,5 +731,66 @@ class RoadmapApiController extends Controller
         // If no study date found in 14 days, just return the original date
         return \Carbon\Carbon::instance($fromDate);
     }
+
+    /**
+     * Assign tasks to study schedules for a learning path
+     * POST /api/learning-paths/{id}/assign-schedules
+     */
+    public function assignSchedules(Request $request, $learningPathId): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Find learning path
+            $learningPath = LearningPath::where('user_id', $user->id)
+                ->where('id', $learningPathId)
+                ->with(['milestones.tasks', 'studySchedules'])
+                ->first();
+
+            if (!$learningPath) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Learning path not found'
+                ], 404);
+            }
+
+            // Check if has study schedules
+            if ($learningPath->studySchedules->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No study schedules found. Please create study schedules first.'
+                ], 400);
+            }
+
+            // Assign tasks to schedules
+            $this->assignTasksToSchedules($learningPath);
+
+            // Reload learning path with updated tasks
+            $learningPath->load(['milestones.tasks', 'studySchedules']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Tasks assigned to study schedules successfully',
+                'data' => [
+                    'learning_path_id' => $learningPath->id,
+                    'tasks_count' => $learningPath->milestones->sum(fn($m) => $m->tasks->count()),
+                    'schedules_count' => $learningPath->studySchedules->count(),
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error assigning tasks to schedules', [
+                'learning_path_id' => $learningPathId,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to assign tasks to schedules',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
 
