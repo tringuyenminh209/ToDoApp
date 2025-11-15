@@ -188,13 +188,59 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- View Mode Toggle -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/view_mode_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_lg"
+        android:layout_marginTop="@dimen/spacing_md"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="1dp"
+        app:strokeWidth="0.5dp"
+        app:strokeColor="@color/line_variant"
+        app:layout_constraintTop_toBottomOf="@id/tabs_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/view_mode_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_sm"
+            app:chipSpacingHorizontal="8dp"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_list_view"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="リスト"
+                app:chipIcon="@drawable/ic_inbox" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_timeline_view"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="タイムライン"
+                app:chipIcon="@drawable/ic_clock" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </com.google.android.material.card.MaterialCardView>
+
     <!-- Tasks Content with Swipe to Refresh -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/spacing_md"
-        app:layout_constraintTop_toBottomOf="@id/tabs_card"
+        app:layout_constraintTop_toBottomOf="@id/view_mode_card"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -203,7 +249,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- Tasks RecyclerView -->
+            <!-- Tasks RecyclerView (List View) -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTasks"
                 android:layout_width="match_parent"
@@ -213,7 +259,21 @@
                 android:clipToPadding="false"
                 android:paddingTop="@dimen/spacing_sm"
                 android:paddingBottom="80dp"
+                android:visibility="visible"
                 tools:listitem="@layout/item_task_card" />
+
+            <!-- Timeline RecyclerView (Timeline View) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_timeline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/spacing_lg"
+                android:layout_marginTop="@dimen/spacing_lg"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/spacing_sm"
+                android:paddingBottom="80dp"
+                android:visibility="gone"
+                tools:listitem="@layout/item_timeline_hour" />
 
             <!-- Empty State -->
             <LinearLayout
