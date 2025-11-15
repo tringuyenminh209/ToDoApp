@@ -147,40 +147,24 @@ class MainTaskAdapter(
                     dateContainer.visibility = View.GONE
                 }
 
-                // Scheduled Time - show if available
+                // Scheduled Time - show if available (now TIME type: HH:MM:SS or HH:MM)
                 if (!task.scheduled_time.isNullOrEmpty()) {
                     scheduledTimeContainer.visibility = View.VISIBLE
                     try {
-                        // Server returns datetime in UTC: "yyyy-MM-dd HH:mm:ss"
-                        // Parse as UTC and convert to local timezone
-                        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).apply {
-                            timeZone = TimeZone.getTimeZone("UTC")
-                        }
-                        val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-                        val dateFormat = SimpleDateFormat("MM/dd", Locale.getDefault())
+                        // Backend returns HH:MM:SS or HH:MM format (time only, no date)
+                        val displayFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                        val apiFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 
-                        val datetime = inputFormat.parse(task.scheduled_time)
-
-                        if (datetime != null) {
-                            // Format time in local timezone
-                            val formattedTime = outputFormat.format(datetime)
-                            val formattedDate = dateFormat.format(datetime)
-
-                            // Check if today
-                            val today = Calendar.getInstance()
-                            val scheduledCal = Calendar.getInstance().apply { time = datetime }
-
-                            val isToday = today.get(Calendar.YEAR) == scheduledCal.get(Calendar.YEAR) &&
-                                         today.get(Calendar.DAY_OF_YEAR) == scheduledCal.get(Calendar.DAY_OF_YEAR)
-
-                            tvScheduledTime.text = if (isToday) {
-                                "今日 $formattedTime"
-                            } else {
-                                "$formattedDate $formattedTime"
-                            }
+                        // Parse time string
+                        val time = if (task.scheduled_time.count { it == ':' } == 2) {
+                            // HH:MM:SS format
+                            apiFormat.parse(task.scheduled_time)
                         } else {
-                            tvScheduledTime.text = task.scheduled_time
+                            // HH:MM format
+                            displayFormat.parse(task.scheduled_time)
                         }
+
+                        tvScheduledTime.text = if (time != null) displayFormat.format(time) else task.scheduled_time
                     } catch (e: Exception) {
                         // Fallback: just display the time as-is
                         tvScheduledTime.text = task.scheduled_time
