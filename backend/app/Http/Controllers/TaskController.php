@@ -105,19 +105,24 @@ class TaskController extends Controller
         if ($request->has('scheduled_time') && $request->scheduled_time) {
             $time = $request->scheduled_time;
 
+            Log::info('Original scheduled_time', ['value' => $time]);
+
             // If format is DATETIME (contains space or T), extract time part only
             if (strpos($time, ' ') !== false || strpos($time, 'T') !== false) {
                 // Extract time from "2025-11-15 09:00:27" or "2025-11-15T09:00:27"
                 $parts = preg_split('/[\sT]/', $time);
                 $time = end($parts); // Get the last part (time)
+                Log::info('Extracted time from datetime', ['extracted' => $time]);
             }
 
             // If format is HH:mm (only 1 colon), add :00 for seconds
             if (substr_count($time, ':') === 1) {
                 $time = $time . ':00';
+                Log::info('Added seconds', ['final' => $time]);
             }
 
             $request->merge(['scheduled_time' => $time]);
+            Log::info('Final scheduled_time after merge', ['merged' => $request->scheduled_time]);
         }
 
         $validator = Validator::make($request->all(), [
@@ -153,6 +158,12 @@ class TaskController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+
+        // Log successful validation with all input data
+        Log::info('Task validation passed', [
+            'input' => $request->except(['password']),
+            'user_id' => $request->user()->id
+        ]);
 
         try {
             DB::beginTransaction();

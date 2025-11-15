@@ -39,7 +39,7 @@ class Task extends Model
     ];
 
     protected $casts = [
-        'deadline' => 'datetime',
+        'deadline' => 'date', // Use 'date' instead of 'datetime' to avoid timezone conversion
         // scheduled_time is TIME type (HH:MM:SS) - no casting needed, returns as string
         'priority' => 'integer',
         'estimated_minutes' => 'integer',
