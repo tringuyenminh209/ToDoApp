@@ -237,6 +237,9 @@ Route::middleware('auth:sanctum')->group(function () {
         // Study schedules for specific learning path
         Route::get('/{id}/study-schedules', [\App\Http\Controllers\StudyScheduleController::class, 'index']);
         Route::post('/{id}/study-schedules', [\App\Http\Controllers\StudyScheduleController::class, 'store']);
+
+        // Assign tasks to study schedules
+        Route::post('/{id}/assign-schedules', [\App\Http\Controllers\RoadmapApiController::class, 'assignSchedules']);
     });
 
     // Study Schedule routes
