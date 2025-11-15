@@ -168,8 +168,10 @@ class CalendarViewModel : ViewModel() {
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1 // 0=Sunday, 1=Monday, ..., 6=Saturday
 
         // 日付でフィルタリング
+        // NOTE: scheduled_time is now TIME type (HH:mm:ss), not datetime
+        // Tasks are shown on a date based on their deadline field
         var filtered = tasks.filter { task ->
-            // Check both deadline and scheduled_time
+            // Primary: Check deadline
             val matchesDeadline = if (!task.deadline.isNullOrEmpty()) {
                 try {
                     // Handle different deadline formats: "yyyy-MM-dd" or "yyyy-MM-dd HH:mm:ss"
@@ -188,31 +190,12 @@ class CalendarViewModel : ViewModel() {
                 false
             }
 
-            // Check scheduled_time
-            val matchesScheduledTime = if (!task.scheduled_time.isNullOrEmpty()) {
-                try {
-                    // Extract date from scheduled_time: "yyyy-MM-dd HH:mm:ss" -> "yyyy-MM-dd"
-                    val scheduledStr = task.scheduled_time.trim()
-                    val scheduledDate = if (scheduledStr.length >= 10) {
-                        scheduledStr.substring(0, 10) // Extract YYYY-MM-DD part
-                    } else {
-                        scheduledStr
-                    }
-                    scheduledDate == selectedDateString
-                } catch (e: Exception) {
-                    android.util.Log.e("CalendarViewModel", "Error parsing scheduled_time: ${task.scheduled_time}", e)
-                    false
-                }
-            } else {
-                false
-            }
-
-            // Task matches if either deadline OR scheduled_time matches selected date
-            if (matchesDeadline || matchesScheduledTime) {
+            // Task matches if deadline matches selected date
+            if (matchesDeadline) {
                 true
             } else {
-                // Tasks without deadline or scheduled_time: show for today only if not completed
-                if (task.deadline.isNullOrEmpty() && task.scheduled_time.isNullOrEmpty()) {
+                // Tasks without deadline: show for today only if not completed
+                if (task.deadline.isNullOrEmpty()) {
                     val isToday = todayString == selectedDateString
                     isToday && task.status != "completed"
                 } else {
@@ -244,6 +227,18 @@ class CalendarViewModel : ViewModel() {
             FilterType.COMPLETED -> filtered.filter { it.status == "completed" }
         }
 
+        // Sort tasks by scheduled_time (if available), then by priority
+        filtered = filtered.sortedWith(compareBy<Task> { task ->
+            // Tasks with scheduled_time come first
+            if (!task.scheduled_time.isNullOrEmpty()) 0 else 1
+        }.thenBy { task ->
+            // Sort by scheduled_time (HH:mm:ss format)
+            task.scheduled_time ?: "99:99:99" // Put tasks without time at the end
+        }.thenByDescending { task ->
+            // Then by priority (high to low)
+            task.priority
+        })
+
         android.util.Log.d("CalendarViewModel",
             "Filtered ${filtered.size} tasks for date $selectedDateString (${tasks.size} regular + ${studyScheduleTasks.size} study schedules)")
 
@@ -264,30 +259,19 @@ class CalendarViewModel : ViewModel() {
     private fun convertStudyScheduleToTask(schedule: StudyScheduleWithPath, selectedDate: Date): Task {
         val pathTitle = schedule.learning_path?.title ?: "学習"
         val dayName = schedule.getDayNameJapanese()
-        val time = schedule.getFormattedTime()
+        val time = schedule.getFormattedTime() // Returns "HH:mm"
 
         // Format deadline as the selected date
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val deadline = dateFormat.format(selectedDate)
 
-        // Format scheduled_time as selected date + time
-        val datetimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val scheduledCalendar = Calendar.getInstance()
-        scheduledCalendar.time = selectedDate
-
-        // Parse time (HH:mm format)
-        try {
-            val timeParts = time.split(":")
-            val hour = timeParts.getOrNull(0)?.toIntOrNull() ?: 0
-            val minute = timeParts.getOrNull(1)?.toIntOrNull() ?: 0
-            scheduledCalendar.set(Calendar.HOUR_OF_DAY, hour)
-            scheduledCalendar.set(Calendar.MINUTE, minute)
-            scheduledCalendar.set(Calendar.SECOND, 0)
-        } catch (e: Exception) {
-            // Keep default time if parsing fails
+        // scheduled_time is now TIME type (HH:mm:ss only, no date)
+        // Convert HH:mm to HH:mm:ss format
+        val scheduledTime = if (time.count { it == ':' } == 1) {
+            "$time:00" // Add seconds
+        } else {
+            time // Already HH:mm:ss format
         }
-
-        val scheduledTime = datetimeFormat.format(scheduledCalendar.time)
 
         return Task(
             id = -schedule.id, // Negative ID to distinguish from regular tasks
@@ -299,7 +283,7 @@ class CalendarViewModel : ViewModel() {
             energy_level = "high",
             estimated_minutes = schedule.duration_minutes,
             deadline = deadline,
-            scheduled_time = scheduledTime,
+            scheduled_time = scheduledTime, // Now TIME type (HH:mm:ss)
             created_at = "",
             updated_at = "",
             user_id = 0,
