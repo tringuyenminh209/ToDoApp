@@ -202,6 +202,9 @@ class RoadmapApiController extends Controller
                             'reminder_before_minutes' => $scheduleData['reminder_before_minutes'] ?? 30,
                         ]);
                     }
+
+                    // Assign tasks to study schedules
+                    $this->assignTasksToStudySchedules($learningPath);
                 }
 
                 $template->incrementUsage();
@@ -556,6 +559,108 @@ class RoadmapApiController extends Controller
             'subtasks' => $subtasks,
             'knowledge_items' => $knowledgeItems,
         ]);
+    }
+
+    /**
+     * Assign tasks to study schedules by distributing them across scheduled study times
+     * タスクを学習スケジュールに割り当てて、予定された学習時間に分散させる
+     */
+    private function assignTasksToStudySchedules(LearningPath $learningPath): void
+    {
+        // Load study schedules and tasks
+        $learningPath->load([
+            'studySchedules' => function ($query) {
+                $query->where('is_active', true)
+                    ->orderBy('day_of_week')
+                    ->orderBy('study_time');
+            },
+            'milestones.tasks' => function ($query) {
+                $query->orderBy('id');
+            }
+        ]);
+
+        $studySchedules = $learningPath->studySchedules;
+
+        // If no study schedules, skip assignment
+        if ($studySchedules->isEmpty()) {
+            return;
+        }
+
+        // Collect all tasks from all milestones in order
+        $allTasks = collect();
+        foreach ($learningPath->milestones as $milestone) {
+            $allTasks = $allTasks->merge($milestone->tasks);
+        }
+
+        // If no tasks, nothing to assign
+        if ($allTasks->isEmpty()) {
+            return;
+        }
+
+        // Get current date and time
+        $now = now();
+        $currentDate = $now->copy()->startOfDay();
+
+        // Find the next study session starting from today
+        $nextStudyDate = $this->findNextStudyDate($currentDate, $studySchedules);
+
+        // Distribute tasks across study schedules
+        $taskIndex = 0;
+        $tasksCount = $allTasks->count();
+        $schedulesCount = $studySchedules->count();
+        $currentSessionDate = $nextStudyDate;
+
+        foreach ($allTasks as $task) {
+            // Get the schedule for this task (round-robin through schedules)
+            $scheduleIndex = $taskIndex % $schedulesCount;
+            $schedule = $studySchedules[$scheduleIndex];
+
+            // Set scheduled_time for this task
+            $scheduledDateTime = $currentSessionDate->copy();
+            $timeParts = explode(':', $schedule->study_time);
+            $scheduledDateTime->setTime((int)$timeParts[0], (int)$timeParts[1], 0);
+
+            // Update the task
+            $task->update([
+                'scheduled_time' => $scheduledDateTime
+            ]);
+
+            // Move to next schedule slot
+            $taskIndex++;
+
+            // If we've cycled through all schedules, move to next week
+            if ($taskIndex % $schedulesCount === 0) {
+                $currentSessionDate = $this->findNextStudyDate($currentSessionDate->addDay(), $studySchedules);
+            }
+        }
+    }
+
+    /**
+     * Find the next study date from given date based on study schedules
+     * 学習スケジュールに基づいて指定された日付から次の学習日を見つける
+     */
+    private function findNextStudyDate($fromDate, $studySchedules)
+    {
+        $date = \Carbon\Carbon::instance($fromDate)->copy();
+
+        // Try up to 14 days to find next study date
+        for ($i = 0; $i < 14; $i++) {
+            $dayOfWeek = $date->dayOfWeek; // 0 = Sunday, 6 = Saturday
+
+            // Check if this day has any study schedule
+            $hasSchedule = $studySchedules->contains(function ($schedule) use ($dayOfWeek) {
+                return $schedule->day_of_week === $dayOfWeek;
+            });
+
+            if ($hasSchedule) {
+                return $date;
+            }
+
+            $date->addDay();
+        }
+
+        // If no study date found in 14 days, just return the original date
+        return \Carbon\Carbon::instance($fromDate);
     }
 }
 
