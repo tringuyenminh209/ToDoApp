@@ -112,6 +112,13 @@ class TaskController extends Controller
             'learning_milestone_id' => 'nullable|exists:learning_milestones,id',
             'tag_ids' => 'nullable|array',
             'tag_ids.*' => 'exists:tags,id',
+            // Focus enhancement fields
+            'requires_deep_focus' => 'nullable|boolean',
+            'allow_interruptions' => 'nullable|boolean',
+            'focus_difficulty' => 'nullable|integer|min:1|max:5',
+            'warmup_minutes' => 'nullable|integer|min:0|max:60',
+            'cooldown_minutes' => 'nullable|integer|min:0|max:60',
+            'recovery_minutes' => 'nullable|integer|min:0|max:120',
         ]);
 
         try {
@@ -131,6 +138,13 @@ class TaskController extends Controller
                 'learning_milestone_id' => $request->learning_milestone_id,
                 'status' => 'pending',
                 'ai_breakdown_enabled' => false,
+                // Focus enhancement fields
+                'requires_deep_focus' => $request->requires_deep_focus ?? false,
+                'allow_interruptions' => $request->allow_interruptions ?? true,
+                'focus_difficulty' => $request->focus_difficulty ?? 3,
+                'warmup_minutes' => $request->warmup_minutes,
+                'cooldown_minutes' => $request->cooldown_minutes,
+                'recovery_minutes' => $request->recovery_minutes,
             ]);
 
             // Attach tags if provided
