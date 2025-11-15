@@ -570,7 +570,7 @@ JSON形式で返してください：
     \"estimated_minutes\": 推定時間（分）,
     \"priority\": \"high/medium/low\",
     \"deadline\": \"YYYY-MM-DD\" (オプション、期限が指定されている場合のみ),
-    \"scheduled_time\": \"YYYY-MM-DD HH:MM:SS\" (オプション、開始時刻が指定されている場合),
+    \"scheduled_time\": \"HH:MM:SS\" (オプション、開始時刻が指定されている場合。時刻のみ、例: \"14:30:00\"),
     \"tags\": [\"タグ1\", \"タグ2\"],
     \"subtasks\": [
       {
@@ -622,7 +622,7 @@ JSON形式で返してください：
 - deadlineはユーザーが明示的に期限を指定した場合のみ含めてください
   例: 「明日まで」「来週の金曜日まで」「10月30日まで」など
 - deadlineが指定されていない場合は、フィールドを省略してください（バックエンドで自動的に今日の日付が設定されます）
-- scheduled_timeは今日の日付(" . now()->format('Y-m-d') . ")に時刻を組み合わせてください
+- scheduled_timeは時刻のみ（HH:MM:SSまたはHH:MM形式）で指定してください。例: \"14:30:00\" または \"14:30\"
 - 時刻指定がない場合は scheduled_time を省略してください
 - 疑わしい場合は false を返してください";
 
@@ -986,7 +986,7 @@ JSON形式で返してください：
     \"description\": \"説明\",
     \"estimated_minutes\": 60,
     \"priority\": \"high/medium/low\",
-    \"scheduled_time\": \"{$today} 14:00:00\",
+    \"scheduled_time\": \"14:00:00\",
     \"reason\": \"提案理由\"
   }
 }
@@ -996,7 +996,7 @@ JSON形式で返してください：
 
 4. **会話トーン**: 親しみやすく、具体的で実行可能なアドバイスを提供
 
-scheduled_timeは{$today}に時刻を組み合わせてください。";
+scheduled_timeは時刻のみ（HH:MM:SSまたはHH:MM形式）で指定してください。例: \"14:30:00\" または \"14:30\"";
     }
 
     /**
@@ -1142,12 +1142,16 @@ scheduled_timeは{$today}に時刻を組み合わせてください。";
         foreach ($tasks as $task) {
             if (!empty($task['scheduled_time'])) {
                 $scheduledTime = $task['scheduled_time'];
-                // Extract time portion
+                // scheduled_time is now TIME type (HH:MM:SS or HH:MM)
+                // Extract HH:MM portion
                 try {
-                    $timeObj = new \DateTime($scheduledTime);
-                    $busySlots[] = $timeObj->format('H:i');
+                    // If it's HH:MM:SS, take first 5 chars; if HH:MM, use as is
+                    $timeParts = explode(':', $scheduledTime);
+                    if (count($timeParts) >= 2) {
+                        $busySlots[] = sprintf('%02d:%02d', (int)$timeParts[0], (int)$timeParts[1]);
+                    }
                 } catch (\Exception $e) {
-                    // Skip invalid dates
+                    // Skip invalid times
                 }
             }
         }

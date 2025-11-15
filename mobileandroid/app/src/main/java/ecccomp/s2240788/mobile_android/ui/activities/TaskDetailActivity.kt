@@ -172,30 +172,30 @@ class TaskDetailActivity : BaseActivity() {
                 binding.tvDueDate.setTextColor(ContextCompat.getColor(this, R.color.text_muted))
             }
 
-            // Scheduled Time (yyyy-MM-dd HH:mm:ss -> MM/dd HH:mm)
+            // Scheduled Time (now TIME type: HH:MM:SS or HH:MM)
             val scheduledTimeStr = task.scheduled_time
             if (!scheduledTimeStr.isNullOrEmpty()) {
                 try {
-                    val inFmt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                    val outFmt = SimpleDateFormat("MM/dd HH:mm", Locale.getDefault())
-                    val datetime = inFmt.parse(scheduledTimeStr)
-                    val text = if (datetime != null) outFmt.format(datetime) else scheduledTimeStr
+                    // Backend returns HH:MM:SS or HH:MM format
+                    val displayFmt = SimpleDateFormat("HH:mm", Locale.getDefault())
+                    val apiFmt = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+
+                    // Parse time string
+                    val time = if (scheduledTimeStr.count { it == ':' } == 2) {
+                        // HH:MM:SS format
+                        apiFmt.parse(scheduledTimeStr)
+                    } else {
+                        // HH:MM format
+                        displayFmt.parse(scheduledTimeStr)
+                    }
+
+                    val text = if (time != null) displayFmt.format(time) else scheduledTimeStr
                     binding.tvScheduledTime.text = getString(R.string.scheduled_time) + ": " + text
                     binding.llScheduledTime.visibility = View.VISIBLE
                 } catch (e: Exception) {
-                    // Try alternative format (HH:mm only)
-                    try {
-                        val inFmt2 = SimpleDateFormat("HH:mm", Locale.getDefault())
-                        val time = inFmt2.parse(scheduledTimeStr)
-                        if (time != null) {
-                            binding.tvScheduledTime.text = getString(R.string.scheduled_time) + ": " + scheduledTimeStr
-                            binding.llScheduledTime.visibility = View.VISIBLE
-                        } else {
-                            binding.llScheduledTime.visibility = View.GONE
-                        }
-                    } catch (_: Exception) {
-                        binding.llScheduledTime.visibility = View.GONE
-                    }
+                    // Fallback: display as-is
+                    binding.tvScheduledTime.text = getString(R.string.scheduled_time) + ": " + scheduledTimeStr
+                    binding.llScheduledTime.visibility = View.VISIBLE
                 }
             } else {
                 binding.llScheduledTime.visibility = View.GONE
