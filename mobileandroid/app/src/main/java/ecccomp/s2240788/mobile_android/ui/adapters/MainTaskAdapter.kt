@@ -151,23 +151,39 @@ class MainTaskAdapter(
                 if (!task.scheduled_time.isNullOrEmpty()) {
                     scheduledTimeContainer.visibility = View.VISIBLE
                     try {
-                        // scheduled_time format: HH:mm:ss or HH:mm
-                        val parts = task.scheduled_time.split(":")
-                        val hour = parts.getOrNull(0)?.toIntOrNull() ?: 0
-                        val minute = parts.getOrNull(1)?.toIntOrNull() ?: 0
-                        val formattedTime = String.format("%02d:%02d", hour, minute)
+                        // Try full datetime format first: yyyy-MM-dd HH:mm:ss
+                        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                        val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                        val datetime = inputFormat.parse(task.scheduled_time)
 
-                        // Check if today
-                        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().time)
-                        val isToday = task.deadline == today
+                        if (datetime != null) {
+                            val formattedTime = outputFormat.format(datetime)
 
-                        tvScheduledTime.text = if (isToday) {
-                            "今日 $formattedTime"
+                            // Check if today
+                            val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().time)
+                            val isToday = task.deadline == today
+
+                            tvScheduledTime.text = if (isToday) {
+                                "今日 $formattedTime"
+                            } else {
+                                formattedTime
+                            }
                         } else {
-                            formattedTime
+                            tvScheduledTime.text = task.scheduled_time
                         }
                     } catch (e: Exception) {
-                        tvScheduledTime.text = task.scheduled_time
+                        // Try alternative format (HH:mm:ss or HH:mm only)
+                        try {
+                            val inputFormat2 = SimpleDateFormat("HH:mm", Locale.getDefault())
+                            val time = inputFormat2.parse(task.scheduled_time)
+                            tvScheduledTime.text = if (time != null) {
+                                task.scheduled_time
+                            } else {
+                                task.scheduled_time
+                            }
+                        } catch (e2: Exception) {
+                            tvScheduledTime.text = task.scheduled_time
+                        }
                     }
                 } else {
                     scheduledTimeContainer.visibility = View.GONE
