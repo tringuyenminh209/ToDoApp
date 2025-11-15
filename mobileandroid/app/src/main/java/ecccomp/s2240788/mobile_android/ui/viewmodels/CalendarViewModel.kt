@@ -169,15 +169,8 @@ class CalendarViewModel : ViewModel() {
 
         // 日付でフィルタリング
         var filtered = tasks.filter { task ->
-            if (task.deadline.isNullOrEmpty()) {
-                // Tasks without deadline: show for today only if not completed
-                val isToday = todayString == selectedDateString
-                if (isToday && task.status != "completed") {
-                    true // Show pending tasks without deadline for today
-                } else {
-                    false
-                }
-            } else {
+            // Check both deadline and scheduled_time
+            val matchesDeadline = if (!task.deadline.isNullOrEmpty()) {
                 try {
                     // Handle different deadline formats: "yyyy-MM-dd" or "yyyy-MM-dd HH:mm:ss"
                     val deadlineStr = task.deadline.trim()
@@ -186,11 +179,43 @@ class CalendarViewModel : ViewModel() {
                     } else {
                         deadlineStr
                     }
-
-                    // Match exact date
                     taskDate == selectedDateString
                 } catch (e: Exception) {
                     android.util.Log.e("CalendarViewModel", "Error parsing deadline: ${task.deadline}", e)
+                    false
+                }
+            } else {
+                false
+            }
+
+            // Check scheduled_time
+            val matchesScheduledTime = if (!task.scheduled_time.isNullOrEmpty()) {
+                try {
+                    // Extract date from scheduled_time: "yyyy-MM-dd HH:mm:ss" -> "yyyy-MM-dd"
+                    val scheduledStr = task.scheduled_time.trim()
+                    val scheduledDate = if (scheduledStr.length >= 10) {
+                        scheduledStr.substring(0, 10) // Extract YYYY-MM-DD part
+                    } else {
+                        scheduledStr
+                    }
+                    scheduledDate == selectedDateString
+                } catch (e: Exception) {
+                    android.util.Log.e("CalendarViewModel", "Error parsing scheduled_time: ${task.scheduled_time}", e)
+                    false
+                }
+            } else {
+                false
+            }
+
+            // Task matches if either deadline OR scheduled_time matches selected date
+            if (matchesDeadline || matchesScheduledTime) {
+                true
+            } else {
+                // Tasks without deadline or scheduled_time: show for today only if not completed
+                if (task.deadline.isNullOrEmpty() && task.scheduled_time.isNullOrEmpty()) {
+                    val isToday = todayString == selectedDateString
+                    isToday && task.status != "completed"
+                } else {
                     false
                 }
             }
