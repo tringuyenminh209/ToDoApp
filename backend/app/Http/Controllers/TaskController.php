@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
@@ -108,14 +110,14 @@ class TaskController extends Controller
             }
         }
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'category' => 'nullable|in:study,work,personal,other',
             'description' => 'nullable|string|max:1000',
             'priority' => 'required|integer|min:1|max:5',
             'energy_level' => 'required|in:low,medium,high',
             'estimated_minutes' => 'nullable|integer|min:1|max:600',
-            'deadline' => 'nullable|date|after_or_equal:today',
+            'deadline' => 'nullable|date', // Removed after_or_equal:today to allow past dates
             'scheduled_time' => 'nullable|date_format:H:i:s',
             'project_id' => 'nullable|exists:projects,id',
             'learning_milestone_id' => 'nullable|exists:learning_milestones,id',
@@ -129,6 +131,18 @@ class TaskController extends Controller
             'cooldown_minutes' => 'nullable|integer|min:0|max:60',
             'recovery_minutes' => 'nullable|integer|min:0|max:120',
         ]);
+
+        if ($validator->fails()) {
+            Log::error('Task validation failed', [
+                'errors' => $validator->errors()->toArray(),
+                'input' => $request->except(['password'])
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'バリデーションエラー',
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
         try {
             DB::beginTransaction();
