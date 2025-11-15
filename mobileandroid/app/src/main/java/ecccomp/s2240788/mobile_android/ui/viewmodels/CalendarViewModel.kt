@@ -31,8 +31,13 @@ class CalendarViewModel : ViewModel() {
     private val _allStudySchedules = MutableLiveData<List<StudyScheduleWithPath>>()
     val allStudySchedules: LiveData<List<StudyScheduleWithPath>> = _allStudySchedules
 
-    private val _filteredTasks = MutableLiveData<List<Task>>()
-    val filteredTasks: LiveData<List<Task>> = _filteredTasks
+    // For list view: regular tasks only
+    private val _listTasks = MutableLiveData<List<Task>>()
+    val listTasks: LiveData<List<Task>> = _listTasks
+
+    // For timeline view: study schedules only
+    private val _timelineTasks = MutableLiveData<List<Task>>()
+    val timelineTasks: LiveData<List<Task>> = _timelineTasks
 
     private val _selectedDate = MutableLiveData<Date>()
     val selectedDate: LiveData<Date> = _selectedDate
@@ -149,7 +154,7 @@ class CalendarViewModel : ViewModel() {
 
     /**
      * フィルターを適用してタスクをフィルタリング
-     * Apply filter including study schedules for the selected day of week
+     * Populates both listTasks (regular tasks by deadline) and timelineTasks (study schedules)
      */
     private fun applyFilter() {
         val tasks = _allTasks.value ?: emptyList()
@@ -160,37 +165,77 @@ class CalendarViewModel : ViewModel() {
         // 日付フォーマッター
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val selectedDateString = dateFormat.format(selectedDateValue)
+        val todayString = dateFormat.format(today)
 
         // Calculate day of week for selected date (0=Sunday, 1=Monday, ...)
         val calendar = Calendar.getInstance()
         calendar.time = selectedDateValue
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1 // 0=Sunday, 1=Monday, ..., 6=Saturday
 
-        // Timeline only shows study schedules (not regular tasks)
-        // Filter study schedules by day of week
-        var filtered = studySchedules
+        // ===== LIST VIEW: Regular tasks filtered by deadline =====
+        var listFiltered = tasks.filter { task ->
+            // Primary: Check deadline
+            val matchesDeadline = if (!task.deadline.isNullOrEmpty()) {
+                try {
+                    // Handle different deadline formats: "yyyy-MM-dd" or "yyyy-MM-dd HH:mm:ss"
+                    val deadlineStr = task.deadline.trim()
+                    val taskDate = if (deadlineStr.length >= 10) {
+                        deadlineStr.substring(0, 10) // Extract YYYY-MM-DD part
+                    } else {
+                        deadlineStr
+                    }
+                    taskDate == selectedDateString
+                } catch (e: Exception) {
+                    android.util.Log.e("CalendarViewModel", "Error parsing deadline: ${task.deadline}", e)
+                    false
+                }
+            } else {
+                false
+            }
+
+            // Task matches if deadline matches selected date
+            if (matchesDeadline) {
+                true
+            } else {
+                // Tasks without deadline: show for today only if not completed
+                if (task.deadline.isNullOrEmpty()) {
+                    val isToday = todayString == selectedDateString
+                    isToday && task.status != "completed"
+                } else {
+                    false
+                }
+            }
+        }
+
+        // Apply status filter to list tasks
+        listFiltered = when (currentFilter) {
+            FilterType.ALL -> listFiltered
+            FilterType.ACTIVE -> listFiltered.filter { it.status != "completed" }
+            FilterType.COMPLETED -> listFiltered.filter { it.status == "completed" }
+        }
+
+        // Sort list tasks by priority
+        listFiltered = listFiltered.sortedByDescending { it.priority }
+
+        android.util.Log.d("CalendarViewModel",
+            "List view showing ${listFiltered.size} tasks for $selectedDateString")
+
+        _listTasks.value = listFiltered
+
+        // ===== TIMELINE VIEW: Study schedules only =====
+        var timelineFiltered = studySchedules
             .filter { schedule -> schedule.day_of_week == dayOfWeek && schedule.is_active }
             .map { schedule -> convertStudyScheduleToTask(schedule, selectedDateValue) }
 
-        android.util.Log.d("CalendarViewModel",
-            "Timeline for date: $selectedDateString, Day of week: $dayOfWeek, Study schedules: ${filtered.size}")
-
-        // ステータスでフィルタリング
-        filtered = when (currentFilter) {
-            FilterType.ALL -> filtered
-            FilterType.ACTIVE -> filtered.filter { it.status != "completed" }
-            FilterType.COMPLETED -> filtered.filter { it.status == "completed" }
-        }
-
-        // Sort by scheduled_time (all study schedules have scheduled_time)
-        filtered = filtered.sortedBy { task ->
+        // Sort timeline by scheduled_time
+        timelineFiltered = timelineFiltered.sortedBy { task ->
             task.scheduled_time ?: "99:99:99"
         }
 
         android.util.Log.d("CalendarViewModel",
-            "Timeline showing ${filtered.size} study schedules for $selectedDateString")
+            "Timeline view showing ${timelineFiltered.size} study schedules for $selectedDateString (day $dayOfWeek)")
 
-        _filteredTasks.value = filtered
+        _timelineTasks.value = timelineFiltered
     }
 
     /**
