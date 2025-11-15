@@ -15,6 +15,7 @@ import ecccomp.s2240788.mobile_android.data.models.Task
 import ecccomp.s2240788.mobile_android.databinding.ActivityTaskListBinding
 import ecccomp.s2240788.mobile_android.databinding.BottomSheetTaskOptionsBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.MainTaskAdapter
+import ecccomp.s2240788.mobile_android.ui.adapters.TimelineAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.TaskViewModel
 import com.google.android.material.tabs.TabLayout
 
@@ -27,6 +28,8 @@ class TaskListActivity : BaseActivity() {
     private lateinit var binding: ActivityTaskListBinding
     private lateinit var taskViewModel: TaskViewModel
     private lateinit var taskAdapter: MainTaskAdapter
+    private lateinit var timelineAdapter: TimelineAdapter
+    private var isTimelineView = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +50,7 @@ class TaskListActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
+        // List view adapter
         taskAdapter = MainTaskAdapter(
             onTaskClick = { task ->
                 val intent = Intent(this, TaskDetailActivity::class.java)
@@ -66,6 +70,21 @@ class TaskListActivity : BaseActivity() {
         binding.rvTasks.apply {
             layoutManager = LinearLayoutManager(this@TaskListActivity)
             adapter = taskAdapter
+            setHasFixedSize(true)
+        }
+
+        // Timeline view adapter
+        timelineAdapter = TimelineAdapter(
+            onTaskClick = { task ->
+                val intent = Intent(this, TaskDetailActivity::class.java)
+                intent.putExtra("task_id", task.id)
+                startActivity(intent)
+            }
+        )
+
+        binding.rvTimeline.apply {
+            layoutManager = LinearLayoutManager(this@TaskListActivity)
+            adapter = timelineAdapter
             setHasFixedSize(true)
         }
 
@@ -93,6 +112,19 @@ class TaskListActivity : BaseActivity() {
             startActivity(intent)
         }
 
+        // View mode toggle
+        binding.chipListView.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                switchToListView()
+            }
+        }
+
+        binding.chipTimelineView.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                switchToTimelineView()
+            }
+        }
+
         // Search
         binding.etSearch.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -101,6 +133,26 @@ class TaskListActivity : BaseActivity() {
             }
             override fun afterTextChanged(s: android.text.Editable?) {}
         })
+    }
+
+    /**
+     * Switch to list view
+     */
+    private fun switchToListView() {
+        isTimelineView = false
+        binding.rvTasks.visibility = View.VISIBLE
+        binding.rvTimeline.visibility = View.GONE
+        binding.tabLayout.visibility = View.VISIBLE
+    }
+
+    /**
+     * Switch to timeline view
+     */
+    private fun switchToTimelineView() {
+        isTimelineView = true
+        binding.rvTasks.visibility = View.GONE
+        binding.rvTimeline.visibility = View.VISIBLE
+        binding.tabLayout.visibility = View.GONE  // Hide filter tabs in timeline mode
     }
 
     private fun setupTabLayout() {
@@ -122,14 +174,25 @@ class TaskListActivity : BaseActivity() {
         // タスクリスト
         taskViewModel.filteredTasks.observe(this) { tasks ->
             taskAdapter.submitList(tasks)
+            timelineAdapter.submitList(tasks)
 
             // Empty state
             if (tasks.isEmpty()) {
                 binding.emptyStateView.visibility = View.VISIBLE
-                binding.rvTasks.visibility = View.GONE
+                if (isTimelineView) {
+                    binding.rvTimeline.visibility = View.GONE
+                } else {
+                    binding.rvTasks.visibility = View.GONE
+                }
             } else {
                 binding.emptyStateView.visibility = View.GONE
-                binding.rvTasks.visibility = View.VISIBLE
+                if (isTimelineView) {
+                    binding.rvTimeline.visibility = View.VISIBLE
+                    binding.rvTasks.visibility = View.GONE
+                } else {
+                    binding.rvTasks.visibility = View.VISIBLE
+                    binding.rvTimeline.visibility = View.GONE
+                }
             }
         }
 
