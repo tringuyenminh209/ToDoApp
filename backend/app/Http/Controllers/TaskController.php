@@ -135,7 +135,8 @@ class TaskController extends Controller
         if ($validator->fails()) {
             Log::error('Task validation failed', [
                 'errors' => $validator->errors()->toArray(),
-                'input' => $request->except(['password'])
+                'input' => $request->all(),  // Log all input for debugging
+                'user_id' => $request->user()->id
             ]);
             return response()->json([
                 'success' => false,
