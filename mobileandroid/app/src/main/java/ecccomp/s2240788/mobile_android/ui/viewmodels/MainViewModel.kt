@@ -125,7 +125,7 @@ class MainViewModel : ViewModel() {
             id = -session.id, // Negative ID to distinguish from regular tasks
             title = "📚 学習スケジュール: $pathTitle",
             category = "study",
-            description = "$dayName曜日 $time - ${session.duration_minutes}分",
+            description = "${dayName}曜日 $time - ${session.duration_minutes}分",
             status = "pending",
             priority = 5, // High priority for study schedules
             energy_level = "high",
