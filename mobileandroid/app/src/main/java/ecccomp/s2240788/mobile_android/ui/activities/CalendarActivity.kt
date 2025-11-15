@@ -65,10 +65,15 @@ class CalendarActivity : BaseActivity() {
                 Toast.makeText(this, it, Toast.LENGTH_LONG).show()
             }
         }
-        
-        // Observe filtered tasks for logging
-        viewModel.filteredTasks.observe(this) { tasks ->
-            android.util.Log.d("CalendarActivity", "Filtered tasks: ${tasks.size}")
+
+        // Observe list tasks for logging
+        viewModel.listTasks.observe(this) { tasks ->
+            android.util.Log.d("CalendarActivity", "List tasks: ${tasks.size}")
+        }
+
+        // Observe timeline tasks for logging
+        viewModel.timelineTasks.observe(this) { tasks ->
+            android.util.Log.d("CalendarActivity", "Timeline tasks: ${tasks.size}")
         }
     }
 
