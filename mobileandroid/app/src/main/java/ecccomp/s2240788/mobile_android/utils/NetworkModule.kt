@@ -22,6 +22,11 @@ object NetworkModule {
     private const val BASE_URL = "http://localhost:8080/api/"
     internal var contextRef: WeakReference<Context>? = null
 
+    // Lazy initialization of ApiService
+    val apiService: ApiService by lazy {
+        provideApiService(provideRetrofit(provideOkHttpClient()))
+    }
+
     // Timeout constants - Đồng bộ với backend
     // Backend chat timeout with GPT-5 can take 40-60s for complex context-aware responses
     // Android timeout must be higher to avoid premature timeout
