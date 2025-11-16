@@ -50,7 +50,7 @@
         <activity
             android:name=".ui.activities.AICoachActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name=".ui.activities.FocusSessionActivity"
             android:exported="false" />
