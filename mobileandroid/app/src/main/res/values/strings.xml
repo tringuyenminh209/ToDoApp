@@ -276,6 +276,10 @@
 
     <!-- Task Detail -->
     <string name="task_detail">タスクの詳細</string>
+    <string name="task_timeline">タスクタイムライン</string>
+    <string name="start">開始</string>
+    <string name="to_arrow">まで</string>
+    <string name="enabled">有効</string>
     <string name="tags">タグ</string>
     <string name="focus_sessions">フォーカスセッション</string>
     <string name="mark_complete">完了</string>
