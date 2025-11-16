@@ -482,4 +482,25 @@ interface ApiService {
     // Get schedule statistics
     @GET("study-schedules/stats")
     suspend fun getStudyScheduleStats(): Response<ApiResponse<StudyScheduleStats>>
+
+    // ==================== Settings Endpoints ====================
+
+    // Get user settings
+    @GET("settings")
+    suspend fun getSettings(): Response<SettingsResponse>
+
+    // Update user settings
+    @PUT("settings")
+    suspend fun updateSettings(@Body request: SettingsRequest): Response<SettingsResponse>
+
+    // Reset settings to default
+    @POST("settings/reset")
+    suspend fun resetSettings(): Response<SettingsResponse>
+
+    // Update specific setting by key
+    @PATCH("settings/{key}")
+    suspend fun updateSetting(
+        @Path("key") key: String,
+        @Body value: Map<String, Any>
+    ): Response<SettingsResponse>
 }
