@@ -36,7 +36,8 @@ class AICoachActivity : BaseActivity() {
         binding = ActivityAiCoachBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupWindowInsets()
+        // Use simple window insets setup for chat screen
+        setupWindowInsetsForChat()
 
         // Initialize ViewModel
         viewModel = ViewModelProvider(this)[AICoachViewModel::class.java]
@@ -47,6 +48,27 @@ class AICoachActivity : BaseActivity() {
         setupKeyboardListener()
         setupRecyclerViewInsets()
         observeViewModel()
+    }
+
+    /**
+     * Simplified window insets setup for chat screen
+     * Uses standard adjustResize behavior without edge-to-edge complications
+     */
+    private fun setupWindowInsetsForChat() {
+        // Don't call setupWindowInsets() from BaseActivity
+        // Let system handle window resizing naturally with adjustResize mode
+
+        // Only add padding for navigation bar on input container
+        ViewCompat.setOnApplyWindowInsetsListener(binding.inputContainer) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(
+                v.paddingLeft,
+                v.paddingTop,
+                v.paddingRight,
+                systemBars.bottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     private fun setupRecyclerView() {
