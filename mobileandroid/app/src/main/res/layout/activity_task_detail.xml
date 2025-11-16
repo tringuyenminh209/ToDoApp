@@ -203,7 +203,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/spacing_sm"
-                        android:text="Task Timeline"
+                        android:text="@string/task_timeline"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -228,14 +228,14 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_clock"
-                                android:contentDescription="Start time"
+                                android:contentDescription="@string/timetable_start_time"
                                 app:tint="@color/primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Start"
+                                android:text="@string/start"
                                 android:textColor="@color/text_muted"
                                 android:textSize="10sp" />
 
@@ -255,7 +255,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_arrow_forward"
-                            android:contentDescription="To"
+                            android:contentDescription="@string/to_arrow"
                             app:tint="@color/text_muted" />
 
                         <!-- End Time (Deadline) -->
@@ -271,14 +271,14 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_calendar"
-                                android:contentDescription="Deadline"
+                                android:contentDescription="@string/deadline"
                                 app:tint="@color/error" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Deadline"
+                                android:text="@string/deadline"
                                 android:textColor="@color/text_muted"
                                 android:textSize="10sp" />
 
@@ -467,7 +467,7 @@
                             <com.google.android.material.chip.Chip
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Today"
+                                android:text="@string/today"
                                 android:textColor="@color/white"
                                 app:chipBackgroundColor="@color/primary"
                                 app:chipCornerRadius="8dp"
@@ -568,7 +568,7 @@
                         <com.google.android.material.chip.Chip
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Enabled"
+                            android:text="@string/enabled"
                             android:textColor="@color/primary"
                             app:chipBackgroundColor="@color/white"
                             app:chipCornerRadius="12dp"
