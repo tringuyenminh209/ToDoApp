@@ -69,32 +69,23 @@ open class BaseActivity : AppCompatActivity() {
         // Setup window insets for input container (if exists and no bottom navigation)
         // This handles cases like AICoachActivity where input is at the bottom
         if (bottomNav == null && inputContainer != null) {
-            // Store original padding before insets listener
-            val originalPaddingBottom = inputContainer.paddingBottom
+            // Store original padding values
+            val originalLeft = inputContainer.paddingLeft
+            val originalTop = inputContainer.paddingTop
+            val originalRight = inputContainer.paddingRight
+            val originalBottom = inputContainer.paddingBottom
 
             ViewCompat.setOnApplyWindowInsetsListener(inputContainer) { v, insets ->
                 val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
 
-                // When keyboard is visible, use IME insets; otherwise use system bars
-                val bottomInset = if (imeInsets.bottom > 0) {
-                    // Keyboard is visible - no extra padding needed because adjustResize handles it
-                    originalPaddingBottom
-                } else {
-                    // Keyboard is hidden - add padding for navigation bar
-                    originalPaddingBottom + systemBars.bottom
-                }
-
-                // Apply bottom padding to input container
+                // Always add padding for navigation bar to prevent overlap
+                // adjustResize will handle keyboard positioning by resizing the window
                 v.setPadding(
-                    v.paddingLeft,
-                    v.paddingTop,
-                    v.paddingRight,
-                    bottomInset
+                    originalLeft,
+                    originalTop,
+                    originalRight,
+                    originalBottom + systemBars.bottom
                 )
-
-                // Reset translation - let adjustResize handle keyboard positioning
-                v.translationY = 0f
 
                 insets
             }
