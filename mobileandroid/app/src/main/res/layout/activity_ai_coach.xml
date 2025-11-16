@@ -468,6 +468,7 @@
         android:id="@+id/input_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fitsSystemWindows="false"
         app:cardBackgroundColor="@color/white"
         app:cardElevation="16dp"
         app:cardCornerRadius="0dp"
