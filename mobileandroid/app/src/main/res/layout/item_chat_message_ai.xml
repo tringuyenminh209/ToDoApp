@@ -4,43 +4,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:paddingStart="@dimen/spacing_md"
+    android:paddingEnd="@dimen/spacing_md"
+    android:paddingTop="@dimen/spacing_xs"
+    android:paddingBottom="@dimen/spacing_xs">
 
+    <!-- AI Avatar -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/avatarCard"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:cardBackgroundColor="@color/primary_light"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_chat"
+            android:contentDescription="@string/ai_coach"
+            app:tint="@color/primary" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Message Card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/messageCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
+        android:layout_marginStart="@dimen/spacing_sm"
+        android:layout_marginEnd="48dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="2dp"
-        app:strokeColor="@color/border_color"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="3dp"
+        app:strokeColor="@color/line"
         app:strokeWidth="1dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_max="280dp">
+        app:layout_constraintStart_toEndOf="@id/avatarCard"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:padding="@dimen/spacing_md">
 
+            <!-- AI Badge -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/spacing_xs"
+                android:background="@drawable/bg_chip"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_star"
+                    app:tint="@color/primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="AIコーチ"
+                    android:textColor="@color/primary"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- Message Text -->
             <TextView
                 android:id="@+id/tvMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:lineSpacingExtra="2dp"
-                tools:text="タスク管理は生産性向上に重要です。まず、タスクを優先順位付けすることから始めましょう。" />
+                android:textSize="15sp"
+                android:lineSpacingExtra="4dp"
+                android:lineSpacingMultiplier="1.2"
+                tools:text="タスク管理は生産性向上に重要です。まず、タスクを優先順位付けすることから始めましょう。\n\n1. 緊急かつ重要なタスクを最優先\n2. スケジュールを立てる\n3. 定期的に見直す" />
 
+            <!-- Timestamp -->
             <TextView
                 android:id="@+id/tvTimestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/spacing_sm"
                 android:textColor="@color/text_muted"
                 android:textSize="11sp"
                 tools:text="10:30" />
