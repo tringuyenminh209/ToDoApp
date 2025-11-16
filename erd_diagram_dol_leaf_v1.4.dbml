@@ -1,13 +1,16 @@
 // DOL LEAF TodoApp AI - Database Schema (Updated with Implementation Fixes)
 // Created for dbdiagram.io visualization
-// Version: 1.13
-// Updated: 2025-12-16
+// Version: 1.14
+// Updated: 2025-11-16
 // Changes:
+//   - v1.14: FIXED TO MATCH ACTUAL MIGRATIONS - Added Laravel framework tables (password_reset_tokens, sessions, cache, cache_locks, personal_access_tokens, password_resets)
+//   - v1.14: FIXED TO MATCH ACTUAL MIGRATIONS - Restored language/timezone fields in user_settings (migration still has these fields)
+//   - v1.14: FIXED TO MATCH ACTUAL MIGRATIONS - Changed tasks.scheduled_time from timestamp to time (per migration 2025_11_15)
 //   - v1.13: Schema normalization fixes - removed JSON dependencies, replaced with dedicated tables
 //   - v1.13: Added roadmap_milestone_dependencies table (normalized milestone dependencies)
 //   - v1.13: Added learning_path_dependencies table (normalized learning path dependencies)
 //   - v1.13: Removed tasks.tags JSON field (use normalized tags + task_tags tables)
-//   - v1.13: Removed duplicate language/timezone from user_settings (keep only in users table)
+//   - v1.13: NOTE: language/timezone removal was planned but NOT implemented in migrations yet
 //   - v1.13: Removed JSON dependencies from roadmap_milestones (use roadmap_milestone_dependencies table)
 //   - v1.13: Removed JSON dependencies from learning_paths (use learning_path_dependencies table)
 //   - v1.12: Added Roadmap System (roadmaps, roadmap_milestones, roadmap_templates)
@@ -61,6 +64,90 @@ Table users {
   }
 }
 
+// ============================================
+// Laravel Framework Tables (Authentication & Cache)
+// ============================================
+
+Table password_reset_tokens {
+  email varchar(255) [pk, not null, note: 'メールアドレス']
+  token varchar(255) [not null, note: 'リセットトークン']
+  created_at timestamp [null, note: '作成日時']
+
+  indexes {
+    email
+  }
+
+  Note: 'Laravel password reset tokens table'
+}
+
+Table sessions {
+  id varchar(255) [pk, not null, note: 'セッションID']
+  user_id bigint [null, note: 'ユーザーID（ログイン時）']
+  ip_address varchar(45) [null, note: 'IPアドレス']
+  user_agent text [null, note: 'ユーザーエージェント']
+  payload longtext [not null, note: 'セッションデータ']
+  last_activity integer [not null, note: '最終アクティビティ時刻（UNIX timestamp）']
+
+  indexes {
+    user_id
+    last_activity
+  }
+
+  Note: 'Laravel sessions table'
+}
+
+Table cache {
+  key varchar(255) [pk, not null, note: 'キャッシュキー']
+  value mediumtext [not null, note: 'キャッシュ値']
+  expiration integer [not null, note: '有効期限（UNIX timestamp）']
+
+  Note: 'Laravel cache table'
+}
+
+Table cache_locks {
+  key varchar(255) [pk, not null, note: 'ロックキー']
+  owner varchar(255) [not null, note: 'ロック所有者']
+  expiration integer [not null, note: '有効期限（UNIX timestamp）']
+
+  Note: 'Laravel cache locks table'
+}
+
+Table personal_access_tokens {
+  id bigint [pk, increment]
+  tokenable_type varchar(255) [not null, note: 'トークン所有者タイプ']
+  tokenable_id bigint [not null, note: 'トークン所有者ID']
+  name varchar(255) [not null, note: 'トークン名']
+  token varchar(64) [unique, not null, note: 'トークン（ハッシュ化）']
+  abilities text [null, note: '権限（JSON）']
+  last_used_at timestamp [null, note: '最終使用日時']
+  expires_at timestamp [null, note: '有効期限']
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  indexes {
+    (tokenable_type, tokenable_id)
+    token [unique]
+  }
+
+  Note: 'Laravel Sanctum personal access tokens table'
+}
+
+Table password_resets {
+  email varchar(255) [not null, note: 'メールアドレス']
+  token varchar(255) [not null, note: 'リセットトークン']
+  created_at timestamp [null, note: '作成日時']
+
+  indexes {
+    email
+  }
+
+  Note: 'Legacy Laravel password resets table'
+}
+
+// ============================================
+// User Tables
+// ============================================
+
 Table user_profiles {
   id bigint [pk, increment]
   user_id bigint [unique, not null, ref: > users.id]
@@ -81,6 +168,8 @@ Table user_settings {
   id bigint [pk, increment]
   user_id bigint [unique, not null, ref: > users.id]
   theme "ENUM('light','dark','auto')" [not null, default: 'auto']
+  language "ENUM('vi','en','ja')" [not null, default: 'ja', note: 'UI言語（migration still has this field）']
+  timezone varchar(50) [not null, default: 'UTC', note: 'タイムゾーン（migration still has this field）']
   default_focus_minutes integer [not null, default: 25, note: 'デフォルトの集中時間（分）']
   pomodoro_duration integer [not null, default: 25, note: 'ポモドーロタイマーの長さ（分）']
   break_minutes integer [not null, default: 5, note: '短い休憩時間（分）']
@@ -176,7 +265,7 @@ Table tasks {
   estimated_minutes integer [null, note: '予想時間（分）']
   actual_minutes integer [null, note: '実際の時間（分）（v1.12）']
   deadline timestamp [null, note: '締め切り']
-  scheduled_time timestamp [null, note: '予定開始時刻 (タスクを開始する予定の時刻)（v1.10）']
+  scheduled_time time [null, note: '予定開始時刻 (タスクを開始する予定の時刻)（v1.10, changed to time in migration 2025_11_15）']
   actual_start_date timestamp [null, note: '実際の開始日時（v1.12）']
   actual_end_date timestamp [null, note: '実際の完了日時（v1.12）']
   status "ENUM('pending','in_progress','completed','cancelled')" [not null, default: 'pending', note: 'タスクステータス']
