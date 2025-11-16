@@ -906,8 +906,7 @@
         android:id="@+id/bottom_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_md"
-        app:cardElevation="8dp"
+        app:cardElevation="12dp"
         app:cardCornerRadius="0dp"
         app:cardBackgroundColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -917,37 +916,66 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
+            android:padding="@dimen/spacing_lg"
             android:weightSum="2">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_complete"
+            <!-- Complete Button -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginEnd="@dimen/spacing_sm"
-                android:layout_weight="1"
-                android:text="@string/mark_complete"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/success"
-                app:cornerRadius="16dp"
-                app:icon="@drawable/ic_check"
-                app:iconSize="20dp"
-                app:iconGravity="textStart" />
+                app:cardBackgroundColor="@color/success"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_start_focus"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_complete"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/mark_complete"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/success"
+                    app:cornerRadius="20dp"
+                    app:elevation="0dp"
+                    app:icon="@drawable/ic_check"
+                    app:iconSize="24dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="@dimen/spacing_sm"
+                    app:rippleColor="@color/white" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Start Focus Button -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="@dimen/spacing_sm"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/start_focus"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/primary"
-                app:cornerRadius="16dp"
-                app:icon="@drawable/ic_timer"
-                app:iconSize="20dp"
-                app:iconGravity="textStart" />
+                android:layout_marginStart="@dimen/spacing_sm"
+                app:cardBackgroundColor="@color/primary"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_start_focus"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/start_focus"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/primary"
+                    app:cornerRadius="20dp"
+                    app:elevation="0dp"
+                    app:icon="@drawable/ic_timer"
+                    app:iconSize="24dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="@dimen/spacing_sm"
+                    app:rippleColor="@color/white" />
+
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
