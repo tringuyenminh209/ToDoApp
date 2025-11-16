@@ -69,38 +69,33 @@ open class BaseActivity : AppCompatActivity() {
         // Setup window insets for input container (if exists and no bottom navigation)
         // This handles cases like AICoachActivity where input is at the bottom
         if (bottomNav == null && inputContainer != null) {
-            // Store original values before any insets are applied
-            val originalPaddingLeft = inputContainer.paddingLeft
-            val originalPaddingTop = inputContainer.paddingTop
-            val originalPaddingRight = inputContainer.paddingRight
+            // Store original padding before insets listener
             val originalPaddingBottom = inputContainer.paddingBottom
-            
+
             ViewCompat.setOnApplyWindowInsetsListener(inputContainer) { v, insets ->
                 val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
                 val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
-                
-                // Apply bottom padding to input container to avoid system navigation bar overlap
-                v.setPadding(
-                    originalPaddingLeft, 
-                    originalPaddingTop, 
-                    originalPaddingRight, 
+
+                // When keyboard is visible, use IME insets; otherwise use system bars
+                val bottomInset = if (imeInsets.bottom > 0) {
+                    // Keyboard is visible - no extra padding needed because adjustResize handles it
+                    originalPaddingBottom
+                } else {
+                    // Keyboard is hidden - add padding for navigation bar
                     originalPaddingBottom + systemBars.bottom
-                )
-                
-                // For adjustResize mode, we need to apply translationY to push input container above keyboard
-                // This ensures input container is always visible above the keyboard
-                // Use post to ensure layout is complete before applying translation
-                v.post {
-                    if (imeInsets.bottom > 0) {
-                        // Keyboard is visible, translate input container up by keyboard height
-                        // Add small offset to ensure it's fully visible
-                        v.translationY = -(imeInsets.bottom + systemBars.bottom).toFloat()
-                    } else {
-                        // Keyboard is hidden, reset translation
-                        v.translationY = 0f
-                    }
                 }
-                
+
+                // Apply bottom padding to input container
+                v.setPadding(
+                    v.paddingLeft,
+                    v.paddingTop,
+                    v.paddingRight,
+                    bottomInset
+                )
+
+                // Reset translation - let adjustResize handle keyboard positioning
+                v.translationY = 0f
+
                 insets
             }
         }
