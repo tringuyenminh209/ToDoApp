@@ -624,6 +624,10 @@
     <string name="timetable_color_success">ライトグリーン</string>
     <string name="timetable_color_warning">黄</string>
     <string name="timetable_color_danger">赤</string>
+    <string name="timetable_icon">アイコン</string>
+    <string name="timetable_select_icon">アイコンを選択</string>
+    <string name="timetable_learning_path">学習パス</string>
+    <string name="timetable_learning_path_helper">オプション - 学習パスにリンク</string>
     <string name="timetable_create_task">タスクを作成</string>
     <string name="timetable_set_reminder">リマインダーを設定</string>
     <string name="timetable_confirm_delete_class">このクラスを削除しますか？</string>
