@@ -68,6 +68,9 @@ interface ApiService {
     @PUT("subtasks/{id}/toggle")
     suspend fun toggleSubtask(@Path("id") id: Int): Response<ApiResponse<Subtask>>
 
+    @PUT("subtasks/{id}/complete")
+    suspend fun completeSubtask(@Path("id") id: Int): Response<ApiResponse<SubtaskCompleteResponse>>
+
     @DELETE("subtasks/{id}")
     suspend fun deleteSubtask(@Path("id") id: Int): Response<ApiResponse<Unit>>
 

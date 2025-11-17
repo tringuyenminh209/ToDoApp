@@ -58,6 +58,13 @@ class Task extends Model
     ];
 
     /**
+     * Attributes to append to JSON serialization
+     */
+    protected $appends = [
+        'remaining_minutes',
+    ];
+
+    /**
      * Serialize deadline as date-only (Y-m-d) to avoid timezone issues
      */
     protected function serializeDate(\DateTimeInterface $date): string
@@ -310,6 +317,15 @@ class Task extends Model
                $this->days_until_deadline >= 0;
     }
 
+    /**
+     * Accessor for remaining_minutes attribute
+     * Automatically available when task is serialized to JSON
+     */
+    public function getRemainingMinutesAttribute()
+    {
+        return $this->getRemainingMinutes();
+    }
+
     // Helper methods
     public function markAsCompleted()
     {
@@ -338,6 +354,36 @@ class Task extends Model
     {
         $subtaskTime = $this->subtasks->sum('estimated_minutes');
         return $this->estimated_minutes ? max($this->estimated_minutes, $subtaskTime) : $subtaskTime;
+    }
+
+    /**
+     * Get remaining minutes after subtracting completed subtasks
+     * Formula: task.estimated_minutes - SUM(completed_subtasks.estimated_minutes)
+     * Used for smart timer duration when starting focus session
+     */
+    public function getRemainingMinutes()
+    {
+        // If no estimated minutes for task, return null
+        if (!$this->estimated_minutes) {
+            return null;
+        }
+
+        // If no subtasks, return full task time
+        if ($this->subtasks->isEmpty()) {
+            return $this->estimated_minutes;
+        }
+
+        // Calculate time spent on completed subtasks
+        $completedSubtasksTime = $this->subtasks()
+            ->where('is_completed', true)
+            ->whereNotNull('estimated_minutes')
+            ->sum('estimated_minutes');
+
+        // Remaining time = total - completed
+        $remaining = $this->estimated_minutes - $completedSubtasksTime;
+
+        // Ensure remaining time is not negative
+        return max(0, $remaining);
     }
 
     public function getNextSubtask()
