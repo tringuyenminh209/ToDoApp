@@ -438,7 +438,11 @@
     <string name="ai_coach_welcome_title">こんにちは！私はAIコーチです</string>
     <string name="ai_coach_welcome_message">計画、集中、目標達成のお手伝いをします</string>
     <string name="ai_coach_welcome_hint">生産性、時間管理、目標について何でもお聞きください</string>
-    
+
+    <!-- Voice Input -->
+    <string name="voice_input">音声入力</string>
+    <string name="voice_listening">音声を聞いています...</string>
+
     <!-- Chat History -->
     <string name="chat_history">会話履歴</string>
     <string name="chat_history_empty">会話履歴がありません</string>
