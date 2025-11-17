@@ -48,13 +48,30 @@ class TimelineAdapter(
     override fun getItemCount(): Int = timelineSlots.size
 
     fun submitList(tasks: List<Task>) {
+        android.util.Log.d("TimelineAdapter", "=== SUBMIT LIST DEBUG ===")
+        android.util.Log.d("TimelineAdapter", "Received ${tasks.size} tasks")
+
+        tasks.forEach { task ->
+            android.util.Log.d("TimelineAdapter",
+                "Task: id=${task.id}, title=${task.title}, scheduled_time=${task.scheduled_time}")
+        }
+
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
         // 24時間分のスロットを生成 (00:00 - 23:00)
         timelineSlots = (0..23).map { hour ->
             // この時間帯のタスクをフィルター
             val tasksInThisHour = tasks.filter { task ->
-                getTaskHour(task) == hour
+                val taskHour = getTaskHour(task)
+                android.util.Log.d("TimelineAdapter",
+                    "Checking task '${task.title}': scheduled_time=${task.scheduled_time}, " +
+                    "extracted hour=$taskHour, slot hour=$hour, match=${taskHour == hour}")
+                taskHour == hour
+            }
+
+            if (tasksInThisHour.isNotEmpty()) {
+                android.util.Log.d("TimelineAdapter",
+                    "Hour $hour has ${tasksInThisHour.size} tasks")
             }
 
             TimelineSlot(
@@ -63,6 +80,10 @@ class TimelineAdapter(
                 isCurrentHour = (hour == currentHour)
             )
         }
+
+        android.util.Log.d("TimelineAdapter", "Created ${timelineSlots.size} time slots")
+        android.util.Log.d("TimelineAdapter",
+            "Slots with tasks: ${timelineSlots.count { it.tasks.isNotEmpty() }}")
 
         notifyDataSetChanged()
     }
@@ -107,9 +128,15 @@ class TimelineAdapter(
 
                 // タスクがある場合は表示
                 if (slot.tasks.isNotEmpty()) {
+                    android.util.Log.d("TimelineAdapter",
+                        "Binding hour ${slot.hour} with ${slot.tasks.size} tasks")
                     slot.tasks.forEach { task ->
+                        android.util.Log.d("TimelineAdapter",
+                            "Creating view for task: ${task.title}")
                         val taskView = createTaskView(task)
                         tasksContainer.addView(taskView)
+                        android.util.Log.d("TimelineAdapter",
+                            "Added task view to container, child count: ${tasksContainer.childCount}")
                     }
                 }
             }
@@ -119,6 +146,10 @@ class TimelineAdapter(
          * タスクビューを動的に生成
          */
         private fun createTaskView(task: Task): View {
+            android.util.Log.d("TimelineAdapter",
+                "createTaskView: title='${task.title}', category='${task.category}', " +
+                "estimated_minutes=${task.estimated_minutes}")
+
             val taskBinding = ItemTimelineTaskBinding.inflate(
                 LayoutInflater.from(itemView.context),
                 binding.tasksContainer,
@@ -128,11 +159,15 @@ class TimelineAdapter(
             taskBinding.apply {
                 // タスクタイトル
                 tvTaskTitle.text = task.title
+                android.util.Log.d("TimelineAdapter",
+                    "Set tvTaskTitle.text = '${task.title}'")
 
                 // 時間表示
                 if (task.estimated_minutes != null && task.estimated_minutes > 0) {
                     tvTime.visibility = View.VISIBLE
                     tvTime.text = "${task.estimated_minutes}分"
+                    android.util.Log.d("TimelineAdapter",
+                        "Set tvTime = '${task.estimated_minutes}分'")
                 } else {
                     tvTime.visibility = View.GONE
                 }
@@ -162,12 +197,20 @@ class TimelineAdapter(
                             R.color.warning,
                             R.color.warning_light
                         )
+                        "class" -> Triple(
+                            "授業",
+                            R.color.primary,
+                            R.color.primary_light
+                        )
                         else -> Triple(
                             itemView.context.getString(R.string.category_other),
                             R.color.text_muted,
                             R.color.surface
                         )
                     }
+
+                    android.util.Log.d("TimelineAdapter",
+                        "Category: '${task.category}' -> badge text: '$categoryText'")
 
                     categoryBadge.setCardBackgroundColor(
                         ContextCompat.getColor(itemView.context, categoryBgColor)
@@ -185,6 +228,9 @@ class TimelineAdapter(
                     onTaskClick(task)
                 }
             }
+
+            android.util.Log.d("TimelineAdapter",
+                "Created task view, returning root")
 
             return taskBinding.root
         }
