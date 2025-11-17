@@ -27,7 +27,7 @@ class FocusSessionActivity : BaseActivity() {
     private lateinit var knowledgeAdapter: FocusKnowledgeAdapter
     private lateinit var subtaskAdapter: FocusSubtaskAdapter
     private var taskId: Int = -1
-    private var subtaskIndex: Int = -1
+    private var subtaskId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +38,14 @@ class FocusSessionActivity : BaseActivity() {
 
         viewModel = ViewModelProvider(this)[FocusSessionViewModel::class.java]
 
-        // Get task ID and subtask index from intent
+        // Get task ID and subtask ID from intent
         taskId = intent.getIntExtra("task_id", -1)
-        subtaskIndex = intent.getIntExtra("subtask_index", -1)
+        subtaskId = intent.getIntExtra("subtask_id", -1)
 
         if (taskId != -1) {
-            if (subtaskIndex != -1) {
+            if (subtaskId != -1) {
                 // Focus on specific subtask
-                viewModel.loadTaskWithSubtask(taskId, subtaskIndex)
+                viewModel.loadTaskWithSubtask(taskId, subtaskId)
             } else {
                 // Focus on main task
                 viewModel.loadTask(taskId)

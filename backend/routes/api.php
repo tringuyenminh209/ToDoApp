@@ -99,6 +99,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/tasks/{taskId}/subtasks/reorder', [SubtaskController::class, 'reorder']);
     Route::put('/subtasks/{id}', [SubtaskController::class, 'update']);
     Route::put('/subtasks/{id}/toggle', [SubtaskController::class, 'toggle']);
+    Route::put('/subtasks/{id}/complete', [SubtaskController::class, 'complete']);
     Route::delete('/subtasks/{id}', [SubtaskController::class, 'destroy']);
 
     // Focus Session routes

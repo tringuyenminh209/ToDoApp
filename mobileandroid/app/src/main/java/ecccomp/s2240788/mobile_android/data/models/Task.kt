@@ -29,6 +29,8 @@ data class Task(
     val last_focus_at: String? = null,
     val total_focus_minutes: Int = 0,
     val distraction_count: Int = 0,
+    // Smart time calculation (auto-calculated by backend)
+    val remaining_minutes: Int? = null, // Time remaining after subtracting completed subtasks
     // Relations
     val subtasks: List<Subtask>? = null,
     val knowledge_items: List<KnowledgeItem>? = null
@@ -43,6 +45,12 @@ data class Subtask(
     val sort_order: Int,
     val created_at: String,
     val updated_at: String
+)
+
+// Response model for subtask completion
+data class SubtaskCompleteResponse(
+    val subtask: Subtask,
+    val task: Task
 )
 
 // Request models
