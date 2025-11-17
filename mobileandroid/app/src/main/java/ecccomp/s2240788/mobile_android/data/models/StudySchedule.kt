@@ -229,3 +229,104 @@ object DayItemHelper {
         )
     }
 }
+
+/**
+ * Timeline Item - Unified format for both Study Schedules and Timetable Classes
+ * タイムラインアイテム - スケジュールと時間割の統合フォーマット
+ *
+ * Combines both Study Schedules and Timetable Classes into a single format for timeline display
+ */
+data class TimelineItem(
+    val id: String,                           // "study_123" or "class_456"
+    val type: String,                         // "study_schedule" or "timetable_class"
+    val title: String,                        // Display title with emoji
+    val day_of_week: Int,                     // 0-6 (Sunday-Saturday)
+    val scheduled_time: String,               // HH:mm:ss format
+    val duration_minutes: Int,                // Duration in minutes
+    val category: String,                     // "study" or "class"
+
+    // Optional fields for timetable classes
+    val room: String? = null,
+    val instructor: String? = null,
+    val period: Int? = null,
+    val color: String? = null,
+    val icon: String? = null,
+
+    // Learning path reference (for both types)
+    val learning_path_id: Int? = null,
+    val learning_path: LearningPathBasic? = null
+) {
+    /**
+     * Convert to Task object for timeline adapter compatibility
+     */
+    fun toTask(selectedDate: String): Task {
+        // Extract hour from scheduled_time for timeline display
+        val hour = try {
+            scheduled_time.split(":")[0].toIntOrNull() ?: -1
+        } catch (e: Exception) {
+            -1
+        }
+
+        return Task(
+            id = if (type == "study_schedule") {
+                -id.substringAfter("_").toIntOrNull() ?: 0
+            } else {
+                -10000 - (id.substringAfter("_").toIntOrNull() ?: 0)
+            },
+            title = title,
+            category = category,
+            description = when (type) {
+                "study_schedule" -> "学習セッション: ${duration_minutes}分"
+                "timetable_class" -> buildString {
+                    append("授業")
+                    period?.let { append(" - 第${it}時限") }
+                    room?.let { append(" - ${it}") }
+                    instructor?.let { append(" - ${it}") }
+                    append(" - ${duration_minutes}分")
+                }
+                else -> ""
+            },
+            status = "pending",
+            priority = if (type == "timetable_class") 5 else 4,
+            energy_level = "medium",
+            estimated_minutes = duration_minutes,
+            deadline = selectedDate,
+            scheduled_time = scheduled_time,
+            created_at = "",
+            updated_at = "",
+            user_id = 0,
+            project_id = null,
+            learning_milestone_id = learning_path_id,
+            ai_breakdown_enabled = false,
+            subtasks = null,
+            knowledge_items = null
+        )
+    }
+
+    /**
+     * Get day name in Japanese
+     */
+    fun getDayNameJapanese(): String {
+        return when (day_of_week) {
+            0 -> "日"
+            1 -> "月"
+            2 -> "火"
+            3 -> "水"
+            4 -> "木"
+            5 -> "金"
+            6 -> "土"
+            else -> "?"
+        }
+    }
+
+    /**
+     * Get formatted time (HH:mm)
+     */
+    fun getFormattedTime(): String {
+        return try {
+            scheduled_time.substring(0, 5)
+        } catch (e: Exception) {
+            scheduled_time
+        }
+    }
+}
