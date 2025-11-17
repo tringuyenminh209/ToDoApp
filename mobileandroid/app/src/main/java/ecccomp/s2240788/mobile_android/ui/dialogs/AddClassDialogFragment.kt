@@ -33,6 +33,8 @@ class AddClassDialogFragment : DialogFragment() {
     private var selectedStartTime: String? = null
     private var selectedEndTime: String? = null
     private var selectedColor: String = "#4F46E5" // Default indigo
+    private var selectedIcon: String? = null
+    private var selectedLearningPathId: Int? = null
     
     companion object {
         private const val ARG_DAY = "day"
@@ -85,21 +87,27 @@ class AddClassDialogFragment : DialogFragment() {
         val dayAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, days)
         dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerDay.adapter = dayAdapter
-        
+
         // Setup period spinner
         val periods = (1..10).map { getString(R.string.timetable_period_format, it) }.toTypedArray()
         val periodAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, periods)
         periodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerPeriod.adapter = periodAdapter
-        
+
         // Setup color chips
         setupColorChips()
+
+        // Setup icon dropdown
+        setupIconDropdown()
+
+        // Setup learning path dropdown
+        setupLearningPathDropdown()
     }
     
     private fun setupColorChips() {
         // Default selection
         binding.chipColorBlue.isChecked = true
-        
+
         binding.chipGroupColor.setOnCheckedStateChangeListener { _, checkedIds ->
             if (checkedIds.isNotEmpty()) {
                 selectedColor = when (checkedIds[0]) {
@@ -111,6 +119,67 @@ class AddClassDialogFragment : DialogFragment() {
                     else -> "#4F46E5"
                 }
             }
+        }
+    }
+
+    private fun setupIconDropdown() {
+        // Icon options matching drawable resources
+        val iconOptions = listOf(
+            "None",
+            "Book",
+            "Computer",
+            "Briefcase",
+            "Design",
+            "Coffee",
+            "Target",
+            "Star"
+        )
+
+        val iconAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            iconOptions
+        )
+        binding.actvIcon.setAdapter(iconAdapter)
+
+        // Set default to None
+        binding.actvIcon.setText("None", false)
+
+        // Handle selection
+        binding.actvIcon.setOnItemClickListener { _, _, position, _ ->
+            selectedIcon = when (iconOptions[position]) {
+                "None" -> null
+                "Book" -> "book"
+                "Computer" -> "computer"
+                "Briefcase" -> "briefcase"
+                "Design" -> "design"
+                "Coffee" -> "coffee"
+                "Target" -> "target"
+                "Star" -> "star"
+                else -> null
+            }
+        }
+    }
+
+    private fun setupLearningPathDropdown() {
+        // Learning path options (currently static, should be loaded from API in future)
+        val learningPathOptions = listOf("None")
+
+        val learningPathAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            learningPathOptions
+        )
+        binding.actvLearningPath.setAdapter(learningPathAdapter)
+
+        // Set default to None
+        binding.actvLearningPath.setText("None", false)
+
+        // Handle selection
+        binding.actvLearningPath.setOnItemClickListener { _, _, position, _ ->
+            // For now, only "None" option exists
+            selectedLearningPathId = null
+            // TODO: In future, load learning paths from API and map selection to ID
         }
     }
     
@@ -218,7 +287,7 @@ class AddClassDialogFragment : DialogFragment() {
         val instructor = binding.etInstructor.text.toString().trim().ifEmpty { null }
         val description = binding.etDescription.text.toString().trim().ifEmpty { null }
         val notes = binding.etNotes.text.toString().trim().ifEmpty { null }
-        
+
         // Create class via ViewModel
         viewModel.createClass(
             name = name,
@@ -230,7 +299,9 @@ class AddClassDialogFragment : DialogFragment() {
             startTime = selectedStartTime!!,
             endTime = selectedEndTime!!,
             color = selectedColor,
+            icon = selectedIcon,
             notes = notes,
+            learningPathId = selectedLearningPathId,
             onSuccess = {
                 // Show success message
                 Toast.makeText(requireContext(), "授業を追加しました", Toast.LENGTH_SHORT).show()
