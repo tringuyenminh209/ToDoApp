@@ -260,16 +260,9 @@ data class TimelineItem(
      * Convert to Task object for timeline adapter compatibility
      */
     fun toTask(selectedDate: String): Task {
-        // Extract hour from scheduled_time for timeline display
-        val hour = try {
-            scheduled_time.split(":")[0].toIntOrNull() ?: -1
-        } catch (e: Exception) {
-            -1
-        }
-
         return Task(
             id = if (type == "study_schedule") {
-                -id.substringAfter("_").toIntOrNull() ?: 0
+                -(id.substringAfter("_").toIntOrNull() ?: 0)
             } else {
                 -10000 - (id.substringAfter("_").toIntOrNull() ?: 0)
             },
