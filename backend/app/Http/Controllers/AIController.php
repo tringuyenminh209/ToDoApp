@@ -967,13 +967,16 @@ class AIController extends Controller
                 'content' => $request->message,
             ]);
 
-            // Parse task intent from user message
-            $taskData = $this->aiService->parseTaskIntent($request->message);
-            $createdTask = null;
-
-            // Parse timetable intent from user message
+            // Parse timetable intent FIRST (higher priority than task)
             $timetableData = $this->aiService->parseTimetableIntent($request->message);
             $createdTimetableClass = null;
+
+            // Parse task intent only if NO timetable intent detected
+            $taskData = null;
+            $createdTask = null;
+            if (!$timetableData) {
+                $taskData = $this->aiService->parseTaskIntent($request->message);
+            }
 
             // If task intent detected, create task
             if ($taskData) {
