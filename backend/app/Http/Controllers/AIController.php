@@ -7,6 +7,7 @@ use App\Models\AISuggestion;
 use App\Models\AISummary;
 use App\Models\ChatConversation;
 use App\Models\ChatMessage;
+use App\Models\TimetableClass;
 use App\Services\AIService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -970,6 +971,10 @@ class AIController extends Controller
             $taskData = $this->aiService->parseTaskIntent($request->message);
             $createdTask = null;
 
+            // Parse timetable intent from user message
+            $timetableData = $this->aiService->parseTimetableIntent($request->message);
+            $createdTimetableClass = null;
+
             // If task intent detected, create task
             if ($taskData) {
                 try {
@@ -1029,6 +1034,43 @@ class AIController extends Controller
                 } catch (\Exception $e) {
                     Log::error('Failed to create task from context-aware chat: ' . $e->getMessage());
                     // Continue without task creation
+                }
+            }
+
+            // If timetable intent detected, create timetable class
+            if ($timetableData) {
+                try {
+                    // Calculate period if not provided (assume 1 period = 1 hour)
+                    $period = $timetableData['period'] ?? null;
+                    if (!$period) {
+                        // Calculate period from time duration
+                        $start = \Carbon\Carbon::createFromFormat('H:i', $timetableData['start_time']);
+                        $end = \Carbon\Carbon::createFromFormat('H:i', $timetableData['end_time']);
+                        $durationHours = $start->diffInHours($end);
+                        $period = max(1, round($durationHours)); // At least 1 period
+                    }
+
+                    $createdTimetableClass = TimetableClass::create([
+                        'user_id' => $user->id,
+                        'name' => $timetableData['name'],
+                        'description' => $timetableData['description'] ?? null,
+                        'room' => $timetableData['room'] ?? null,
+                        'instructor' => $timetableData['instructor'] ?? null,
+                        'day' => $timetableData['day'],
+                        'period' => $period,
+                        'start_time' => $timetableData['start_time'],
+                        'end_time' => $timetableData['end_time'],
+                        'color' => $timetableData['color'] ?? '#6366f1', // Default indigo
+                        'icon' => $timetableData['icon'] ?? '📚', // Default book icon
+                    ]);
+
+                    Log::info('Timetable class created from context-aware chat', [
+                        'class_id' => $createdTimetableClass->id,
+                        'conversation_id' => $conversation->id
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to create timetable class from context-aware chat: ' . $e->getMessage());
+                    // Continue without timetable creation
                 }
             }
 
@@ -1114,6 +1156,32 @@ class AIController extends Controller
                 $aiResponse['message'] = $aiResponse['message'] . $taskConfirmation;
             }
 
+            // If timetable class was created, add confirmation to AI response
+            if ($createdTimetableClass) {
+                $dayNameMap = [
+                    'monday' => '月曜日',
+                    'tuesday' => '火曜日',
+                    'wednesday' => '水曜日',
+                    'thursday' => '木曜日',
+                    'friday' => '金曜日',
+                    'saturday' => '土曜日',
+                    'sunday' => '日曜日',
+                ];
+                $dayJapanese = $dayNameMap[$createdTimetableClass->day] ?? $createdTimetableClass->day;
+
+                $classConfirmation = "\n\n🎓 授業を登録しました: 「{$createdTimetableClass->name}」\n";
+                $classConfirmation .= "📅 {$dayJapanese} {$createdTimetableClass->start_time} - {$createdTimetableClass->end_time}";
+
+                if ($createdTimetableClass->room) {
+                    $classConfirmation .= "\n🏫 教室: {$createdTimetableClass->room}";
+                }
+                if ($createdTimetableClass->instructor) {
+                    $classConfirmation .= "\n👨‍🏫 教員: {$createdTimetableClass->instructor}";
+                }
+
+                $aiResponse['message'] = $aiResponse['message'] . $classConfirmation;
+            }
+
             // Create assistant message
             $assistantMessage = ChatMessage::create([
                 'conversation_id' => $conversation->id,
@@ -1137,6 +1205,7 @@ class AIController extends Controller
                 'user_message' => $userMessage,
                 'assistant_message' => $assistantMessage,
                 'created_task' => $createdTask, // Auto-created task from parseTaskIntent
+                'created_timetable_class' => $createdTimetableClass, // Auto-created timetable class from parseTimetableIntent
                 'task_suggestion' => $aiResponse['task_suggestion'] ?? null, // AI suggestion (requires user confirmation)
             ];
 
