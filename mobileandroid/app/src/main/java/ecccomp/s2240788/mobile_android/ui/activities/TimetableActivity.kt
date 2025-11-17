@@ -14,8 +14,10 @@ import ecccomp.s2240788.mobile_android.data.models.toStudyModel
 import ecccomp.s2240788.mobile_android.ui.adapters.StudyAdapter
 import ecccomp.s2240788.mobile_android.ui.adapters.TimetableAdapter
 import ecccomp.s2240788.mobile_android.ui.dialogs.AddClassDialogFragment
+import ecccomp.s2240788.mobile_android.ui.dialogs.AddStudyDialogFragment
 import ecccomp.s2240788.mobile_android.ui.dialogs.EditWeeklyContentDialogFragment
 import ecccomp.s2240788.mobile_android.ui.viewmodels.TimetableViewModel
+import ecccomp.s2240788.mobile_android.ui.viewmodels.TimetableStatus
 import android.widget.Toast
 import kotlin.math.abs
 
@@ -80,7 +82,7 @@ class TimetableActivity : BaseActivity() {
         studyAdapter = StudyAdapter(
             studies = emptyList(),
             onStudyClick = { study ->
-                // TODO: Show edit study dialog
+                showEditStudyDialog(study)
             },
             onCheckboxClick = { study ->
                 viewModel.toggleStudyCompletion(study.id.toInt())
@@ -172,8 +174,39 @@ class TimetableActivity : BaseActivity() {
     }
 
     private fun updateStatusCard(status: Any?) {
-        // Update status display if view exists
-        // TODO: Add status views to layout when ready
+        val timetableStatus = status as? TimetableStatus ?: return
+
+        when (timetableStatus) {
+            TimetableStatus.ACTIVE -> {
+                // Currently in class
+                val currentClass = viewModel.currentClass.value
+                binding.tvStatusTitle.text = currentClass?.name ?: getString(R.string.timetable_status_in_class)
+                binding.tvStatusSubtitle.text = currentClass?.room?.let { "教室: $it" } ?: ""
+                binding.imgStatusIcon.setImageResource(R.drawable.ic_book)
+
+                // Show remaining time
+                val remainingMinutes = viewModel.getRemainingTime()
+                binding.tvStatusTime.text = String.format("%02d:%02d", remainingMinutes / 60, remainingMinutes % 60)
+            }
+            TimetableStatus.NEXT -> {
+                // Next class coming up
+                val nextClass = viewModel.nextClass.value
+                binding.tvStatusTitle.text = getString(R.string.timetable_status_next)
+                binding.tvStatusSubtitle.text = nextClass?.name ?: ""
+                binding.imgStatusIcon.setImageResource(R.drawable.ic_clock)
+
+                // Show time until next class
+                val minutesUntil = viewModel.getTimeUntilNextClass()
+                binding.tvStatusTime.text = String.format("%02d:%02d", minutesUntil / 60, minutesUntil % 60)
+            }
+            TimetableStatus.BREAK -> {
+                // No class / Break time
+                binding.tvStatusTitle.text = getString(R.string.timetable_no_class)
+                binding.tvStatusSubtitle.text = getString(R.string.timetable_break_time)
+                binding.imgStatusIcon.setImageResource(R.drawable.ic_clock)
+                binding.tvStatusTime.text = "--:--"
+            }
+        }
     }
 
     private fun updateCurrentClassUI(currentClass: ecccomp.s2240788.mobile_android.data.models.ClassModel?) {
@@ -254,7 +287,7 @@ class TimetableActivity : BaseActivity() {
 
         // Add study button
         binding.btnAddStudy.setOnClickListener {
-            // TODO: Show add study dialog
+            showAddStudyDialog()
         }
 
         // Previous week
@@ -313,7 +346,49 @@ class TimetableActivity : BaseActivity() {
         val dialog = AddClassDialogFragment.newInstance(day, period)
         dialog.show(supportFragmentManager, "AddClassDialog")
     }
-    
+
+    /**
+     * Show add study dialog
+     * 宿題追加ダイアログを表示
+     */
+    private fun showAddStudyDialog() {
+        val dialog = AddStudyDialogFragment.newInstance()
+        dialog.show(supportFragmentManager, "AddStudyDialog")
+    }
+
+    /**
+     * Show edit study dialog
+     * 宿題編集ダイアログを表示
+     */
+    private fun showEditStudyDialog(study: ecccomp.s2240788.mobile_android.data.models.StudyModel) {
+        // Convert StudyModel back to TimetableStudy
+        val typeString = when (study.type) {
+            ecccomp.s2240788.mobile_android.data.models.StudyType.HOMEWORK -> "homework"
+            ecccomp.s2240788.mobile_android.data.models.StudyType.REVIEW -> "review"
+            ecccomp.s2240788.mobile_android.data.models.StudyType.EXAM -> "exam"
+            ecccomp.s2240788.mobile_android.data.models.StudyType.PROJECT -> "project"
+        }
+
+        val timetableStudy = ecccomp.s2240788.mobile_android.data.models.TimetableStudy(
+            id = study.id.toInt(),
+            userId = 0, // Not needed for dialog
+            timetableClassId = null,
+            title = study.title,
+            description = null,
+            type = typeString,
+            subject = study.subject,
+            dueDate = study.dueDate,
+            priority = study.priority,
+            status = if (study.completed) "completed" else "pending",
+            completedAt = null,
+            taskId = null,
+            createdAt = "",
+            updatedAt = ""
+        )
+        val dialog = AddStudyDialogFragment.newInstance(timetableStudy)
+        dialog.show(supportFragmentManager, "EditStudyDialog")
+    }
+
     private fun showEditWeeklyContentDialog(timetableClass: ecccomp.s2240788.mobile_android.data.models.TimetableClass) {
         val dialog = EditWeeklyContentDialogFragment.newInstance(timetableClass)
         dialog.show(supportFragmentManager, "EditWeeklyContentDialog")

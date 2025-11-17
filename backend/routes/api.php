@@ -220,6 +220,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Studies (homework/review)
         Route::get('/studies', [TimetableController::class, 'getStudies']);
         Route::post('/studies', [TimetableController::class, 'createStudy']);
+        Route::put('/studies/{id}', [TimetableController::class, 'updateStudy']);
         Route::put('/studies/{id}/toggle', [TimetableController::class, 'toggleStudy']);
         Route::delete('/studies/{id}', [TimetableController::class, 'deleteStudy']);
     });

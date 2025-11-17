@@ -291,6 +291,49 @@ class TimetableController extends Controller
     }
 
     /**
+     * Update a study
+     * PUT /api/timetable/studies/{id}
+     */
+    public function updateStudy(Request $request, string $id): JsonResponse
+    {
+        $study = TimetableStudy::where('user_id', $request->user()->id)->findOrFail($id);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'type' => 'required|in:homework,review,exam,project',
+            'subject' => 'nullable|string|max:255',
+            'due_date' => 'nullable|date',
+            'priority' => 'nullable|integer|min:1|max:5',
+            'status' => 'nullable|in:pending,completed',
+            'timetable_class_id' => 'nullable|exists:timetable_classes,id',
+            'task_id' => 'nullable|exists:tasks,id',
+        ]);
+
+        try {
+            $study->update($request->only([
+                'title', 'description', 'type', 'subject',
+                'due_date', 'priority', 'status', 'timetable_class_id', 'task_id'
+            ]));
+
+            $study->load(['timetableClass', 'task']);
+
+            return response()->json([
+                'success' => true,
+                'data' => $study,
+                'message' => '宿題・復習を更新しました'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '宿題・復習の更新に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Toggle study completion
      * PUT /api/timetable/studies/{id}/toggle
      */

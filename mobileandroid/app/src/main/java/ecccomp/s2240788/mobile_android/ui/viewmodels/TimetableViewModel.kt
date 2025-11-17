@@ -311,6 +311,32 @@ class TimetableViewModel : ViewModel() {
     }
     
     /**
+     * Update study
+     * 宿題・課題を更新
+     */
+    fun updateStudy(id: Int, request: CreateTimetableStudyRequest, onSuccess: () -> Unit = {}) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                val response = apiService.updateTimetableStudy(id, request)
+
+                if (response.isSuccessful) {
+                    loadStudies() // Reload to get updated list
+                    onSuccess()
+                } else {
+                    _error.value = "Failed to update study: ${response.message()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Error updating study: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
      * Toggle study completion
      * 宿題・課題の完了状態をトグル
      */
