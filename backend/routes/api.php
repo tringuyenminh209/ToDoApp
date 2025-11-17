@@ -246,6 +246,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('study-schedules')->group(function () {
         Route::get('/today', [\App\Http\Controllers\StudyScheduleController::class, 'todaySessions']);
         Route::get('/stats', [\App\Http\Controllers\StudyScheduleController::class, 'stats']);
+        Route::get('/timeline', [\App\Http\Controllers\StudyScheduleController::class, 'getTimelineItems']);
         Route::get('/', [\App\Http\Controllers\StudyScheduleController::class, 'allSchedules']);
         Route::put('/{id}', [\App\Http\Controllers\StudyScheduleController::class, 'update']);
         Route::delete('/{id}', [\App\Http\Controllers\StudyScheduleController::class, 'destroy']);
