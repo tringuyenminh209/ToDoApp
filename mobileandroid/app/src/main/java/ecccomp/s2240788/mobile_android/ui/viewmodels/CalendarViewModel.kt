@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.Task
 import ecccomp.s2240788.mobile_android.data.models.StudyScheduleWithPath
+import ecccomp.s2240788.mobile_android.data.models.TimelineItem
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.async
