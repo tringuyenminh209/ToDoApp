@@ -140,8 +140,10 @@ class FocusSessionViewModel : ViewModel() {
 
     /**
      * サブタスクを含むタスクを取得してフォーカス
+     * @param taskId Task ID
+     * @param subtaskId Subtask ID (database ID, not array index)
      */
-    fun loadTaskWithSubtask(taskId: Int, subtaskIndex: Int) {
+    fun loadTaskWithSubtask(taskId: Int, subtaskId: Int) {
         viewModelScope.launch {
             try {
                 val response = apiService.getTask(taskId)
@@ -151,8 +153,13 @@ class FocusSessionViewModel : ViewModel() {
                         val task = apiResponse.data
                         val subtasks = task.subtasks
 
-                        if (subtasks != null && subtaskIndex >= 0 && subtaskIndex < subtasks.size) {
-                            val subtask = subtasks[subtaskIndex]
+                        // Find subtask by ID (not by index!)
+                        val subtask = subtasks?.find { it.id == subtaskId }
+
+                        if (subtask != null) {
+                            android.util.Log.d("FocusSessionViewModel",
+                                "Subtask found: id=${subtask.id}, title=${subtask.title}, " +
+                                "estimated_minutes=${subtask.estimated_minutes}")
 
                             // Create a modified task object with subtask info for display
                             val modifiedTask = task.copy(
@@ -175,7 +182,9 @@ class FocusSessionViewModel : ViewModel() {
                             // Load knowledge items for task and all subtasks after subtasks are loaded
                             loadKnowledgeItemsInternal(taskId)
                         } else {
-                            _toast.value = "サブタスクが見つかりません"
+                            android.util.Log.e("FocusSessionViewModel",
+                                "Subtask not found: subtaskId=$subtaskId in task $taskId with ${subtasks?.size ?: 0} subtasks")
+                            _toast.value = "サブタスクが見つかりません (ID: $subtaskId)"
                         }
                     } else {
                         _toast.value = "タスクが見つかりません"
@@ -184,6 +193,7 @@ class FocusSessionViewModel : ViewModel() {
                     _toast.value = "タスクの取得に失敗しました"
                 }
             } catch (e: Exception) {
+                android.util.Log.e("FocusSessionViewModel", "Error loading subtask", e)
                 _toast.value = "エラーが発生しました: ${e.message}"
             }
         }
