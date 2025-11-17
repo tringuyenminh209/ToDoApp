@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.data.models.Task
+import ecccomp.s2240788.mobile_android.data.models.Subtask
 import ecccomp.s2240788.mobile_android.databinding.ItemTaskCardBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,6 +21,7 @@ import java.util.*
 class MainTaskAdapter(
     private val onTaskClick: (Task) -> Unit,
     private val onStartClick: (Task) -> Unit,
+    private val onSubtaskStartClick: (Task, Subtask) -> Unit,
     private val onMoreClick: (Task) -> Unit
 ) : ListAdapter<Task, MainTaskAdapter.TaskViewHolder>(MainTaskDiffCallback()) {
 
@@ -245,6 +247,29 @@ class MainTaskAdapter(
                         } else {
                             subtaskView.addView(indicator)
                             subtaskView.addView(titleText)
+                        }
+
+                        // Start button for uncompleted subtasks
+                        if (!subtask.is_completed) {
+                            val startButton = com.google.android.material.button.MaterialButton(
+                                itemView.context,
+                                null,
+                                com.google.android.material.R.attr.materialIconButtonStyle
+                            ).apply {
+                                setIconResource(R.drawable.ic_play)
+                                iconTint = ContextCompat.getColorStateList(context, R.color.primary)
+                                iconGravity = com.google.android.material.button.MaterialButton.ICON_GRAVITY_TEXT_START
+                                layoutParams = android.widget.LinearLayout.LayoutParams(
+                                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                                ).apply {
+                                    marginStart = 8
+                                }
+                                setOnClickListener {
+                                    onSubtaskStartClick(task, subtask)
+                                }
+                            }
+                            subtaskView.addView(startButton)
                         }
 
                         subtasksContainer.addView(subtaskView)
