@@ -160,9 +160,8 @@ class CalendarFragment : Fragment() {
         binding.rvTimeline.visibility = View.VISIBLE
         binding.filterChipGroup.visibility = View.GONE
 
-        // Trigger refresh to update timeline
-        viewModel.applyFilters()
-        Log.d("CalendarFragment", "Timeline view activated, filters applied")
+        // Timeline will update automatically via LiveData observation
+        Log.d("CalendarFragment", "Timeline view activated")
     }
 
     /**
