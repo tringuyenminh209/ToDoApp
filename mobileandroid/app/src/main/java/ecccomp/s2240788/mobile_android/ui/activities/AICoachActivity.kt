@@ -267,6 +267,44 @@ class AICoachActivity : BaseActivity() {
             }
         }
 
+        // Observe created timetable class
+        viewModel.createdTimetableClass.observe(this) { timetableClass ->
+            timetableClass?.let {
+                // Map day to Japanese
+                val dayNameMap = mapOf(
+                    "monday" to "月曜日",
+                    "tuesday" to "火曜日",
+                    "wednesday" to "水曜日",
+                    "thursday" to "木曜日",
+                    "friday" to "金曜日",
+                    "saturday" to "土曜日",
+                    "sunday" to "日曜日"
+                )
+                val dayJapanese = dayNameMap[it.day] ?: it.day
+
+                // Build message
+                val message = buildString {
+                    append("🎓 授業を登録しました: 「${it.name}」\n")
+                    append("📅 $dayJapanese ${it.startTime} - ${it.endTime}")
+                    if (!it.room.isNullOrEmpty()) {
+                        append("\n🏫 教室: ${it.room}")
+                    }
+                    if (!it.instructor.isNullOrEmpty()) {
+                        append("\n👨‍🏫 教員: ${it.instructor}")
+                    }
+                }
+
+                Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+                    .setAction("表示") {
+                        // Navigate to timetable screen
+                        Toast.makeText(this, "授業 ID: ${it.id}", Toast.LENGTH_SHORT).show()
+                    }
+                    .show()
+
+                viewModel.clearCreatedTimetableClass()
+            }
+        }
+
         // Observe task suggestion
         viewModel.taskSuggestion.observe(this) { suggestion ->
             if (suggestion != null) {
