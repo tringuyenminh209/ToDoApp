@@ -46,6 +46,10 @@ class FocusSessionViewModel : ViewModel() {
     private val _currentTask = MutableLiveData<Task?>()
     val currentTask: LiveData<Task?> = _currentTask
 
+    // Track current subtask ID if focusing on specific subtask
+    private var currentSubtaskId: Int? = null
+    private var parentTaskId: Int? = null
+
     // Deep Work Mode
     private val _isDeepWorkMode = MutableLiveData<Boolean>(false)
     val isDeepWorkMode: LiveData<Boolean> = _isDeepWorkMode
@@ -110,6 +114,12 @@ class FocusSessionViewModel : ViewModel() {
                         val task = apiResponse.data
                         _currentTask.value = task
 
+                        // Clear subtask tracking (focusing on whole task, not specific subtask)
+                        currentSubtaskId = null
+                        parentTaskId = null
+                        android.util.Log.d("FocusSessionViewModel",
+                            "Focusing on whole task (no specific subtask)")
+
                         // Update subtasks
                         _subtasks.value = task.subtasks ?: emptyList()
 
@@ -119,10 +129,29 @@ class FocusSessionViewModel : ViewModel() {
                         android.util.Log.d("FocusSessionViewModel", "Task loaded - focus_difficulty: ${task.focus_difficulty}")
                         _isDeepWorkMode.value = task.requires_deep_focus
 
-                        // Set timer duration based on task estimated minutes
-                        task.estimated_minutes?.let { minutes ->
-                            setTimerDuration(minutes)
+                        // Set timer duration - use remaining_minutes if available (smart time calculation)
+                        val timerMinutes = when {
+                            // Use remaining_minutes if > 0 (accounts for completed subtasks)
+                            task.remaining_minutes != null && task.remaining_minutes > 0 -> {
+                                android.util.Log.d("FocusSessionViewModel",
+                                    "Using remaining_minutes: ${task.remaining_minutes} " +
+                                    "(estimated: ${task.estimated_minutes}, completed subtasks deducted)")
+                                task.remaining_minutes
+                            }
+                            // Fallback to estimated_minutes if remaining_minutes not available or = 0
+                            task.estimated_minutes != null && task.estimated_minutes > 0 -> {
+                                android.util.Log.d("FocusSessionViewModel",
+                                    "Using estimated_minutes: ${task.estimated_minutes}")
+                                task.estimated_minutes
+                            }
+                            // Default to 25 minutes if no time estimate
+                            else -> {
+                                android.util.Log.d("FocusSessionViewModel",
+                                    "No time estimate, using default: 25 minutes")
+                                25
+                            }
                         }
+                        setTimerDuration(timerMinutes)
 
                         // Load knowledge items for task and all subtasks after subtasks are loaded
                         loadKnowledgeItemsInternal(taskId)
@@ -140,8 +169,10 @@ class FocusSessionViewModel : ViewModel() {
 
     /**
      * サブタスクを含むタスクを取得してフォーカス
+     * @param taskId Task ID
+     * @param subtaskId Subtask ID (database ID, not array index)
      */
-    fun loadTaskWithSubtask(taskId: Int, subtaskIndex: Int) {
+    fun loadTaskWithSubtask(taskId: Int, subtaskId: Int) {
         viewModelScope.launch {
             try {
                 val response = apiService.getTask(taskId)
@@ -151,8 +182,19 @@ class FocusSessionViewModel : ViewModel() {
                         val task = apiResponse.data
                         val subtasks = task.subtasks
 
-                        if (subtasks != null && subtaskIndex >= 0 && subtaskIndex < subtasks.size) {
-                            val subtask = subtasks[subtaskIndex]
+                        // Find subtask by ID (not by index!)
+                        val subtask = subtasks?.find { it.id == subtaskId }
+
+                        if (subtask != null) {
+                            android.util.Log.d("FocusSessionViewModel",
+                                "Subtask found: id=${subtask.id}, title=${subtask.title}, " +
+                                "estimated_minutes=${subtask.estimated_minutes}")
+
+                            // Track current subtask and parent task for auto-completion
+                            currentSubtaskId = subtask.id
+                            parentTaskId = task.id
+                            android.util.Log.d("FocusSessionViewModel",
+                                "Tracking subtask: subtaskId=$currentSubtaskId, parentTaskId=$parentTaskId")
 
                             // Create a modified task object with subtask info for display
                             val modifiedTask = task.copy(
@@ -175,7 +217,9 @@ class FocusSessionViewModel : ViewModel() {
                             // Load knowledge items for task and all subtasks after subtasks are loaded
                             loadKnowledgeItemsInternal(taskId)
                         } else {
-                            _toast.value = "サブタスクが見つかりません"
+                            android.util.Log.e("FocusSessionViewModel",
+                                "Subtask not found: subtaskId=$subtaskId in task $taskId with ${subtasks?.size ?: 0} subtasks")
+                            _toast.value = "サブタスクが見つかりません (ID: $subtaskId)"
                         }
                     } else {
                         _toast.value = "タスクが見つかりません"
@@ -184,6 +228,7 @@ class FocusSessionViewModel : ViewModel() {
                     _toast.value = "タスクの取得に失敗しました"
                 }
             } catch (e: Exception) {
+                android.util.Log.e("FocusSessionViewModel", "Error loading subtask", e)
                 _toast.value = "エラーが発生しました: ${e.message}"
             }
         }
@@ -279,7 +324,10 @@ class FocusSessionViewModel : ViewModel() {
             TimerMode.WORK -> {
                 pomodoroCount++
                 saveFocusSession()
-                
+
+                // Auto-complete subtask if focusing on specific subtask
+                completeCurrentSubtask()
+
                 // 4ポモドーロごとに長い休憩
                 if (pomodoroCount % 4 == 0) {
                     switchToBreakMode(TimerMode.LONG_BREAK, 15)
@@ -599,6 +647,53 @@ class FocusSessionViewModel : ViewModel() {
             _toast.value = "ネットワークエラー: ${e.message}"
         } finally {
             _isLoadingKnowledge.value = false
+        }
+    }
+
+    /**
+     * Complete current subtask when focus session finishes
+     * Only called if user was focusing on a specific subtask
+     */
+    private fun completeCurrentSubtask() {
+        val subtaskId = currentSubtaskId
+        val taskId = parentTaskId
+
+        if (subtaskId == null || taskId == null) {
+            android.util.Log.d("FocusSessionViewModel",
+                "No subtask to complete (focusing on whole task)")
+            return
+        }
+
+        android.util.Log.d("FocusSessionViewModel",
+            "Auto-completing subtask: subtaskId=$subtaskId, parentTaskId=$taskId")
+
+        viewModelScope.launch {
+            try {
+                val response = apiService.completeSubtask(subtaskId)
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse?.success == true && apiResponse.data != null) {
+                        val result = apiResponse.data
+
+                        android.util.Log.d("FocusSessionViewModel",
+                            "Subtask completed successfully: ${result.subtask.title}")
+
+                        // Reload parent task to refresh subtasks list and progress
+                        loadTask(taskId)
+
+                        // Show success message
+                        _toast.value = apiResponse.message ?: "サブタスクを完了しました！"
+                    } else {
+                        _toast.value = "サブタスクの完了に失敗しました"
+                    }
+                } else {
+                    _toast.value = "サブタスクの完了に失敗しました"
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("FocusSessionViewModel",
+                    "Error completing subtask", e)
+                _toast.value = "エラーが発生しました: ${e.message}"
+            }
         }
     }
 
