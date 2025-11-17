@@ -106,6 +106,7 @@ data class CreateTimetableStudyRequest(
     @SerializedName("subject") val subject: String? = null,
     @SerializedName("due_date") val dueDate: String? = null,
     @SerializedName("priority") val priority: Int = 3,
+    @SerializedName("status") val status: String? = null,
     @SerializedName("timetable_class_id") val timetableClassId: Int? = null,
     @SerializedName("task_id") val taskId: Int? = null
 )
