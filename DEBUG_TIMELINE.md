@@ -195,12 +195,22 @@ Converting class: test, day=monday, day_of_week=1
 
 ## 🆘 STILL NOT WORKING?
 
-Provide these logs:
+**UPDATE: Timeline items are loading correctly but not displaying in the UI.**
+
+See **TIMELINE_DEBUG_STEPS.md** for comprehensive debugging guide with:
+- Detailed logging added to TimelineAdapter and CalendarFragment
+- Step-by-step testing instructions
+- Expected log output examples
+- Common issues and solutions
+
+### Quick Logs to Provide:
 
 1. **Logcat output:**
    ```
-   CalendarViewModel: Loaded X timeline items
-   CalendarViewModel: Timeline view showing Y items for DATE (day Z)
+   CalendarFragment: === UPDATE TIMELINE VIEW ===
+   CalendarFragment: Received X tasks
+   TimelineAdapter: === SUBMIT LIST DEBUG ===
+   TimelineAdapter: Received Y tasks
    ```
 
 2. **Selected date:** (e.g., 2025-11-17 Monday)
