@@ -693,6 +693,159 @@ JSON形式で返してください：
     }
 
     /**
+     * Parse timetable class creation intent from user message
+     * Similar to parseTaskIntent() but for timetable classes
+     *
+     * @param string $message User message
+     * @return array|null Timetable class data if intent detected, null otherwise
+     */
+    public function parseTimetableIntent(string $message): ?array
+    {
+        if (!$this->apiKey) {
+            return null;
+        }
+
+        $prompt = "以下のメッセージを分析して、**明確な授業登録の意図があるか**判断してください。
+授業登録の意図がある場合は、授業情報を抽出してJSONで返してください。
+意図がない場合は、必ず false を返してください。
+
+メッセージ: {$message}
+
+授業登録の意図がある場合のJSON形式:
+{
+  \"has_timetable_intent\": true,
+  \"timetable_class\": {
+    \"name\": \"授業名\",
+    \"day\": \"monday/tuesday/wednesday/thursday/friday/saturday/sunday\",
+    \"start_time\": \"HH:MM\",
+    \"end_time\": \"HH:MM\",
+    \"period\": 1-10 (オプション、指定されていない場合は時間から計算),
+    \"room\": \"教室名（オプション）\",
+    \"instructor\": \"教員名（オプション）\",
+    \"description\": \"説明（オプション）\"
+  }
+}
+
+授業登録の意図がない場合:
+{
+  \"has_timetable_intent\": false
+}
+
+**明確に授業登録の意図があるキーワード:**
+- 「授業を追加」「授業を登録」「クラスを追加」「時間割に追加」「授業を入れる」
+- 「〜の授業がある」+時間指定 (例: 「月曜日に数学の授業がある」)
+- 「〜のクラスを追加」(例: 「Calculusのクラスを追加」)
+- ベトナム語: 「thêm lớp」「đăng ký lớp」「thêm lịch học」「thêm môn」
+- 英語: \"add class\", \"register class\", \"add to timetable\"
+
+**授業登録の意図がないもの (必ず false を返す):**
+- 質問: 「今日の授業は何ですか？」「スケジュールを見せて」
+- 確認: 「授業の時間を確認」「時間割を教えて」
+- 雑談: 「授業が大変」「先生が厳しい」
+
+**日本語の曜日 → 英語マッピング:**
+- 月曜日 → monday
+- 火曜日 → tuesday
+- 水曜日 → wednesday
+- 木曜日 → thursday
+- 金曜日 → friday
+- 土曜日 → saturday
+- 日曜日 → sunday
+
+**ベトナム語の曜日 → 英語マッピング:**
+- thứ 2 → monday
+- thứ 3 → tuesday
+- thứ 4 → wednesday
+- thứ 5 → thursday
+- thứ 6 → friday
+- thứ 7 → saturday
+- chủ nhật → sunday
+
+**時間フォーマット:**
+- 日本語: 「9時」→ \"09:00\", 「10時半」→ \"10:30\", \"9時15分\" → \"09:15\"
+- ベトナム語: \"9h\" → \"09:00\", \"9h30\" → \"09:30\"
+- 英語: \"9am\" → \"09:00\", \"2:30pm\" → \"14:30\"
+- 24時間制: \"14:00\" → \"14:00\"
+
+**例:**
+❌ \"今日の授業は何ですか？\" → {\"has_timetable_intent\": false} (質問)
+❌ \"月曜日のスケジュールを見せて\" → {\"has_timetable_intent\": false} (確認)
+❌ \"授業が多すぎる\" → {\"has_timetable_intent\": false} (雑談)
+✅ \"月曜日の9時から10時までCalculusの授業を追加\" → {\"has_timetable_intent\": true, \"timetable_class\": {\"name\": \"Calculus\", \"day\": \"monday\", \"start_time\": \"09:00\", \"end_time\": \"10:00\"}}
+✅ \"木曜日の9時から10時まで日本語の授業を追加してください\" → {\"has_timetable_intent\": true, \"timetable_class\": {\"name\": \"日本語\", \"day\": \"thursday\", \"start_time\": \"09:00\", \"end_time\": \"10:00\"}}
+✅ \"Thêm lớp Calculus thứ 2 lúc 9h\" → {\"has_timetable_intent\": true, \"timetable_class\": {\"name\": \"Calculus\", \"day\": \"monday\", \"start_time\": \"09:00\"}}
+✅ \"火曜日に英語の授業を入れて、10時から11時半まで\" → {\"has_timetable_intent\": true, \"timetable_class\": {\"name\": \"英語\", \"day\": \"tuesday\", \"start_time\": \"10:00\", \"end_time\": \"11:30\"}}
+
+注意:
+- start_time と end_time は必須です (HH:MM 形式)
+- period は指定されていない場合は省略してください (バックエンドで計算)
+- day は必ず英語 (monday-sunday) で返してください
+- 疑わしい場合は false を返してください";
+
+        try {
+            $parseTimeout = min(10, $this->timeout * 0.33);
+
+            $useMaxCompletionTokens = in_array($this->fallbackModel, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
+
+            $requestBody = [
+                'model' => $this->fallbackModel,
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'You are a timetable parser assistant. Analyze user messages and extract timetable class information. Always return valid JSON.'
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => $prompt
+                    ]
+                ],
+                'temperature' => 0.3,
+            ];
+
+            if ($useMaxCompletionTokens) {
+                $requestBody['max_completion_tokens'] = 500;
+            } else {
+                $requestBody['max_tokens'] = 500;
+            }
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Content-Type' => 'application/json',
+            ])->timeout((int)$parseTimeout)->post($this->baseUrl . '/chat/completions', $requestBody);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $content = $data['choices'][0]['message']['content'] ?? '';
+
+                // Parse JSON response
+                $parsedContent = json_decode($content, true);
+
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    if (!empty($parsedContent['has_timetable_intent']) && $parsedContent['has_timetable_intent'] === true) {
+                        Log::info('Timetable intent detected', ['class' => $parsedContent['timetable_class']]);
+                        return $parsedContent['timetable_class'];
+                    }
+                }
+
+                // Try to extract JSON from response
+                $jsonMatch = [];
+                if (preg_match('/\{.*\}/s', $content, $jsonMatch)) {
+                    $parsedContent = json_decode($jsonMatch[0], true);
+                    if (json_last_error() === JSON_ERROR_NONE && !empty($parsedContent['has_timetable_intent'])) {
+                        if ($parsedContent['has_timetable_intent'] === true) {
+                            return $parsedContent['timetable_class'];
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Timetable intent parsing failed: ' . $e->getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * Chat with AI - for general conversation
      *
      * @param array $messages Array of messages in format: [['role' => 'user/assistant', 'content' => 'message']]
