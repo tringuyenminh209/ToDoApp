@@ -9,6 +9,7 @@ import ecccomp.s2240788.mobile_android.data.models.ChatConversation
 import ecccomp.s2240788.mobile_android.data.models.ChatMessage
 import ecccomp.s2240788.mobile_android.data.models.Task
 import ecccomp.s2240788.mobile_android.data.models.TaskSuggestion
+import ecccomp.s2240788.mobile_android.data.models.TimetableClass
 import ecccomp.s2240788.mobile_android.data.repository.ChatRepository
 import ecccomp.s2240788.mobile_android.data.result.ChatResult
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
