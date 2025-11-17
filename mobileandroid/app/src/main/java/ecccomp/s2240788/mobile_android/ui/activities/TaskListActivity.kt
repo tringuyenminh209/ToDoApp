@@ -62,6 +62,12 @@ class TaskListActivity : BaseActivity() {
                     showStartTaskDialog(task)
                 }
             },
+            onSubtaskStartClick = { task, subtask ->
+                val intent = Intent(this, FocusSessionActivity::class.java)
+                intent.putExtra("task_id", task.id)
+                intent.putExtra("subtask_id", subtask.id)
+                startActivity(intent)
+            },
             onMoreClick = { task ->
                 showTaskOptionsBottomSheet(task)
             }
