@@ -148,6 +148,52 @@ class SubtaskController extends Controller
     }
 
     /**
+     * Mark subtask as completed
+     * PUT /api/subtasks/{id}/complete
+     */
+    public function complete(Request $request, string $id): JsonResponse
+    {
+        $subtask = Subtask::findOrFail($id);
+
+        // Check if user owns the parent task
+        $task = Task::where('id', $subtask->task_id)
+            ->where('user_id', $request->user()->id)
+            ->firstOrFail();
+
+        try {
+            $subtask->markAsCompleted();
+
+            // Check if all subtasks are completed, auto-complete parent task
+            $allSubtasksCompleted = $task->subtasks()
+                ->where('is_completed', false)
+                ->count() === 0;
+
+            if ($allSubtasksCompleted && $task->status !== 'completed') {
+                $task->markAsCompleted();
+                $message = 'サブタスクを完了しました！全てのサブタスクが完了したため、タスクも完了しました';
+            } else {
+                $message = 'サブタスクを完了しました！';
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'subtask' => $subtask->fresh(),
+                    'task' => $task->fresh()->load('subtasks'),
+                ],
+                'message' => $message
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'サブタスクの完了に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Delete a subtask
      * DELETE /api/subtasks/{id}
      */
