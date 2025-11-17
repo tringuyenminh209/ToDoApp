@@ -81,6 +81,13 @@ class MainActivity : BaseActivity() {
                 // Start task - mark as in_progress
                 showStartTaskDialog(task)
             },
+            onSubtaskStartClick = { task, subtask ->
+                // Start specific subtask - navigate to FocusSessionActivity
+                val intent = Intent(this, FocusSessionActivity::class.java)
+                intent.putExtra("task_id", task.id)
+                intent.putExtra("subtask_id", subtask.id)
+                startActivity(intent)
+            },
             onMoreClick = { task ->
                 showTaskOptionsBottomSheet(task)
             }
