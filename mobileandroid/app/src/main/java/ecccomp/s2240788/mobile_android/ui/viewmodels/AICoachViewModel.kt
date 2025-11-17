@@ -66,6 +66,10 @@ class AICoachViewModel : ViewModel() {
     private val _taskSuggestion = MutableLiveData<TaskSuggestion?>()
     val taskSuggestion: LiveData<TaskSuggestion?> = _taskSuggestion
 
+    // Created timetable class from AI chat
+    private val _createdTimetableClass = MutableLiveData<TimetableClass?>()
+    val createdTimetableClass: LiveData<TimetableClass?> = _createdTimetableClass
+
     /**
      * Start a new conversation with initial message
      */
@@ -113,6 +117,9 @@ class AICoachViewModel : ViewModel() {
                             if (result.data.created_task != null) {
                                 _createdTask.value = result.data.created_task
                                 _successMessage.value = "会話を開始し、タスクを作成しました！"
+                            } else if (result.data.created_timetable_class != null) {
+                                _createdTimetableClass.value = result.data.created_timetable_class
+                                _successMessage.value = "会話を開始し、授業を登録しました！"
                             } else {
                                 _successMessage.value = "会話を開始しました"
                             }
@@ -214,6 +221,12 @@ class AICoachViewModel : ViewModel() {
                                 _successMessage.value = "タスクを作成しました！"
                             }
 
+                            // Check if timetable class was created (auto-created timetable class)
+                            if (result.data.created_timetable_class != null) {
+                                _createdTimetableClass.value = result.data.created_timetable_class
+                                _successMessage.value = "授業を登録しました！"
+                            }
+
                             // Check if there's a task suggestion (requires user confirmation)
                             if (result.data.task_suggestion != null) {
                                 _taskSuggestion.value = result.data.task_suggestion
@@ -309,6 +322,13 @@ class AICoachViewModel : ViewModel() {
      */
     fun clearCreatedTask() {
         _createdTask.value = null
+    }
+
+    /**
+     * Clear created timetable class
+     */
+    fun clearCreatedTimetableClass() {
+        _createdTimetableClass.value = null
     }
 
     /**

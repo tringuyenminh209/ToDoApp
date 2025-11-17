@@ -375,7 +375,8 @@ data class ChatConversationsResponse(
 
 data class CreateConversationResponse(
     val conversation: ChatConversation,
-    val created_task: Task? = null
+    val created_task: Task? = null,
+    val created_timetable_class: TimetableClass? = null
 )
 
 // Task Suggestion from AI (not auto-created, requires user confirmation)
@@ -392,6 +393,7 @@ data class SendMessageResponse(
     val user_message: ChatMessage,
     val assistant_message: ChatMessage,
     val created_task: Task? = null,
+    val created_timetable_class: TimetableClass? = null,
     val task_suggestion: TaskSuggestion? = null // New field for AI suggestions
 )
 
