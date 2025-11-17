@@ -154,10 +154,15 @@ class CalendarFragment : Fragment() {
      * タイムラインビューに切り替え
      */
     private fun switchToTimelineView() {
+        Log.d("CalendarFragment", "Switching to timeline view")
         isTimelineView = true
         binding.rvTasks.visibility = View.GONE
         binding.rvTimeline.visibility = View.VISIBLE
         binding.filterChipGroup.visibility = View.GONE
+
+        // Trigger refresh to update timeline
+        viewModel.applyFilters()
+        Log.d("CalendarFragment", "Timeline view activated, filters applied")
     }
 
     /**
@@ -307,13 +312,26 @@ class CalendarFragment : Fragment() {
      * Update timeline view with study schedules
      */
     private fun updateTimelineView(tasks: List<Task>) {
+        Log.d("CalendarFragment", "=== UPDATE TIMELINE VIEW ===")
+        Log.d("CalendarFragment", "Received ${tasks.size} tasks")
+        Log.d("CalendarFragment", "isTimelineView = $isTimelineView")
+
+        tasks.forEach { task ->
+            Log.d("CalendarFragment",
+                "Task: id=${task.id}, title='${task.title}', " +
+                "scheduled_time='${task.scheduled_time}', category='${task.category}'")
+        }
+
         timelineAdapter.submitList(tasks)
+        Log.d("CalendarFragment", "Called timelineAdapter.submitList()")
 
         // Update UI visibility if currently in timeline view
         if (isTimelineView) {
             if (tasks.isEmpty()) {
+                Log.d("CalendarFragment", "No tasks, showing empty state")
                 showEmptyState()
             } else {
+                Log.d("CalendarFragment", "Has tasks, showing timeline RecyclerView")
                 binding.emptyState.visibility = View.GONE
                 binding.rvTasks.visibility = View.GONE
                 binding.rvTimeline.visibility = View.VISIBLE
@@ -321,6 +339,8 @@ class CalendarFragment : Fragment() {
 
             // タスク数バッジの更新 (study schedules count)
             binding.tvTaskCount.text = tasks.size.toString()
+        } else {
+            Log.d("CalendarFragment", "Not in timeline view, skipping UI update")
         }
 
         Log.d("CalendarFragment", "Timeline view updated with ${tasks.size} study schedules")
