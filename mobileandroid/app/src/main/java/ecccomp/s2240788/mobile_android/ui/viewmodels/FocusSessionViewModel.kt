@@ -607,11 +607,39 @@ class FocusSessionViewModel : ViewModel() {
 
     /**
      * Load knowledge items for the current task and all its subtasks
-     * Public method that can be called from Activity (for backward compatibility)
+     * Public method that can be called from Activity
+     * This will fetch task data first to get all subtasks, then load knowledge
      */
     fun loadKnowledgeItems(taskId: Int) {
         viewModelScope.launch {
-            loadKnowledgeItemsInternal(taskId)
+            try {
+                // Fetch task to get all subtasks first
+                val response = apiService.getTask(taskId)
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse?.success == true && apiResponse.data != null) {
+                        val task = apiResponse.data
+                        val subtasks = task.subtasks ?: emptyList()
+
+                        android.util.Log.d("FocusSessionViewModel",
+                            "Public loadKnowledgeItems: taskId=$taskId, subtasks=${subtasks.size}")
+
+                        // Load knowledge with all subtasks
+                        loadKnowledgeItemsInternal(taskId, subtasks)
+                    } else {
+                        // Fallback: try without subtasks
+                        loadKnowledgeItemsInternal(taskId, null)
+                    }
+                } else {
+                    // Fallback: try without subtasks
+                    loadKnowledgeItemsInternal(taskId, null)
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("FocusSessionViewModel",
+                    "Error in public loadKnowledgeItems", e)
+                // Fallback: try without subtasks
+                loadKnowledgeItemsInternal(taskId, null)
+            }
         }
     }
 
