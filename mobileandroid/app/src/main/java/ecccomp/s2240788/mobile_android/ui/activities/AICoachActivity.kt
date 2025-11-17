@@ -1,5 +1,7 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
@@ -17,6 +19,7 @@ import ecccomp.s2240788.mobile_android.databinding.ActivityAiCoachBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.ChatMessageAdapter
 import ecccomp.s2240788.mobile_android.ui.dialogs.ConversationHistoryDialog
 import ecccomp.s2240788.mobile_android.ui.viewmodels.AICoachViewModel
+import ecccomp.s2240788.mobile_android.utils.SpeechRecognitionHelper
 
 /**
  * AICoachActivity
@@ -24,12 +27,14 @@ import ecccomp.s2240788.mobile_android.ui.viewmodels.AICoachViewModel
  * - クイックアクション（1日の計画、集中力のヘルプ、モチベーション、休憩提案）
  * - AIとのチャット機能
  * - メッセージ履歴の表示
+ * - 音声入力機能（Phase 1: Basic Voice Input）
  */
 class AICoachActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAiCoachBinding
     private lateinit var viewModel: AICoachViewModel
     private lateinit var chatAdapter: ChatMessageAdapter
+    private lateinit var speechHelper: SpeechRecognitionHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +46,9 @@ class AICoachActivity : BaseActivity() {
 
         // Initialize ViewModel
         viewModel = ViewModelProvider(this)[AICoachViewModel::class.java]
+
+        // Initialize Speech Recognition Helper
+        speechHelper = SpeechRecognitionHelper(this)
 
         setupRecyclerView()
         setupUI()
@@ -140,6 +148,16 @@ class AICoachActivity : BaseActivity() {
 
         binding.chipBreakSuggestion.setOnClickListener {
             sendQuickAction("休憩のタイミングを教えてください")
+        }
+
+        // Voice input button
+        binding.btnVoiceInput.setOnClickListener {
+            startVoiceInput()
+        }
+
+        // Cancel recording button
+        binding.btnCancelRecording.setOnClickListener {
+            cancelVoiceInput()
         }
     }
 
@@ -453,8 +471,106 @@ class AICoachActivity : BaseActivity() {
         dialog?.updateConversations(conversations)
     }
 
+    /**
+     * Start voice input
+     */
+    private fun startVoiceInput() {
+        // Check if speech recognition is available
+        if (!speechHelper.isSpeechRecognitionAvailable()) {
+            Toast.makeText(
+                this,
+                "音声認識がこのデバイスで利用できません",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
+        // Show recording indicator
+        binding.recordingIndicator.visibility = View.VISIBLE
+        binding.inputContainer.alpha = 0.5f
+
+        // Start listening
+        speechHelper.startListening(
+            language = "ja-JP",  // Japanese
+            onReady = {
+                // Recognition is ready
+            },
+            onListening = {
+                // User can start speaking now
+            },
+            onResult = { recognizedText ->
+                // Hide recording indicator
+                binding.recordingIndicator.visibility = View.GONE
+                binding.inputContainer.alpha = 1.0f
+
+                // Put recognized text in input field
+                binding.etMessage.setText(recognizedText)
+                binding.etMessage.setSelection(recognizedText.length) // Cursor to end
+
+                // Show success message
+                Toast.makeText(
+                    this,
+                    "音声を認識しました",
+                    Toast.LENGTH_SHORT
+                ).show()
+            },
+            onError = { error ->
+                // Hide recording indicator
+                binding.recordingIndicator.visibility = View.GONE
+                binding.inputContainer.alpha = 1.0f
+
+                // Show error
+                Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+            }
+        )
+    }
+
+    /**
+     * Cancel voice input
+     */
+    private fun cancelVoiceInput() {
+        speechHelper.cancel()
+        binding.recordingIndicator.visibility = View.GONE
+        binding.inputContainer.alpha = 1.0f
+        Toast.makeText(this, "音声入力をキャンセルしました", Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Handle permission request result
+     */
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == SpeechRecognitionHelper.REQUEST_RECORD_AUDIO) {
+            if (grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+                // Permission granted, start listening
+                Toast.makeText(
+                    this,
+                    "録音権限が許可されました",
+                    Toast.LENGTH_SHORT
+                ).show()
+                startVoiceInput()
+            } else {
+                // Permission denied
+                Toast.makeText(
+                    this,
+                    "音声入力には録音権限が必要です",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        // Destroy speech helper
+        speechHelper.destroy()
         // Optional: Save conversation state or perform cleanup
     }
 }
