@@ -45,6 +45,12 @@ data class Subtask(
     val updated_at: String
 )
 
+// Response model for subtask completion
+data class SubtaskCompleteResponse(
+    val subtask: Subtask,
+    val task: Task
+)
+
 // Request models
 data class LoginRequest(
     val email: String,
