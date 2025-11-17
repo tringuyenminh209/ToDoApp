@@ -374,9 +374,11 @@ class Task extends Model
         }
 
         // Calculate time spent on completed subtasks
-        $completedSubtasksTime = $this->subtasks()
-            ->where('is_completed', true)
-            ->whereNotNull('estimated_minutes')
+        // Use eager-loaded collection instead of query for better performance
+        $completedSubtasksTime = $this->subtasks
+            ->filter(function($subtask) {
+                return $subtask->is_completed && $subtask->estimated_minutes !== null;
+            })
             ->sum('estimated_minutes');
 
         // Remaining time = total - completed

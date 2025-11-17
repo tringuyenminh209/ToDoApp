@@ -600,6 +600,7 @@ JSON形式で返してください：
 - 確認: 「本当ですか？」「そうなんですか？」
 - 一般的な会話: 「はい」「いいえ」「わかりました」
 - **情報確認**: 「lịch học thứ 3を確認」「スケジュールを見せて」「予定を教えて」「時間割を確認」
+- **授業/クラス登録** (これは時間割登録なのでタスクではない): 「授業を追加」「クラスを追加」「時間割に追加」「授業を登録」「lớp học」「thêm lớp」「đăng ký lớp」「add class」「register class」
 
 **重要な判断基準:**
 1. 具体的な行動が明示されているか？
@@ -614,6 +615,10 @@ JSON形式で返してください：
 ❌ \"Kiểm tra lịch học thứ 3\" → {\"has_task_intent\": false} (スケジュール確認の質問)
 ❌ \"今日の予定を教えて\" → {\"has_task_intent\": false} (情報確認)
 ❌ \"スケジュールを見せて\" → {\"has_task_intent\": false} (情報確認)
+❌ \"木曜日の9時から10時まで日本語の授業を追加してください\" → {\"has_task_intent\": false} (授業登録、タスクではない)
+❌ \"月曜日にCalculusの授業を登録\" → {\"has_task_intent\": false} (クラス登録、タスクではない)
+❌ \"Thêm lớp Programming thứ 2\" → {\"has_task_intent\": false} (lớp học、タスクではない)
+❌ \"Add English class on Tuesday\" → {\"has_task_intent\": false} (クラス登録、タスクではない)
 ✅ \"英語を30分勉強する\" → {\"has_task_intent\": true} (明確な行動)
 ✅ \"レポートを書くタスクを作成\" → {\"has_task_intent\": true} (明確な意図)
 ✅ \"Tạo task học tiếng anh 30 phút\" → {\"has_task_intent\": true} (明確なタスク作成)
