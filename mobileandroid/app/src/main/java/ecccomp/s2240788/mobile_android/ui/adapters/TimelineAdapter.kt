@@ -162,6 +162,16 @@ class TimelineAdapter(
                 android.util.Log.d("TimelineAdapter",
                     "Set tvTaskTitle.text = '${task.title}'")
 
+                // タスク説明（部屋番号、先生名、時限など）
+                if (!task.description.isNullOrEmpty()) {
+                    tvTaskDescription.visibility = View.VISIBLE
+                    tvTaskDescription.text = task.description
+                    android.util.Log.d("TimelineAdapter",
+                        "Set tvTaskDescription = '${task.description}'")
+                } else {
+                    tvTaskDescription.visibility = View.GONE
+                }
+
                 // 時間表示
                 if (task.estimated_minutes != null && task.estimated_minutes > 0) {
                     tvTime.visibility = View.VISIBLE

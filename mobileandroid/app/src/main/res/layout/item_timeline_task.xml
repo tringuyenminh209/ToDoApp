@@ -30,6 +30,18 @@
             android:ellipsize="end"
             tools:text="📚 学習スケジュール: Java Backend" />
 
+        <!-- Task Description (room, instructor, duration) -->
+        <TextView
+            android:id="@+id/tv_task_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            tools:text="授業 - 第1時限 - 1603 - 先生名 - 90分" />
+
         <!-- Task Meta Info -->
         <LinearLayout
             android:layout_width="match_parent"
