@@ -119,10 +119,29 @@ class FocusSessionViewModel : ViewModel() {
                         android.util.Log.d("FocusSessionViewModel", "Task loaded - focus_difficulty: ${task.focus_difficulty}")
                         _isDeepWorkMode.value = task.requires_deep_focus
 
-                        // Set timer duration based on task estimated minutes
-                        task.estimated_minutes?.let { minutes ->
-                            setTimerDuration(minutes)
+                        // Set timer duration - use remaining_minutes if available (smart time calculation)
+                        val timerMinutes = when {
+                            // Use remaining_minutes if > 0 (accounts for completed subtasks)
+                            task.remaining_minutes != null && task.remaining_minutes > 0 -> {
+                                android.util.Log.d("FocusSessionViewModel",
+                                    "Using remaining_minutes: ${task.remaining_minutes} " +
+                                    "(estimated: ${task.estimated_minutes}, completed subtasks deducted)")
+                                task.remaining_minutes
+                            }
+                            // Fallback to estimated_minutes if remaining_minutes not available or = 0
+                            task.estimated_minutes != null && task.estimated_minutes > 0 -> {
+                                android.util.Log.d("FocusSessionViewModel",
+                                    "Using estimated_minutes: ${task.estimated_minutes}")
+                                task.estimated_minutes
+                            }
+                            // Default to 25 minutes if no time estimate
+                            else -> {
+                                android.util.Log.d("FocusSessionViewModel",
+                                    "No time estimate, using default: 25 minutes")
+                                25
+                            }
                         }
+                        setTimerDuration(timerMinutes)
 
                         // Load knowledge items for task and all subtasks after subtasks are loaded
                         loadKnowledgeItemsInternal(taskId)
