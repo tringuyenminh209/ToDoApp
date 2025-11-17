@@ -482,9 +482,20 @@ class StudyScheduleController extends Controller
                 }
 
                 // Add seconds to start_time if needed (HH:mm -> HH:mm:ss)
-                $scheduledTime = strlen($class->start_time) == 5
-                    ? $class->start_time . ':00'
-                    : $class->start_time;
+                // Force to string format to prevent Carbon datetime serialization
+                $scheduledTime = $class->start_time;
+                if (is_object($scheduledTime)) {
+                    // If it's a Carbon/DateTime object, format it as time string
+                    $scheduledTime = date('H:i:s', strtotime($scheduledTime));
+                } elseif (strlen($scheduledTime) == 5) {
+                    // If it's HH:mm format, add seconds
+                    $scheduledTime = $scheduledTime . ':00';
+                }
+                // Ensure it's just time, not datetime
+                if (strlen($scheduledTime) > 8) {
+                    // Extract time part from datetime string
+                    $scheduledTime = substr($scheduledTime, 11, 8);
+                }
 
                 $timelineItems[] = [
                     'id' => 'class_' . $class->id,

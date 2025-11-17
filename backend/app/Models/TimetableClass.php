@@ -28,8 +28,8 @@ class TimetableClass extends Model
     ];
 
     protected $casts = [
-        'start_time' => 'datetime:H:i',
-        'end_time' => 'datetime:H:i',
+        // Don't cast TIME columns to datetime - keep as string
+        // Database TIME type (HH:mm:ss) should remain as string for API
     ];
 
     // Relationships
