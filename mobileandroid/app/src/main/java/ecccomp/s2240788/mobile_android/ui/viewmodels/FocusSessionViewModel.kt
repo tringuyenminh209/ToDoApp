@@ -121,7 +121,8 @@ class FocusSessionViewModel : ViewModel() {
                             "Focusing on whole task (no specific subtask)")
 
                         // Update subtasks
-                        _subtasks.value = task.subtasks ?: emptyList()
+                        val subtasks = task.subtasks ?: emptyList()
+                        _subtasks.value = subtasks
 
                         // Update deep work mode status - Log để debug
                         android.util.Log.d("FocusSessionViewModel", "Task loaded - requires_deep_focus: ${task.requires_deep_focus}")
@@ -153,8 +154,9 @@ class FocusSessionViewModel : ViewModel() {
                         }
                         setTimerDuration(timerMinutes)
 
-                        // Load knowledge items for task and all subtasks after subtasks are loaded
-                        loadKnowledgeItemsInternal(taskId)
+                        // Load knowledge items for task and all subtasks
+                        // Pass subtasks directly to avoid race condition with LiveData
+                        loadKnowledgeItemsInternal(taskId, subtasks)
                     } else {
                         _toast.value = "タスクが見つかりません"
                     }
@@ -204,7 +206,8 @@ class FocusSessionViewModel : ViewModel() {
                             _currentTask.value = modifiedTask
 
                             // Update subtasks (show all subtasks, highlight current one)
-                            _subtasks.value = task.subtasks ?: emptyList()
+                            val subtasks = task.subtasks ?: emptyList()
+                            _subtasks.value = subtasks
 
                             // Update deep work mode status (inherit from parent task)
                             android.util.Log.d("FocusSessionViewModel", "Subtask loaded - parent requires_deep_focus: ${task.requires_deep_focus}")
@@ -214,8 +217,9 @@ class FocusSessionViewModel : ViewModel() {
                             val minutes = subtask.estimated_minutes ?: 60
                             setTimerDuration(minutes)
 
-                            // Load knowledge items for task and all subtasks after subtasks are loaded
-                            loadKnowledgeItemsInternal(taskId)
+                            // Load knowledge items for task and all subtasks
+                            // Pass subtasks directly to avoid race condition with LiveData
+                            loadKnowledgeItemsInternal(taskId, subtasks)
                         } else {
                             android.util.Log.e("FocusSessionViewModel",
                                 "Subtask not found: subtaskId=$subtaskId in task $taskId with ${subtasks?.size ?: 0} subtasks")
@@ -613,8 +617,10 @@ class FocusSessionViewModel : ViewModel() {
 
     /**
      * Internal method to load knowledge items (can be called within other suspend functions)
+     * @param taskId The task ID
+     * @param subtasks List of subtasks (optional, will use _subtasks.value if null)
      */
-    private suspend fun loadKnowledgeItemsInternal(taskId: Int) {
+    private suspend fun loadKnowledgeItemsInternal(taskId: Int, subtasks: List<Subtask>? = null) {
         try {
             _isLoadingKnowledge.value = true
 
@@ -625,10 +631,12 @@ class FocusSessionViewModel : ViewModel() {
                 val allItems = response.body()?.data ?: emptyList()
 
                 // Get IDs to filter: task ID + all subtask IDs
-                val subtaskIds = _subtasks.value?.map { it.id } ?: emptyList()
+                // Use provided subtasks or fallback to LiveData value
+                val currentSubtasks = subtasks ?: _subtasks.value ?: emptyList()
+                val subtaskIds = currentSubtasks.map { it.id }
                 val filterIds = listOf(taskId) + subtaskIds
 
-                android.util.Log.d("FocusSessionViewModel", "Loading knowledge items for taskId=$taskId, subtaskIds=$subtaskIds")
+                android.util.Log.d("FocusSessionViewModel", "Loading knowledge items for taskId=$taskId, subtaskIds=$subtaskIds (${currentSubtasks.size} subtasks)")
 
                 // Filter knowledge items for task and all subtasks
                 val taskItems = allItems.filter { item ->
