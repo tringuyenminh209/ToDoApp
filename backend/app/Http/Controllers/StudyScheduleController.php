@@ -396,4 +396,121 @@ class StudyScheduleController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Get combined timeline items (Study Schedules + Timetable Classes)
+     * GET /api/study-schedules/timeline
+     *
+     * Returns both study schedules and timetable classes in unified format for timeline view
+     */
+    public function getTimelineItems(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Fetch study schedules
+            $studySchedules = StudySchedule::whereHas('learningPath', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+                ->where('is_active', true)
+                ->with('learningPath')
+                ->get();
+
+            // Fetch timetable classes
+            $timetableClasses = \App\Models\TimetableClass::where('user_id', $user->id)
+                ->with('learningPath')
+                ->get();
+
+            $timelineItems = [];
+
+            // Convert study schedules to timeline format
+            foreach ($studySchedules as $schedule) {
+                $timelineItems[] = [
+                    'id' => 'study_' . $schedule->id,
+                    'type' => 'study_schedule',
+                    'title' => '📚 ' . ($schedule->learningPath->title ?? '学習'),
+                    'day_of_week' => $schedule->day_of_week,
+                    'scheduled_time' => $schedule->study_time, // HH:mm:ss
+                    'duration_minutes' => $schedule->duration_minutes,
+                    'category' => 'study',
+                    'learning_path_id' => $schedule->learning_path_id,
+                    'learning_path' => $schedule->learningPath ? [
+                        'id' => $schedule->learningPath->id,
+                        'title' => $schedule->learningPath->title,
+                    ] : null,
+                ];
+            }
+
+            // Convert timetable classes to timeline format
+            foreach ($timetableClasses as $class) {
+                // Map day string to day_of_week integer
+                $dayMap = [
+                    'sunday' => 0,
+                    'monday' => 1,
+                    'tuesday' => 2,
+                    'wednesday' => 3,
+                    'thursday' => 4,
+                    'friday' => 5,
+                    'saturday' => 6,
+                ];
+
+                $dayOfWeek = $dayMap[strtolower($class->day)] ?? 1;
+
+                // Calculate duration in minutes
+                try {
+                    $start = \Carbon\Carbon::createFromFormat('H:i', $class->start_time);
+                    $end = \Carbon\Carbon::createFromFormat('H:i', $class->end_time);
+                    $durationMinutes = $end->diffInMinutes($start);
+                } catch (\Exception $e) {
+                    $durationMinutes = 60; // Default 1 hour
+                }
+
+                // Add seconds to start_time if needed (HH:mm -> HH:mm:ss)
+                $scheduledTime = strlen($class->start_time) == 5
+                    ? $class->start_time . ':00'
+                    : $class->start_time;
+
+                $timelineItems[] = [
+                    'id' => 'class_' . $class->id,
+                    'type' => 'timetable_class',
+                    'title' => '🎓 ' . $class->name,
+                    'day_of_week' => $dayOfWeek,
+                    'scheduled_time' => $scheduledTime, // HH:mm:ss
+                    'duration_minutes' => $durationMinutes,
+                    'category' => 'class',
+                    'room' => $class->room,
+                    'instructor' => $class->instructor,
+                    'period' => $class->period,
+                    'color' => $class->color,
+                    'icon' => $class->icon,
+                    'learning_path_id' => $class->learning_path_id,
+                    'learning_path' => $class->learningPath ? [
+                        'id' => $class->learningPath->id,
+                        'title' => $class->learningPath->title,
+                    ] : null,
+                ];
+            }
+
+            // Sort by day_of_week then scheduled_time
+            usort($timelineItems, function ($a, $b) {
+                if ($a['day_of_week'] === $b['day_of_week']) {
+                    return strcmp($a['scheduled_time'], $b['scheduled_time']);
+                }
+                return $a['day_of_week'] <=> $b['day_of_week'];
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => $timelineItems,
+                'message' => 'タイムラインデータを取得しました'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error fetching timeline items: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'タイムラインデータの取得に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
