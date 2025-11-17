@@ -421,6 +421,8 @@ class StudyScheduleController extends Controller
                 ->with('learningPath')
                 ->get();
 
+            Log::info('Timeline API - User: ' . $user->id . ', Study Schedules: ' . $studySchedules->count() . ', Timetable Classes: ' . $timetableClasses->count());
+
             $timelineItems = [];
 
             // Convert study schedules to timeline format
@@ -455,13 +457,27 @@ class StudyScheduleController extends Controller
                 ];
 
                 $dayOfWeek = $dayMap[strtolower($class->day)] ?? 1;
+                Log::debug('Converting class: ' . $class->name . ', day=' . $class->day . ', day_of_week=' . $dayOfWeek);
 
                 // Calculate duration in minutes
                 try {
-                    $start = \Carbon\Carbon::createFromFormat('H:i', $class->start_time);
-                    $end = \Carbon\Carbon::createFromFormat('H:i', $class->end_time);
+                    // Parse time format - handle both H:i and H:i:s formats
+                    $startTimeStr = $class->start_time;
+                    $endTimeStr = $class->end_time;
+
+                    // Try parsing with seconds first (H:i:s)
+                    try {
+                        $start = \Carbon\Carbon::createFromFormat('H:i:s', $startTimeStr);
+                        $end = \Carbon\Carbon::createFromFormat('H:i:s', $endTimeStr);
+                    } catch (\Exception $e) {
+                        // Fallback to H:i format
+                        $start = \Carbon\Carbon::createFromFormat('H:i', $startTimeStr);
+                        $end = \Carbon\Carbon::createFromFormat('H:i', $endTimeStr);
+                    }
+
                     $durationMinutes = $end->diffInMinutes($start);
                 } catch (\Exception $e) {
+                    Log::warning('Error calculating duration for class: ' . $class->id . ' - ' . $e->getMessage());
                     $durationMinutes = 60; // Default 1 hour
                 }
 
