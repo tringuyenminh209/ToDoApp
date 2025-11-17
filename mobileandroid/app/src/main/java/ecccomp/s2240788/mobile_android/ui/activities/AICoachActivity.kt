@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityAiCoachBinding
+import ecccomp.s2240788.mobile_android.data.models.TimetableClass
 import ecccomp.s2240788.mobile_android.ui.adapters.ChatMessageAdapter
 import ecccomp.s2240788.mobile_android.ui.dialogs.ConversationHistoryDialog
 import ecccomp.s2240788.mobile_android.ui.viewmodels.AICoachViewModel
