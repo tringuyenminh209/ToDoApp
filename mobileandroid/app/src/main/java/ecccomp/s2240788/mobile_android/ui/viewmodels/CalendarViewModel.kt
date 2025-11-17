@@ -31,6 +31,10 @@ class CalendarViewModel : ViewModel() {
     private val _allStudySchedules = MutableLiveData<List<StudyScheduleWithPath>>()
     val allStudySchedules: LiveData<List<StudyScheduleWithPath>> = _allStudySchedules
 
+    // Timeline items (Study Schedules + Timetable Classes combined)
+    private val _allTimelineItems = MutableLiveData<List<TimelineItem>>()
+    val allTimelineItems: LiveData<List<TimelineItem>> = _allTimelineItems
+
     // For list view: regular tasks only
     private val _listTasks = MutableLiveData<List<Task>>()
     val listTasks: LiveData<List<Task>> = _listTasks
@@ -62,7 +66,7 @@ class CalendarViewModel : ViewModel() {
 
     /**
      * タスク一覧を取得
-     * Fetch both regular tasks and study schedules
+     * Fetch regular tasks and timeline items (Study Schedules + Timetable Classes combined)
      */
     fun fetchTasks() {
         viewModelScope.launch {
@@ -70,12 +74,12 @@ class CalendarViewModel : ViewModel() {
                 _isLoading.value = true
                 _error.value = null
 
-                // Fetch tasks and study schedules in parallel
+                // Fetch tasks and timeline items in parallel
                 val tasksDeferred = async { apiService.getTasks(perPage = 100) }
-                val studySchedulesDeferred = async { apiService.getAllStudySchedules() }
+                val timelineDeferred = async { apiService.getTimelineItems() }
 
                 val tasksResponse = tasksDeferred.await()
-                val studySchedulesResponse = studySchedulesDeferred.await()
+                val timelineResponse = timelineDeferred.await()
 
                 // Process regular tasks
                 if (tasksResponse.isSuccessful) {
@@ -98,22 +102,22 @@ class CalendarViewModel : ViewModel() {
                     _error.value = errorMsg
                 }
 
-                // Process study schedules
-                if (studySchedulesResponse.isSuccessful) {
-                    val apiResponse = studySchedulesResponse.body()
+                // Process timeline items (Study Schedules + Timetable Classes)
+                if (timelineResponse.isSuccessful) {
+                    val apiResponse = timelineResponse.body()
                     if (apiResponse?.success == true) {
-                        val schedules = apiResponse.data ?: emptyList()
-                        android.util.Log.d("CalendarViewModel", "Loaded ${schedules.size} study schedules from API")
-                        _allStudySchedules.value = schedules
+                        val timelineItems = apiResponse.data ?: emptyList()
+                        android.util.Log.d("CalendarViewModel", "Loaded ${timelineItems.size} timeline items from API")
+                        _allTimelineItems.value = timelineItems
                     } else {
-                        val errorMsg = apiResponse?.message ?: "スケジュールの取得に失敗しました"
-                        android.util.Log.e("CalendarViewModel", "Study schedules API error: $errorMsg")
-                        _allStudySchedules.value = emptyList()
+                        val errorMsg = apiResponse?.message ?: "タイムラインの取得に失敗しました"
+                        android.util.Log.e("CalendarViewModel", "Timeline API error: $errorMsg")
+                        _allTimelineItems.value = emptyList()
                     }
                 } else {
-                    val errorMsg = "ネットワークエラー: ${studySchedulesResponse.code()} - ${studySchedulesResponse.message()}"
-                    android.util.Log.e("CalendarViewModel", "Study schedules network error: $errorMsg")
-                    _allStudySchedules.value = emptyList()
+                    val errorMsg = "ネットワークエラー: ${timelineResponse.code()} - ${timelineResponse.message()}"
+                    android.util.Log.e("CalendarViewModel", "Timeline network error: $errorMsg")
+                    _allTimelineItems.value = emptyList()
                 }
 
                 applyFilter()
@@ -215,10 +219,12 @@ class CalendarViewModel : ViewModel() {
 
         _listTasks.value = listFiltered
 
-        // ===== TIMELINE VIEW: Study schedules only =====
-        var timelineFiltered = studySchedules
-            .filter { schedule -> schedule.day_of_week == dayOfWeek && schedule.is_active }
-            .map { schedule -> convertStudyScheduleToTask(schedule, selectedDateValue) }
+        // ===== TIMELINE VIEW: Timeline items (Study Schedules + Timetable Classes) =====
+        val timelineItems = _allTimelineItems.value ?: emptyList()
+
+        var timelineFiltered = timelineItems
+            .filter { item -> item.day_of_week == dayOfWeek }
+            .map { item -> item.toTask(selectedDateString) }
 
         // Sort timeline by scheduled_time
         timelineFiltered = timelineFiltered.sortedBy { task ->
@@ -226,7 +232,7 @@ class CalendarViewModel : ViewModel() {
         }
 
         android.util.Log.d("CalendarViewModel",
-            "Timeline view showing ${timelineFiltered.size} study schedules for $selectedDateString (day $dayOfWeek)")
+            "Timeline view showing ${timelineFiltered.size} timeline items for $selectedDateString (day $dayOfWeek)")
 
         _timelineTasks.value = timelineFiltered
     }
