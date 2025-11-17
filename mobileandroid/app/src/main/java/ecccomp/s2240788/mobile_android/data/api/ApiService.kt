@@ -160,7 +160,10 @@ interface ApiService {
     
     @POST("timetable/studies")
     suspend fun createTimetableStudy(@Body request: CreateTimetableStudyRequest): Response<ApiResponse<TimetableStudy>>
-    
+
+    @PUT("timetable/studies/{id}")
+    suspend fun updateTimetableStudy(@Path("id") id: Int, @Body request: CreateTimetableStudyRequest): Response<ApiResponse<TimetableStudy>>
+
     @PUT("timetable/studies/{id}/toggle")
     suspend fun toggleTimetableStudy(@Path("id") id: Int): Response<ApiResponse<TimetableStudy>>
     
