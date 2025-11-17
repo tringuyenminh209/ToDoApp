@@ -223,9 +223,32 @@ class CalendarViewModel : ViewModel() {
         // ===== TIMELINE VIEW: Timeline items (Study Schedules + Timetable Classes) =====
         val timelineItems = _allTimelineItems.value ?: emptyList()
 
+        android.util.Log.d("CalendarViewModel",
+            "=== TIMELINE FILTERING DEBUG ===")
+        android.util.Log.d("CalendarViewModel",
+            "Total timeline items from API: ${timelineItems.size}")
+        android.util.Log.d("CalendarViewModel",
+            "Selected date: $selectedDateString, day_of_week: $dayOfWeek (0=Sun, 1=Mon)")
+
+        // Log all timeline items
+        timelineItems.forEach { item ->
+            android.util.Log.d("CalendarViewModel",
+                "Timeline item: id=${item.id}, type=${item.type}, title=${item.title}, " +
+                "day_of_week=${item.day_of_week}, scheduled_time=${item.scheduled_time}")
+        }
+
         var timelineFiltered = timelineItems
-            .filter { item -> item.day_of_week == dayOfWeek }
-            .map { item -> item.toTask(selectedDateString) }
+            .filter { item ->
+                val matches = item.day_of_week == dayOfWeek
+                android.util.Log.d("CalendarViewModel",
+                    "Filter: ${item.title} day=${item.day_of_week} vs $dayOfWeek = $matches")
+                matches
+            }
+            .map { item ->
+                android.util.Log.d("CalendarViewModel",
+                    "Converting to Task: ${item.title}")
+                item.toTask(selectedDateString)
+            }
 
         // Sort timeline by scheduled_time
         timelineFiltered = timelineFiltered.sortedBy { task ->
