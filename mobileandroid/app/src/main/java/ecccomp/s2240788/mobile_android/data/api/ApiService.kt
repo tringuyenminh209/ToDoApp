@@ -483,6 +483,10 @@ interface ApiService {
     @GET("study-schedules/stats")
     suspend fun getStudyScheduleStats(): Response<ApiResponse<StudyScheduleStats>>
 
+    // Get combined timeline items (Study Schedules + Timetable Classes)
+    @GET("study-schedules/timeline")
+    suspend fun getTimelineItems(): Response<ApiResponse<List<TimelineItem>>>
+
     // ==================== Settings Endpoints ====================
 
     // Get user settings
