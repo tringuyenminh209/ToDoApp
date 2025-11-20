@@ -1,8 +1,11 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
+import android.webkit.JavascriptInterface
+import android.webkit.WebView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +15,8 @@ import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityExerciseDetailBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.TestCaseAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.ExerciseDetailViewModel
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class ExerciseDetailActivity : BaseActivity() {
 
@@ -58,12 +63,99 @@ class ExerciseDetailActivity : BaseActivity() {
         viewModel = ViewModelProvider(this)[ExerciseDetailViewModel::class.java]
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun setupCodeEditor() {
-        // Set monospace font for code editor
-        binding.etCodeEditor.typeface = Typeface.MONOSPACE
+        // Configure WebView for code editing
+        binding.webviewCodeEditor.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            loadWithOverviewMode = false
+            useWideViewPort = false
+            builtInZoomControls = false
+            displayZoomControls = false
+            setSupportZoom(false)
+        }
 
-        // Set tab key behavior (insert 4 spaces)
-        binding.etCodeEditor.setHorizontallyScrolling(true)
+        // Disable scrollbars for WebView
+        binding.webviewCodeEditor.isVerticalScrollBarEnabled = false
+        binding.webviewCodeEditor.isHorizontalScrollBarEnabled = false
+
+        // Load editor template
+        loadCodeEditor("")
+    }
+
+    private fun loadCodeEditor(initialCode: String) {
+        try {
+            // Load template from assets
+            val inputStream = assets.open("code_editor_template.html")
+            val reader = BufferedReader(InputStreamReader(inputStream))
+            val stringBuilder = StringBuilder()
+            var line: String?
+
+            while (reader.readLine().also { line = it } != null) {
+                stringBuilder.append(line)
+                stringBuilder.append('\n')
+            }
+
+            reader.close()
+
+            // Replace placeholders
+            val language = mapExerciseLanguage(languageName)
+            val escapedCode = escapeHtml(initialCode)
+            val html = stringBuilder.toString()
+                .replace("LANGUAGE_PLACEHOLDER", language)
+                .replace("CODE_PLACEHOLDER", escapedCode)
+
+            // Load HTML into WebView
+            binding.webviewCodeEditor.loadDataWithBaseURL(
+                null,
+                html,
+                "text/html",
+                "UTF-8",
+                null
+            )
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Failed to load code editor", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getCodeFromEditor(callback: (String) -> Unit) {
+        binding.webviewCodeEditor.evaluateJavascript("getCode()") { result ->
+            // Remove quotes from JavaScript string result
+            val code = result?.removeSurrounding("\"")?.replace("\\n", "\n")?.replace("\\t", "\t") ?: ""
+            callback(code)
+        }
+    }
+
+    private fun setCodeInEditor(code: String) {
+        val escapedCode = code.replace("\\", "\\\\")
+            .replace("\"", "\\\"")
+            .replace("\n", "\\n")
+            .replace("\r", "")
+        binding.webviewCodeEditor.evaluateJavascript("setCode(\"$escapedCode\")") { }
+    }
+
+    private fun escapeHtml(text: String): String {
+        return text
+            .replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace("\"", "&quot;")
+            .replace("'", "&#39;")
+    }
+
+    private fun mapExerciseLanguage(language: String): String {
+        return when (language.lowercase()) {
+            "php" -> "php"
+            "java" -> "java"
+            "javascript", "js" -> "javascript"
+            "python", "py" -> "python"
+            "bash", "shell" -> "bash"
+            "go" -> "go"
+            else -> "plaintext"
+        }
     }
 
     private fun setupRecyclerView() {
@@ -92,7 +184,7 @@ class ExerciseDetailActivity : BaseActivity() {
         // Reset button
         binding.btnReset.setOnClickListener {
             viewModel.exercise.value?.starterCode?.let { starterCode ->
-                binding.etCodeEditor.setText(starterCode)
+                setCodeInEditor(starterCode)
             }
         }
 
@@ -137,7 +229,7 @@ class ExerciseDetailActivity : BaseActivity() {
                 }
 
                 // Set starter code in editor
-                binding.etCodeEditor.setText(it.starterCode ?: "")
+                setCodeInEditor(it.starterCode ?: "")
 
                 // Show test cases
                 it.testCases?.let { testCases ->
@@ -205,14 +297,14 @@ class ExerciseDetailActivity : BaseActivity() {
     }
 
     private fun submitSolution() {
-        val code = binding.etCodeEditor.text.toString()
+        getCodeFromEditor { code ->
+            if (code.trim().isEmpty()) {
+                Toast.makeText(this, "Please write some code first", Toast.LENGTH_SHORT).show()
+                return@getCodeFromEditor
+            }
 
-        if (code.trim().isEmpty()) {
-            Toast.makeText(this, "Please write some code first", Toast.LENGTH_SHORT).show()
-            return
+            viewModel.submitSolution(languageId, exerciseId, code)
         }
-
-        viewModel.submitSolution(languageId, exerciseId, code)
     }
 
     private fun showResultDialog(
@@ -288,7 +380,7 @@ class ExerciseDetailActivity : BaseActivity() {
             .setTitle("Solution")
             .setMessage(solution)
             .setPositiveButton("Copy to Editor") { dialog, _ ->
-                binding.etCodeEditor.setText(solution)
+                setCodeInEditor(solution)
                 dialog.dismiss()
             }
             .setNegativeButton("Close") { dialog, _ ->
