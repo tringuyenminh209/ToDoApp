@@ -66,12 +66,16 @@ class EditWeeklyContentDialogFragment : DialogFragment() {
     
     private fun setupUI() {
         val classData = timetableClass ?: return
-        
+
         // Set class name
         binding.tvClassName.text = classData.name
-        
+
         // Set week info
         binding.tvWeekInfo.text = viewModel.getCurrentWeekInfo()
+
+        // Pre-fill room and instructor from class data
+        binding.etRoom.setText(classData.room ?: "")
+        binding.etInstructor.setText(classData.instructor ?: "")
     }
     
     private fun setupClickListeners() {
@@ -103,14 +107,48 @@ class EditWeeklyContentDialogFragment : DialogFragment() {
     
     private fun saveWeeklyContent() {
         val classData = timetableClass ?: return
-        
+
+        val room = binding.etRoom.text?.toString()?.trim()
+        val instructor = binding.etInstructor.text?.toString()?.trim()
         val title = binding.etWeeklyTitle.text?.toString()?.trim()
         val content = binding.etContent.text?.toString()?.trim()
         val homework = binding.etHomework.text?.toString()?.trim()
         val notes = binding.etNotes.text?.toString()?.trim()
-        
+
+        // First, update class info (room & instructor) if changed
+        if (room != classData.room || instructor != classData.instructor) {
+            val updateRequest = ecccomp.s2240788.mobile_android.data.models.CreateTimetableClassRequest(
+                name = classData.name,
+                description = classData.description,
+                room = room,
+                instructor = instructor,
+                day = classData.day,
+                period = classData.period,
+                startTime = classData.startTime,
+                endTime = classData.endTime,
+                color = classData.color,
+                icon = classData.icon
+            )
+
+            viewModel.updateClass(classData.id, updateRequest) {
+                // After updating class, update weekly content
+                saveWeeklyContentOnly(classData.id, title, content, homework, notes)
+            }
+        } else {
+            // No class info changes, just update weekly content
+            saveWeeklyContentOnly(classData.id, title, content, homework, notes)
+        }
+    }
+
+    private fun saveWeeklyContentOnly(
+        classId: Int,
+        title: String?,
+        content: String?,
+        homework: String?,
+        notes: String?
+    ) {
         viewModel.updateWeeklyContent(
-            classId = classData.id,
+            classId = classId,
             title = title,
             content = content,
             homework = homework,

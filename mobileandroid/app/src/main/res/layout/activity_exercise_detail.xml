@@ -66,7 +66,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_md">
+            android:padding="@dimen/spacing_md"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false">
 
             <!-- Exercise Info Card -->
             <com.google.android.material.card.MaterialCardView
@@ -192,23 +194,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_md"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="1dp">
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="#1E1E1E">
 
                 <EditText
                     android:id="@+id/et_code_editor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="200dp"
+                    android:minHeight="500dp"
                     android:gravity="top|start"
-                    android:padding="12dp"
+                    android:padding="16dp"
                     android:background="@android:color/transparent"
                     android:fontFamily="monospace"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textColor="#D4D4D4"
+                    android:textColorHint="#6A6A6A"
                     android:hint="ここにコードを入力してください..."
                     android:inputType="textMultiLine|textNoSuggestions"
                     android:scrollbars="vertical"
-                    android:importantForAutofill="no" />
+                    android:importantForAutofill="no"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:lineSpacingExtra="4dp"
+                    android:imeOptions="flagNoExtractUi|actionNone"
+                    android:privateImeOptions="nm"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
 
             </com.google.android.material.card.MaterialCardView>
 

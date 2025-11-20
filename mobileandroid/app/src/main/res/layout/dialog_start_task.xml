@@ -192,7 +192,7 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:maxHeight="400dp"
         android:layout_marginTop="@dimen/spacing_md"
         android:layout_marginBottom="@dimen/spacing_md"

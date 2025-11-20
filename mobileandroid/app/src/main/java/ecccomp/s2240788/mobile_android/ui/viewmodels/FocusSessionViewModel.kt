@@ -198,10 +198,24 @@ class FocusSessionViewModel : ViewModel() {
                             android.util.Log.d("FocusSessionViewModel",
                                 "Tracking subtask: subtaskId=$currentSubtaskId, parentTaskId=$parentTaskId")
 
+                            // Calculate default time if subtask has no estimate
+                            // Use parent task's estimated time divided by number of subtasks, or 25 min default
+                            val defaultTime = if (task.estimated_minutes != null && subtasks != null && subtasks.isNotEmpty()) {
+                                (task.estimated_minutes / subtasks.size).coerceAtLeast(15)
+                            } else {
+                                25  // Standard Pomodoro time
+                            }
+
+                            val subtaskTime = subtask.estimated_minutes ?: defaultTime
+
+                            android.util.Log.d("FocusSessionViewModel",
+                                "Subtask time calculation: subtask.estimated_minutes=${subtask.estimated_minutes}, " +
+                                "defaultTime=$defaultTime, final=$subtaskTime")
+
                             // Create a modified task object with subtask info for display
                             val modifiedTask = task.copy(
                                 title = subtask.title,
-                                estimated_minutes = subtask.estimated_minutes ?: 60
+                                estimated_minutes = subtaskTime
                             )
                             _currentTask.value = modifiedTask
 
@@ -214,8 +228,7 @@ class FocusSessionViewModel : ViewModel() {
                             _isDeepWorkMode.value = task.requires_deep_focus
 
                             // Set timer duration based on subtask estimated minutes
-                            val minutes = subtask.estimated_minutes ?: 60
-                            setTimerDuration(minutes)
+                            setTimerDuration(subtaskTime)
 
                             // Load knowledge items for task and all subtasks
                             // Pass subtasks directly to avoid race condition with LiveData
