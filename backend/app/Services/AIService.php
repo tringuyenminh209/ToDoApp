@@ -710,12 +710,22 @@ JSON形式で返してください：
             return null;
         }
 
-        // Build conversation context if provided
+        // Only use conversation history for SHORT/UNCLEAR messages
+        // If message has clear timetable keywords, parse independently
+        $hasTimeKeywords = preg_match('/(月曜|火曜|水曜|木曜|金曜|土曜|日曜|monday|tuesday|wednesday|thursday|friday|saturday|sunday)/iu', $message);
+        $hasClassKeywords = preg_match('/(クラス|授業|class|lecture)/iu', $message);
+        $messageLength = mb_strlen($message);
+
+        // Use history ONLY if message is short (<15 chars) AND doesn't have clear keywords
+        $useHistory = !empty($conversationHistory) && $messageLength < 15 && !($hasTimeKeywords && $hasClassKeywords);
+
+        // Build conversation context if needed
         $contextText = '';
-        if (!empty($conversationHistory)) {
-            \Log::info('parseTimetableIntent: Conversation history provided', [
+        if ($useHistory) {
+            \Log::info('parseTimetableIntent: Using conversation history (short/unclear message)', [
                 'message_count' => count($conversationHistory),
-                'current_message' => $message
+                'current_message' => $message,
+                'message_length' => $messageLength
             ]);
             $contextText = "\n会話履歴:\n";
             // Get last 3 messages for context
@@ -727,8 +737,11 @@ JSON形式で返してください：
             $contextText .= "\n";
             \Log::info('parseTimetableIntent: Context text', ['context' => $contextText]);
         } else {
-            \Log::info('parseTimetableIntent: No conversation history provided', [
-                'current_message' => $message
+            \Log::info('parseTimetableIntent: Parsing message independently (has clear keywords)', [
+                'current_message' => $message,
+                'message_length' => $messageLength,
+                'has_time_keywords' => $hasTimeKeywords,
+                'has_class_keywords' => $hasClassKeywords
             ]);
         }
 
