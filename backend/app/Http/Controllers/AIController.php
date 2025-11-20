@@ -981,25 +981,27 @@ class AIController extends Controller
                 })
                 ->toArray();
 
-            // Parse timetable intent FIRST (higher priority than task)
+            // Parse BOTH intents independently (don't let one block the other)
             $timetableData = $this->aiService->parseTimetableIntent($request->message, $historyForParsing);
             Log::info('AIController: parseTimetableIntent returned', [
                 'has_data' => !is_null($timetableData),
                 'data' => $timetableData
             ]);
-            $createdTimetableClass = null;
 
-            // Parse task intent only if NO timetable intent detected
-            $taskData = null;
+            $taskData = $this->aiService->parseTaskIntent($request->message);
+            Log::info('AIController: parseTaskIntent returned', [
+                'has_data' => !is_null($taskData),
+                'data' => $taskData
+            ]);
+
+            // Determine which intent to use (timetable has priority if both detected)
+            $createdTimetableClass = null;
             $createdTask = null;
-            if (!$timetableData) {
-                $taskData = $this->aiService->parseTaskIntent($request->message);
-                Log::info('AIController: parseTaskIntent returned', [
-                    'has_data' => !is_null($taskData),
-                    'data' => $taskData
-                ]);
-            } else {
-                Log::info('AIController: Skipping task intent parsing because timetable intent was detected');
+
+            if ($timetableData && $taskData) {
+                // Both detected - use timetable and ignore task
+                Log::info('AIController: Both intents detected, prioritizing timetable');
+                $taskData = null;
             }
 
             // If task intent detected, create task
