@@ -1064,58 +1064,41 @@ class AIController extends Controller
                 }
             }
 
-            // If timetable intent detected, create timetable class
+            // If timetable intent detected, prepare suggestion (don't auto-create)
+            $timetableSuggestion = null;
             if ($timetableData) {
-                Log::info('AIController: Timetable data detected, attempting to create class', [
+                Log::info('AIController: Timetable data detected, preparing suggestion', [
                     'timetable_data' => $timetableData,
                     'user_id' => $user->id
                 ]);
 
-                try {
-                    // Calculate period if not provided (assume 1 period = 1 hour)
-                    $period = $timetableData['period'] ?? null;
-                    if (!$period) {
-                        // Calculate period from time duration
-                        $start = \Carbon\Carbon::createFromFormat('H:i', $timetableData['start_time']);
-                        $end = \Carbon\Carbon::createFromFormat('H:i', $timetableData['end_time']);
-                        $durationHours = $start->diffInHours($end);
-                        $period = max(1, round($durationHours)); // At least 1 period
-                    }
-
-                    Log::info('AIController: Creating timetable class with data', [
-                        'name' => $timetableData['name'],
-                        'day' => $timetableData['day'],
-                        'start_time' => $timetableData['start_time'],
-                        'end_time' => $timetableData['end_time'],
-                        'period' => $period
-                    ]);
-
-                    $createdTimetableClass = TimetableClass::create([
-                        'user_id' => $user->id,
-                        'name' => $timetableData['name'],
-                        'description' => $timetableData['description'] ?? null,
-                        'room' => $timetableData['room'] ?? null,
-                        'instructor' => $timetableData['instructor'] ?? null,
-                        'day' => $timetableData['day'],
-                        'period' => $period,
-                        'start_time' => $timetableData['start_time'],
-                        'end_time' => $timetableData['end_time'],
-                        'color' => $timetableData['color'] ?? '#6366f1', // Default indigo
-                        'icon' => $timetableData['icon'] ?? '📚', // Default book icon
-                    ]);
-
-                    Log::info('Timetable class created from context-aware chat', [
-                        'class_id' => $createdTimetableClass->id,
-                        'conversation_id' => $conversation->id,
-                        'class_name' => $createdTimetableClass->name
-                    ]);
-                } catch (\Exception $e) {
-                    Log::error('Failed to create timetable class from context-aware chat: ' . $e->getMessage(), [
-                        'exception' => $e,
-                        'timetable_data' => $timetableData
-                    ]);
-                    // Continue without timetable creation
+                // Calculate period if not provided (assume 1 period = 1 hour)
+                $period = $timetableData['period'] ?? null;
+                if (!$period) {
+                    // Calculate period from time duration
+                    $start = \Carbon\Carbon::createFromFormat('H:i', $timetableData['start_time']);
+                    $end = \Carbon\Carbon::createFromFormat('H:i', $timetableData['end_time']);
+                    $durationHours = $start->diffInHours($end);
+                    $period = max(1, round($durationHours)); // At least 1 period
                 }
+
+                // Prepare suggestion for user confirmation
+                $timetableSuggestion = [
+                    'name' => $timetableData['name'],
+                    'description' => $timetableData['description'] ?? null,
+                    'room' => $timetableData['room'] ?? null,
+                    'instructor' => $timetableData['instructor'] ?? null,
+                    'day' => $timetableData['day'],
+                    'period' => $period,
+                    'start_time' => $timetableData['start_time'],
+                    'end_time' => $timetableData['end_time'],
+                    'color' => $timetableData['color'] ?? '#6366f1',
+                    'icon' => $timetableData['icon'] ?? '📚',
+                ];
+
+                Log::info('AIController: Timetable suggestion prepared', [
+                    'suggestion' => $timetableSuggestion
+                ]);
             }
 
             // Load user context: tasks + timetable
@@ -1200,31 +1183,7 @@ class AIController extends Controller
                 $aiResponse['message'] = $aiResponse['message'] . $taskConfirmation;
             }
 
-            // If timetable class was created, add confirmation to AI response
-            if ($createdTimetableClass) {
-                $dayNameMap = [
-                    'monday' => '月曜日',
-                    'tuesday' => '火曜日',
-                    'wednesday' => '水曜日',
-                    'thursday' => '木曜日',
-                    'friday' => '金曜日',
-                    'saturday' => '土曜日',
-                    'sunday' => '日曜日',
-                ];
-                $dayJapanese = $dayNameMap[$createdTimetableClass->day] ?? $createdTimetableClass->day;
-
-                $classConfirmation = "\n\n🎓 授業を登録しました: 「{$createdTimetableClass->name}」\n";
-                $classConfirmation .= "📅 {$dayJapanese} {$createdTimetableClass->start_time} - {$createdTimetableClass->end_time}";
-
-                if ($createdTimetableClass->room) {
-                    $classConfirmation .= "\n🏫 教室: {$createdTimetableClass->room}";
-                }
-                if ($createdTimetableClass->instructor) {
-                    $classConfirmation .= "\n👨‍🏫 教員: {$createdTimetableClass->instructor}";
-                }
-
-                $aiResponse['message'] = $aiResponse['message'] . $classConfirmation;
-            }
+            // Note: Timetable suggestions are handled by Android UI, no need to modify message
 
             // Create assistant message
             $assistantMessage = ChatMessage::create([
@@ -1249,8 +1208,8 @@ class AIController extends Controller
                 'user_message' => $userMessage,
                 'assistant_message' => $assistantMessage,
                 'created_task' => $createdTask, // Auto-created task from parseTaskIntent
-                'created_timetable_class' => $createdTimetableClass, // Auto-created timetable class from parseTimetableIntent
-                'task_suggestion' => $aiResponse['task_suggestion'] ?? null, // AI suggestion (requires user confirmation)
+                'task_suggestion' => $aiResponse['task_suggestion'] ?? null, // AI task suggestion (requires user confirmation)
+                'timetable_suggestion' => $timetableSuggestion, // Timetable class suggestion (requires user confirmation)
             ];
 
             return response()->json([
@@ -1538,6 +1497,70 @@ class AIController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'タスクの作成に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Confirm and create timetable class from AI suggestion
+     * POST /api/ai/chat/timetable-suggestions/confirm
+     */
+    public function confirmTimetableSuggestion(Request $request): JsonResponse
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+            'room' => 'nullable|string|max:100',
+            'instructor' => 'nullable|string|max:255',
+            'day' => 'required|in:monday,tuesday,wednesday,thursday,friday,saturday,sunday',
+            'period' => 'required|integer|min:1|max:10',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'color' => 'nullable|string|max:20',
+            'icon' => 'nullable|string|max:10',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $user = $request->user();
+
+            $timetableClass = TimetableClass::create([
+                'user_id' => $user->id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'room' => $request->room,
+                'instructor' => $request->instructor,
+                'day' => $request->day,
+                'period' => $request->period,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'color' => $request->color ?? '#6366f1',
+                'icon' => $request->icon ?? '📚',
+            ]);
+
+            DB::commit();
+
+            Log::info('Timetable class created from AI suggestion', [
+                'class_id' => $timetableClass->id,
+                'user_id' => $user->id,
+                'name' => $timetableClass->name
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => $timetableClass,
+                'message' => '授業を登録しました！'
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Timetable suggestion confirmation failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => '授業の登録に失敗しました',
                 'error' => $e->getMessage()
             ], 500);
         }

@@ -389,12 +389,26 @@ data class TaskSuggestion(
     val reason: String // Why AI suggests this task
 )
 
+// Timetable Class Suggestion from AI (not auto-created, requires user confirmation)
+data class TimetableClassSuggestion(
+    val name: String,
+    val description: String?,
+    val room: String?,
+    val instructor: String?,
+    val day: String, // "monday", "tuesday", etc.
+    val period: Int,
+    val start_time: String, // "HH:mm"
+    val end_time: String, // "HH:mm"
+    val color: String?,
+    val icon: String?
+)
+
 data class SendMessageResponse(
     val user_message: ChatMessage,
     val assistant_message: ChatMessage,
     val created_task: Task? = null,
-    val created_timetable_class: TimetableClass? = null,
-    val task_suggestion: TaskSuggestion? = null // New field for AI suggestions
+    val task_suggestion: TaskSuggestion? = null, // Task suggestion (requires user confirmation)
+    val timetable_suggestion: TimetableClassSuggestion? = null // Timetable class suggestion (requires user confirmation)
 )
 
 // ==================== AI Task Breakdown Models ====================
