@@ -243,7 +243,10 @@ class MainActivity : BaseActivity() {
         viewModel.tasks.observe(this) { tasks ->
             // Always submit list to adapter (even if empty/null)
             val taskList = tasks ?: emptyList()
-            val topTasks = taskList.take(3)
+
+            // Filter out roadmap tasks (tasks with learning_milestone_id)
+            val regularTasks = taskList.filter { it.learning_milestone_id == null }
+            val topTasks = regularTasks.take(3)
 
             // Ensure list is visible before submit to avoid flicker
             if (topTasks.isNotEmpty()) {

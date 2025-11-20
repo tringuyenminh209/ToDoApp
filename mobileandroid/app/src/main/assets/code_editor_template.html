@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            background: #1E1E1E;
+            color: #D4D4D4;
+            overflow-x: auto;
+            margin: 0;
+            padding: 16px;
+        }
+
+        #editor {
+            font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            background: transparent;
+            color: #D4D4D4;
+            border: none;
+            outline: none;
+            width: 100%;
+            min-height: 400px;
+            white-space: pre;
+            overflow-wrap: normal;
+            overflow-x: auto;
+            -webkit-user-select: text;
+            user-select: text;
+            caret-color: #D4D4D4;
+        }
+
+        #editor:empty:before {
+            content: attr(data-placeholder);
+            color: #6A6A6A;
+            pointer-events: none;
+        }
+
+        /* Syntax highlighting colors */
+        .comment {
+            color: #6A9955;
+            font-style: italic;
+        }
+
+        .keyword {
+            color: #C586C0;
+        }
+
+        .string {
+            color: #CE9178;
+        }
+
+        .number {
+            color: #B5CEA8;
+        }
+
+        .function {
+            color: #DCDCAA;
+        }
+
+        .operator {
+            color: #D4D4D4;
+        }
+
+        .variable {
+            color: #9CDCFE;
+        }
+
+        .class-name {
+            color: #4EC9B0;
+        }
+
+        .tag {
+            color: #569CD6;
+        }
+
+        .attr-name {
+            color: #9CDCFE;
+        }
+
+        .attr-value {
+            color: #CE9178;
+        }
+    </style>
+</head>
+<body>
+    <div id="editor" contenteditable="true" spellcheck="false" autocorrect="off" autocapitalize="off" data-placeholder="ここにコードを入力してください...">CODE_PLACEHOLDER</div>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const language = 'LANGUAGE_PLACEHOLDER';
+
+        // Token definitions for syntax highlighting
+        const tokens = {
+            php: [
+                { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                { regex: /\/\/.*/, type: 'comment' },
+                { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                { regex: /\b(echo|print|return|if|else|elseif|foreach|for|while|function|class|public|private|protected|static|const|new|extends|implements|namespace|use|try|catch|finally|throw|as|array|die|exit|include|require)\b/, type: 'keyword' },
+                { regex: /\$[a-zA-Z_][a-zA-Z0-9_]*/, type: 'variable' },
+                { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
+            ],
+            java: [
+                { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                { regex: /\/\/.*/, type: 'comment' },
+                { regex: /("(?:\\.|[^"\\])*")/, type: 'string' },
+                { regex: /\b(public|private|protected|static|final|class|interface|extends|implements|new|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|throws|import|package|void|int|long|double|float|char|boolean|String|true|false|null)\b/, type: 'keyword' },
+                { regex: /\b[A-Z][a-zA-Z0-9]*\b/, type: 'class-name' },
+                { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
+            ],
+            javascript: [
+                { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                { regex: /\/\/.*/, type: 'comment' },
+                { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/, type: 'string' },
+                { regex: /\b(var|let|const|function|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|class|extends|import|export|default|async|await|new|typeof|instanceof|true|false|null|undefined)\b/, type: 'keyword' },
+                { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
+            ],
+            python: [
+                { regex: /#.*/, type: 'comment' },
+                { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                { regex: /\b(def|class|if|elif|else|for|while|return|import|from|as|try|except|finally|with|lambda|pass|break|continue|True|False|None|and|or|not|in|is)\b/, type: 'keyword' },
+                { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
+            ],
+            bash: [
+                { regex: /#.*/, type: 'comment' },
+                { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                { regex: /\b(if|then|else|elif|fi|for|while|do|done|case|esac|function|return|echo|exit|break|continue)\b/, type: 'keyword' },
+                { regex: /\$[a-zA-Z_][a-zA-Z0-9_]*/, type: 'variable' },
+                { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
+            ],
+            go: [
+                { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                { regex: /\/\/.*/, type: 'comment' },
+                { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/, type: 'string' },
+                { regex: /\b(package|import|func|var|const|type|struct|interface|return|if|else|for|range|switch|case|break|continue|goto|defer|go|chan|select|true|false|nil)\b/, type: 'keyword' },
+                { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
+            ]
+        };
+
+        // Get plain text from editor
+        function getPlainText() {
+            return editor.textContent;
+        }
+
+        // Escape HTML entities
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        // Tokenize and highlight
+        function highlight(code, lang) {
+            if (!tokens[lang]) {
+                return escapeHtml(code);
+            }
+
+            let result = '';
+            let pos = 0;
+
+            while (pos < code.length) {
+                let matched = false;
+
+                for (let tokenDef of tokens[lang]) {
+                    const regex = new RegExp('^' + tokenDef.regex.source);
+                    const match = code.slice(pos).match(regex);
+
+                    if (match) {
+                        const token = match[0];
+                        result += '<span class="' + tokenDef.type + '">' + escapeHtml(token) + '</span>';
+                        pos += token.length;
+                        matched = true;
+                        break;
+                    }
+                }
+
+                if (!matched) {
+                    result += escapeHtml(code[pos]);
+                    pos++;
+                }
+            }
+
+            return result;
+        }
+
+        // Save cursor position
+        function saveCursorPosition() {
+            const selection = window.getSelection();
+            if (selection.rangeCount === 0) return 0;
+
+            const range = selection.getRangeAt(0);
+            const preCaretRange = range.cloneRange();
+            preCaretRange.selectNodeContents(editor);
+            preCaretRange.setEnd(range.endContainer, range.endOffset);
+            return preCaretRange.toString().length;
+        }
+
+        // Restore cursor position
+        function restoreCursorPosition(savedPosition) {
+            const selection = window.getSelection();
+            const range = document.createRange();
+
+            let currentPos = 0;
+            let found = false;
+
+            function traverse(node) {
+                if (found) return;
+
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const nextPos = currentPos + node.length;
+                    if (savedPosition >= currentPos && savedPosition <= nextPos) {
+                        range.setStart(node, savedPosition - currentPos);
+                        range.collapse(true);
+                        found = true;
+                        return;
+                    }
+                    currentPos = nextPos;
+                } else {
+                    for (let child of node.childNodes) {
+                        traverse(child);
+                        if (found) return;
+                    }
+                }
+            }
+
+            traverse(editor);
+
+            if (found) {
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+
+        // Update highlighting
+        function updateHighlighting() {
+            const cursorPos = saveCursorPosition();
+            const code = getPlainText();
+            editor.innerHTML = highlight(code, language);
+            restoreCursorPosition(cursorPos);
+        }
+
+        // Listen for input events
+        let updateTimeout;
+        editor.addEventListener('input', function() {
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(updateHighlighting, 100);
+        });
+
+        // Prevent tab from losing focus
+        editor.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                document.execCommand('insertText', false, '    ');
+            }
+        });
+
+        // Interface for Android
+        function getCode() {
+            return getPlainText();
+        }
+
+        function setCode(code) {
+            editor.textContent = code;
+            updateHighlighting();
+        }
+
+        // Initial highlight
+        if (editor.textContent && editor.textContent.trim()) {
+            updateHighlighting();
+        }
+    </script>
+</body>
+</html>
