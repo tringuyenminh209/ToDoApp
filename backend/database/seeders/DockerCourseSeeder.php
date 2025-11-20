@@ -45,7 +45,7 @@ class DockerCourseSeeder extends Seeder
                 'title' => '第1週：環境構築とDocker入門',
                 'description' => 'WSL2 + Docker Desktopのセットアップ、Dockerの基本概念、アーキテクチャ',
                 'sort_order' => 1,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 150,
                 'priority' => 5,
                 'resources' => ['Docker公式ドキュメント', 'WSL2設定ガイド'],
                 'subtasks' => [
@@ -89,7 +89,7 @@ class DockerCourseSeeder extends Seeder
                 'title' => '第2週：Dockerfile作成と基本コマンド',
                 'description' => '初めてのDockerfile作成、イメージビルド、コンテナ操作の基本コマンド',
                 'sort_order' => 2,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['Dockerfile Best Practices', 'Docker CLI Reference'],
                 'subtasks' => [
@@ -150,7 +150,7 @@ class DockerCourseSeeder extends Seeder
                 'title' => '第3週：Volumes & Networks',
                 'description' => 'データ永続化とコンテナ間ネットワーク通信',
                 'sort_order' => 3,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['Docker Volumes', 'Docker Networks'],
                 'subtasks' => [
@@ -192,7 +192,7 @@ class DockerCourseSeeder extends Seeder
                 'title' => '第4週：Docker Compose',
                 'description' => 'Compose v2で複数コンテナを管理、環境変数とProfiles',
                 'sort_order' => 4,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 5,
                 'resources' => ['Docker Compose Specification'],
                 'subtasks' => [
@@ -252,7 +252,7 @@ class DockerCourseSeeder extends Seeder
                 'title' => '第5週：Multi-stage Build & Healthcheck',
                 'description' => 'イメージの最適化とヘルスチェック',
                 'sort_order' => 5,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['Multi-stage Builds', 'Healthcheck Reference'],
                 'subtasks' => [
@@ -288,7 +288,7 @@ class DockerCourseSeeder extends Seeder
                 'title' => '第6週：Private Registry & セキュリティ',
                 'description' => 'プライベートレジストリ構築とセキュリティスキャン',
                 'sort_order' => 6,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['Docker Registry', 'Trivy Documentation'],
                 'subtasks' => [
@@ -341,7 +341,7 @@ class DockerCourseSeeder extends Seeder
                 'title' => '第7週：Orchestration & Monitoring',
                 'description' => 'Docker SwarmとPrometheus/Grafanaによる監視',
                 'sort_order' => 7,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 270,
                 'priority' => 5,
                 'resources' => ['Docker Swarm', 'Prometheus', 'Grafana'],
                 'subtasks' => [
@@ -377,7 +377,7 @@ class DockerCourseSeeder extends Seeder
                 'title' => '第8週：Microservices構成',
                 'description' => 'マイクロサービス + API Gateway + ネットワーク分離',
                 'sort_order' => 8,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['Microservices Pattern', 'Nginx as Gateway'],
                 'subtasks' => [
@@ -423,7 +423,7 @@ class DockerCourseSeeder extends Seeder
                 'title' => '第9-12週：E-commerce Capstone',
                 'description' => 'Full-stack構成 + CI/CD + Monitoring + Security',
                 'sort_order' => 9,
-                'estimated_minutes' => 1920,
+                'estimated_minutes' => 1740,
                 'priority' => 5,
                 'resources' => ['GitHub Actions', 'Docker Best Practices'],
                 'subtasks' => [
