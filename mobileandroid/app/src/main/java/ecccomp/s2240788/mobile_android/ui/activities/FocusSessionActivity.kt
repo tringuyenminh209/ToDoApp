@@ -161,12 +161,12 @@ class FocusSessionActivity : BaseActivity() {
 
                 // Display estimated time (ViewModel already set the timer duration correctly)
                 val estimatedMinutes = it.estimated_minutes ?: 25
-                binding.tvEstimatedTime.text = "⏱ ${estimatedMinutes} phút"
+                binding.tvEstimatedTime.text = "⏱ $estimatedMinutes ${getString(R.string.minutes_unit)}"
 
                 // DO NOT call setTimerDuration() here - ViewModel already set it correctly in loadTask/loadTaskWithSubtask
                 // Calling it here would override the correct subtask time with the modified task's time
 
-                binding.tvFocusCount.text = "🎯 ${viewModel.getPomodoroCount()}/5 Pomodoro"
+                binding.tvFocusCount.text = getString(R.string.pomodoro_count_format, viewModel.getPomodoroCount())
 
                 // Update timer mode text based on category
                 val categoryText = when (it.category?.lowercase()) {
@@ -198,7 +198,7 @@ class FocusSessionActivity : BaseActivity() {
         viewModel.focusSessionCompleted.observe(this) { completed ->
             if (completed) {
                 // Play sound, show notification, etc.
-                Toast.makeText(this, "Session hoàn thành!", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.session_completed), Toast.LENGTH_LONG).show()
                 
                 // Save notes if user entered any
                 val notes = binding.etNotes.text?.toString()
@@ -227,7 +227,7 @@ class FocusSessionActivity : BaseActivity() {
                 binding.learningContentCard.visibility = View.VISIBLE
                 binding.emptyKnowledgeState.visibility = View.GONE
                 knowledgeAdapter.submitList(items)
-                binding.tvKnowledgeCount.text = "${items.size} items"
+                binding.tvKnowledgeCount.text = getString(R.string.items_count_format, items.size)
             }
         }
 
@@ -297,7 +297,7 @@ class FocusSessionActivity : BaseActivity() {
     private fun updateDeepWorkModeUI(isDeepWork: Boolean) {
         if (isDeepWork) {
             // Change title to "Deep Work Mode" with primary color
-            binding.tvTitle.text = "Deep Work Mode"
+            binding.tvTitle.text = getString(R.string.deep_work_mode_title)
             binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.primary))
             
             // Change top bar background to primary_light for Deep Work
@@ -319,7 +319,7 @@ class FocusSessionActivity : BaseActivity() {
             binding.timerModeBadge.setCardBackgroundColor(
                 ContextCompat.getColor(this, R.color.primary)
             )
-            binding.tvTimerMode.text = "Deep Work"
+            binding.tvTimerMode.text = getString(R.string.deep_work_mode_title)
             binding.tvTimerMode.setTextColor(
                 ContextCompat.getColor(this, R.color.white)
             )
@@ -341,7 +341,7 @@ class FocusSessionActivity : BaseActivity() {
             
         } else {
             // Normal focus mode
-            binding.tvTitle.text = "Focus Mode"
+            binding.tvTitle.text = getString(R.string.focus_mode_title)
             binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
             
             // Reset top bar background
@@ -386,7 +386,7 @@ class FocusSessionActivity : BaseActivity() {
 
         when (mode) {
             FocusSessionViewModel.TimerMode.WORK -> {
-                binding.tvTimerMode.text = "Làm việc"
+                binding.tvTimerMode.text = getString(R.string.timer_mode_work)
                 binding.timerModeBadge.setCardBackgroundColor(
                     ContextCompat.getColor(this, R.color.primary_light)
                 )
@@ -398,7 +398,7 @@ class FocusSessionActivity : BaseActivity() {
                 )
             }
             FocusSessionViewModel.TimerMode.SHORT_BREAK -> {
-                binding.tvTimerMode.text = "Nghỉ ngắn"
+                binding.tvTimerMode.text = getString(R.string.timer_mode_short_break)
                 binding.timerModeBadge.setCardBackgroundColor(
                     ContextCompat.getColor(this, R.color.success_light)
                 )
@@ -410,7 +410,7 @@ class FocusSessionActivity : BaseActivity() {
                 )
             }
             FocusSessionViewModel.TimerMode.LONG_BREAK -> {
-                binding.tvTimerMode.text = "Nghỉ dài"
+                binding.tvTimerMode.text = getString(R.string.timer_mode_long_break)
                 binding.timerModeBadge.setCardBackgroundColor(
                     ContextCompat.getColor(this, R.color.accent_light)
                 )

@@ -732,10 +732,18 @@
 
     <!-- Focus Enhancement Features -->
     <string name="deep_work_mode">ディープワークモード</string>
+    <string name="deep_work_mode_title">Deep Work Mode</string>
+    <string name="focus_mode_title">Focus Mode</string>
     <string name="deep_work_mode_desc">中断のない集中時間が必要なタスク</string>
     <string name="allow_interruptions">中断を許可</string>
     <string name="timer_mode_work">作業中</string>
     <string name="timer_mode_break">休憩中</string>
+    <string name="timer_mode_short_break">短い休憩</string>
+    <string name="timer_mode_long_break">長い休憩</string>
+    <string name="session_completed">セッション完了！</string>
+    <string name="minutes_unit">分</string>
+    <string name="pomodoro_count_format">🎯 %1$d/5 Pomodoro</string>
+    <string name="items_count_format">%d アイテム</string>
     <string name="category_study">勉強</string>
     <string name="focus_difficulty">集中難易度</string>
     <string name="focus_difficulty_desc">このタスクにはどの程度の集中力が必要ですか？</string>
