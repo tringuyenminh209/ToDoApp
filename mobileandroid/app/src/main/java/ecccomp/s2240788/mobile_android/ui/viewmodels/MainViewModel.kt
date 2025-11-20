@@ -172,16 +172,17 @@ class MainViewModel : ViewModel() {
 
     /**
      * Smart task sorting for main display:
-     * 1. Prioritize roadmap tasks (learning_milestone_id != null)
-     * 2. Sort by scheduled_time (earliest first)
-     * 3. Sort by priority (highest first)
-     * 4. Filter out completed tasks
-     * 5. Take top 3
+     * 1. Prioritize user-created tasks (learning_milestone_id == null)
+     * 2. Then roadmap tasks (learning_milestone_id != null)
+     * 3. Sort by scheduled_time (earliest first)
+     * 4. Sort by priority (highest first)
+     * 5. Filter out completed tasks
+     * 6. Take top 3
      */
     private fun sortTasksForMainDisplay(tasks: List<Task>): List<Task> {
         return tasks
             .filter { it.status != "completed" } // Exclude completed tasks
-            .sortedWith(compareByDescending<Task> { it.learning_milestone_id != null } // Roadmap tasks first
+            .sortedWith(compareBy<Task> { it.learning_milestone_id != null } // User-created tasks first (null milestone)
                 .thenBy { task ->
                     // Parse scheduled_time for sorting (HH:mm:ss format)
                     task.scheduled_time?.let { time ->
