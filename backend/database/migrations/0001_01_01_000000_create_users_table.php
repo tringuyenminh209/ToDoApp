@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable()->comment('メール確認日時');
             $table->string('password', 255)->comment('パスワード（ハッシュ化）');
             $table->enum('language', ['vi', 'en', 'ja'])->default('ja')->comment('UI言語');
-            $table->string('timezone', 50)->default('UTC')->comment('タイムゾーン');
+            $table->string('timezone', 50)->default('Asia/Tokyo')->comment('タイムゾーン');
             $table->string('avatar_url', 500)->nullable()->comment('アバター画像URL');
             $table->rememberToken();
             $table->timestamps();
