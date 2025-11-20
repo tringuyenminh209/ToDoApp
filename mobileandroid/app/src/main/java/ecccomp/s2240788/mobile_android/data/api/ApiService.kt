@@ -388,6 +388,9 @@ interface ApiService {
     @POST("ai/chat/task-suggestions/confirm")
     suspend fun confirmTaskSuggestion(@Body request: TaskSuggestion): Response<ApiResponse<Task>>
 
+    @POST("ai/chat/timetable-suggestions/confirm")
+    suspend fun confirmTimetableSuggestion(@Body request: TimetableClassSuggestion): Response<ApiResponse<TimetableClass>>
+
     // ==================== AI Task Breakdown Endpoint ====================
 
     @POST("ai/breakdown-task")

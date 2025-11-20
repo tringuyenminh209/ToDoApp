@@ -10,6 +10,7 @@ import ecccomp.s2240788.mobile_android.data.models.ChatMessage
 import ecccomp.s2240788.mobile_android.data.models.Task
 import ecccomp.s2240788.mobile_android.data.models.TaskSuggestion
 import ecccomp.s2240788.mobile_android.data.models.TimetableClass
+import ecccomp.s2240788.mobile_android.data.models.TimetableClassSuggestion
 import ecccomp.s2240788.mobile_android.data.repository.ChatRepository
 import ecccomp.s2240788.mobile_android.data.result.ChatResult
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
@@ -66,6 +67,10 @@ class AICoachViewModel : ViewModel() {
     // Task suggestion from AI (not auto-created, requires user confirmation)
     private val _taskSuggestion = MutableLiveData<TaskSuggestion?>()
     val taskSuggestion: LiveData<TaskSuggestion?> = _taskSuggestion
+
+    // Timetable class suggestion from AI (not auto-created, requires user confirmation)
+    private val _timetableSuggestion = MutableLiveData<TimetableClassSuggestion?>()
+    val timetableSuggestion: LiveData<TimetableClassSuggestion?> = _timetableSuggestion
 
     // Created timetable class from AI chat
     private val _createdTimetableClass = MutableLiveData<TimetableClass?>()
@@ -222,15 +227,14 @@ class AICoachViewModel : ViewModel() {
                                 _successMessage.value = "タスクを作成しました！"
                             }
 
-                            // Check if timetable class was created (auto-created timetable class)
-                            if (result.data.created_timetable_class != null) {
-                                _createdTimetableClass.value = result.data.created_timetable_class
-                                _successMessage.value = "授業を登録しました！"
-                            }
-
                             // Check if there's a task suggestion (requires user confirmation)
                             if (result.data.task_suggestion != null) {
                                 _taskSuggestion.value = result.data.task_suggestion
+                            }
+
+                            // Check if there's a timetable suggestion (requires user confirmation)
+                            if (result.data.timetable_suggestion != null) {
+                                _timetableSuggestion.value = result.data.timetable_suggestion
                             }
                         } catch (e: Exception) {
                             android.util.Log.e("AICoachViewModel", "Error processing sendMessage response", e)
@@ -373,6 +377,37 @@ class AICoachViewModel : ViewModel() {
     }
 
     /**
+     * Confirm and create timetable class from AI suggestion
+     */
+    fun confirmTimetableSuggestion(suggestion: TimetableClassSuggestion) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                val response = apiService.confirmTimetableSuggestion(suggestion)
+
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _createdTimetableClass.value = response.body()?.data
+                    _timetableSuggestion.value = null // Clear suggestion after confirmation
+                    _successMessage.value = "授業を登録しました！"
+                } else {
+                    _error.value = "授業の登録に失敗しました"
+                }
+            } catch (e: Exception) {
+                _error.value = "授業の登録に失敗しました: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Dismiss timetable suggestion without creating
+     */
+    fun dismissTimetableSuggestion() {
+        _timetableSuggestion.value = null
+    }
+
+    /**
      * Reset conversation (start fresh)
      */
     fun resetConversation() {
@@ -381,6 +416,7 @@ class AICoachViewModel : ViewModel() {
         _error.value = null
         _successMessage.value = null
         _taskSuggestion.value = null
+        _timetableSuggestion.value = null
     }
 
     /**

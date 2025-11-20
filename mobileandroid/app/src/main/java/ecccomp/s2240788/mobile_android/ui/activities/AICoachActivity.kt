@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityAiCoachBinding
 import ecccomp.s2240788.mobile_android.data.models.TimetableClass
+import ecccomp.s2240788.mobile_android.data.models.TimetableClassSuggestion
 import ecccomp.s2240788.mobile_android.ui.adapters.ChatMessageAdapter
 import ecccomp.s2240788.mobile_android.ui.dialogs.ConversationHistoryDialog
 import ecccomp.s2240788.mobile_android.ui.viewmodels.AICoachViewModel
@@ -358,6 +359,14 @@ class AICoachActivity : BaseActivity() {
                 binding.taskSuggestionCard.visibility = View.GONE
             }
         }
+
+        // Observe timetable suggestion
+        viewModel.timetableSuggestion.observe(this) { suggestion ->
+            if (suggestion != null) {
+                // Show confirmation dialog for timetable class
+                showTimetableConfirmationDialog(suggestion)
+            }
+        }
     }
 
     /**
@@ -508,6 +517,46 @@ class AICoachActivity : BaseActivity() {
     private fun updateConversationHistoryDialog(conversations: List<ecccomp.s2240788.mobile_android.data.models.ChatConversation>) {
         val dialog = supportFragmentManager.findFragmentByTag("conversation_history") as? ConversationHistoryDialog
         dialog?.updateConversations(conversations)
+    }
+
+    /**
+     * Show confirmation dialog for timetable class suggestion
+     */
+    private fun showTimetableConfirmationDialog(suggestion: TimetableClassSuggestion) {
+        val dayNameMap = mapOf(
+            "monday" to "月曜日",
+            "tuesday" to "火曜日",
+            "wednesday" to "水曜日",
+            "thursday" to "木曜日",
+            "friday" to "金曜日",
+            "saturday" to "土曜日",
+            "sunday" to "日曜日"
+        )
+        val dayJapanese = dayNameMap[suggestion.day] ?: suggestion.day
+
+        val message = buildString {
+            append("📚 ${suggestion.name}\n")
+            append("📅 $dayJapanese ${suggestion.start_time} - ${suggestion.end_time}\n")
+            if (suggestion.room != null) {
+                append("🏫 教室: ${suggestion.room}\n")
+            }
+            if (suggestion.instructor != null) {
+                append("👨‍🏫 教員: ${suggestion.instructor}\n")
+            }
+            append("\n授業を登録しますか？")
+        }
+
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("授業登録の確認")
+            .setMessage(message)
+            .setPositiveButton("登録") { _, _ ->
+                viewModel.confirmTimetableSuggestion(suggestion)
+            }
+            .setNegativeButton("キャンセル") { _, _ ->
+                viewModel.dismissTimetableSuggestion()
+            }
+            .setCancelable(false)
+            .show()
     }
 
     /**
