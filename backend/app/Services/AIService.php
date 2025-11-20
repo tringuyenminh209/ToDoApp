@@ -704,17 +704,39 @@ JSON形式で返してください：
      * @param string $message User message
      * @return array|null Timetable class data if intent detected, null otherwise
      */
-    public function parseTimetableIntent(string $message): ?array
+    public function parseTimetableIntent(string $message, array $conversationHistory = []): ?array
     {
         if (!$this->apiKey) {
             return null;
         }
 
-        $prompt = "以下のメッセージを分析して、**明確な授業登録の意図があるか**判断してください。
+        // Build conversation context if provided
+        $contextText = '';
+        if (!empty($conversationHistory)) {
+            \Log::info('parseTimetableIntent: Conversation history provided', [
+                'message_count' => count($conversationHistory),
+                'current_message' => $message
+            ]);
+            $contextText = "\n会話履歴:\n";
+            // Get last 3 messages for context
+            $recentHistory = array_slice($conversationHistory, -3);
+            foreach ($recentHistory as $msg) {
+                $role = $msg['role'] === 'user' ? 'ユーザー' : 'アシスタント';
+                $contextText .= "{$role}: {$msg['content']}\n";
+            }
+            $contextText .= "\n";
+            \Log::info('parseTimetableIntent: Context text', ['context' => $contextText]);
+        } else {
+            \Log::info('parseTimetableIntent: No conversation history provided', [
+                'current_message' => $message
+            ]);
+        }
+
+        $prompt = "以下のメッセージ（と会話履歴）を分析して、**授業登録の意図があるか**判断してください。
 授業登録の意図がある場合は、授業情報を抽出してJSONで返してください。
 意図がない場合は、必ず false を返してください。
-
-メッセージ: {$message}
+{$contextText}
+現在のメッセージ: {$message}
 
 授業登録の意図がある場合のJSON形式:
 {
@@ -740,8 +762,11 @@ JSON形式で返してください：
 - 「授業を追加」「授業を登録」「クラスを追加」「時間割に追加」「授業を入れる」
 - 「〜の授業がある」+時間指定 (例: 「月曜日に数学の授業がある」)
 - 「〜のクラスを追加」(例: 「Calculusのクラスを追加」)
-- ベトナム語: 「thêm lớp」「đăng ký lớp」「thêm lịch học」「thêm môn」
-- 英語: \"add class\", \"register class\", \"add to timetable\"
+- **確認・承認の返事** (会話履歴で授業登録について話していた場合): 「オケー追加して」「はい追加」「OK」「追加して」「いいです」「得ない」「được」
+- ベトナム語: 「thêm lớp」「đăng ký lớp」「thêm lịch học」「thêm môn」「được, thêm đi」
+- 英語: \"add class\", \"register class\", \"add to timetable\", \"ok add it\", \"yes add\"
+
+**重要:** 会話履歴があり、直前のメッセージでアシスタントが授業登録を提案していた場合、確認の返事（「オケー」「はい」「OK」「追加して」など）は授業登録の意図とみなしてください。その場合、履歴から授業情報を抽出してください。
 
 **授業登録の意図がないもの (必ず false を返す):**
 - 質問: 「今日の授業は何ですか？」「スケジュールを見せて」
@@ -822,14 +847,25 @@ JSON形式で返してください：
                 $data = $response->json();
                 $content = $data['choices'][0]['message']['content'] ?? '';
 
+                \Log::info('parseTimetableIntent: AI response received', ['response' => $content]);
+
                 // Parse JSON response
                 $parsedContent = json_decode($content, true);
 
                 if (json_last_error() === JSON_ERROR_NONE) {
+                    \Log::info('parseTimetableIntent: JSON parsed successfully', [
+                        'has_intent' => $parsedContent['has_timetable_intent'] ?? false,
+                        'parsed_data' => $parsedContent
+                    ]);
+
                     if (!empty($parsedContent['has_timetable_intent']) && $parsedContent['has_timetable_intent'] === true) {
                         Log::info('Timetable intent detected', ['class' => $parsedContent['timetable_class']]);
                         return $parsedContent['timetable_class'];
+                    } else {
+                        \Log::info('parseTimetableIntent: No timetable intent in parsed response');
                     }
+                } else {
+                    \Log::warning('parseTimetableIntent: JSON parse error', ['error' => json_last_error_msg()]);
                 }
 
                 // Try to extract JSON from response
@@ -838,10 +874,16 @@ JSON形式で返してください：
                     $parsedContent = json_decode($jsonMatch[0], true);
                     if (json_last_error() === JSON_ERROR_NONE && !empty($parsedContent['has_timetable_intent'])) {
                         if ($parsedContent['has_timetable_intent'] === true) {
+                            \Log::info('parseTimetableIntent: Timetable intent found via regex extraction');
                             return $parsedContent['timetable_class'];
                         }
                     }
                 }
+            } else {
+                \Log::error('parseTimetableIntent: API request failed', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
             }
         } catch (\Exception $e) {
             Log::error('Timetable intent parsing failed: ' . $e->getMessage());
