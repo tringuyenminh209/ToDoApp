@@ -168,6 +168,15 @@ class CalendarFragment : Fragment() {
      * クリックリスナーのセットアップ
      */
     private fun setupClickListeners() {
+        // Month navigation buttons
+        binding.btnPrevMonth.setOnClickListener {
+            navigateToPreviousMonth()
+        }
+
+        binding.btnNextMonth.setOnClickListener {
+            navigateToNextMonth()
+        }
+
         binding.btnToday.setOnClickListener {
             selectToday()
         }
@@ -196,6 +205,30 @@ class CalendarFragment : Fragment() {
         binding.fabAddTask.setOnClickListener {
             openAddTask()
         }
+    }
+
+    /**
+     * Navigate to previous month
+     */
+    private fun navigateToPreviousMonth() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = binding.calendarView.date
+        calendar.add(Calendar.MONTH, -1)
+        binding.calendarView.date = calendar.timeInMillis
+        viewModel.selectDate(calendar.time)
+        Log.d("CalendarFragment", "Navigated to previous month: ${SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(calendar.time)}")
+    }
+
+    /**
+     * Navigate to next month
+     */
+    private fun navigateToNextMonth() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = binding.calendarView.date
+        calendar.add(Calendar.MONTH, 1)
+        binding.calendarView.date = calendar.timeInMillis
+        viewModel.selectDate(calendar.time)
+        Log.d("CalendarFragment", "Navigated to next month: ${SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(calendar.time)}")
     }
 
     /**
