@@ -68,10 +68,6 @@ class PathsActivity : BaseActivity() {
      * クリックリスナーのセットアップ
      */
     private fun setupClickListeners() {
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-
         binding.btnAddPath.setOnClickListener {
             showAddPathBottomSheet()
         }
