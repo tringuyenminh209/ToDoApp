@@ -237,10 +237,11 @@ class StartTaskDialogFragment : DialogFragment() {
     
     override fun onStart() {
         super.onStart()
-        // Make dialog fullscreen width with some margin
+        // Make dialog fullscreen width with some margin and max height
+        val maxHeight = (resources.displayMetrics.heightPixels * 0.85).toInt()
         dialog?.window?.setLayout(
             (resources.displayMetrics.widthPixels * 0.95).toInt(),
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            maxHeight
         )
     }
     

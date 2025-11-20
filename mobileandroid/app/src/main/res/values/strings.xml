@@ -734,6 +734,9 @@
     <string name="deep_work_mode">ディープワークモード</string>
     <string name="deep_work_mode_desc">中断のない集中時間が必要なタスク</string>
     <string name="allow_interruptions">中断を許可</string>
+    <string name="timer_mode_work">作業中</string>
+    <string name="timer_mode_break">休憩中</string>
+    <string name="category_study">勉強</string>
     <string name="focus_difficulty">集中難易度</string>
     <string name="focus_difficulty_desc">このタスクにはどの程度の集中力が必要ですか？</string>
     <string name="difficulty_1_shallow">1 - 浅い</string>

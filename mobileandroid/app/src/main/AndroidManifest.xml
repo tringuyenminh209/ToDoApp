@@ -98,7 +98,7 @@
         <activity
             android:name=".ui.activities.ExerciseDetailActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activities.TimetableActivity"
             android:exported="false" />

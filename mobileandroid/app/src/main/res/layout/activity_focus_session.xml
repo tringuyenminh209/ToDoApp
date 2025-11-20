@@ -350,7 +350,7 @@
                             android:id="@+id/tv_timer_mode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Làm việc"
+                            android:text="@string/timer_mode_work"
                             android:textColor="@color/primary"
                             android:textSize="14sp"
                             android:textStyle="bold" />

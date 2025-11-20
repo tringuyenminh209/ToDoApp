@@ -159,20 +159,30 @@ class FocusSessionActivity : BaseActivity() {
             task?.let {
                 binding.tvCurrentTask.text = it.title
 
-                // Set timer to task's estimated time
+                // Display estimated time (ViewModel already set the timer duration correctly)
                 val estimatedMinutes = it.estimated_minutes ?: 25
                 binding.tvEstimatedTime.text = "⏱ ${estimatedMinutes} phút"
 
-                // Set timer duration to task's estimated time
-                viewModel.setTimerDuration(estimatedMinutes)
+                // DO NOT call setTimerDuration() here - ViewModel already set it correctly in loadTask/loadTaskWithSubtask
+                // Calling it here would override the correct subtask time with the modified task's time
 
                 binding.tvFocusCount.text = "🎯 ${viewModel.getPomodoroCount()}/5 Pomodoro"
-                
+
+                // Update timer mode text based on category
+                val categoryText = when (it.category?.lowercase()) {
+                    "study" -> getString(R.string.category_study)
+                    "work" -> getString(R.string.category_work)
+                    "personal" -> getString(R.string.category_personal)
+                    "other" -> getString(R.string.category_other)
+                    else -> getString(R.string.timer_mode_work) // Default to "Working"
+                }
+                binding.tvTimerMode.text = categoryText
+
                 // CRITICAL: Update deep work mode UI immediately when task loads
                 // This ensures UI is updated even if isDeepWorkMode observer hasn't fired yet
                 val isDeepWork = it.requires_deep_focus
                 android.util.Log.d("FocusSessionActivity", "Task loaded - requires_deep_focus: $isDeepWork, allow_interruptions: ${it.allow_interruptions}, focus_difficulty: ${it.focus_difficulty}")
-                
+
                 // Always update UI based on task's requires_deep_focus value
                 updateDeepWorkModeUI(isDeepWork)
             }
