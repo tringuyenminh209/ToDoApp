@@ -967,8 +967,26 @@ class AIController extends Controller
                 'content' => $request->message,
             ]);
 
+            // Get conversation history for context-aware intent parsing
+            $historyForParsing = $conversation->messages()
+                ->orderBy('created_at', 'desc')
+                ->limit(5) // Last 5 messages for context
+                ->get()
+                ->reverse()
+                ->map(function($msg) {
+                    return [
+                        'role' => $msg->role,
+                        'content' => $msg->content
+                    ];
+                })
+                ->toArray();
+
             // Parse timetable intent FIRST (higher priority than task)
-            $timetableData = $this->aiService->parseTimetableIntent($request->message);
+            $timetableData = $this->aiService->parseTimetableIntent($request->message, $historyForParsing);
+            Log::info('AIController: parseTimetableIntent returned', [
+                'has_data' => !is_null($timetableData),
+                'data' => $timetableData
+            ]);
             $createdTimetableClass = null;
 
             // Parse task intent only if NO timetable intent detected
@@ -976,6 +994,12 @@ class AIController extends Controller
             $createdTask = null;
             if (!$timetableData) {
                 $taskData = $this->aiService->parseTaskIntent($request->message);
+                Log::info('AIController: parseTaskIntent returned', [
+                    'has_data' => !is_null($taskData),
+                    'data' => $taskData
+                ]);
+            } else {
+                Log::info('AIController: Skipping task intent parsing because timetable intent was detected');
             }
 
             // If task intent detected, create task
@@ -1042,6 +1066,11 @@ class AIController extends Controller
 
             // If timetable intent detected, create timetable class
             if ($timetableData) {
+                Log::info('AIController: Timetable data detected, attempting to create class', [
+                    'timetable_data' => $timetableData,
+                    'user_id' => $user->id
+                ]);
+
                 try {
                     // Calculate period if not provided (assume 1 period = 1 hour)
                     $period = $timetableData['period'] ?? null;
@@ -1052,6 +1081,14 @@ class AIController extends Controller
                         $durationHours = $start->diffInHours($end);
                         $period = max(1, round($durationHours)); // At least 1 period
                     }
+
+                    Log::info('AIController: Creating timetable class with data', [
+                        'name' => $timetableData['name'],
+                        'day' => $timetableData['day'],
+                        'start_time' => $timetableData['start_time'],
+                        'end_time' => $timetableData['end_time'],
+                        'period' => $period
+                    ]);
 
                     $createdTimetableClass = TimetableClass::create([
                         'user_id' => $user->id,
@@ -1069,10 +1106,14 @@ class AIController extends Controller
 
                     Log::info('Timetable class created from context-aware chat', [
                         'class_id' => $createdTimetableClass->id,
-                        'conversation_id' => $conversation->id
+                        'conversation_id' => $conversation->id,
+                        'class_name' => $createdTimetableClass->name
                     ]);
                 } catch (\Exception $e) {
-                    Log::error('Failed to create timetable class from context-aware chat: ' . $e->getMessage());
+                    Log::error('Failed to create timetable class from context-aware chat: ' . $e->getMessage(), [
+                        'exception' => $e,
+                        'timetable_data' => $timetableData
+                    ]);
                     // Continue without timetable creation
                 }
             }
