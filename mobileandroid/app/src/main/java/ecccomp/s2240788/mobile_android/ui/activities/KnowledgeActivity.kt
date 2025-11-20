@@ -73,10 +73,6 @@ class KnowledgeActivity : BaseActivity() {
     }
 
     private fun setupClickListeners() {
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-
         binding.btnAddKnowledge.setOnClickListener {
             // Navigate to template browser to add new path
             val intent = Intent(this, TemplateBrowserActivity::class.java)
