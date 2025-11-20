@@ -25,38 +25,15 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/spacing_lg">
 
-            <!-- Back Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_back"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:contentDescription="@string/back"
-                app:backgroundTint="@android:color/transparent"
-                app:cornerRadius="12dp"
-                app:icon="@drawable/ic_arrow_back"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconSize="24dp"
-                app:iconTint="@color/text_primary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:strokeWidth="0dp" />
-
             <!-- Logo -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/logo_container"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="@dimen/spacing_md"
                 app:cardBackgroundColor="@color/primary_light"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="2dp"
-                app:layout_constraintStart_toEndOf="@id/btn_back"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:strokeWidth="0dp">
 
