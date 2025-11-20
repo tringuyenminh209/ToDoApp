@@ -16,6 +16,7 @@ import ecccomp.s2240788.mobile_android.data.repository.SettingsRepository
 import ecccomp.s2240788.mobile_android.data.result.AuthResult
 import ecccomp.s2240788.mobile_android.data.result.SettingsResult
 import ecccomp.s2240788.mobile_android.databinding.ActivitySettingsBinding
+import ecccomp.s2240788.mobile_android.utils.LocaleHelper
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import ecccomp.s2240788.mobile_android.utils.SettingsPreferences
 import kotlinx.coroutines.Dispatchers
@@ -208,6 +209,9 @@ class SettingsActivity : BaseActivity() {
         val blockNotifications = binding.switchBlockNotifications.isChecked
         val backgroundSound = binding.switchBackgroundSound.isChecked
 
+        // Check if language has changed
+        val languageChanged = currentSettings?.language != language
+
         // Create request
         val request = SettingsRequest(
             theme = theme,
@@ -244,11 +248,24 @@ class SettingsActivity : BaseActivity() {
                     currentSettings = result.data
                     // Save to cache
                     SettingsPreferences.saveSettings(this@SettingsActivity, result.data)
-                    Toast.makeText(
-                        this@SettingsActivity,
-                        "Settings saved successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
+                    // If language changed, update LocaleHelper and recreate activity
+                    if (languageChanged) {
+                        LocaleHelper.setLanguage(this@SettingsActivity, language)
+                        Toast.makeText(
+                            this@SettingsActivity,
+                            "Settings saved successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // Recreate activity to apply language change
+                        recreate()
+                    } else {
+                        Toast.makeText(
+                            this@SettingsActivity,
+                            "Settings saved successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
                 is SettingsResult.Error -> {
                     Toast.makeText(
