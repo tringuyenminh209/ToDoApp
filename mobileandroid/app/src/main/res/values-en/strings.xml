@@ -1,84 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Common -->
+    <!-- App Info -->
     <string name="app_name">DOL LEAF</string>
-    <string name="back">Back</string>
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
-    <string name="edit">Edit</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="cancel">Cancel</string>
-
-    <!-- Navigation -->
-    <string name="nav_home">Home</string>
-    <string name="nav_calendar">Calendar</string>
-    <string name="nav_paths">Paths</string>
-    <string name="nav_knowledge">Knowledge</string>
-    <string name="nav_settings">Settings</string>
-
-    <!-- Main -->
-    <string name="main_today">Today</string>
-    <string name="main_view_all">View all</string>
-    <string name="main_empty_tasks">No tasks</string>
-    <string name="main_empty_tasks_description">Add a new task to get started</string>
-
-    <!-- Task list -->
-    <string name="tasks_title">Tasks</string>
-    <string name="filter_all">All</string>
-    <string name="filter_pending">Active</string>
-    <string name="filter_completed">Completed</string>
-    <string name="add_task">Add task</string>
-    <string name="delete_task">Delete</string>
-    <string name="complete_task">Complete</string>
-    <string name="empty_tasks_title">No tasks</string>
-    <string name="empty_tasks_message">Create a task to start working</string>
-    <string name="task_more">More</string>
-    <string name="task_start">Start</string>
-
-    <!-- Add/Edit Task -->
-    <string name="add_task_title">Add task</string>
-    <string name="edit_task_title">Edit task</string>
-    <string name="basic_information">Basic information</string>
-    <string name="task_title_hint">Task title</string>
-    <string name="task_description_hint">Detailed description (optional)</string>
-    <string name="priority_and_time">Priority &amp; time</string>
-    <string name="priority">Priority level</string>
-    <string name="priority_high">High</string>
-    <string name="priority_medium">Medium</string>
-    <string name="priority_low">Low</string>
-    <string name="estimated_time">Estimated time</string>
-    <string name="time_hint">min</string>
-    <string name="energy_level">Energy level</string>
-    <string name="energy_high">High</string>
-    <string name="energy_medium">Medium</string>
-    <string name="energy_low">Low</string>
-    <string name="deadline">Deadline</string>
-    <string name="deadline_hint">yyyy/MM/dd</string>
-    <string name="today">Today</string>
-    <string name="tomorrow">Tomorrow</string>
-    <string name="next_week">Next week</string>
-    <string name="subtasks">Subtasks</string>
-    <string name="add_subtask">Add subtask</string>
-    <string name="no_subtasks">No subtasks</string>
-    <string name="no_subtasks_description">Add small steps to make progress</string>
-
-    <!-- Task Detail -->
-    <string name="task_detail">Task detail</string>
-    <string name="tags">Tags</string>
-    <string name="focus_sessions">Focus sessions</string>
-    <string name="mark_complete">Mark complete</string>
-    <string name="start_focus">Start focus</string>
-    <string name="due_date">Due</string>
-
-    <!-- AI -->
-    <string name="ai_support">AI support</string>
-    <string name="ai_suggestions">AI suggestions</string>
-    <string name="ai_breakdown_task">Break down task</string>
-    <string name="ai_optimize_time">Optimize time</string>
-    <string name="ai_suggest_subtasks">Suggest subtasks</string>
-    <string name="beta">BETA</string>
-    <string name="ai_status_info">AI will analyze and suggest suitable actions</string>
+    <string name="app_tagline">AI-Powered ToDo App</string>
+    <string name="app_version">Version 1.0.0</string>
+    <string name="app_logo">App Logo</string>
 
     <!-- Login -->
     <string name="welcome_back">Welcome back</string>
@@ -95,6 +21,17 @@
     <string name="register_button">Register</string>
     <string name="registering">Registering...</string>
     <string name="register_success">Registration successful!</string>
+
+    <!-- Forgot Password -->
+    <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_description">Enter your email to receive a password reset link</string>
+    <string name="forgot_password_icon">Forgot Password Icon</string>
+    <string name="reset_password_button">Send Reset Link</string>
+    <string name="resetting_password">Sending...</string>
+    <string name="reset_success">Password reset link sent!</string>
+
+    <!-- Reset Password -->
+    <string name="reset_password_icon">Reset Password Icon</string>
 
     <!-- Form Fields -->
     <string name="name_hint">Full name</string>
@@ -120,38 +57,667 @@
     <string name="register_link">Register now</string>
     <string name="have_account">Already have an account?</string>
     <string name="login_link">Login</string>
+    <string name="remember_password">Remember password?</string>
     <string name="remember_me">Remember me</string>
     <string name="or_divider">or</string>
 
+    <!-- Social Login -->
+    <string name="google_login">Login with Google</string>
+    <string name="apple_login">Login with Apple</string>
+
     <!-- Terms -->
     <string name="terms_agreement">I agree to Terms and Conditions and Privacy Policy</string>
+
+    <!-- Navigation -->
+    <string name="back">Back</string>
 
     <!-- Errors -->
     <string name="error_network">Network error</string>
     <string name="error_server">Server error</string>
     <string name="error_unknown">An unknown error occurred</string>
 
-    <!-- Search -->
-    <string name="knowledge_search_hint">Search notes, articles, links…</string>
-    
+    <!-- Onboarding -->
+    <string name="onboarding_title">Welcome to DOL LEAF</string>
+    <string name="onboarding_subtitle">Set your goals and start your journey</string>
+    <string name="onboarding_step">Step %1$d/%2$d</string>
+    <string name="step_progress">Step 2/3</string>
+
+    <!-- Step 1: Goals -->
+    <string name="onboarding_step1_title">What are your goals?</string>
+    <string name="onboarding_step1_description">Choose areas you want to focus on</string>
+    <string name="goal_learning">Learning</string>
+    <string name="goal_work">Work</string>
+    <string name="goal_health">Health</string>
+
+    <!-- Step 2: Time -->
+    <string name="onboarding_step2_title">When are you free?</string>
+    <string name="onboarding_step2_description">Select times you usually focus on work</string>
+    <string name="time_morning">Early Morning</string>
+    <string name="time_morning_late">Late Morning</string>
+    <string name="time_afternoon">Afternoon</string>
+    <string name="time_evening">Evening</string>
+    <string name="time_morning_slot">6:00 - 9:00</string>
+    <string name="time_morning_late_slot">9:00 - 12:00</string>
+    <string name="time_afternoon_slot">13:00 - 17:00</string>
+    <string name="time_evening_slot">19:00 - 22:00</string>
+
+    <!-- Step 3: Notifications -->
+    <string name="onboarding_step3_title">Want to receive notifications?</string>
+    <string name="onboarding_step3_description">We\'ll send gentle reminders to help you stay on track</string>
+    <string name="notification_reminder">Receive reminder notifications</string>
+    <string name="notification_info">You can change this setting anytime</string>
+
+    <!-- Buttons -->
+    <string name="btn_next">Next</string>
+    <string name="btn_complete">Complete</string>
+    <string name="onboarding_welcome">Welcome to DOL LEAF! We\'ll create some sample tasks to get you started.</string>
+
+    <!-- Main Activity -->
+    <string name="main_greeting">Good morning</string>
+    <string name="main_today">Today</string>
+    <string name="main_date_placeholder">Thursday, 18/10/2024</string>
+    <string name="main_progress_today">Today\'s Progress</string>
+    <string name="main_tasks_completed">Tasks Completed</string>
+    <string name="main_focus_time">Focus Time</string>
+    <string name="main_streak_days">Day Streak</string>
+    <string name="main_view_stats">View Stats</string>
+    <string name="main_timetable">Timetable</string>
+    <string name="main_checkin">Morning Check-in</string>
+    <string name="main_review">Evening Review</string>
+    <string name="main_ai_coach">AI Coach</string>
+    <string name="main_ai_arrange">AI Arrange</string>
+    <string name="main_start_5min">Start 5min</string>
+    <string name="main_reschedule">Reschedule</string>
+    <string name="main_top3_today">Top 3 Today</string>
+    <string name="main_view_all">View all</string>
+    <string name="main_start_focus">Start Focus</string>
+    <string name="main_empty_tasks">No tasks</string>
+    <string name="main_empty_tasks_description">Add a new task to get started</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_calendar">Calendar</string>
+    <string name="nav_paths">Paths</string>
+    <string name="nav_knowledge">Knowledge</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Add Task Screen -->
+    <string name="add_task_title">Add Task</string>
+    <string name="basic_information">Basic Information</string>
+    <string name="task_title_hint">Task title</string>
+    <string name="task_description_hint">Detailed description (optional)</string>
+    <string name="priority_and_time">Priority &amp; Time</string>
+    <string name="priority">Priority level</string>
+    <string name="priority_high">High</string>
+    <string name="priority_medium">Medium</string>
+    <string name="priority_low">Low</string>
+    <string name="estimated_time">Estimated time</string>
+    <string name="time_hint">min</string>
+    <string name="energy_level">Energy level</string>
+    <string name="energy_low">Low</string>
+    <string name="energy_medium">Medium</string>
+    <string name="energy_high">High</string>
+    <string name="subtasks">Execution Steps</string>
+    <string name="add_subtask">Add step</string>
+    <string name="no_subtasks">No steps</string>
+    <string name="no_subtasks_description">Add small steps to make it easier</string>
+    <string name="subtask_hint">Step description</string>
+    <string name="remove">Remove</string>
+    <string name="save">Save</string>
+    <string name="edit_task_title">Edit Task</string>
+    <string name="task_start">Start</string>
+    <string name="task_continue">Continue</string>
+
+    <!-- Deadline Section -->
+    <string name="deadline">Deadline</string>
+    <string name="deadline_hint">yyyy/mm/dd --:--</string>
+    <string name="scheduled_time">Scheduled Time</string>
+    <string name="scheduled_time_label">Execution Time</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="next_week">Next week</string>
+
+    <!-- AI Support Section -->
+    <string name="ai_support">AI Support</string>
+    <string name="beta">BETA</string>
+    <string name="ai_suggestions">AI Suggestions</string>
+    <string name="ai_breakdown_task">Break down task</string>
+    <string name="ai_optimize_time">Optimize time</string>
+    <string name="ai_suggest_subtasks">Suggest execution steps</string>
+    <string name="ai_status_info">AI will analyze and provide appropriate suggestions</string>
+
+    <!-- AI Complexity Selector -->
+    <string name="ai_complexity_title">Select Complexity Level</string>
+    <string name="ai_complexity_subtitle">Choose breakdown method based on task complexity</string>
+    <string name="ai_complexity_simple">Simple - 3-5 subtasks</string>
+    <string name="ai_complexity_medium">Medium - 5-8 subtasks</string>
+    <string name="ai_complexity_complex">Complex - 8-12 subtasks</string>
+
+    <!-- AI Preview -->
+    <string name="ai_preview_title">Generated Subtasks</string>
+    <string name="ai_preview_subtitle">%d subtasks generated</string>
+    <string name="ai_preview_empty">No subtasks generated</string>
+    <string name="apply">Apply</string>
+    <string name="confirm">Confirm</string>
+
+    <!-- Task Actions -->
+    <string name="task_more">View more</string>
+    <string name="task_priority">Priority level</string>
+    <string name="task_time_format">%d min</string>
+
+    <!-- Common Actions -->
+    <string name="skip">Skip</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="add">Add</string>
+
+    <!-- Daily Check-in -->
+    <string name="daily_checkin_title">Morning Check-in</string>
+    <string name="checkin_welcome">Good morning!</string>
+    <string name="checkin_subtitle">How are you feeling today?</string>
+    <string name="checkin_mood_label">Your mood</string>
+    <string name="mood_excellent">Excellent</string>
+    <string name="mood_good">Good</string>
+    <string name="mood_average">Average</string>
+    <string name="mood_poor">Poor</string>
+    <string name="mood_terrible">Terrible</string>
+    <string name="checkin_energy_label">Energy</string>
+    <string name="checkin_sleep_label">Sleep hours</string>
+    <string name="checkin_stress_label">Stress level</string>
+    <string name="stress_low">Low</string>
+    <string name="stress_medium">Medium</string>
+    <string name="stress_high">High</string>
+    <string name="checkin_priorities_label">Top 3 priorities</string>
+    <string name="checkin_priorities_hint">Most important things today</string>
+    <string name="priority_1">Priority 1</string>
+    <string name="priority_2">Priority 2</string>
+    <string name="priority_3">Priority 3 (optional)</string>
+    <string name="checkin_goals_label">Today\'s goals</string>
+    <string name="checkin_goals_hint">What do you want to achieve?</string>
+    <string name="goal_1">Goal 1</string>
+    <string name="goal_2">Goal 2 (optional)</string>
+    <string name="checkin_notes_label">Notes</string>
+    <string name="checkin_notes_hint">Anything you want to remember...</string>
+    <string name="checkin_submit">Complete Check-in</string>
+
+    <!-- Daily Review -->
+    <string name="daily_review_title">Evening Review</string>
+    <string name="review_welcome">Good evening!</string>
+    <string name="review_subtitle">How was your day?</string>
+    <string name="review_mood_label">End of day mood</string>
+    <string name="review_stats_label">Today\'s stats</string>
+    <string name="review_tasks_completed">Tasks completed</string>
+    <string name="review_focus_time">Total focus time (min)</string>
+    <string name="review_scores_label">Performance evaluation</string>
+    <string name="review_productivity_score">Productivity</string>
+    <string name="review_focus_score">Focus</string>
+    <string name="review_task_completion_score">Task completion</string>
+    <string name="review_goal_achievement_score">Goal achievement</string>
+    <string name="review_work_life_balance_score">Work-life balance</string>
+    <string name="review_achievements_label">Today\'s achievements</string>
+    <string name="review_achievements_hint">What are you proud of?</string>
+    <string name="add_achievement">Add achievement</string>
+    <string name="review_challenges_label">Challenges faced</string>
+    <string name="review_challenges_hint">What was difficult?</string>
+    <string name="add_challenge">Add challenge</string>
+    <string name="review_lessons_label">Lessons learned</string>
+    <string name="review_lessons_hint">What did you learn?</string>
+    <string name="add_lesson">Add lesson</string>
+    <string name="review_gratitude_label">Gratitude</string>
+    <string name="review_gratitude_hint">What are you grateful for?</string>
+    <string name="add_gratitude">Add gratitude</string>
+    <string name="review_notes_label">Additional notes</string>
+    <string name="review_notes_hint">Your thoughts about today...</string>
+    <string name="review_tomorrow_goals_label">Tomorrow\'s goals</string>
+    <string name="review_tomorrow_goals_hint">What do you want to do tomorrow?</string>
+    <string name="review_submit">Complete Review</string>
+
+    <!-- Task Detail -->
+    <string name="task_detail">Task Details</string>
+    <string name="task_timeline">Task Timeline</string>
+    <string name="start">Start</string>
+    <string name="to_arrow">to</string>
+    <string name="enabled">Enabled</string>
+    <string name="tags">Tags</string>
+    <string name="focus_sessions">Focus Sessions</string>
+    <string name="mark_complete">Mark Complete</string>
+    <string name="start_focus">Start Focus</string>
+    <string name="total_focus_time">Total focus time: %s min</string>
+
+    <!-- Subtask Input -->
+    <string name="drag_to_reorder">Drag to reorder</string>
+    <string name="subtask_title_hint">Subtask title</string>
+
+    <!-- Task Detail Placeholders -->
+    <string name="task_detail_title_placeholder">Sample Task Title</string>
+    <string name="task_detail_due_placeholder">Due: 2025-10-28</string>
+    <string name="task_detail_priority_placeholder">Priority: High</string>
+    <string name="task_detail_description_placeholder">Task description...</string>
+
+    <!-- AI Coach -->
+    <string name="ai_coach">AI Coach</string>
+    <string name="ask_ai_coach">Ask AI Coach...</string>
+    <string name="ai_thinking">AI is thinking...</string>
+    <string name="ai_suggestion">AI Suggestion</string>
+
+    <!-- Calendar -->
+    <string name="calendar_title">Calendar</string>
+    <string name="select_date">Select date</string>
+    <string name="no_tasks_on_date">No tasks</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="account">Account</string>
+    <string name="preferences">Preferences</string>
+    <string name="notifications">Notifications</string>
+    <string name="theme">Theme</string>
+    <string name="language">Language</string>
+    <string name="about">About</string>
+    <string name="logout">Logout</string>
+
+    <!-- Settings Profile Stats -->
+    <string name="streak_days">Day Streak</string>
+    <string name="minutes_today">Minutes Today</string>
+    <string name="tasks_completed">Tasks Completed</string>
+
+    <!-- Settings Notifications -->
+    <string name="push_notifications">Push Notifications</string>
+    <string name="push_notifications_desc">Receive notifications for tasks and reminders</string>
+    <string name="daily_reminders">Daily Reminders</string>
+    <string name="daily_reminders_desc">Notify daily at 7:30 AM</string>
+    <string name="goal_reminders">Goal Reminders</string>
+    <string name="goal_reminders_desc">Notify when deadlines approach</string>
+
+    <!-- Settings Theme -->
+    <string name="theme_section">Theme</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode_desc">Follow system settings</string>
+    <string name="language_section">Language</string>
+    <string name="language_current">English</string>
+
+    <!-- Settings Focus Mode -->
+    <string name="focus_mode_section">Focus Mode</string>
+    <string name="pomodoro_time">Pomodoro Time</string>
+    <string name="pomodoro_time_desc">25 min work, 5 min break</string>
+    <string name="block_notifications">Block Notifications</string>
+    <string name="block_notifications_desc">Auto-block during focus</string>
+    <string name="background_sound">Background Sound</string>
+    <string name="background_sound_desc">White noise during focus</string>
+
+    <!-- Settings Data & Privacy -->
+    <string name="data_privacy_section">Data &amp; Privacy</string>
+    <string name="export_data">Export Data</string>
+    <string name="export_data_desc">Download all your data</string>
+    <string name="export">Export</string>
+    <string name="delete_data">Delete Data</string>
+    <string name="delete_data_desc">Delete all data and account</string>
+
+    <!-- Settings Account -->
+    <string name="account_section">Account</string>
+    <string name="personal_info">Personal Information</string>
+    <string name="personal_info_desc">Update your profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_password_desc">Update account password</string>
+    <string name="logout_desc">Logout from current account</string>
+
+    <!-- Settings Actions -->
+    <string name="save_settings">Save Settings</string>
+    <string name="reset_settings">Reset to Default</string>
+
+    <!-- Stats -->
+    <string name="stats_title">Stats</string>
+    <string name="stats_subtitle">Track your progress and habits</string>
+    <string name="daily_stats">Today\'s Stats</string>
+    <string name="weekly_stats">Weekly Stats</string>
+    <string name="monthly_stats">Monthly Stats</string>
+    <string name="productivity_trend">Productivity Trend</string>
+    <string name="focus_time_trend">Focus Time Trend</string>
+
+    <!-- Stats Details -->
+    <string name="streak_record">Record: %d days</string>
+    <string name="minutes_this_week">Minutes This Week</string>
+    <string name="completion_rate">Completion Rate</string>
+    <string name="compared_to_yesterday">%s vs yesterday</string>
+    <string name="compared_to_last_week">%s vs last week</string>
+
+    <!-- Deep Work -->
+    <string name="deep_work">Deep Work</string>
+    <string name="deep_work_past_days">Deep Work (Past %d Days)</string>
+    <string name="this_week">This Week</string>
+    <string name="focus_minutes">Focus Minutes</string>
+
+    <!-- Golden Hour -->
+    <string name="your_golden_hour">Your Golden Hour</string>
+    <string name="golden_hour">Golden Hour</string>
+    <string name="this_month">This Month</string>
+    <string name="golden_hour_insight">%1$s to %2$s is your peak focus time. Schedule your hardest tasks during this window.</string>
+    <string name="reschedule">Reschedule</string>
+
+    <!-- Smart Insights -->
+    <string name="smart_insights">Smart Insights</string>
+    <string name="positive_trend">Positive Trend</string>
+    <string name="deep_work_trend_message">Your deep work time is trending upward. Keep up the momentum!</string>
+    <string name="weekly_goal">Weekly Goal</string>
+    <string name="weekly_goal_progress">You\'ve achieved %1$d%% of your weekly goal. Just %2$d more minutes to hit 100%%!</string>
+    <string name="view_plan">View Plan</string>
+
+    <!-- Messages -->
+    <string name="loading">Loading...</string>
+    <string name="saving">Saving...</string>
+    <string name="deleting">Deleting...</string>
+    <string name="success">Success!</string>
+    <string name="error">An error occurred</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="try_again">Try again</string>
+
+    <!-- Confirmations -->
+    <string name="confirm_delete_task">Delete this task?</string>
+    <string name="confirm_delete_message">This action cannot be undone</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!-- Calendar Fragment -->
+    <string name="calendar_today">Today</string>
+    <string name="calendar_filter_label">Filter tasks</string>
+    <string name="calendar_filter_all">All</string>
+    <string name="calendar_filter_active">Active</string>
+    <string name="calendar_filter_completed">Completed</string>
+    <string name="calendar_add_task">Add Task</string>
+    <string name="calendar_empty_tasks">No tasks</string>
+    <string name="calendar_empty_tasks_description">Add a task for this day to get started</string>
+    <string name="calendar_tasks_for_date">Tasks for this day</string>
+
+    <!-- AI Coach -->
+    <string name="ai_coach_quick_actions">Quick Suggestions</string>
+    <string name="ai_coach_plan_day">Plan Today</string>
+    <string name="ai_coach_focus_help">Need Focus</string>
+    <string name="ai_coach_motivation">Motivate Me</string>
+    <string name="ai_coach_break">Take a Break</string>
+    <string name="ai_coach_welcome_title">Hello! I\'m your AI Coach</string>
+    <string name="ai_coach_welcome_message">I\'m here to help you plan, focus, and achieve your goals</string>
+    <string name="ai_coach_welcome_hint">Try asking me anything about productivity, time management, or your goals</string>
+
+    <!-- Voice Input -->
+    <string name="voice_input">Voice Input</string>
+    <string name="voice_listening">Listening to voice...</string>
+
+    <!-- Chat History -->
+    <string name="chat_history">Chat History</string>
+    <string name="chat_history_empty">No chat history</string>
+
+    <!-- Task Detail -->
+    <string name="task_add_subtask">Add step</string>
+    <string name="task_add_tag">Add tag</string>
+    <string name="task_no_subtasks">No execution steps</string>
+    <string name="task_no_tags">No tags</string>
+    <string name="share">Share</string>
+    <string name="archive">Archive</string>
+
+    <!-- Paths Activity -->
+    <string name="paths_title">Paths</string>
+    <string name="paths_subtitle">Track your goal progress</string>
+    <string name="paths_add">Add Path</string>
+    <string name="paths_active">Active</string>
+    <string name="paths_completed">Completed</string>
+    <string name="paths_overall">Overall Progress</string>
+    <string name="paths_filter_all">All</string>
+    <string name="paths_filter_active">Active</string>
+    <string name="paths_filter_completed">Completed</string>
+    <string name="paths_empty">No paths</string>
+    <string name="paths_empty_description">Create a new path to track your goal progress</string>
+
+    <!-- Knowledge Activity -->
+    <string name="knowledge_title">Knowledge</string>
+    <string name="knowledge_subtitle">Manage notes and documents</string>
+    <string name="knowledge_add">Add Knowledge</string>
+    <string name="knowledge_search_hint">Search notes, articles, links...</string>
+    <string name="knowledge_total">Total</string>
+    <string name="knowledge_categories">Categories</string>
+    <string name="knowledge_recent">Recent</string>
+    <string name="knowledge_filter_all">All</string>
+    <string name="knowledge_filter_notes">Notes</string>
+    <string name="knowledge_filter_articles">Articles</string>
+    <string name="knowledge_filter_links">Links</string>
+    <string name="knowledge_filter_code">Code</string>
+    <string name="knowledge_filter_exercises">Exercises</string>
+    <string name="knowledge_filter_attachments">Attachments</string>
+    <string name="knowledge_filter_favorites">Favorites</string>
+    <string name="knowledge_filter_archived">Archived</string>
+    <string name="knowledge_filter_due_review">Due Review</string>
+    <string name="knowledge_empty">No knowledge</string>
+    <string name="knowledge_empty_description">Add notes, articles, or links to build your knowledge base</string>
+
+    <!-- Knowledge Item Card -->
+    <string name="favorite">Favorite</string>
+    <string name="more">More</string>
+    <string name="more_options">More Options</string>
+    <string name="knowledge_category_label">Category</string>
+    <string name="knowledge_last_review_label">Last:</string>
+    <string name="knowledge_next_review_label">Next:</string>
+    <string name="knowledge_title_placeholder">Sample Title</string>
+    <string name="knowledge_preview_placeholder">Preview text...</string>
+    <string name="knowledge_type_code">Code</string>
+    <string name="knowledge_language_placeholder">Language</string>
+    <string name="knowledge_tag_sample1">Algorithm</string>
+    <string name="knowledge_tag_sample2">Array</string>
+    <string name="select_learning_path">Select Path</string>
+    <string name="all_learning_paths">All Paths</string>
+    <string name="knowledge_detail">Knowledge Details</string>
+    <string name="content">Content</string>
+    <string name="copy_code">Copy Code</string>
+    <string name="exercise">Exercise</string>
+    <string name="question">Question</string>
+    <string name="answer">Answer</string>
+    <string name="show_answer">Show Answer</string>
+    <string name="hide_answer">Hide Answer</string>
+    <string name="resource_link">Resource Link</string>
+    <string name="open_in_browser">Open in Browser</string>
+    <string name="review_info">Review Information</string>
+    <string name="review_count">Review Count</string>
+    <string name="last_reviewed">Last Reviewed</string>
+    <string name="next_review">Next Review</string>
+    <string name="mark_as_reviewed">Mark as Reviewed</string>
+    <string name="meta_info">Meta Information</string>
+    <string name="view_count">View Count</string>
+    <string name="created_at">Created At</string>
+    <string name="code_copied">Code Copied</string>
+    <string name="code_example">Code Example</string>
+    <string name="close">Close</string>
+    <string name="marked_as_reviewed">Marked as Reviewed</string>
+    <string name="knowledge_select_path">Select a path to view learning content</string>
+    <string name="view_learning_content">View Learning Content</string>
+    <string name="milestone_knowledge">Milestone Learning Content</string>
+    <string name="milestone_knowledge_empty_description">This milestone has no learning content yet</string>
+    <string name="search_hint">Search...</string>
+
+    <!-- Task Management -->
+    <string name="tasks_title">Task Management</string>
+    <string name="filter_all">All</string>
+    <string name="filter_pending">Pending</string>
+    <string name="filter_completed">Completed</string>
+    <string name="add_task">Add Task</string>
+    <string name="complete_task">Complete</string>
+    <string name="delete_task">Delete</string>
+    <string name="no_tasks">No tasks</string>
+    <string name="empty_tasks_title">No tasks</string>
+    <string name="empty_tasks_message">Create a task to start working</string>
+    <string name="priority_indicator">Priority</string>
+    <string name="task_title">Task Title</string>
+    <string name="task_description">Description (optional)</string>
+    <string name="due_date">Due Date</string>
+    <string name="select_due_date">Select Due Date</string>
+    <string name="save_task">Save</string>
+
+    <!-- Calendar specific strings -->
+    <string name="calendar_selected_date">Selected date</string>
+    <string name="calendar_task_count_single">1 task</string>
+    <string name="calendar_task_count_plural">%d tasks</string>
+
+    <!-- Time input strings -->
+    <string name="estimated_time_desc">Estimated time</string>
+    <string name="or_custom">or custom:</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
+
     <!-- Status -->
     <string name="status">Status</string>
-    
+    <string name="status_pending">Pending</string>
+    <string name="status_in_progress">In Progress</string>
+    <string name="status_completed">Completed</string>
+
+    <!-- Category/Type -->
+    <string name="category_learning">Learning</string>
+    <string name="category_work">Work</string>
+    <string name="category_personal">Personal</string>
+    <string name="category_project">Project</string>
+    <string name="category_other">Other</string>
+
     <!-- Timetable -->
-    <string name="timetable_no_class">No class</string>
-    <string name="timetable_no_next_class">No next class</string>
-    <string name="timetable_status_active">In class</string>
-    <string name="timetable_status_next">Next class</string>
-    <string name="timetable_status_break">Break time</string>
+    <string name="timetable_title">Timetable</string>
+    <string name="timetable_add_class">Add Class</string>
+    <string name="timetable_add_class_title">Add Class</string>
+    <string name="timetable_edit_class_title">Edit Class</string>
+    <string name="timetable_no_class">No Class</string>
+    <string name="timetable_no_next_class">No Next Class</string>
+    <string name="timetable_break_time">Break Time</string>
+    <string name="timetable_status_icon">Status Icon</string>
+    <string name="timetable_status_active">In Class</string>
+    <string name="timetable_status_in_class">In Class</string>
+    <string name="timetable_status_next">Next Class</string>
+    <string name="timetable_status_break">Break</string>
+    <string name="timetable_status_free">Free Time</string>
+    <string name="timetable_edit_weekly_content">Edit Weekly Content</string>
+    <string name="timetable_weekly_title">Weekly Title</string>
+    <string name="timetable_weekly_content">Content/Topics</string>
+    <string name="timetable_weekly_homework">Homework</string>
+    <string name="timetable_weekly_notes">Notes</string>
+    <string name="timetable_week_1">Week 1 - September</string>
+    <string name="timetable_date_range">28/9 - 4/10/2025</string>
+    <string name="timetable_period">Period</string>
+    <string name="timetable_sun">Sun</string>
+    <string name="timetable_mon">Mon</string>
+    <string name="timetable_tue">Tue</string>
+    <string name="timetable_wed">Wed</string>
+    <string name="timetable_thu">Thu</string>
+    <string name="timetable_fri">Fri</string>
+    <string name="timetable_sat">Sat</string>
+
+    <!-- Class Dialog -->
+    <string name="timetable_add_class_subtitle">Add a new class</string>
+    <string name="timetable_class_name">Class Name</string>
+    <string name="timetable_class_name_hint">Class name (e.g., IT Project Development)</string>
+    <string name="timetable_day">Day</string>
+    <string name="timetable_day_hint">Day of week</string>
+    <string name="timetable_period_hint">Period</string>
+    <string name="timetable_period_format">Period %d</string>
+    <string name="timetable_start_time">Start Time</string>
+    <string name="timetable_end_time">End Time</string>
+    <string name="timetable_select_start_time">Select Start Time</string>
+    <string name="timetable_select_end_time">Select End Time</string>
+    <string name="timetable_room">Room</string>
+    <string name="timetable_room_hint">Room (e.g., 1603)</string>
+    <string name="timetable_instructor">Instructor</string>
+    <string name="timetable_description">Description</string>
+    <string name="timetable_notes">Notes</string>
+    <string name="timetable_color">Color</string>
+    <string name="timetable_color_hint">Color</string>
+    <string name="timetable_color_primary">Green (Default)</string>
+    <string name="timetable_color_accent">Blue</string>
+    <string name="timetable_color_success">Light Green</string>
+    <string name="timetable_color_warning">Yellow</string>
+    <string name="timetable_color_danger">Red</string>
+    <string name="timetable_icon">Icon</string>
+    <string name="timetable_select_icon">Select Icon</string>
+    <string name="timetable_learning_path">Learning Path</string>
+    <string name="timetable_learning_path_helper">Optional - Link to learning path</string>
+    <string name="timetable_create_task">Create Task</string>
+    <string name="timetable_set_reminder">Set Reminder</string>
+    <string name="timetable_confirm_delete_class">Delete this class?</string>
+    <string name="timetable_error_name_required">Please enter class name</string>
+    <string name="timetable_error_start_time_required">Please select start time</string>
+    <string name="timetable_error_end_time_required">Please select end time</string>
+
+    <!-- Color Names -->
+    <string name="color_blue">Blue</string>
+    <string name="color_green">Green</string>
+    <string name="color_red">Red</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_purple">Purple</string>
+
+    <!-- Study Section -->
+    <string name="timetable_study_section">Homework &amp; Review</string>
+    <string name="timetable_add_study">Add</string>
+    <string name="timetable_add_study_title">Add Homework/Review</string>
+    <string name="timetable_edit_study_title">Edit Homework/Review</string>
+    <string name="timetable_study_icon">Study Icon</string>
+    <string name="timetable_study_title_hint">Title (e.g., Java OOP Homework)</string>
+    <string name="timetable_study_type_hint">Type</string>
+    <string name="timetable_study_type_homework">Homework</string>
+    <string name="timetable_study_type_review">Review</string>
+    <string name="timetable_study_type_exam">Exam</string>
+    <string name="timetable_study_type_project">Project</string>
+    <string name="timetable_study_subject_hint">Subject (e.g., Java Programming)</string>
+    <string name="timetable_study_due_date_hint">Due Date</string>
+    <string name="timetable_study_priority_hint">Priority</string>
+    <string name="timetable_study_description_hint">Detailed description...</string>
+    <string name="timetable_study_completed">Completed</string>
+    <string name="timetable_study_pending">Pending</string>
+    <string name="timetable_confirm_delete_study">Delete this homework?</string>
+
+    <!-- Days Array -->
+    <string name="day_sunday">Sunday</string>
+    <string name="day_monday">Monday</string>
+    <string name="day_tuesday">Tuesday</string>
+    <string name="day_wednesday">Wednesday</string>
+    <string name="day_thursday">Thursday</string>
+    <string name="day_friday">Friday</string>
+    <string name="day_saturday">Saturday</string>
+
+    <!-- Periods Array -->
+    <string name="period_1">Period 1</string>
+    <string name="period_2">Period 2</string>
+    <string name="period_3">Period 3</string>
+    <string name="period_4">Period 4</string>
+    <string name="period_5">Period 5</string>
+
+    <!-- Start Task Dialog -->
+    <string name="start_task_dialog_title">Start Task</string>
+    <string name="start_task_dialog_subtitle">Select a task to start</string>
+    <string name="start_task_dialog_icon">Start Task Icon</string>
+    <string name="start_task_available_count">%d tasks available</string>
+    <string name="start_task_sort">Sort</string>
+    <string name="start_task_quick_tasks">Quick Tasks</string>
+    <string name="start_task_ai_suggest">AI Suggest</string>
+    <string name="start_task_create_new">Create New</string>
+    <string name="start_task_start_btn">Start</string>
+    <string name="start_task_ai_recommended">AI Recommended</string>
+    <string name="start_task_empty_icon">Empty Icon</string>
+    <string name="start_task_empty_title">No available tasks</string>
+    <string name="start_task_empty_message">Create a new task or change filters</string>
+    <string name="start_task_no_available_tasks">No tasks available to start</string>
+    <string name="start_task_sort_priority">By Priority</string>
+    <string name="start_task_sort_time">By Time</string>
+    <string name="start_task_sort_deadline">By Deadline</string>
+
     <!-- Task Type -->
-    <string name="task_type">Task type</string>
+    <string name="task_type">Task Type</string>
     <string name="type_study">Study</string>
     <string name="type_work">Work</string>
+
+    <!-- Learning Path Detail -->
+    <string name="milestones">Milestones</string>
+    <string name="target_date">Target Date</string>
+
+    <!-- Milestone Detail -->
+    <string name="task_status">Task Status</string>
 
     <!-- Cheat Code -->
     <string name="cheat_code">Cheat Code</string>
     <string name="cheat_code_title">Cheat Code</string>
     <string name="search">Search</string>
+    <string name="refresh">Refresh</string>
     <string name="all">All</string>
     <string name="programming">Programming</string>
     <string name="markup">Markup</string>
@@ -163,7 +729,88 @@
     <string name="examples_count">%d examples</string>
     <string name="sections_and_examples">%1$d sections • %2$d examples</string>
     <string name="error_invalid_language_data">Invalid language data</string>
-    <string name="code_copied">Code copied</string>
-    <string name="copy_code">Copy code</string>
+
+    <!-- Focus Enhancement Features -->
+    <string name="deep_work_mode">Deep Work Mode</string>
+    <string name="deep_work_mode_desc">Tasks requiring uninterrupted focus time</string>
+    <string name="allow_interruptions">Allow Interruptions</string>
+    <string name="focus_difficulty">Focus Difficulty</string>
+    <string name="focus_difficulty_desc">How much concentration does this task require?</string>
+    <string name="difficulty_1_shallow">1 - Shallow</string>
+    <string name="difficulty_2_light">2 - Light</string>
+    <string name="difficulty_3_moderate">3 - Moderate</string>
+    <string name="difficulty_4_deep">4 - Deep</string>
+    <string name="difficulty_5_ultra_deep">5 - Ultra Deep</string>
+    <string name="warmup_time">Warmup Time</string>
+    <string name="warmup_time_desc">Preparation time before starting task</string>
+    <string name="cooldown_time">Cooldown Time</string>
+    <string name="cooldown_time_desc">Reflection time after task</string>
+    <string name="recovery_time">Recovery Time</string>
+    <string name="recovery_time_desc">Break time after task completion</string>
+    <string name="minutes_short">min</string>
+
+    <!-- Environment Checklist -->
+    <string name="environment_checklist">Environment Checklist</string>
+    <string name="environment_checklist_desc">Ensure optimal focus environment</string>
+    <string name="check_quiet_space">Quiet space</string>
+    <string name="check_phone_silent">Phone on silent</string>
+    <string name="check_materials_ready">Materials ready</string>
+    <string name="check_water_coffee">Water/coffee ready</string>
+    <string name="check_comfortable">Comfortable posture</string>
+    <string name="check_notifications_off">Notifications off</string>
+    <string name="apps_closed">Apps closed</string>
+    <string name="environment_notes">Notes</string>
+    <string name="all_checks_passed">All checks passed!</string>
+    <string name="checks_remaining">%d checks remaining</string>
+    <string name="start_focus_session">Start Focus Session</string>
+    <string name="skip_checklist">Skip</string>
+
+    <!-- Quick Start -->
+    <string name="create_and_start_now">Create and Start Now</string>
+    <string name="create_and_start_desc">Create a task and immediately start a focus session</string>
+
+    <!-- Context Switch Warning -->
+    <string name="context_switch_warning">Context Switch Warning</string>
+    <string name="context_switch_detected">Context switch detected</string>
+    <string name="from_task">From task</string>
+    <string name="to_task">To task</string>
+    <string name="estimated_recovery_cost">Estimated recovery time: ~%d min</string>
+    <string name="switch_tip_title">Tip</string>
+    <string name="switch_tip_category">Different task categories require mental adjustment. Consider batching similar tasks together.</string>
+    <string name="switch_tip_difficulty">Focus difficulty change detected. Take time to mentally prepare for the new task.</string>
+    <string name="proceed_anyway">Proceed Anyway</string>
+    <string name="schedule_later">Schedule Later</string>
+    <string name="batch_similar_tasks">Batch Similar Tasks</string>
+
+    <!-- Distraction Logging -->
+    <string name="log_distraction">Log Distraction</string>
+    <string name="distraction_type">Distraction Type</string>
+    <string name="distraction_phone">Phone</string>
+    <string name="distraction_social_media">Social Media</string>
+    <string name="distraction_noise">Noise</string>
+    <string name="distraction_person">Person</string>
+    <string name="distraction_thoughts">Thoughts</string>
+    <string name="distraction_hunger">Hunger/Thirst</string>
+    <string name="distraction_fatigue">Fatigue</string>
+    <string name="distraction_other">Other</string>
+    <string name="distraction_duration">Duration (seconds)</string>
+    <string name="distraction_notes">Notes</string>
+    <string name="log_and_continue">Log and Continue</string>
+
+    <!-- Analytics -->
+    <string name="focus_analytics">Focus Analytics</string>
+    <string name="total_distractions">Total Distractions</string>
+    <string name="average_distraction_duration">Average Duration</string>
+    <string name="top_distractions">Top Distractions</string>
+    <string name="distractions_by_time">By Time</string>
+    <string name="context_switches_this_week">Context Switches This Week</string>
+    <string name="significant_switches">Significant Switches</string>
+    <string name="total_cost">Total Cost</string>
+
+    <!-- AI Task Suggestion -->
+    <string name="ai_task_suggestion">AI Task Suggestion</string>
+    <string name="task_suggestion">Task Suggestion</string>
+    <string name="create_task">Create Task</string>
+    <string name="dismiss">Dismiss</string>
 
 </resources>
