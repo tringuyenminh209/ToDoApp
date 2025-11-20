@@ -197,29 +197,12 @@
                 app:cardElevation="1dp"
                 app:cardBackgroundColor="#1E1E1E">
 
-                <EditText
-                    android:id="@+id/et_code_editor"
+                <WebView
+                    android:id="@+id/webview_code_editor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="500dp"
-                    android:gravity="top|start"
-                    android:padding="16dp"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="monospace"
-                    android:textSize="14sp"
-                    android:textColor="#D4D4D4"
-                    android:textColorHint="#6A6A6A"
-                    android:hint="ここにコードを入力してください..."
-                    android:inputType="textMultiLine|textNoSuggestions"
-                    android:scrollbars="vertical"
-                    android:importantForAutofill="no"
-                    android:overScrollMode="always"
-                    android:scrollbarStyle="insideInset"
-                    android:lineSpacingExtra="4dp"
-                    android:imeOptions="flagNoExtractUi|actionNone"
-                    android:privateImeOptions="nm"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true" />
+                    android:background="@android:color/transparent" />
 
             </com.google.android.material.card.MaterialCardView>
 
