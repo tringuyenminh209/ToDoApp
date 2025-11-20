@@ -734,6 +734,9 @@
     <string name="deep_work_mode">Chế độ Deep Work</string>
     <string name="deep_work_mode_desc">Các task cần thời gian tập trung không bị gián đoạn</string>
     <string name="allow_interruptions">Cho phép gián đoạn</string>
+    <string name="timer_mode_work">Làm việc</string>
+    <string name="timer_mode_break">Nghỉ ngơi</string>
+    <string name="category_study">Học tập</string>
     <string name="focus_difficulty">Độ khó tập trung</string>
     <string name="focus_difficulty_desc">Task này cần mức độ tập trung như thế nào?</string>
     <string name="difficulty_1_shallow">1 - Nông</string>

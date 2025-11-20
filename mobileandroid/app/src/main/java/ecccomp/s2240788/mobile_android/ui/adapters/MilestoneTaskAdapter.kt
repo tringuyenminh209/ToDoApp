@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ItemMilestoneTaskBinding
 import ecccomp.s2240788.mobile_android.data.models.Task
+import ecccomp.s2240788.mobile_android.data.models.Subtask
 import com.google.android.material.card.MaterialCardView
 
 /**
@@ -18,7 +19,7 @@ import com.google.android.material.card.MaterialCardView
  */
 class MilestoneTaskAdapter(
     private val onStartTask: (Task) -> Unit = {},
-    private val onStartSubtask: (Task, Int) -> Unit = { _, _ -> }
+    private val onStartSubtask: (Task, Subtask) -> Unit = { _, _ -> }
 ) : ListAdapter<Task, MilestoneTaskAdapter.TaskViewHolder>(TaskDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -37,7 +38,7 @@ class MilestoneTaskAdapter(
     class TaskViewHolder(
         private val binding: ItemMilestoneTaskBinding,
         private val onStartTask: (Task) -> Unit,
-        private val onStartSubtask: (Task, Int) -> Unit
+        private val onStartSubtask: (Task, Subtask) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private var isExpanded = false
@@ -204,7 +205,7 @@ class MilestoneTaskAdapter(
                 // Start button
                 val btnStartSubtask = subtaskView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_start_subtask)
                 btnStartSubtask.setOnClickListener {
-                    onStartSubtask(task, index)
+                    onStartSubtask(task, subtask)
                 }
 
                 binding.subtasksContainer.addView(subtaskView)

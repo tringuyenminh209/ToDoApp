@@ -35,7 +35,51 @@
         android:text="第1週 - 1月"
         android:textSize="14sp"
         android:textColor="@color/text_secondary"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="16dp" />
+
+    <!-- Room (Classroom) -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="教室 (Room)"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:startIconDrawable="@drawable/ic_location"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Instructor (Teacher) -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_instructor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="教師 (Instructor)"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:startIconDrawable="@drawable/ic_person"
+        android:layout_marginBottom="24dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_instructor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Weekly Title -->
     <com.google.android.material.textfield.TextInputLayout

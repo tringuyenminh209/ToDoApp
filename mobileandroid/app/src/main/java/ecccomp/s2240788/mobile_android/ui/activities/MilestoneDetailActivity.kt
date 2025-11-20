@@ -11,6 +11,7 @@ import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityMilestoneDetailBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.MilestoneTaskAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.PathsViewModel
+import ecccomp.s2240788.mobile_android.data.models.Subtask
 
 /**
  * Milestone Detail Activity
@@ -76,11 +77,12 @@ class MilestoneDetailActivity : BaseActivity() {
                 intent.putExtra("task_id", task.id)
                 startActivity(intent)
             },
-            onStartSubtask = { task, subtaskIndex ->
-                // Navigate to focus session with main task (subtask will be handled in focus session)
+            onStartSubtask = { task, subtask ->
+                // Navigate to focus session with specific subtask (like TaskDetailActivity)
                 val intent = Intent(this, FocusSessionActivity::class.java)
                 intent.putExtra("task_id", task.id)
-                intent.putExtra("subtask_index", subtaskIndex)
+                intent.putExtra("subtask_id", subtask.id)
+                intent.putExtra("subtask_title", subtask.title)
                 startActivity(intent)
             }
         )
