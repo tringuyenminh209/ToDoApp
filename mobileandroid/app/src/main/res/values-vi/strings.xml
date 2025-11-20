@@ -732,10 +732,18 @@
 
     <!-- Focus Enhancement Features -->
     <string name="deep_work_mode">Chế độ Deep Work</string>
+    <string name="deep_work_mode_title">Deep Work Mode</string>
+    <string name="focus_mode_title">Focus Mode</string>
     <string name="deep_work_mode_desc">Các task cần thời gian tập trung không bị gián đoạn</string>
     <string name="allow_interruptions">Cho phép gián đoạn</string>
     <string name="timer_mode_work">Làm việc</string>
     <string name="timer_mode_break">Nghỉ ngơi</string>
+    <string name="timer_mode_short_break">Nghỉ ngắn</string>
+    <string name="timer_mode_long_break">Nghỉ dài</string>
+    <string name="session_completed">Session hoàn thành!</string>
+    <string name="minutes_unit">phút</string>
+    <string name="pomodoro_count_format">🎯 %1$d/5 Pomodoro</string>
+    <string name="items_count_format">%d items</string>
     <string name="category_study">Học tập</string>
     <string name="focus_difficulty">Độ khó tập trung</string>
     <string name="focus_difficulty_desc">Task này cần mức độ tập trung như thế nào?</string>
