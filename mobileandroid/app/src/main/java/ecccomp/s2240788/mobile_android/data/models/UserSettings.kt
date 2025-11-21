@@ -54,8 +54,8 @@ data class UserSettings(
     val reminderTimes: List<String> = listOf("09:00", "18:00"),
 
     // Localization
-    val language: String = "vi", // vi, en, ja
-    val timezone: String = "Asia/Ho_Chi_Minh",
+    val language: String = "ja", // vi, en, ja
+    val timezone: String = "Asia/Tokyo",
 
     @SerializedName("created_at")
     val createdAt: String? = null,

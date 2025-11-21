@@ -744,6 +744,8 @@
     <string name="minutes_unit">分</string>
     <string name="pomodoro_count_format">🎯 %1$d/5 Pomodoro</string>
     <string name="items_count_format">%d アイテム</string>
+    <string name="current_task">現在のタスク</string>
+    <string name="session_notes">セッション後のメモ</string>
     <string name="category_study">勉強</string>
     <string name="focus_difficulty">集中難易度</string>
     <string name="focus_difficulty_desc">このタスクにはどの程度の集中力が必要ですか？</string>

@@ -84,11 +84,6 @@ Class User extends Authenticatable{
         return $this->hasOne(UserSetting::class);
     }
 
-    public function userStats(): HasOne
-    {
-        return $this->hasOne(UserStats::class);
-    }
-
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);

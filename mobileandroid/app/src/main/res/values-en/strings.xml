@@ -744,6 +744,8 @@
     <string name="minutes_unit">min</string>
     <string name="pomodoro_count_format">🎯 %1$d/5 Pomodoro</string>
     <string name="items_count_format">%d items</string>
+    <string name="current_task">Current Task</string>
+    <string name="session_notes">Session Notes</string>
     <string name="focus_difficulty">Focus Difficulty</string>
     <string name="focus_difficulty_desc">How much concentration does this task require?</string>
     <string name="difficulty_1_shallow">1 - Shallow</string>

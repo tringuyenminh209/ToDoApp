@@ -6,9 +6,12 @@ use App\Models\Task;
 use App\Models\FocusSession;
 use App\Models\Project;
 use App\Models\PerformanceMetric;
+use App\Models\UserStatsCache;
+use App\Jobs\UpdateUserStatsCache;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class StatsController extends Controller
@@ -23,34 +26,30 @@ class StatsController extends Controller
             $user = $request->user();
             $userId = $user->id;
 
-            // Get task statistics
-            $totalTasks = Task::where('user_id', $userId)->count();
-            $completedTasks = Task::where('user_id', $userId)->where('status', 'completed')->count();
-            $pendingTasks = Task::where('user_id', $userId)->where('status', 'pending')->count();
-            $inProgressTasks = Task::where('user_id', $userId)->where('status', 'in_progress')->count();
+            // Try to get cached stats first
+            $cache = UserStatsCache::where('user_id', $userId)->first();
 
-            // Calculate completion rate
-            $completionRate = $totalTasks > 0 ? ($completedTasks / $totalTasks) * 100 : 0;
+            // If cache doesn't exist or is stale (older than 5 minutes), calculate fresh stats
+            if (!$cache || $cache->isStale(5)) {
+                Log::info("Stats cache miss or stale for user {$userId}, dispatching update job");
 
-            // Get focus session statistics
-            $focusSessions = FocusSession::where('user_id', $userId)->where('status', 'completed')->get();
-            $totalFocusTime = $focusSessions->sum('actual_minutes');
-            $totalFocusSessions = $focusSessions->count();
-            $averageSessionDuration = $totalFocusSessions > 0
-                ? round($totalFocusTime / $totalFocusSessions)
-                : 0;
+                // Dispatch job to update cache asynchronously
+                UpdateUserStatsCache::dispatch($userId);
 
-            // Calculate streak (consecutive days with completed tasks)
-            $streaks = $this->calculateStreaks($userId);
+                // If no cache exists at all, calculate stats synchronously for first time
+                if (!$cache) {
+                    Log::info("No cache exists for user {$userId}, calculating stats synchronously");
+                    return $this->calculateFreshStats($userId);
+                }
+            }
 
-            // Get tasks by priority
+            // Get additional stats not in cache (tasks by priority, weekly stats, monthly productivity)
             $tasksByPriority = [
                 'high' => Task::where('user_id', $userId)->where('priority', '>=', 4)->count(),
                 'medium' => Task::where('user_id', $userId)->where('priority', 3)->count(),
                 'low' => Task::where('user_id', $userId)->where('priority', '<=', 2)->count(),
             ];
 
-            // Get weekly stats (last 7 days)
             $weekStart = Carbon::now()->subDays(6)->startOfDay();
             $weeklyTasks = Task::where('user_id', $userId)
                 ->where('status', 'completed')
@@ -63,7 +62,6 @@ class StatsController extends Controller
                 ->get();
             $weeklyFocusTime = $weeklyFocusSessions->sum('actual_minutes');
 
-            // Count days active in the week
             $daysActive = FocusSession::where('user_id', $userId)
                 ->where('status', 'completed')
                 ->where('created_at', '>=', $weekStart)
@@ -77,20 +75,20 @@ class StatsController extends Controller
                 'days_active' => $daysActive,
             ];
 
-            // Get monthly productivity (last 30 days)
             $monthlyProductivity = $this->getMonthlyProductivity($userId);
 
+            // Combine cached stats with additional stats
             $stats = [
-                'total_tasks' => $totalTasks,
-                'completed_tasks' => $completedTasks,
-                'pending_tasks' => $pendingTasks,
-                'in_progress_tasks' => $inProgressTasks,
-                'completion_rate' => round($completionRate, 1),
-                'total_focus_time' => $totalFocusTime,
-                'total_focus_sessions' => $totalFocusSessions,
-                'average_session_duration' => $averageSessionDuration,
-                'current_streak' => $streaks['current'],
-                'longest_streak' => $streaks['longest'],
+                'total_tasks' => $cache->total_tasks,
+                'completed_tasks' => $cache->completed_tasks,
+                'pending_tasks' => $cache->pending_tasks,
+                'in_progress_tasks' => $cache->in_progress_tasks,
+                'completion_rate' => (float) $cache->completion_rate,
+                'total_focus_time' => $cache->total_focus_time,
+                'total_focus_sessions' => $cache->total_focus_sessions,
+                'average_session_duration' => $cache->average_session_duration,
+                'current_streak' => $cache->current_streak,
+                'longest_streak' => $cache->longest_streak,
                 'tasks_by_priority' => $tasksByPriority,
                 'weekly_stats' => $weeklyStats,
                 'monthly_productivity' => $monthlyProductivity,
@@ -103,12 +101,91 @@ class StatsController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            Log::error("getUserStats error: " . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to retrieve statistics',
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Calculate fresh stats without cache (fallback method)
+     */
+    private function calculateFreshStats(int $userId): JsonResponse
+    {
+        // Original calculation logic
+        $totalTasks = Task::where('user_id', $userId)->count();
+        $completedTasks = Task::where('user_id', $userId)->where('status', 'completed')->count();
+        $pendingTasks = Task::where('user_id', $userId)->where('status', 'pending')->count();
+        $inProgressTasks = Task::where('user_id', $userId)->where('status', 'in_progress')->count();
+
+        $completionRate = $totalTasks > 0 ? ($completedTasks / $totalTasks) * 100 : 0;
+
+        $focusSessions = FocusSession::where('user_id', $userId)->where('status', 'completed')->get();
+        $totalFocusTime = $focusSessions->sum('actual_minutes');
+        $totalFocusSessions = $focusSessions->count();
+        $averageSessionDuration = $totalFocusSessions > 0
+            ? round($totalFocusTime / $totalFocusSessions)
+            : 0;
+
+        $streaks = $this->calculateStreaks($userId);
+
+        $tasksByPriority = [
+            'high' => Task::where('user_id', $userId)->where('priority', '>=', 4)->count(),
+            'medium' => Task::where('user_id', $userId)->where('priority', 3)->count(),
+            'low' => Task::where('user_id', $userId)->where('priority', '<=', 2)->count(),
+        ];
+
+        $weekStart = Carbon::now()->subDays(6)->startOfDay();
+        $weeklyTasks = Task::where('user_id', $userId)
+            ->where('status', 'completed')
+            ->where('updated_at', '>=', $weekStart)
+            ->count();
+
+        $weeklyFocusSessions = FocusSession::where('user_id', $userId)
+            ->where('status', 'completed')
+            ->where('created_at', '>=', $weekStart)
+            ->get();
+        $weeklyFocusTime = $weeklyFocusSessions->sum('actual_minutes');
+
+        $daysActive = FocusSession::where('user_id', $userId)
+            ->where('status', 'completed')
+            ->where('created_at', '>=', $weekStart)
+            ->select(DB::raw('DATE(created_at) as date'))
+            ->distinct()
+            ->count();
+
+        $weeklyStats = [
+            'tasks_completed' => $weeklyTasks,
+            'focus_time' => $weeklyFocusTime,
+            'days_active' => $daysActive,
+        ];
+
+        $monthlyProductivity = $this->getMonthlyProductivity($userId);
+
+        $stats = [
+            'total_tasks' => $totalTasks,
+            'completed_tasks' => $completedTasks,
+            'pending_tasks' => $pendingTasks,
+            'in_progress_tasks' => $inProgressTasks,
+            'completion_rate' => round($completionRate, 1),
+            'total_focus_time' => $totalFocusTime,
+            'total_focus_sessions' => $totalFocusSessions,
+            'average_session_duration' => $averageSessionDuration,
+            'current_streak' => $streaks['current'],
+            'longest_streak' => $streaks['longest'],
+            'tasks_by_priority' => $tasksByPriority,
+            'weekly_stats' => $weeklyStats,
+            'monthly_productivity' => $monthlyProductivity,
+        ];
+
+        return response()->json([
+            'success' => true,
+            'data' => $stats,
+            'message' => 'Statistics retrieved successfully'
+        ]);
     }
 
     /**
@@ -405,19 +482,91 @@ class StatsController extends Controller
 
     /**
      * Lấy tasks stats cho dashboard
+     *
+     * Today's Progress Logic (Optimized):
+     *
+     * WHAT COUNTS AS "TODAY'S TASKS":
+     * 1. Daily tasks (learning_milestone_id IS NULL) that are:
+     *    - Created today (new tasks for today)
+     *    - Have deadline today or in the past (due/overdue)
+     *    - Currently in progress or pending (not completed or cancelled)
+     *
+     * 2. Roadmap tasks WITH deadline today (scheduled work)
+     *
+     * WHAT COUNTS AS "COMPLETED TODAY":
+     * - Tasks from above that are completed (regardless of when)
+     * - This includes tasks completed early (before deadline)
+     *
+     * BENEFITS:
+     * - Recognizes early completion (task due today but done yesterday)
+     * - Shows overdue tasks (motivates user to catch up)
+     * - Clear daily workload without roadmap noise
+     * - Realistic progress tracking
      */
     private function getTasksStats($user, $today, $thisWeek, $thisMonth)
     {
         $allTasks = Task::where('user_id', $user->id);
-        $todayTasks = clone $allTasks;
+
+        // Today's tasks: What user should work on today
+        $todayTasksQuery = Task::where('user_id', $user->id)
+            ->whereIn('status', ['pending', 'in_progress', 'completed']) // Exclude cancelled
+            ->where(function($query) use ($today) {
+                // Daily tasks: created today OR has deadline <= today
+                $query->where(function($q) use ($today) {
+                    $q->whereNull('learning_milestone_id')
+                      ->where(function($subQ) use ($today) {
+                          $subQ->whereDate('created_at', $today)
+                               ->orWhere(function($deadlineQ) use ($today) {
+                                   $deadlineQ->whereNotNull('deadline')
+                                             ->whereDate('deadline', '<=', $today);
+                               });
+                      });
+                })
+                // OR roadmap tasks with deadline today
+                ->orWhere(function($q) use ($today) {
+                    $q->whereNotNull('learning_milestone_id')
+                      ->whereNotNull('deadline')
+                      ->whereDate('deadline', $today);
+                });
+            });
+
+        $totalToday = $todayTasksQuery->count();
+
+        // Completed: Same criteria but status = completed
+        $todayCompleted = Task::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->where(function($query) use ($today) {
+                // Daily tasks completed
+                $query->where(function($q) use ($today) {
+                    $q->whereNull('learning_milestone_id')
+                      ->where(function($subQ) use ($today) {
+                          $subQ->whereDate('created_at', $today)
+                               ->orWhere(function($deadlineQ) use ($today) {
+                                   $deadlineQ->whereNotNull('deadline')
+                                             ->whereDate('deadline', '<=', $today);
+                               });
+                      });
+                })
+                // OR roadmap tasks completed with deadline today
+                ->orWhere(function($q) use ($today) {
+                    $q->whereNotNull('learning_milestone_id')
+                      ->whereNotNull('deadline')
+                      ->whereDate('deadline', $today);
+                });
+            })
+            ->count();
+
+        // Weekly and Monthly: Count all tasks for overall productivity
         $weekTasks = clone $allTasks;
         $monthTasks = clone $allTasks;
 
         return [
             'today' => [
-                'total' => $todayTasks->whereDate('created_at', $today)->count(),
-                'completed' => $todayTasks->whereDate('updated_at', $today)->where('status', 'completed')->count(),
-                'created' => $todayTasks->whereDate('created_at', $today)->count(),
+                'total' => $totalToday,
+                'completed' => $todayCompleted,
+                'created' => Task::where('user_id', $user->id)
+                    ->whereDate('created_at', $today)
+                    ->count(),
             ],
             'this_week' => [
                 'total' => $weekTasks->where('created_at', '>=', $thisWeek)->count(),
