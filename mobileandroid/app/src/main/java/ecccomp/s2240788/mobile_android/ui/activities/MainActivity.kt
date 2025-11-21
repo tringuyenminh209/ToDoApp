@@ -287,10 +287,8 @@ class MainActivity : BaseActivity() {
                     "${minutes}m"
                 }
 
-                // Update streak (if available)
-                if (it.streakDays > 0) {
-                    binding.tvStreak.text = it.streakDays.toString()
-                }
+                // Update streak (always update, even if 0)
+                binding.tvStreak.text = it.streakDays.toString()
             }
         }
     }

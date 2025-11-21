@@ -744,6 +744,8 @@
     <string name="minutes_unit">phút</string>
     <string name="pomodoro_count_format">🎯 %1$d/5 Pomodoro</string>
     <string name="items_count_format">%d items</string>
+    <string name="current_task">Task hiện tại</string>
+    <string name="session_notes">Ghi chú sau phiên</string>
     <string name="category_study">Học tập</string>
     <string name="focus_difficulty">Độ khó tập trung</string>
     <string name="focus_difficulty_desc">Task này cần mức độ tập trung như thế nào?</string>

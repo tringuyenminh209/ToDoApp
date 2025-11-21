@@ -196,4 +196,38 @@ class AuthController extends Controller
             'message' => 'トークンが更新されました'
         ], 200);
     }
+
+    /**
+     * 現在のユーザー情報を取得
+     * GET /api/user
+     */
+    public function getUser(Request $request)
+    {
+        $user = $request->user();
+
+        Log::info("getUser called", [
+            'user' => $user ? $user->toArray() : null
+        ]);
+
+        if (!$user) {
+            $response = [
+                'success' => false,
+                'data' => null,
+                'message' => 'ユーザーが見つかりません',
+                'error' => 'User not found'
+            ];
+            Log::info("getUser response (not found)", ['response' => $response]);
+            return response()->json($response, 404);
+        }
+
+        $response = [
+            'success' => true,
+            'data' => $user->toArray(),
+            'message' => 'ユーザー情報を取得しました',
+            'error' => null
+        ];
+
+        Log::info("getUser response (success)", ['response' => $response]);
+        return response()->json($response, 200);
+    }
 }

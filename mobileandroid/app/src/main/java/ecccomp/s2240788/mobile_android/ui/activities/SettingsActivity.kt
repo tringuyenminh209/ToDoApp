@@ -117,6 +117,7 @@ class SettingsActivity : BaseActivity() {
 
     private fun loadUserProfile() {
         lifecycleScope.launch {
+            Log.d(TAG, "Loading user profile...")
             val result = withContext(Dispatchers.IO) {
                 authRepository.getCurrentUser()
             }
@@ -124,20 +125,55 @@ class SettingsActivity : BaseActivity() {
             when (result) {
                 is AuthResult.Success -> {
                     currentUser = result.data
+                    Log.d(TAG, "User profile loaded: name=${result.data.name}, email=${result.data.email}")
                     updateUserProfileUI(result.data)
                 }
                 is AuthResult.Error -> {
                     Log.e(TAG, "Failed to load user profile: ${result.message}")
+                    Toast.makeText(
+                        this@SettingsActivity,
+                        "Failed to load user profile: ${result.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                else -> {}
+                else -> {
+                    Log.e(TAG, "Unknown result type when loading user profile")
+                }
             }
         }
     }
 
     private fun updateUserProfileUI(user: User) {
-        binding.tvUserName.text = user.name
-        binding.tvUserEmail.text = user.email
-        // TODO: Load actual stats from API
+        Log.d(TAG, "Updating UI with user: name=${user.name}, email=${user.email}")
+        binding.tvUserName.text = user.name ?: "Unknown User"
+        binding.tvUserEmail.text = user.email ?: "No email"
+        // Load user stats
+        loadUserStats()
+    }
+
+    private fun loadUserStats() {
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    NetworkModule.apiService.getUserStats()
+                }
+
+                if (response.isSuccessful && response.body()?.success == true) {
+                    val stats = response.body()?.data
+                    stats?.let {
+                        // Update UI with real stats
+                        binding.tvStreakValue.text = it.current_streak.toString()
+                        binding.tvFocusValue.text = it.total_focus_time.toString()
+                        binding.tvTasksValue.text = it.completed_tasks.toString()
+                        Log.d(TAG, "Stats loaded: streak=${it.current_streak}, focus=${it.total_focus_time}, tasks=${it.completed_tasks}")
+                    }
+                } else {
+                    Log.e(TAG, "Failed to load stats: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error loading stats", e)
+            }
+        }
     }
 
     private fun loadSettings() {

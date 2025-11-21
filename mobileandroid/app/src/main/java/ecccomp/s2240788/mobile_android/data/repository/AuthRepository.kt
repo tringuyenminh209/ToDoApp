@@ -128,12 +128,19 @@ class AuthRepository(
     suspend fun getCurrentUser(): AuthResult<User> {
         return try {
             val response = apiService.getUser()
+            android.util.Log.d("AuthRepository", "getCurrentUser response code: ${response.code()}")
+            android.util.Log.d("AuthRepository", "getCurrentUser response body: ${response.body()}")
 
             if (response.isSuccessful) {
-                val user = response.body()?.data
+                val responseBody = response.body()
+                android.util.Log.d("AuthRepository", "Response body data: ${responseBody?.data}")
+
+                val user = responseBody?.data
                 if (user != null) {
+                    android.util.Log.d("AuthRepository", "User loaded: name=${user.name}, email=${user.email}")
                     AuthResult.Success(user)
                 } else {
+                    android.util.Log.e("AuthRepository", "User data is null in response body")
                     AuthResult.Error("ユーザー情報の取得に失敗しました")
                 }
             } else {
@@ -145,6 +152,7 @@ class AuthRepository(
                 AuthResult.Error(errorMessage)
             }
         } catch (e: Exception) {
+            android.util.Log.e("AuthRepository", "Exception in getCurrentUser", e)
             AuthResult.Error("ネットワークエラー: ${e.message}")
         }
     }
