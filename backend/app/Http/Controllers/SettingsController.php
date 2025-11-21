@@ -74,8 +74,7 @@ class SettingsController extends Controller
                 'push_notifications' => 'nullable|boolean',
                 'daily_reminders' => 'nullable|boolean',
                 'goal_reminders' => 'nullable|boolean',
-                'reminder_times' => 'nullable|array',
-                'reminder_times.*' => 'string|regex:/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/',
+                'reminder_times' => 'nullable',
 
                 // Localization
                 'language' => 'nullable|in:vi,en,ja',
@@ -130,7 +129,10 @@ class SettingsController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            Log::error('Failed to update settings: ' . $e->getMessage());
+            Log::error('Failed to update settings: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all()
+            ]);
 
             return response()->json([
                 'success' => false,
