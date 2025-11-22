@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             HtmlCourseSeeder::class,
             DockerCourseSeeder::class,
             GitCourseSeeder::class,
+            SqlCourseSeeder::class,
 
             // CheatCode Data
             CheatCodePhpSeeder::class,
