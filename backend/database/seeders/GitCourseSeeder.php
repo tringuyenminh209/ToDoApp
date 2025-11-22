@@ -45,7 +45,7 @@ class GitCourseSeeder extends Seeder
                 'title' => '第1週：Gitとは？環境設定',
                 'description' => 'バージョン管理の概念とGitのインストール、初期設定',
                 'sort_order' => 1,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 240,
                 'priority' => 5,
                 'resources' => ['Git公式サイト', 'Pro Git Book'],
                 'subtasks' => [
@@ -82,7 +82,7 @@ class GitCourseSeeder extends Seeder
                 'title' => '第2週：基本コマンド（add, commit, log）',
                 'description' => 'ステージング、コミット、履歴確認の基本操作',
                 'sort_order' => 2,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 5,
                 'resources' => ['Git Documentation - Basic Commands'],
                 'subtasks' => [
@@ -193,7 +193,7 @@ class GitCourseSeeder extends Seeder
                 'title' => '第4週：GitHubとリモートリポジトリ',
                 'description' => 'GitHubアカウント作成、リポジトリ作成、clone、remote操作',
                 'sort_order' => 4,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 270,
                 'priority' => 5,
                 'resources' => ['GitHub Docs', 'GitHub Getting Started'],
                 'subtasks' => [
@@ -230,7 +230,7 @@ class GitCourseSeeder extends Seeder
                 'title' => '第5週：Push、Pull、Fetch',
                 'description' => 'リモートリポジトリとの同期、プッシュ・プル操作',
                 'sort_order' => 5,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 420,
                 'priority' => 5,
                 'resources' => ['Git Remote Commands'],
                 'subtasks' => [
@@ -274,7 +274,7 @@ class GitCourseSeeder extends Seeder
                 'title' => '第6週：プルリクエストとコードレビュー',
                 'description' => 'Pull Requestの作成、レビュー、マージ、Issue管理',
                 'sort_order' => 6,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 5,
                 'resources' => ['GitHub Pull Requests', 'GitHub Issues'],
                 'subtasks' => [
@@ -332,7 +332,7 @@ class GitCourseSeeder extends Seeder
                 'title' => '第7週：Rebase、Stash、Reset',
                 'description' => 'コミット履歴の整理、一時保存、コミットの取り消し',
                 'sort_order' => 7,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 4,
                 'resources' => ['Git Rebase Guide', 'Git Reset vs Revert'],
                 'subtasks' => [
@@ -375,7 +375,7 @@ class GitCourseSeeder extends Seeder
                 'title' => '第8週：タグ、Cherry-pick、高度なテクニック',
                 'description' => 'バージョンタグ管理、特定コミットの取り込み、便利なコマンド',
                 'sort_order' => 8,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 4,
                 'resources' => ['Git Tag', 'Git Tips and Tricks'],
                 'subtasks' => [
@@ -429,7 +429,7 @@ class GitCourseSeeder extends Seeder
                 'title' => '第9週：ブランチ戦略とチーム開発',
                 'description' => 'Git Flow、GitHub Flow、フォーク、コラボレーター',
                 'sort_order' => 9,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 5,
                 'resources' => ['Git Flow', 'GitHub Flow Guide'],
                 'subtasks' => [
@@ -463,7 +463,7 @@ class GitCourseSeeder extends Seeder
                 'title' => '第10週：.gitignore、GitHub Actions、ベストプラクティス',
                 'description' => '無視ファイル設定、CI/CD自動化、Gitのベストプラクティス',
                 'sort_order' => 10,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 4,
                 'resources' => ['gitignore.io', 'GitHub Actions Documentation'],
                 'subtasks' => [
