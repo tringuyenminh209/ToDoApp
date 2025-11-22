@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             LaravelCourseSeeder::class,
             GoCourseSeeder::class,
             JavaScriptCourseSeeder::class,
+            TypeScriptCourseSeeder::class,
             PythonCourseSeeder::class,
             HtmlCourseSeeder::class,
             DockerCourseSeeder::class,
