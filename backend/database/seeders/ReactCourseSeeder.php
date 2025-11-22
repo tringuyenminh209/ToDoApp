@@ -45,7 +45,7 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第1週：Reactとは？環境構築とJSX',
                 'description' => 'Reactの概要、Create React App、JSX、コンポーネントの基本',
                 'sort_order' => 1,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['React公式ドキュメント', 'React入門'],
                 'subtasks' => [
@@ -81,7 +81,7 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第2週：コンポーネント、Props、State',
                 'description' => 'コンポーネントの作成、Propsによるデータ受け渡し、Stateによる状態管理',
                 'sort_order' => 2,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 5,
                 'resources' => ['React Components', 'Props and State'],
                 'subtasks' => [
@@ -118,7 +118,7 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第3週：イベント処理、リスト、フォーム',
                 'description' => 'イベントハンドリング、リストのレンダリング、フォームの制御',
                 'sort_order' => 3,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 5,
                 'resources' => ['React Events', 'Lists and Keys'],
                 'subtasks' => [
@@ -172,7 +172,7 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第4週：useState、useEffect',
                 'description' => '状態管理の基本、副作用の処理、ライフサイクル',
                 'sort_order' => 4,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['React Hooks Introduction', 'useEffect Guide'],
                 'subtasks' => [
@@ -200,7 +200,7 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第5週：useContext、useReducer',
                 'description' => 'Context APIによる状態共有、useReducerによる複雑な状態管理',
                 'sort_order' => 5,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 5,
                 'resources' => ['useContext', 'useReducer'],
                 'subtasks' => [
@@ -229,7 +229,7 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第6週：その他のHooksとカスタムフック',
                 'description' => 'useRef、useMemo、useCallback、カスタムフック作成',
                 'sort_order' => 6,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 5,
                 'resources' => ['React Hooks API Reference'],
                 'subtasks' => [
@@ -275,7 +275,7 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第7週：React Router',
                 'description' => 'ルーティング、ナビゲーション、動的ルート、ネストされたルート',
                 'sort_order' => 7,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['React Router Documentation'],
                 'subtasks' => [
@@ -297,12 +297,12 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第8週：Redux Toolkit基礎',
                 'description' => 'Redux Toolkit、Slice、Store、Reducer',
                 'sort_order' => 8,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 660,
                 'priority' => 5,
                 'resources' => ['Redux Toolkit Documentation'],
                 'subtasks' => [
-                    ['title' => 'Redux Toolkitをセットアップ', 'estimated_minutes' => 120, 'sort_order' => 1],
-                    ['title' => 'Slice作成と使用を学習', 'estimated_minutes' => 180, 'sort_order' => 2],
+                    ['title' => 'Redux Toolkitをセットアップ', 'estimated_minutes' => 330, 'sort_order' => 1],
+                    ['title' => 'Slice作成と使用を学習', 'estimated_minutes' => 330, 'sort_order' => 2],
                 ],
                 'knowledge_items' => [],
             ],
@@ -310,7 +310,7 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第9週：非同期処理とミドルウェア',
                 'description' => 'createAsyncThunk、RTK Query、ミドルウェア',
                 'sort_order' => 9,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 4,
                 'resources' => ['RTK Query', 'Redux Middleware'],
                 'subtasks' => [
@@ -340,7 +340,7 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第10週：パフォーマンス最適化',
                 'description' => 'React.memo、Code Splitting、Lazy Loading、最適化テクニック',
                 'sort_order' => 10,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 240,
                 'priority' => 5,
                 'resources' => ['React Performance Optimization'],
                 'subtasks' => [
@@ -352,11 +352,11 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第11週：テスト',
                 'description' => 'Jest、React Testing Library、コンポーネントテスト',
                 'sort_order' => 11,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['React Testing Library'],
                 'subtasks' => [
-                    ['title' => 'React Testing Libraryを学習', 'estimated_minutes' => 240, 'sort_order' => 1],
+                    ['title' => 'React Testing Libraryを学習', 'estimated_minutes' => 300, 'sort_order' => 1],
                 ],
                 'knowledge_items' => [],
             ],
@@ -364,7 +364,7 @@ class ReactCourseSeeder extends Seeder
                 'title' => '第12週：TypeScript + React、デプロイ',
                 'description' => 'TypeScriptとReactの統合、ベストプラクティス、デプロイ',
                 'sort_order' => 12,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 4,
                 'resources' => ['React TypeScript', 'Deployment Guide'],
                 'subtasks' => [

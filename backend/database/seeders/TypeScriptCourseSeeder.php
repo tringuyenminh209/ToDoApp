@@ -45,7 +45,7 @@ class TypeScriptCourseSeeder extends Seeder
                 'title' => '第1週：TypeScriptとは？環境構築',
                 'description' => 'TypeScriptの概要、インストール、tsconfig.json、コンパイル',
                 'sort_order' => 1,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 240,
                 'priority' => 5,
                 'resources' => ['TypeScript公式ドキュメント', 'TypeScript Handbook'],
                 'subtasks' => [
@@ -81,7 +81,7 @@ class TypeScriptCourseSeeder extends Seeder
                 'title' => '第2週：基本的な型',
                 'description' => 'プリミティブ型、配列、タプル、Enum、Any、Unknown',
                 'sort_order' => 2,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 5,
                 'resources' => ['TypeScript Basic Types'],
                 'subtasks' => [
@@ -118,7 +118,7 @@ class TypeScriptCourseSeeder extends Seeder
                 'title' => '第3週：関数とインターフェース',
                 'description' => '関数の型付け、オプション引数、インターフェース、型エイリアス',
                 'sort_order' => 3,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['TypeScript Functions', 'TypeScript Interfaces'],
                 'subtasks' => [
@@ -170,7 +170,7 @@ class TypeScriptCourseSeeder extends Seeder
                 'title' => '第4週：Union型とIntersection型',
                 'description' => 'Union型、Intersection型、型ガード、Type Assertion',
                 'sort_order' => 4,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 5,
                 'resources' => ['TypeScript Union Types'],
                 'subtasks' => [
@@ -207,7 +207,7 @@ class TypeScriptCourseSeeder extends Seeder
                 'title' => '第5週：ジェネリクス',
                 'description' => 'ジェネリック関数、ジェネリッククラス、制約、デフォルト型',
                 'sort_order' => 5,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 390,
                 'priority' => 5,
                 'resources' => ['TypeScript Generics'],
                 'subtasks' => [
@@ -244,7 +244,7 @@ class TypeScriptCourseSeeder extends Seeder
                 'title' => '第6週：ユーティリティ型とMapped Types',
                 'description' => 'Partial、Required、Readonly、Pick、Omit、Record、Mapped Types',
                 'sort_order' => 6,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 420,
                 'priority' => 5,
                 'resources' => ['TypeScript Utility Types'],
                 'subtasks' => [
@@ -298,7 +298,7 @@ class TypeScriptCourseSeeder extends Seeder
                 'title' => '第7週：クラスとOOP',
                 'description' => 'クラス、継承、アクセス修飾子、抽象クラス、implements',
                 'sort_order' => 7,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 300,
                 'priority' => 5,
                 'resources' => ['TypeScript Classes'],
                 'subtasks' => [
@@ -327,7 +327,7 @@ class TypeScriptCourseSeeder extends Seeder
                 'title' => '第8週：デコレータとモジュール',
                 'description' => 'デコレータ、Namespace、モジュールシステム',
                 'sort_order' => 8,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 4,
                 'resources' => ['TypeScript Decorators', 'TypeScript Modules'],
                 'subtasks' => [
@@ -373,7 +373,7 @@ class TypeScriptCourseSeeder extends Seeder
                 'title' => '第9週：React/Vue + TypeScript',
                 'description' => 'React/VueでのTypeScript活用、コンポーネントの型付け',
                 'sort_order' => 9,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 5,
                 'resources' => ['React TypeScript Cheatsheet', 'Vue TypeScript Support'],
                 'subtasks' => [
@@ -402,7 +402,7 @@ class TypeScriptCourseSeeder extends Seeder
                 'title' => '第10週：Node.js + TypeScript、テスト、ベストプラクティス',
                 'description' => 'Express + TypeScript、Jest、ESLint、ベストプラクティス',
                 'sort_order' => 10,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 390,
                 'priority' => 4,
                 'resources' => ['Node.js TypeScript Guide', 'TypeScript Best Practices'],
                 'subtasks' => [

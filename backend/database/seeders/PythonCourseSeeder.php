@@ -45,7 +45,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第1週：環境設定とHello World',
                 'description' => 'Python開発環境のセットアップとprint()を使った画面出力',
                 'sort_order' => 1,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 120,
                 'priority' => 5,
                 'resources' => ['Python公式サイト', 'Visual Studio Code + Python拡張機能'],
                 'subtasks' => [
@@ -74,7 +74,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第2週：変数とデータ型',
                 'description' => 'Pythonの変数宣言、基本データ型、型変換について学習',
                 'sort_order' => 2,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 270,
                 'priority' => 5,
                 'resources' => ['Python公式ドキュメント - Data Types'],
                 'subtasks' => [
@@ -110,7 +110,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第3週：演算子と文字列操作',
                 'description' => '算術演算子、比較演算子、論理演算子、文字列操作について学習',
                 'sort_order' => 3,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 210,
                 'priority' => 4,
                 'resources' => ['Python Operators Documentation'],
                 'subtasks' => [
@@ -139,7 +139,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第4週：ユーザー入力とフォーマット',
                 'description' => 'input()を使った入力とf-stringを使ったフォーマット出力',
                 'sort_order' => 4,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 240,
                 'priority' => 4,
                 'resources' => ['Python Input/Output'],
                 'subtasks' => [
@@ -184,7 +184,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第5週：条件分岐（if/elif/else）',
                 'description' => '条件分岐の基本とネストされた条件文',
                 'sort_order' => 5,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 240,
                 'priority' => 5,
                 'resources' => ['Python Control Flow'],
                 'subtasks' => [
@@ -206,7 +206,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第6週：ループ（while, for）',
                 'description' => 'whileループとforループ、range()の使い方',
                 'sort_order' => 6,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 210,
                 'priority' => 5,
                 'resources' => ['Python Loops'],
                 'subtasks' => [
@@ -235,7 +235,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第7週：関数',
                 'description' => '関数の定義、引数、戻り値、デフォルト引数、可変長引数',
                 'sort_order' => 7,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 210,
                 'priority' => 5,
                 'resources' => ['Python Functions'],
                 'subtasks' => [
@@ -280,7 +280,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第8週：リストとタプル',
                 'description' => 'リストとタプルの操作、メソッド、違い',
                 'sort_order' => 8,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 210,
                 'priority' => 5,
                 'resources' => ['Python Lists and Tuples'],
                 'subtasks' => [
@@ -309,7 +309,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第9週：辞書とセット',
                 'description' => '辞書（dict）とセット（set）の操作',
                 'sort_order' => 9,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 210,
                 'priority' => 5,
                 'resources' => ['Python Dictionaries and Sets'],
                 'subtasks' => [
@@ -338,7 +338,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第10週：リスト内包表記とイテレータ',
                 'description' => 'リスト内包表記、辞書内包表記、ジェネレータ',
                 'sort_order' => 10,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 210,
                 'priority' => 5,
                 'resources' => ['Python Comprehensions'],
                 'subtasks' => [
@@ -383,7 +383,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第11週：クラスとオブジェクト',
                 'description' => 'クラスの定義、コンストラクタ、インスタンス変数とメソッド',
                 'sort_order' => 11,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 240,
                 'priority' => 5,
                 'resources' => ['Python Classes and Objects'],
                 'subtasks' => [
@@ -412,7 +412,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第12週：継承とポリモーフィズム',
                 'description' => 'クラスの継承、メソッドのオーバーライド、super()',
                 'sort_order' => 12,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 210,
                 'priority' => 5,
                 'resources' => ['Python Inheritance'],
                 'subtasks' => [
@@ -441,7 +441,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第13週：カプセル化と特殊メソッド',
                 'description' => 'プライベート変数、プロパティ、特殊メソッド（__str__, __repr__など）',
                 'sort_order' => 13,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 240,
                 'priority' => 5,
                 'resources' => ['Python Encapsulation'],
                 'subtasks' => [
@@ -486,7 +486,7 @@ class PythonCourseSeeder extends Seeder
                 'title' => '第14週：モジュールと例外処理',
                 'description' => 'モジュールのインポート、作成、例外処理',
                 'sort_order' => 14,
-                'estimated_minutes' => 360,
+                'estimated_minutes' => 240,
                 'priority' => 5,
                 'resources' => ['Python Modules and Exceptions'],
                 'subtasks' => [
