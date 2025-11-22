@@ -123,7 +123,7 @@ class PathsViewModel : ViewModel() {
         // 全体進捗率を計算
         if (paths.isNotEmpty()) {
             val totalProgress = paths.sumOf { it.progress_percentage }
-            val averageProgress = totalProgress / paths.size
+            val averageProgress = (totalProgress / paths.size).toInt()
             _overallProgress.value = averageProgress
         } else {
             _overallProgress.value = 0
@@ -189,20 +189,42 @@ class PathsViewModel : ViewModel() {
     }
 
     /**
+     * Parse Int safely from Any (handles both Number and String)
+     */
+    private fun parseIntSafe(value: Any?): Int {
+        return when (value) {
+            is Number -> value.toInt()
+            is String -> value.toDoubleOrNull()?.toInt() ?: 0
+            else -> 0
+        }
+    }
+
+    /**
+     * Parse Double safely from Any (handles both Number and String)
+     */
+    private fun parseDoubleSafe(value: Any?): Double {
+        return when (value) {
+            is Number -> value.toDouble()
+            is String -> value.toDoubleOrNull() ?: 0.0
+            else -> 0.0
+        }
+    }
+
+    /**
      * Map を LearningPath に変換
      */
     private fun convertMapToPath(map: Map<*, *>): LearningPath? {
         return try {
             LearningPath(
-                id = (map["id"] as? Number)?.toInt() ?: 0,
-                user_id = (map["user_id"] as? Number)?.toInt() ?: 0,
+                id = parseIntSafe(map["id"]),
+                user_id = parseIntSafe(map["user_id"]),
                 title = map["title"] as? String ?: "",
                 description = map["description"] as? String,
                 category = map["category"] as? String,
                 status = map["status"] as? String ?: "active",
-                progress_percentage = (map["progress_percentage"] as? Number)?.toInt() ?: 0,
-                total_milestones = (map["total_milestones"] as? Number)?.toInt() ?: 0,
-                completed_milestones = (map["completed_milestones"] as? Number)?.toInt() ?: 0,
+                progress_percentage = parseDoubleSafe(map["progress_percentage"]),
+                total_milestones = parseIntSafe(map["total_milestones"]),
+                completed_milestones = parseIntSafe(map["completed_milestones"]),
                 target_date = map["target_date"] as? String,
                 icon = map["icon"] as? String,
                 color = map["color"] as? String,

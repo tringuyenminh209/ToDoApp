@@ -124,7 +124,7 @@ data class LearningPath(
     val description: String?,
     val category: String?,
     val status: String, // active, completed, paused
-    val progress_percentage: Int,
+    val progress_percentage: Double, // Changed from Int to Double to match backend decimal:2 type
     val total_milestones: Int,
     val completed_milestones: Int,
     val target_date: String?,
