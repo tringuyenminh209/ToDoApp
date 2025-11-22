@@ -63,6 +63,9 @@ class DatabaseSeeder extends Seeder
             CheatCodeYamlSeeder::class,
             CheatCodeMysqlSeeder::class,
             CheatCodeMysqlExerciseSeeder::class,
+
+            // Timetable Data
+            TimetableClassSeeder::class,
         ]);
     }
 }
