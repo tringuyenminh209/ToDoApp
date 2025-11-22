@@ -123,7 +123,9 @@ class TaskDetailActivity : BaseActivity() {
                 try {
                     val inFmt = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     val outFmt = SimpleDateFormat("MM/dd", Locale.getDefault())
-                    val d = inFmt.parse(deadlineStr)
+                    // Extract only date part (yyyy-MM-dd) if timestamp is included
+                    val dateOnly = if (deadlineStr.length >= 10) deadlineStr.substring(0, 10) else deadlineStr
+                    val d = inFmt.parse(dateOnly)
                     val text = if (d != null) outFmt.format(d) else deadlineStr
                     binding.tvDueDate.text = getString(R.string.due_date) + ": " + text
 
@@ -197,12 +199,26 @@ class TaskDetailActivity : BaseActivity() {
                     binding.tvScheduledTime.text = scheduledTimeDisplay
                     binding.cardScheduledTime.visibility = View.VISIBLE
                     hasScheduledTime = true
+
+                    // Show "今日" chip only if deadline is today (using statusLabel from deadline calculation)
+                    if (statusLabel == getString(R.string.today)) {
+                        binding.chipScheduledToday.visibility = View.VISIBLE
+                    } else {
+                        binding.chipScheduledToday.visibility = View.GONE
+                    }
                 } catch (e: Exception) {
                     // Fallback: display as-is
                     scheduledTimeDisplay = scheduledTimeStr
                     binding.tvScheduledTime.text = scheduledTimeStr
                     binding.cardScheduledTime.visibility = View.VISIBLE
                     hasScheduledTime = true
+
+                    // Show "今日" chip only if deadline is today
+                    if (statusLabel == getString(R.string.today)) {
+                        binding.chipScheduledToday.visibility = View.VISIBLE
+                    } else {
+                        binding.chipScheduledToday.visibility = View.GONE
+                    }
                 }
             } else {
                 binding.cardScheduledTime.visibility = View.GONE
@@ -226,13 +242,25 @@ class TaskDetailActivity : BaseActivity() {
                 binding.cardTaskTimeline.visibility = View.GONE
             }
 
-            // Priority label
+            // Priority label - Fix mapping: 1=low, 2=medium, 3=high, 4=urgent, 5=critical
             val priText = when (task.priority) {
-                5,4 -> getString(R.string.priority_high)
-                1,2 -> getString(R.string.priority_low)
-                else -> getString(R.string.priority_medium)
+                5,4 -> getString(R.string.priority_high)   // 4-5 = urgent/critical (high)
+                3 -> getString(R.string.priority_high)     // 3 = high
+                2 -> getString(R.string.priority_medium)   // 2 = medium
+                else -> getString(R.string.priority_low)   // 1 = low
             }
             binding.tvPriority.text = getString(R.string.task_priority) + ": " + priText
+
+            // Set priority icon color based on priority level
+            val priorityColorRes = when (task.priority) {
+                5,4,3 -> R.color.error        // High priority = red
+                2 -> R.color.warning          // Medium priority = orange/yellow
+                else -> R.color.text_muted    // Low priority = gray
+            }
+            binding.ivPriorityIcon.setColorFilter(
+                ContextCompat.getColor(this, priorityColorRes),
+                android.graphics.PorterDuff.Mode.SRC_IN
+            )
 
             // Description
             binding.tvDescription.text = task.description ?: ""
@@ -356,7 +384,7 @@ class TaskDetailActivity : BaseActivity() {
                     intent.putExtra("task_title", task.title)
                 }
                 startActivity(intent)
-                
+
                 // Reset the startedTaskId to prevent re-navigation on orientation change
                 viewModel.clearStartedTaskId()
             }
@@ -405,5 +433,4 @@ class TaskDetailActivity : BaseActivity() {
         startActivity(intent)
     }
 }
-
 

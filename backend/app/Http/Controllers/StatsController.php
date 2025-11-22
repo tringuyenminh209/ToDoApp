@@ -508,17 +508,20 @@ class StatsController extends Controller
         $allTasks = Task::where('user_id', $user->id);
 
         // Today's tasks: What user should work on today
+        // IMPORTANT: Only count tasks that are specifically for TODAY
+        // - Daily tasks created today OR with deadline exactly today
+        // - Roadmap tasks with deadline exactly today
         $todayTasksQuery = Task::where('user_id', $user->id)
-            ->whereIn('status', ['pending', 'in_progress', 'completed']) // Exclude cancelled
+            ->whereIn('status', ['pending', 'in_progress']) // Only pending/in_progress for total count
             ->where(function($query) use ($today) {
-                // Daily tasks: created today OR has deadline <= today
+                // Daily tasks: created today OR has deadline = today
                 $query->where(function($q) use ($today) {
                     $q->whereNull('learning_milestone_id')
                       ->where(function($subQ) use ($today) {
                           $subQ->whereDate('created_at', $today)
                                ->orWhere(function($deadlineQ) use ($today) {
                                    $deadlineQ->whereNotNull('deadline')
-                                             ->whereDate('deadline', '<=', $today);
+                                             ->whereDate('deadline', $today);
                                });
                       });
                 })
@@ -532,22 +535,24 @@ class StatsController extends Controller
 
         $totalToday = $todayTasksQuery->count();
 
-        // Completed: Same criteria but status = completed
+        // Completed: Only tasks completed TODAY (updated_at = today)
+        // AND match the same criteria as above (created today OR deadline today)
         $todayCompleted = Task::where('user_id', $user->id)
             ->where('status', 'completed')
+            ->whereDate('updated_at', $today) // ONLY completed today
             ->where(function($query) use ($today) {
-                // Daily tasks completed
+                // Daily tasks
                 $query->where(function($q) use ($today) {
                     $q->whereNull('learning_milestone_id')
                       ->where(function($subQ) use ($today) {
                           $subQ->whereDate('created_at', $today)
                                ->orWhere(function($deadlineQ) use ($today) {
                                    $deadlineQ->whereNotNull('deadline')
-                                             ->whereDate('deadline', '<=', $today);
+                                             ->whereDate('deadline', $today);
                                });
                       });
                 })
-                // OR roadmap tasks completed with deadline today
+                // OR roadmap tasks with deadline today
                 ->orWhere(function($q) use ($today) {
                     $q->whereNotNull('learning_milestone_id')
                       ->whereNotNull('deadline')
@@ -555,6 +560,9 @@ class StatsController extends Controller
                 });
             })
             ->count();
+
+        // Add completed tasks to total
+        $totalToday += $todayCompleted;
 
         // Weekly and Monthly: Count all tasks for overall productivity
         $weekTasks = clone $allTasks;

@@ -392,11 +392,12 @@
                             android:layout_marginStart="@dimen/spacing_sm">
 
                             <ImageView
+                                android:id="@+id/iv_priority_icon"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:src="@drawable/ic_star"
                                 android:contentDescription="@string/priority"
-                                app:tint="@color/warning" />
+                                app:tint="@color/text_muted" />
 
                             <TextView
                                 android:id="@+id/tv_priority"
@@ -465,10 +466,12 @@
                             </LinearLayout>
 
                             <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_scheduled_today"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/today"
                                 android:textColor="@color/white"
+                                android:visibility="gone"
                                 app:chipBackgroundColor="@color/primary"
                                 app:chipCornerRadius="8dp"
                                 app:chipMinHeight="28dp" />
