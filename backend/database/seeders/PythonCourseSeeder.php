@@ -18,7 +18,7 @@ class PythonCourseSeeder extends Seeder
             'description' => '初心者向けPythonプログラミング基礎コース。15週間の実践的な課題を通じて、Pythonの基本構文からオブジェクト指向プログラミング、データ分析まで段階的に学習します。',
             'category' => 'programming',
             'difficulty' => 'beginner',
-            'estimated_hours_total' => 120,
+            'estimated_hours_total' => 90,
             'tags' => ['python', '基礎', '初心者', 'プログラミング', 'データ分析', 'AI'],
             'icon' => 'ic_python',
             'color' => '#3776AB',
