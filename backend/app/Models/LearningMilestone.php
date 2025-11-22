@@ -205,7 +205,20 @@ class LearningMilestone extends Model
 
         $progress = $totalWeight > 0 ? ($weightedProgress / $totalWeight) : 0;
 
-        $this->update(['progress_percentage' => $progress]);
+        // Update progress_percentage
+        $updateData = ['progress_percentage' => $progress];
+
+        // Auto-update status based on progress
+        if ($progress >= 100 && $this->status !== 'completed') {
+            $updateData['status'] = 'completed';
+            $updateData['completed_at'] = now();
+        } elseif ($progress > 0 && $progress < 100 && $this->status === 'pending') {
+            $updateData['status'] = 'in_progress';
+        } elseif ($progress == 0 && $this->status !== 'pending' && $this->status !== 'completed') {
+            $updateData['status'] = 'pending';
+        }
+
+        $this->update($updateData);
 
         return $progress;
     }
