@@ -39,6 +39,11 @@ class LearningPath extends Model
         'tags' => 'array',
     ];
 
+    protected $appends = [
+        'total_milestones',
+        'completed_milestones',
+    ];
+
     // Relationships
     public function user(): BelongsTo
     {
@@ -156,6 +161,16 @@ class LearningPath extends Model
                $this->status !== 'completed';
     }
 
+    public function getTotalMilestonesAttribute()
+    {
+        return $this->milestones()->count();
+    }
+
+    public function getCompletedMilestonesAttribute()
+    {
+        return $this->milestones()->where('status', 'completed')->count();
+    }
+
     // Helper methods
     public function calculateProgress()
     {
@@ -165,7 +180,23 @@ class LearningPath extends Model
         }
 
         $totalProgress = $milestones->avg('progress_percentage');
-        $this->update(['progress_percentage' => $totalProgress]);
+
+        // Update progress_percentage
+        $updateData = ['progress_percentage' => $totalProgress];
+
+        // Auto-update status based on progress and milestone completion
+        $completedMilestones = $milestones->where('status', 'completed')->count();
+        $totalMilestones = $milestones->count();
+
+        if ($completedMilestones === $totalMilestones && $totalMilestones > 0 && $this->status !== 'completed') {
+            // All milestones completed -> mark path as completed
+            $updateData['status'] = 'completed';
+        } elseif ($totalProgress > 0 && $totalProgress < 100 && $this->status !== 'active' && $this->status !== 'paused') {
+            // Some progress made -> mark as active
+            $updateData['status'] = 'active';
+        }
+
+        $this->update($updateData);
 
         return $totalProgress;
     }
