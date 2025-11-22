@@ -102,8 +102,9 @@ class LearningPathDetailActivity : BaseActivity() {
                     tvStatus.setBackgroundColor(statusColor)
 
                     // Progress
-                    progressBar.progress = it.progress_percentage
-                    tvProgress.text = "${it.progress_percentage}%"
+                    val progressInt = it.progress_percentage.toInt()
+                    progressBar.progress = progressInt
+                    tvProgress.text = "$progressInt%"
 
                     // Milestones statistics
                     tvMilestonesCount.text = "${it.completed_milestones}/${it.total_milestones}"

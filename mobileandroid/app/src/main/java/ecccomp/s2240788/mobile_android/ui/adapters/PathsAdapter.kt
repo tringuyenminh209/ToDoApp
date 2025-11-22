@@ -67,10 +67,11 @@ class PathsAdapter(
                 tvStatus.text = statusText
 
                 // Progress bar
-                progressBar.setProgressCompat(path.progress_percentage, true)
+                val progressInt = path.progress_percentage.toInt()
+                progressBar.setProgressCompat(progressInt, true)
 
                 // Progress text
-                val progressText = "${path.completed_milestones}/${path.total_milestones} milestones • ${path.progress_percentage}%"
+                val progressText = "${path.completed_milestones}/${path.total_milestones} milestones • $progressInt%"
                 tvProgressText.text = progressText
 
                 // Target date
