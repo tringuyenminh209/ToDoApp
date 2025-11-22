@@ -45,7 +45,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第1週：データベース基礎とセットアップ',
                 'description' => 'データベースの概念、RDBMS、MySQLのインストールと基本操作',
                 'sort_order' => 1,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 270,
                 'priority' => 5,
                 'resources' => ['MySQL公式ドキュメント', 'SQL Tutorial'],
                 'subtasks' => [
@@ -74,7 +74,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第2週：テーブル作成とデータ型',
                 'description' => 'CREATE TABLE、データ型、制約、INSERT文',
                 'sort_order' => 2,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 5,
                 'resources' => ['MySQL Data Types'],
                 'subtasks' => [
@@ -110,7 +110,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第3週：SELECT、UPDATE、DELETE',
                 'description' => 'データの取得、更新、削除の基本操作',
                 'sort_order' => 3,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 5,
                 'resources' => ['SQL CRUD Operations'],
                 'subtasks' => [
@@ -164,7 +164,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第4週：WHERE句と条件指定',
                 'description' => 'WHERE句、比較演算子、論理演算子、LIKE、IN、BETWEEN',
                 'sort_order' => 4,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 330,
                 'priority' => 5,
                 'resources' => ['SQL WHERE Clause'],
                 'subtasks' => [
@@ -194,7 +194,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第5週：ORDER BY、GROUP BY、集計関数',
                 'description' => 'データの並び替え、グループ化、COUNT/SUM/AVG/MAX/MIN',
                 'sort_order' => 5,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 5,
                 'resources' => ['SQL Aggregate Functions'],
                 'subtasks' => [
@@ -231,7 +231,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第6週：JOIN（テーブル結合）',
                 'description' => 'INNER JOIN、LEFT JOIN、RIGHT JOIN、CROSS JOIN、自己結合',
                 'sort_order' => 6,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 5,
                 'resources' => ['SQL JOIN Tutorial'],
                 'subtasks' => [
@@ -291,7 +291,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第7週：サブクエリとCTE',
                 'description' => 'サブクエリ（副問い合わせ）、WITH句（CTE）',
                 'sort_order' => 7,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 390,
                 'priority' => 4,
                 'resources' => ['SQL Subqueries', 'Common Table Expressions'],
                 'subtasks' => [
@@ -321,7 +321,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第8週：ウィンドウ関数と高度な集計',
                 'description' => 'ROW_NUMBER、RANK、LEAD/LAG、累積集計',
                 'sort_order' => 8,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 390,
                 'priority' => 4,
                 'resources' => ['SQL Window Functions'],
                 'subtasks' => [
@@ -351,7 +351,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第9週：トランザクションとインデックス',
                 'description' => 'ACID特性、COMMIT/ROLLBACK、インデックスの作成と最適化',
                 'sort_order' => 9,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 420,
                 'priority' => 5,
                 'resources' => ['SQL Transactions', 'Database Indexing'],
                 'subtasks' => [
@@ -404,7 +404,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第10週：データベース設計と正規化',
                 'description' => 'ER図、正規化（第1～第3正規形）、制約',
                 'sort_order' => 10,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 360,
                 'priority' => 5,
                 'resources' => ['Database Normalization', 'ER Diagram'],
                 'subtasks' => [
@@ -433,7 +433,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第11週：ビューとストアドプロシージャ',
                 'description' => 'VIEW、STORED PROCEDURE、FUNCTION',
                 'sort_order' => 11,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 390,
                 'priority' => 4,
                 'resources' => ['SQL Views', 'Stored Procedures'],
                 'subtasks' => [
@@ -463,7 +463,7 @@ class SqlCourseSeeder extends Seeder
                 'title' => '第12週：トリガーとベストプラクティス',
                 'description' => 'TRIGGER、バックアップ、セキュリティ、パフォーマンスチューニング',
                 'sort_order' => 12,
-                'estimated_minutes' => 480,
+                'estimated_minutes' => 390,
                 'priority' => 4,
                 'resources' => ['SQL Triggers', 'Database Security'],
                 'subtasks' => [
