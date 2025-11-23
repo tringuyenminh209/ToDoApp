@@ -76,6 +76,28 @@
 
             </LinearLayout>
 
+            <!-- Quick Capture Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_quick_capture"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:contentDescription="@string/quick_capture"
+                app:backgroundTint="@android:color/transparent"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_bolt"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="22dp"
+                app:iconTint="@color/accent"
+                app:layout_constraintEnd_toStartOf="@id/btn_add_knowledge"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="0dp" />
+
             <!-- Add Knowledge Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_add_knowledge"
