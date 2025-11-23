@@ -870,4 +870,13 @@
     <string name="error_question_required">問題を入力してください</string>
     <string name="error_url_required">URLを入力してください</string>
 
+    <!-- Quick Capture -->
+    <string name="quick_capture">クイックキャプチャ</string>
+    <string name="paste_content_here">ここに内容を貼り付け...</string>
+    <string name="analyze_and_suggest">分析して提案</string>
+    <string name="auto_detected">自動検出</string>
+    <string name="suggested_categories">推奨カテゴリ</string>
+    <string name="auto_tags">自動タグ</string>
+    <string name="quick_capture_success">保存されました！</string>
+
 </resources>
