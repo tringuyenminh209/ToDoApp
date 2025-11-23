@@ -10,26 +10,26 @@ use Illuminate\Support\Facades\DB;
 class KnowledgeCategorySeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * データベースのシードを実行します。
      *
-     * Creates default knowledge categories for IT students
+     * IT学生向けのデフォルト知識カテゴリを作成します
      */
     public function run(): void
     {
-        // Get first user (or create demo user)
+        // 最初のユーザーを取得（またはデモユーザーを作成）
         $user = User::first();
 
         if (!$user) {
-            $this->command->warn('No users found. Please create a user first.');
+            $this->command->warn('ユーザーが見つかりません。最初にユーザーを作成してください。');
             return;
         }
 
-        $this->command->info("Creating default knowledge categories for user: {$user->email}");
+        $this->command->info("ユーザー {$user->email} のデフォルト知識カテゴリを作成中...");
 
         DB::beginTransaction();
 
         try {
-            // Clear existing categories for this user (optional - comment out if not needed)
+            // このユーザーの既存カテゴリをクリア（オプション - 不要な場合はコメントアウト）
             // KnowledgeCategory::where('user_id', $user->id)->delete();
 
             $categories = $this->getCategoryStructure($user->id);
@@ -40,17 +40,17 @@ class KnowledgeCategorySeeder extends Seeder
 
             DB::commit();
 
-            $this->command->info('✅ Default knowledge categories created successfully!');
-            $this->command->info('Total categories created: ' . KnowledgeCategory::where('user_id', $user->id)->count());
+            $this->command->info('✅ デフォルト知識カテゴリの作成に成功しました！');
+            $this->command->info('作成されたカテゴリ数: ' . KnowledgeCategory::where('user_id', $user->id)->count());
 
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->command->error('Failed to create categories: ' . $e->getMessage());
+            $this->command->error('カテゴリの作成に失敗しました: ' . $e->getMessage());
         }
     }
 
     /**
-     * Create category recursively with children
+     * 子カテゴリを再帰的に作成します
      */
     private function createCategory(array $data, ?int $parentId = null): KnowledgeCategory
     {
@@ -62,7 +62,7 @@ class KnowledgeCategorySeeder extends Seeder
             'parent_id' => $parentId
         ]);
 
-        // Create children recursively
+        // 子カテゴリを再帰的に作成
         foreach ($children as $childData) {
             $this->createCategory($childData, $category->id);
         }
@@ -71,16 +71,16 @@ class KnowledgeCategorySeeder extends Seeder
     }
 
     /**
-     * Get complete category structure
+     * 完全なカテゴリ構造を取得します
      */
     private function getCategoryStructure(int $userId): array
     {
         return [
-            // 1. Programming Languages
+            // 1. プログラミング言語
             [
                 'user_id' => $userId,
-                'name' => 'Programming Languages',
-                'description' => 'Programming language notes, syntax, and best practices',
+                'name' => 'プログラミング言語',
+                'description' => 'プログラミング言語のノート、構文、ベストプラクティス',
                 'color' => '#0FA968',
                 'icon' => 'code',
                 'sort_order' => 1,
@@ -88,39 +88,39 @@ class KnowledgeCategorySeeder extends Seeder
                     [
                         'user_id' => $userId,
                         'name' => 'Python',
-                        'description' => 'Python programming notes',
+                        'description' => 'Pythonプログラミングノート',
                         'color' => '#3776AB',
                         'icon' => 'python',
                         'sort_order' => 1,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'Basics', 'color' => '#3776AB', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Data Structures', 'color' => '#3776AB', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Libraries', 'description' => 'pandas, numpy, requests, etc.', 'color' => '#3776AB', 'sort_order' => 3],
-                            ['user_id' => $userId, 'name' => 'Interview Questions', 'color' => '#3776AB', 'sort_order' => 4],
+                            ['user_id' => $userId, 'name' => '基礎', 'color' => '#3776AB', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => 'データ構造', 'color' => '#3776AB', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'ライブラリ', 'description' => 'pandas, numpy, requests など', 'color' => '#3776AB', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => '面接問題', 'color' => '#3776AB', 'sort_order' => 4],
                         ]
                     ],
                     [
                         'user_id' => $userId,
                         'name' => 'Java',
-                        'description' => 'Java programming notes',
+                        'description' => 'Javaプログラミングノート',
                         'color' => '#007396',
                         'icon' => 'java',
                         'sort_order' => 2,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'Core Java', 'color' => '#007396', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => 'コアJava', 'color' => '#007396', 'sort_order' => 1],
                             ['user_id' => $userId, 'name' => 'Spring Framework', 'color' => '#6DB33F', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Design Patterns', 'color' => '#007396', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'デザインパターン', 'color' => '#007396', 'sort_order' => 3],
                         ]
                     ],
                     [
                         'user_id' => $userId,
                         'name' => 'JavaScript',
-                        'description' => 'JavaScript and TypeScript notes',
+                        'description' => 'JavaScriptとTypeScriptのノート',
                         'color' => '#F7DF1E',
                         'icon' => 'javascript',
                         'sort_order' => 3,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'ES6+ Features', 'color' => '#F7DF1E', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => 'ES6+機能', 'color' => '#F7DF1E', 'sort_order' => 1],
                             ['user_id' => $userId, 'name' => 'React.js', 'color' => '#61DAFB', 'sort_order' => 2],
                             ['user_id' => $userId, 'name' => 'Node.js', 'color' => '#339933', 'sort_order' => 3],
                             ['user_id' => $userId, 'name' => 'TypeScript', 'color' => '#3178C6', 'sort_order' => 4],
@@ -129,265 +129,265 @@ class KnowledgeCategorySeeder extends Seeder
                     [
                         'user_id' => $userId,
                         'name' => 'PHP',
-                        'description' => 'PHP and Laravel notes',
+                        'description' => 'PHPとLaravelのノート',
                         'color' => '#777BB4',
                         'icon' => 'php',
                         'sort_order' => 4,
                         'children' => [
                             ['user_id' => $userId, 'name' => 'Laravel', 'color' => '#FF2D20', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Best Practices', 'color' => '#777BB4', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'ベストプラクティス', 'color' => '#777BB4', 'sort_order' => 2],
                         ]
                     ],
                     [
                         'user_id' => $userId,
                         'name' => 'C/C++',
-                        'description' => 'C and C++ programming',
+                        'description' => 'CとC++プログラミング',
                         'color' => '#00599C',
                         'icon' => 'cpp',
                         'sort_order' => 5,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'STL', 'description' => 'Standard Template Library', 'color' => '#00599C', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Memory Management', 'color' => '#00599C', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'STL', 'description' => '標準テンプレートライブラリ', 'color' => '#00599C', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => 'メモリ管理', 'color' => '#00599C', 'sort_order' => 2],
                         ]
                     ],
                     [
                         'user_id' => $userId,
                         'name' => 'Go',
-                        'description' => 'Golang programming',
+                        'description' => 'Golangプログラミング',
                         'color' => '#00ADD8',
                         'icon' => 'go',
                         'sort_order' => 6,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'Concurrency', 'color' => '#00ADD8', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Web Services', 'color' => '#00ADD8', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => '並行処理', 'color' => '#00ADD8', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => 'Webサービス', 'color' => '#00ADD8', 'sort_order' => 2],
                         ]
                     ],
                 ]
             ],
 
-            // 2. Computer Science Fundamentals
+            // 2. コンピュータサイエンス基礎
             [
                 'user_id' => $userId,
-                'name' => 'Computer Science Fundamentals',
-                'description' => 'Core CS concepts, algorithms, and theory',
+                'name' => 'コンピュータサイエンス基礎',
+                'description' => 'コアCS概念、アルゴリズム、理論',
                 'color' => '#FF6B6B',
                 'icon' => 'school',
                 'sort_order' => 2,
                 'children' => [
                     [
                         'user_id' => $userId,
-                        'name' => 'Data Structures',
-                        'description' => 'Arrays, linked lists, trees, graphs, etc.',
+                        'name' => 'データ構造',
+                        'description' => '配列、連結リスト、木、グラフなど',
                         'color' => '#FF6B6B',
                         'sort_order' => 1,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'Arrays & Strings', 'color' => '#FF6B6B', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Linked Lists', 'color' => '#FF6B6B', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Trees & Graphs', 'color' => '#FF6B6B', 'sort_order' => 3],
-                            ['user_id' => $userId, 'name' => 'Hash Tables', 'color' => '#FF6B6B', 'sort_order' => 4],
-                            ['user_id' => $userId, 'name' => 'Heaps & Stacks', 'color' => '#FF6B6B', 'sort_order' => 5],
+                            ['user_id' => $userId, 'name' => '配列 & 文字列', 'color' => '#FF6B6B', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => '連結リスト', 'color' => '#FF6B6B', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => '木 & グラフ', 'color' => '#FF6B6B', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'ハッシュテーブル', 'color' => '#FF6B6B', 'sort_order' => 4],
+                            ['user_id' => $userId, 'name' => 'ヒープ & スタック', 'color' => '#FF6B6B', 'sort_order' => 5],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'Algorithms',
-                        'description' => 'Sorting, searching, DP, etc.',
+                        'name' => 'アルゴリズム',
+                        'description' => 'ソート、検索、動的計画法など',
                         'color' => '#FF6B6B',
                         'sort_order' => 2,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'Sorting & Searching', 'color' => '#FF6B6B', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Dynamic Programming', 'color' => '#FF6B6B', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Greedy Algorithms', 'color' => '#FF6B6B', 'sort_order' => 3],
-                            ['user_id' => $userId, 'name' => 'Graph Algorithms', 'color' => '#FF6B6B', 'sort_order' => 4],
+                            ['user_id' => $userId, 'name' => 'ソート & 検索', 'color' => '#FF6B6B', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => '動的計画法', 'color' => '#FF6B6B', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => '貪欲アルゴリズム', 'color' => '#FF6B6B', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'グラフアルゴリズム', 'color' => '#FF6B6B', 'sort_order' => 4],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'Database Theory',
-                        'description' => 'SQL, normalization, transactions',
+                        'name' => 'データベース理論',
+                        'description' => 'SQL、正規化、トランザクション',
                         'color' => '#FF6B6B',
                         'sort_order' => 3,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'SQL Fundamentals', 'color' => '#FF6B6B', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Normalization', 'color' => '#FF6B6B', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Indexing', 'color' => '#FF6B6B', 'sort_order' => 3],
-                            ['user_id' => $userId, 'name' => 'Transactions', 'color' => '#FF6B6B', 'sort_order' => 4],
+                            ['user_id' => $userId, 'name' => 'SQL基礎', 'color' => '#FF6B6B', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => '正規化', 'color' => '#FF6B6B', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'インデックス', 'color' => '#FF6B6B', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'トランザクション', 'color' => '#FF6B6B', 'sort_order' => 4],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'Networks',
-                        'description' => 'TCP/IP, HTTP, DNS',
+                        'name' => 'ネットワーク',
+                        'description' => 'TCP/IP、HTTP、DNS',
                         'color' => '#FF6B6B',
                         'sort_order' => 4,
                         'children' => [
                             ['user_id' => $userId, 'name' => 'TCP/IP', 'color' => '#FF6B6B', 'sort_order' => 1],
                             ['user_id' => $userId, 'name' => 'HTTP/HTTPS', 'color' => '#FF6B6B', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'DNS & Routing', 'color' => '#FF6B6B', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'DNS & ルーティング', 'color' => '#FF6B6B', 'sort_order' => 3],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'Operating Systems',
-                        'description' => 'Process, memory, file systems',
+                        'name' => 'オペレーティングシステム',
+                        'description' => 'プロセス、メモリ、ファイルシステム',
                         'color' => '#FF6B6B',
                         'sort_order' => 5,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'Process Management', 'color' => '#FF6B6B', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Memory Management', 'color' => '#FF6B6B', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'File Systems', 'color' => '#FF6B6B', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'プロセス管理', 'color' => '#FF6B6B', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => 'メモリ管理', 'color' => '#FF6B6B', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'ファイルシステム', 'color' => '#FF6B6B', 'sort_order' => 3],
                         ]
                     ],
                 ]
             ],
 
-            // 3. Web Development
+            // 3. Web開発
             [
                 'user_id' => $userId,
-                'name' => 'Web Development',
-                'description' => 'Frontend, backend, and DevOps',
+                'name' => 'Web開発',
+                'description' => 'フロントエンド、バックエンド、DevOps',
                 'color' => '#4ECDC4',
                 'icon' => 'web',
                 'sort_order' => 3,
                 'children' => [
                     [
                         'user_id' => $userId,
-                        'name' => 'Frontend',
-                        'description' => 'HTML, CSS, JavaScript frameworks',
+                        'name' => 'フロントエンド',
+                        'description' => 'HTML、CSS、JavaScriptフレームワーク',
                         'color' => '#4ECDC4',
                         'sort_order' => 1,
                         'children' => [
                             ['user_id' => $userId, 'name' => 'HTML & CSS', 'color' => '#4ECDC4', 'sort_order' => 1],
                             ['user_id' => $userId, 'name' => 'JavaScript', 'color' => '#4ECDC4', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Frameworks', 'description' => 'React, Vue, Angular', 'color' => '#4ECDC4', 'sort_order' => 3],
-                            ['user_id' => $userId, 'name' => 'UI/UX Best Practices', 'color' => '#4ECDC4', 'sort_order' => 4],
+                            ['user_id' => $userId, 'name' => 'フレームワーク', 'description' => 'React、Vue、Angular', 'color' => '#4ECDC4', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'UI/UXベストプラクティス', 'color' => '#4ECDC4', 'sort_order' => 4],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'Backend',
-                        'description' => 'APIs, authentication, databases',
+                        'name' => 'バックエンド',
+                        'description' => 'API、認証、データベース',
                         'color' => '#4ECDC4',
                         'sort_order' => 2,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'REST APIs', 'color' => '#4ECDC4', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Authentication', 'color' => '#4ECDC4', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Caching', 'color' => '#4ECDC4', 'sort_order' => 3],
-                            ['user_id' => $userId, 'name' => 'Microservices', 'color' => '#4ECDC4', 'sort_order' => 4],
+                            ['user_id' => $userId, 'name' => 'REST API', 'color' => '#4ECDC4', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => '認証', 'color' => '#4ECDC4', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'キャッシング', 'color' => '#4ECDC4', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'マイクロサービス', 'color' => '#4ECDC4', 'sort_order' => 4],
                         ]
                     ],
                     [
                         'user_id' => $userId,
                         'name' => 'DevOps',
-                        'description' => 'CI/CD, monitoring, cloud',
+                        'description' => 'CI/CD、モニタリング、クラウド',
                         'color' => '#4ECDC4',
                         'sort_order' => 3,
                         'children' => [
                             ['user_id' => $userId, 'name' => 'CI/CD', 'color' => '#4ECDC4', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Monitoring', 'color' => '#4ECDC4', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Cloud Services', 'description' => 'AWS, Azure, GCP', 'color' => '#4ECDC4', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'モニタリング', 'color' => '#4ECDC4', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'クラウドサービス', 'description' => 'AWS、Azure、GCP', 'color' => '#4ECDC4', 'sort_order' => 3],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'Security',
-                        'description' => 'OWASP, auth, encryption',
+                        'name' => 'セキュリティ',
+                        'description' => 'OWASP、認証、暗号化',
                         'color' => '#E74C3C',
                         'sort_order' => 4,
                         'children' => [
                             ['user_id' => $userId, 'name' => 'OWASP Top 10', 'color' => '#E74C3C', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Authentication & Authorization', 'color' => '#E74C3C', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Encryption', 'color' => '#E74C3C', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => '認証 & 認可', 'color' => '#E74C3C', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => '暗号化', 'color' => '#E74C3C', 'sort_order' => 3],
                         ]
                     ],
                 ]
             ],
 
-            // 4. Tools & Workflow
+            // 4. ツール & ワークフロー
             [
                 'user_id' => $userId,
-                'name' => 'Tools & Workflow',
-                'description' => 'Development tools and utilities',
+                'name' => 'ツール & ワークフロー',
+                'description' => '開発ツールとユーティリティ',
                 'color' => '#95A5A6',
                 'icon' => 'build',
                 'sort_order' => 4,
                 'children' => [
                     [
                         'user_id' => $userId,
-                        'name' => 'Git & Version Control',
-                        'description' => 'Git commands and workflows',
+                        'name' => 'Git & バージョン管理',
+                        'description' => 'Gitコマンドとワークフロー',
                         'color' => '#F05032',
                         'sort_order' => 1,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'Basic Commands', 'color' => '#F05032', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Branching Strategies', 'color' => '#F05032', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Merge Conflicts', 'color' => '#F05032', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => '基本コマンド', 'color' => '#F05032', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => 'ブランチ戦略', 'color' => '#F05032', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'マージコンフリクト', 'color' => '#F05032', 'sort_order' => 3],
                         ]
                     ],
                     [
                         'user_id' => $userId,
                         'name' => 'Docker',
-                        'description' => 'Containerization and orchestration',
+                        'description' => 'コンテナ化とオーケストレーション',
                         'color' => '#2496ED',
                         'sort_order' => 2,
                         'children' => [
                             ['user_id' => $userId, 'name' => 'Dockerfile', 'color' => '#2496ED', 'sort_order' => 1],
                             ['user_id' => $userId, 'name' => 'Docker Compose', 'color' => '#2496ED', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Container Orchestration', 'color' => '#2496ED', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'コンテナオーケストレーション', 'color' => '#2496ED', 'sort_order' => 3],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'Linux Commands',
-                        'description' => 'Shell commands and scripting',
+                        'name' => 'Linuxコマンド',
+                        'description' => 'シェルコマンドとスクリプト',
                         'color' => '#FCC624',
                         'sort_order' => 3,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'File Operations', 'color' => '#FCC624', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Process Management', 'color' => '#FCC624', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Shell Scripting', 'color' => '#FCC624', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'ファイル操作', 'color' => '#FCC624', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => 'プロセス管理', 'color' => '#FCC624', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'シェルスクリプト', 'color' => '#FCC624', 'sort_order' => 3],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'IDEs & Editors',
-                        'description' => 'Editor tips and shortcuts',
+                        'name' => 'IDE & エディタ',
+                        'description' => 'エディタのヒントとショートカット',
                         'color' => '#007ACC',
                         'sort_order' => 4,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'VS Code Tips', 'color' => '#007ACC', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => 'VS Codeヒント', 'color' => '#007ACC', 'sort_order' => 1],
                             ['user_id' => $userId, 'name' => 'IntelliJ IDEA', 'color' => '#000000', 'sort_order' => 2],
                             ['user_id' => $userId, 'name' => 'Vim', 'color' => '#019733', 'sort_order' => 3],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'Testing',
-                        'description' => 'Unit, integration, and E2E testing',
+                        'name' => 'テスト',
+                        'description' => '単体テスト、統合テスト、E2Eテスト',
                         'color' => '#8DD6F9',
                         'sort_order' => 5,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'Unit Testing', 'color' => '#8DD6F9', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Integration Testing', 'color' => '#8DD6F9', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Test-Driven Development', 'color' => '#8DD6F9', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => '単体テスト', 'color' => '#8DD6F9', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => '統合テスト', 'color' => '#8DD6F9', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'テスト駆動開発', 'color' => '#8DD6F9', 'sort_order' => 3],
                         ]
                     ],
                 ]
             ],
 
-            // 5. Interview Preparation
+            // 5. 面接準備
             [
                 'user_id' => $userId,
-                'name' => 'Interview Preparation',
-                'description' => 'Coding challenges and interview questions',
+                'name' => '面接準備',
+                'description' => 'コーディングチャレンジと面接問題',
                 'color' => '#9B59B6',
                 'icon' => 'work',
                 'sort_order' => 5,
                 'children' => [
                     [
                         'user_id' => $userId,
-                        'name' => 'Coding Challenges',
-                        'description' => 'LeetCode, HackerRank, etc.',
+                        'name' => 'コーディングチャレンジ',
+                        'description' => 'LeetCode、HackerRankなど',
                         'color' => '#9B59B6',
                         'sort_order' => 1,
                         'children' => [
@@ -399,54 +399,54 @@ class KnowledgeCategorySeeder extends Seeder
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'System Design',
-                        'description' => 'Scalability and architecture',
+                        'name' => 'システム設計',
+                        'description' => 'スケーラビリティとアーキテクチャ',
                         'color' => '#9B59B6',
                         'sort_order' => 2,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'Scalability', 'color' => '#9B59B6', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Load Balancing', 'color' => '#9B59B6', 'sort_order' => 2],
-                            ['user_id' => $userId, 'name' => 'Database Design', 'color' => '#9B59B6', 'sort_order' => 3],
+                            ['user_id' => $userId, 'name' => 'スケーラビリティ', 'color' => '#9B59B6', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => 'ロードバランシング', 'color' => '#9B59B6', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'データベース設計', 'color' => '#9B59B6', 'sort_order' => 3],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'Behavioral Questions',
-                        'description' => 'STAR method and common questions',
+                        'name' => '行動面接質問',
+                        'description' => 'STAR法と一般的な質問',
                         'color' => '#9B59B6',
                         'sort_order' => 3,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'STAR Method', 'color' => '#9B59B6', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Common Questions', 'color' => '#9B59B6', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => 'STAR法', 'color' => '#9B59B6', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => '一般的な質問', 'color' => '#9B59B6', 'sort_order' => 2],
                         ]
                     ],
                     [
                         'user_id' => $userId,
-                        'name' => 'Complexity Analysis',
-                        'description' => 'Big O notation',
+                        'name' => '計算量解析',
+                        'description' => 'Big O記法',
                         'color' => '#9B59B6',
                         'sort_order' => 4,
                         'children' => [
-                            ['user_id' => $userId, 'name' => 'Time Complexity', 'color' => '#9B59B6', 'sort_order' => 1],
-                            ['user_id' => $userId, 'name' => 'Space Complexity', 'color' => '#9B59B6', 'sort_order' => 2],
+                            ['user_id' => $userId, 'name' => '時間計算量', 'color' => '#9B59B6', 'sort_order' => 1],
+                            ['user_id' => $userId, 'name' => '空間計算量', 'color' => '#9B59B6', 'sort_order' => 2],
                         ]
                     ],
                 ]
             ],
 
-            // 6. Projects & Ideas
+            // 6. プロジェクト & アイデア
             [
                 'user_id' => $userId,
-                'name' => 'Projects & Ideas',
-                'description' => 'Personal project notes and code snippets',
+                'name' => 'プロジェクト & アイデア',
+                'description' => '個人プロジェクトのノートとコードスニペット',
                 'color' => '#F39C12',
                 'icon' => 'lightbulb',
                 'sort_order' => 6,
                 'children' => [
-                    ['user_id' => $userId, 'name' => 'Project Ideas', 'color' => '#F39C12', 'sort_order' => 1],
-                    ['user_id' => $userId, 'name' => 'Project Notes', 'color' => '#F39C12', 'sort_order' => 2],
-                    ['user_id' => $userId, 'name' => 'Architecture Decisions', 'color' => '#F39C12', 'sort_order' => 3],
-                    ['user_id' => $userId, 'name' => 'Code Snippets Library', 'color' => '#F39C12', 'sort_order' => 4],
+                    ['user_id' => $userId, 'name' => 'プロジェクトアイデア', 'color' => '#F39C12', 'sort_order' => 1],
+                    ['user_id' => $userId, 'name' => 'プロジェクトノート', 'color' => '#F39C12', 'sort_order' => 2],
+                    ['user_id' => $userId, 'name' => 'アーキテクチャ決定', 'color' => '#F39C12', 'sort_order' => 3],
+                    ['user_id' => $userId, 'name' => 'コードスニペットライブラリ', 'color' => '#F39C12', 'sort_order' => 4],
                 ]
             ],
         ];

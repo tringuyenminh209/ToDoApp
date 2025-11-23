@@ -290,8 +290,9 @@ class KnowledgeDetailActivity : BaseActivity() {
         popup.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_edit -> {
-                    // TODO: Open edit activity
-                    Toast.makeText(this, "編集機能（開発中）", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, KnowledgeEditorActivity::class.java)
+                    intent.putExtra("KNOWLEDGE_ITEM_ID", knowledgeItemId)
+                    startActivity(intent)
                     true
                 }
                 R.id.action_archive -> {

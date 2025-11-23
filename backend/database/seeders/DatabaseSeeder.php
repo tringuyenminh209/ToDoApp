@@ -69,6 +69,8 @@ class DatabaseSeeder extends Seeder
 
             // Knowledge Base
             KnowledgeCategorySeeder::class,
+
+            KnowledgeItemSeeder::class,
         ]);
     }
 }

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- Category Item -->
+    <LinearLayout
+        android:id="@+id/ll_category_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingVertical="14dp"
+        android:minHeight="56dp"
+        android:background="?attr/selectableItemBackground">
+
+        <!-- Indent for child categories -->
+        <View
+            android:id="@+id/view_indent"
+            android:layout_width="24dp"
+            android:layout_height="1dp"
+            android:visibility="gone" />
+
+        <!-- Expand/Collapse Icon -->
+        <ImageButton
+            android:id="@+id/btn_expand"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_expand_more"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/expand_collapse"
+            android:visibility="gone"
+            app:tint="@color/text_secondary" />
+
+        <!-- Category Icon (Optional) -->
+        <ImageView
+            android:id="@+id/iv_category_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="12dp"
+            android:visibility="gone"
+            app:tint="@color/text_secondary"
+            tools:src="@drawable/ic_folder" />
+
+        <!-- Category Name -->
+        <TextView
+            android:id="@+id/tv_category_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            tools:text="Python" />
+
+        <!-- Item Count -->
+        <TextView
+            android:id="@+id/tv_item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp"
+            android:visibility="gone"
+            tools:text="(15)" />
+
+        <!-- Selected Indicator -->
+        <ImageView
+            android:id="@+id/iv_selected"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="@color/primary" />
+
+    </LinearLayout>
+
+    <!-- Children Container (for nested categories) -->
+    <LinearLayout
+        android:id="@+id/ll_children"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- Children will be added here dynamically -->
+
+    </LinearLayout>
+
+</LinearLayout>
+
