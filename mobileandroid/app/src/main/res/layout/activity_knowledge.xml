@@ -216,6 +216,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_lg"
                 android:layout_marginBottom="@dimen/spacing_md"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
@@ -228,14 +231,52 @@
                     android:orientation="vertical"
                     android:paddingVertical="@dimen/spacing_md">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
                         android:layout_marginStart="@dimen/spacing_md"
-                        android:text="@string/knowledge_categories"
-                        android:textColor="@color/text_primary"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:layout_marginEnd="@dimen/spacing_md"
+                        android:clickable="false"
+                        android:focusable="false">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/knowledge_categories"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_all_categories"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/knowledge_filter_all"
+                            android:textAllCaps="false"
+                            android:textSize="12sp"
+                            android:checkable="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:chipBackgroundColor="@color/surface"
+                            app:chipStartPadding="8dp"
+                            app:chipEndPadding="8dp"
+                            app:checkedIconVisible="true" />
+
+                        <ImageButton
+                            android:id="@+id/btn_select_category"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginStart="8dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/select_category"
+                            android:src="@drawable/ic_expand_more"
+                            app:tint="@color/text_secondary" />
+
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_categories"
@@ -245,6 +286,8 @@
                         android:paddingHorizontal="@dimen/spacing_md"
                         android:overScrollMode="never"
                         android:nestedScrollingEnabled="false"
+                        android:clickable="false"
+                        android:focusable="false"
                         tools:itemCount="6"
                         tools:listitem="@layout/item_category_chip" />
 

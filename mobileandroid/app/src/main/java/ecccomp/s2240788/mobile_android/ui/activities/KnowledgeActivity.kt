@@ -14,6 +14,7 @@ import ecccomp.s2240788.mobile_android.databinding.ActivityKnowledgeBinding
 import ecccomp.s2240788.mobile_android.data.models.KnowledgeItem
 import ecccomp.s2240788.mobile_android.ui.adapters.KnowledgeAdapter
 import ecccomp.s2240788.mobile_android.ui.adapters.KnowledgeCategoryChipAdapter
+import ecccomp.s2240788.mobile_android.ui.dialogs.CategorySelectorBottomSheet
 import ecccomp.s2240788.mobile_android.ui.viewmodels.KnowledgeViewModel
 
 /**
@@ -84,30 +85,47 @@ class KnowledgeActivity : BaseActivity() {
 
         // Setup Categories RecyclerView
         categoryAdapter = KnowledgeCategoryChipAdapter { category ->
-            // Filter by category - TODO: implement in ViewModel
-            Toast.makeText(this, "Category: ${category.name}", Toast.LENGTH_SHORT).show()
+            // カテゴリ選択ボトムシートを表示（現在選択中のカテゴリを渡す）
+            showCategorySelectorBottomSheet(viewModel.getCurrentCategoryId())
         }
         binding.rvCategories.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.rvCategories.adapter = categoryAdapter
+        
+        // 「すべて」チップの設定
+        binding.chipAllCategories.setOnClickListener {
+            viewModel.clearCategoryFilter()
+            updateSelectedCategory()
+        }
+        binding.chipAllCategories.isChecked = viewModel.getCurrentCategoryId() == null
+        
+        // カテゴリセクション全体をクリック可能にする
+        binding.categoriesCard.setOnClickListener {
+            showCategorySelectorBottomSheet(viewModel.getCurrentCategoryId())
+        }
+        
+        // カテゴリ選択ボタン
+        binding.btnSelectCategory.setOnClickListener {
+            showCategorySelectorBottomSheet(viewModel.getCurrentCategoryId())
+        }
     }
 
     private fun setupClickListeners() {
         // Quick Capture FAB
         binding.fabAddKnowledge.setOnClickListener {
-            // TODO: Open QuickCaptureActivity when created
-            Toast.makeText(this, "Quick Capture - Coming soon", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, KnowledgeEditorActivity::class.java)
+            startActivity(intent)
         }
 
         // Header add button
         binding.btnAddKnowledge.setOnClickListener {
-            // TODO: Open QuickCaptureActivity when created
-            Toast.makeText(this, "Quick Capture - Coming soon", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, KnowledgeEditorActivity::class.java)
+            startActivity(intent)
         }
 
         // Empty state add button
         binding.btnAddKnowledgeEmpty.setOnClickListener {
-            // TODO: Open QuickCaptureActivity when created
-            Toast.makeText(this, "Quick Capture - Coming soon", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, KnowledgeEditorActivity::class.java)
+            startActivity(intent)
         }
 
         // CheatCode navigation
@@ -172,6 +190,13 @@ class KnowledgeActivity : BaseActivity() {
         viewModel.categories.observe(this) { categories ->
             android.util.Log.d("KnowledgeActivity", "Categories loaded: ${categories.size}")
             categoryAdapter.submitList(categories)
+            // 選択中のカテゴリを更新
+            updateSelectedCategory()
+        }
+        
+        // カテゴリフィルターの変更を監視
+        viewModel.filteredItems.observe(this) {
+            updateSelectedCategory()
         }
     }
 
@@ -278,6 +303,37 @@ class KnowledgeActivity : BaseActivity() {
             }
         }
     }
+
+    /**
+     * 選択中のカテゴリを更新
+     */
+    private fun updateSelectedCategory() {
+        val currentCategoryId = viewModel.getCurrentCategoryId()
+        categoryAdapter.setSelectedCategory(currentCategoryId)
+        // 「すべて」チップの選択状態を更新
+        binding.chipAllCategories.isChecked = currentCategoryId == null
+    }
+
+    /**
+     * カテゴリ選択ボトムシートを表示
+     */
+    private fun showCategorySelectorBottomSheet(currentCategoryId: Int? = null) {
+        val bottomSheet = CategorySelectorBottomSheet.newInstance(
+            currentCategoryId = currentCategoryId ?: viewModel.getCurrentCategoryId(),
+            onCategorySelected = { category ->
+                if (category != null) {
+                    viewModel.filterByCategory(category.id)
+                    Toast.makeText(this, "カテゴリ: ${category.name}", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.clearCategoryFilter()
+                }
+                // 選択状態を更新
+                updateSelectedCategory()
+            }
+        )
+        bottomSheet.show(supportFragmentManager, CategorySelectorBottomSheet.TAG)
+    }
+
 
     override fun onResume() {
         super.onResume()

@@ -12,6 +12,8 @@ class KnowledgeCategoryChipAdapter(
     private val onCategoryClick: (KnowledgeCategory) -> Unit
 ) : ListAdapter<KnowledgeCategory, KnowledgeCategoryChipAdapter.CategoryViewHolder>(CategoryDiffCallback()) {
 
+    private var selectedCategoryId: Int? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val binding = ItemCategoryChipBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -22,15 +24,29 @@ class KnowledgeCategoryChipAdapter(
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), selectedCategoryId == getItem(position).id)
+    }
+
+    /**
+     * 選択されたカテゴリを設定
+     */
+    fun setSelectedCategory(categoryId: Int?) {
+        val oldSelectedId = selectedCategoryId
+        selectedCategoryId = categoryId
+        
+        // 変更があった場合のみ更新
+        if (oldSelectedId != categoryId) {
+            notifyDataSetChanged()
+        }
     }
 
     inner class CategoryViewHolder(
         private val binding: ItemCategoryChipBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(category: KnowledgeCategory) {
+        fun bind(category: KnowledgeCategory, isSelected: Boolean) {
             binding.chipCategory.text = category.name
+            binding.chipCategory.isChecked = isSelected
             binding.chipCategory.setOnClickListener {
                 onCategoryClick(category)
             }
