@@ -16,6 +16,7 @@ use App\Http\Controllers\LearningPathTemplateController;
 use App\Http\Controllers\CheatCodeController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\KnowledgeController;
+use App\Http\Controllers\KnowledgeCategoryController;
 use App\Http\Controllers\FocusEnhancementController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Http\Request;
@@ -279,7 +280,27 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Knowledge routes
     Route::prefix('knowledge')->group(function () {
+        // Category routes
+        Route::prefix('categories')->group(function () {
+            Route::get('/stats', [KnowledgeCategoryController::class, 'stats']);
+            Route::get('/tree', [KnowledgeCategoryController::class, 'tree']);
+            Route::post('/reorder', [KnowledgeCategoryController::class, 'reorder']);
+            Route::get('/', [KnowledgeCategoryController::class, 'index']);
+            Route::post('/', [KnowledgeCategoryController::class, 'store']);
+            Route::get('/{id}', [KnowledgeCategoryController::class, 'show']);
+            Route::put('/{id}', [KnowledgeCategoryController::class, 'update']);
+            Route::delete('/{id}', [KnowledgeCategoryController::class, 'destroy']);
+            Route::post('/{id}/move', [KnowledgeCategoryController::class, 'move']);
+            Route::post('/{id}/update-count', [KnowledgeCategoryController::class, 'updateItemCount']);
+        });
+
+        // Knowledge item routes
         Route::get('/stats', [KnowledgeController::class, 'stats']);
+        Route::get('/due-review', [KnowledgeController::class, 'dueReview']);
+        Route::post('/quick-capture', [KnowledgeController::class, 'quickCapture']);
+        Route::put('/bulk-tag', [KnowledgeController::class, 'bulkTag']);
+        Route::put('/bulk-move', [KnowledgeController::class, 'bulkMove']);
+        Route::delete('/bulk-delete', [KnowledgeController::class, 'bulkDelete']);
         Route::get('/', [KnowledgeController::class, 'index']);
         Route::post('/', [KnowledgeController::class, 'store']);
         Route::get('/{id}', [KnowledgeController::class, 'show']);
@@ -288,6 +309,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}/favorite', [KnowledgeController::class, 'toggleFavorite']);
         Route::put('/{id}/archive', [KnowledgeController::class, 'toggleArchive']);
         Route::put('/{id}/review', [KnowledgeController::class, 'markReviewed']);
+        Route::post('/{id}/clone', [KnowledgeController::class, 'clone']);
+        Route::get('/{id}/related', [KnowledgeController::class, 'related']);
     });
 
     // Settings routes
