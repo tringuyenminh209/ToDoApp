@@ -290,6 +290,417 @@ class KnowledgeController extends Controller
     }
 
     /**
+     * Quick capture - Fast create with auto-categorization
+     * POST /api/knowledge/quick-capture
+     */
+    public function quickCapture(Request $request)
+    {
+        $user = $request->user();
+
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string',
+            'item_type' => 'required|in:note,code_snippet,exercise,resource_link',
+            'auto_categorize' => 'nullable|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $content = $request->input('content');
+        $itemType = $request->input('item_type');
+        $autoCateg = $request->input('auto_categorize', true);
+
+        // Auto-detect title from content
+        $title = $this->extractTitle($content, $itemType);
+
+        // Auto-detect code language for code snippets
+        $codeLanguage = null;
+        if ($itemType === 'code_snippet') {
+            $codeLanguage = $this->detectCodeLanguage($content);
+        }
+
+        // Auto-suggest category
+        $suggestedCategories = [];
+        $categoryId = null;
+        if ($autoCateg) {
+            $suggestedCategories = $this->suggestCategories($user->id, $content, $itemType, $codeLanguage);
+            if (!empty($suggestedCategories)) {
+                $categoryId = $suggestedCategories[0]['id'];
+            }
+        }
+
+        // Auto-generate tags
+        $tags = $this->generateTags($content, $itemType, $codeLanguage);
+
+        // Create item
+        $item = KnowledgeItem::create([
+            'user_id' => $user->id,
+            'category_id' => $categoryId ?? $request->input('category_id'),
+            'title' => $title,
+            'item_type' => $itemType,
+            'content' => $content,
+            'code_language' => $codeLanguage,
+            'tags' => $tags,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'item' => $item,
+                'suggested_categories' => $suggestedCategories,
+                'auto_detected_language' => $codeLanguage,
+                'auto_generated_tags' => $tags,
+            ],
+            'message' => 'Item captured successfully'
+        ], 201);
+    }
+
+    /**
+     * Bulk operations - tag multiple items
+     * PUT /api/knowledge/bulk-tag
+     */
+    public function bulkTag(Request $request)
+    {
+        $user = $request->user();
+
+        $validator = Validator::make($request->all(), [
+            'item_ids' => 'required|array',
+            'item_ids.*' => 'exists:knowledge_items,id',
+            'tags' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $updated = 0;
+        foreach ($request->input('item_ids') as $itemId) {
+            $item = KnowledgeItem::where('user_id', $user->id)->find($itemId);
+            if ($item) {
+                $currentTags = $item->tags ?? [];
+                $newTags = array_unique(array_merge($currentTags, $request->input('tags')));
+                $item->tags = $newTags;
+                $item->save();
+                $updated++;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => ['updated_count' => $updated],
+            'message' => "Tagged {$updated} items successfully"
+        ]);
+    }
+
+    /**
+     * Bulk move items to new category
+     * PUT /api/knowledge/bulk-move
+     */
+    public function bulkMove(Request $request)
+    {
+        $user = $request->user();
+
+        $validator = Validator::make($request->all(), [
+            'item_ids' => 'required|array',
+            'item_ids.*' => 'exists:knowledge_items,id',
+            'category_id' => 'required|exists:knowledge_categories,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Verify category belongs to user
+        $category = KnowledgeCategory::where('user_id', $user->id)
+            ->find($request->input('category_id'));
+
+        if (!$category) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category not found or does not belong to you'
+            ], 404);
+        }
+
+        $updated = KnowledgeItem::where('user_id', $user->id)
+            ->whereIn('id', $request->input('item_ids'))
+            ->update(['category_id' => $category->id]);
+
+        return response()->json([
+            'success' => true,
+            'data' => ['updated_count' => $updated],
+            'message' => "Moved {$updated} items successfully"
+        ]);
+    }
+
+    /**
+     * Bulk delete items
+     * DELETE /api/knowledge/bulk-delete
+     */
+    public function bulkDelete(Request $request)
+    {
+        $user = $request->user();
+
+        $validator = Validator::make($request->all(), [
+            'item_ids' => 'required|array',
+            'item_ids.*' => 'exists:knowledge_items,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $deleted = KnowledgeItem::where('user_id', $user->id)
+            ->whereIn('id', $request->input('item_ids'))
+            ->delete();
+
+        return response()->json([
+            'success' => true,
+            'data' => ['deleted_count' => $deleted],
+            'message' => "Deleted {$deleted} items successfully"
+        ]);
+    }
+
+    /**
+     * Clone/duplicate an item
+     * POST /api/knowledge/{id}/clone
+     */
+    public function clone(Request $request, $id)
+    {
+        $user = $request->user();
+        $original = KnowledgeItem::where('user_id', $user->id)->findOrFail($id);
+
+        $clone = $original->replicate();
+        $clone->title = $original->title . ' (Copy)';
+        $clone->created_at = now();
+        $clone->updated_at = now();
+        $clone->save();
+
+        return response()->json([
+            'success' => true,
+            'data' => $clone,
+            'message' => 'Item cloned successfully'
+        ], 201);
+    }
+
+    /**
+     * Get items due for review today
+     * GET /api/knowledge/due-review
+     */
+    public function dueReview(Request $request)
+    {
+        $user = $request->user();
+
+        $items = KnowledgeItem::where('user_id', $user->id)
+            ->dueForReview()
+            ->with(['category'])
+            ->orderBy('next_review_date')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $items,
+            'message' => 'Due review items retrieved successfully'
+        ]);
+    }
+
+    /**
+     * Get related items based on tags and category
+     * GET /api/knowledge/{id}/related
+     */
+    public function related(Request $request, $id)
+    {
+        $user = $request->user();
+        $item = KnowledgeItem::where('user_id', $user->id)->findOrFail($id);
+
+        $relatedItems = KnowledgeItem::where('user_id', $user->id)
+            ->where('id', '!=', $id)
+            ->where(function($query) use ($item) {
+                $query->where('category_id', $item->category_id);
+
+                if ($item->tags && count($item->tags) > 0) {
+                    foreach ($item->tags as $tag) {
+                        $query->orWhereJsonContains('tags', $tag);
+                    }
+                }
+            })
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $relatedItems,
+            'message' => 'Related items retrieved successfully'
+        ]);
+    }
+
+    // ==================== Helper Methods ====================
+
+    /**
+     * Extract title from content
+     */
+    private function extractTitle($content, $itemType)
+    {
+        if ($itemType === 'code_snippet') {
+            // Extract first line or function name
+            $lines = explode("\n", trim($content));
+            $firstLine = trim($lines[0]);
+
+            // Try to extract function/class name
+            if (preg_match('/(function|class|def|public|private)\s+(\w+)/', $firstLine, $matches)) {
+                return $matches[2];
+            }
+
+            return substr($firstLine, 0, 50);
+        }
+
+        // For notes, use first line or first 50 chars
+        $lines = explode("\n", trim($content));
+        $firstLine = trim($lines[0]);
+
+        // Remove markdown heading markers
+        $firstLine = preg_replace('/^#+\s*/', '', $firstLine);
+
+        return substr($firstLine, 0, 100);
+    }
+
+    /**
+     * Detect programming language from code
+     */
+    private function detectCodeLanguage($content)
+    {
+        // Simple keyword-based detection
+        $patterns = [
+            'python' => ['def ', 'import ', 'from ', 'class ', '__init__'],
+            'javascript' => ['const ', 'let ', 'var ', 'function ', '=>', 'console.log'],
+            'java' => ['public class', 'private ', 'protected ', 'System.out'],
+            'php' => ['<?php', 'namespace ', 'use ', '::'],
+            'go' => ['func ', 'package ', 'import ', 'type '],
+            'cpp' => ['#include', 'std::', 'cout', 'cin'],
+            'sql' => ['SELECT ', 'INSERT ', 'UPDATE ', 'DELETE ', 'FROM '],
+        ];
+
+        foreach ($patterns as $lang => $keywords) {
+            foreach ($keywords as $keyword) {
+                if (stripos($content, $keyword) !== false) {
+                    return $lang;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Suggest categories based on content
+     */
+    private function suggestCategories($userId, $content, $itemType, $codeLanguage)
+    {
+        $suggestions = [];
+
+        // Get all user categories
+        $categories = KnowledgeCategory::where('user_id', $userId)->get();
+
+        foreach ($categories as $category) {
+            $score = 0;
+
+            // Match by code language
+            if ($codeLanguage && stripos($category->name, $codeLanguage) !== false) {
+                $score += 0.9;
+            }
+
+            // Match by category name in content
+            if (stripos($content, $category->name) !== false) {
+                $score += 0.7;
+            }
+
+            // Match by keywords
+            if (stripos($content, 'leetcode') !== false && stripos($category->name, 'interview') !== false) {
+                $score += 0.8;
+            }
+
+            if ($score > 0) {
+                $suggestions[] = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'confidence' => round($score, 2)
+                ];
+            }
+        }
+
+        // Sort by confidence
+        usort($suggestions, function($a, $b) {
+            return $b['confidence'] <=> $a['confidence'];
+        });
+
+        return array_slice($suggestions, 0, 3);
+    }
+
+    /**
+     * Generate tags based on content
+     */
+    private function generateTags($content, $itemType, $codeLanguage)
+    {
+        $tags = [];
+
+        // Add language tag
+        if ($codeLanguage) {
+            $tags[] = '#' . $codeLanguage;
+        }
+
+        // Add type tag
+        if ($itemType === 'code_snippet') {
+            $tags[] = '#code';
+        } elseif ($itemType === 'exercise') {
+            $tags[] = '#exercise';
+        }
+
+        // Detect difficulty
+        if (stripos($content, 'easy') !== false || stripos($content, 'beginner') !== false) {
+            $tags[] = '#beginner';
+        } elseif (stripos($content, 'hard') !== false || stripos($content, 'advanced') !== false) {
+            $tags[] = '#advanced';
+        } elseif (stripos($content, 'medium') !== false || stripos($content, 'intermediate') !== false) {
+            $tags[] = '#intermediate';
+        }
+
+        // Detect common topics
+        $topics = [
+            'algorithm' => ['algorithm', 'sorting', 'searching', 'tree', 'graph'],
+            'interview' => ['leetcode', 'interview', 'hackerrank'],
+            'database' => ['database', 'sql', 'mysql', 'postgresql'],
+            'web' => ['web', 'html', 'css', 'frontend', 'backend'],
+        ];
+
+        foreach ($topics as $tag => $keywords) {
+            foreach ($keywords as $keyword) {
+                if (stripos($content, $keyword) !== false) {
+                    $tags[] = '#' . $tag;
+                    break;
+                }
+            }
+        }
+
+        return array_unique($tags);
+    }
+
+    /**
      * Calculate review interval based on review count (spaced repetition)
      *
      * @param int $reviewCount

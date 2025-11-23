@@ -66,6 +66,9 @@ class DatabaseSeeder extends Seeder
 
             // Timetable Data
             TimetableClassSeeder::class,
+
+            // Knowledge Base
+            KnowledgeCategorySeeder::class,
         ]);
     }
 }
