@@ -116,6 +116,12 @@ class KnowledgeActivity : BaseActivity() {
             startActivity(intent)
         }
 
+        // Quick Capture button (header)
+        binding.btnQuickCapture.setOnClickListener {
+            val intent = Intent(this, QuickCaptureActivity::class.java)
+            startActivity(intent)
+        }
+
         // Header add button
         binding.btnAddKnowledge.setOnClickListener {
             val intent = Intent(this, KnowledgeEditorActivity::class.java)

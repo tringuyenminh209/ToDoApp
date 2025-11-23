@@ -1,9 +1,13 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import ecccomp.s2240788.mobile_android.R
@@ -46,6 +50,7 @@ class KnowledgeEditorActivity : BaseActivity() {
         setupClickListeners()
         setupObservers()
         setupTypeChangeListeners()
+        setupKeyboardHandling()
 
         // Load categories
         viewModel.loadCategories()
@@ -343,5 +348,135 @@ class KnowledgeEditorActivity : BaseActivity() {
         } else {
             viewModel.createKnowledgeItem(request)
         }
+    }
+
+    /**
+     * キーボード表示時の処理を設定
+     * 入力フィールドにフォーカスが当たったときに自動的にスクロール
+     */
+    private fun setupKeyboardHandling() {
+        // すべての入力フィールドにフォーカスリスナーを設定
+        val inputFields = listOf(
+            binding.etTitle,
+            binding.etContent,
+            binding.etCodeLanguage,
+            binding.etUrl,
+            binding.etQuestion,
+            binding.etAnswer,
+            binding.etTags
+        )
+
+        inputFields.forEach { editText ->
+            editText?.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    // フォーカスが当たったときに、そのフィールドが見えるようにスクロール
+                    view.postDelayed({
+                        scrollToViewWithKeyboard(view)
+                    }, 300)
+                }
+            }
+        }
+
+        // WindowInsetsを使用してキーボードの高さを正確に取得
+        ViewCompat.setOnApplyWindowInsetsListener(binding.nestedScrollView) { _, insets ->
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            
+            // キーボードが表示されている場合
+            if (imeInsets.bottom > 0) {
+                val focusedView = currentFocus
+                focusedView?.let {
+                    it.postDelayed({
+                        scrollToViewWithKeyboard(it)
+                    }, 300)
+                }
+            }
+            
+            insets
+        }
+
+        // キーボードの表示/非表示を検知してスクロール（フォールバック）
+        var wasKeyboardVisible = false
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val rect = Rect()
+                binding.root.getWindowVisibleDisplayFrame(rect)
+                val screenHeight = binding.root.height
+                val keypadHeight = screenHeight - rect.bottom
+
+                // キーボードが表示されている場合（画面の15%以上）
+                val isKeyboardVisible = keypadHeight > screenHeight * 0.15
+                
+                if (isKeyboardVisible && !wasKeyboardVisible) {
+                    // キーボードが表示されたとき
+                    val focusedView = currentFocus
+                    focusedView?.let {
+                        it.postDelayed({
+                            scrollToViewWithKeyboard(it)
+                        }, 300)
+                    }
+                }
+                
+                wasKeyboardVisible = isKeyboardVisible
+            }
+        })
+    }
+
+    /**
+     * キーボードを考慮してビューが見えるようにスクロール
+     */
+    private fun scrollToViewWithKeyboard(view: View) {
+        val scrollView = binding.nestedScrollView
+        
+        // まず、requestRectangleOnScreenを使用して、ビューが見えるようにする
+        val rect = Rect()
+        view.getHitRect(rect)
+        scrollView.requestRectangleOnScreen(rect, true)
+        
+        // 追加のスクロール処理（より確実にするため）
+        view.postDelayed({
+            val location = IntArray(2)
+            view.getLocationOnScreen(location)
+            val scrollViewLocation = IntArray(2)
+            scrollView.getLocationOnScreen(scrollViewLocation)
+            
+            // キーボードの高さを取得
+            val rootView = binding.root
+            val rootRect = Rect()
+            rootView.getWindowVisibleDisplayFrame(rootRect)
+            val screenHeight = rootView.height
+            val keyboardHeight = screenHeight - rootRect.bottom
+            
+            // ビューの位置から、キーボードの上に表示されるように計算
+            val viewTop = location[1]
+            val scrollViewTop = scrollViewLocation[1]
+            val visibleHeight = rootRect.height()
+            val targetY = viewTop - scrollViewTop
+            
+            // キーボードの上に表示されるように、十分な余白を確保
+            // ビューの高さ + 大きなマージン（150dp）
+            val viewHeight = view.height
+            val margin = (150 * resources.displayMetrics.density).toInt()
+            
+            // ビューがキーボードの上に完全に見えるように計算
+            val availableHeight = visibleHeight - keyboardHeight
+            // ビューの上端が表示される位置を計算
+            val desiredTop = availableHeight - viewHeight - margin
+            val currentTop = targetY
+            val offset = currentTop - desiredTop
+            
+            if (offset > 0) {
+                // 現在のスクロール位置を取得
+                val currentScrollY = scrollView.scrollY
+                scrollView.smoothScrollTo(0, currentScrollY + offset)
+            }
+            
+            // さらに確実にするため、もう一度requestRectangleOnScreenを呼び出す
+            view.postDelayed({
+                val updatedRect = Rect()
+                view.getHitRect(updatedRect)
+                scrollView.requestRectangleOnScreen(updatedRect, true)
+            }, 200)
+        }, 100)
     }
 }
