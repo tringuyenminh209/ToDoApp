@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Info -->
-    <string name="app_name">DOL LEAF</string>
+    <string name="app_name">Kizamu</string>
     <string name="app_tagline">AI-Powered ToDo App</string>
     <string name="app_version">Version 1.0.0</string>
     <string name="app_logo">App Logo</string>
@@ -77,7 +77,7 @@
     <string name="error_unknown">An unknown error occurred</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_title">Welcome to DOL LEAF</string>
+    <string name="onboarding_title">Welcome to Kizamu</string>
     <string name="onboarding_subtitle">Set your goals and start your journey</string>
     <string name="onboarding_step">Step %1$d/%2$d</string>
     <string name="step_progress">Step 2/3</string>
@@ -110,7 +110,7 @@
     <!-- Buttons -->
     <string name="btn_next">Next</string>
     <string name="btn_complete">Complete</string>
-    <string name="onboarding_welcome">Welcome to DOL LEAF! We\'ll create some sample tasks to get you started.</string>
+    <string name="onboarding_welcome">Welcome to Kizamu! We\'ll create some sample tasks to get you started.</string>
 
     <!-- Main Activity -->
     <string name="main_greeting">Good morning</string>

@@ -59,7 +59,7 @@
 
         <p>こんにちは、</p>
 
-        <p>DOL LEAFへご登録いただき、ありがとうございます！</p>
+        <p>Kizamuへご登録いただき、ありがとうございます！</p>
 
         <p>以下のリンクをクリックして、メールアドレスを確認してください：</p>
 
@@ -79,7 +79,7 @@
 
         <div class="footer">
             <p>このリクエストをしていない場合は、このメールを無視してください。</p>
-            <p>© 2025 DOL LEAF. All rights reserved.</p>
+            <p>© 2025 Kizamu. All rights reserved.</p>
         </div>
     </div>
 </body>

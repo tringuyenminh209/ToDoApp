@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeJavaSeeder extends Seeder
 {
     /**
-     * Seed Java cheat code data from doleaf
-     * Reference: https://doleaf.com/java
+     * Seed Java cheat code data from Kizamu
+     * Reference: https://Kizamu.com/java
      */
     public function run(): void
     {
@@ -41,7 +41,7 @@ class CheatCodeJavaSeeder extends Seeder
         );
 
         $this->createExample($section1, $javaLanguage, '変数', 2,
-            "int num = 5;\nfloat floatNum = 5.99f;\nchar letter = 'D';\nboolean bool = true;\nString site = \"doleaf.com\";",
+            "int num = 5;\nfloat floatNum = 5.99f;\nchar letter = 'D';\nboolean bool = true;\nString site = \"Kizamu.com\";",
             'プリミティブ型とStringの宣言と初期化',
             null,
             'easy'
@@ -55,7 +55,7 @@ class CheatCodeJavaSeeder extends Seeder
         );
 
         $this->createExample($section1, $javaLanguage, 'ループ', 4,
-            "String word = \"Doleaf\";\nfor (char c: word.toCharArray()) {\n  System.out.print(c + \"-\");\n}",
+            "String word = \"Kizamu\";\nfor (char c: word.toCharArray()) {\n  System.out.print(c + \"-\");\n}",
             '文字配列を反復処理する拡張forループ',
             "D-o-l-e-a-f-",
             'easy'
@@ -100,14 +100,14 @@ class CheatCodeJavaSeeder extends Seeder
         );
 
         $this->createExample($section2, $javaLanguage, 'StringBuilder', 2,
-            "StringBuilder sb = new StringBuilder(10);\nsb.append(\"Dole\");\nsb.append(\"!\");\n\nSystem.out.println(sb);\n\nsb.insert(4, \"af\");   // Doleaf!\nsb.delete(4, 6);       // Dole!",
+            "StringBuilder sb = new StringBuilder(10);\nsb.append(\"Dole\");\nsb.append(\"!\");\n\nSystem.out.println(sb);\n\nsb.insert(4, \"af\");   // Kizamu!\nsb.delete(4, 6);       // Dole!",
             'StringBuilderのappend、delete、insert操作',
-            "Dole!\nDoleaf!\nDole!",
+            "Dole!\nKizamu!\nDole!",
             'easy'
         );
 
         $this->createExample($section2, $javaLanguage, '比較', 3,
-            "String s1 = new String(\"Doleaf\");\nString s2 = new String(\"Doleaf\");\n\ns1 == s2;                 // false (different references)\ns1.equals(s2);            // true (same content)\n\"AB\".equalsIgnoreCase(\"ab\");  // true",
+            "String s1 = new String(\"Kizamu\");\nString s2 = new String(\"Kizamu\");\n\ns1 == s2;                 // false (different references)\ns1.equals(s2);            // true (same content)\n\"AB\".equalsIgnoreCase(\"ab\");  // true",
             '参照比較と値比較、大文字小文字を区別しないマッチング',
             null,
             'easy'

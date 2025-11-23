@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodePhpSeeder extends Seeder
 {
     /**
-     * Seed PHP cheat code data from doleaf
-     * Reference: https://doleaf.com/php
+     * Seed PHP cheat code data from Kizamu
+     * Reference: https://Kizamu.com/php
      */
     public function run(): void
     {
@@ -34,9 +34,9 @@ class CheatCodePhpSeeder extends Seeder
         $section1 = $this->createSection($phpLanguage, 'はじめに', 1, 'PHPプログラミングの基礎', 'getting-started');
 
         $this->createExample($section1, $phpLanguage, 'hello.php', 1,
-            "<?php // begin with a PHP open tag.\n\necho \"Hello World\\n\";\nprint(\"Hello doleaf.com\");\n\n?>",
+            "<?php // begin with a PHP open tag.\n\necho \"Hello World\\n\";\nprint(\"Hello Kizamu.com\");\n\n?>",
             'PHPの開始タグから始める',
-            "Hello World\nHello doleaf.com",
+            "Hello World\nHello Kizamu.com",
             'easy'
         );
 
@@ -48,9 +48,9 @@ class CheatCodePhpSeeder extends Seeder
         );
 
         $this->createExample($section1, $phpLanguage, '文字列', 3,
-            "\$url = \"doleaf.com\";\necho \"I'm learning PHP at \$url\";\n\n// Concatenate strings\necho \"I'm learning PHP at \" . \$url;\n\n\$hello = \"Hello, \";\n\$hello .= \"World!\";\necho \$hello;",
+            "\$url = \"Kizamu.com\";\necho \"I'm learning PHP at \$url\";\n\n// Concatenate strings\necho \"I'm learning PHP at \" . \$url;\n\n\$hello = \"Hello, \";\n\$hello .= \"World!\";\necho \$hello;",
             '文字列操作と連結',
-            "I'm learning PHP at doleaf.com\nI'm learning PHP at doleaf.com\nHello, World!",
+            "I'm learning PHP at Kizamu.com\nI'm learning PHP at Kizamu.com\nHello, World!",
             'easy'
         );
 
@@ -283,7 +283,7 @@ class CheatCodePhpSeeder extends Seeder
         );
 
         $this->createExample($section7, $phpLanguage, '正規表現', 2,
-            "\$str = \"Visit Doleaf.com\";\necho preg_match(\"/do/i\", \$str);",
+            "\$str = \"Visit Kizamu.com\";\necho preg_match(\"/do/i\", \$str);",
             'preg_matchを使った正規表現',
             '1',
             'medium'

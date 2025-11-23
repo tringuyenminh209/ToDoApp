@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeKotlinSeeder extends Seeder
 {
     /**
-     * Seed Kotlin cheat code data from doleaf
-     * Reference: https://doleaf.com/kotlin
+     * Seed Kotlin cheat code data from Kizamu
+     * Reference: https://Kizamu.com/kotlin
      */
     public function run(): void
     {
@@ -34,9 +34,9 @@ class CheatCodeKotlinSeeder extends Seeder
         $section1 = $this->createSection($kotlinLanguage, 'Kotlin入門', 1, 'Kotlinの基本と導入', 'kotlin-introduction');
 
         $this->createExample($section1, $kotlinLanguage, 'main()', 1,
-            "fun main() {\n  println(\"Greetings, Doleaf!\")\n  // Code goes here\n}",
+            "fun main() {\n  println(\"Greetings, Kizamu!\")\n  // Code goes here\n}",
             'main()関数はすべてのKotlinプログラムの開始点です',
-            "Greetings, Doleaf!",
+            "Greetings, Kizamu!",
             'easy'
         );
 

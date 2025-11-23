@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeMysqlSeeder extends Seeder
 {
     /**
-     * Seed MySQL cheat code data from doleaf
-     * Reference: https://doleaf.com/mysql
+     * Seed MySQL cheat code data from Kizamu
+     * Reference: https://Kizamu.com/mysql
      */
     public function run(): void
     {

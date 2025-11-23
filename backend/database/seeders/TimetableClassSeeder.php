@@ -29,8 +29,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:37:48',
-                'updated_at' => '2025-11-22 15:37:48',
             ],
             [
                 'id' => 2,
@@ -47,8 +45,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:38:56',
-                'updated_at' => '2025-11-22 15:38:56',
             ],
             [
                 'id' => 3,
@@ -65,8 +61,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:40:16',
-                'updated_at' => '2025-11-22 15:40:16',
             ],
             [
                 'id' => 4,
@@ -83,8 +77,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:40:45',
-                'updated_at' => '2025-11-22 15:40:45',
             ],
             [
                 'id' => 5,
@@ -101,8 +93,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:41:58',
-                'updated_at' => '2025-11-22 15:41:58',
             ],
             [
                 'id' => 6,
@@ -119,8 +109,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:42:20',
-                'updated_at' => '2025-11-22 15:42:20',
             ],
             [
                 'id' => 7,
@@ -137,8 +125,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:43:15',
-                'updated_at' => '2025-11-22 15:43:15',
             ],
             [
                 'id' => 8,
@@ -155,8 +141,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:44:05',
-                'updated_at' => '2025-11-22 15:44:05',
             ],
             [
                 'id' => 9,
@@ -173,8 +157,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:45:54',
-                'updated_at' => '2025-11-22 15:45:54',
             ],
             [
                 'id' => 10,
@@ -191,8 +173,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:46:32',
-                'updated_at' => '2025-11-22 15:46:32',
             ],
             [
                 'id' => 11,
@@ -209,8 +189,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:47:10',
-                'updated_at' => '2025-11-22 15:47:10',
             ],
             [
                 'id' => 12,
@@ -227,8 +205,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:48:00',
-                'updated_at' => '2025-11-22 15:48:00',
             ],
             [
                 'id' => 13,
@@ -245,8 +221,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:49:23',
-                'updated_at' => '2025-11-22 15:49:23',
             ],
             [
                 'id' => 14,
@@ -263,8 +237,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:49:48',
-                'updated_at' => '2025-11-22 15:49:48',
             ],
             [
                 'id' => 15,
@@ -281,8 +253,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:50:42',
-                'updated_at' => '2025-11-22 15:50:42',
             ],
             [
                 'id' => 16,
@@ -299,8 +269,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:51:21',
-                'updated_at' => '2025-11-22 15:51:21',
             ],
             [
                 'id' => 17,
@@ -317,8 +285,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:52:06',
-                'updated_at' => '2025-11-22 15:52:06',
             ],
             [
                 'id' => 18,
@@ -335,8 +301,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:52:34',
-                'updated_at' => '2025-11-22 15:52:34',
             ],
             [
                 'id' => 19,
@@ -353,8 +317,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:53:41',
-                'updated_at' => '2025-11-22 15:53:41',
             ],
             [
                 'id' => 20,
@@ -371,8 +333,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:54:06',
-                'updated_at' => '2025-11-22 15:54:06',
             ],
             [
                 'id' => 21,
@@ -389,8 +349,6 @@ class TimetableClassSeeder extends Seeder
                 'icon' => null,
                 'notes' => null,
                 'learning_path_id' => null,
-                'created_at' => '2025-11-22 15:55:43',
-                'updated_at' => '2025-11-22 15:55:43',
             ],
         ];
 
