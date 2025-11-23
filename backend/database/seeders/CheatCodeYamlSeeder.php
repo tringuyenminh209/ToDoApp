@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeYamlSeeder extends Seeder
 {
     /**
-     * Seed YAML cheat code data from doleaf
-     * Reference: https://doleaf.com/yaml
+     * Seed YAML cheat code data from Kizamu
+     * Reference: https://Kizamu.com/yaml
      */
     public function run(): void
     {

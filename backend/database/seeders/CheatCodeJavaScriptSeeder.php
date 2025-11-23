@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeJavaScriptSeeder extends Seeder
 {
     /**
-     * Seed JavaScript cheat code data from doleaf
-     * Reference: https://doleaf.com/javascript
+     * Seed JavaScript cheat code data from Kizamu
+     * Reference: https://Kizamu.com/javascript
      */
     public function run(): void
     {
@@ -34,9 +34,9 @@ class CheatCodeJavaScriptSeeder extends Seeder
         $section1 = $this->createSection($jsLanguage, 'はじめに', 1, 'JavaScriptの基本と導入', 'getting-started');
 
         $this->createExample($section1, $jsLanguage, 'Console', 1,
-            "// => Hello world!\nconsole.log('Hello world!');\n\n// => Hello Doleaf\nconsole.warn('hello %s', 'Doleaf');\n\n// Prints error message to stderr\nconsole.error(new Error('Oops!'));",
+            "// => Hello world!\nconsole.log('Hello world!');\n\n// => Hello Kizamu\nconsole.warn('hello %s', 'Kizamu');\n\n// Prints error message to stderr\nconsole.error(new Error('Oops!'));",
             '出力用のコンソールメソッド',
-            "Hello world!\nHello Doleaf\nError: Oops!",
+            "Hello world!\nHello Kizamu\nError: Oops!",
             'easy'
         );
 

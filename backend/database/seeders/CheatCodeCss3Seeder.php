@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeCss3Seeder extends Seeder
 {
     /**
-     * Seed CSS3 cheat code data from doleaf
-     * Reference: https://doleaf.com/css3
+     * Seed CSS3 cheat code data from Kizamu
+     * Reference: https://Kizamu.com/css3
      */
     public function run(): void
     {

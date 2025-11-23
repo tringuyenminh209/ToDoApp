@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Info -->
-    <string name="app_name">DOL LEAF</string>
+    <string name="app_name">Kizamu</string>
     <string name="app_tagline">Ứng dụng ToDo có AI</string>
     <string name="app_version">Phiên bản 1.0.0</string>
     <string name="app_logo">Logo ứng dụng</string>
@@ -77,7 +77,7 @@
     <string name="error_unknown">Đã xảy ra lỗi không xác định</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_title">Chào mừng đến với DOL LEAF</string>
+    <string name="onboarding_title">Chào mừng đến với Kizamu</string>
     <string name="onboarding_subtitle">Đặt mục tiêu và bắt đầu hành trình của bạn</string>
     <string name="onboarding_step">Bước %1$d/%2$d</string>
     <string name="step_progress">Bước 2/3</string>
@@ -110,7 +110,7 @@
     <!-- Buttons -->
     <string name="btn_next">Tiếp theo</string>
     <string name="btn_complete">Hoàn tất</string>
-    <string name="onboarding_welcome">Chào mừng bạn đến với DOL LEAF! Chúng tôi sẽ tạo một số task mẫu để bạn bắt đầu.</string>
+    <string name="onboarding_welcome">Chào mừng bạn đến với Kizamu! Chúng tôi sẽ tạo một số task mẫu để bạn bắt đầu.</string>
 
     <!-- Main Activity -->
     <string name="main_greeting">Chào buổi sáng</string>

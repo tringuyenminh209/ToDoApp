@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeBashSeeder extends Seeder
 {
     /**
-     * Seed Bash cheat code data from doleaf
-     * Reference: https://doleaf.com/bash
+     * Seed Bash cheat code data from Kizamu
+     * Reference: https://Kizamu.com/bash
      */
     public function run(): void
     {

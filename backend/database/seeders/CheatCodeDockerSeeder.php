@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeDockerSeeder extends Seeder
 {
     /**
-     * Seed Docker cheat code data from doleaf
-     * Reference: https://doleaf.com/docker
+     * Seed Docker cheat code data from Kizamu
+     * Reference: https://Kizamu.com/docker
      */
     public function run(): void
     {
