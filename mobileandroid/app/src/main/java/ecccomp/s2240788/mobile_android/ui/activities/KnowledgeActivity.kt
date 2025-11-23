@@ -2,25 +2,36 @@ package ecccomp.s2240788.mobile_android.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityKnowledgeBinding
-import ecccomp.s2240788.mobile_android.ui.adapters.PathsAdapter
-import ecccomp.s2240788.mobile_android.ui.viewmodels.PathsViewModel
+import ecccomp.s2240788.mobile_android.data.models.KnowledgeItem
+import ecccomp.s2240788.mobile_android.ui.adapters.KnowledgeAdapter
+import ecccomp.s2240788.mobile_android.ui.adapters.KnowledgeCategoryChipAdapter
+import ecccomp.s2240788.mobile_android.ui.viewmodels.KnowledgeViewModel
 
 /**
  * KnowledgeActivity
- * 知識管理画面 - Learning Paths経由で学習内容にアクセス
- * Flow: Learning Paths → Milestones → Knowledge Items → Detail
+ * 知識管理画面 - Phase 1 Knowledge Base System
+ * Features:
+ * - Knowledge items list with filters
+ * - Search functionality
+ * - Category-based navigation
+ * - Quick Capture FAB
+ * - Integration with CheatCode
  */
 class KnowledgeActivity : BaseActivity() {
 
     private lateinit var binding: ActivityKnowledgeBinding
-    private lateinit var viewModel: PathsViewModel
-    private lateinit var adapter: PathsAdapter
+    private lateinit var viewModel: KnowledgeViewModel
+    private lateinit var adapter: KnowledgeAdapter
+    private lateinit var categoryAdapter: KnowledgeCategoryChipAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,54 +40,74 @@ class KnowledgeActivity : BaseActivity() {
 
         setupWindowInsets()
 
-        viewModel = ViewModelProvider(this)[PathsViewModel::class.java]
+        viewModel = ViewModelProvider(this)[KnowledgeViewModel::class.java]
 
         setupUI()
         setupClickListeners()
         setupObservers()
         setupBottomNavigation()
+        setupFilters()
 
-        // Load learning paths
-        viewModel.fetchPaths()
+        // Load knowledge items and categories
+        viewModel.loadKnowledgeItems()
+        viewModel.loadCategories()
+        viewModel.loadKnowledgeStats()
     }
 
     private fun setupUI() {
-        // Hide unused UI elements
-        // Note: These views might not exist in the current layout binding
-        // binding.chipGroupFilters.visibility = View.GONE
-        // binding.searchLayout.visibility = View.GONE
-        // binding.pathSelectorCard.visibility = View.GONE
-
         // Update title
         binding.tvTitle.text = getString(R.string.knowledge_title)
-        binding.tvSubtitle.text = getString(R.string.knowledge_select_path)
+        binding.tvSubtitle.text = getString(R.string.knowledge_subtitle)
 
-        // Setup Paths adapter
-        adapter = PathsAdapter(
-            onPathClick = { path ->
-                // Navigate to learning path detail to see milestones
-                val intent = Intent(this, LearningPathDetailActivity::class.java)
-                intent.putExtra("LEARNING_PATH_ID", path.id)
+        // Hide path selector (not needed for direct knowledge browsing)
+        binding.pathSelectorCard.visibility = View.GONE
+
+        // Setup Knowledge adapter
+        adapter = KnowledgeAdapter(
+            onItemClick = { item ->
+                // Navigate to knowledge detail
+                val intent = Intent(this, KnowledgeDetailActivity::class.java)
+                intent.putExtra("KNOWLEDGE_ITEM_ID", item.id)
                 startActivity(intent)
             },
-            onCompleteClick = { path ->
-                viewModel.completePath(path.id)
+            onFavoriteClick = { item ->
+                viewModel.toggleFavorite(item.id)
             },
-            onDeleteClick = { path ->
-                viewModel.deletePath(path.id)
+            onMenuClick = { item ->
+                showItemMenu(item)
             }
         )
 
         // RecyclerView setup
         binding.rvKnowledge.layoutManager = LinearLayoutManager(this)
         binding.rvKnowledge.adapter = adapter
+
+        // Setup Categories RecyclerView
+        categoryAdapter = KnowledgeCategoryChipAdapter { category ->
+            // Filter by category - TODO: implement in ViewModel
+            Toast.makeText(this, "Category: ${category.name}", Toast.LENGTH_SHORT).show()
+        }
+        binding.rvCategories.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvCategories.adapter = categoryAdapter
     }
 
     private fun setupClickListeners() {
+        // Quick Capture FAB
+        binding.fabAddKnowledge.setOnClickListener {
+            // TODO: Open QuickCaptureActivity when created
+            Toast.makeText(this, "Quick Capture - Coming soon", Toast.LENGTH_SHORT).show()
+        }
+
+        // Header add button
         binding.btnAddKnowledge.setOnClickListener {
-            // Navigate to template browser to add new path
-            val intent = Intent(this, TemplateBrowserActivity::class.java)
-            startActivity(intent)
+            // TODO: Open QuickCaptureActivity when created
+            Toast.makeText(this, "Quick Capture - Coming soon", Toast.LENGTH_SHORT).show()
+        }
+
+        // Empty state add button
+        binding.btnAddKnowledgeEmpty.setOnClickListener {
+            // TODO: Open QuickCaptureActivity when created
+            Toast.makeText(this, "Quick Capture - Coming soon", Toast.LENGTH_SHORT).show()
         }
 
         // CheatCode navigation
@@ -84,30 +115,131 @@ class KnowledgeActivity : BaseActivity() {
             val intent = Intent(this, CheatCodeActivity::class.java)
             startActivity(intent)
         }
+
+        // Search
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.setQuery(s?.toString() ?: "")
+            }
+        })
     }
 
     private fun setupObservers() {
-        // Observe filtered paths
-        viewModel.filteredPaths.observe(this) { paths ->
-            if (paths.isEmpty()) {
+        // Observe filtered knowledge items
+        viewModel.filteredItems.observe(this) { items ->
+            android.util.Log.d("KnowledgeActivity", "filteredItems observer triggered with ${items.size} items")
+            if (items.isEmpty()) {
+                android.util.Log.d("KnowledgeActivity", "Showing empty state")
                 binding.emptyState.visibility = View.VISIBLE
                 binding.rvKnowledge.visibility = View.GONE
             } else {
+                android.util.Log.d("KnowledgeActivity", "Showing ${items.size} items in RecyclerView")
                 binding.emptyState.visibility = View.GONE
                 binding.rvKnowledge.visibility = View.VISIBLE
-                adapter.submitList(paths)
+                adapter.submitList(items)
             }
         }
 
         viewModel.error.observe(this) { error ->
             error?.let {
+                android.util.Log.e("KnowledgeActivity", "Error: $it")
                 Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                viewModel.clearError()
+            }
+        }
+
+        viewModel.successMessage.observe(this) { message ->
+            message?.let {
+                android.util.Log.d("KnowledgeActivity", "Success: $it")
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                viewModel.clearSuccessMessage()
             }
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
+            android.util.Log.d("KnowledgeActivity", "Loading state: $isLoading")
             // Show/hide loading indicator if needed
         }
+
+        // Observe stats for potential future use
+        viewModel.knowledgeStats.observe(this) { stats ->
+            // Could display stats in UI
+        }
+
+        // Observe categories
+        viewModel.categories.observe(this) { categories ->
+            android.util.Log.d("KnowledgeActivity", "Categories loaded: ${categories.size}")
+            categoryAdapter.submitList(categories)
+        }
+    }
+
+    private fun setupFilters() {
+        // Filter chips
+        binding.chipAll.setOnClickListener {
+            viewModel.setFilter(KnowledgeViewModel.FilterType.ALL)
+        }
+        binding.chipNotes.setOnClickListener {
+            viewModel.setFilter(KnowledgeViewModel.FilterType.NOTES)
+        }
+        binding.chipCode.setOnClickListener {
+            viewModel.setFilter(KnowledgeViewModel.FilterType.CODE)
+        }
+        binding.chipExercises.setOnClickListener {
+            viewModel.setFilter(KnowledgeViewModel.FilterType.EXERCISES)
+        }
+        binding.chipLinks.setOnClickListener {
+            viewModel.setFilter(KnowledgeViewModel.FilterType.LINKS)
+        }
+        binding.chipAttachments.setOnClickListener {
+            viewModel.setFilter(KnowledgeViewModel.FilterType.ATTACHMENTS)
+        }
+        binding.chipFavorites.setOnClickListener {
+            viewModel.setFilter(KnowledgeViewModel.FilterType.FAVORITES)
+        }
+        binding.chipArchived.setOnClickListener {
+            viewModel.setFilter(KnowledgeViewModel.FilterType.ARCHIVED)
+        }
+        binding.chipDueReview.setOnClickListener {
+            viewModel.setFilter(KnowledgeViewModel.FilterType.DUE_REVIEW)
+        }
+    }
+
+    private fun showItemMenu(item: KnowledgeItem) {
+        val popup = PopupMenu(this, binding.rvKnowledge)
+        popup.menuInflater.inflate(R.menu.menu_knowledge_item_actions, popup.menu)
+
+        // Hide archive option if already archived
+        if (item.is_archived) {
+            popup.menu.findItem(R.id.action_archive)?.title = "復元"
+        }
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_edit -> {
+                    // TODO: Open edit dialog
+                    Toast.makeText(this, "Edit - Coming soon", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.action_clone -> {
+                    viewModel.cloneKnowledgeItem(item.id)
+                    true
+                }
+                R.id.action_archive -> {
+                    viewModel.toggleArchive(item.id)
+                    true
+                }
+                R.id.action_delete -> {
+                    viewModel.deleteItem(item.id) {
+                        Toast.makeText(this, "削除しました", Toast.LENGTH_SHORT).show()
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.show()
     }
 
     /**
@@ -149,7 +281,7 @@ class KnowledgeActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Reload paths when returning
-        viewModel.fetchPaths()
+        // Reload knowledge items when returning
+        viewModel.refreshKnowledgeItems()
     }
 }

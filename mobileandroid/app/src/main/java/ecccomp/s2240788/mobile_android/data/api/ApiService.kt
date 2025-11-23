@@ -186,30 +186,97 @@ interface ApiService {
     @GET("stats/trends")
     suspend fun getTrends(@Query("period") period: String, @Query("metric") metric: String? = null): Response<ApiResponse<TrendsData>>
     
-    // Knowledge Items
+    // ==================== Knowledge Base Endpoints ====================
+
+    // Knowledge Category endpoints
+    @GET("knowledge/categories/stats")
+    suspend fun getKnowledgeCategoryStats(): Response<ApiResponse<KnowledgeCategoryStats>>
+
+    @GET("knowledge/categories/tree")
+    suspend fun getKnowledgeCategoryTree(): Response<ApiResponse<List<KnowledgeCategory>>>
+
+    @POST("knowledge/categories/reorder")
+    suspend fun reorderKnowledgeCategories(@Body request: ReorderCategoriesRequest): Response<ApiResponse<Unit>>
+
+    @GET("knowledge/categories")
+    suspend fun getKnowledgeCategories(): Response<ApiResponse<List<KnowledgeCategory>>>
+
+    @POST("knowledge/categories")
+    suspend fun createKnowledgeCategory(@Body request: CreateKnowledgeCategoryRequest): Response<ApiResponse<KnowledgeCategory>>
+
+    @GET("knowledge/categories/{id}")
+    suspend fun getKnowledgeCategory(@Path("id") id: Int): Response<ApiResponse<KnowledgeCategory>>
+
+    @PUT("knowledge/categories/{id}")
+    suspend fun updateKnowledgeCategory(@Path("id") id: Int, @Body request: CreateKnowledgeCategoryRequest): Response<ApiResponse<KnowledgeCategory>>
+
+    @DELETE("knowledge/categories/{id}")
+    suspend fun deleteKnowledgeCategory(@Path("id") id: Int): Response<ApiResponse<Unit>>
+
+    @POST("knowledge/categories/{id}/move")
+    suspend fun moveKnowledgeCategory(@Path("id") id: Int, @Body request: MoveCategoryRequest): Response<ApiResponse<KnowledgeCategory>>
+
+    @POST("knowledge/categories/{id}/update-count")
+    suspend fun updateKnowledgeCategoryCount(@Path("id") id: Int): Response<ApiResponse<KnowledgeCategory>>
+
+    // Knowledge Item endpoints
+    @GET("knowledge/stats")
+    suspend fun getKnowledgeStats(): Response<ApiResponse<KnowledgeStats>>
+
+    @GET("knowledge/due-review")
+    suspend fun getKnowledgeDueReview(): Response<ApiResponse<List<KnowledgeItem>>>
+
+    @POST("knowledge/quick-capture")
+    suspend fun quickCaptureKnowledge(@Body request: QuickCaptureRequest): Response<ApiResponse<QuickCaptureResponse>>
+
+    @PUT("knowledge/bulk-tag")
+    suspend fun bulkTagKnowledgeItems(@Body request: BulkTagRequest): Response<ApiResponse<BulkOperationResponse>>
+
+    @PUT("knowledge/bulk-move")
+    suspend fun bulkMoveKnowledgeItems(@Body request: BulkMoveRequest): Response<ApiResponse<BulkOperationResponse>>
+
+    @DELETE("knowledge/bulk-delete")
+    suspend fun bulkDeleteKnowledgeItems(@Body request: BulkDeleteRequest): Response<ApiResponse<BulkOperationResponse>>
+
     @GET("knowledge")
-    suspend fun getKnowledgeItems(@Query("filter") filter: String? = null): Response<ApiResponse<List<KnowledgeItem>>>
-    
+    suspend fun getKnowledgeItems(
+        @Query("category_id") categoryId: Int? = null,
+        @Query("item_type") itemType: String? = null,
+        @Query("is_favorite") isFavorite: Boolean? = null,
+        @Query("is_archived") isArchived: Boolean? = null,
+        @Query("search") search: String? = null,
+        @Query("tags") tags: List<String>? = null,
+        @Query("sort_by") sortBy: String = "created_at",
+        @Query("sort_order") sortOrder: String = "desc",
+        @Query("per_page") perPage: Int = 20
+    ): Response<ApiResponse<Any>>
+
     @POST("knowledge")
     suspend fun createKnowledgeItem(@Body request: CreateKnowledgeItemRequest): Response<ApiResponse<KnowledgeItem>>
-    
+
     @GET("knowledge/{id}")
     suspend fun getKnowledgeItem(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
-    
+
     @PUT("knowledge/{id}")
     suspend fun updateKnowledgeItem(@Path("id") id: Int, @Body request: CreateKnowledgeItemRequest): Response<ApiResponse<KnowledgeItem>>
-    
+
     @DELETE("knowledge/{id}")
     suspend fun deleteKnowledgeItem(@Path("id") id: Int): Response<ApiResponse<Unit>>
-    
+
     @PUT("knowledge/{id}/favorite")
     suspend fun toggleKnowledgeFavorite(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
-    
+
     @PUT("knowledge/{id}/archive")
     suspend fun toggleKnowledgeArchive(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
-    
+
     @PUT("knowledge/{id}/review")
     suspend fun markKnowledgeReviewed(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
+
+    @POST("knowledge/{id}/clone")
+    suspend fun cloneKnowledgeItem(@Path("id") id: Int, @Body request: CloneKnowledgeRequest): Response<ApiResponse<KnowledgeItem>>
+
+    @GET("knowledge/{id}/related")
+    suspend fun getRelatedKnowledgeItems(@Path("id") id: Int, @Query("limit") limit: Int = 5): Response<ApiResponse<List<KnowledgeItem>>>
     
     // Learning Path Templates
     @GET("learning-path-templates")

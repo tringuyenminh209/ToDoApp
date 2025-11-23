@@ -212,6 +212,7 @@
     <string name="delete">削除</string>
     <string name="edit">編集</string>
     <string name="add">追加</string>
+    <string name="clone">複製</string>
 
     <!-- Daily Check-in -->
     <string name="daily_checkin_title">朝のチェックイン</string>
