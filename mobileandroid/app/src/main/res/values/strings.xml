@@ -476,6 +476,11 @@
     <string name="knowledge_search_hint">メモ、記事、リンクを検索...</string>
     <string name="knowledge_total">合計数</string>
     <string name="knowledge_categories">カテゴリ</string>
+    <string name="select_category">カテゴリを選択</string>
+    <string name="search_categories">カテゴリを検索...</string>
+    <string name="selected_category">選択中:</string>
+    <string name="clear">クリア</string>
+    <string name="expand_collapse">展開/折りたたみ</string>
     <string name="knowledge_recent">最近</string>
     <string name="knowledge_filter_all">すべて</string>
     <string name="knowledge_filter_notes">メモ</string>
@@ -826,5 +831,43 @@
     <string name="task_suggestion">タスク提案</string>
     <string name="create_task">タスクを作成</string>
     <string name="dismiss">キャンセル</string>
+
+    <!-- Knowledge Editor -->
+    <string name="knowledge_editor">知識エディタ</string>
+    <string name="create_knowledge_item">知識アイテムを作成</string>
+    <string name="edit_knowledge_item">知識アイテムを編集</string>
+    <string name="item_type">アイテムタイプ</string>
+    <string name="type_note">ノート</string>
+    <string name="type_code">コード</string>
+    <string name="type_exercise">演習</string>
+    <string name="type_link">リンク</string>
+    <string name="title">タイトル</string>
+    <string name="category">カテゴリ</string>
+    <string name="enter_title">タイトルを入力</string>
+    <string name="enter_content">内容を入力</string>
+    <string name="enter_note_content">ノートの内容を入力</string>
+    <string name="enter_code">コードを入力</string>
+    <string name="enter_description">説明を入力</string>
+    <string name="code_language">プログラミング言語</string>
+    <string name="enter_language">言語を入力（例: Python, Java）</string>
+    <string name="url">URL</string>
+    <string name="enter_url">URLを入力</string>
+    <string name="enter_question">問題を入力</string>
+    <string name="enter_answer">答えを入力</string>
+    <string name="difficulty">難易度</string>
+    <string name="difficulty_easy">簡単</string>
+    <string name="difficulty_medium">普通</string>
+    <string name="difficulty_hard">難しい</string>
+    <string name="enter_tags">タグを入力（カンマ区切り）</string>
+    <string name="tags_helper">カンマで区切ってタグを入力（例: #java, #algorithm）</string>
+    <string name="description">説明</string>
+    <string name="code">コード</string>
+
+    <!-- Validation Errors -->
+    <string name="error_title_required">タイトルを入力してください</string>
+    <string name="error_content_required">内容を入力してください</string>
+    <string name="error_code_required">コードを入力してください</string>
+    <string name="error_question_required">問題を入力してください</string>
+    <string name="error_url_required">URLを入力してください</string>
 
 </resources>

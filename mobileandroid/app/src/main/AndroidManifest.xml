@@ -84,6 +84,10 @@
             android:name=".ui.activities.KnowledgeDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activities.KnowledgeEditorActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".ui.activities.MilestoneKnowledgeActivity"
             android:exported="false" />
         <activity

@@ -62,6 +62,7 @@ class KnowledgeViewModel : ViewModel() {
     private var currentFilter: FilterType = FilterType.ALL
     private var currentQuery: String = ""
     private var currentLearningPathId: Int? = null  // null = all paths
+    private var currentCategoryId: Int? = null  // null = all categories
 
     enum class FilterType {
         ALL, NOTES, CODE, EXERCISES, LINKS, ATTACHMENTS, FAVORITES, ARCHIVED, DUE_REVIEW
@@ -260,6 +261,12 @@ class KnowledgeViewModel : ViewModel() {
             allItems
         }
         android.util.Log.d("KnowledgeViewModel", "After learning path filter: ${filtered.size} items")
+
+        // Filter by category
+        if (currentCategoryId != null) {
+            filtered = filtered.filter { it.category_id == currentCategoryId }
+            android.util.Log.d("KnowledgeViewModel", "After category filter (${currentCategoryId}): ${filtered.size} items")
+        }
 
         // Apply type filter
         filtered = when (currentFilter) {
@@ -470,6 +477,29 @@ class KnowledgeViewModel : ViewModel() {
     fun filterByLearningPath(learningPathId: Int?) {
         currentLearningPathId = learningPathId
         applyFilterAndSearch()
+    }
+
+    /**
+     * カテゴリでフィルタリング
+     */
+    fun filterByCategory(categoryId: Int) {
+        currentCategoryId = categoryId
+        applyFilterAndSearch()
+    }
+
+    /**
+     * カテゴリフィルターをクリア
+     */
+    fun clearCategoryFilter() {
+        currentCategoryId = null
+        applyFilterAndSearch()
+    }
+
+    /**
+     * 現在選択中のカテゴリIDを取得
+     */
+    fun getCurrentCategoryId(): Int? {
+        return currentCategoryId
     }
 
     /**
