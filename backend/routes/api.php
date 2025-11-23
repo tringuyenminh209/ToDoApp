@@ -36,6 +36,7 @@ Route::post('/register', [AuthController::class, 'register'])
     ->middleware('throttle:3,1'); // 3 requests per minute
 
 Route::post('/login', [AuthController::class, 'login'])
+    ->name('login')
     ->middleware('throttle:5,1'); // 5 requests per minute
 
 // Password reset routes with rate limiting

@@ -31,7 +31,7 @@ object NetworkModule {
     // Backend chat timeout with GPT-5 can take 40-60s for complex context-aware responses
     // Android timeout must be higher to avoid premature timeout
     private const val CONNECT_TIMEOUT_SECONDS = 30L    // Kết nối: 30s
-    private const val READ_TIMEOUT_SECONDS = 90L       // Đọc response: 90s (đủ cho GPT-5 với context dài)
+    private const val READ_TIMEOUT_SECONDS = 120L       // Đọc response: 90s (đủ cho GPT-5 với context dài)
     private const val WRITE_TIMEOUT_SECONDS = 30L      // Ghi request: 30s
 
     /**
@@ -94,7 +94,7 @@ class ResponseInterceptor : Interceptor {
         // 401 Unauthorizedをキャッチ
         if (response.code == 401 && !response.request.url.encodedPath.contains("/api/login")) {
             val context = NetworkModule.contextRef?.get()
-            
+
             context?.let { ctx ->
                 // Tokenをクリア
                 TokenManager.clearToken()
@@ -129,7 +129,7 @@ class ResponseInterceptor : Interceptor {
 object TokenManager {
     private const val PREFS_NAME = "auth_prefs"
     private const val TOKEN_KEY = "auth_token"
-    
+
     private var encryptedPrefs: SharedPreferences? = null
 
     /**

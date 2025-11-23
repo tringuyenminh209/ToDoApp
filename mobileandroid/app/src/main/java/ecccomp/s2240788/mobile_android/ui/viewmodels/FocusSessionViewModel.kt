@@ -665,11 +665,23 @@ class FocusSessionViewModel : ViewModel() {
         try {
             _isLoadingKnowledge.value = true
 
-            // Load all knowledge items and filter by source_task_id
-            val response = apiService.getKnowledgeItems(null)
+            // Load all knowledge items using new API
+            val response = apiService.getKnowledgeItems(
+                categoryId = null,
+                itemType = null,
+                isFavorite = null,
+                isArchived = null,
+                search = null,
+                tags = null
+            )
 
             if (response.isSuccessful) {
-                val allItems = response.body()?.data ?: emptyList()
+                val apiResponse = response.body()
+                val allItems = if (apiResponse?.success == true) {
+                    parseItemsFromResponse(apiResponse.data)
+                } else {
+                    emptyList()
+                }
 
                 // Get IDs to filter: task ID + all subtask IDs
                 // Use provided subtasks or fallback to LiveData value
@@ -696,6 +708,25 @@ class FocusSessionViewModel : ViewModel() {
             _toast.value = "ネットワークエラー: ${e.message}"
         } finally {
             _isLoadingKnowledge.value = false
+        }
+    }
+
+    /**
+     * Parse Items from API Response
+     */
+    private fun parseItemsFromResponse(data: Any?): List<KnowledgeItem> {
+        return try {
+            when (data) {
+                is List<*> -> data.mapNotNull { it as? KnowledgeItem }
+                is Map<*, *> -> {
+                    // Handle paginated response
+                    val dataList = data["data"] as? List<*>
+                    dataList?.mapNotNull { it as? KnowledgeItem } ?: emptyList()
+                }
+                else -> emptyList()
+            }
+        } catch (e: Exception) {
+            emptyList()
         }
     }
 
