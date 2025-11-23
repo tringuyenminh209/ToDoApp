@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Info -->
-    <string name="app_name">DOL LEAF</string>
+    <string name="app_name">Kizamu</string>
     <string name="app_tagline">AI搭載のToDoアプリ</string>
     <string name="app_version">バージョン 1.0.0</string>
     <string name="app_logo">アプリロゴ</string>
@@ -77,7 +77,7 @@
     <string name="error_unknown">不明なエラーが発生しました</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_title">DOL LEAFへようこそ</string>
+    <string name="onboarding_title">Kizamuへようこそ</string>
     <string name="onboarding_subtitle">目標を設定して、あなたの旅を始めましょう</string>
     <string name="onboarding_step">ステップ %1$d/%2$d</string>
     <string name="step_progress">ステップ 2/3</string>
@@ -110,7 +110,7 @@
     <!-- Buttons -->
     <string name="btn_next">次へ</string>
     <string name="btn_complete">完了</string>
-    <string name="onboarding_welcome">DOL LEAFへようこそ！いくつかのサンプルタスクを作成します。</string>
+    <string name="onboarding_welcome">Kizamuへようこそ！いくつかのサンプルタスクを作成します。</string>
 
     <!-- Main Activity -->
     <string name="main_greeting">おはようございます</string>

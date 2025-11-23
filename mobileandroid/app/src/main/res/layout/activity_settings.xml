@@ -63,7 +63,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_logo"
+                    android:src="@mipmap/ic_launcher_foreground"
                     android:contentDescription="@string/app_name" />
 
             </com.google.android.material.card.MaterialCardView>

@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeHtmlSeeder extends Seeder
 {
     /**
-     * Seed HTML cheat code data from doleaf
-     * Reference: https://doleaf.com/html
+     * Seed HTML cheat code data from Kizamu
+     * Reference: https://Kizamu.com/html
      */
     public function run(): void
     {
@@ -34,7 +34,7 @@ class CheatCodeHtmlSeeder extends Seeder
         $section1 = $this->createSection($htmlLanguage, 'はじめに', 1, 'HTMLの基本と基本的なタグ', 'getting-started');
 
         $this->createExample($section1, $htmlLanguage, 'Hello HTML', 1,
-            "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML5 Boilerplate</title>\n</head>\n<body>\n    <h1>Hello world, hello Doleaf!</h1>\n</body>\n</html>",
+            "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML5 Boilerplate</title>\n</head>\n<body>\n    <h1>Hello world, hello Kizamu!</h1>\n</body>\n</html>",
             '基本的なHTML5ボイラープレート構造',
             null,
             'easy'
@@ -48,14 +48,14 @@ class CheatCodeHtmlSeeder extends Seeder
         );
 
         $this->createExample($section1, $htmlLanguage, '段落', 3,
-            "<p>I'm from Doleaf</p>\n<p>Share reference cheat sheet.</p>",
+            "<p>I'm from Kizamu</p>\n<p>Share reference cheat sheet.</p>",
             'テキスト段落要素',
             null,
             'easy'
         );
 
         $this->createExample($section1, $htmlLanguage, 'HTMLリンク', 4,
-            "<a href=\"https://doleaf.com\">Doleaf</a>\n<a href=\"mailto:email@example.com\">Email</a>\n<a href=\"tel:+12345678\">Call</a>\n<a href=\"sms:+12345678&body=ha%20ha\">Msg</a>",
+            "<a href=\"https://Kizamu.com\">Kizamu</a>\n<a href=\"mailto:email@example.com\">Email</a>\n<a href=\"tel:+12345678\">Call</a>\n<a href=\"sms:+12345678&body=ha%20ha\">Msg</a>",
             'メール、電話、SMSを含む様々なリンクタイプ',
             null,
             'easy'
@@ -97,7 +97,7 @@ class CheatCodeHtmlSeeder extends Seeder
         );
 
         $this->createExample($section1, $htmlLanguage, 'HTML内のJavaScript', 10,
-            "<script type=\"text/javascript\">\n    let text = \"Hello Doleaf\";\n    alert(text);\n</script>",
+            "<script type=\"text/javascript\">\n    let text = \"Hello Kizamu\";\n    alert(text);\n</script>",
             'JavaScriptコード用の埋め込みscriptタグ',
             null,
             'easy'
@@ -114,7 +114,7 @@ class CheatCodeHtmlSeeder extends Seeder
         $section2 = $this->createSection($htmlLanguage, 'HTML5タグ', 2, 'セマンティックHTML5要素', 'html5-tags');
 
         $this->createExample($section2, $htmlLanguage, 'ドキュメント構造', 1,
-            "<body>\n  <header>\n    <nav>...</nav>\n  </header>\n  <main>\n    <h1>Doleaf</h1>\n  </main>\n  <footer>\n    <p>©2023 Doleaf</p>\n  </footer>\n</body>",
+            "<body>\n  <header>\n    <nav>...</nav>\n  </header>\n  <main>\n    <h1>Kizamu</h1>\n  </main>\n  <footer>\n    <p>©2023 Kizamu</p>\n  </footer>\n</body>",
             'セマンティックなページレイアウト要素：header、nav、main、footer',
             null,
             'easy'
@@ -156,7 +156,7 @@ class CheatCodeHtmlSeeder extends Seeder
         );
 
         $this->createExample($section2, $htmlLanguage, 'HTML5 Mark', 7,
-            "<p>I Love <mark>Doleaf</mark></p>",
+            "<p>I Love <mark>Kizamu</mark></p>",
             '強調のためのハイライトテキスト要素',
             null,
             'easy'
@@ -273,14 +273,14 @@ class CheatCodeHtmlSeeder extends Seeder
         );
 
         $this->createExample($section6, $htmlLanguage, 'Open Graph', 2,
-            "<meta property=\"og:type\" content=\"website\">\n<meta property=\"og:locale\" content=\"en_CA\">\n<meta property=\"og:title\" content=\"HTML cheatsheet\">\n<meta property=\"og:url\" content=\"https://doleaf.com/html\">\n<meta property=\"og:image\" content=\"https://xxx.com/image.jpg\">\n<meta property=\"og:site_name\" content=\"Name of your website\">\n<meta property=\"og:description\" content=\"Description of this page\">",
+            "<meta property=\"og:type\" content=\"website\">\n<meta property=\"og:locale\" content=\"en_CA\">\n<meta property=\"og:title\" content=\"HTML cheatsheet\">\n<meta property=\"og:url\" content=\"https://Kizamu.com/html\">\n<meta property=\"og:image\" content=\"https://xxx.com/image.jpg\">\n<meta property=\"og:site_name\" content=\"Name of your website\">\n<meta property=\"og:description\" content=\"Description of this page\">",
             'Facebook、Instagram、Pinterest、LinkedIn用のソーシャルメディアメタデータ',
             null,
             'medium'
         );
 
         $this->createExample($section6, $htmlLanguage, 'Twitter Cards', 3,
-            "<meta name=\"twitter:card\" content=\"summary\">\n<meta name=\"twitter:site\" content=\"@FechinLi\">\n<meta name=\"twitter:title\" content=\"HTML cheatsheet\">\n<meta name=\"twitter:url\" content=\"https://doleaf.com/html\">\n<meta name=\"twitter:description\" content=\"Description of this page\">\n<meta name=\"twitter:image\" content=\"https://xxx.com/image.jpg\">",
+            "<meta name=\"twitter:card\" content=\"summary\">\n<meta name=\"twitter:site\" content=\"@FechinLi\">\n<meta name=\"twitter:title\" content=\"HTML cheatsheet\">\n<meta name=\"twitter:url\" content=\"https://Kizamu.com/html\">\n<meta name=\"twitter:description\" content=\"Description of this page\">\n<meta name=\"twitter:image\" content=\"https://xxx.com/image.jpg\">",
             '共有コンテンツカード用のTwitter固有のメタデータ',
             null,
             'medium'

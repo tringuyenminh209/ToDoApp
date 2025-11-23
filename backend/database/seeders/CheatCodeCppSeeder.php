@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 class CheatCodeCppSeeder extends Seeder
 {
     /**
-     * Seed C++ cheat code data from doleaf
-     * Reference: https://doleaf.com/cpp
+     * Seed C++ cheat code data from Kizamu
+     * Reference: https://Kizamu.com/cpp
      */
     public function run(): void
     {
@@ -34,16 +34,16 @@ class CheatCodeCppSeeder extends Seeder
         $section1 = $this->createSection($cppLanguage, 'はじめに', 1, 'C++の基本と導入', 'getting-started');
 
         $this->createExample($section1, $cppLanguage, 'hello.cpp', 1,
-            "#include <iostream>\n\nint main() {\n    std::cout << \"Hello Doleaf\\n\";\n    return 0;\n}",
+            "#include <iostream>\n\nint main() {\n    std::cout << \"Hello Kizamu\\n\";\n    return 0;\n}",
             '基本的なHello Worldプログラム',
-            "Hello Doleaf\n",
+            "Hello Kizamu\n",
             'easy'
         );
 
         $this->createExample($section1, $cppLanguage, 'コンパイルと実行', 2,
-            "\$ g++ hello.cpp -o hello\n\$ ./hello\nHello Doleaf",
+            "\$ g++ hello.cpp -o hello\n\$ ./hello\nHello Kizamu",
             'C++プログラムのコンパイルと実行',
-            "Hello Doleaf",
+            "Hello Kizamu",
             'easy'
         );
 
@@ -104,9 +104,9 @@ class CheatCodeCppSeeder extends Seeder
         );
 
         $this->createExample($section1, $cppLanguage, '関数', 11,
-            "#include <iostream>\n \nvoid hello(); // Declaring\n \nint main() {  // main function\n    hello();    // Calling\n}\n \nvoid hello() { // Defining\n    std::cout << \"Hello Doleaf!\\n\";\n}",
+            "#include <iostream>\n \nvoid hello(); // Declaring\n \nint main() {  // main function\n    hello();    // Calling\n}\n \nvoid hello() { // Defining\n    std::cout << \"Hello Kizamu!\\n\";\n}",
             '関数の宣言と定義',
-            "Hello Doleaf!\n",
+            "Hello Kizamu!\n",
             'easy'
         );
 
@@ -263,9 +263,9 @@ class CheatCodeCppSeeder extends Seeder
         $section5 = $this->createSection($cppLanguage, 'C++関数', 5, '関数の定義と使用', 'cpp-functions');
 
         $this->createExample($section5, $cppLanguage, '関数の宣言', 1,
-            "#include <iostream>\n \nvoid hello(); // Declaring\n \nint main() {  // main function\n    hello();    // Calling\n}\n \nvoid hello() { // Defining\n    std::cout << \"Hello Doleaf!\\n\";\n}",
+            "#include <iostream>\n \nvoid hello(); // Declaring\n \nint main() {  // main function\n    hello();    // Calling\n}\n \nvoid hello() { // Defining\n    std::cout << \"Hello Kizamu!\\n\";\n}",
             '関数の宣言と定義',
-            "Hello Doleaf!\n",
+            "Hello Kizamu!\n",
             'easy'
         );
 

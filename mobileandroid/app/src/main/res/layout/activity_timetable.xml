@@ -15,7 +15,7 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         android:paddingBottom="100dp"
-        android:clipToPadding="false"
+        android:clipToPadding="false" 
         android:scrollbars="vertical"
         android:fadeScrollbars="false"
         app:layout_constraintTop_toTopOf="parent"

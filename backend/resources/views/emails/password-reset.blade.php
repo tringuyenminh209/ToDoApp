@@ -75,7 +75,7 @@
 
         <div class="footer">
             <p>ご質問がございましたら、サポートチームまでお問い合わせください。</p>
-            <p>© 2025 DOL LEAF. All rights reserved.</p>
+            <p>© 2025 Kizamu. All rights reserved.</p>
         </div>
     </div>
 </body>
