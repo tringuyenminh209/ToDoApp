@@ -238,17 +238,48 @@ class KnowledgeController extends Controller
 
     /**
      * Mark item as reviewed
+     * Quality: "hard" | "good" | "easy"
      */
     public function markReviewed(Request $request, $id)
     {
         $user = $request->user();
         $item = KnowledgeItem::where('user_id', $user->id)->findOrFail($id);
 
-        $item->review_count = ($item->review_count ?? 0) + 1;
+        // Validate request
+        $validator = Validator::make($request->all(), [
+            'quality' => 'nullable|string|in:hard,good,easy',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Get quality from request (default: "good")
+        $quality = $request->input('quality', 'good');
+
+        // Update review count based on quality
+        $currentReviewCount = $item->review_count ?? 0;
+
+        if ($quality === 'hard') {
+            // Hard: Reset to beginning or decrease review count
+            // If review_count > 0, decrease by 1, otherwise keep at 0
+            $item->review_count = max(0, $currentReviewCount - 1);
+        } elseif ($quality === 'easy') {
+            // Easy: Increase review count to advance faster
+            $item->review_count = $currentReviewCount + 2;
+        } else {
+            // Good: Normal progression
+            $item->review_count = $currentReviewCount + 1;
+        }
+
         $item->last_reviewed_at = now();
 
-        // Calculate next review date using spaced repetition algorithm
-        $interval = $this->calculateReviewInterval($item->review_count);
+        // Calculate next review date using spaced repetition algorithm with quality
+        $interval = $this->calculateReviewInterval($item->review_count, $quality);
         $item->next_review_date = now()->addDays($interval)->toDateString();
 
         $item->save();
@@ -257,6 +288,43 @@ class KnowledgeController extends Controller
             'success' => true,
             'data' => $item,
             'message' => 'Item marked as reviewed'
+        ]);
+    }
+
+    /**
+     * Add item to review list
+     * POST /api/knowledge/{id}/add-to-review
+     * Sets next_review_date to today or tomorrow so the item appears in review list
+     */
+    public function addToReview(Request $request, $id)
+    {
+        $user = $request->user();
+        $item = KnowledgeItem::where('user_id', $user->id)->findOrFail($id);
+
+        // If item is not in review list yet, add it
+        if (!$item->next_review_date || $item->next_review_date > now()->toDateString()) {
+            // Set next_review_date to today so it appears in due review list
+            $item->next_review_date = now()->toDateString();
+
+            // If review_count is 0, this is the first time adding to review
+            if ($item->review_count == 0) {
+                // Keep review_count at 0, just set the date
+            }
+
+            $item->save();
+
+            return response()->json([
+                'success' => true,
+                'data' => $item,
+                'message' => 'Item added to review list'
+            ]);
+        }
+
+        // Item is already in review list
+        return response()->json([
+            'success' => true,
+            'data' => $item,
+            'message' => 'Item is already in review list'
         ]);
     }
 
@@ -782,17 +850,32 @@ class KnowledgeController extends Controller
     }
 
     /**
-     * Calculate review interval based on review count (spaced repetition)
+     * Calculate review interval based on review count and quality (spaced repetition)
      *
      * @param int $reviewCount
+     * @param string $quality "hard" | "good" | "easy"
      * @return int Number of days until next review
      */
-    private function calculateReviewInterval($reviewCount)
+    private function calculateReviewInterval($reviewCount, $quality = 'good')
     {
         // Spaced repetition intervals: 1, 3, 7, 14, 30, 60, 120 days
         $intervals = [1, 3, 7, 14, 30, 60, 120];
 
-        $index = min($reviewCount - 1, count($intervals) - 1);
+        // Base index calculation
+        $baseIndex = max(0, min($reviewCount - 1, count($intervals) - 1));
+
+        // Adjust interval based on quality
+        if ($quality === 'hard') {
+            // Hard: Use shorter interval (previous level or minimum)
+            $index = max(0, $baseIndex - 1);
+        } elseif ($quality === 'easy') {
+            // Easy: Use longer interval (next level or maximum)
+            $index = min($baseIndex + 1, count($intervals) - 1);
+        } else {
+            // Good: Use normal interval
+            $index = $baseIndex;
+        }
+
         return $intervals[$index];
     }
 }

@@ -59,6 +59,7 @@ class KnowledgeDetailActivity : BaseActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView() {
+        // Setup code WebView
         binding.webviewCode.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
@@ -68,9 +69,21 @@ class KnowledgeDetailActivity : BaseActivity() {
             displayZoomControls = false
             setSupportZoom(false)
         }
-
         binding.webviewCode.isVerticalScrollBarEnabled = false
         binding.webviewCode.isHorizontalScrollBarEnabled = false
+
+        // Setup answer WebView
+        binding.webviewAnswer.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            loadWithOverviewMode = false
+            useWideViewPort = false
+            builtInZoomControls = false
+            displayZoomControls = false
+            setSupportZoom(false)
+        }
+        binding.webviewAnswer.isVerticalScrollBarEnabled = false
+        binding.webviewAnswer.isHorizontalScrollBarEnabled = false
     }
 
     private fun setupClickListeners() {
@@ -186,12 +199,12 @@ class KnowledgeDetailActivity : BaseActivity() {
 
         // Display review information
         binding.tvReviewCount.text = "${item.review_count}回"
-        binding.tvLastReviewed.text = item.last_reviewed_at ?: "未復習"
-        binding.tvNextReview.text = item.next_review_date ?: "未設定"
+        binding.tvLastReviewed.text = formatDateTime(item.last_reviewed_at) ?: "未復習"
+        binding.tvNextReview.text = formatDate(item.next_review_date) ?: "未設定"
 
         // Display meta information
         binding.tvViewCount.text = "${item.view_count}回"
-        binding.tvCreatedAt.text = item.created_at.substring(0, 10)
+        binding.tvCreatedAt.text = formatDate(item.created_at) ?: ""
     }
 
     private fun hideAllContentCards() {
@@ -237,7 +250,36 @@ class KnowledgeDetailActivity : BaseActivity() {
     private fun displayExercise(item: KnowledgeItem) {
         binding.cardExercise.visibility = View.VISIBLE
         binding.tvQuestion.text = item.question ?: ""
-        binding.tvAnswer.text = item.answer ?: ""
+
+        // Display answer with code highlighting if it contains code
+        val answer = item.answer ?: ""
+        val isCode = isCodeContent(answer)
+        
+        if (isCode) {
+            // Use WebView for code highlighting
+            binding.tvAnswer.visibility = View.GONE
+            binding.webviewAnswer.visibility = View.VISIBLE
+            
+            // Extract code from code blocks if present
+            val (blockLanguage, codeContent) = extractCodeFromBlock(answer)
+            val detectedLanguage = detectCodeLanguage(codeContent)
+            
+            // Use language from code block, detected language, item's code_language, or default
+            val language = blockLanguage ?: detectedLanguage ?: item.code_language ?: "plaintext"
+            val html = CodeHighlightHelper.generateHighlightedHtml(this, codeContent, language)
+            binding.webviewAnswer.loadDataWithBaseURL(
+                null,
+                html,
+                "text/html",
+                "UTF-8",
+                null
+            )
+        } else {
+            // Use TextView for plain text
+            binding.tvAnswer.visibility = View.VISIBLE
+            binding.webviewAnswer.visibility = View.GONE
+            binding.tvAnswer.text = answer
+        }
 
         // Set difficulty chip
         val (diffText, diffColor) = when (item.difficulty) {
@@ -252,6 +294,75 @@ class KnowledgeDetailActivity : BaseActivity() {
         // Initially hide answer
         binding.layoutAnswer.visibility = View.GONE
         binding.btnShowAnswer.text = getString(R.string.show_answer)
+    }
+
+    /**
+     * Check if content is code (contains code blocks or code patterns)
+     */
+    private fun isCodeContent(content: String): Boolean {
+        if (content.isEmpty()) return false
+        
+        // Check for code blocks (```...```)
+        if (content.contains("```")) {
+            return true
+        }
+        
+        // Check for common code patterns
+        val codePatterns = listOf(
+            "def ", "function ", "class ", "import ", "from ",
+            "const ", "let ", "var ", "public ", "private ",
+            "<?php", "package ", "func ", "#include",
+            "SELECT ", "INSERT ", "UPDATE ", "DELETE ",
+            "if (", "for (", "while (", "return ",
+            "->", "::", "=>", "&&", "||"
+        )
+        
+        return codePatterns.any { content.contains(it) }
+    }
+
+    /**
+     * Extract code and language from code blocks (```language\ncode\n```)
+     * Returns Pair(language, code)
+     */
+    private fun extractCodeFromBlock(content: String): Pair<String?, String> {
+        // Check for code blocks
+        if (content.contains("```")) {
+            // Try to extract language and code: ```language\ncode\n```
+            val regex = Regex("```(\\w+)?\\s*\\n([\\s\\S]*?)\\n```")
+            val match = regex.find(content)
+            if (match != null) {
+                val language = match.groupValues[1].takeIf { it.isNotEmpty() }
+                val code = match.groupValues[2].trim()
+                return Pair(language, code)
+            }
+        }
+        return Pair(null, content.trim())
+    }
+
+    /**
+     * Detect code language from content
+     */
+    private fun detectCodeLanguage(content: String): String? {
+        val patterns = mapOf(
+            "python" to listOf("def ", "import ", "from ", "class ", "__init__", "print("),
+            "javascript" to listOf("const ", "let ", "var ", "function ", "=>", "console.log"),
+            "java" to listOf("public class", "private ", "protected ", "System.out", "public static"),
+            "php" to listOf("<?php", "namespace ", "use ", "::", "$"),
+            "go" to listOf("func ", "package ", "import ", "type ", "var "),
+            "cpp" to listOf("#include", "std::", "cout", "cin", "using namespace"),
+            "sql" to listOf("SELECT ", "INSERT ", "UPDATE ", "DELETE ", "FROM ", "WHERE "),
+            "bash" to listOf("#!/bin/bash", "#!/bin/sh", "echo ", "if [", "for "),
+            "html" to listOf("<!DOCTYPE", "<html", "<div", "<script", "<style"),
+            "css" to listOf("@media", "@keyframes", "margin:", "padding:", "background:")
+        )
+        
+        for ((lang, keywords) in patterns) {
+            if (keywords.any { content.contains(it, ignoreCase = true) }) {
+                return lang
+            }
+        }
+        
+        return null
     }
 
     private fun displayResourceLink(item: KnowledgeItem) {
@@ -337,6 +448,10 @@ class KnowledgeDetailActivity : BaseActivity() {
                     startActivity(intent)
                     true
                 }
+                R.id.action_review -> {
+                    addToReviewList()
+                    true
+                }
                 R.id.action_archive -> {
                     viewModel.toggleArchive()
                     true
@@ -386,6 +501,100 @@ class KnowledgeDetailActivity : BaseActivity() {
             putExtra(Intent.EXTRA_TEXT, shareText)
         }
         startActivity(Intent.createChooser(intent, "共有"))
+    }
+
+    /**
+     * 復習リストに追加する
+     * アイテムを復習リストに追加して、後で復習できるようにする
+     */
+    private fun addToReviewList() {
+        val item = viewModel.knowledgeItem.value ?: return
+
+        // 既に復習リストにあるかチェック（next_review_dateが今日以前なら既に復習対象）
+        val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            .format(java.util.Date())
+        
+        if (!item.next_review_date.isNullOrEmpty() && item.next_review_date <= today) {
+            // 既に復習リストにある場合
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.review_title))
+                .setMessage("このアイテムは既に復習リストに追加されています。\n復習画面で復習できます。")
+                .setPositiveButton("OK", null)
+                .show()
+            return
+        }
+
+        // 復習リストに追加
+        viewModel.addToReview()
+    }
+
+    /**
+     * 日付文字列をフォーマット（yyyy-MM-dd形式から日本語形式へ）
+     */
+    private fun formatDate(dateString: String?): String? {
+        if (dateString.isNullOrEmpty()) return null
+        
+        return try {
+            // ISO 8601形式またはyyyy-MM-dd形式をパース
+            val datePart = if (dateString.contains("T")) {
+                dateString.substring(0, 10) // "2025-10-27T15:00:00.000000Z" -> "2025-10-27"
+            } else {
+                dateString
+            }
+            
+            val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            val outputFormat = java.text.SimpleDateFormat("yyyy年MM月dd日", java.util.Locale.getDefault())
+            val date = inputFormat.parse(datePart)
+            date?.let { outputFormat.format(it) }
+        } catch (e: Exception) {
+            // パースに失敗した場合は、手動でフォーマット
+            try {
+                val parts = dateString.substring(0, 10).split("-")
+                if (parts.size == 3) {
+                    "${parts[0]}年${parts[1]}月${parts[2]}日"
+                } else {
+                    dateString
+                }
+            } catch (e2: Exception) {
+                dateString
+            }
+        }
+    }
+
+    /**
+     * 日時文字列をフォーマット（ISO 8601形式から日本語形式へ）
+     */
+    private fun formatDateTime(dateTimeString: String?): String? {
+        if (dateTimeString.isNullOrEmpty()) return null
+        
+        return try {
+            // ISO 8601形式をパース（複数の形式に対応）
+            val datePart = dateTimeString.substring(0, 10) // "2025-10-27"
+            val timePart = if (dateTimeString.contains("T") && dateTimeString.length > 11) {
+                // "2025-10-27T15:00:00.000000Z" -> "15:00"
+                val timeStart = dateTimeString.indexOf("T") + 1
+                val timeEnd = dateTimeString.indexOf(".", timeStart).takeIf { it > 0 } 
+                    ?: dateTimeString.indexOf("Z", timeStart).takeIf { it > 0 }
+                    ?: dateTimeString.length
+                dateTimeString.substring(timeStart, minOf(timeEnd, timeStart + 5)) // "HH:mm"のみ取得
+            } else {
+                null
+            }
+            
+            val dateFormatted = formatDate(datePart)
+            if (timePart != null && dateFormatted != null) {
+                "$dateFormatted $timePart"
+            } else {
+                dateFormatted
+            }
+        } catch (e: Exception) {
+            // パースに失敗した場合は、日付部分のみを表示
+            if (dateTimeString.length >= 10) {
+                formatDate(dateTimeString.substring(0, 10))
+            } else {
+                dateTimeString
+            }
+        }
     }
 
     override fun onResume() {
