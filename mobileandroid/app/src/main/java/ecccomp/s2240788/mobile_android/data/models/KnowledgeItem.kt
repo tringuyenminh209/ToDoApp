@@ -111,6 +111,37 @@ data class CategorySuggestion(
 )
 
 /**
+ * Smart AI Feature Request/Response Models
+ */
+data class SuggestCategoryRequest(
+    val title: String? = null,
+    val content: String,
+    val item_type: String // note, code_snippet, exercise, resource_link
+)
+
+data class SuggestCategoryResponse(
+    val suggested_categories: List<SimpleCategorySuggestion>,
+    val detected_language: String?,
+    val confidence: Double
+)
+
+data class SimpleCategorySuggestion(
+    val id: Int,
+    val name: String,
+    val confidence: Double
+)
+
+data class SuggestTagsRequest(
+    val content: String,
+    val item_type: String? = "note"
+)
+
+data class SuggestTagsResponse(
+    val suggested_tags: List<String>,
+    val detected_language: String?
+)
+
+/**
  * Bulk Operation Request Models
  */
 data class BulkTagRequest(

@@ -229,6 +229,12 @@ interface ApiService {
     @POST("knowledge/quick-capture")
     suspend fun quickCaptureKnowledge(@Body request: QuickCaptureRequest): Response<ApiResponse<QuickCaptureResponse>>
 
+    @POST("knowledge/suggest-category")
+    suspend fun suggestCategory(@Body request: SuggestCategoryRequest): Response<ApiResponse<SuggestCategoryResponse>>
+
+    @POST("knowledge/suggest-tags")
+    suspend fun suggestTags(@Body request: SuggestTagsRequest): Response<ApiResponse<SuggestTagsResponse>>
+
     @PUT("knowledge/bulk-tag")
     suspend fun bulkTagKnowledgeItems(@Body request: BulkTagRequest): Response<ApiResponse<BulkOperationResponse>>
 

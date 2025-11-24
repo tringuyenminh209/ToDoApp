@@ -56,6 +56,12 @@ class KnowledgeViewModel : ViewModel() {
     private val _quickCaptureResponse = MutableLiveData<QuickCaptureResponse?>()
     val quickCaptureResponse: LiveData<QuickCaptureResponse?> = _quickCaptureResponse
 
+    private val _suggestCategoryResponse = MutableLiveData<SuggestCategoryResponse?>()
+    val suggestCategoryResponse: LiveData<SuggestCategoryResponse?> = _suggestCategoryResponse
+
+    private val _suggestTagsResponse = MutableLiveData<SuggestTagsResponse?>()
+    val suggestTagsResponse: LiveData<SuggestTagsResponse?> = _suggestTagsResponse
+
     private val _successMessage = MutableLiveData<String?>()
     val successMessage: LiveData<String?> = _successMessage
 
@@ -712,6 +718,56 @@ class KnowledgeViewModel : ViewModel() {
                     loadKnowledgeItems()
                 } else {
                     _error.value = "保存に失敗しました"
+                }
+            } catch (e: Exception) {
+                _error.value = "エラー: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Suggest category based on content
+     */
+    fun suggestCategory(title: String?, content: String, itemType: String) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                val request = SuggestCategoryRequest(title, content, itemType)
+                val response = apiService.suggestCategory(request)
+
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _suggestCategoryResponse.postValue(response.body()?.data)
+                } else {
+                    _error.value = "カテゴリの提案に失敗しました"
+                }
+            } catch (e: Exception) {
+                _error.value = "エラー: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Suggest tags based on content
+     */
+    fun suggestTags(content: String, itemType: String = "note") {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                val request = SuggestTagsRequest(content, itemType)
+                val response = apiService.suggestTags(request)
+
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _suggestTagsResponse.postValue(response.body()?.data)
+                } else {
+                    _error.value = "タグの提案に失敗しました"
                 }
             } catch (e: Exception) {
                 _error.value = "エラー: ${e.message}"

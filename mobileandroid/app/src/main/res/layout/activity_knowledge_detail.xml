@@ -202,7 +202,17 @@
                             android:contentDescription="@string/copy_code" />
                     </LinearLayout>
 
+                    <!-- WebView for syntax highlighting -->
+                    <WebView
+                        android:id="@+id/webview_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/surface"
+                        android:visibility="gone" />
+
+                    <!-- Fallback HorizontalScrollView for plain text -->
                     <HorizontalScrollView
+                        android:id="@+id/scroll_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
