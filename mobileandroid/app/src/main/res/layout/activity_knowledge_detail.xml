@@ -317,6 +317,15 @@
                             android:textStyle="bold"
                             android:layout_marginBottom="@dimen/spacing_sm" />
 
+                        <!-- WebView for code highlighting -->
+                        <WebView
+                            android:id="@+id/webview_answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/surface"
+                            android:visibility="gone" />
+
+                        <!-- TextView for plain text -->
                         <TextView
                             android:id="@+id/tv_answer"
                             android:layout_width="match_parent"

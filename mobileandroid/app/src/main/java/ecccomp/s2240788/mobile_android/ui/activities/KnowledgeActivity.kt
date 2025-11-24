@@ -66,6 +66,7 @@ class KnowledgeActivity : BaseActivity() {
 
     private fun setupAdapters() {
         // Folder adapter for sub-categories
+        // Note: allItems will be updated when data changes
         folderAdapter = FolderAdapter(
             onFolderClick = { category ->
                 navigateToCategory(category)
@@ -321,7 +322,15 @@ class KnowledgeActivity : BaseActivity() {
         // Show/hide folders section
         binding.foldersSection.visibility = if (hasSubFolders) View.VISIBLE else View.GONE
         if (hasSubFolders) {
-            folderAdapter.submitList(subFolders)
+            // Update item counts for each folder based on actual items
+            val foldersWithCounts = subFolders.map { category ->
+                val actualCount = allItems.count { 
+                    it.category_id == category.id && !it.is_archived 
+                }
+                // Create a copy with updated item_count
+                category.copy(item_count = actualCount)
+            }
+            folderAdapter.submitList(foldersWithCounts)
         }
 
         // Show/hide files section

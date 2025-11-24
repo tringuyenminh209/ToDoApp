@@ -375,16 +375,23 @@ class KnowledgeViewModel : ViewModel() {
 
     /**
      * レビュー済みとしてマーク
+     * @param itemId アイテムID
+     * @param quality 復習評価 ("hard", "good", "easy")
+     * @param onSuccess 成功時のコールバック
      */
-    fun markAsReviewed(itemId: Int, onSuccess: () -> Unit = {}) {
+    fun markAsReviewed(itemId: Int, quality: String = "good", onSuccess: () -> Unit = {}) {
         viewModelScope.launch {
             try {
                 _error.value = null
                 
-                val response = apiService.markKnowledgeReviewed(itemId)
+                val request = MarkReviewRequest(quality = quality)
+                val response = apiService.markKnowledgeReviewed(itemId, request)
                 
                 if (response.isSuccessful) {
+                    // 復習項目リストを更新
+                    loadDueReviewItems()
                     loadKnowledgeItems()
+                    _successMessage.value = "復習済みにマークしました"
                     onSuccess()
                 } else {
                     _error.value = "レビューの更新に失敗しました: ${response.message()}"

@@ -24,6 +24,19 @@ class KnowledgeCategoryController extends Controller
             ->ordered()
             ->get();
 
+        // Get item counts for all categories in one query (more efficient)
+        $categoryIds = $categories->pluck('id');
+        $itemCounts = KnowledgeItem::whereIn('category_id', $categoryIds)
+            ->where('is_archived', false)
+            ->groupBy('category_id')
+            ->selectRaw('category_id, count(*) as count')
+            ->pluck('count', 'category_id');
+
+        // Update item_count for each category
+        $categories->each(function ($category) use ($itemCounts) {
+            $category->item_count = $itemCounts->get($category->id, 0);
+        });
+
         return response()->json([
             'success' => true,
             'data' => $categories,
@@ -39,15 +52,26 @@ class KnowledgeCategoryController extends Controller
     {
         $user = $request->user();
 
-        // Get only root categories (parent_id is null)
-        $rootCategories = KnowledgeCategory::where('user_id', $user->id)
-            ->rootCategories()
-            ->ordered()
-            ->get();
+        // Get all categories for this user
+        $allCategories = KnowledgeCategory::where('user_id', $user->id)->get();
 
-        // Load all children recursively
-        $tree = $rootCategories->map(function ($category) {
-            return $this->buildCategoryTree($category);
+        // Get item counts for all categories in one query (more efficient)
+        $categoryIds = $allCategories->pluck('id');
+        $itemCounts = KnowledgeItem::whereIn('category_id', $categoryIds)
+            ->where('is_archived', false)
+            ->groupBy('category_id')
+            ->selectRaw('category_id, count(*) as count')
+            ->pluck('count', 'category_id');
+
+        // Get only root categories (parent_id is null)
+        $rootCategories = $allCategories->whereNull('parent_id')
+            ->sortBy(function ($category) {
+                return [$category->sort_order, $category->name];
+            });
+
+        // Load all children recursively with pre-calculated counts
+        $tree = $rootCategories->map(function ($category) use ($allCategories, $itemCounts) {
+            return $this->buildCategoryTreeWithCounts($category, $allCategories, $itemCounts);
         });
 
         return response()->json([
@@ -71,6 +95,11 @@ class KnowledgeCategoryController extends Controller
                       ->orderBy('created_at', 'desc');
             }])
             ->findOrFail($id);
+
+        // Calculate real-time item count (excluding archived items)
+        $category->item_count = KnowledgeItem::where('category_id', $category->id)
+            ->where('is_archived', false)
+            ->count();
 
         // Get breadcrumb path
         $breadcrumb = $this->getBreadcrumb($category);
@@ -436,11 +465,16 @@ class KnowledgeCategoryController extends Controller
     // ==================== Helper Methods ====================
 
     /**
-     * Build category tree recursively
+     * Build category tree recursively (old method, kept for backward compatibility)
      */
     private function buildCategoryTree(KnowledgeCategory $category): array
     {
         $data = $category->toArray();
+
+        // Calculate real-time item count (excluding archived items)
+        $data['item_count'] = KnowledgeItem::where('category_id', $category->id)
+            ->where('is_archived', false)
+            ->count();
 
         // Load children
         $children = $category->children()->ordered()->get();
@@ -449,6 +483,34 @@ class KnowledgeCategoryController extends Controller
             $data['children'] = $children->map(function ($child) {
                 return $this->buildCategoryTree($child);
             })->toArray();
+        } else {
+            $data['children'] = [];
+        }
+
+        return $data;
+    }
+
+    /**
+     * Build category tree recursively with pre-calculated item counts (optimized)
+     */
+    private function buildCategoryTreeWithCounts(KnowledgeCategory $category, $allCategories, $itemCounts): array
+    {
+        $data = $category->toArray();
+
+        // Set item count from pre-calculated counts
+        $data['item_count'] = $itemCounts->get($category->id, 0);
+
+        // Get children from pre-loaded collection
+        $children = $allCategories->where('parent_id', $category->id)
+            ->sortBy(function ($child) {
+                return [$child->sort_order, $child->name];
+            });
+
+        // Build children tree recursively
+        if ($children->isNotEmpty()) {
+            $data['children'] = $children->map(function ($child) use ($allCategories, $itemCounts) {
+                return $this->buildCategoryTreeWithCounts($child, $allCategories, $itemCounts);
+            })->values()->toArray();
         } else {
             $data['children'] = [];
         }

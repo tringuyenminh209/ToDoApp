@@ -276,7 +276,13 @@ interface ApiService {
     suspend fun toggleKnowledgeArchive(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
 
     @PUT("knowledge/{id}/review")
-    suspend fun markKnowledgeReviewed(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
+    suspend fun markKnowledgeReviewed(
+        @Path("id") id: Int,
+        @Body request: MarkReviewRequest
+    ): Response<ApiResponse<KnowledgeItem>>
+
+    @POST("knowledge/{id}/add-to-review")
+    suspend fun addKnowledgeToReview(@Path("id") id: Int): Response<ApiResponse<KnowledgeItem>>
 
     @POST("knowledge/{id}/clone")
     suspend fun cloneKnowledgeItem(@Path("id") id: Int, @Body request: CloneKnowledgeRequest): Response<ApiResponse<KnowledgeItem>>

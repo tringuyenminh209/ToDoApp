@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.KnowledgeItem
+import ecccomp.s2240788.mobile_android.data.models.MarkReviewRequest
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
 
@@ -136,14 +137,40 @@ class KnowledgeDetailViewModel : ViewModel() {
     }
 
     /**
-     * レビュー済みとしてマーク
+     * 復習リストに追加
+     * next_review_dateを今日に設定して、復習リストに表示されるようにする
      */
-    fun markAsReviewed() {
+    fun addToReview() {
         val itemId = _knowledgeItem.value?.id ?: return
 
         viewModelScope.launch {
             try {
-                val response = apiService.markKnowledgeReviewed(itemId)
+                val response = apiService.addKnowledgeToReview(itemId)
+
+                if (response.isSuccessful) {
+                    val updatedItem = response.body()?.data
+                    _knowledgeItem.postValue(updatedItem)
+                    _toast.value = "復習リストに追加しました"
+                } else {
+                    _error.value = "復習リストへの追加に失敗しました"
+                }
+            } catch (e: Exception) {
+                _error.value = "エラーが発生しました: ${e.message}"
+            }
+        }
+    }
+
+    /**
+     * レビュー済みとしてマーク
+     * @param quality 復習評価 ("hard", "good", "easy") - デフォルト: "good"
+     */
+    fun markAsReviewed(quality: String = "good") {
+        val itemId = _knowledgeItem.value?.id ?: return
+
+        viewModelScope.launch {
+            try {
+                val request = MarkReviewRequest(quality = quality)
+                val response = apiService.markKnowledgeReviewed(itemId, request)
 
                 if (response.isSuccessful) {
                     val updatedItem = response.body()?.data

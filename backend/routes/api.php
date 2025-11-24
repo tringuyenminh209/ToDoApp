@@ -315,6 +315,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}/favorite', [KnowledgeController::class, 'toggleFavorite']);
         Route::put('/{id}/archive', [KnowledgeController::class, 'toggleArchive']);
         Route::put('/{id}/review', [KnowledgeController::class, 'markReviewed']);
+        Route::post('/{id}/add-to-review', [KnowledgeController::class, 'addToReview']);
         Route::post('/{id}/clone', [KnowledgeController::class, 'clone']);
         Route::get('/{id}/related', [KnowledgeController::class, 'related']);
     });

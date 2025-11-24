@@ -889,7 +889,7 @@
     <string name="easy">簡単</string>
     <string name="reviewed_times">%d回復習済み</string>
     <string name="items_left">残り %d</string>
-    <string name="next_review_intervals">難しい: %s • 良い: %s • 簡単: %s</string>
+    <string name="next_review_intervals" formatted="false">難しい: %1$s • 良い: %2$s • 簡単: %3$s</string>
     <string name="one_day">1日</string>
     <string name="days_count">%d日</string>
     <string name="weeks_count">%d週間</string>
