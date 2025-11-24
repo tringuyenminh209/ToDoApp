@@ -51,7 +51,7 @@ class FolderAdapter(
                 tvFolderDescription.visibility = View.GONE
             }
 
-            // Set item count
+            // Set item count (should be calculated from backend or passed with updated count)
             tvItemCount.text = category.item_count.toString()
 
             // Set folder icon (could be customized based on category icon)

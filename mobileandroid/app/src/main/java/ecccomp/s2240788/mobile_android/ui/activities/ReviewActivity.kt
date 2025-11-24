@@ -51,6 +51,7 @@ class ReviewActivity : BaseActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView() {
+        // Setup content WebView
         binding.webviewContent.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
@@ -60,9 +61,21 @@ class ReviewActivity : BaseActivity() {
             displayZoomControls = false
             setSupportZoom(false)
         }
-
         binding.webviewContent.isVerticalScrollBarEnabled = false
         binding.webviewContent.isHorizontalScrollBarEnabled = false
+
+        // Setup answer WebView
+        binding.webviewAnswer.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            loadWithOverviewMode = false
+            useWideViewPort = false
+            builtInZoomControls = false
+            displayZoomControls = false
+            setSupportZoom(false)
+        }
+        binding.webviewAnswer.isVerticalScrollBarEnabled = false
+        binding.webviewAnswer.isHorizontalScrollBarEnabled = false
     }
 
     private fun setupClickListeners() {
@@ -175,7 +188,36 @@ class ReviewActivity : BaseActivity() {
                     binding.llQuestion.visibility = View.VISIBLE
                     binding.llContent.visibility = View.GONE
                     binding.tvQuestion.text = item.question ?: ""
-                    binding.tvAnswer.text = item.answer ?: ""
+                    
+                    // Display answer with code highlighting if it contains code
+                    val answer = item.answer ?: ""
+                    val isCode = isCodeContent(answer)
+                    
+                    if (isCode) {
+                        // Use WebView for code highlighting
+                        binding.tvAnswer.visibility = View.GONE
+                        binding.webviewAnswer.visibility = View.VISIBLE
+                        
+                        // Extract code from code blocks if present
+                        val (blockLanguage, codeContent) = extractCodeFromBlock(answer)
+                        val detectedLanguage = detectCodeLanguage(codeContent)
+                        
+                        // Use language from code block, detected language, item's code_language, or default
+                        val language = blockLanguage ?: detectedLanguage ?: item.code_language ?: "plaintext"
+                        val html = CodeHighlightHelper.generateHighlightedHtml(this, codeContent, language)
+                        binding.webviewAnswer.loadDataWithBaseURL(
+                            null,
+                            html,
+                            "text/html",
+                            "UTF-8",
+                            null
+                        )
+                    } else {
+                        // Use TextView for plain text
+                        binding.tvAnswer.visibility = View.VISIBLE
+                        binding.webviewAnswer.visibility = View.GONE
+                        binding.tvAnswer.text = answer
+                    }
                 }
                 "code_snippet" -> {
                     // Show code with syntax highlighting
@@ -252,8 +294,8 @@ class ReviewActivity : BaseActivity() {
             }
             selectedButton.alpha = 0.5f
 
-            // Mark as reviewed on backend
-            viewModel.markAsReviewed(item.id)
+            // Mark as reviewed on backend with quality parameter
+            viewModel.markAsReviewed(item.id, quality)
 
             // Add a short delay before moving to next card for better UX
             binding.root.postDelayed({
@@ -264,7 +306,7 @@ class ReviewActivity : BaseActivity() {
                 selectedButton.alpha = 1.0f
             }, 300)
 
-            // Note: Backend auto-calculates next_review_date based on review_count
+            // Note: Backend calculates next_review_date based on review_count and quality
             // moveToNextItem() will be called by the successMessage observer
         }
     }
@@ -317,14 +359,27 @@ class ReviewActivity : BaseActivity() {
     }
 
     private fun getNextInterval(currentCount: Int, quality: String): Int {
-        // Spaced repetition intervals in days
+        // Spaced repetition intervals in days (matches backend algorithm)
         val intervals = listOf(1, 3, 7, 14, 30, 60, 120)
 
+        // Calculate base index (same as backend)
+        val baseIndex = maxOf(0, minOf(currentCount - 1, intervals.size - 1))
+
         return when (quality) {
-            "hard" -> intervals.getOrElse(0) { 1 } // Reset to 1 day
-            "good" -> intervals.getOrElse(currentCount) { 120 }
-            "easy" -> intervals.getOrElse(currentCount + 1) { 120 }
-            else -> intervals.getOrElse(currentCount) { 120 }
+            "hard" -> {
+                // Hard: Use shorter interval (previous level or minimum)
+                val index = maxOf(0, baseIndex - 1)
+                intervals.getOrElse(index) { 1 }
+            }
+            "easy" -> {
+                // Easy: Use longer interval (next level or maximum)
+                val index = minOf(baseIndex + 1, intervals.size - 1)
+                intervals.getOrElse(index) { 120 }
+            }
+            else -> {
+                // Good: Use normal interval
+                intervals.getOrElse(baseIndex) { 120 }
+            }
         }
     }
 
@@ -336,6 +391,75 @@ class ReviewActivity : BaseActivity() {
             days < 365 -> getString(R.string.months_count, days / 30)
             else -> getString(R.string.years_count, days / 365)
         }
+    }
+
+    /**
+     * Check if content is code (contains code blocks or code patterns)
+     */
+    private fun isCodeContent(content: String): Boolean {
+        if (content.isEmpty()) return false
+        
+        // Check for code blocks (```...```)
+        if (content.contains("```")) {
+            return true
+        }
+        
+        // Check for common code patterns
+        val codePatterns = listOf(
+            "def ", "function ", "class ", "import ", "from ",
+            "const ", "let ", "var ", "public ", "private ",
+            "<?php", "package ", "func ", "#include",
+            "SELECT ", "INSERT ", "UPDATE ", "DELETE ",
+            "if (", "for (", "while (", "return ",
+            "->", "::", "=>", "&&", "||"
+        )
+        
+        return codePatterns.any { content.contains(it) }
+    }
+
+    /**
+     * Extract code and language from code blocks (```language\ncode\n```)
+     * Returns Pair(language, code)
+     */
+    private fun extractCodeFromBlock(content: String): Pair<String?, String> {
+        // Check for code blocks
+        if (content.contains("```")) {
+            // Try to extract language and code: ```language\ncode\n```
+            val regex = Regex("```(\\w+)?\\s*\\n([\\s\\S]*?)\\n```")
+            val match = regex.find(content)
+            if (match != null) {
+                val language = match.groupValues[1].takeIf { it.isNotEmpty() }
+                val code = match.groupValues[2].trim()
+                return Pair(language, code)
+            }
+        }
+        return Pair(null, content.trim())
+    }
+
+    /**
+     * Detect code language from content
+     */
+    private fun detectCodeLanguage(content: String): String? {
+        val patterns = mapOf(
+            "python" to listOf("def ", "import ", "from ", "class ", "__init__", "print("),
+            "javascript" to listOf("const ", "let ", "var ", "function ", "=>", "console.log"),
+            "java" to listOf("public class", "private ", "protected ", "System.out", "public static"),
+            "php" to listOf("<?php", "namespace ", "use ", "::", "$"),
+            "go" to listOf("func ", "package ", "import ", "type ", "var "),
+            "cpp" to listOf("#include", "std::", "cout", "cin", "using namespace"),
+            "sql" to listOf("SELECT ", "INSERT ", "UPDATE ", "DELETE ", "FROM ", "WHERE "),
+            "bash" to listOf("#!/bin/bash", "#!/bin/sh", "echo ", "if [", "for "),
+            "html" to listOf("<!DOCTYPE", "<html", "<div", "<script", "<style"),
+            "css" to listOf("@media", "@keyframes", "margin:", "padding:", "background:")
+        )
+        
+        for ((lang, keywords) in patterns) {
+            if (keywords.any { content.contains(it, ignoreCase = true) }) {
+                return lang
+            }
+        }
+        
+        return null
     }
 
     private fun showEmptyState() {

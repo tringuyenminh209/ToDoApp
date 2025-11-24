@@ -6,6 +6,11 @@
         android:icon="@drawable/ic_edit" />
 
     <item
+        android:id="@+id/action_review"
+        android:title="@string/review_title"
+        android:icon="@drawable/ic_book" />
+
+    <item
         android:id="@+id/action_archive"
         android:title="@string/archive"
         android:icon="@drawable/ic_folder" />
