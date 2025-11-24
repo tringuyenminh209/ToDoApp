@@ -879,4 +879,25 @@
     <string name="auto_tags">自動タグ</string>
     <string name="quick_capture_success">保存されました！</string>
 
+    <!-- Review System -->
+    <string name="review_title">復習</string>
+    <string name="no_items_to_review">復習するアイテムがありません</string>
+    <string name="back_to_knowledge">知識ベースに戻る</string>
+    <string name="how_well_did_you_remember">どのくらい覚えていましたか？</string>
+    <string name="hard">難しい</string>
+    <string name="good">良い</string>
+    <string name="easy">簡単</string>
+    <string name="reviewed_times">%d回復習済み</string>
+    <string name="items_left">残り %d</string>
+    <string name="next_review_intervals">難しい: %s • 良い: %s • 簡単: %s</string>
+    <string name="one_day">1日</string>
+    <string name="days_count">%d日</string>
+    <string name="weeks_count">%d週間</string>
+    <string name="months_count">%dヶ月</string>
+    <string name="years_count">%d年</string>
+    <string name="review_completed">復習完了！</string>
+    <string name="all_reviews_completed">すべての復習が完了しました！</string>
+    <string name="items_due_today">今日 %d件</string>
+    <string name="no_reviews_today">今日はなし</string>
+
 </resources>

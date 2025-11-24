@@ -53,6 +53,7 @@ class KnowledgeActivity : BaseActivity() {
         viewModel.loadKnowledgeItems()
         viewModel.loadCategories()
         viewModel.loadKnowledgeStats()
+        viewModel.loadDueReviewItems()
     }
 
     private fun setupUI() {
@@ -140,6 +141,12 @@ class KnowledgeActivity : BaseActivity() {
             startActivity(intent)
         }
 
+        // Review navigation
+        binding.reviewCard.setOnClickListener {
+            val intent = Intent(this, ReviewActivity::class.java)
+            startActivity(intent)
+        }
+
         // Search
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -190,6 +197,16 @@ class KnowledgeActivity : BaseActivity() {
         // Observe stats for potential future use
         viewModel.knowledgeStats.observe(this) { stats ->
             // Could display stats in UI
+        }
+
+        // Observe due review items count
+        viewModel.dueReviewItems.observe(this) { items ->
+            val count = items.size
+            binding.tvDueCount.text = if (count > 0) {
+                getString(R.string.items_due_today, count)
+            } else {
+                getString(R.string.no_reviews_today)
+            }
         }
 
         // Observe categories

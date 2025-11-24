@@ -98,6 +98,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.activities.ReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.MilestoneKnowledgeActivity"
             android:exported="false" />
         <activity
