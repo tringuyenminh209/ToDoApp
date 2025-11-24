@@ -290,6 +290,87 @@ class KnowledgeController extends Controller
     }
 
     /**
+     * Suggest category based on content
+     * POST /api/knowledge/suggest-category
+     */
+    public function suggestCategory(Request $request)
+    {
+        $user = $request->user();
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'nullable|string',
+            'content' => 'required|string',
+            'item_type' => 'required|in:note,code_snippet,exercise,resource_link',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $content = $request->input('title', '') . ' ' . $request->input('content');
+        $itemType = $request->input('item_type');
+
+        // Auto-detect code language for better suggestions
+        $codeLanguage = null;
+        if ($itemType === 'code_snippet') {
+            $codeLanguage = $this->detectCodeLanguage($content);
+        }
+
+        // Get category suggestions
+        $suggestions = $this->suggestCategories($user->id, $content, $itemType, $codeLanguage);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'suggested_categories' => $suggestions,
+                'detected_language' => $codeLanguage,
+                'confidence' => !empty($suggestions) ? $suggestions[0]['confidence'] : 0
+            ]
+        ]);
+    }
+
+    /**
+     * Suggest tags based on content
+     * POST /api/knowledge/suggest-tags
+     */
+    public function suggestTags(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string',
+            'item_type' => 'nullable|in:note,code_snippet,exercise,resource_link',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $content = $request->input('content');
+        $itemType = $request->input('item_type', 'note');
+
+        // Auto-detect code language
+        $codeLanguage = $this->detectCodeLanguage($content);
+
+        // Generate tags
+        $tags = $this->generateTags($content, $itemType, $codeLanguage);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'suggested_tags' => $tags,
+                'detected_language' => $codeLanguage
+            ]
+        ]);
+    }
+
+    /**
      * Quick capture - Fast create with auto-categorization
      * POST /api/knowledge/quick-capture
      */

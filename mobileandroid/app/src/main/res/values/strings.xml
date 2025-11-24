@@ -900,4 +900,10 @@
     <string name="items_due_today">今日 %d件</string>
     <string name="no_reviews_today">今日はなし</string>
 
+    <!-- Folder Navigation -->
+    <string name="folder">フォルダ</string>
+    <string name="folders">フォルダ</string>
+    <string name="files">ファイル</string>
+    <string name="home">ホーム</string>
+
 </resources>
