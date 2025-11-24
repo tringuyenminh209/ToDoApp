@@ -1,5 +1,6 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.data.models.KnowledgeItem
 import ecccomp.s2240788.mobile_android.databinding.ActivityReviewBinding
 import ecccomp.s2240788.mobile_android.ui.viewmodels.KnowledgeViewModel
+import ecccomp.s2240788.mobile_android.utils.CodeHighlightHelper
 
 /**
  * ReviewActivity
@@ -39,11 +41,28 @@ class ReviewActivity : BaseActivity() {
 
         viewModel = ViewModelProvider(this)[KnowledgeViewModel::class.java]
 
+        setupWebView()
         setupClickListeners()
         setupObservers()
 
         // Load items due for review
         viewModel.loadDueReviewItems()
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun setupWebView() {
+        binding.webviewContent.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            loadWithOverviewMode = false
+            useWideViewPort = false
+            builtInZoomControls = false
+            displayZoomControls = false
+            setSupportZoom(false)
+        }
+
+        binding.webviewContent.isVerticalScrollBarEnabled = false
+        binding.webviewContent.isHorizontalScrollBarEnabled = false
     }
 
     private fun setupClickListeners() {
@@ -159,17 +178,42 @@ class ReviewActivity : BaseActivity() {
                     binding.tvAnswer.text = item.answer ?: ""
                 }
                 "code_snippet" -> {
-                    // Show code
+                    // Show code with syntax highlighting
                     binding.llQuestion.visibility = View.GONE
                     binding.llContent.visibility = View.VISIBLE
                     binding.tvContentLabel.text = getString(R.string.code)
-                    binding.tvContent.text = item.content ?: ""
+
+                    // Use WebView for code highlighting
+                    val code = item.content ?: ""
+                    val language = item.code_language ?: "plaintext"
+
+                    if (code.isNotEmpty()) {
+                        binding.tvContent.visibility = View.GONE
+                        binding.webviewContent.visibility = View.VISIBLE
+
+                        val html = CodeHighlightHelper.generateHighlightedHtml(this, code, language)
+                        binding.webviewContent.loadDataWithBaseURL(
+                            null,
+                            html,
+                            "text/html",
+                            "UTF-8",
+                            null
+                        )
+                    } else {
+                        binding.tvContent.visibility = View.VISIBLE
+                        binding.webviewContent.visibility = View.GONE
+                        binding.tvContent.text = code
+                    }
                 }
                 else -> {
                     // Show regular content
                     binding.llQuestion.visibility = View.GONE
                     binding.llContent.visibility = View.VISIBLE
                     binding.tvContentLabel.text = getString(R.string.content)
+
+                    // Use TextView for non-code content
+                    binding.tvContent.visibility = View.VISIBLE
+                    binding.webviewContent.visibility = View.GONE
                     binding.tvContent.text = item.content ?: ""
                 }
             }

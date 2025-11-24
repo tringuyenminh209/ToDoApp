@@ -75,9 +75,22 @@ class QuickCaptureActivity : BaseActivity() {
             }
         }
 
+        // Observe suggest category response
+        viewModel.suggestCategoryResponse.observe(this) { response ->
+            response?.let {
+                showSuggestedCategories(it)
+            }
+        }
+
+        // Observe suggest tags response
+        viewModel.suggestTagsResponse.observe(this) { response ->
+            response?.let {
+                showSuggestedTags(it)
+            }
+        }
+
         viewModel.quickCaptureResponse.observe(this) { response ->
             response?.let {
-                showAutoDetectedInfo(response)
                 viewModel.clearQuickCaptureResponse()
 
                 // Show success and navigate to detail
@@ -126,20 +139,21 @@ class QuickCaptureActivity : BaseActivity() {
             else -> "note"
         }
 
-        // Call quick capture API to get suggestions (without saving yet)
-        viewModel.quickCapture(content, itemType, selectedCategoryId)
+        // Call suggest APIs to get suggestions (without saving)
+        viewModel.suggestCategory(null, content, itemType)
+        viewModel.suggestTags(content, itemType)
     }
 
     /**
-     * Display auto-detected information
+     * Display suggested categories from suggest-category API
      */
-    private fun showAutoDetectedInfo(response: ecccomp.s2240788.mobile_android.data.models.QuickCaptureResponse) {
+    private fun showSuggestedCategories(response: ecccomp.s2240788.mobile_android.data.models.SuggestCategoryResponse) {
         binding.cardAutoInfo.visibility = View.VISIBLE
 
         // Show detected language
-        if (!response.auto_detected_language.isNullOrEmpty()) {
+        if (!response.detected_language.isNullOrEmpty()) {
             binding.llDetectedLanguage.visibility = View.VISIBLE
-            binding.tvDetectedLanguage.text = response.auto_detected_language.uppercase()
+            binding.tvDetectedLanguage.text = response.detected_language.uppercase()
         } else {
             binding.llDetectedLanguage.visibility = View.GONE
         }
@@ -151,27 +165,34 @@ class QuickCaptureActivity : BaseActivity() {
 
             response.suggested_categories.forEach { suggestion ->
                 val chip = Chip(this)
-                chip.text = "${suggestion.category.name} (${(suggestion.confidence * 100).toInt()}%)"
+                chip.text = "${suggestion.name} (${(suggestion.confidence * 100).toInt()}%)"
                 chip.isCheckable = true
                 chip.setOnClickListener {
-                    selectedCategoryId = suggestion.category.id
+                    selectedCategoryId = suggestion.id
                 }
                 binding.chipGroupSuggestions.addView(chip)
             }
 
             // Auto-select the highest confidence category
             if (response.suggested_categories.isNotEmpty()) {
-                selectedCategoryId = response.suggested_categories[0].category.id
+                selectedCategoryId = response.suggested_categories[0].id
                 (binding.chipGroupSuggestions.getChildAt(0) as? Chip)?.isChecked = true
             }
         } else {
             binding.llSuggestedCategories.visibility = View.GONE
         }
+    }
+
+    /**
+     * Display suggested tags from suggest-tags API
+     */
+    private fun showSuggestedTags(response: ecccomp.s2240788.mobile_android.data.models.SuggestTagsResponse) {
+        binding.cardAutoInfo.visibility = View.VISIBLE
 
         // Show auto-generated tags
-        if (response.auto_generated_tags.isNotEmpty()) {
+        if (response.suggested_tags.isNotEmpty()) {
             binding.llAutoTags.visibility = View.VISIBLE
-            binding.tvAutoTags.text = response.auto_generated_tags.joinToString(" ")
+            binding.tvAutoTags.text = response.suggested_tags.joinToString(" ")
         } else {
             binding.llAutoTags.visibility = View.GONE
         }

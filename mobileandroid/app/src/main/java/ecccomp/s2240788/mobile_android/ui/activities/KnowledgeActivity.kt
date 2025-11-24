@@ -4,35 +4,42 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityKnowledgeBinding
+import ecccomp.s2240788.mobile_android.data.models.KnowledgeCategory
 import ecccomp.s2240788.mobile_android.data.models.KnowledgeItem
+import ecccomp.s2240788.mobile_android.ui.adapters.FolderAdapter
 import ecccomp.s2240788.mobile_android.ui.adapters.KnowledgeAdapter
-import ecccomp.s2240788.mobile_android.ui.adapters.KnowledgeCategoryChipAdapter
-import ecccomp.s2240788.mobile_android.ui.dialogs.CategorySelectorBottomSheet
 import ecccomp.s2240788.mobile_android.ui.viewmodels.KnowledgeViewModel
 
 /**
- * KnowledgeActivity
- * 知識管理画面 - Phase 1 Knowledge Base System
+ * KnowledgeActivity (Redesigned)
+ * Folder-Based Hierarchical Navigation
  * Features:
- * - Knowledge items list with filters
- * - Search functionality
- * - Category-based navigation
- * - Quick Capture FAB
- * - Integration with CheatCode
+ * - Browse categories as folders
+ * - Breadcrumb navigation
+ * - Mixed folder + file view
+ * - Navigate into sub-categories
+ * - Context-aware UI
  */
 class KnowledgeActivity : BaseActivity() {
 
     private lateinit var binding: ActivityKnowledgeBinding
     private lateinit var viewModel: KnowledgeViewModel
-    private lateinit var adapter: KnowledgeAdapter
-    private lateinit var categoryAdapter: KnowledgeCategoryChipAdapter
+    private lateinit var folderAdapter: FolderAdapter
+    private lateinit var knowledgeAdapter: KnowledgeAdapter
+
+    // Navigation state
+    private val breadcrumbPath = mutableListOf<KnowledgeCategory?>()  // null = root
+    private var currentCategoryId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,31 +50,36 @@ class KnowledgeActivity : BaseActivity() {
 
         viewModel = ViewModelProvider(this)[KnowledgeViewModel::class.java]
 
-        setupUI()
+        setupAdapters()
         setupClickListeners()
         setupObservers()
         setupBottomNavigation()
-        setupFilters()
 
-        // Load knowledge items and categories
+        // Initialize at root level
+        navigateToRoot()
+
+        // Load initial data
         viewModel.loadKnowledgeItems()
         viewModel.loadCategories()
-        viewModel.loadKnowledgeStats()
         viewModel.loadDueReviewItems()
     }
 
-    private fun setupUI() {
-        // Update title
-        binding.tvTitle.text = getString(R.string.knowledge_title)
-        binding.tvSubtitle.text = getString(R.string.knowledge_subtitle)
+    private fun setupAdapters() {
+        // Folder adapter for sub-categories
+        folderAdapter = FolderAdapter(
+            onFolderClick = { category ->
+                navigateToCategory(category)
+            },
+            onFolderMenuClick = { category ->
+                showFolderMenu(category)
+            }
+        )
+        binding.rvFolders.layoutManager = LinearLayoutManager(this)
+        binding.rvFolders.adapter = folderAdapter
 
-        // Hide path selector (not needed for direct knowledge browsing)
-        binding.pathSelectorCard.visibility = View.GONE
-
-        // Setup Knowledge adapter
-        adapter = KnowledgeAdapter(
+        // Knowledge items adapter
+        knowledgeAdapter = KnowledgeAdapter(
             onItemClick = { item ->
-                // Navigate to knowledge detail
                 val intent = Intent(this, KnowledgeDetailActivity::class.java)
                 intent.putExtra("KNOWLEDGE_ITEM_ID", item.id)
                 startActivity(intent)
@@ -79,72 +91,58 @@ class KnowledgeActivity : BaseActivity() {
                 showItemMenu(item)
             }
         )
-
-        // RecyclerView setup
         binding.rvKnowledge.layoutManager = LinearLayoutManager(this)
-        binding.rvKnowledge.adapter = adapter
-
-        // Setup Categories RecyclerView
-        categoryAdapter = KnowledgeCategoryChipAdapter { category ->
-            // カテゴリ選択ボトムシートを表示（現在選択中のカテゴリを渡す）
-            showCategorySelectorBottomSheet(viewModel.getCurrentCategoryId())
-        }
-        binding.rvCategories.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvCategories.adapter = categoryAdapter
-        
-        // 「すべて」チップの設定
-        binding.chipAllCategories.setOnClickListener {
-            viewModel.clearCategoryFilter()
-            updateSelectedCategory()
-        }
-        binding.chipAllCategories.isChecked = viewModel.getCurrentCategoryId() == null
-        
-        // カテゴリセクション全体をクリック可能にする
-        binding.categoriesCard.setOnClickListener {
-            showCategorySelectorBottomSheet(viewModel.getCurrentCategoryId())
-        }
-        
-        // カテゴリ選択ボタン
-        binding.btnSelectCategory.setOnClickListener {
-            showCategorySelectorBottomSheet(viewModel.getCurrentCategoryId())
-        }
+        binding.rvKnowledge.adapter = knowledgeAdapter
     }
 
     private fun setupClickListeners() {
-        // Quick Capture FAB
-        binding.fabAddKnowledge.setOnClickListener {
-            val intent = Intent(this, KnowledgeEditorActivity::class.java)
-            startActivity(intent)
-        }
-
-        // Quick Capture button (header)
+        // Header buttons
         binding.btnQuickCapture.setOnClickListener {
             val intent = Intent(this, QuickCaptureActivity::class.java)
+            if (currentCategoryId != null) {
+                intent.putExtra("CATEGORY_ID", currentCategoryId)
+            }
             startActivity(intent)
         }
 
-        // Header add button
         binding.btnAddKnowledge.setOnClickListener {
             val intent = Intent(this, KnowledgeEditorActivity::class.java)
+            if (currentCategoryId != null) {
+                intent.putExtra("CATEGORY_ID", currentCategoryId)
+            }
             startActivity(intent)
         }
 
-        // Empty state add button
+        binding.fabAddKnowledge.setOnClickListener {
+            val intent = Intent(this, KnowledgeEditorActivity::class.java)
+            if (currentCategoryId != null) {
+                intent.putExtra("CATEGORY_ID", currentCategoryId)
+            }
+            startActivity(intent)
+        }
+
         binding.btnAddKnowledgeEmpty.setOnClickListener {
             val intent = Intent(this, KnowledgeEditorActivity::class.java)
+            if (currentCategoryId != null) {
+                intent.putExtra("CATEGORY_ID", currentCategoryId)
+            }
             startActivity(intent)
         }
 
-        // CheatCode navigation
+        // Quick action cards
         binding.cheatCodeCard.setOnClickListener {
             val intent = Intent(this, CheatCodeActivity::class.java)
             startActivity(intent)
         }
 
-        // Review navigation
         binding.reviewCard.setOnClickListener {
             val intent = Intent(this, ReviewActivity::class.java)
             startActivity(intent)
+        }
+
+        // Home icon in breadcrumb
+        binding.ivHome.setOnClickListener {
+            navigateToRoot()
         }
 
         // Search
@@ -152,54 +150,40 @@ class KnowledgeActivity : BaseActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                viewModel.setQuery(s?.toString() ?: "")
+                val query = s?.toString() ?: ""
+                if (query.isNotEmpty()) {
+                    viewModel.setQuery(query)
+                } else {
+                    // Refresh current folder view
+                    loadCurrentFolder()
+                }
             }
         })
     }
 
     private fun setupObservers() {
-        // Observe filtered knowledge items
+        // Observe all categories
+        viewModel.categories.observe(this) { categories ->
+            // Update folder view when categories change
+            loadCurrentFolder()
+        }
+
+        // Observe all knowledge items
+        viewModel.knowledgeItems.observe(this) { items ->
+            // Update files view when items change
+            loadCurrentFolder()
+        }
+
+        // Observe filtered items (for search)
         viewModel.filteredItems.observe(this) { items ->
-            android.util.Log.d("KnowledgeActivity", "filteredItems observer triggered with ${items.size} items")
-            if (items.isEmpty()) {
-                android.util.Log.d("KnowledgeActivity", "Showing empty state")
-                binding.emptyState.visibility = View.VISIBLE
-                binding.rvKnowledge.visibility = View.GONE
-            } else {
-                android.util.Log.d("KnowledgeActivity", "Showing ${items.size} items in RecyclerView")
-                binding.emptyState.visibility = View.GONE
-                binding.rvKnowledge.visibility = View.VISIBLE
-                adapter.submitList(items)
+            val query = binding.etSearch.text.toString()
+            if (query.isNotEmpty()) {
+                // Show search results
+                displaySearchResults(items)
             }
         }
 
-        viewModel.error.observe(this) { error ->
-            error?.let {
-                android.util.Log.e("KnowledgeActivity", "Error: $it")
-                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-                viewModel.clearError()
-            }
-        }
-
-        viewModel.successMessage.observe(this) { message ->
-            message?.let {
-                android.util.Log.d("KnowledgeActivity", "Success: $it")
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                viewModel.clearSuccessMessage()
-            }
-        }
-
-        viewModel.isLoading.observe(this) { isLoading ->
-            android.util.Log.d("KnowledgeActivity", "Loading state: $isLoading")
-            // Show/hide loading indicator if needed
-        }
-
-        // Observe stats for potential future use
-        viewModel.knowledgeStats.observe(this) { stats ->
-            // Could display stats in UI
-        }
-
-        // Observe due review items count
+        // Observe due review items
         viewModel.dueReviewItems.observe(this) { items ->
             val count = items.size
             binding.tvDueCount.text = if (count > 0) {
@@ -209,56 +193,216 @@ class KnowledgeActivity : BaseActivity() {
             }
         }
 
-        // Observe categories
-        viewModel.categories.observe(this) { categories ->
-            android.util.Log.d("KnowledgeActivity", "Categories loaded: ${categories.size}")
-            categoryAdapter.submitList(categories)
-            // 選択中のカテゴリを更新
-            updateSelectedCategory()
+        // Observe errors
+        viewModel.error.observe(this) { error ->
+            error?.let {
+                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                viewModel.clearError()
+            }
         }
-        
-        // カテゴリフィルターの変更を監視
-        viewModel.filteredItems.observe(this) {
-            updateSelectedCategory()
+
+        // Observe success messages
+        viewModel.successMessage.observe(this) { message ->
+            message?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                viewModel.clearSuccessMessage()
+            }
         }
     }
 
-    private fun setupFilters() {
-        // Filter chips
-        binding.chipAll.setOnClickListener {
-            viewModel.setFilter(KnowledgeViewModel.FilterType.ALL)
+    /**
+     * Navigate to root level (show all top-level categories)
+     */
+    private fun navigateToRoot() {
+        currentCategoryId = null
+        breadcrumbPath.clear()
+        breadcrumbPath.add(null)  // Root marker
+        updateBreadcrumb()
+        loadCurrentFolder()
+    }
+
+    /**
+     * Navigate into a category folder
+     */
+    private fun navigateToCategory(category: KnowledgeCategory) {
+        currentCategoryId = category.id
+        breadcrumbPath.add(category)
+        updateBreadcrumb()
+        loadCurrentFolder()
+    }
+
+    /**
+     * Navigate back to a specific breadcrumb level
+     */
+    private fun navigateToBreadcrumb(index: Int) {
+        // Remove all items after the clicked index
+        while (breadcrumbPath.size > index + 1) {
+            breadcrumbPath.removeAt(breadcrumbPath.size - 1)
         }
-        binding.chipNotes.setOnClickListener {
-            viewModel.setFilter(KnowledgeViewModel.FilterType.NOTES)
-        }
-        binding.chipCode.setOnClickListener {
-            viewModel.setFilter(KnowledgeViewModel.FilterType.CODE)
-        }
-        binding.chipExercises.setOnClickListener {
-            viewModel.setFilter(KnowledgeViewModel.FilterType.EXERCISES)
-        }
-        binding.chipLinks.setOnClickListener {
-            viewModel.setFilter(KnowledgeViewModel.FilterType.LINKS)
-        }
-        binding.chipAttachments.setOnClickListener {
-            viewModel.setFilter(KnowledgeViewModel.FilterType.ATTACHMENTS)
-        }
-        binding.chipFavorites.setOnClickListener {
-            viewModel.setFilter(KnowledgeViewModel.FilterType.FAVORITES)
-        }
-        binding.chipArchived.setOnClickListener {
-            viewModel.setFilter(KnowledgeViewModel.FilterType.ARCHIVED)
-        }
-        binding.chipDueReview.setOnClickListener {
-            viewModel.setFilter(KnowledgeViewModel.FilterType.DUE_REVIEW)
+
+        // Set current category
+        val targetCategory = breadcrumbPath.lastOrNull()
+        currentCategoryId = targetCategory?.id
+
+        updateBreadcrumb()
+        loadCurrentFolder()
+    }
+
+    /**
+     * Update breadcrumb navigation UI
+     */
+    private fun updateBreadcrumb() {
+        // Clear existing breadcrumb items (except home icon)
+        binding.breadcrumbContainer.removeViews(
+            1,
+            binding.breadcrumbContainer.childCount - 1
+        )
+
+        // Add breadcrumb items for each level
+        breadcrumbPath.forEachIndexed { index, category ->
+            if (index == 0 && category == null) {
+                // Root level - home icon only
+                return@forEachIndexed
+            }
+
+            if (category != null) {
+                // Add separator arrow
+                val separatorView = LayoutInflater.from(this)
+                    .inflate(R.layout.item_breadcrumb, binding.breadcrumbContainer, false)
+
+                val tvBreadcrumb = separatorView.findViewById<TextView>(R.id.tv_breadcrumb)
+                val ivSeparator = separatorView.findViewById<ImageView>(R.id.iv_separator)
+
+                tvBreadcrumb.text = category.name
+                tvBreadcrumb.setOnClickListener {
+                    navigateToBreadcrumb(index)
+                }
+
+                // Hide separator for last item
+                if (index == breadcrumbPath.size - 1) {
+                    ivSeparator.visibility = View.GONE
+                }
+
+                binding.breadcrumbContainer.addView(separatorView)
+            }
         }
     }
 
+    /**
+     * Load and display current folder contents
+     */
+    private fun loadCurrentFolder() {
+        val allCategories = viewModel.categories.value ?: emptyList()
+        val allItems = viewModel.knowledgeItems.value ?: emptyList()
+
+        // Get sub-folders (child categories)
+        val subFolders = allCategories.filter { it.parent_id == currentCategoryId }
+
+        // Get files (items in current category)
+        val files = allItems.filter { item ->
+            if (currentCategoryId == null) {
+                // At root: show items without category
+                item.category == null || item.category_id == null
+            } else {
+                // In folder: show items with matching category
+                item.category_id == currentCategoryId
+            }
+        }
+
+        // Update UI visibility
+        val isRoot = currentCategoryId == null
+        val hasSubFolders = subFolders.isNotEmpty()
+        val hasFiles = files.isNotEmpty()
+        val isEmpty = !hasSubFolders && !hasFiles
+
+        // Show/hide quick actions (only at root)
+        binding.quickActionsContainer.visibility = if (isRoot) View.VISIBLE else View.GONE
+
+        // Show/hide folders section
+        binding.foldersSection.visibility = if (hasSubFolders) View.VISIBLE else View.GONE
+        if (hasSubFolders) {
+            folderAdapter.submitList(subFolders)
+        }
+
+        // Show/hide files section
+        binding.filesSection.visibility = if (hasFiles) View.VISIBLE else View.GONE
+        if (hasFiles) {
+            knowledgeAdapter.submitList(files)
+        }
+
+        // Show/hide empty state
+        binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        if (isEmpty) {
+            val currentCategory = breadcrumbPath.lastOrNull()
+            if (currentCategory != null) {
+                binding.tvEmptyTitle.text = "Empty folder"
+                binding.tvEmptyDescription.text = "This folder doesn't have any items yet"
+            } else {
+                binding.tvEmptyTitle.text = getString(R.string.knowledge_empty)
+                binding.tvEmptyDescription.text = getString(R.string.knowledge_empty_description)
+            }
+        }
+
+        // Update folder info
+        if (!isRoot) {
+            val totalCount = subFolders.size + files.size
+            binding.tvFolderInfo.text = "$totalCount items in this folder"
+            binding.tvFolderInfo.visibility = View.VISIBLE
+        } else {
+            binding.tvFolderInfo.visibility = View.GONE
+        }
+    }
+
+    /**
+     * Display search results (global search)
+     */
+    private fun displaySearchResults(items: List<KnowledgeItem>) {
+        // Hide folder structure, show flat list
+        binding.quickActionsContainer.visibility = View.GONE
+        binding.foldersSection.visibility = View.GONE
+        binding.filesSection.visibility = View.VISIBLE
+        binding.tvFilesHeader.text = "Search Results (${items.size})"
+
+        if (items.isNotEmpty()) {
+            binding.emptyState.visibility = View.GONE
+            knowledgeAdapter.submitList(items)
+        } else {
+            binding.emptyState.visibility = View.VISIBLE
+            binding.tvEmptyTitle.text = "No results found"
+            binding.tvEmptyDescription.text = "Try different keywords"
+        }
+    }
+
+    /**
+     * Show folder context menu
+     */
+    private fun showFolderMenu(category: KnowledgeCategory) {
+        val popup = PopupMenu(this, binding.rvFolders)
+        popup.menuInflater.inflate(R.menu.menu_folder_actions, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_rename -> {
+                    Toast.makeText(this, "Rename - Coming soon", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.action_delete -> {
+                    Toast.makeText(this, "Delete folder - Coming soon", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.show()
+    }
+
+    /**
+     * Show item context menu
+     */
     private fun showItemMenu(item: KnowledgeItem) {
         val popup = PopupMenu(this, binding.rvKnowledge)
         popup.menuInflater.inflate(R.menu.menu_knowledge_item_actions, popup.menu)
 
-        // Hide archive option if already archived
         if (item.is_archived) {
             popup.menu.findItem(R.id.action_archive)?.title = "復元"
         }
@@ -266,7 +410,6 @@ class KnowledgeActivity : BaseActivity() {
         popup.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_edit -> {
-                    // TODO: Open edit dialog
                     Toast.makeText(this, "Edit - Coming soon", Toast.LENGTH_SHORT).show()
                     true
                 }
@@ -291,7 +434,7 @@ class KnowledgeActivity : BaseActivity() {
     }
 
     /**
-     * ボトムナビゲーションのセットアップ
+     * Setup bottom navigation
      */
     private fun setupBottomNavigation() {
         binding.bottomNavigation.selectedItemId = R.id.nav_knowledge
@@ -327,40 +470,23 @@ class KnowledgeActivity : BaseActivity() {
         }
     }
 
-    /**
-     * 選択中のカテゴリを更新
-     */
-    private fun updateSelectedCategory() {
-        val currentCategoryId = viewModel.getCurrentCategoryId()
-        categoryAdapter.setSelectedCategory(currentCategoryId)
-        // 「すべて」チップの選択状態を更新
-        binding.chipAllCategories.isChecked = currentCategoryId == null
-    }
-
-    /**
-     * カテゴリ選択ボトムシートを表示
-     */
-    private fun showCategorySelectorBottomSheet(currentCategoryId: Int? = null) {
-        val bottomSheet = CategorySelectorBottomSheet.newInstance(
-            currentCategoryId = currentCategoryId ?: viewModel.getCurrentCategoryId(),
-            onCategorySelected = { category ->
-                if (category != null) {
-                    viewModel.filterByCategory(category.id)
-                    Toast.makeText(this, "カテゴリ: ${category.name}", Toast.LENGTH_SHORT).show()
-                } else {
-                    viewModel.clearCategoryFilter()
-                }
-                // 選択状態を更新
-                updateSelectedCategory()
-            }
-        )
-        bottomSheet.show(supportFragmentManager, CategorySelectorBottomSheet.TAG)
-    }
-
-
     override fun onResume() {
         super.onResume()
-        // Reload knowledge items when returning
+        // Reload data when returning
         viewModel.refreshKnowledgeItems()
+    }
+
+    /**
+     * Handle back press - navigate up folder hierarchy
+     */
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if (breadcrumbPath.size > 1) {
+            // Navigate up one level
+            navigateToBreadcrumb(breadcrumbPath.size - 2)
+        } else {
+            // At root, exit activity
+            super.onBackPressed()
+        }
     }
 }

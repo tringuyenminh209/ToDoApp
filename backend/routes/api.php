@@ -299,6 +299,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/stats', [KnowledgeController::class, 'stats']);
         Route::get('/due-review', [KnowledgeController::class, 'dueReview']);
         Route::post('/quick-capture', [KnowledgeController::class, 'quickCapture']);
+
+        // Smart AI features
+        Route::post('/suggest-category', [KnowledgeController::class, 'suggestCategory']);
+        Route::post('/suggest-tags', [KnowledgeController::class, 'suggestTags']);
+
         Route::put('/bulk-tag', [KnowledgeController::class, 'bulkTag']);
         Route::put('/bulk-move', [KnowledgeController::class, 'bulkMove']);
         Route::delete('/bulk-delete', [KnowledgeController::class, 'bulkDelete']);

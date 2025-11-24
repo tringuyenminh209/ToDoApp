@@ -1,5 +1,6 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
+import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -16,6 +17,7 @@ import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.data.models.KnowledgeItem
 import ecccomp.s2240788.mobile_android.databinding.ActivityKnowledgeDetailBinding
 import ecccomp.s2240788.mobile_android.ui.viewmodels.KnowledgeDetailViewModel
+import ecccomp.s2240788.mobile_android.utils.CodeHighlightHelper
 
 /**
  * KnowledgeDetailActivity
@@ -47,11 +49,28 @@ class KnowledgeDetailActivity : BaseActivity() {
             return
         }
 
+        setupWebView()
         setupClickListeners()
         setupObservers()
 
         // Load knowledge item
         viewModel.loadKnowledgeItem(knowledgeItemId)
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun setupWebView() {
+        binding.webviewCode.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            loadWithOverviewMode = false
+            useWideViewPort = false
+            builtInZoomControls = false
+            displayZoomControls = false
+            setSupportZoom(false)
+        }
+
+        binding.webviewCode.isVerticalScrollBarEnabled = false
+        binding.webviewCode.isHorizontalScrollBarEnabled = false
     }
 
     private fun setupClickListeners() {
@@ -190,7 +209,29 @@ class KnowledgeDetailActivity : BaseActivity() {
     private fun displayCodeSnippet(item: KnowledgeItem) {
         binding.cardCode.visibility = View.VISIBLE
         binding.tvCodeLanguage.text = item.code_language?.uppercase() ?: "CODE"
-        binding.tvCodeContent.text = item.content ?: ""
+
+        val code = item.content ?: ""
+        val language = item.code_language ?: "plaintext"
+
+        if (code.isNotEmpty()) {
+            // Use WebView with syntax highlighting
+            binding.scrollCode.visibility = View.GONE
+            binding.webviewCode.visibility = View.VISIBLE
+
+            val html = CodeHighlightHelper.generateHighlightedHtml(this, code, language)
+            binding.webviewCode.loadDataWithBaseURL(
+                null,
+                html,
+                "text/html",
+                "UTF-8",
+                null
+            )
+        } else {
+            // Fallback to TextView for empty code
+            binding.scrollCode.visibility = View.VISIBLE
+            binding.webviewCode.visibility = View.GONE
+            binding.tvCodeContent.text = code
+        }
     }
 
     private fun displayExercise(item: KnowledgeItem) {
@@ -247,7 +288,8 @@ class KnowledgeDetailActivity : BaseActivity() {
     }
 
     private fun copyCodeToClipboard() {
-        val codeContent = binding.tvCodeContent.text.toString()
+        val item = viewModel.knowledgeItem.value
+        val codeContent = item?.content ?: binding.tvCodeContent.text.toString()
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("code", codeContent)
         clipboard.setPrimaryClip(clip)
