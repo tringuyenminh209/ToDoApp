@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LearningPath;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +12,13 @@ use Illuminate\Validation\Rule;
 
 class LearningPathController extends Controller
 {
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     /**
      * Get all learning paths for the authenticated user
      */
@@ -120,44 +128,16 @@ class LearningPathController extends Controller
                 'is_ai_generated' => false,
             ]);
 
-            // Auto-create Knowledge Category for this roadmap
-            // Create as child category under "プログラミング演習"
+            // Auto-create Knowledge Category for this roadmap using CategoryService
             try {
-                // Get or create parent category "プログラミング演習"
-                $parentCategory = \App\Models\KnowledgeCategory::where('user_id', $user->id)
-                    ->where('name', 'プログラミング演習')
-                    ->whereNull('parent_id')
-                    ->first();
-
-                if (!$parentCategory) {
-                    $parentCategory = \App\Models\KnowledgeCategory::create([
-                        'user_id' => $user->id,
-                        'name' => 'プログラミング演習',
-                        'parent_id' => null,
-                        'description' => 'プログラミング演習用のフォルダ',
-                        'icon' => 'folder',
-                        'color' => '#0FA968'
-                    ]);
-                }
-
-                // Check if child category with roadmap name already exists under parent
-                $existingCategory = \App\Models\KnowledgeCategory::where('user_id', $user->id)
-                    ->where('name', $validated['title'])
-                    ->where('parent_id', $parentCategory->id)
-                    ->first();
-
-                if (!$existingCategory) {
-                    // Create child category with roadmap name
-                    \App\Models\KnowledgeCategory::create([
-                        'user_id' => $user->id,
-                        'name' => $validated['title'],
-                        'description' => 'ロードマップ: ' . $validated['title'],
-                        'parent_id' => $parentCategory->id,
-                        'sort_order' => 0,
+                $this->categoryService->getOrCreateRoadmapCategory(
+                    $user->id,
+                    $validated['title'],
+                    [
                         'color' => $validated['color'] ?? '#3B82F6',
                         'icon' => $validated['icon'] ?? 'code',
-                    ]);
-                }
+                    ]
+                );
             } catch (\Exception $e) {
                 // Log but don't fail the roadmap creation if category creation fails
                 Log::warning('Failed to create knowledge category for roadmap: ' . $e->getMessage());
@@ -199,6 +179,19 @@ class LearningPathController extends Controller
                 'color' => 'nullable|string|max:20',
                 'icon' => 'nullable|string|max:50',
             ]);
+
+            // If title changed, sync with knowledge category
+            if (isset($validated['title']) && $validated['title'] !== $path->title) {
+                try {
+                    $this->categoryService->syncCategoryWithRoadmapTitle(
+                        $user->id,
+                        $path->title,
+                        $validated['title']
+                    );
+                } catch (\Exception $e) {
+                    Log::warning('Failed to sync category with roadmap title: ' . $e->getMessage());
+                }
+            }
 
             $path->update($validated);
 

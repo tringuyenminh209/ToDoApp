@@ -7,12 +7,20 @@ use App\Models\LearningPathTemplate;
 use App\Models\Task;
 use App\Models\KnowledgeItem;
 use App\Models\KnowledgeCategory;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class LearningPathTemplateController extends Controller
 {
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     /**
      * Get all templates with optional filters
      */
@@ -345,53 +353,59 @@ class LearningPathTemplateController extends Controller
             return;
         }
 
-        // Get or create parent category "プログラミング演習"
-        $parentCategory = KnowledgeCategory::where('user_id', $userId)
-            ->where('name', 'プログラミング演習')
-            ->whereNull('parent_id')
-            ->first();
-
-        if (!$parentCategory) {
-            $parentCategory = KnowledgeCategory::create([
-                'user_id' => $userId,
-                'name' => 'プログラミング演習',
-                'parent_id' => null,
-                'description' => 'プログラミング演習用のフォルダ',
-                'icon' => 'folder',
-                'color' => '#0FA968'
-            ]);
-        }
-
-        // Get or create child category with roadmap name (must be under parent category)
-        $category = KnowledgeCategory::where('user_id', $userId)
-            ->where('name', $learningPath->title)
-            ->where('parent_id', $parentCategory->id)
-            ->first();
-
-        if (!$category) {
-            $category = KnowledgeCategory::create([
-                'user_id' => $userId,
-                'name' => $learningPath->title,
-                'parent_id' => $parentCategory->id,
-                'description' => 'ロードマップ: ' . $learningPath->title,
+        // Use CategoryService to get or create the roadmap category
+        $category = $this->categoryService->getOrCreateRoadmapCategory(
+            $userId,
+            $learningPath->title,
+            [
                 'icon' => 'code',
                 'color' => '#3B82F6'
-            ]);
-        }
+            ]
+        );
 
         foreach ($knowledgeItemsData as $itemData) {
-            $title = $itemData['title'] ?? 'Untitled';
-            $itemType = $itemData['type'] ?? 'note';
+            // Validate item data structure
+            if (!isset($itemData['title']) || !isset($itemData['type'])) {
+                Log::warning('Invalid knowledge item data, skipping', ['item' => $itemData]);
+                continue;
+            }
 
-            // Check if knowledge item already exists in this category (prevent duplicates)
-            $existingItem = KnowledgeItem::where('user_id', $userId)
+            $title = $itemData['title'];
+            $itemType = $itemData['type'];
+
+            // Build duplicate check query - check title, type, and content/question
+            $duplicateQuery = KnowledgeItem::where('user_id', $userId)
                 ->where('category_id', $category->id)
                 ->where('title', $title)
-                ->where('item_type', $itemType)
-                ->first();
+                ->where('item_type', $itemType);
+
+            // Add type-specific duplicate checks
+            switch ($itemType) {
+                case 'note':
+                case 'code_snippet':
+                    $content = $itemData['content'] ?? '';
+                    if ($content) {
+                        $duplicateQuery->where('content', $content);
+                    }
+                    break;
+                case 'resource_link':
+                    $url = $itemData['url'] ?? '';
+                    if ($url) {
+                        $duplicateQuery->where('url', $url);
+                    }
+                    break;
+                case 'exercise':
+                    $question = $itemData['question'] ?? '';
+                    if ($question) {
+                        $duplicateQuery->where('question', $question);
+                    }
+                    break;
+            }
+
+            $existingItem = $duplicateQuery->first();
 
             if ($existingItem) {
-                Log::info('Knowledge item already exists, skipping', [
+                Log::info('Knowledge item already exists (exact duplicate), skipping', [
                     'category_id' => $category->id,
                     'title' => $title,
                     'item_type' => $itemType,
