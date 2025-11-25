@@ -121,17 +121,43 @@ class LearningPathController extends Controller
             ]);
 
             // Auto-create Knowledge Category for this roadmap
-            // Always create a new category for each roadmap
+            // Create as child category under "プログラミング演習"
             try {
-                \App\Models\KnowledgeCategory::create([
-                    'user_id' => $user->id,
-                    'name' => $validated['title'],
-                    'description' => 'ロードマップ: ' . $validated['title'],
-                    'parent_id' => null,
-                    'sort_order' => 0,
-                    'color' => $validated['color'] ?? null,
-                    'icon' => $validated['icon'] ?? null,
-                ]);
+                // Get or create parent category "プログラミング演習"
+                $parentCategory = \App\Models\KnowledgeCategory::where('user_id', $user->id)
+                    ->where('name', 'プログラミング演習')
+                    ->whereNull('parent_id')
+                    ->first();
+
+                if (!$parentCategory) {
+                    $parentCategory = \App\Models\KnowledgeCategory::create([
+                        'user_id' => $user->id,
+                        'name' => 'プログラミング演習',
+                        'parent_id' => null,
+                        'description' => 'プログラミング演習用のフォルダ',
+                        'icon' => 'folder',
+                        'color' => '#0FA968'
+                    ]);
+                }
+
+                // Check if child category with roadmap name already exists under parent
+                $existingCategory = \App\Models\KnowledgeCategory::where('user_id', $user->id)
+                    ->where('name', $validated['title'])
+                    ->where('parent_id', $parentCategory->id)
+                    ->first();
+
+                if (!$existingCategory) {
+                    // Create child category with roadmap name
+                    \App\Models\KnowledgeCategory::create([
+                        'user_id' => $user->id,
+                        'name' => $validated['title'],
+                        'description' => 'ロードマップ: ' . $validated['title'],
+                        'parent_id' => $parentCategory->id,
+                        'sort_order' => 0,
+                        'color' => $validated['color'] ?? '#3B82F6',
+                        'icon' => $validated['icon'] ?? 'code',
+                    ]);
+                }
             } catch (\Exception $e) {
                 // Log but don't fail the roadmap creation if category creation fails
                 Log::warning('Failed to create knowledge category for roadmap: ' . $e->getMessage());
