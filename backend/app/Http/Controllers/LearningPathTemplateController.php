@@ -380,13 +380,33 @@ class LearningPathTemplateController extends Controller
         }
 
         foreach ($knowledgeItemsData as $itemData) {
+            $title = $itemData['title'] ?? 'Untitled';
+            $itemType = $itemData['type'] ?? 'note';
+
+            // Check if knowledge item already exists in this category (prevent duplicates)
+            $existingItem = KnowledgeItem::where('user_id', $userId)
+                ->where('category_id', $category->id)
+                ->where('title', $title)
+                ->where('item_type', $itemType)
+                ->first();
+
+            if ($existingItem) {
+                Log::info('Knowledge item already exists, skipping', [
+                    'category_id' => $category->id,
+                    'title' => $title,
+                    'item_type' => $itemType,
+                    'existing_id' => $existingItem->id
+                ]);
+                continue; // Skip creating duplicate
+            }
+
             $knowledgeItem = [
                 'user_id' => $userId,
                 'category_id' => $category->id,
                 'learning_path_id' => $learningPathId,
                 'source_task_id' => $taskId,
-                'title' => $itemData['title'] ?? 'Untitled',
-                'item_type' => $itemData['type'] ?? 'note',
+                'title' => $title,
+                'item_type' => $itemType,
                 'view_count' => 0,
                 'review_count' => 0,
                 'retention_score' => 3,
@@ -395,7 +415,7 @@ class LearningPathTemplateController extends Controller
             ];
 
             // Add type-specific fields
-            switch ($itemData['type'] ?? 'note') {
+            switch ($itemType) {
                 case 'note':
                     $knowledgeItem['content'] = $itemData['content'] ?? '';
                     break;
@@ -416,6 +436,12 @@ class LearningPathTemplateController extends Controller
             }
 
             KnowledgeItem::create($knowledgeItem);
+
+            Log::info('Created new knowledge item', [
+                'category_id' => $category->id,
+                'title' => $title,
+                'item_type' => $itemType
+            ]);
         }
     }
 }
