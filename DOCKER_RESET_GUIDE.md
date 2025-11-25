@@ -19,6 +19,8 @@ git pull origin claude/review-timeba-backend-01SWJQCs1fxCHpgxgm2PuSEM
 # 2. Restart backend container
 docker-compose restart app
 
+docker exec todo-app-backend php artisan config:clear && docker exec todo-app-backend php artisan cache:clear
+
 # 3. Clear Laravel cache
 docker-compose exec app php artisan cache:clear
 docker-compose exec app php artisan config:clear

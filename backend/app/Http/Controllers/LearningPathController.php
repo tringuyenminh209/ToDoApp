@@ -120,6 +120,23 @@ class LearningPathController extends Controller
                 'is_ai_generated' => false,
             ]);
 
+            // Auto-create Knowledge Category for this roadmap
+            // Always create a new category for each roadmap
+            try {
+                \App\Models\KnowledgeCategory::create([
+                    'user_id' => $user->id,
+                    'name' => $validated['title'],
+                    'description' => 'ロードマップ: ' . $validated['title'],
+                    'parent_id' => null,
+                    'sort_order' => 0,
+                    'color' => $validated['color'] ?? null,
+                    'icon' => $validated['icon'] ?? null,
+                ]);
+            } catch (\Exception $e) {
+                // Log but don't fail the roadmap creation if category creation fails
+                Log::warning('Failed to create knowledge category for roadmap: ' . $e->getMessage());
+            }
+
             return response()->json([
                 'success' => true,
                 'data' => $path,

@@ -166,7 +166,9 @@ class FocusSessionActivity : BaseActivity() {
                 // DO NOT call setTimerDuration() here - ViewModel already set it correctly in loadTask/loadTaskWithSubtask
                 // Calling it here would override the correct subtask time with the modified task's time
 
-                binding.tvFocusCount.text = getString(R.string.pomodoro_count_format, viewModel.getPomodoroCount())
+                // Calculate target pomodoros (1 pomodoro = 25 min)
+                val targetPomodoros = (estimatedMinutes + 24) / 25  // Round up
+                binding.tvFocusCount.text = getString(R.string.pomodoro_count_format, viewModel.getPomodoroCount(), targetPomodoros)
 
                 // Update timer mode text based on category
                 val categoryText = when (it.category?.lowercase()) {
