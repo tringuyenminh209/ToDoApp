@@ -128,6 +128,8 @@ class FocusSessionViewModel : ViewModel() {
                         android.util.Log.d("FocusSessionViewModel", "Task loaded - requires_deep_focus: ${task.requires_deep_focus}")
                         android.util.Log.d("FocusSessionViewModel", "Task loaded - allow_interruptions: ${task.allow_interruptions}")
                         android.util.Log.d("FocusSessionViewModel", "Task loaded - focus_difficulty: ${task.focus_difficulty}")
+                        android.util.Log.d("FocusSessionViewModel", "Task loaded - learning_milestone_id: ${task.learning_milestone_id}")
+                        android.util.Log.d("FocusSessionViewModel", "Task loaded - learning_path_id: ${task.learning_path_id}")
                         _isDeepWorkMode.value = task.requires_deep_focus
 
                         // Set timer duration - use remaining_minutes if available (smart time calculation)
@@ -155,8 +157,8 @@ class FocusSessionViewModel : ViewModel() {
                         setTimerDuration(timerMinutes)
 
                         // Load knowledge items for task and all subtasks
-                        // Pass subtasks directly to avoid race condition with LiveData
-                        loadKnowledgeItemsInternal(taskId, subtasks)
+                        // Pass subtasks and learning_path_id directly to avoid race condition with LiveData
+                        loadKnowledgeItemsInternal(taskId, subtasks, task.learning_path_id)
                     } else {
                         _toast.value = "タスクが見つかりません"
                     }
@@ -231,8 +233,8 @@ class FocusSessionViewModel : ViewModel() {
                             setTimerDuration(subtaskTime)
 
                             // Load knowledge items for task and all subtasks
-                            // Pass subtasks directly to avoid race condition with LiveData
-                            loadKnowledgeItemsInternal(taskId, subtasks)
+                            // Pass subtasks and learning_path_id directly to avoid race condition with LiveData
+                            loadKnowledgeItemsInternal(taskId, subtasks, task.learning_path_id)
                         } else {
                             android.util.Log.e("FocusSessionViewModel",
                                 "Subtask not found: subtaskId=$subtaskId in task $taskId with ${subtasks?.size ?: 0} subtasks")
@@ -638,20 +640,20 @@ class FocusSessionViewModel : ViewModel() {
                             "Public loadKnowledgeItems: taskId=$taskId, subtasks=${subtasks.size}")
 
                         // Load knowledge with all subtasks
-                        loadKnowledgeItemsInternal(taskId, subtasks)
+                        loadKnowledgeItemsInternal(taskId, subtasks, task.learning_path_id)
                     } else {
                         // Fallback: try without subtasks
-                        loadKnowledgeItemsInternal(taskId, null)
+                        loadKnowledgeItemsInternal(taskId, null, null)
                     }
                 } else {
                     // Fallback: try without subtasks
-                    loadKnowledgeItemsInternal(taskId, null)
+                    loadKnowledgeItemsInternal(taskId, null, null)
                 }
             } catch (e: Exception) {
                 android.util.Log.e("FocusSessionViewModel",
                     "Error in public loadKnowledgeItems", e)
                 // Fallback: try without subtasks
-                loadKnowledgeItemsInternal(taskId, null)
+                loadKnowledgeItemsInternal(taskId, null, null)
             }
         }
     }
@@ -660,12 +662,24 @@ class FocusSessionViewModel : ViewModel() {
      * Internal method to load knowledge items (can be called within other suspend functions)
      * @param taskId The task ID
      * @param subtasks List of subtasks (optional, will use _subtasks.value if null)
+     * @param learningPathId Learning path ID (optional, will use _currentTask.value?.learning_path_id if null)
      */
-    private suspend fun loadKnowledgeItemsInternal(taskId: Int, subtasks: List<Subtask>? = null) {
+    private suspend fun loadKnowledgeItemsInternal(taskId: Int, subtasks: List<Subtask>? = null, learningPathId: Int? = null) {
         try {
             _isLoadingKnowledge.value = true
 
-            // Load all knowledge items using new API
+            // Get IDs to filter: task ID + all subtask IDs
+            // Use provided subtasks or fallback to LiveData value
+            val currentSubtasks = subtasks ?: _subtasks.value ?: emptyList()
+            val subtaskIds = currentSubtasks.map { it.id }
+            val filterTaskIds = listOf(taskId) + subtaskIds
+
+            // Use provided learning_path_id or fallback to current task's learning_path_id
+            val finalLearningPathId = learningPathId ?: _currentTask.value?.learning_path_id
+
+            android.util.Log.d("FocusSessionViewModel", "Loading knowledge items for taskId=$taskId, learningPathId=$finalLearningPathId, subtaskIds=$subtaskIds (${currentSubtasks.size} subtasks)")
+
+            // Load knowledge items with filters applied on server side
             val response = apiService.getKnowledgeItems(
                 categoryId = null,
                 itemType = null,
@@ -673,40 +687,24 @@ class FocusSessionViewModel : ViewModel() {
                 isArchived = false,  // Only non-archived items
                 search = null,
                 tags = null,
+                sourceTaskId = filterTaskIds,  // Filter by task and subtask IDs
+                learningPathId = finalLearningPathId,  // Filter by learning path ID
                 perPage = 1000  // Load all items
             )
 
             if (response.isSuccessful) {
                 val apiResponse = response.body()
-                val allItems = if (apiResponse?.success == true) {
+                val taskItems = if (apiResponse?.success == true) {
                     parseItemsFromResponse(apiResponse.data)
                 } else {
                     emptyList()
                 }
 
-                // Get IDs to filter: task ID + all subtask IDs
-                // Use provided subtasks or fallback to LiveData value
-                val currentSubtasks = subtasks ?: _subtasks.value ?: emptyList()
-                val subtaskIds = currentSubtasks.map { it.id }
-                val filterIds = listOf(taskId) + subtaskIds
-
-                // Get learning path ID from current task
-                val learningPathId = _currentTask.value?.learning_milestone_id
-
-                android.util.Log.d("FocusSessionViewModel", "Loading knowledge items for taskId=$taskId, learningPathId=$learningPathId, subtaskIds=$subtaskIds (${currentSubtasks.size} subtasks)")
-
-                // Filter knowledge items for task and all subtasks
-                // Also include items linked to the learning path
-                val taskItems = allItems.filter { item ->
-                    item.source_task_id in filterIds ||
-                    (learningPathId != null && item.learning_path_id == learningPathId)
-                }
-
-                android.util.Log.d("FocusSessionViewModel", "Found ${taskItems.size} knowledge items (total: ${allItems.size})")
+                android.util.Log.d("FocusSessionViewModel", "Found ${taskItems.size} knowledge items")
 
                 // Log sample items for debugging
-                if (allItems.isNotEmpty()) {
-                    android.util.Log.d("FocusSessionViewModel", "Sample item: source_task_id=${allItems[0].source_task_id}, learning_path_id=${allItems[0].learning_path_id}, title=${allItems[0].title}")
+                if (taskItems.isNotEmpty()) {
+                    android.util.Log.d("FocusSessionViewModel", "Sample item: source_task_id=${taskItems[0].source_task_id}, learning_path_id=${taskItems[0].learning_path_id}, title=${taskItems[0].title}")
                 }
 
                 _knowledgeItems.postValue(taskItems)
@@ -728,15 +726,39 @@ class FocusSessionViewModel : ViewModel() {
     private fun parseItemsFromResponse(data: Any?): List<KnowledgeItem> {
         return try {
             when (data) {
-                is List<*> -> data.mapNotNull { it as? KnowledgeItem }
+                is List<*> -> {
+                    // Retrofit/Gson returns List<LinkedHashMap>, not List<KnowledgeItem>
+                    // Need to use Gson to convert each map to KnowledgeItem
+                    val gson = com.google.gson.Gson()
+                    data.mapNotNull { item ->
+                        try {
+                            when (item) {
+                                is KnowledgeItem -> item
+                                is Map<*, *> -> {
+                                    // Convert Map to JSON string then parse to KnowledgeItem
+                                    val json = gson.toJson(item)
+                                    gson.fromJson(json, KnowledgeItem::class.java)
+                                }
+                                else -> null
+                            }
+                        } catch (e: Exception) {
+                            android.util.Log.e("FocusSessionViewModel", "Error parsing knowledge item", e)
+                            null
+                        }
+                    }
+                }
                 is Map<*, *> -> {
                     // Handle paginated response
                     val dataList = data["data"] as? List<*>
-                    dataList?.mapNotNull { it as? KnowledgeItem } ?: emptyList()
+                    dataList?.let { parseItemsFromResponse(it) } ?: emptyList()
                 }
-                else -> emptyList()
+                else -> {
+                    android.util.Log.w("FocusSessionViewModel", "Unexpected data type: ${data?.javaClass?.simpleName}")
+                    emptyList()
+                }
             }
         } catch (e: Exception) {
+            android.util.Log.e("FocusSessionViewModel", "Error in parseItemsFromResponse", e)
             emptyList()
         }
     }
