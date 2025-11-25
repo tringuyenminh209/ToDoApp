@@ -132,7 +132,7 @@ class SettingsActivity : BaseActivity() {
                     Log.e(TAG, "Failed to load user profile: ${result.message}")
                     Toast.makeText(
                         this@SettingsActivity,
-                        "Failed to load user profile: ${result.message}",
+                        getString(R.string.failed_to_load_profile, result.message),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -145,8 +145,8 @@ class SettingsActivity : BaseActivity() {
 
     private fun updateUserProfileUI(user: User) {
         Log.d(TAG, "Updating UI with user: name=${user.name}, email=${user.email}")
-        binding.tvUserName.text = user.name ?: "Unknown User"
-        binding.tvUserEmail.text = user.email ?: "No email"
+        binding.tvUserName.text = user.name ?: getString(R.string.unknown_user)
+        binding.tvUserEmail.text = user.email ?: getString(R.string.no_email)
         // Load user stats
         loadUserStats()
     }
@@ -201,7 +201,7 @@ class SettingsActivity : BaseActivity() {
                     Log.e(TAG, "Failed to load settings: ${result.message}")
                     Toast.makeText(
                         this@SettingsActivity,
-                        "Failed to load settings: ${result.message}",
+                        getString(R.string.failed_to_load_settings, result.message),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -230,7 +230,7 @@ class SettingsActivity : BaseActivity() {
 
     private fun saveSettings() {
         if (currentSettings == null) {
-            Toast.makeText(this, "Settings not loaded yet", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.settings_not_loaded), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -269,7 +269,7 @@ class SettingsActivity : BaseActivity() {
 
         // Show loading
         binding.btnSaveSettings.isEnabled = false
-        binding.btnSaveSettings.text = "Saving..."
+        binding.btnSaveSettings.text = getString(R.string.saving)
 
         lifecycleScope.launch {
             val result = withContext(Dispatchers.IO) {
@@ -290,7 +290,7 @@ class SettingsActivity : BaseActivity() {
                         LocaleHelper.setLanguage(this@SettingsActivity, language)
                         Toast.makeText(
                             this@SettingsActivity,
-                            "Settings saved successfully",
+                            getString(R.string.settings_saved),
                             Toast.LENGTH_SHORT
                         ).show()
                         // Recreate activity to apply language change
@@ -298,7 +298,7 @@ class SettingsActivity : BaseActivity() {
                     } else {
                         Toast.makeText(
                             this@SettingsActivity,
-                            "Settings saved successfully",
+                            getString(R.string.settings_saved),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -306,7 +306,7 @@ class SettingsActivity : BaseActivity() {
                 is SettingsResult.Error -> {
                     Toast.makeText(
                         this@SettingsActivity,
-                        "Failed to save: ${result.message}",
+                        getString(R.string.failed_to_save, result.message),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -317,10 +317,10 @@ class SettingsActivity : BaseActivity() {
 
     private fun showResetConfirmationDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Reset Settings")
-            .setMessage("Are you sure you want to reset all settings to default values?")
-            .setPositiveButton("Reset") { _, _ -> resetSettings() }
-            .setNegativeButton("Cancel", null)
+            .setTitle(getString(R.string.reset_settings_title))
+            .setMessage(getString(R.string.reset_settings_message))
+            .setPositiveButton(getString(R.string.reset)) { _, _ -> resetSettings() }
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
@@ -338,14 +338,14 @@ class SettingsActivity : BaseActivity() {
                     SettingsPreferences.saveSettings(this@SettingsActivity, result.data)
                     Toast.makeText(
                         this@SettingsActivity,
-                        "Settings reset to default",
+                        getString(R.string.settings_reset_success),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
                 is SettingsResult.Error -> {
                     Toast.makeText(
                         this@SettingsActivity,
-                        "Failed to reset: ${result.message}",
+                        getString(R.string.failed_to_reset, result.message),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -355,40 +355,40 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun exportUserData() {
-        Toast.makeText(this, "Export data feature coming soon", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.export_data_coming_soon), Toast.LENGTH_SHORT).show()
         // TODO: Implement data export
     }
 
     private fun showDeleteDataDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Delete Data")
-            .setMessage("Are you sure you want to delete all your data? This action cannot be undone.")
-            .setPositiveButton("Delete") { _, _ -> deleteUserData() }
-            .setNegativeButton("Cancel", null)
+            .setTitle(getString(R.string.delete_data_title))
+            .setMessage(getString(R.string.delete_data_message))
+            .setPositiveButton(getString(R.string.delete)) { _, _ -> deleteUserData() }
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
     private fun deleteUserData() {
-        Toast.makeText(this, "Delete data feature coming soon", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.delete_data_coming_soon), Toast.LENGTH_SHORT).show()
         // TODO: Implement data deletion
     }
 
     private fun editProfile() {
-        Toast.makeText(this, "Edit profile feature coming soon", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.edit_profile_coming_soon), Toast.LENGTH_SHORT).show()
         // TODO: Navigate to edit profile screen
     }
 
     private fun changePassword() {
-        Toast.makeText(this, "Change password feature coming soon", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.change_password_coming_soon), Toast.LENGTH_SHORT).show()
         // TODO: Navigate to change password screen
     }
 
     private fun logout() {
         AlertDialog.Builder(this)
-            .setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Logout") { _, _ -> performLogout() }
-            .setNegativeButton("Cancel", null)
+            .setTitle(getString(R.string.logout_title))
+            .setMessage(getString(R.string.logout_message))
+            .setPositiveButton(getString(R.string.logout)) { _, _ -> performLogout() }
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
