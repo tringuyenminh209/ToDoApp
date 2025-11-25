@@ -5,7 +5,8 @@
       "Bash(curl:*)",
       "Bash(./gradlew assembleDebug:*)",
       "Bash(php artisan tinker:*)",
-      "Bash(docker-compose ps:*)"
+      "Bash(docker-compose ps:*)",
+      "Bash(docker-compose restart:*)"
     ],
     "deny": [],
     "ask": []
