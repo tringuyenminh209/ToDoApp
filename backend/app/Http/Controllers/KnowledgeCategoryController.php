@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class KnowledgeCategoryController extends Controller
 {
@@ -254,26 +255,63 @@ class KnowledgeCategoryController extends Controller
 
         DB::beginTransaction();
         try {
-            // Disable foreign key checks temporarily
-            DB::statement('SET FOREIGN_KEY_CHECKS=0');
+            // Check if category has items
+            $itemCount = KnowledgeItem::where('category_id', $category->id)->count();
+
+            // Get child categories before deletion
+            $childCategories = KnowledgeCategory::where('parent_id', $category->id)->get();
+
+            // If category has items and no parent, find another root category to move items to
+            if ($itemCount > 0 && $category->parent_id === null) {
+                // Find another root category for the same user
+                $alternativeCategory = KnowledgeCategory::where('user_id', $user->id)
+                    ->where('id', '!=', $category->id)
+                    ->whereNull('parent_id')
+                    ->first();
+
+                if (!$alternativeCategory) {
+                    // If no alternative root category exists, prevent deletion
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Cannot delete root category with items. Please move or delete items first, or create another root category.'
+                    ], 422);
+                }
+
+                // Move items to alternative root category
+                KnowledgeItem::where('category_id', $category->id)
+                    ->where('user_id', $user->id) // Ensure items belong to user
+                    ->update(['category_id' => $alternativeCategory->id]);
+            } elseif ($itemCount > 0 && $category->parent_id !== null) {
+                // Verify parent category exists and belongs to user
+                $parentCategory = KnowledgeCategory::where('user_id', $user->id)
+                    ->find($category->parent_id);
+
+                if (!$parentCategory) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Parent category not found or does not belong to you'
+                    ], 404);
+                }
+
+                // Move items to parent category
+                KnowledgeItem::where('category_id', $category->id)
+                    ->where('user_id', $user->id) // Ensure items belong to user
+                    ->update(['category_id' => $category->parent_id]);
+            }
 
             // Move all child categories to parent (or root if no parent)
-            DB::table('knowledge_categories')
-                ->where('parent_id', $category->id)
-                ->update(['parent_id' => $category->parent_id]);
-
-            // Move all knowledge items to parent category (or set to null if no parent)
-            DB::table('knowledge_items')
-                ->where('category_id', $category->id)
-                ->update(['category_id' => $category->parent_id]);
+            // Use whereIn to update all children at once
+            if ($childCategories->isNotEmpty()) {
+                $newParentId = $category->parent_id; // Can be null for root categories
+                KnowledgeCategory::whereIn('id', $childCategories->pluck('id'))
+                    ->where('user_id', $user->id) // Ensure children belong to user
+                    ->update(['parent_id' => $newParentId]);
+            }
 
             // Now delete the category
-            DB::table('knowledge_categories')
-                ->where('id', $category->id)
-                ->delete();
-
-            // Re-enable foreign key checks
-            DB::statement('SET FOREIGN_KEY_CHECKS=1');
+            $category->delete();
 
             DB::commit();
 
@@ -283,8 +321,13 @@ class KnowledgeCategoryController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            // Make sure to re-enable foreign key checks even on error
-            DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+            Log::error('Failed to delete category', [
+                'category_id' => $id,
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
 
             return response()->json([
                 'success' => false,
