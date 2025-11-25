@@ -670,9 +670,10 @@ class FocusSessionViewModel : ViewModel() {
                 categoryId = null,
                 itemType = null,
                 isFavorite = null,
-                isArchived = null,
+                isArchived = false,  // Only non-archived items
                 search = null,
-                tags = null
+                tags = null,
+                perPage = 1000  // Load all items
             )
 
             if (response.isSuccessful) {
@@ -689,14 +690,24 @@ class FocusSessionViewModel : ViewModel() {
                 val subtaskIds = currentSubtasks.map { it.id }
                 val filterIds = listOf(taskId) + subtaskIds
 
-                android.util.Log.d("FocusSessionViewModel", "Loading knowledge items for taskId=$taskId, subtaskIds=$subtaskIds (${currentSubtasks.size} subtasks)")
+                // Get learning path ID from current task
+                val learningPathId = _currentTask.value?.learning_milestone_id
+
+                android.util.Log.d("FocusSessionViewModel", "Loading knowledge items for taskId=$taskId, learningPathId=$learningPathId, subtaskIds=$subtaskIds (${currentSubtasks.size} subtasks)")
 
                 // Filter knowledge items for task and all subtasks
+                // Also include items linked to the learning path
                 val taskItems = allItems.filter { item ->
-                    item.source_task_id in filterIds
+                    item.source_task_id in filterIds ||
+                    (learningPathId != null && item.learning_path_id == learningPathId)
                 }
 
                 android.util.Log.d("FocusSessionViewModel", "Found ${taskItems.size} knowledge items (total: ${allItems.size})")
+
+                // Log sample items for debugging
+                if (allItems.isNotEmpty()) {
+                    android.util.Log.d("FocusSessionViewModel", "Sample item: source_task_id=${allItems[0].source_task_id}, learning_path_id=${allItems[0].learning_path_id}, title=${allItems[0].title}")
+                }
 
                 _knowledgeItems.postValue(taskItems)
             } else {

@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
@@ -115,11 +116,7 @@ class KnowledgeActivity : BaseActivity() {
         }
 
         binding.fabAddKnowledge.setOnClickListener {
-            val intent = Intent(this, KnowledgeEditorActivity::class.java)
-            if (currentCategoryId != null) {
-                intent.putExtra("CATEGORY_ID", currentCategoryId)
-            }
-            startActivity(intent)
+            showAddKnowledgeBottomSheet()
         }
 
         binding.btnAddKnowledgeEmpty.setOnClickListener {
@@ -322,13 +319,20 @@ class KnowledgeActivity : BaseActivity() {
         // Show/hide folders section
         binding.foldersSection.visibility = if (hasSubFolders) View.VISIBLE else View.GONE
         if (hasSubFolders) {
-            // Update item counts for each folder based on actual items
+            // Update counts for each folder (items + subfolders)
             val foldersWithCounts = subFolders.map { category ->
-                val actualCount = allItems.count { 
-                    it.category_id == category.id && !it.is_archived 
+                // Count items in this category
+                val itemCount = allItems.count {
+                    it.category_id == category.id && !it.is_archived
                 }
+                // Count subfolders in this category
+                val subfolderCount = allCategories.count {
+                    it.parent_id == category.id
+                }
+                // Total count = items + subfolders
+                val totalCount = itemCount + subfolderCount
                 // Create a copy with updated item_count
-                category.copy(item_count = actualCount)
+                category.copy(item_count = totalCount)
             }
             folderAdapter.submitList(foldersWithCounts)
         }
@@ -392,17 +396,105 @@ class KnowledgeActivity : BaseActivity() {
         popup.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_rename -> {
-                    Toast.makeText(this, "Rename - Coming soon", Toast.LENGTH_SHORT).show()
+                    showRenameFolderDialog(category)
                     true
                 }
                 R.id.action_delete -> {
-                    Toast.makeText(this, "Delete folder - Coming soon", Toast.LENGTH_SHORT).show()
+                    showDeleteFolderConfirmation(category)
                     true
                 }
                 else -> false
             }
         }
         popup.show()
+    }
+
+    /**
+     * Show delete folder confirmation dialog
+     */
+    private fun showDeleteFolderConfirmation(category: KnowledgeCategory) {
+        val allCategories = viewModel.categories.value ?: emptyList()
+        val allItems = viewModel.knowledgeItems.value ?: emptyList()
+
+        // Count subfolders and items
+        val subfolderCount = allCategories.count { it.parent_id == category.id }
+        val itemCount = allItems.count { it.category_id == category.id }
+
+        val message = when {
+            subfolderCount > 0 && itemCount > 0 ->
+                "This folder contains $subfolderCount subfolder(s) and $itemCount item(s). Delete anyway?"
+            subfolderCount > 0 ->
+                "This folder contains $subfolderCount subfolder(s). Delete anyway?"
+            itemCount > 0 ->
+                "This folder contains $itemCount item(s). Delete anyway?"
+            else ->
+                "Delete folder \"${category.name}\"?"
+        }
+
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Delete Folder")
+            .setMessage(message)
+            .setPositiveButton("Delete") { _, _ ->
+                deleteFolder(category.id)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    /**
+     * Delete folder via API
+     */
+    private fun deleteFolder(categoryId: Int) {
+        viewModel.deleteCategory(categoryId)
+    }
+
+    /**
+     * Show rename folder dialog
+     */
+    private fun showRenameFolderDialog(category: KnowledgeCategory) {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_rename_folder, null)
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        val etFolderName = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_folder_name)
+        val btnCancel = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_cancel)
+        val btnRename = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_rename)
+
+        // Set current name
+        etFolderName.setText(category.name)
+        etFolderName.setSelection(category.name.length) // Move cursor to end
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnRename.setOnClickListener {
+            val newName = etFolderName.text.toString().trim()
+
+            if (newName.isEmpty()) {
+                etFolderName.error = "Folder name cannot be empty"
+                return@setOnClickListener
+            }
+
+            if (newName == category.name) {
+                dialog.dismiss()
+                return@setOnClickListener
+            }
+
+            // Call API to rename
+            renameFolderCategory(category.id, newName)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    /**
+     * Rename folder category via API
+     */
+    private fun renameFolderCategory(categoryId: Int, newName: String) {
+        viewModel.renameCategory(categoryId, newName)
     }
 
     /**
@@ -497,5 +589,93 @@ class KnowledgeActivity : BaseActivity() {
             // At root, exit activity
             super.onBackPressed()
         }
+    }
+
+    /**
+     * Show bottom sheet with add options
+     */
+    private fun showAddKnowledgeBottomSheet() {
+        val bottomSheet = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_add_knowledge, null)
+        bottomSheet.setContentView(view)
+
+        // Create Folder option
+        view.findViewById<View>(R.id.option_create_folder).setOnClickListener {
+            bottomSheet.dismiss()
+            showCreateFolderDialog()
+        }
+
+        // Add Item option
+        view.findViewById<View>(R.id.option_add_item).setOnClickListener {
+            bottomSheet.dismiss()
+            val intent = Intent(this, KnowledgeEditorActivity::class.java)
+            if (currentCategoryId != null) {
+                intent.putExtra("CATEGORY_ID", currentCategoryId)
+            }
+            startActivity(intent)
+        }
+
+        // Quick Capture option
+        view.findViewById<View>(R.id.option_quick_capture).setOnClickListener {
+            bottomSheet.dismiss()
+            val intent = Intent(this, QuickCaptureActivity::class.java)
+            if (currentCategoryId != null) {
+                intent.putExtra("CATEGORY_ID", currentCategoryId)
+            }
+            startActivity(intent)
+        }
+
+        bottomSheet.show()
+    }
+
+    /**
+     * Show create folder dialog
+     */
+    private fun showCreateFolderDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_create_folder, null)
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        val etFolderName = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_folder_name)
+        val etFolderDescription = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.et_folder_description)
+        val llCurrentLocation = dialogView.findViewById<LinearLayout>(R.id.ll_current_location)
+        val tvParentFolder = dialogView.findViewById<TextView>(R.id.tv_parent_folder)
+        val btnCancel = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_cancel)
+        val btnCreate = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_create)
+
+        // Show current location if inside a folder
+        if (currentCategoryId != null) {
+            llCurrentLocation.visibility = View.VISIBLE
+            val currentCategory = breadcrumbPath.lastOrNull()
+            tvParentFolder.text = "Parent: ${currentCategory?.name ?: "Root"}"
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnCreate.setOnClickListener {
+            val folderName = etFolderName.text.toString().trim()
+            val description = etFolderDescription.text.toString().trim()
+
+            if (folderName.isEmpty()) {
+                etFolderName.error = "Folder name cannot be empty"
+                return@setOnClickListener
+            }
+
+            // Call API to create folder
+            createFolder(folderName, description, currentCategoryId)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    /**
+     * Create new folder via API
+     */
+    private fun createFolder(name: String, description: String?, parentId: Int?) {
+        viewModel.createCategory(name, description, parentId)
     }
 }

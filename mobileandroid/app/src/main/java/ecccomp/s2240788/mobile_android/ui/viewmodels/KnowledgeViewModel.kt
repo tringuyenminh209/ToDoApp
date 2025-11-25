@@ -906,30 +906,6 @@ class KnowledgeViewModel : ViewModel() {
     }
 
     /**
-     * Delete category
-     */
-    fun deleteCategory(categoryId: Int) {
-        viewModelScope.launch {
-            try {
-                _isLoading.value = true
-                val response = apiService.deleteKnowledgeCategory(categoryId)
-
-                if (response.isSuccessful && response.body()?.success == true) {
-                    _successMessage.postValue("カテゴリーを削除しました")
-                    loadCategories()
-                    loadCategoryTree()
-                } else {
-                    _error.value = "削除に失敗しました"
-                }
-            } catch (e: Exception) {
-                _error.value = "エラー: ${e.message}"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    /**
      * Clear success message
      */
     fun clearSuccessMessage() {
@@ -941,5 +917,103 @@ class KnowledgeViewModel : ViewModel() {
      */
     fun clearQuickCaptureResponse() {
         _quickCaptureResponse.value = null
+    }
+
+    /**
+     * Rename category
+     */
+    fun renameCategory(categoryId: Int, newName: String) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                val request = CreateKnowledgeCategoryRequest(
+                    name = newName,
+                    description = null,
+                    parent_id = null,
+                    color = null,
+                    icon = null,
+                    sort_order = null
+                )
+
+                val response = apiService.updateKnowledgeCategory(categoryId, request)
+
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _successMessage.postValue("Folder renamed successfully")
+                    // Reload categories to refresh the list
+                    loadCategories()
+                } else {
+                    _error.value = "Failed to rename folder"
+                }
+            } catch (e: Exception) {
+                _error.value = "Error: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Create new category/folder
+     */
+    fun createCategory(name: String, description: String?, parentId: Int?) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                val request = CreateKnowledgeCategoryRequest(
+                    name = name,
+                    description = description?.ifEmpty { null },
+                    parent_id = parentId,
+                    color = null,
+                    icon = null,
+                    sort_order = null
+                )
+
+                val response = apiService.createKnowledgeCategory(request)
+
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _successMessage.postValue("Folder created successfully")
+                    // Reload categories to refresh the list
+                    loadCategories()
+                } else {
+                    _error.value = "Failed to create folder"
+                }
+            } catch (e: Exception) {
+                _error.value = "Error: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    /**
+     * Delete category/folder
+     */
+    fun deleteCategory(categoryId: Int) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                _error.value = null
+
+                val response = apiService.deleteKnowledgeCategory(categoryId)
+
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _successMessage.postValue("Folder deleted successfully")
+                    // Reload both categories and items
+                    loadCategories()
+                    loadKnowledgeItems()
+                } else {
+                    val errorMsg = response.body()?.message ?: "Failed to delete folder"
+                    _error.value = errorMsg
+                }
+            } catch (e: Exception) {
+                _error.value = "Error: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
     }
 }
