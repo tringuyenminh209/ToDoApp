@@ -362,10 +362,36 @@
     <string name="change_password">パスワードを変更</string>
     <string name="change_password_desc">アカウントのパスワードを更新</string>
     <string name="logout_desc">現在のアカウントからログアウト</string>
-    
-    <!-- Settings Actions -->
+
+    <!-- Settings Actions and States -->
     <string name="save_settings">設定を保存</string>
     <string name="reset_settings">デフォルトに戻す</string>
+    <string name="settings_saved">設定が保存されました</string>
+    <string name="settings_not_loaded">設定がまだ読み込まれていません</string>
+    <string name="failed_to_save">保存に失敗しました: %s</string>
+    <string name="failed_to_reset">リセットに失敗しました: %s</string>
+    <string name="settings_reset_success">設定がデフォルトに戻りました</string>
+
+    <!-- Settings Dialogs -->
+    <string name="reset_settings_title">設定をリセット</string>
+    <string name="reset_settings_message">すべての設定をデフォルト値にリセットしますか？</string>
+    <string name="delete_data_title">データを削除</string>
+    <string name="delete_data_message">すべてのデータを削除しますか？この操作は元に戻せません。</string>
+    <string name="logout_title">ログアウト</string>
+    <string name="logout_message">ログアウトしてもよろしいですか？</string>
+    <string name="reset">リセット</string>
+
+    <!-- Settings Features -->
+    <string name="export_data_coming_soon">データエクスポート機能は近日公開予定です</string>
+    <string name="delete_data_coming_soon">データ削除機能は近日公開予定です</string>
+    <string name="edit_profile_coming_soon">プロフィール編集機能は近日公開予定です</string>
+    <string name="change_password_coming_soon">パスワード変更機能は近日公開予定です</string>
+
+    <!-- Settings Errors -->
+    <string name="failed_to_load_profile">プロフィールの読み込みに失敗しました: %s</string>
+    <string name="failed_to_load_settings">設定の読み込みに失敗しました: %s</string>
+    <string name="unknown_user">不明なユーザー</string>
+    <string name="no_email">メールアドレスなし</string>
 
     <!-- Stats -->
     <string name="stats_title">統計</string>
