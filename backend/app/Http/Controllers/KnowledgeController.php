@@ -135,6 +135,22 @@ class KnowledgeController extends Controller
         $data = $validator->validated();
         $data['user_id'] = $user->id;
 
+        // Auto-assign category from learning path if learning_path_id is provided but no category
+        if (isset($data['learning_path_id']) && !isset($data['category_id'])) {
+            $learningPath = \App\Models\LearningPath::find($data['learning_path_id']);
+            if ($learningPath) {
+                // Find category with same name as roadmap
+                $category = \App\Models\KnowledgeCategory::where('user_id', $user->id)
+                    ->where('name', $learningPath->title)
+                    ->orderBy('created_at', 'desc') // Get the most recent one
+                    ->first();
+
+                if ($category) {
+                    $data['category_id'] = $category->id;
+                }
+            }
+        }
+
         $item = KnowledgeItem::create($data);
 
         return response()->json([

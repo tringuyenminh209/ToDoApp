@@ -19,7 +19,8 @@ import java.util.concurrent.TimeUnit
 
 object NetworkModule {
 
-    private const val BASE_URL = "http://localhost:8080/api/"
+    // Sử dụng AppConfig để dễ thay đổi URL
+    private const val BASE_URL = AppConfig.BASE_URL
     internal var contextRef: WeakReference<Context>? = null
 
     // Lazy initialization of ApiService

@@ -252,28 +252,45 @@ class KnowledgeCategoryController extends Controller
         $category = KnowledgeCategory::where('user_id', $user->id)
             ->findOrFail($id);
 
-        // Check if category has children
-        if ($category->children()->count() > 0) {
+        DB::beginTransaction();
+        try {
+            // Disable foreign key checks temporarily
+            DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+            // Move all child categories to parent (or root if no parent)
+            DB::table('knowledge_categories')
+                ->where('parent_id', $category->id)
+                ->update(['parent_id' => $category->parent_id]);
+
+            // Move all knowledge items to parent category (or set to null if no parent)
+            DB::table('knowledge_items')
+                ->where('category_id', $category->id)
+                ->update(['category_id' => $category->parent_id]);
+
+            // Now delete the category
+            DB::table('knowledge_categories')
+                ->where('id', $category->id)
+                ->delete();
+
+            // Re-enable foreign key checks
+            DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Category deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Make sure to re-enable foreign key checks even on error
+            DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
             return response()->json([
                 'success' => false,
-                'message' => 'Cannot delete category with subcategories. Please delete or move subcategories first.'
-            ], 422);
+                'message' => 'Failed to delete category: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Check if category has items
-        if ($category->knowledgeItems()->count() > 0) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cannot delete category with items. Please move or delete items first.'
-            ], 422);
-        }
-
-        $category->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Category deleted successfully'
-        ]);
     }
 
     /**
