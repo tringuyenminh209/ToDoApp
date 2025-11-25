@@ -255,69 +255,90 @@ class KnowledgeCategoryController extends Controller
 
         DB::beginTransaction();
         try {
-            // Check if category has items
+            // MOVE UP Strategy: Move items and subcategories to parent before deletion
+
+            // Step 1: Determine where to move items/subcategories
+            $isRootCategory = ($category->parent_id === null);
+            $targetParentId = $category->parent_id; // null if root category
+            $targetParentIdForItems = $targetParentId; // For items
+            $targetParentIdForChildren = $targetParentId; // For subcategories
+
+            // If deleting root category, handle items and children differently
+            if ($isRootCategory) {
+                // Items: Move to "Uncategorized" category
+                $uncategorizedCategory = KnowledgeCategory::firstOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'name' => '未分類',
+                        'parent_id' => null
+                    ],
+                    [
+                        'description' => 'カテゴリなしのアイテム',
+                        'icon' => 'folder',
+                        'color' => '#6B7280'
+                    ]
+                );
+                $targetParentIdForItems = $uncategorizedCategory->id;
+
+                // Children: Keep as root categories (parent_id = NULL)
+                $targetParentIdForChildren = null;
+            }
+
+            // Step 2: Count items and subcategories for logging
             $itemCount = KnowledgeItem::where('category_id', $category->id)->count();
+            $childCount = KnowledgeCategory::where('parent_id', $category->id)->count();
 
-            // Get child categories before deletion
-            $childCategories = KnowledgeCategory::where('parent_id', $category->id)->get();
+            Log::info('Deleting category', [
+                'category_id' => $category->id,
+                'category_name' => $category->name,
+                'parent_id' => $category->parent_id,
+                'is_root_category' => $isRootCategory,
+                'item_count' => $itemCount,
+                'child_count' => $childCount,
+                'target_for_items' => $targetParentIdForItems,
+                'target_for_children' => $targetParentIdForChildren
+            ]);
 
-            // If category has items and no parent, find another root category to move items to
-            if ($itemCount > 0 && $category->parent_id === null) {
-                // Find another root category for the same user
-                $alternativeCategory = KnowledgeCategory::where('user_id', $user->id)
-                    ->where('id', '!=', $category->id)
-                    ->whereNull('parent_id')
-                    ->first();
+            // Step 3: Move all knowledge items to parent category (or uncategorized)
+            if ($itemCount > 0) {
+                $moved = KnowledgeItem::where('category_id', $category->id)
+                    ->where('user_id', $user->id)
+                    ->update(['category_id' => $targetParentIdForItems]);
 
-                if (!$alternativeCategory) {
-                    // If no alternative root category exists, prevent deletion
-                    DB::rollBack();
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Cannot delete root category with items. Please move or delete items first, or create another root category.'
-                    ], 422);
-                }
-
-                // Move items to alternative root category
-                KnowledgeItem::where('category_id', $category->id)
-                    ->where('user_id', $user->id) // Ensure items belong to user
-                    ->update(['category_id' => $alternativeCategory->id]);
-            } elseif ($itemCount > 0 && $category->parent_id !== null) {
-                // Verify parent category exists and belongs to user
-                $parentCategory = KnowledgeCategory::where('user_id', $user->id)
-                    ->find($category->parent_id);
-
-                if (!$parentCategory) {
-                    DB::rollBack();
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Parent category not found or does not belong to you'
-                    ], 404);
-                }
-
-                // Move items to parent category
-                KnowledgeItem::where('category_id', $category->id)
-                    ->where('user_id', $user->id) // Ensure items belong to user
-                    ->update(['category_id' => $category->parent_id]);
+                Log::info('Moved knowledge items', [
+                    'moved_count' => $moved,
+                    'from_category' => $category->id,
+                    'to_category' => $targetParentIdForItems
+                ]);
             }
 
-            // Move all child categories to parent (or root if no parent)
-            // Use whereIn to update all children at once
-            if ($childCategories->isNotEmpty()) {
-                $newParentId = $category->parent_id; // Can be null for root categories
-                KnowledgeCategory::whereIn('id', $childCategories->pluck('id'))
-                    ->where('user_id', $user->id) // Ensure children belong to user
-                    ->update(['parent_id' => $newParentId]);
+            // Step 4: Move all child categories up one level
+            if ($childCount > 0) {
+                $moved = KnowledgeCategory::where('parent_id', $category->id)
+                    ->where('user_id', $user->id)
+                    ->update(['parent_id' => $targetParentIdForChildren]);
+
+                Log::info('Moved child categories', [
+                    'moved_count' => $moved,
+                    'from_parent' => $category->id,
+                    'to_parent' => $targetParentIdForChildren
+                ]);
             }
 
-            // Now delete the category
+            // Step 5: Delete the category (now empty)
             $category->delete();
 
             DB::commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category deleted successfully'
+                'message' => 'Category deleted successfully. Items and subcategories moved to parent.',
+                'data' => [
+                    'deleted_category_id' => $category->id,
+                    'moved_items_count' => $itemCount,
+                    'moved_children_count' => $childCount,
+                    'target_parent_id' => $targetParentId
+                ]
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
