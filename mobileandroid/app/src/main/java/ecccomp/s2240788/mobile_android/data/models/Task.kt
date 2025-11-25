@@ -18,6 +18,7 @@ data class Task(
     val user_id: Int,
     val project_id: Int?,
     val learning_milestone_id: Int?,
+    val learning_path_id: Int? = null, // Added from backend accessor
     val ai_breakdown_enabled: Boolean,
     // Focus enhancement features
     val requires_deep_focus: Boolean = false,

@@ -6,6 +6,7 @@ use App\Models\KnowledgeItem;
 use App\Models\KnowledgeCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class KnowledgeController extends Controller
 {
@@ -17,6 +18,17 @@ class KnowledgeController extends Controller
         $user = $request->user();
         $query = KnowledgeItem::where('user_id', $user->id)
             ->with(['category', 'learningPath', 'sourceTask']);
+
+        // Debug logging - check all query params
+        Log::info('Knowledge API request', [
+            'all_query' => $request->all(),
+            'source_task_id' => $request->source_task_id,
+            'source_task_id_type' => gettype($request->source_task_id),
+            'learning_path_id' => $request->learning_path_id,
+            'user_id' => $user->id,
+            'query_string' => $request->getQueryString(),
+            'full_url' => $request->fullUrl(),
+        ]);
 
         // Filter by type (also support 'filter' parameter for backward compatibility)
         if ($request->has('type')) {
@@ -32,12 +44,79 @@ class KnowledgeController extends Controller
 
         // Filter by learning path
         if ($request->has('learning_path_id')) {
-            $query->where('learning_path_id', $request->learning_path_id);
+            $learningPathId = $request->learning_path_id;
+            // Support both single ID and array of IDs
+            if (is_array($learningPathId)) {
+                $query->whereIn('learning_path_id', $learningPathId);
+            } else {
+                $query->where('learning_path_id', $learningPathId);
+            }
         }
 
-        // Filter by source task
+        // Filter by source task (support single ID or array of IDs)
+        // When multiple query params with same name are sent (e.g., source_task_id=45&source_task_id=142),
+        // Retrofit sends them as multiple query params with the same name
+        // We need to manually extract all values from the query string using regex
         if ($request->has('source_task_id')) {
-            $query->where('source_task_id', $request->source_task_id);
+            $sourceTaskId = [];
+            // IMPORTANT: Use $_SERVER['QUERY_STRING'] to get RAW query string before PHP processing
+            // $request->getQueryString() returns already-parsed string where PHP keeps only last value
+            $queryString = $_SERVER['QUERY_STRING'] ?? $request->getQueryString();
+
+            // First, try to extract using regex (most reliable for multiple params with same name)
+            // Support both formats: ?source_task_id=1&source_task_id=2 and ?source_task_id[]=1&source_task_id[]=2
+            if ($queryString) {
+                preg_match_all('/[&?]source_task_id(?:\[\])?=(\d+)/', $queryString, $matches);
+                if (!empty($matches[1])) {
+                    $sourceTaskId = array_map('intval', $matches[1]);
+                }
+            }
+
+            // Fallback: try parse_str() which should create array for duplicate keys
+            if (empty($sourceTaskId) && $queryString) {
+                parse_str($queryString, $parsed);
+                if (isset($parsed['source_task_id'])) {
+                    $sourceTaskId = $parsed['source_task_id'];
+                    if (!is_array($sourceTaskId)) {
+                        $sourceTaskId = [$sourceTaskId];
+                    }
+                }
+            }
+
+            // Last fallback: try request input (Laravel might have parsed it)
+            if (empty($sourceTaskId)) {
+                $inputValue = $request->input('source_task_id');
+                if ($inputValue !== null) {
+                    $sourceTaskId = is_array($inputValue) ? $inputValue : [$inputValue];
+                }
+            }
+
+            Log::info('Processing source_task_id filter', [
+                'raw_value' => $sourceTaskId,
+                'type' => gettype($sourceTaskId),
+                'is_array' => is_array($sourceTaskId),
+                'query_string' => $queryString,
+                'regex_matches' => $matches[1] ?? null,
+            ]);
+
+            // Filter out null values and ensure all are integers
+            $sourceTaskId = array_filter(array_map('intval', $sourceTaskId), function($id) {
+                return $id > 0;
+            });
+
+            Log::info('Filtered source_task_id', [
+                'filtered_ids' => $sourceTaskId,
+                'count' => count($sourceTaskId),
+            ]);
+
+            if (!empty($sourceTaskId)) {
+                $query->whereIn('source_task_id', $sourceTaskId);
+            } else {
+                Log::warning('source_task_id filter is empty after processing', [
+                    'query_string' => $queryString,
+                    'request_all' => $request->all(),
+                ]);
+            }
         }
 
         // Filter favorites
@@ -73,7 +152,70 @@ class KnowledgeController extends Controller
         $sortOrder = $request->input('sort_order', 'desc');
         $query->orderBy($sortBy, $sortOrder);
 
+        // Log the SQL query before execution
+        Log::info('Knowledge API query SQL', [
+            'sql' => $query->toSql(),
+            'bindings' => $query->getBindings(),
+        ]);
+
         $items = $query->get();
+
+        // Debug logging - detailed
+        Log::info('Knowledge API response', [
+            'count' => $items->count(),
+            'source_task_id_filter' => $request->source_task_id,
+            'learning_path_id_filter' => $request->learning_path_id,
+            'user_id' => $user->id,
+            'first_item_id' => $items->first()?->id,
+            'all_query_params' => $request->all(),
+            'query_string' => $request->getQueryString(),
+        ]);
+
+        // Also log if no items found but should have items
+        if ($items->count() == 0 && $request->has('source_task_id')) {
+            // Test query with source_task_id only
+            $testQuery = KnowledgeItem::where('user_id', $user->id)
+                ->where('is_archived', false);
+            if (is_array($request->source_task_id)) {
+                $testQuery->whereIn('source_task_id', $request->source_task_id);
+            } else {
+                $testQuery->where('source_task_id', $request->source_task_id);
+            }
+            $testCount = $testQuery->count();
+
+            // Test query with learning_path_id if provided
+            $testCountByPath = 0;
+            if ($request->has('learning_path_id') && $request->learning_path_id) {
+                $testQueryByPath = KnowledgeItem::where('user_id', $user->id)
+                    ->where('is_archived', false)
+                    ->where('learning_path_id', $request->learning_path_id);
+                $testCountByPath = $testQueryByPath->count();
+            }
+
+            // Check if task has learning_milestone_id and get learning_path_id from it
+            $taskLearningPathId = null;
+            if (is_array($request->source_task_id)) {
+                $firstTaskId = $request->source_task_id[0] ?? null;
+            } else {
+                $firstTaskId = $request->source_task_id;
+            }
+
+            if ($firstTaskId) {
+                $task = \App\Models\Task::with('learningMilestone')->find($firstTaskId);
+                if ($task && $task->learningMilestone) {
+                    $taskLearningPathId = $task->learningMilestone->learning_path_id;
+                }
+            }
+
+            Log::warning('No knowledge items found', [
+                'test_count_by_source_task' => $testCount,
+                'test_count_by_learning_path' => $testCountByPath,
+                'source_task_id_from_request' => $request->source_task_id,
+                'learning_path_id_from_request' => $request->learning_path_id,
+                'task_learning_path_id' => $taskLearningPathId,
+                'task_id' => $firstTaskId,
+            ]);
+        }
 
         return response()->json([
             'success' => true,

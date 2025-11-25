@@ -62,6 +62,7 @@ class Task extends Model
      */
     protected $appends = [
         'remaining_minutes',
+        'learning_path_id',
     ];
 
     /**
@@ -444,6 +445,14 @@ class Task extends Model
     public function isLowPriority()
     {
         return $this->priority <= 2;
+    }
+
+    /**
+     * Get learning_path_id from milestone
+     */
+    public function getLearningPathIdAttribute()
+    {
+        return $this->learningMilestone?->learning_path_id;
     }
 
     public function requiresHighEnergy()
