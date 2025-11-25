@@ -425,11 +425,46 @@ class RoadmapApiController extends Controller
      */
     private function createKnowledgeItems($userId, $learningPathId, $taskId, $knowledgeItemsData)
     {
-        // Get or create default category
-        $category = KnowledgeCategory::firstOrCreate(
-            ['user_id' => $userId, 'name' => 'プログラミング学習'],
-            ['description' => 'プログラミング学習用のメモとコード', 'icon' => 'code', 'color' => '#3B82F6']
-        );
+        // Get learning path to get the title
+        $learningPath = LearningPath::find($learningPathId);
+        if (!$learningPath) {
+            Log::warning("Learning path not found: {$learningPathId}");
+            return;
+        }
+
+        // Get or create parent category "プログラミング演習"
+        $parentCategory = KnowledgeCategory::where('user_id', $userId)
+            ->where('name', 'プログラミング演習')
+            ->whereNull('parent_id')
+            ->first();
+
+        if (!$parentCategory) {
+            $parentCategory = KnowledgeCategory::create([
+                'user_id' => $userId,
+                'name' => 'プログラミング演習',
+                'parent_id' => null,
+                'description' => 'プログラミング演習用のフォルダ',
+                'icon' => 'folder',
+                'color' => '#0FA968'
+            ]);
+        }
+
+        // Get or create child category with roadmap name (must be under parent category)
+        $category = KnowledgeCategory::where('user_id', $userId)
+            ->where('name', $learningPath->title)
+            ->where('parent_id', $parentCategory->id)
+            ->first();
+
+        if (!$category) {
+            $category = KnowledgeCategory::create([
+                'user_id' => $userId,
+                'name' => $learningPath->title,
+                'parent_id' => $parentCategory->id,
+                'description' => 'ロードマップ: ' . $learningPath->title,
+                'icon' => 'code',
+                'color' => '#3B82F6'
+            ]);
+        }
 
         foreach ($knowledgeItemsData as $itemData) {
             $knowledgeItem = [
