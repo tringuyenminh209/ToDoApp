@@ -252,6 +252,8 @@ interface ApiService {
         @Query("is_archived") isArchived: Boolean? = null,
         @Query("search") search: String? = null,
         @Query("tags") tags: List<String>? = null,
+        @Query("source_task_id") sourceTaskId: List<Int>? = null,
+        @Query("learning_path_id") learningPathId: Int? = null,
         @Query("sort_by") sortBy: String = "created_at",
         @Query("sort_order") sortOrder: String = "desc",
         @Query("per_page") perPage: Int = 20
