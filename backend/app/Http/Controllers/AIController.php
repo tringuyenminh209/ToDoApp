@@ -994,14 +994,33 @@ class AIController extends Controller
                 'data' => $taskData
             ]);
 
-            // Determine which intent to use (timetable has priority if both detected)
+            // NEW: Parse knowledge query intent
+            $knowledgeQueryData = $this->aiService->parseKnowledgeQueryIntent($request->message, $historyForParsing);
+            Log::info('AIController: parseKnowledgeQueryIntent returned', [
+                'has_data' => !is_null($knowledgeQueryData),
+                'data' => $knowledgeQueryData
+            ]);
+
+            // NEW: Parse knowledge CREATION intent
+            $knowledgeCreationData = $this->aiService->parseKnowledgeCreationIntent(
+                $request->message,
+                $historyForParsing,
+                $user
+            );
+            Log::info('AIController: parseKnowledgeCreationIntent returned', [
+                'has_data' => !is_null($knowledgeCreationData),
+                'data' => $knowledgeCreationData
+            ]);
+
+            // Allow ALL intents to execute simultaneously
             $createdTimetableClass = null;
             $createdTask = null;
+            $knowledgeResults = null;
+            $knowledgeCreationResults = null;
 
+            // Log if both intents detected (no longer ignore task)
             if ($timetableData && $taskData) {
-                // Both detected - use timetable and ignore task
-                Log::info('AIController: Both intents detected, prioritizing timetable');
-                $taskData = null;
+                Log::info('AIController: Both intents detected - will create BOTH timetable class AND task');
             }
 
             // If task intent detected, create task
@@ -1103,6 +1122,90 @@ class AIController extends Controller
                 ]);
             }
 
+            // NEW: If knowledge query intent detected, search knowledge items
+            if ($knowledgeQueryData) {
+                Log::info('AIController: Knowledge query detected, searching items', [
+                    'query' => $knowledgeQueryData
+                ]);
+
+                try {
+                    $query = \App\Models\KnowledgeItem::where('user_id', $user->id)
+                        ->where('is_archived', false);
+
+                    // Filter by item type if specified
+                    if (!empty($knowledgeQueryData['item_type']) && $knowledgeQueryData['item_type'] !== 'any') {
+                        $query->where('item_type', $knowledgeQueryData['item_type']);
+                    }
+
+                    // Search by keywords in title, content, question, tags
+                    if (!empty($knowledgeQueryData['keywords'])) {
+                        $query->where(function($q) use ($knowledgeQueryData) {
+                            foreach ($knowledgeQueryData['keywords'] as $keyword) {
+                                $q->orWhere('title', 'LIKE', "%{$keyword}%")
+                                  ->orWhere('content', 'LIKE', "%{$keyword}%")
+                                  ->orWhere('question', 'LIKE', "%{$keyword}%")
+                                  ->orWhereJsonContains('tags', $keyword)
+                                  ->orWhereJsonContains('tags', "#{$keyword}");
+                            }
+                        });
+                    }
+
+                    // Filter by learning path if specified
+                    if (!empty($knowledgeQueryData['learning_path_id'])) {
+                        $query->where('learning_path_id', $knowledgeQueryData['learning_path_id']);
+                    }
+
+                    // Filter by category if specified
+                    if (!empty($knowledgeQueryData['category_id'])) {
+                        $query->where('category_id', $knowledgeQueryData['category_id']);
+                    }
+
+                    // Get results with relations
+                    $knowledgeResults = $query
+                        ->with(['category', 'learningPath'])
+                        ->orderBy('last_reviewed_at', 'desc')
+                        ->orderBy('view_count', 'desc')
+                        ->limit(10)
+                        ->get();
+
+                    Log::info('AIController: Knowledge search completed', [
+                        'results_count' => $knowledgeResults->count()
+                    ]);
+
+                } catch (\Exception $e) {
+                    Log::error('AIController: Knowledge search failed', [
+                        'error' => $e->getMessage()
+                    ]);
+                    $knowledgeResults = collect([]);
+                }
+            }
+
+            // NEW: If knowledge CREATION intent detected, create categories and items
+            if ($knowledgeCreationData && !empty($knowledgeCreationData['has_creation_intent'])) {
+                Log::info('AIController: Knowledge creation intent detected, creating items...');
+
+                try {
+                    $creationService = app(\App\Services\KnowledgeCreationService::class);
+                    $knowledgeCreationResults = $creationService->createKnowledgeFromIntent($knowledgeCreationData, $user);
+
+                    Log::info('AIController: Knowledge creation completed', [
+                        'success' => $knowledgeCreationResults['success'],
+                        'categories_created' => $knowledgeCreationResults['summary']['categories_created'] ?? 0,
+                        'items_created' => $knowledgeCreationResults['summary']['items_created'] ?? 0,
+                    ]);
+
+                } catch (\Exception $e) {
+                    Log::error('AIController: Knowledge creation failed', [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                    $knowledgeCreationResults = [
+                        'success' => false,
+                        'error' => $e->getMessage()
+                    ];
+                }
+            }
+
             // Load user context: tasks + timetable
             $tasks = Task::where('user_id', $user->id)
                 ->where('status', '!=', 'completed')
@@ -1142,6 +1245,30 @@ class AIController extends Controller
                 'timetable' => $timetableByDay,
                 'today' => $todayDayName,
             ];
+
+            // NEW: Add knowledge results to context if available
+            if ($knowledgeResults && $knowledgeResults->count() > 0) {
+                $userContext['knowledge_items'] = $knowledgeResults->map(function($item) {
+                    return [
+                        'id' => $item->id,
+                        'title' => $item->title,
+                        'type' => $item->item_type,
+                        'content' => $item->content ? substr($item->content, 0, 500) : null, // Limit content length
+                        'code_language' => $item->code_language,
+                        'url' => $item->url,
+                        'question' => $item->question,
+                        'answer' => $item->answer ? substr($item->answer, 0, 500) : null,
+                        'tags' => $item->tags,
+                        'category' => $item->category ? $item->category->name : null,
+                        'learning_path' => $item->learningPath ? $item->learningPath->title : null,
+                        'last_reviewed' => $item->last_reviewed_at ? $item->last_reviewed_at->diffForHumans() : null,
+                    ];
+                })->toArray();
+
+                Log::info('AIController: Added knowledge items to context', [
+                    'count' => count($userContext['knowledge_items'])
+                ]);
+            }
 
             // Get conversation history (last 10 messages for context)
             $history = $conversation->messages()
@@ -1185,6 +1312,40 @@ class AIController extends Controller
                 $aiResponse['message'] = $aiResponse['message'] . $taskConfirmation;
             }
 
+            // NEW: If knowledge was created, add confirmation to AI response
+            if ($knowledgeCreationResults && $knowledgeCreationResults['success']) {
+                $categoriesCount = $knowledgeCreationResults['summary']['categories_created'] ?? 0;
+                $itemsCount = $knowledgeCreationResults['summary']['items_created'] ?? 0;
+
+                $knowledgeConfirmation = "\n\n✅ Knowledge作成完了:";
+                if ($categoriesCount > 0) {
+                    $knowledgeConfirmation .= "\n📁 フォルダ: {$categoriesCount}個";
+                }
+                if ($itemsCount > 0) {
+                    $knowledgeConfirmation .= "\n📝 アイテム: {$itemsCount}個";
+                }
+
+                // Add details about created items
+                if (!empty($knowledgeCreationResults['items'])) {
+                    $knowledgeConfirmation .= "\n\n作成されたアイテム:";
+                    foreach ($knowledgeCreationResults['items'] as $item) {
+                        $typeEmoji = [
+                            'note' => '📝',
+                            'code_snippet' => '💻',
+                            'exercise' => '✏️',
+                            'resource_link' => '🔗',
+                            'attachment' => '📎'
+                        ];
+                        $emoji = $typeEmoji[$item->item_type] ?? '📄';
+                        $knowledgeConfirmation .= "\n{$emoji} {$item->title}";
+                    }
+                }
+
+                $aiResponse['message'] = $aiResponse['message'] . $knowledgeConfirmation;
+
+                Log::info('AIController: Added knowledge creation confirmation to response');
+            }
+
             // Note: Timetable suggestions are handled by Android UI, no need to modify message
 
             // Create assistant message
@@ -1212,6 +1373,7 @@ class AIController extends Controller
                 'created_task' => $createdTask, // Auto-created task from parseTaskIntent
                 'task_suggestion' => $aiResponse['task_suggestion'] ?? null, // AI task suggestion (requires user confirmation)
                 'timetable_suggestion' => $timetableSuggestion, // Timetable class suggestion (requires user confirmation)
+                'knowledge_creation' => $knowledgeCreationResults, // NEW: Knowledge creation results
             ];
 
             return response()->json([
