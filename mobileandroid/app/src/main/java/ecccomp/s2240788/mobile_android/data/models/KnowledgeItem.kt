@@ -197,3 +197,20 @@ data class KnowledgeCategoryStats(
     val avg_items_per_category: Double
 )
 
+/**
+ * AI Knowledge Creation Result
+ * Response from AI-powered knowledge creation via chat
+ */
+data class KnowledgeCreationResult(
+    val success: Boolean,
+    val categories: List<KnowledgeCategory>,
+    val items: List<KnowledgeItem>,
+    val errors: List<String>,
+    val summary: KnowledgeCreationSummary
+)
+
+data class KnowledgeCreationSummary(
+    val categories_created: Int,
+    val items_created: Int
+)
+

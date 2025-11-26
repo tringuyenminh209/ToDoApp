@@ -146,6 +146,12 @@
                         android:textSize="14sp"
                         android:lineSpacingExtra="4dp"
                         tools:text="This is the content of the knowledge item" />
+
+                    <WebView
+                        android:id="@+id/webview_note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
