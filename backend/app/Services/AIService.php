@@ -916,6 +916,312 @@ JSON形式で返してください：
     }
 
     /**
+     * Parse knowledge query intent from user message
+     * Detects when user is asking about their knowledge items
+     *
+     * @param string $message User message
+     * @param array $conversationHistory Optional conversation context
+     * @return array|null Knowledge query data if intent detected, null otherwise
+     */
+    public function parseKnowledgeQueryIntent(string $message, array $conversationHistory = []): ?array
+    {
+        if (!$this->apiKey) {
+            return null;
+        }
+
+        // Build context if history provided
+        $contextText = '';
+        if (!empty($conversationHistory)) {
+            $contextText = "\n会話履歴:\n";
+            $recentHistory = array_slice($conversationHistory, -3);
+            foreach ($recentHistory as $msg) {
+                $role = $msg['role'] === 'user' ? 'ユーザー' : 'アシスタント';
+                $contextText .= "{$role}: {$msg['content']}\n";
+            }
+            $contextText .= "\n";
+        }
+
+        $prompt = "以下のメッセージを分析して、**knowledge items（学習メモ・コード・演習問題）を検索する意図があるか**判断してください。
+{$contextText}
+現在のメッセージ: {$message}
+
+Knowledge検索の意図がある場合のJSON形式:
+{
+  \"has_knowledge_query\": true,
+  \"query\": {
+    \"keywords\": [\"java\", \"list\"],
+    \"item_type\": \"code_snippet|note|exercise|resource_link|attachment|any\",
+    \"learning_path_id\": null,
+    \"category_id\": null
+  }
+}
+
+Knowledge検索の意図がない場合:
+{
+  \"has_knowledge_query\": false
+}
+
+**明確にKnowledge検索の意図があるキーワード:**
+- 「〜について教えて」「〜を見せて」「〜を探して」
+- 「〜のメモ」「〜のコード」「〜の演習問題」
+- 「Java list ntn?」「Cách làm bubble sort?」
+- 「Review lại exercises về sorting」
+- 「〜を復習したい」「〜を確認したい」
+- 「前に書いた〜」「保存した〜」
+
+**Knowledge検索の意図がないもの (必ず false を返す):**
+- 質問: 「〜とは何ですか？」「〜の方法を教えて」(新しい知識を求める質問)
+- タスク作成: 「タスクを作成」「〜をやる」
+- 雑談: 「こんにちは」「ありがとう」
+- 一般的な会話
+
+**重要な判断基準:**
+1. ユーザーが**既存のknowledge items**を参照しようとしているか？
+2. 新しい情報を求めるのではなく、**保存済みの情報**を探しているか？
+3. 具体的なトピック・キーワードがあるか？
+
+**例:**
+❌ \"Javaのリストとは何ですか？\" → {\"has_knowledge_query\": false} (新しい知識を求める質問)
+❌ \"タスクを作成\" → {\"has_knowledge_query\": false} (タスク作成)
+✅ \"Java listのメモを見せて\" → {\"has_knowledge_query\": true, \"query\": {\"keywords\": [\"java\", \"list\"], \"item_type\": \"note\"}}
+✅ \"binary searchのコード\" → {\"has_knowledge_query\": true, \"query\": {\"keywords\": [\"binary\", \"search\"], \"item_type\": \"code_snippet\"}}
+✅ \"sortingの演習問題をreview\" → {\"has_knowledge_query\": true, \"query\": {\"keywords\": [\"sorting\"], \"item_type\": \"exercise\"}}
+
+注意:
+- keywords: 検索に使用するキーワードの配列
+- item_type: 指定がない場合は \"any\" を返す
+- learning_path_id, category_id: メッセージから明示的に指定されている場合のみ含める
+- 疑わしい場合は false を返してください";
+
+        try {
+            $parseTimeout = min(10, $this->timeout * 0.33);
+            $useMaxCompletionTokens = in_array($this->fallbackModel, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
+
+            $requestBody = [
+                'model' => $this->fallbackModel,
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'You are a knowledge query parser assistant. Analyze user messages and extract knowledge search intent. Always return valid JSON.'
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => $prompt
+                    ]
+                ],
+                'temperature' => 0.3,
+            ];
+
+            if ($useMaxCompletionTokens) {
+                $requestBody['max_completion_tokens'] = 500;
+            } else {
+                $requestBody['max_tokens'] = 500;
+            }
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Content-Type' => 'application/json',
+            ])->timeout((int)$parseTimeout)->post($this->baseUrl . '/chat/completions', $requestBody);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $content = $data['choices'][0]['message']['content'] ?? '';
+
+                Log::info('parseKnowledgeQueryIntent: AI response received', ['response' => $content]);
+
+                // Parse JSON response
+                $parsedContent = json_decode($content, true);
+
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    if (!empty($parsedContent['has_knowledge_query']) && $parsedContent['has_knowledge_query'] === true) {
+                        Log::info('Knowledge query intent detected', ['query' => $parsedContent['query']]);
+                        return $parsedContent['query'];
+                    }
+                }
+
+                // Try to extract JSON from response
+                $jsonMatch = [];
+                if (preg_match('/\{.*\}/s', $content, $jsonMatch)) {
+                    $parsedContent = json_decode($jsonMatch[0], true);
+                    if (json_last_error() === JSON_ERROR_NONE && !empty($parsedContent['has_knowledge_query'])) {
+                        if ($parsedContent['has_knowledge_query'] === true) {
+                            return $parsedContent['query'];
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Knowledge query intent parsing failed: ' . $e->getMessage());
+        }
+
+        return null;
+    }
+
+    /**
+     * Parse knowledge creation intent from user message
+     * Detects when user wants to CREATE categories and knowledge items
+     *
+     * @param string $message User message
+     * @param array $conversationHistory Optional conversation context
+     * @param User $user The user (to check existing categories)
+     * @return array|null Creation data if intent detected, null otherwise
+     */
+    public function parseKnowledgeCreationIntent(string $message, array $conversationHistory = [], $user = null): ?array
+    {
+        if (!$this->apiKey) {
+            return null;
+        }
+
+        // Build context - include user's existing categories
+        $existingCategories = [];
+        if ($user) {
+            $existingCategories = \App\Models\KnowledgeCategory::where('user_id', $user->id)
+                ->select('id', 'name', 'parent_id', 'description')
+                ->get()
+                ->toArray();
+        }
+
+        $contextText = '';
+        if (!empty($conversationHistory)) {
+            $contextText = "\n会話履歴:\n";
+            $recentHistory = array_slice($conversationHistory, -3);
+            foreach ($recentHistory as $msg) {
+                $role = $msg['role'] === 'user' ? 'ユーザー' : 'アシスタント';
+                $contextText .= "{$role}: {$msg['content']}\n";
+            }
+        }
+
+        // Build existing categories context
+        $categoriesContext = '';
+        if (!empty($existingCategories)) {
+            $categoriesContext = "\n\n既存のフォルダ/カテゴリ:\n";
+            foreach ($existingCategories as $cat) {
+                $parentInfo = $cat['parent_id'] ? " (親: {$cat['parent_id']})" : '';
+                $categoriesContext .= "- [{$cat['id']}] {$cat['name']}{$parentInfo}\n";
+            }
+        }
+
+        $systemPrompt = "あなたは知識管理アシスタントです。
+ユーザーのメッセージを分析して、knowledge folderやknowledge itemを作成する意図があるかを判断してください。
+
+## 判定基準:
+- 「作成」「追加」「保存」「記録」「フォルダ」「ノート」などのキーワード
+- 具体的な技術/トピック名の言及 (例: JavaScript, Python, React)
+- コードスニペット、メモ、演習問題などの言及
+
+## 出力形式 (JSON):
+{
+    \"has_creation_intent\": true/false,
+    \"action\": \"create\" | \"add_to_existing\",
+    \"categories\": [
+        {
+            \"name\": \"カテゴリ名\",
+            \"description\": \"説明 (自動生成)\",
+            \"color\": \"#hex色コード (適切な色を選択)\",
+            \"icon\": \"アイコン名 (技術に合ったもの)\",
+            \"parent_id\": null or 既存カテゴリID
+        }
+    ],
+    \"items\": [
+        {
+            \"title\": \"タイトル\",
+            \"item_type\": \"note\" | \"code_snippet\" | \"exercise\" | \"resource_link\" | \"attachment\",
+            \"content\": \"内容 (note/code_snippet用)\",
+            \"code_language\": \"言語 (code_snippet用)\",
+            \"url\": \"URL (resource_link用)\",
+            \"question\": \"問題文 (exercise用)\",
+            \"answer\": \"解答 (exercise用)\",
+            \"difficulty\": \"easy\" | \"medium\" | \"hard\",
+            \"tags\": [\"tag1\", \"tag2\"],
+            \"category_name\": \"所属カテゴリ名\"
+        }
+    ],
+    \"ai_explanation\": \"実行内容の説明\"
+}
+
+## 重要:
+- item_typeを正しく判定 (コード→code_snippet, メモ→note, 問題→exercise, リンク→resource_link)
+- code_snippetの場合、code_languageを必ず設定
+- tagsは関連キーワードから自動抽出
+- 既存カテゴリがあれば再利用 (parent_idを設定)
+- ユーザーが具体的な内容を提供していない場合、サンプル/テンプレートを生成
+{$categoriesContext}";
+
+        $userPrompt = "ユーザーのメッセージ: {$message}{$contextText}";
+
+        try {
+            // Use fallback model for faster parsing (like parseKnowledgeQueryIntent)
+            $modelToUse = $this->fallbackModel;
+            $parseTimeout = 60; // Increased timeout for knowledge creation parsing
+
+            $messages = [
+                ['role' => 'system', 'content' => $systemPrompt],
+                ['role' => 'user', 'content' => $userPrompt],
+            ];
+
+            // Determine if we should use max_completion_tokens (for o1/o3/gpt-5 models)
+            $useMaxCompletionTokens = in_array($modelToUse, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
+
+            $requestBody = [
+                'model' => $modelToUse,
+                'messages' => $messages,
+                'temperature' => 0.3, // Lower temperature for structured parsing
+            ];
+
+            if ($useMaxCompletionTokens) {
+                $requestBody['max_completion_tokens'] = 2000;
+            } else {
+                $requestBody['max_tokens'] = 2000;
+            }
+
+            // Add response format for JSON mode if using gpt-4o or later
+            if (str_contains($modelToUse, 'gpt-4') || str_contains($modelToUse, 'gpt-5')) {
+                $requestBody['response_format'] = ['type' => 'json_object'];
+            }
+
+            Log::info('parseKnowledgeCreationIntent: Sending request', [
+                'model' => $modelToUse,
+                'message' => $message
+            ]);
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Content-Type' => 'application/json',
+            ])->timeout((int)$parseTimeout)->post($this->baseUrl . '/chat/completions', $requestBody);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $content = $data['choices'][0]['message']['content'] ?? '';
+
+                Log::info('parseKnowledgeCreationIntent: AI response', ['response' => $content]);
+
+                $parsedContent = json_decode($content, true);
+
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    if (!empty($parsedContent['has_creation_intent']) && $parsedContent['has_creation_intent'] === true) {
+                        Log::info('Knowledge creation intent detected', ['data' => $parsedContent]);
+                        return $parsedContent;
+                    }
+                }
+            } else {
+                Log::error('parseKnowledgeCreationIntent: API request failed', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
+            }
+
+            return null;
+
+        } catch (\Exception $e) {
+            Log::error('parseKnowledgeCreationIntent: Exception', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return null;
+        }
+    }
+
+    /**
      * Chat with AI - for general conversation
      *
      * @param array $messages Array of messages in format: [['role' => 'user/assistant', 'content' => 'message']]
@@ -1171,11 +1477,18 @@ JSON形式で返してください：
     {
         $tasks = $context['tasks'] ?? [];
         $timetable = $context['timetable'] ?? [];
+        $knowledgeItems = $context['knowledge_items'] ?? [];
 
         $tasksInfo = $this->formatTasksInfo($tasks);
         $scheduleInfo = $this->formatScheduleInfo($timetable);
         $freeTimeAnalysis = $this->analyzeFreeTime($timetable, $tasks);
         $deadlineWarnings = $this->analyzeDeadlines($tasks);
+        $knowledgeInfo = $this->formatKnowledgeItems($knowledgeItems);
+
+        // NEW: Enhanced context analysis
+        $priorityAnalysis = $this->analyzePriorityTasks($tasks);
+        $timeGapAnalysis = $this->analyzeTimeGaps($timetable, $tasks);
+        $productivityInsights = $this->getProductivityInsights($tasks);
 
         $today = now()->format('Y-m-d');
         $currentTime = now()->format('H:i');
@@ -1186,6 +1499,10 @@ JSON形式で返してください：
 
 {$tasksInfo}
 {$scheduleInfo}
+{$knowledgeInfo}
+{$priorityAnalysis}
+{$timeGapAnalysis}
+{$productivityInsights}
 {$freeTimeAnalysis}
 {$deadlineWarnings}
 
@@ -1270,6 +1587,83 @@ scheduled_timeは時刻のみ（HH:MM:SSまたはHH:MM形式）で指定して�
 
             $taskCount++;
         }
+
+        return $info;
+    }
+
+    /**
+     * Format knowledge items information for AI context
+     *
+     * @param array $knowledgeItems User's knowledge items (searched results)
+     * @return string Formatted knowledge info
+     */
+    private function formatKnowledgeItems(array $knowledgeItems): string
+    {
+        if (empty($knowledgeItems)) {
+            return "";
+        }
+
+        $info = "## 📚 検索された Knowledge Items\n";
+        $info .= "ユーザーの質問に関連する以下の保存済みアイテムが見つかりました:\n\n";
+
+        $itemCount = 0;
+        foreach ($knowledgeItems as $item) {
+            if ($itemCount >= 5) { // Limit to 5 items to avoid token limit
+                $info .= "... 他" . (count($knowledgeItems) - 5) . "個のアイテム\n";
+                break;
+            }
+
+            $title = $item['title'] ?? 'No title';
+            $type = $item['type'] ?? 'unknown';
+            $category = $item['category'] ?? '';
+            $tags = $item['tags'] ?? [];
+
+            // Type emoji mapping
+            $typeEmoji = [
+                'note' => '📝',
+                'code_snippet' => '💻',
+                'exercise' => '✏️',
+                'resource_link' => '🔗',
+                'attachment' => '📎',
+            ];
+            $emoji = $typeEmoji[$type] ?? '📄';
+
+            $info .= "### {$emoji} {$title}\n";
+            $info .= "- **Type**: {$type}\n";
+
+            if ($category) {
+                $info .= "- **Category**: {$category}\n";
+            }
+
+            if (!empty($tags)) {
+                $info .= "- **Tags**: " . implode(', ', array_slice($tags, 0, 5)) . "\n";
+            }
+
+            // Add content based on type
+            if ($type === 'code_snippet' && !empty($item['content'])) {
+                $lang = $item['code_language'] ?? 'plaintext';
+                $content = $item['content'];
+                $info .= "- **Code** ({$lang}):\n```{$lang}\n{$content}\n```\n";
+            } elseif ($type === 'note' && !empty($item['content'])) {
+                $info .= "- **Content**: " . substr($item['content'], 0, 300) . "...\n";
+            } elseif ($type === 'exercise' && !empty($item['question'])) {
+                $info .= "- **Question**: {$item['question']}\n";
+                if (!empty($item['answer'])) {
+                    $info .= "- **Answer**: " . substr($item['answer'], 0, 200) . "...\n";
+                }
+            } elseif ($type === 'resource_link' && !empty($item['url'])) {
+                $info .= "- **URL**: {$item['url']}\n";
+            }
+
+            if (!empty($item['last_reviewed'])) {
+                $info .= "- **Last reviewed**: {$item['last_reviewed']}\n";
+            }
+
+            $info .= "\n";
+            $itemCount++;
+        }
+
+        $info .= "\n**重要**: これらはユーザーが以前保存したknowledge itemsです。ユーザーの質問に答える際は、これらの情報を活用してください。\n";
 
         return $info;
     }
@@ -1478,6 +1872,251 @@ scheduled_timeは時刻のみ（HH:MM:SSまたはHH:MM形式）で指定して�
         }
 
         $analysis .= "💡 これらのタスクを優先的に進めることをお勧めします。\n";
+
+        return $analysis;
+    }
+
+    /**
+     * Analyze priority tasks
+     * Highlights high-priority tasks that need attention
+     *
+     * @param array $tasks User's tasks
+     * @return string Priority analysis
+     */
+    private function analyzePriorityTasks(array $tasks): string
+    {
+        if (empty($tasks)) {
+            return "";
+        }
+
+        // Filter high priority tasks (priority >= 4) that are not completed
+        $highPriorityTasks = array_filter($tasks, function($task) {
+            $priority = $task['priority'] ?? 3;
+            $status = $task['status'] ?? 'pending';
+            return $priority >= 4 && !in_array($status, ['completed', 'cancelled']);
+        });
+
+        if (empty($highPriorityTasks)) {
+            return "";
+        }
+
+        $analysis = "## ⭐ 優先タスク\n";
+        $analysis .= "現在、" . count($highPriorityTasks) . "個の高優先度タスクがあります:\n\n";
+
+        $count = 0;
+        foreach ($highPriorityTasks as $task) {
+            if ($count >= 5) { // Limit to 5 tasks
+                $remaining = count($highPriorityTasks) - 5;
+                $analysis .= "... 他{$remaining}個の高優先度タスク\n";
+                break;
+            }
+
+            $title = $task['title'] ?? 'No title';
+            $priority = $task['priority'] ?? 3;
+            $status = $task['status'] ?? 'pending';
+            $deadline = $task['deadline'] ?? null;
+            $scheduled = $task['scheduled_time'] ?? null;
+
+            $priorityEmoji = $priority >= 5 ? '🔴' : '🟠';
+            $analysis .= "{$priorityEmoji} **{$title}**";
+
+            $details = [];
+            if ($deadline) {
+                try {
+                    $deadlineDate = new \DateTime($deadline);
+                    $daysLeft = now()->diffInDays($deadlineDate, false);
+                    if ($daysLeft < 0) {
+                        $details[] = "期限切れ";
+                    } elseif ($daysLeft == 0) {
+                        $details[] = "今日期限";
+                    } elseif ($daysLeft == 1) {
+                        $details[] = "明日期限";
+                    } else {
+                        $details[] = "期限: {$daysLeft}日後";
+                    }
+                } catch (\Exception $e) {
+                    // Skip
+                }
+            }
+
+            if ($status === 'in_progress') {
+                $details[] = "進行中";
+            } elseif ($scheduled) {
+                $details[] = "予定済み";
+            } else {
+                $details[] = "未スケジュール";
+            }
+
+            if (!empty($details)) {
+                $analysis .= " (" . implode(', ', $details) . ")";
+            }
+
+            $analysis .= "\n";
+            $count++;
+        }
+
+        $analysis .= "\n💡 これらの高優先度タスクに注目してください。\n";
+
+        return $analysis;
+    }
+
+    /**
+     * Analyze time gaps and scheduling opportunities
+     * Suggests when to schedule tasks based on available time
+     *
+     * @param array $timetable User's timetable
+     * @param array $tasks User's tasks
+     * @return string Time gap analysis
+     */
+    private function analyzeTimeGaps(array $timetable, array $tasks): string
+    {
+        if (empty($timetable) && empty($tasks)) {
+            return "";
+        }
+
+        $analysis = "## 📅 スケジューリング機会\n";
+
+        // Count unscheduled tasks
+        $unscheduledTasks = array_filter($tasks, function($task) {
+            $status = $task['status'] ?? 'pending';
+            $scheduled = $task['scheduled_time'] ?? null;
+            return !in_array($status, ['completed', 'cancelled']) && empty($scheduled);
+        });
+
+        $unscheduledCount = count($unscheduledTasks);
+
+        if ($unscheduledCount > 0) {
+            $analysis .= "- **未スケジュールタスク**: {$unscheduledCount}個\n";
+
+            // Calculate total estimated time needed
+            $totalMinutes = 0;
+            foreach ($unscheduledTasks as $task) {
+                $totalMinutes += $task['estimated_minutes'] ?? 0;
+            }
+
+            if ($totalMinutes > 0) {
+                $hours = floor($totalMinutes / 60);
+                $minutes = $totalMinutes % 60;
+                $timeStr = $hours > 0 ? "{$hours}時間{$minutes}分" : "{$minutes}分";
+                $analysis .= "- **必要な時間**: 約{$timeStr}\n";
+            }
+
+            // Analyze current time
+            $currentHour = (int)now()->format('H');
+            $currentDay = now()->format('l'); // Day name
+
+            // Suggest based on time of day
+            if ($currentHour >= 8 && $currentHour < 12) {
+                $analysis .= "- 💡 **今がチャンス**: 午前中は集中力が高い時間です。重要なタスクを始めましょう\n";
+            } elseif ($currentHour >= 12 && $currentHour < 14) {
+                $analysis .= "- 💡 **ランチタイム後**: 軽めのタスクから始めて、徐々にペースを上げましょう\n";
+            } elseif ($currentHour >= 14 && $currentHour < 18) {
+                $analysis .= "- 💡 **午後の作業時間**: 生産的な時間帯です。タスクを進めましょう\n";
+            } elseif ($currentHour >= 18 && $currentHour < 22) {
+                $analysis .= "- 💡 **夕方の時間**: 軽めのタスクや復習に適しています\n";
+            } else {
+                $analysis .= "- 💡 休息も大切です。明日のために計画を立てましょう\n";
+            }
+
+            // Count timetable classes today
+            $todayClasses = 0;
+            if (isset($timetable[$currentDay])) {
+                $todayClasses = count($timetable[$currentDay]);
+            }
+
+            if ($todayClasses > 0) {
+                $analysis .= "- 📚 今日の授業: {$todayClasses}コマ\n";
+                $analysis .= "- 授業の合間や終了後に短いタスクを入れると効率的です\n";
+            } else {
+                $analysis .= "- 📚 今日は授業がありません。計画的にタスクを進められます\n";
+            }
+        } else {
+            $analysis .= "- ✅ すべてのタスクがスケジュール済みです！\n";
+            $analysis .= "- 予定通りに進めましょう\n";
+        }
+
+        return $analysis;
+    }
+
+    /**
+     * Get productivity insights
+     * Analyzes user's task completion patterns and provides insights
+     *
+     * @param array $tasks User's tasks
+     * @return string Productivity insights
+     */
+    private function getProductivityInsights(array $tasks): string
+    {
+        if (empty($tasks)) {
+            return "";
+        }
+
+        $analysis = "## 📊 生産性インサイト\n";
+
+        // Calculate statistics
+        $totalTasks = count($tasks);
+        $completedTasks = array_filter($tasks, fn($t) => ($t['status'] ?? '') === 'completed');
+        $inProgressTasks = array_filter($tasks, fn($t) => ($t['status'] ?? '') === 'in_progress');
+        $pendingTasks = array_filter($tasks, fn($t) => ($t['status'] ?? '') === 'pending');
+
+        $completedCount = count($completedTasks);
+        $inProgressCount = count($inProgressTasks);
+        $pendingCount = count($pendingTasks);
+
+        // Completion rate
+        if ($totalTasks > 0) {
+            $completionRate = round(($completedCount / $totalTasks) * 100);
+            $analysis .= "- **完了率**: {$completionRate}% ({$completedCount}/{$totalTasks})\n";
+
+            if ($completionRate >= 70) {
+                $analysis .= "  - 🎉 素晴らしい進捗です！この調子で続けましょう\n";
+            } elseif ($completionRate >= 40) {
+                $analysis .= "  - 👍 良いペースです。少しずつ進めていきましょう\n";
+            } else {
+                $analysis .= "  - 💪 まずは小さなタスクから完了させていきましょう\n";
+            }
+        }
+
+        // Task distribution
+        $analysis .= "- **タスク分布**:\n";
+        $analysis .= "  - ✅ 完了: {$completedCount}個\n";
+        $analysis .= "  - 🔄 進行中: {$inProgressCount}個\n";
+        $analysis .= "  - 📝 保留中: {$pendingCount}個\n";
+
+        // Priority distribution (excluding completed/cancelled)
+        $activeTasks = array_filter($tasks, fn($t) => !in_array($t['status'] ?? '', ['completed', 'cancelled']));
+        if (!empty($activeTasks)) {
+            $highPriority = array_filter($activeTasks, fn($t) => ($t['priority'] ?? 3) >= 4);
+            $mediumPriority = array_filter($activeTasks, fn($t) => ($t['priority'] ?? 3) == 3);
+            $lowPriority = array_filter($activeTasks, fn($t) => ($t['priority'] ?? 3) <= 2);
+
+            $analysis .= "- **優先度分布** (アクティブタスク):\n";
+            $analysis .= "  - 🔴 高: " . count($highPriority) . "個\n";
+            $analysis .= "  - 🟡 中: " . count($mediumPriority) . "個\n";
+            $analysis .= "  - 🟢 低: " . count($lowPriority) . "個\n";
+
+            if (count($highPriority) > 5) {
+                $analysis .= "  - ⚠️ 高優先度タスクが多いです。焦点を絞りましょう\n";
+            }
+        }
+
+        // Time-based insights
+        $tasksWithEstimate = array_filter($tasks, fn($t) => !empty($t['estimated_minutes']));
+        if (!empty($tasksWithEstimate)) {
+            $totalEstimatedMinutes = array_sum(array_column($tasksWithEstimate, 'estimated_minutes'));
+            $hours = floor($totalEstimatedMinutes / 60);
+            $minutes = $totalEstimatedMinutes % 60;
+            $timeStr = $hours > 0 ? "{$hours}時間{$minutes}分" : "{$minutes}分";
+
+            $analysis .= "- **推定作業時間**: 約{$timeStr}\n";
+
+            // Suggest time management
+            if ($totalEstimatedMinutes > 480) { // > 8 hours
+                $analysis .= "  - 💡 作業量が多いです。タスクを数日に分散させることをお勧めします\n";
+            } elseif ($totalEstimatedMinutes > 240) { // > 4 hours
+                $analysis .= "  - 💡 集中力を保つため、休憩を挟みながら進めましょう\n";
+            }
+        }
 
         return $analysis;
     }

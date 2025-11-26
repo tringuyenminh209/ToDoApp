@@ -87,6 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tasks/by-priority/{priority}', [TaskController::class, 'byPriority']);
     Route::get('/tasks/overdue', [TaskController::class, 'overdue']);
     Route::get('/tasks/due-soon', [TaskController::class, 'dueSoon']);
+    Route::get('/tasks/{id}/suggest-schedule', [TaskController::class, 'suggestSchedule']);
     Route::put('/tasks/{id}/complete', [TaskController::class, 'complete']);
     Route::put('/tasks/{id}/start', [TaskController::class, 'start']);
 

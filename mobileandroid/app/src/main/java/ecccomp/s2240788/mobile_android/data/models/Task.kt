@@ -409,7 +409,8 @@ data class SendMessageResponse(
     val assistant_message: ChatMessage,
     val created_task: Task? = null,
     val task_suggestion: TaskSuggestion? = null, // Task suggestion (requires user confirmation)
-    val timetable_suggestion: TimetableClassSuggestion? = null // Timetable class suggestion (requires user confirmation)
+    val timetable_suggestion: TimetableClassSuggestion? = null, // Timetable class suggestion (requires user confirmation)
+    val knowledge_creation: KnowledgeCreationResult? = null // AI knowledge creation result
 )
 
 // ==================== AI Task Breakdown Models ====================
