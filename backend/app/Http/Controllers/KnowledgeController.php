@@ -43,9 +43,14 @@ class KnowledgeController extends Controller
         }
 
         // Filter by learning path
-        if ($request->has('learning_path_id')) {
+        // Note: If both learning_path_id and source_task_id are provided,
+        // we use OR logic (items from either source)
+        $hasLearningPathFilter = $request->has('learning_path_id');
+        $hasSourceTaskFilter = $request->has('source_task_id');
+
+        if ($hasLearningPathFilter && !$hasSourceTaskFilter) {
+            // Only learning_path_id provided
             $learningPathId = $request->learning_path_id;
-            // Support both single ID and array of IDs
             if (is_array($learningPathId)) {
                 $query->whereIn('learning_path_id', $learningPathId);
             } else {
@@ -110,7 +115,22 @@ class KnowledgeController extends Controller
             ]);
 
             if (!empty($sourceTaskId)) {
-                $query->whereIn('source_task_id', $sourceTaskId);
+                // If both learning_path_id and source_task_id are provided,
+                // use OR logic (items from either source)
+                if ($hasLearningPathFilter) {
+                    $learningPathId = $request->learning_path_id;
+                    $query->where(function($q) use ($sourceTaskId, $learningPathId) {
+                        $q->whereIn('source_task_id', $sourceTaskId);
+                        if (is_array($learningPathId)) {
+                            $q->orWhereIn('learning_path_id', $learningPathId);
+                        } else {
+                            $q->orWhere('learning_path_id', $learningPathId);
+                        }
+                    });
+                } else {
+                    // Only source_task_id provided
+                    $query->whereIn('source_task_id', $sourceTaskId);
+                }
             } else {
                 Log::warning('source_task_id filter is empty after processing', [
                     'query_string' => $queryString,
@@ -689,23 +709,36 @@ class KnowledgeController extends Controller
             ], 422);
         }
 
-        $updated = 0;
-        foreach ($request->input('item_ids') as $itemId) {
-            $item = KnowledgeItem::where('user_id', $user->id)->find($itemId);
-            if ($item) {
-                $currentTags = $item->tags ?? [];
-                $newTags = array_unique(array_merge($currentTags, $request->input('tags')));
-                $item->tags = $newTags;
-                $item->save();
-                $updated++;
-            }
-        }
+        try {
+            \DB::beginTransaction();
 
-        return response()->json([
-            'success' => true,
-            'data' => ['updated_count' => $updated],
-            'message' => "Tagged {$updated} items successfully"
-        ]);
+            $updated = 0;
+            foreach ($request->input('item_ids') as $itemId) {
+                $item = KnowledgeItem::where('user_id', $user->id)->find($itemId);
+                if ($item) {
+                    $currentTags = $item->tags ?? [];
+                    $newTags = array_unique(array_merge($currentTags, $request->input('tags')));
+                    $item->tags = $newTags;
+                    $item->save();
+                    $updated++;
+                }
+            }
+
+            \DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'data' => ['updated_count' => $updated],
+                'message' => "Tagged {$updated} items successfully"
+            ]);
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Log::error('Bulk tag failed: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Bulk tag operation failed'
+            ], 500);
+        }
     }
 
     /**
@@ -741,15 +774,28 @@ class KnowledgeController extends Controller
             ], 404);
         }
 
-        $updated = KnowledgeItem::where('user_id', $user->id)
-            ->whereIn('id', $request->input('item_ids'))
-            ->update(['category_id' => $category->id]);
+        try {
+            \DB::beginTransaction();
 
-        return response()->json([
-            'success' => true,
-            'data' => ['updated_count' => $updated],
-            'message' => "Moved {$updated} items successfully"
-        ]);
+            $updated = KnowledgeItem::where('user_id', $user->id)
+                ->whereIn('id', $request->input('item_ids'))
+                ->update(['category_id' => $category->id]);
+
+            \DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'data' => ['updated_count' => $updated],
+                'message' => "Moved {$updated} items successfully"
+            ]);
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Log::error('Bulk move failed: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Bulk move operation failed'
+            ], 500);
+        }
     }
 
     /**
@@ -773,15 +819,28 @@ class KnowledgeController extends Controller
             ], 422);
         }
 
-        $deleted = KnowledgeItem::where('user_id', $user->id)
-            ->whereIn('id', $request->input('item_ids'))
-            ->delete();
+        try {
+            \DB::beginTransaction();
 
-        return response()->json([
-            'success' => true,
-            'data' => ['deleted_count' => $deleted],
-            'message' => "Deleted {$deleted} items successfully"
-        ]);
+            $deleted = KnowledgeItem::where('user_id', $user->id)
+                ->whereIn('id', $request->input('item_ids'))
+                ->delete();
+
+            \DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'data' => ['deleted_count' => $deleted],
+                'message' => "Deleted {$deleted} items successfully"
+            ]);
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            Log::error('Bulk delete failed: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Bulk delete operation failed'
+            ], 500);
+        }
     }
 
     /**
