@@ -84,6 +84,19 @@ class KnowledgeDetailActivity : BaseActivity() {
         }
         binding.webviewAnswer.isVerticalScrollBarEnabled = false
         binding.webviewAnswer.isHorizontalScrollBarEnabled = false
+
+        // Setup note WebView
+        binding.webviewNote.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            loadWithOverviewMode = false
+            useWideViewPort = false
+            builtInZoomControls = false
+            displayZoomControls = false
+            setSupportZoom(false)
+        }
+        binding.webviewNote.isVerticalScrollBarEnabled = false
+        binding.webviewNote.isHorizontalScrollBarEnabled = false
     }
 
     private fun setupClickListeners() {
@@ -216,7 +229,40 @@ class KnowledgeDetailActivity : BaseActivity() {
 
     private fun displayNote(item: KnowledgeItem) {
         binding.cardContent.visibility = View.VISIBLE
-        binding.tvContent.text = item.content ?: ""
+
+        val content = item.content ?: ""
+        val isCode = isCodeContent(content)
+
+        android.util.Log.d("KnowledgeDetail", "displayNote - isCode: $isCode, content length: ${content.length}")
+
+        if (isCode) {
+            // Use WebView for code highlighting
+            binding.tvContent.visibility = View.GONE
+            binding.webviewNote.visibility = View.VISIBLE
+
+            // Extract code from code blocks if present
+            val (blockLanguage, codeContent) = extractCodeFromBlock(content)
+            val detectedLanguage = detectCodeLanguage(codeContent)
+
+            // Use language from code block, detected language, item's code_language, or default
+            val language = blockLanguage ?: detectedLanguage ?: item.code_language ?: "plaintext"
+
+            android.util.Log.d("KnowledgeDetail", "Language detection - block: $blockLanguage, detected: $detectedLanguage, final: $language")
+
+            val html = CodeHighlightHelper.generateHighlightedHtml(this, codeContent, language)
+            binding.webviewNote.loadDataWithBaseURL(
+                null,
+                html,
+                "text/html",
+                "UTF-8",
+                null
+            )
+        } else {
+            // Use TextView for plain text
+            binding.tvContent.visibility = View.VISIBLE
+            binding.webviewNote.visibility = View.GONE
+            binding.tvContent.text = content
+        }
     }
 
     private fun displayCodeSnippet(item: KnowledgeItem) {
@@ -301,23 +347,47 @@ class KnowledgeDetailActivity : BaseActivity() {
      */
     private fun isCodeContent(content: String): Boolean {
         if (content.isEmpty()) return false
-        
+
         // Check for code blocks (```...```)
         if (content.contains("```")) {
+            android.util.Log.d("KnowledgeDetail", "isCodeContent: Found code block markers")
             return true
         }
-        
-        // Check for common code patterns
+
+        // Check for common code patterns (case-sensitive)
         val codePatterns = listOf(
             "def ", "function ", "class ", "import ", "from ",
             "const ", "let ", "var ", "public ", "private ",
             "<?php", "package ", "func ", "#include",
-            "SELECT ", "INSERT ", "UPDATE ", "DELETE ",
             "if (", "for (", "while (", "return ",
             "->", "::", "=>", "&&", "||"
         )
-        
-        return codePatterns.any { content.contains(it) }
+
+        // Check for SQL patterns (case-insensitive, no trailing space required)
+        val sqlPatterns = listOf(
+            "SELECT", "INSERT", "UPDATE", "DELETE", "CREATE", "ALTER",
+            "DROP", "FROM", "WHERE", "JOIN", "SHOW", "USE", "DATABASE",
+            "TABLE", "INDEX", "VIEW", "PROCEDURE", "TRIGGER",
+            "GROUP BY", "ORDER BY", "LIMIT", "OFFSET", "HAVING",
+            "INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "PRIMARY KEY"
+        )
+
+        // Check for markdown patterns
+        val markdownPatterns = listOf(
+            "**", "##", "###", "####", "- **", "* **", "```",
+            "# ", "## ", "### "
+        )
+
+        val contentUpper = content.uppercase()
+        val hasCodePattern = codePatterns.any { content.contains(it) }
+        val hasSqlPattern = sqlPatterns.any { contentUpper.contains(it) }
+        val hasMarkdownPattern = markdownPatterns.any { content.contains(it) }
+
+        val result = hasCodePattern || hasSqlPattern || hasMarkdownPattern
+
+        android.util.Log.d("KnowledgeDetail", "isCodeContent: code=$hasCodePattern, sql=$hasSqlPattern, markdown=$hasMarkdownPattern, result=$result")
+
+        return result
     }
 
     /**
@@ -327,12 +397,14 @@ class KnowledgeDetailActivity : BaseActivity() {
     private fun extractCodeFromBlock(content: String): Pair<String?, String> {
         // Check for code blocks
         if (content.contains("```")) {
-            // Try to extract language and code: ```language\ncode\n```
-            val regex = Regex("```(\\w+)?\\s*\\n([\\s\\S]*?)\\n```")
+            // Try to extract language and code: ```language\ncode\n``` or ```language code```
+            // More flexible regex that handles various formats
+            val regex = Regex("```(\\w+)?\\s*([\\s\\S]*?)```", RegexOption.DOT_MATCHES_ALL)
             val match = regex.find(content)
             if (match != null) {
                 val language = match.groupValues[1].takeIf { it.isNotEmpty() }
                 val code = match.groupValues[2].trim()
+                android.util.Log.d("KnowledgeDetail", "Extracted code block - language: $language, code length: ${code.length}")
                 return Pair(language, code)
             }
         }
@@ -343,6 +415,25 @@ class KnowledgeDetailActivity : BaseActivity() {
      * Detect code language from content
      */
     private fun detectCodeLanguage(content: String): String? {
+        val contentUpper = content.uppercase()
+
+        // Check for markdown first (if has markdown patterns)
+        if (content.contains("**") || content.contains("##") || content.contains("###") || content.contains("# ")) {
+            android.util.Log.d("KnowledgeDetail", "Detected markdown")
+            return "markdown"
+        }
+
+        // Check for SQL (case-insensitive, no space required)
+        val sqlKeywords = listOf(
+            "SELECT", "INSERT", "UPDATE", "DELETE", "CREATE", "ALTER",
+            "DROP", "SHOW", "USE", "DATABASE", "TABLE", "INDEX",
+            "VIEW", "PROCEDURE", "TRIGGER", "FROM", "WHERE", "JOIN"
+        )
+        if (sqlKeywords.any { contentUpper.contains(it) }) {
+            android.util.Log.d("KnowledgeDetail", "Detected SQL")
+            return "sql"
+        }
+
         val patterns = mapOf(
             "python" to listOf("def ", "import ", "from ", "class ", "__init__", "print("),
             "javascript" to listOf("const ", "let ", "var ", "function ", "=>", "console.log"),
@@ -350,18 +441,17 @@ class KnowledgeDetailActivity : BaseActivity() {
             "php" to listOf("<?php", "namespace ", "use ", "::", "$"),
             "go" to listOf("func ", "package ", "import ", "type ", "var "),
             "cpp" to listOf("#include", "std::", "cout", "cin", "using namespace"),
-            "sql" to listOf("SELECT ", "INSERT ", "UPDATE ", "DELETE ", "FROM ", "WHERE "),
             "bash" to listOf("#!/bin/bash", "#!/bin/sh", "echo ", "if [", "for "),
             "html" to listOf("<!DOCTYPE", "<html", "<div", "<script", "<style"),
             "css" to listOf("@media", "@keyframes", "margin:", "padding:", "background:")
         )
-        
+
         for ((lang, keywords) in patterns) {
             if (keywords.any { content.contains(it, ignoreCase = true) }) {
                 return lang
             }
         }
-        
+
         return null
     }
 

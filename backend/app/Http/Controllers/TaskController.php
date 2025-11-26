@@ -541,4 +541,51 @@ class TaskController extends Controller
             'message' => "{$days}日以内の期限タスクを取得しました"
         ]);
     }
+
+    /**
+     * Suggest optimal schedule times for a task
+     * GET /api/tasks/{id}/suggest-schedule
+     */
+    public function suggestSchedule(Request $request, int $id): JsonResponse
+    {
+        $user = $request->user();
+
+        // Find task
+        $task = Task::where('user_id', $user->id)->find($id);
+
+        if (!$task) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Task not found'
+            ], 404);
+        }
+
+        // Get scheduler service
+        $scheduler = app(\App\Services\SmartSchedulerService::class);
+
+        // Get days ahead parameter (default 7)
+        $daysAhead = $request->query('days_ahead', 7);
+        $daysAhead = min(14, max(1, (int)$daysAhead)); // Limit between 1-14 days
+
+        // Get suggestions
+        $suggestions = $scheduler->suggestScheduleTime($task, $user, $daysAhead);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'task' => [
+                    'id' => $task->id,
+                    'title' => $task->title,
+                    'estimated_minutes' => $task->estimated_minutes,
+                    'priority' => $task->priority,
+                    'deadline' => $task->deadline,
+                ],
+                'suggestions' => $suggestions,
+                'days_searched' => $daysAhead,
+            ],
+            'message' => count($suggestions) > 0
+                ? 'スケジュール提案を生成しました'
+                : '適切なスケジュール枠が見つかりませんでした'
+        ]);
+    }
 }
