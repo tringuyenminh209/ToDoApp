@@ -22,7 +22,7 @@ class CheatCodeBashSeeder extends Seeder
             'display_name' => 'Bash',
             'slug' => 'bash',
             'icon' => 'ic_bash',
-            'color' => '#4EAA25',
+            'color' => '#3E4548A6',
             'description' => 'Bashシェルスクリプトのリファレンス。Linux/Unix環境でのシェルスクリプティングの基礎から応用まで。',
             'category' => 'shell',
             'popularity' => 85,

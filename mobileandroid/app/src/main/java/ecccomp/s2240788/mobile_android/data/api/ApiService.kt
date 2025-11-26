@@ -55,6 +55,12 @@ interface ApiService {
     @PUT("tasks/{id}/start")
     suspend fun startTask(@Path("id") id: Int): Response<ApiResponse<Task>>
 
+    @GET("tasks/{id}/suggest-schedule")
+    suspend fun suggestTaskSchedule(
+        @Path("id") taskId: Int,
+        @Query("days_ahead") daysAhead: Int = 7
+    ): Response<ApiResponse<ScheduleSuggestionsResponse>>
+
     // Subtasks
     @GET("tasks/{taskId}/subtasks")
     suspend fun getSubtasks(@Path("taskId") taskId: Int): Response<ApiResponse<List<Subtask>>>
