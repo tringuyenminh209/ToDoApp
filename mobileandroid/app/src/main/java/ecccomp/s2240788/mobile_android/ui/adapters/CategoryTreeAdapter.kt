@@ -156,6 +156,24 @@ class CategoryTreeAdapter(
             // カテゴリ名
             tvCategoryName.text = category.name
 
+            // カテゴリアイコンと色を設定
+            if (!category.color.isNullOrEmpty()) {
+                ivCategoryIcon.isVisible = true
+                try {
+                    val color = android.graphics.Color.parseColor(category.color)
+                    ivCategoryIcon.setColorFilter(color)
+                } catch (e: Exception) {
+                    // Invalid color, use default
+                    ivCategoryIcon.setColorFilter(itemView.context.getColor(R.color.text_secondary))
+                }
+            } else {
+                ivCategoryIcon.isVisible = true
+                ivCategoryIcon.setColorFilter(itemView.context.getColor(R.color.text_secondary))
+            }
+
+            // Set folder icon
+            ivCategoryIcon.setImageResource(R.drawable.ic_folder)
+
             // 階層レベルに応じたインデント
             val indentWidth = (level * 24 * itemView.context.resources.displayMetrics.density).toInt()
             viewIndent.layoutParams.width = indentWidth

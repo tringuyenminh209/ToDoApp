@@ -76,6 +76,10 @@ class AICoachViewModel : ViewModel() {
     private val _createdTimetableClass = MutableLiveData<TimetableClass?>()
     val createdTimetableClass: LiveData<TimetableClass?> = _createdTimetableClass
 
+    // Knowledge creation result from AI (requires user confirmation to view)
+    private val _knowledgeCreationResult = MutableLiveData<ecccomp.s2240788.mobile_android.data.models.KnowledgeCreationResult?>()
+    val knowledgeCreationResult: LiveData<ecccomp.s2240788.mobile_android.data.models.KnowledgeCreationResult?> = _knowledgeCreationResult
+
     /**
      * Start a new conversation with initial message
      */
@@ -235,6 +239,11 @@ class AICoachViewModel : ViewModel() {
                             // Check if there's a timetable suggestion (requires user confirmation)
                             if (result.data.timetable_suggestion != null) {
                                 _timetableSuggestion.value = result.data.timetable_suggestion
+                            }
+
+                            // Check if knowledge was created via AI
+                            if (result.data.knowledge_creation != null && result.data.knowledge_creation.success) {
+                                _knowledgeCreationResult.value = result.data.knowledge_creation
                             }
                         } catch (e: Exception) {
                             android.util.Log.e("AICoachViewModel", "Error processing sendMessage response", e)
@@ -405,6 +414,13 @@ class AICoachViewModel : ViewModel() {
      */
     fun dismissTimetableSuggestion() {
         _timetableSuggestion.value = null
+    }
+
+    /**
+     * Dismiss knowledge creation result after viewing
+     */
+    fun dismissKnowledgeCreation() {
+        _knowledgeCreationResult.value = null
     }
 
     /**

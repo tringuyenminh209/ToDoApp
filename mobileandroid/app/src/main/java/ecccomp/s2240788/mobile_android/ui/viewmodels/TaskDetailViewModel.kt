@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.CreateSubtaskRequest
+import ecccomp.s2240788.mobile_android.data.models.ScheduleSuggestion
 import ecccomp.s2240788.mobile_android.data.models.Subtask
 import ecccomp.s2240788.mobile_android.data.models.Task
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
@@ -28,6 +29,12 @@ class TaskDetailViewModel : ViewModel() {
 
     private val _startedTaskId = MutableLiveData<Int?>()
     val startedTaskId: LiveData<Int?> = _startedTaskId
+
+    private val _scheduleSuggestions = MutableLiveData<List<ScheduleSuggestion>>()
+    val scheduleSuggestions: LiveData<List<ScheduleSuggestion>> = _scheduleSuggestions
+
+    private val _loadingSuggestions = MutableLiveData<Boolean>()
+    val loadingSuggestions: LiveData<Boolean> = _loadingSuggestions
 
     fun loadTask(taskId: Int) {
         viewModelScope.launch {
@@ -126,6 +133,80 @@ class TaskDetailViewModel : ViewModel() {
                     loadTask(taskId)
                 } else {
                     _toast.value = "サブタスクの追加に失敗しました"
+                }
+            } catch (e: Exception) {
+                _toast.value = "ネットワークエラー: ${e.message}"
+            }
+        }
+    }
+
+    fun loadScheduleSuggestions(taskId: Int, daysAhead: Int = 7) {
+        viewModelScope.launch {
+            _loadingSuggestions.value = true
+            try {
+                val res = apiService.suggestTaskSchedule(taskId, daysAhead)
+                if (res.isSuccessful) {
+                    val body = res.body()
+                    if (body?.success == true) {
+                        _scheduleSuggestions.value = body.data?.suggestions ?: emptyList()
+                    } else {
+                        _toast.value = body?.message ?: "スケジュール提案の取得に失敗しました"
+                        _scheduleSuggestions.value = emptyList()
+                    }
+                } else {
+                    _toast.value = "API Error: ${res.message()}"
+                    _scheduleSuggestions.value = emptyList()
+                }
+            } catch (e: Exception) {
+                _toast.value = "ネットワークエラー: ${e.message}"
+                _scheduleSuggestions.value = emptyList()
+            } finally {
+                _loadingSuggestions.value = false
+            }
+        }
+    }
+
+    /**
+     * Apply selected schedule suggestion to task
+     */
+    fun applyScheduleSuggestion(taskId: Int, suggestion: ScheduleSuggestion) {
+        viewModelScope.launch {
+            try {
+                // Get current task data
+                val currentTask = _task.value ?: return@launch
+
+                // Create update request with new scheduled_time
+                val scheduledTime = "${suggestion.date} ${suggestion.startTime}:00"
+                val updateRequest = ecccomp.s2240788.mobile_android.data.models.CreateTaskRequest(
+                    title = currentTask.title,
+                    category = currentTask.category,
+                    description = currentTask.description,
+                    priority = currentTask.priority,
+                    energy_level = currentTask.energy_level ?: "medium",
+                    estimated_minutes = currentTask.estimated_minutes,
+                    deadline = currentTask.deadline,
+                    scheduled_time = scheduledTime,
+                    requires_deep_focus = currentTask.requires_deep_focus ?: false,
+                    allow_interruptions = currentTask.allow_interruptions ?: true,
+                    focus_difficulty = currentTask.focus_difficulty ?: 3,
+                    warmup_minutes = currentTask.warmup_minutes,
+                    cooldown_minutes = currentTask.cooldown_minutes,
+                    recovery_minutes = currentTask.recovery_minutes
+                )
+
+                // Call API to update task
+                val response = apiService.updateTask(taskId, updateRequest)
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body?.success == true) {
+                        _toast.value = "スケジュールを設定しました"
+                        // Reload task to get updated data
+                        loadTask(taskId)
+                    } else {
+                        _toast.value = body?.message ?: "更新に失敗しました"
+                    }
+                } else {
+                    _toast.value = "更新に失敗しました: ${response.code()}"
                 }
             } catch (e: Exception) {
                 _toast.value = "ネットワークエラー: ${e.message}"

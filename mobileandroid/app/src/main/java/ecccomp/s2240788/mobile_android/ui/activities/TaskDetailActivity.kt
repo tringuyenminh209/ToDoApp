@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputLayout
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityTaskDetailBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.SubtaskDisplayAdapter
+import ecccomp.s2240788.mobile_android.ui.dialogs.ScheduleSuggestionsBottomSheet
 import ecccomp.s2240788.mobile_android.ui.viewmodels.TaskDetailViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -106,6 +107,14 @@ class TaskDetailActivity : BaseActivity() {
                 // Start the task first
                 viewModel.startTask(taskId)
             }
+        }
+
+        binding.btnSmartSchedule.setOnClickListener {
+            val bottomSheet = ScheduleSuggestionsBottomSheet(taskId) { suggestion ->
+                // Apply selected schedule suggestion
+                viewModel.applyScheduleSuggestion(taskId, suggestion)
+            }
+            bottomSheet.show(supportFragmentManager, ScheduleSuggestionsBottomSheet.TAG)
         }
     }
 

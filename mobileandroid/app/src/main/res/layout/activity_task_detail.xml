@@ -920,7 +920,37 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:padding="@dimen/spacing_lg"
-            android:weightSum="2">
+            android:weightSum="3">
+
+            <!-- AI Schedule Button -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                app:cardBackgroundColor="@color/primary_light"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_smart_schedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="AI提案"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    app:backgroundTint="@color/primary_light"
+                    app:cornerRadius="20dp"
+                    app:elevation="0dp"
+                    app:icon="@drawable/ic_calendar"
+                    app:iconSize="20dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="4dp"
+                    app:iconTint="@color/primary"
+                    app:rippleColor="@color/primary" />
+
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Complete Button -->
             <com.google.android.material.card.MaterialCardView

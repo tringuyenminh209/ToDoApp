@@ -20,6 +20,9 @@ import ecccomp.s2240788.mobile_android.data.models.TimetableClass
 import ecccomp.s2240788.mobile_android.data.models.TimetableClassSuggestion
 import ecccomp.s2240788.mobile_android.ui.adapters.ChatMessageAdapter
 import ecccomp.s2240788.mobile_android.ui.dialogs.ConversationHistoryDialog
+import ecccomp.s2240788.mobile_android.ui.dialogs.KnowledgeCreationBottomSheet
+import ecccomp.s2240788.mobile_android.ui.dialogs.TaskSuggestionBottomSheet
+import ecccomp.s2240788.mobile_android.ui.dialogs.TimetableSuggestionBottomSheet
 import ecccomp.s2240788.mobile_android.ui.viewmodels.AICoachViewModel
 import ecccomp.s2240788.mobile_android.utils.SpeechRecognitionHelper
 
@@ -307,64 +310,45 @@ class AICoachActivity : BaseActivity() {
             }
         }
 
-        // Observe task suggestion
+        // Observe task suggestion - Show Bottom Sheet
         viewModel.taskSuggestion.observe(this) { suggestion ->
             if (suggestion != null) {
-                // Show suggestion card
-                binding.taskSuggestionCard.visibility = View.VISIBLE
-
-                // Populate suggestion data
-                binding.tvSuggestionTitle.text = suggestion.title
-                binding.tvSuggestionDescription.text = suggestion.description ?: ""
-
-                // Format estimated time
-                val timeText = if (suggestion.estimated_minutes != null) {
-                    "${suggestion.estimated_minutes}分"
-                } else {
-                    "時間未設定"
-                }
-                binding.chipSuggestionTime.text = timeText
-
-                // Format priority
-                val priorityText = when (suggestion.priority.lowercase()) {
-                    "high" -> "高優先度"
-                    "medium" -> "中優先度"
-                    "low" -> "低優先度"
-                    else -> suggestion.priority
-                }
-                binding.chipSuggestionPriority.text = priorityText
-
-                // Set priority chip color
-                val priorityColor = when (suggestion.priority.lowercase()) {
-                    "high" -> R.color.error
-                    "medium" -> R.color.warning
-                    "low" -> R.color.success
-                    else -> R.color.text_secondary
-                }
-                binding.chipSuggestionPriority.setChipBackgroundColorResource(priorityColor)
-
-                // Show reason
-                binding.tvSuggestionReason.text = "💡 ${suggestion.reason}"
-
-                // Setup button listeners
-                binding.btnConfirmSuggestion.setOnClickListener {
-                    viewModel.confirmTaskSuggestion(suggestion)
-                }
-
-                binding.btnDismissSuggestion.setOnClickListener {
-                    viewModel.dismissTaskSuggestion()
-                }
-            } else {
-                // Hide suggestion card
-                binding.taskSuggestionCard.visibility = View.GONE
+                // Show Task Suggestion Bottom Sheet
+                val bottomSheet = ecccomp.s2240788.mobile_android.ui.dialogs.TaskSuggestionBottomSheet.newInstance(
+                    suggestion = suggestion,
+                    onConfirm = { viewModel.confirmTaskSuggestion(it) },
+                    onDismiss = { viewModel.dismissTaskSuggestion() }
+                )
+                bottomSheet.show(supportFragmentManager, "TaskSuggestionBottomSheet")
             }
         }
 
-        // Observe timetable suggestion
+        // Observe timetable suggestion - Show Bottom Sheet
         viewModel.timetableSuggestion.observe(this) { suggestion ->
             if (suggestion != null) {
-                // Show confirmation dialog for timetable class
-                showTimetableConfirmationDialog(suggestion)
+                // Show Timetable Suggestion Bottom Sheet
+                val bottomSheet = ecccomp.s2240788.mobile_android.ui.dialogs.TimetableSuggestionBottomSheet.newInstance(
+                    suggestion = suggestion,
+                    onConfirm = { viewModel.confirmTimetableSuggestion(it) },
+                    onCancel = { viewModel.dismissTimetableSuggestion() }
+                )
+                bottomSheet.show(supportFragmentManager, "TimetableSuggestionBottomSheet")
+            }
+        }
+
+        // Observe knowledge creation result - Show Bottom Sheet
+        viewModel.knowledgeCreationResult.observe(this) { result ->
+            if (result != null && result.success) {
+                val bottomSheet = KnowledgeCreationBottomSheet.newInstance(
+                    result = result,
+                    onViewKnowledgeClick = {
+                        // Navigate to Knowledge screen
+                        viewModel.dismissKnowledgeCreation()
+                        // TODO: Navigate to knowledge screen if needed
+                        finish()
+                    }
+                )
+                bottomSheet.show(supportFragmentManager, "KnowledgeCreationBottomSheet")
             }
         }
     }

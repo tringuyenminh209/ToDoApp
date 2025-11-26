@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_md"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/radius_lg"
+    app:cardElevation="2dp"
+    app:strokeWidth="0.5dp"
+    app:strokeColor="@color/line_variant">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_lg">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Type Icon -->
+            <ImageView
+                android:id="@+id/tvTypeIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_code"
+                app:tint="@color/primary"
+                tools:ignore="ContentDescription" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvItemTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_md"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:maxLines="2"
+                android:ellipsize="end"
+                tools:text="Array.map() メソッド" />
+
+            <!-- Difficulty Badge -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipDifficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_sm"
+                android:textSize="10sp"
+                app:chipMinHeight="24dp"
+                app:chipStrokeWidth="0dp"
+                tools:text="Easy"
+                tools:chipBackgroundColor="@color/success_light" />
+        </LinearLayout>
+
+        <!-- Content Preview -->
+        <TextView
+            android:id="@+id/tvContentPreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:padding="@dimen/spacing_md"
+            android:background="@color/surface"
+            android:textSize="13sp"
+            android:textColor="@color/text_primary"
+            android:fontFamily="monospace"
+            android:maxLines="4"
+            android:ellipsize="end"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="const numbers = [1, 2, 3];\nconst doubled = numbers.map(x => x * 2);" />
+
+        <!-- Tags -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupTags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            app:singleLine="true"
+            app:chipSpacing="@dimen/spacing_xs">
+            <!-- Tags will be added dynamically -->
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- Footer Info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvItemType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                tools:text="📝 Code Snippet • JavaScript" />
+
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/primary"
+                android:drawableStart="@android:drawable/ic_menu_mylocation"
+                android:drawableTint="@color/primary"
+                android:drawablePadding="@dimen/spacing_xs"
+                tools:text="JavaScript" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
