@@ -331,6 +331,41 @@
     <string name="goal_reminders">目標リマインダー</string>
     <string name="goal_reminders_desc">締め切りが近づいたときに通知</string>
     
+    <!-- Notification Activity -->
+    <string name="notification_activity_title">通知</string>
+    <string name="mark_all_read">すべて既読にする</string>
+    <string name="notification_filter_all">すべて</string>
+    <string name="notification_filter_unread">未読</string>
+    <string name="notification_filter_reminders">リマインダー</string>
+    <string name="notification_filter_achievements">実績</string>
+    <string name="no_notifications">通知がありません</string>
+    <string name="no_notifications_description">すべて確認済みです！</string>
+    <string name="mark_as_read">既読にする</string>
+    <string name="delete_notification">通知を削除</string>
+    <string name="delete_notification_title">通知を削除しますか？</string>
+    <string name="delete_notification_message">この操作は元に戻せません。</string>
+    <string name="all_notifications_marked_read">すべての通知を既読にしました</string>
+    <string name="notification_deleted">通知を削除しました</string>
+    <string name="read_notifications_cleared">既読の通知を削除しました</string>
+    <string name="failed_to_load_notifications">通知の読み込みに失敗しました: %s</string>
+    <string name="failed_to_mark_as_read">既読にするのに失敗しました: %s</string>
+    <string name="failed_to_mark_all_as_read">すべて既読にするのに失敗しました: %s</string>
+    <string name="failed_to_delete_notification">通知の削除に失敗しました: %s</string>
+    <string name="failed_to_clear_notifications">通知の削除に失敗しました: %s</string>
+    
+    <!-- Notification Types -->
+    <string name="notification_type_reminder">リマインダー</string>
+    <string name="notification_type_achievement">実績</string>
+    <string name="notification_type_motivational">モチベーション</string>
+    <string name="notification_type_system">システム</string>
+    
+    <!-- Time Ago -->
+    <string name="time_ago_recently">最近</string>
+    <string name="time_ago_just_now">たった今</string>
+    <string name="time_ago_minutes_ago">%d分前</string>
+    <string name="time_ago_hours_ago">%d時間前</string>
+    <string name="time_ago_days_ago">%d日前</string>
+    
     <!-- Settings Theme -->
     <string name="theme_section">テーマ</string>
     <string name="dark_mode">ダークモード</string>

@@ -8,10 +8,13 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ecccomp.s2240788.mobile_android.R
+import ecccomp.s2240788.mobile_android.data.repository.TaskTrackingRepository
 import ecccomp.s2240788.mobile_android.databinding.ActivityFocusSessionBinding
 import ecccomp.s2240788.mobile_android.ui.adapters.FocusKnowledgeAdapter
 import ecccomp.s2240788.mobile_android.ui.adapters.FocusSubtaskAdapter
 import ecccomp.s2240788.mobile_android.ui.viewmodels.FocusSessionViewModel
+import ecccomp.s2240788.mobile_android.utils.NetworkModule
+import kotlinx.coroutines.*
 
 /**
  * FocusSessionActivity
@@ -28,6 +31,10 @@ class FocusSessionActivity : BaseActivity() {
     private lateinit var subtaskAdapter: FocusSubtaskAdapter
     private var taskId: Int = -1
     private var subtaskId: Int = -1
+    
+    // Heartbeat tracking
+    private var heartbeatJob: Job? = null
+    private val heartbeatScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -147,6 +154,13 @@ class FocusSessionActivity : BaseActivity() {
         // Timer running state
         viewModel.isTimerRunning.observe(this) { isRunning ->
             updateControlButtonsUI(isRunning)
+
+            // Start/stop heartbeat worker based on timer state
+            if (isRunning && taskId != -1) {
+                startHeartbeatWorker(taskId)
+            } else {
+                stopHeartbeatWorker(taskId)
+            }
         }
 
         // Timer mode
@@ -199,15 +213,18 @@ class FocusSessionActivity : BaseActivity() {
         // Session completed
         viewModel.focusSessionCompleted.observe(this) { completed ->
             if (completed) {
+                // Stop heartbeat worker when session completes
+                stopHeartbeatWorker(taskId)
+
                 // Play sound, show notification, etc.
                 Toast.makeText(this, getString(R.string.session_completed), Toast.LENGTH_LONG).show()
-                
+
                 // Save notes if user entered any
                 val notes = binding.etNotes.text?.toString()
                 if (!notes.isNullOrBlank()) {
                     viewModel.saveFocusSessionWithNotes(notes)
                 }
-                
+
                 viewModel.clearSessionCompleted()
             }
         }
@@ -475,10 +492,69 @@ class FocusSessionActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+        // Stop heartbeat when activity is destroyed
+        stopHeartbeatWorker(taskId)
+        
+        // Cancel heartbeat scope
+        heartbeatScope.cancel()
+
         // Only clean up if timer is not running
         if (viewModel.isTimerRunning.value != true) {
             viewModel.pauseTimer()
         }
+    }
+
+    /**
+     * Start periodic heartbeat for task tracking
+     * Sends heartbeat every 1-2 minutes as per backend requirements
+     * Uses Coroutine instead of WorkManager to achieve 1-2 minute interval
+     */
+    private fun startHeartbeatWorker(taskId: Int) {
+        if (taskId == -1) return
+
+        // Cancel existing heartbeat if any
+        stopHeartbeatWorker(taskId)
+
+        // Start heartbeat coroutine (every 2 minutes)
+        heartbeatJob = heartbeatScope.launch {
+            while (isActive) {
+                try {
+                    val apiService = NetworkModule.provideApiService(
+                        NetworkModule.provideRetrofit(
+                            NetworkModule.provideOkHttpClient()
+                        )
+                    )
+                    val repository = TaskTrackingRepository(apiService)
+                    
+                    val result = repository.sendHeartbeat(taskId)
+                    result.fold(
+                        onSuccess = {
+                            android.util.Log.d("FocusSessionActivity", "Heartbeat sent successfully for task #$taskId")
+                        },
+                        onError = { error ->
+                            android.util.Log.e("FocusSessionActivity", "Failed to send heartbeat: $error")
+                        }
+                    )
+                } catch (e: Exception) {
+                    android.util.Log.e("FocusSessionActivity", "Error sending heartbeat: ${e.message}", e)
+                }
+                
+                // Wait 2 minutes before next heartbeat
+                delay(2 * 60 * 1000) // 2 minutes in milliseconds
+            }
+        }
+        
+        android.util.Log.d("FocusSessionActivity", "Started heartbeat for task #$taskId (every 2 minutes)")
+    }
+
+    /**
+     * Stop heartbeat worker
+     */
+    private fun stopHeartbeatWorker(taskId: Int) {
+        heartbeatJob?.cancel()
+        heartbeatJob = null
+        android.util.Log.d("FocusSessionActivity", "Stopped heartbeat for task #$taskId")
     }
 }
 

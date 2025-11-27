@@ -36,6 +36,10 @@ class Task extends Model
         'last_focus_at',
         'total_focus_minutes',
         'distraction_count',
+        // Abandonment tracking
+        'last_active_at',
+        'is_abandoned',
+        'abandonment_count',
     ];
 
     protected $casts = [
@@ -55,6 +59,10 @@ class Task extends Model
         'last_focus_at' => 'datetime',
         'total_focus_minutes' => 'integer',
         'distraction_count' => 'integer',
+        // Abandonment tracking
+        'last_active_at' => 'datetime',
+        'is_abandoned' => 'boolean',
+        'abandonment_count' => 'integer',
     ];
 
     /**
@@ -127,6 +135,11 @@ class Task extends Model
     public function contextSwitchesTo(): HasMany
     {
         return $this->hasMany(ContextSwitch::class, 'to_task_id');
+    }
+
+    public function abandonments(): HasMany
+    {
+        return $this->hasMany(TaskAbandonment::class);
     }
 
     // Scopes
