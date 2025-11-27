@@ -26,7 +26,9 @@
       "Bash(git add:*)",
       "Bash(export TOKEN='9|1oHUJF8S6IuhnwSYuJllrsObXPleBomoFWtiNuDU1e883c50')",
       "Bash(TOKEN='9|1oHUJF8S6IuhnwSYuJllrsObXPleBomoFWtiNuDU1e883c50')",
-      "Bash(TOKEN='10|ZrUHw93aiFU2s5F4J1x7KZhtaRdCPnJAqVLNTy5v69c2b39f')"
+      "Bash(TOKEN='10|ZrUHw93aiFU2s5F4J1x7KZhtaRdCPnJAqVLNTy5v69c2b39f')",
+      "Bash(export TOKEN='3|OVWx4mCeQbY6Ros15rEsqURufLK10KeBx1cD67VIe82fa3d3')",
+      "Bash(TOKEN='3|OVWx4mCeQbY6Ros15rEsqURufLK10KeBx1cD67VIe82fa3d3')"
     ],
     "deny": [],
     "ask": []
