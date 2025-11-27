@@ -93,23 +93,25 @@ object CodeHighlightHelper {
      * Map language names to highlight.js codes
      */
     private fun mapLanguage(language: String): String {
-        return when (language) {
-            "php" -> "php"
+        return when (language.lowercase()) {
+            "php", "laravel" -> "php"  // Laravel is PHP framework
             "java" -> "java"
-            "javascript", "js" -> "javascript"
-            "python", "py" -> "python"
-            "html" -> "html"
-            "css" -> "css"
+            "javascript", "js", "node", "nodejs" -> "javascript"
+            "python", "py", "django", "flask" -> "python"
+            "html", "html5" -> "html"
+            "css", "css3", "scss", "sass" -> "css"
             "kotlin", "kt" -> "kotlin"
-            "go" -> "go"
+            "go", "golang" -> "go"
             "c", "cpp", "c++" -> "cpp"
             "swift" -> "swift"
-            "ruby", "rb" -> "ruby"
-            "sql" -> "sql"
+            "ruby", "rb", "rails" -> "ruby"
+            "sql", "mysql", "postgresql", "postgres", "sqlite", "mariadb" -> "sql"
             "json" -> "json"
             "xml" -> "xml"
+            "yaml", "yml" -> "yaml"
             "markdown", "md" -> "markdown"
-            "bash", "sh", "shell" -> "bash"
+            "bash", "sh", "shell", "zsh" -> "bash"
+            "docker", "dockerfile" -> "bash"  // Dockerfile uses bash-like syntax
             else -> "plaintext"
         }
     }

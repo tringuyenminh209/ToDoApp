@@ -825,4 +825,21 @@
     <string name="create_task">Create Task</string>
     <string name="dismiss">Dismiss</string>
 
+    <!-- Theme Options -->
+    <string name="theme_auto">Auto</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+
+    <!-- Language Options -->
+    <string name="language_vietnamese">Vietnamese</string>
+    <string name="language_english">English</string>
+    <string name="language_japanese">Japanese</string>
+
+    <!-- Pomodoro Time Options -->
+    <string name="pomodoro_15">15 minutes</string>
+    <string name="pomodoro_25">25 minutes</string>
+    <string name="pomodoro_30">30 minutes</string>
+    <string name="pomodoro_45">45 minutes</string>
+    <string name="pomodoro_60">60 minutes</string>
+
 </resources>
