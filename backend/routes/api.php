@@ -19,6 +19,8 @@ use App\Http\Controllers\KnowledgeController;
 use App\Http\Controllers\KnowledgeCategoryController;
 use App\Http\Controllers\FocusEnhancementController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\TaskTrackingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -81,15 +83,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'getUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
+    Route::post('/user/fcm-token', [AuthController::class, 'updateFCMToken']);
 
     // Additional task routes (must be before apiResource)
     Route::get('/tasks/stats', [TaskController::class, 'stats']);
     Route::get('/tasks/by-priority/{priority}', [TaskController::class, 'byPriority']);
     Route::get('/tasks/overdue', [TaskController::class, 'overdue']);
     Route::get('/tasks/due-soon', [TaskController::class, 'dueSoon']);
+    Route::get('/tasks/abandoned', [TaskTrackingController::class, 'getAbandonedTasks']);
     Route::get('/tasks/{id}/suggest-schedule', [TaskController::class, 'suggestSchedule']);
+    Route::get('/tasks/{id}/abandonments', [TaskTrackingController::class, 'getTaskAbandonments']);
     Route::put('/tasks/{id}/complete', [TaskController::class, 'complete']);
     Route::put('/tasks/{id}/start', [TaskController::class, 'start']);
+    Route::post('/tasks/{id}/heartbeat', [TaskTrackingController::class, 'heartbeat']);
+    Route::post('/tasks/{id}/abandon', [TaskTrackingController::class, 'abandonTask']);
+    Route::post('/tasks/{id}/resume', [TaskTrackingController::class, 'resumeTask']);
 
     // Task routes (Resource routes must be last)
     Route::apiResource('tasks', TaskController::class);
@@ -327,6 +335,25 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/', [SettingsController::class, 'update']);
         Route::post('/reset', [SettingsController::class, 'reset']);
         Route::patch('/{key}', [SettingsController::class, 'updateSetting']);
+    });
+
+    // Notification routes
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'index']);
+        Route::get('/unread/count', [NotificationController::class, 'unreadCount']);
+        Route::get('/recent', [NotificationController::class, 'recent']);
+        Route::get('/stats', [NotificationController::class, 'stats']);
+        Route::post('/', [NotificationController::class, 'store']);
+        Route::put('/{id}/read', [NotificationController::class, 'markAsRead']);
+        Route::put('/mark-all-read', [NotificationController::class, 'markAllAsRead']);
+        Route::delete('/{id}', [NotificationController::class, 'destroy']);
+        Route::delete('/clear-read', [NotificationController::class, 'clearRead']);
+    });
+
+    // Abandonment statistics routes
+    Route::prefix('abandonments')->group(function () {
+        Route::get('/', [TaskTrackingController::class, 'getUserAbandonments']);
+        Route::get('/stats', [TaskTrackingController::class, 'getAbandonmentStats']);
     });
 
 });

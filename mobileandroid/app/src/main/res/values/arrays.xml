@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Theme Options -->
+    <!-- Theme Options: Order matches SettingsActivity mapping (light=0, dark=1, auto=2) -->
     <string-array name="theme_options">
-        <item>Tự động</item>
-        <item>Sáng</item>
-        <item>Tối</item>
+        <item>@string/theme_light</item>
+        <item>@string/theme_dark</item>
+        <item>@string/theme_auto</item>
     </string-array>
 
-    <!-- Language Options -->
+    <!-- Language Options: Order matches SettingsActivity mapping (vi=0, en=1, ja=2) -->
     <string-array name="language_options">
-        <item>Tiếng Việt</item>
-        <item>English</item>
-        <item>日本語</item>
+        <item>@string/language_vietnamese</item>
+        <item>@string/language_english</item>
+        <item>@string/language_japanese</item>
     </string-array>
 
-    <!-- Pomodoro Time Options -->
+    <!-- Pomodoro Time Options: Order matches SettingsActivity mapping (15=0, 25=1, 30=2, 45=3, 60=4) -->
     <string-array name="pomodoro_time_options">
-        <item>25 phút</item>
-        <item>30 phút</item>
-        <item>45 phút</item>
+        <item>@string/pomodoro_15</item>
+        <item>@string/pomodoro_25</item>
+        <item>@string/pomodoro_30</item>
+        <item>@string/pomodoro_45</item>
+        <item>@string/pomodoro_60</item>
     </string-array>
 
     <!-- Timetable Days -->

@@ -20,6 +20,7 @@ Class User extends Authenticatable{
         'timezone',
         'avatar_url',
         'email_verified_at',
+        'fcm_token',
     ];
 
     protected $hidden = [

@@ -179,7 +179,80 @@
                     { regex: /\b(package|import|func|var|const|type|struct|interface|return|if|else|for|range|switch|case|break|continue|goto|defer|go|chan|select|true|false|nil)\b/, type: 'keyword' },
                     { regex: /\b\d+\.?\d*\b/, type: 'number' },
                     { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
-                ]
+                ],
+                sql: [
+                    { regex: /--.*/, type: 'comment' },
+                    { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                    { regex: /\b(SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|TABLE|INDEX|VIEW|DATABASE|INTO|VALUES|SET|JOIN|LEFT|RIGHT|INNER|OUTER|ON|AS|AND|OR|NOT|NULL|IS|IN|LIKE|BETWEEN|ORDER|BY|GROUP|HAVING|LIMIT|OFFSET|COUNT|SUM|AVG|MAX|MIN|DISTINCT|PRIMARY|KEY|FOREIGN|REFERENCES|CONSTRAINT|DEFAULT|AUTO_INCREMENT|UNSIGNED|INT|VARCHAR|TEXT|DATETIME|TIMESTAMP|BOOLEAN|DECIMAL|FLOAT|DOUBLE)\b/i, type: 'keyword' },
+                    { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                    { regex: /[=<>!]+|[-+*\/]/, type: 'operator' },
+                    { regex: /[(),;]/, type: 'punctuation' }
+                ],
+                kotlin: [
+                    { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                    { regex: /\/\/.*/, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                    { regex: /\b(package|import|class|interface|object|fun|val|var|return|if|else|when|for|while|do|try|catch|finally|throw|public|private|protected|internal|open|abstract|override|companion|data|sealed|enum|annotation|suspend|inline|crossinline|noinline|reified|infix|operator|lateinit|by|delegate|is|as|in|true|false|null)\b/, type: 'keyword' },
+                    { regex: /\b[A-Z][a-zA-Z0-9]*\b/, type: 'class-name' },
+                    { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                    { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
+                ],
+                css: [
+                    { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                    { regex: /[.#]?[a-zA-Z][a-zA-Z0-9-]*(?=\s*\{)/, type: 'selector' },
+                    { regex: /\b(color|background|font|margin|padding|border|width|height|display|position|top|left|right|bottom|float|clear|z-index|opacity|visibility|overflow|cursor|text-align|text-decoration|line-height|letter-spacing|word-spacing|font-size|font-weight|font-family)\b/, type: 'property' },
+                    { regex: /#[0-9a-fA-F]{3,6}\b/, type: 'number' },
+                    { regex: /\b\d+\.?\d*(px|em|rem|%|vh|vw|pt)?\b/, type: 'number' },
+                    { regex: /[:;{}]/, type: 'punctuation' }
+                ],
+                cpp: [
+                    { regex: /\/\*[\s\S]*?\*\//, type: 'comment' },
+                    { regex: /\/\/.*/, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                    { regex: /#\s*include/, type: 'keyword' },
+                    { regex: /\b(class|struct|namespace|using|public|private|protected|virtual|static|const|void|int|long|double|float|char|bool|true|false|NULL|nullptr|if|else|for|while|do|switch|case|break|continue|return|try|catch|throw|new|delete|template|typename|auto|decltype|sizeof|typedef|enum|union|extern|inline|friend|operator|this)\b/, type: 'keyword' },
+                    { regex: /\b[A-Z][a-zA-Z0-9]*\b/, type: 'class-name' },
+                    { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                    { regex: /[-+*\/=<>!&|]+/, type: 'operator' }
+                ],
+                bash: [
+                    { regex: /#.*/, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                    { regex: /\b(if|then|else|elif|fi|for|while|do|done|case|esac|function|return|echo|exit|export|source|alias|unset|read|shift|test|true|false)\b/, type: 'keyword' },
+                    { regex: /\$\{?[a-zA-Z_][a-zA-Z0-9_]*\}?/, type: 'variable' },
+                    { regex: /\b\d+\b/, type: 'number' },
+                    { regex: /[|&;><]/, type: 'operator' }
+                ],
+                markdown: [
+                    { regex: /^#{1,6}\s+.*$/m, type: 'keyword' },
+                    { regex: /\*\*[^*]+\*\*|__[^_]+__/, type: 'keyword' },
+                    { regex: /\*[^*]+\*|_[^_]+_/, type: 'string' },
+                    { regex: /`[^`]+`/, type: 'string' },
+                    { regex: /^\s*[-*+]\s/m, type: 'punctuation' },
+                    { regex: /^\s*\d+\.\s/m, type: 'number' },
+                    { regex: /\[([^\]]+)\]\(([^)]+)\)/, type: 'string' }
+                ],
+                yaml: [
+                    { regex: /#.*/, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                    { regex: /^[a-zA-Z_][a-zA-Z0-9_-]*:/m, type: 'property' },
+                    { regex: /\b(true|false|null|yes|no|on|off)\b/, type: 'keyword' },
+                    { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                    { regex: /^---$|^\.\.\.$/m, type: 'operator' },
+                    { regex: /^\s*-\s/m, type: 'punctuation' }
+                ],
+                yml: [
+                    { regex: /#.*/, type: 'comment' },
+                    { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/, type: 'string' },
+                    { regex: /^[a-zA-Z_][a-zA-Z0-9_-]*:/m, type: 'property' },
+                    { regex: /\b(true|false|null|yes|no|on|off)\b/, type: 'keyword' },
+                    { regex: /\b\d+\.?\d*\b/, type: 'number' },
+                    { regex: /^---$|^\.\.\.$/m, type: 'operator' },
+                    { regex: /^\s*-\s/m, type: 'punctuation' }
+                ],
+                plaintext: []
             };
 
             // Escape HTML entities

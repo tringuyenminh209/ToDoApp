@@ -64,6 +64,15 @@
             android:exported="false"
             android:foregroundServiceType="specialUse" />
 
+        <!-- Firebase Messaging Service -->
+        <service
+            android:name=".services.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <!-- Stats & Settings -->
         <activity
             android:name=".ui.activities.StatsActivity"
@@ -178,6 +187,12 @@
             android:windowSoftInputMode="adjustResize" /> <!-- Main Activity -->
         <activity
             android:name=".ui.activities.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.TodoApp" />
+
+        <!-- Notification Activity -->
+        <activity
+            android:name=".ui.activities.NotificationActivity"
             android:exported="false"
             android:theme="@style/Theme.TodoApp" />
     </application>

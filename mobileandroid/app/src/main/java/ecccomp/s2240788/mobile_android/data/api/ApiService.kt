@@ -603,4 +603,91 @@ interface ApiService {
         @Path("key") key: String,
         @Body value: Map<String, Any>
     ): Response<SettingsResponse>
+
+    // ==================== Notification Endpoints ====================
+
+    // Get all notifications (paginated)
+    // Backend trả về: { success: true, data: [...], pagination: {...} }
+    // data và pagination ở cùng cấp, không phải nested
+    @GET("notifications")
+    suspend fun getNotifications(
+        @Query("type") type: String? = null,
+        @Query("unread") unread: String? = null,  // Backend dùng "unread" không phải "read"
+        @Query("per_page") perPage: Int = 20
+    ): Response<NotificationListApiResponse>
+
+    // Get unread count
+    @GET("notifications/unread/count")
+    suspend fun getUnreadCount(): Response<ApiResponse<UnreadCountResponse>>
+
+    // Get recent notifications (last 10)
+    @GET("notifications/recent")
+    suspend fun getRecentNotifications(): Response<ApiResponse<List<Notification>>>
+
+    // Get notification stats
+    @GET("notifications/stats")
+    suspend fun getNotificationStats(): Response<ApiResponse<NotificationStatsResponse>>
+
+    // Create notification (testing/admin)
+    @POST("notifications")
+    suspend fun createNotification(@Body request: CreateNotificationRequest): Response<ApiResponse<Notification>>
+
+    // Mark notification as read
+    @PUT("notifications/{id}/read")
+    suspend fun markNotificationAsRead(@Path("id") id: Int): Response<ApiResponse<Notification>>
+
+    // Mark all notifications as read
+    @PUT("notifications/mark-all-read")
+    suspend fun markAllNotificationsAsRead(): Response<ApiResponse<Map<String, Any>>>
+
+    // Delete notification
+    @DELETE("notifications/{id}")
+    suspend fun deleteNotification(@Path("id") id: Int): Response<ApiResponse<Unit>>
+
+    // Clear all read notifications
+    @DELETE("notifications/clear-read")
+    suspend fun clearReadNotifications(): Response<ApiResponse<Map<String, Any>>>
+
+    // ==================== Task Tracking & Abandonment Endpoints ====================
+
+    // Send heartbeat for active task
+    @POST("tasks/{id}/heartbeat")
+    suspend fun sendTaskHeartbeat(@Path("id") taskId: Int): Response<ApiResponse<Task>>
+
+    // Manually abandon task
+    @POST("tasks/{id}/abandon")
+    suspend fun abandonTask(
+        @Path("id") taskId: Int,
+        @Body request: AbandonTaskRequest
+    ): Response<ApiResponse<TaskAbandonment>>
+
+    // Resume abandoned task
+    @POST("tasks/{id}/resume")
+    suspend fun resumeAbandonedTask(@Path("id") taskId: Int): Response<ApiResponse<Task>>
+
+    // Get abandonment history for a task
+    @GET("tasks/{id}/abandonments")
+    suspend fun getTaskAbandonments(@Path("id") taskId: Int): Response<ApiResponse<List<TaskAbandonment>>>
+
+    // Get all abandoned tasks
+    @GET("tasks/abandoned")
+    suspend fun getAbandonedTasks(): Response<ApiResponse<List<TaskWithAbandonmentInfo>>>
+
+    // Get user's abandonment history (paginated)
+    @GET("abandonments")
+    suspend fun getUserAbandonments(
+        @Query("per_page") perPage: Int = 20
+    ): Response<ApiResponse<AbandonmentListResponse>>
+
+    // Get abandonment statistics
+    @GET("abandonments/stats")
+    suspend fun getAbandonmentStats(
+        @Query("days") days: Int = 7
+    ): Response<ApiResponse<AbandonmentStatsResponse>>
+
+    // ==================== FCM Token Management ====================
+
+    // Update FCM token
+    @POST("user/fcm-token")
+    suspend fun updateFCMToken(@Body request: UpdateFCMTokenRequest): Response<ApiResponse<Map<String, Any>>>
 }

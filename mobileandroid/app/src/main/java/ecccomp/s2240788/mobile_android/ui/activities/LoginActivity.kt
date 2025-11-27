@@ -10,6 +10,7 @@ import com.google.android.material.textfield.TextInputLayout
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityLoginBinding
 import ecccomp.s2240788.mobile_android.ui.viewmodels.LoginViewModel
+import ecccomp.s2240788.mobile_android.utils.FCMTokenHelper
 import ecccomp.s2240788.mobile_android.utils.LocaleHelper
 
 class LoginActivity : BaseActivity() {
@@ -100,6 +101,10 @@ class LoginActivity : BaseActivity() {
         viewModel.loginSuccess.observe(this) { success ->
             if (success) {
                 Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
+                
+                // Send FCM token to backend after successful login
+                FCMTokenHelper.sendTokenToServer(this)
+                
                 // Navigate to MainActivity (clear back stack)
                 val intent = Intent(this, MainActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
