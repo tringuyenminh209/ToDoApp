@@ -130,26 +130,48 @@
                             app:strokeColor="@color/line"
                             app:strokeWidth="1dp" />
 
-                        <!-- Notification Button -->
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_notification"
-                            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="@dimen/spacing_sm"
-                            android:insetLeft="0dp"
-                            android:insetTop="0dp"
-                            android:insetRight="0dp"
-                            android:insetBottom="0dp"
-                            app:icon="@drawable/ic_notifications"
-                            app:iconGravity="textStart"
-                            app:iconPadding="0dp"
-                            app:iconSize="20dp"
-                            app:iconTint="@color/text_primary"
-                            app:backgroundTint="@color/surface"
-                            app:cornerRadius="12dp"
-                            app:strokeColor="@color/line"
-                            app:strokeWidth="1dp" />
+                        <!-- Notification Button with Badge -->
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/spacing_sm">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_notification"
+                                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:insetLeft="0dp"
+                                android:insetTop="0dp"
+                                android:insetRight="0dp"
+                                android:insetBottom="0dp"
+                                app:icon="@drawable/ic_notifications"
+                                app:iconGravity="textStart"
+                                app:iconPadding="0dp"
+                                app:iconSize="20dp"
+                                app:iconTint="@color/text_primary"
+                                app:backgroundTint="@color/surface"
+                                app:cornerRadius="12dp"
+                                app:strokeColor="@color/line"
+                                app:strokeWidth="1dp" />
+
+                            <!-- Unread Badge -->
+                            <TextView
+                                android:id="@+id/tv_notification_badge"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="top|end"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginEnd="2dp"
+                                android:background="@drawable/bg_notification_badge"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                android:text="9" />
+
+                        </FrameLayout>
 
                         <!-- Add Task Button -->
                         <com.google.android.material.button.MaterialButton

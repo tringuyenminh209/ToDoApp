@@ -30,6 +30,10 @@ data class Task(
     val last_focus_at: String? = null,
     val total_focus_minutes: Int = 0,
     val distraction_count: Int = 0,
+    // Task abandonment tracking
+    val last_active_at: String? = null,
+    val is_abandoned: Boolean = false,
+    val abandonment_count: Int = 0,
     // Smart time calculation (auto-calculated by backend)
     val remaining_minutes: Int? = null, // Time remaining after subtracting completed subtasks
     // Relations

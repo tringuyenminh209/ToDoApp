@@ -75,27 +75,30 @@ class StatsActivity : BaseActivity() {
     private fun updateUI(stats: ecccomp.s2240788.mobile_android.data.models.UserStats) {
         // Streak Section (top card)
         binding.tvStreakValue.text = stats.current_streak.toString()
-        binding.tvStreakRecord.text = "Kỷ lục: ${stats.longest_streak} ngày"
+        binding.tvStreakRecord.text = getString(R.string.streak_record, stats.longest_streak)
 
         // Stats Grid - Row 1
         // Today Focus - Get from monthly_productivity for today
         val todayFocusMinutes = getTodayFocusMinutes(stats)
         binding.tvTodayFocus.text = formatFocusTimeValue(todayFocusMinutes)
-        binding.tvTodayChange.text = "%s 昨日比" // Placeholder for comparison
+        binding.tvTodayChange.text = getString(R.string.compared_to_yesterday, "-")
 
         // Week Focus
         val weekFocusMinutes = stats.weekly_stats.focus_time
         binding.tvWeekFocus.text = formatFocusTimeValue(weekFocusMinutes)
-        binding.tvWeekChange.text = "%s 先週比" // Placeholder for comparison
+        binding.tvWeekChange.text = getString(R.string.compared_to_last_week, "-")
 
         // Stats Grid - Row 2
         // Tasks Completed (lifetime)
         binding.tvTasksCompleted.text = stats.completed_tasks.toString()
-        binding.tvTasksChange.text = "%s 先週比" // Placeholder for comparison
+        binding.tvTasksChange.text = getString(R.string.compared_to_last_week, "-")
 
         // Completion Rate
         binding.tvCompletionRate.text = String.format("%.1f%%", stats.completion_rate)
-        binding.tvCompletionChange.text = "%s 先週比" // Placeholder for comparison
+        binding.tvCompletionChange.text = getString(R.string.compared_to_last_week, "-")
+
+        // Set Deep Work title with day count
+        binding.tvDeepWorkTitle.text = getString(R.string.deep_work_past_days, 7)
 
         // Update Deep Work Chart
         updateDeepWorkChart(stats)
@@ -203,15 +206,18 @@ class StatsActivity : BaseActivity() {
      */
     private fun showDefaultState() {
         binding.tvStreakValue.text = "0"
-        binding.tvStreakRecord.text = "Kỷ lục: 0 ngày"
+        binding.tvStreakRecord.text = getString(R.string.streak_record, 0)
         binding.tvTodayFocus.text = "0m"
-        binding.tvTodayChange.text = "%s 昨日比"
+        binding.tvTodayChange.text = getString(R.string.compared_to_yesterday, "-")
         binding.tvWeekFocus.text = "0m"
-        binding.tvWeekChange.text = "%s 先週比"
+        binding.tvWeekChange.text = getString(R.string.compared_to_last_week, "-")
         binding.tvTasksCompleted.text = "0"
-        binding.tvTasksChange.text = "%s 先週比"
+        binding.tvTasksChange.text = getString(R.string.compared_to_last_week, "-")
         binding.tvCompletionRate.text = "0.0%"
-        binding.tvCompletionChange.text = "%s 先週比"
+        binding.tvCompletionChange.text = getString(R.string.compared_to_last_week, "-")
+
+        // Set Deep Work title with day count
+        binding.tvDeepWorkTitle.text = getString(R.string.deep_work_past_days, 7)
     }
 
     /**
