@@ -27,6 +27,7 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var logoutViewModel: LogoutViewModel
+    private lateinit var notificationViewModel: ecccomp.s2240788.mobile_android.ui.viewmodels.NotificationViewModel
     private lateinit var taskAdapter: MainTaskAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +46,9 @@ class MainActivity : BaseActivity() {
         // Load tasks and today's progress
         viewModel.getTasks()
         viewModel.getTodayProgress()
+
+        // Load notification unread count
+        notificationViewModel.loadUnreadCount()
     }
 
     override fun onResume() {
@@ -52,11 +56,15 @@ class MainActivity : BaseActivity() {
         // Refresh tasks and progress when returning to this activity
         viewModel.getTasks()
         viewModel.getTodayProgress()
+
+        // Refresh notification badge
+        notificationViewModel.loadUnreadCount()
     }
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         logoutViewModel = ViewModelProvider(this)[LogoutViewModel::class.java]
+        notificationViewModel = ViewModelProvider(this)[ecccomp.s2240788.mobile_android.ui.viewmodels.NotificationViewModel::class.java]
         observeLogoutViewModel()
     }
 
@@ -147,7 +155,8 @@ class MainActivity : BaseActivity() {
         }
 
         binding.btnNotification.setOnClickListener {
-            Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, NotificationActivity::class.java)
+            startActivity(intent)
         }
 
         binding.btnAddTask.setOnClickListener {
@@ -269,6 +278,16 @@ class MainActivity : BaseActivity() {
         }
 
         // Observe today's stats
+        // Notification unread count badge
+        notificationViewModel.unreadCount.observe(this) { count ->
+            if (count > 0) {
+                binding.tvNotificationBadge.visibility = View.VISIBLE
+                binding.tvNotificationBadge.text = if (count > 9) "9+" else count.toString()
+            } else {
+                binding.tvNotificationBadge.visibility = View.GONE
+            }
+        }
+
         viewModel.todayStats.observe(this) { stats ->
             stats?.let {
                 // Update progress ring and percentage

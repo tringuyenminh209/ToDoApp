@@ -230,4 +230,31 @@ class AuthController extends Controller
         Log::info("getUser response (success)", ['response' => $response]);
         return response()->json($response, 200);
     }
+
+    /**
+     * Update FCM token
+     * POST /api/user/fcm-token
+     */
+    public function updateFCMToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token' => 'required|string|max:500',
+        ]);
+
+        $user = $request->user();
+        $user->update(['fcm_token' => $request->fcm_token]);
+
+        Log::info("FCM token updated", [
+            'user_id' => $user->id,
+            'email' => $user->email,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'FCM token updated successfully',
+            'data' => [
+                'fcm_token' => $user->fcm_token
+            ]
+        ], 200);
+    }
 }
