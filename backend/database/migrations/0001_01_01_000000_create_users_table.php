@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255)->comment('ユーザー名');
             $table->string('email', 255)->unique()->comment('メールアドレス');
+            $table->string('fcm_token', 500)->nullable()->comment('Firebase Cloud Messagingトークン');
             $table->timestamp('email_verified_at')->nullable()->comment('メール確認日時');
             $table->string('password', 255)->comment('パスワード（ハッシュ化）');
             $table->enum('language', ['vi', 'en', 'ja'])->default('ja')->comment('UI言語');
@@ -25,6 +26,7 @@ return new class extends Migration
 
             // Indexes
             $table->index('email');
+            $table->index('fcm_token');
             $table->index('created_at');
         });
 
