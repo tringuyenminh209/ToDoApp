@@ -103,39 +103,39 @@ services:
           memory: 256M
 
   # PHPMyAdmin (Development only)
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: todo-phpmyadmin
-    restart: unless-stopped
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      PMA_USER: todo_user
-      PMA_PASSWORD: 123qwecc
-    ports:
-      - "8082:80"
-    depends_on:
-      - mysql
-    networks:
-      - todo-network
-    profiles:
-      - dev
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: todo-phpmyadmin
+  #   restart: unless-stopped
+  #   environment:
+  #     PMA_HOST: mysql
+  #     PMA_PORT: 3306
+  #     PMA_USER: todo_user
+  #     PMA_PASSWORD: 123qwecc
+  #   ports:
+  #     - "8082:80"
+  #   depends_on:
+  #     - mysql
+  #   networks:
+  #     - todo-network
+  #   profiles:
+  #     - dev
 
   # Redis Commander (Development only)
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    container_name: todo-redis-commander
-    restart: unless-stopped
-    environment:
-      REDIS_HOSTS: local:redis:6379
-    ports:
-      - "8081:8081"
-    depends_on:
-      - redis
-    networks:
-      - todo-network
-    profiles:
-      - dev
+  # redis-commander:
+  #   image: rediscommander/redis-commander:latest
+  #   container_name: todo-redis-commander
+  #   restart: unless-stopped
+  #   environment:
+  #     REDIS_HOSTS: local:redis:6379
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on:
+  #     - redis
+  #   networks:
+  #     - todo-network
+  #   profiles:
+  #     - dev
 
 volumes:
   mysql_data:
