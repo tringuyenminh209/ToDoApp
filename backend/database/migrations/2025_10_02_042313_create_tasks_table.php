@@ -56,6 +56,8 @@ return new class extends Migration
             $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled'])
                 ->default('pending')
                 ->comment('タスクステータス');
+            $table->boolean('is_abandoned')->default(false)
+                ->comment('放棄されたタスク');
 
             // AI Features
             $table->boolean('ai_breakdown_enabled')->default(false)
@@ -80,10 +82,14 @@ return new class extends Migration
             // Context tracking
             $table->timestamp('last_focus_at')->nullable()
                 ->comment('最後にこのタスクに集中した時刻');
+            $table->timestamp('last_active_at')->nullable()
+                ->comment('最後にアクティブだった時刻（heartbeat更新）');
             $table->integer('total_focus_minutes')->default(0)
                 ->comment('集中に費やした合計時間（分）');
             $table->integer('distraction_count')->default(0)
                 ->comment('記録された気が散った回数');
+            $table->integer('abandonment_count')->default(0)
+                ->comment('放棄された回数');
 
             $table->timestamps();
 
@@ -95,6 +101,8 @@ return new class extends Migration
             $table->index('priority');
             $table->index(['user_id', 'created_at']);
             $table->index(['user_id', 'scheduled_time']);
+            $table->index(['status', 'last_active_at']);
+            $table->index(['user_id', 'is_abandoned']);
         });
     }
 
