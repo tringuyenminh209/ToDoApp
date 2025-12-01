@@ -14,8 +14,10 @@
         "pusher/pusher-php-server": "^7.2"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.6",
         "fakerphp/faker": "^1.23",
         "laravel/boost": "^1.8",
+        "laravel/breeze": "^2.3",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",

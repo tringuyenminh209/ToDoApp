@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>パスワードリセット</title>
+    <title>パスワードリセット</title>  
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
