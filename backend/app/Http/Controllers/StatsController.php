@@ -564,9 +564,22 @@ class StatsController extends Controller
         // Add completed tasks to total
         $totalToday += $todayCompleted;
 
-        // Weekly and Monthly: Count all tasks for overall productivity
-        $weekTasks = clone $allTasks;
-        $monthTasks = clone $allTasks;
+        // Weekly and Monthly: Get all tasks once and filter in memory
+        $allTasksCollection = $allTasks->get();
+
+        $weekTasksCreated = $allTasksCollection->filter(function($task) use ($thisWeek) {
+            return $task->created_at >= $thisWeek;
+        });
+        $weekTasksCompleted = $allTasksCollection->filter(function($task) use ($thisWeek) {
+            return $task->status === 'completed' && $task->updated_at >= $thisWeek;
+        });
+
+        $monthTasksCreated = $allTasksCollection->filter(function($task) use ($thisMonth) {
+            return $task->created_at >= $thisMonth;
+        });
+        $monthTasksCompleted = $allTasksCollection->filter(function($task) use ($thisMonth) {
+            return $task->status === 'completed' && $task->updated_at >= $thisMonth;
+        });
 
         return [
             'today' => [
@@ -577,14 +590,14 @@ class StatsController extends Controller
                     ->count(),
             ],
             'this_week' => [
-                'total' => $weekTasks->where('created_at', '>=', $thisWeek)->count(),
-                'completed' => $weekTasks->where('updated_at', '>=', $thisWeek)->where('status', 'completed')->count(),
-                'created' => $weekTasks->where('created_at', '>=', $thisWeek)->count(),
+                'total' => $weekTasksCreated->count(),
+                'completed' => $weekTasksCompleted->count(),
+                'created' => $weekTasksCreated->count(),
             ],
             'this_month' => [
-                'total' => $monthTasks->where('created_at', '>=', $thisMonth)->count(),
-                'completed' => $monthTasks->where('updated_at', '>=', $thisMonth)->where('status', 'completed')->count(),
-                'created' => $monthTasks->where('created_at', '>=', $thisMonth)->count(),
+                'total' => $monthTasksCreated->count(),
+                'completed' => $monthTasksCompleted->count(),
+                'created' => $monthTasksCreated->count(),
             ],
         ];
     }
@@ -594,23 +607,35 @@ class StatsController extends Controller
      */
     private function getSessionsStats($user, $today, $thisWeek, $thisMonth)
     {
-        $allSessions = FocusSession::where('user_id', $user->id)->where('status', 'completed');
-        $todaySessions = clone $allSessions;
-        $weekSessions = clone $allSessions;
-        $monthSessions = clone $allSessions;
+        // Get all completed sessions once, then filter in memory for better performance
+        $allSessions = FocusSession::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->get();
+
+        $todaySessions = $allSessions->filter(function($session) use ($today) {
+            return $session->started_at->isSameDay($today);
+        });
+
+        $weekSessions = $allSessions->filter(function($session) use ($thisWeek) {
+            return $session->started_at >= $thisWeek;
+        });
+
+        $monthSessions = $allSessions->filter(function($session) use ($thisMonth) {
+            return $session->started_at >= $thisMonth;
+        });
 
         return [
             'today' => [
-                'count' => $todaySessions->whereDate('started_at', $today)->count(),
-                'minutes' => $todaySessions->whereDate('started_at', $today)->sum('actual_minutes'),
+                'count' => $todaySessions->count(),
+                'minutes' => $todaySessions->sum('actual_minutes'),
             ],
             'this_week' => [
-                'count' => $weekSessions->where('started_at', '>=', $thisWeek)->count(),
-                'minutes' => $weekSessions->where('started_at', '>=', $thisWeek)->sum('actual_minutes'),
+                'count' => $weekSessions->count(),
+                'minutes' => $weekSessions->sum('actual_minutes'),
             ],
             'this_month' => [
-                'count' => $monthSessions->where('started_at', '>=', $thisMonth)->count(),
-                'minutes' => $monthSessions->where('started_at', '>=', $thisMonth)->sum('actual_minutes'),
+                'count' => $monthSessions->count(),
+                'minutes' => $monthSessions->sum('actual_minutes'),
             ],
         ];
     }
@@ -978,12 +1003,12 @@ class StatsController extends Controller
             ->pluck('count', 'date')
             ->toArray();
 
-        // Get focus time grouped by date
+        // Get focus time grouped by date (use started_at for accurate date grouping)
         $focusTime = FocusSession::where('user_id', $userId)
             ->where('status', 'completed')
-            ->whereBetween('created_at', [$startDate, $endDate])
+            ->whereBetween('started_at', [$startDate, $endDate])
             ->select(
-                DB::raw('DATE(created_at) as date'),
+                DB::raw('DATE(started_at) as date'),
                 DB::raw('SUM(actual_minutes) as minutes')
             )
             ->groupBy('date')
@@ -1002,5 +1027,95 @@ class StatsController extends Controller
         }
 
         return $productivity;
+    }
+
+    /**
+     * Get golden time heatmap (hourly productivity by day of week)
+     * GET /api/stats/golden-time
+     *
+     * Returns a 2D array of productivity scores:
+     * - Rows: Time slots (0-23 hours, grouped by 2-hour blocks = 12 rows)
+     * - Columns: Days of week (Monday-Sunday = 7 columns)
+     * - Values: Total focus minutes in that time slot
+     */
+    public function goldenTime(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            $userId = $user->id;
+
+            // Get sessions from last 30 days
+            $sessions = FocusSession::where('user_id', $userId)
+                ->where('status', 'completed')
+                ->where('started_at', '>=', Carbon::now()->subDays(29))
+                ->get();
+
+            // Initialize heatmap data: 12 time slots x 7 days
+            // Time slots: 0-2h, 2-4h, 4-6h, ..., 22-24h (12 slots)
+            // Days: Monday(1), Tuesday(2), ..., Sunday(7)
+            $heatmap = array_fill(0, 12, array_fill(0, 7, 0));
+
+            // Fill heatmap with actual data
+            foreach ($sessions as $session) {
+                $dayOfWeek = $session->started_at->dayOfWeekIso; // 1=Monday, 7=Sunday
+                $hour = $session->started_at->hour; // 0-23
+                $timeSlot = intdiv($hour, 2); // 0-11 (2-hour blocks)
+
+                // Add focus minutes to the corresponding cell
+                $heatmap[$timeSlot][$dayOfWeek - 1] += $session->actual_minutes;
+            }
+
+            // Calculate max value for normalization
+            $maxMinutes = 0;
+            foreach ($heatmap as $row) {
+                $maxMinutes = max($maxMinutes, max($row));
+            }
+
+            // Format response with intensity levels (0-4)
+            $formattedHeatmap = [];
+            foreach ($heatmap as $timeSlot => $days) {
+                $row = [];
+                foreach ($days as $minutes) {
+                    // Calculate intensity level (0=no activity, 1-4=light to heavy)
+                    if ($maxMinutes > 0) {
+                        $percentage = ($minutes / $maxMinutes) * 100;
+                        $intensity = match(true) {
+                            $percentage == 0 => 0,
+                            $percentage <= 25 => 1,
+                            $percentage <= 50 => 2,
+                            $percentage <= 75 => 3,
+                            default => 4,
+                        };
+                    } else {
+                        $intensity = 0;
+                    }
+
+                    $row[] = [
+                        'minutes' => $minutes,
+                        'intensity' => $intensity,
+                    ];
+                }
+                $formattedHeatmap[] = $row;
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'heatmap' => $formattedHeatmap,
+                    'max_minutes' => $maxMinutes,
+                    'time_slots' => 12, // 2-hour blocks
+                    'days' => 7,
+                ],
+                'message' => 'ゴールデンタイムデータを取得しました'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('goldenTime error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'ゴールデンタイムデータの取得に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -85,4 +85,11 @@
     <color name="calendar_unfocused_month_text">#94A3B8</color>
     <color name="calendar_selected_week_bg">#E6F8F1</color>
 
+    <!-- Heatmap Colors (Golden Time) -->
+    <color name="heatmap_level_0">#E0E0E0</color>  <!-- No activity -->
+    <color name="heatmap_level_1">#C8E6C9</color>  <!-- Light -->
+    <color name="heatmap_level_2">#81C784</color>  <!-- Medium -->
+    <color name="heatmap_level_3">#4CAF50</color>  <!-- Heavy -->
+    <color name="heatmap_level_4">#2E7D32</color>  <!-- Very heavy -->
+
 </resources>

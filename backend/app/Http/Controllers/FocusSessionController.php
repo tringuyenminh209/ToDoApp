@@ -155,20 +155,6 @@ class FocusSessionController extends Controller
 
             $session->update($updateData);
 
-            // メモをKnowledge Itemとして「Note」フォルダに保存（update後に実行）
-            if ($notes !== null && trim($notes) !== '') {
-                Log::info('Saving session notes as knowledge item', [
-                    'session_id' => $session->id,
-                    'notes_length' => strlen($notes),
-                ]);
-                $this->saveSessionNotesAsKnowledgeItem($session, $notes, $actualMinutes, $request->user());
-            } else {
-                Log::info('No notes to save', [
-                    'session_id' => $session->id,
-                    'reason' => $notes === null ? 'notes_is_null' : 'notes_is_empty'
-                ]);
-            }
-
             // タスク完了チェック（workセッションの場合のみ）
             $task = $session->task;
             $taskCompleted = false;
@@ -278,6 +264,21 @@ class FocusSessionController extends Controller
             }
 
             DB::commit();
+
+            // トランザクション成功後、メモをKnowledge Itemとして「Note」フォルダに保存
+            // セッション/タスク更新と独立して実行（失敗してもセッションは完了）
+            if ($notes !== null && trim($notes) !== '') {
+                Log::info('Saving session notes as knowledge item (after commit)', [
+                    'session_id' => $session->id,
+                    'notes_length' => strlen($notes),
+                ]);
+                $this->saveSessionNotesAsKnowledgeItem($session, $notes, $actualMinutes, $request->user());
+            } else {
+                Log::info('No notes to save', [
+                    'session_id' => $session->id,
+                    'reason' => $notes === null ? 'notes_is_null' : 'notes_is_empty'
+                ]);
+            }
 
             // タスクを再読み込みして最新のステータスを取得
             $task->refresh();

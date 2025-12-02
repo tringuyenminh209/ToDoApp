@@ -183,6 +183,9 @@ interface ApiService {
     @GET("stats/dashboard")
     suspend fun getStatsDashboard(): Response<ApiResponse<StatsDashboard>>
     
+    @GET("stats/golden-time")
+    suspend fun getGoldenTime(): Response<ApiResponse<GoldenTimeData>>
+    
     @GET("stats/tasks")
     suspend fun getTasksStats(@Query("period") period: String? = null): Response<ApiResponse<TasksStats>>
     

@@ -24,6 +24,9 @@ class StatsViewModel : ViewModel() {
     private val _stats = MutableLiveData<UserStats?>()
     val stats: LiveData<UserStats?> = _stats
 
+    private val _goldenTimeData = MutableLiveData<ecccomp.s2240788.mobile_android.data.models.GoldenTimeData?>()
+    val goldenTimeData: LiveData<ecccomp.s2240788.mobile_android.data.models.GoldenTimeData?> = _goldenTimeData
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -32,6 +35,7 @@ class StatsViewModel : ViewModel() {
 
     init {
         fetchStats()
+        fetchGoldenTime()
     }
 
     /**
@@ -49,6 +53,7 @@ class StatsViewModel : ViewModel() {
                     val apiResponse = response.body()
                     if (apiResponse?.success == true) {
                         _stats.value = apiResponse.data
+                        android.util.Log.d("StatsViewModel", "Stats loaded successfully: completed_tasks=${apiResponse.data?.completed_tasks}")
                     } else {
                         _error.value = apiResponse?.message ?: "統計の取得に失敗しました"
                     }
@@ -66,10 +71,37 @@ class StatsViewModel : ViewModel() {
     }
 
     /**
+     * ゴールデンタイムデータを取得
+     */
+    fun fetchGoldenTime() {
+        viewModelScope.launch {
+            try {
+                val response = apiService.getGoldenTime()
+
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse?.success == true) {
+                        _goldenTimeData.value = apiResponse.data
+                        android.util.Log.d("StatsViewModel", "Golden time data loaded: max_minutes=${apiResponse.data?.max_minutes}")
+                    } else {
+                        android.util.Log.e("StatsViewModel", "Golden time取得失敗: ${apiResponse?.message}")
+                    }
+                } else {
+                    android.util.Log.e("StatsViewModel", "Golden timeネットワークエラー: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("StatsViewModel", "Golden timeエラー: ${e.message}")
+                _goldenTimeData.value = null
+            }
+        }
+    }
+
+    /**
      * 統計を再読み込み
      */
     fun refreshStats() {
         fetchStats()
+        fetchGoldenTime()
     }
 
     /**
