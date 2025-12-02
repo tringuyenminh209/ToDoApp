@@ -205,6 +205,18 @@ data class DailyProductivity(
     val focus_minutes: Int
 )
 
+data class GoldenTimeData(
+    val heatmap: List<List<GoldenTimeCell>>, // 12 rows x 7 columns
+    val max_minutes: Int,
+    val time_slots: Int,
+    val days: Int
+)
+
+data class GoldenTimeCell(
+    val minutes: Int,
+    val intensity: Int // 0-4: no activity to heavy activity
+)
+
 //Response models
 data class ApiResponse<T>(
     val success: Boolean,
