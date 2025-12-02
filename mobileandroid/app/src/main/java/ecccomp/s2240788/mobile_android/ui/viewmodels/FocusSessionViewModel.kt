@@ -489,10 +489,18 @@ class FocusSessionViewModel : ViewModel() {
                     currentSessionId = session?.id
                     android.util.Log.d("FocusSessionViewModel", "セッション開始: sessionId=$currentSessionId")
                 } else {
-                    android.util.Log.e("FocusSessionViewModel", "セッション開始失敗: ${response.body()?.message}")
+                    // セッション開始失敗時の詳細ログ
+                    val errorMessage = response.body()?.message ?: "不明なエラー"
+                    val errorCode = response.code()
+                    android.util.Log.e("FocusSessionViewModel", "セッション開始失敗: code=$errorCode, message=$errorMessage")
+                    android.util.Log.e("FocusSessionViewModel", "Response body: ${response.errorBody()?.string()}")
+                    
+                    // ユーザーに通知
+                    _toast.value = "セッション開始に失敗しました: $errorMessage"
                 }
             } catch (e: Exception) {
                 android.util.Log.e("FocusSessionViewModel", "セッション開始エラー", e)
+                _toast.value = "セッション開始エラー: ${e.message}"
             }
         }
     }
@@ -603,10 +611,18 @@ class FocusSessionViewModel : ViewModel() {
                     
                     currentSessionId = null
                 } else {
-                    android.util.Log.e("FocusSessionViewModel", "セッション終了失敗: ${response.body()?.message}")
+                    // セッション終了失敗時の詳細ログ
+                    val errorMessage = response.body()?.message ?: "不明なエラー"
+                    val errorCode = response.code()
+                    android.util.Log.e("FocusSessionViewModel", "セッション終了失敗: code=$errorCode, message=$errorMessage")
+                    android.util.Log.e("FocusSessionViewModel", "Response body: ${response.errorBody()?.string()}")
+                    
+                    // ユーザーに通知
+                    _toast.value = "セッション終了に失敗しました: $errorMessage"
                 }
             } catch (e: Exception) {
-                android.util.Log.e("FocusSessionViewModel", "セッション終了エラー", e)
+                android.util.Log.e("FocusSessionViewModel", "セッション終了エラー: ${e.message}", e)
+                _toast.value = "セッション終了エラー: ${e.message}"
             }
         }
     }

@@ -187,6 +187,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/sessions', [StatsController::class, 'sessions']);
         Route::get('/trends', [StatsController::class, 'trends']);
         Route::get('/performance', [StatsController::class, 'performance']);
+        Route::get('/golden-time', [StatsController::class, 'goldenTime']);
     });
 
     // Daily Check-in routes
