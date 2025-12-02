@@ -120,6 +120,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}/stop', [FocusSessionController::class, 'stop']);
         Route::put('/{id}/pause', [FocusSessionController::class, 'pause']);
         Route::put('/{id}/resume', [FocusSessionController::class, 'resume']);
+        Route::put('/{id}/notes', [FocusSessionController::class, 'updateNotes']);
         Route::get('/', [FocusSessionController::class, 'index']);
     });
 
@@ -186,6 +187,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/sessions', [StatsController::class, 'sessions']);
         Route::get('/trends', [StatsController::class, 'trends']);
         Route::get('/performance', [StatsController::class, 'performance']);
+        Route::get('/golden-time', [StatsController::class, 'goldenTime']);
     });
 
     // Daily Check-in routes
