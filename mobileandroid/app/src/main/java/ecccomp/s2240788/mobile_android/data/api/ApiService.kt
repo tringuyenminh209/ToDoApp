@@ -88,7 +88,7 @@ interface ApiService {
     suspend fun startFocusSession(@Body request: StartFocusSessionRequest): Response<ApiResponse<FocusSession>>
 
     @PUT("sessions/{id}/stop")
-    suspend fun stopFocusSession(@Path("id") sessionId: Int): Response<ApiResponse<FocusSession>>
+    suspend fun stopFocusSession(@Path("id") sessionId: Int, @Body request: StopFocusSessionRequest? = null): Response<ApiResponse<FocusSession>>
 
     @PUT("sessions/{id}/pause")
     suspend fun pauseFocusSession(@Path("id") sessionId: Int): Response<ApiResponse<FocusSession>>
@@ -182,6 +182,9 @@ interface ApiService {
     // Stats endpoints
     @GET("stats/dashboard")
     suspend fun getStatsDashboard(): Response<ApiResponse<StatsDashboard>>
+    
+    @GET("stats/golden-time")
+    suspend fun getGoldenTime(): Response<ApiResponse<GoldenTimeData>>
     
     @GET("stats/tasks")
     suspend fun getTasksStats(@Query("period") period: String? = null): Response<ApiResponse<TasksStats>>

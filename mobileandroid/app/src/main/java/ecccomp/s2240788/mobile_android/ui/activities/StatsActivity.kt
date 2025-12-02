@@ -67,12 +67,27 @@ class StatsActivity : BaseActivity() {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
+
+        viewModel.goldenTimeData.observe(this) { goldenTimeData ->
+            goldenTimeData?.let {
+                updateGoldenTimeHeatmap(it)
+            } ?: run {
+                android.util.Log.w("StatsActivity", "Golden time data is null")
+            }
+        }
     }
 
     /**
      * UI を更新
      */
     private fun updateUI(stats: ecccomp.s2240788.mobile_android.data.models.UserStats) {
+        android.util.Log.d("StatsActivity", "updateUI called with stats: " +
+            "total_tasks=${stats.total_tasks}, " +
+            "completed_tasks=${stats.completed_tasks}, " +
+            "completion_rate=${stats.completion_rate}, " +
+            "total_focus_time=${stats.total_focus_time}, " +
+            "weekly_focus_time=${stats.weekly_stats.focus_time}")
+
         // Streak Section (top card)
         binding.tvStreakValue.text = stats.current_streak.toString()
         binding.tvStreakRecord.text = getString(R.string.streak_record, stats.longest_streak)
@@ -80,11 +95,13 @@ class StatsActivity : BaseActivity() {
         // Stats Grid - Row 1
         // Today Focus - Get from monthly_productivity for today
         val todayFocusMinutes = getTodayFocusMinutes(stats)
+        android.util.Log.d("StatsActivity", "Today focus minutes: $todayFocusMinutes")
         binding.tvTodayFocus.text = formatFocusTimeValue(todayFocusMinutes)
         binding.tvTodayChange.text = getString(R.string.compared_to_yesterday, "-")
 
         // Week Focus
         val weekFocusMinutes = stats.weekly_stats.focus_time
+        android.util.Log.d("StatsActivity", "Week focus minutes: $weekFocusMinutes")
         binding.tvWeekFocus.text = formatFocusTimeValue(weekFocusMinutes)
         binding.tvWeekChange.text = getString(R.string.compared_to_last_week, "-")
 
@@ -178,27 +195,115 @@ class StatsActivity : BaseActivity() {
     }
 
     /**
-     * 過去7日間のデータを取得
+     * 今週（月曜〜日曜）の曜日別データを取得
+     * bar_1=T2(月), bar_2=T3(火), bar_3=T4(水), bar_4=T5(木), bar_5=T6(金), bar_6=T7(土), bar_7=CN(日)
      */
     private fun getLastSevenDaysData(stats: ecccomp.s2240788.mobile_android.data.models.UserStats): List<Int> {
         val calendar = java.util.Calendar.getInstance()
         val dateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
-        val last7Days = mutableListOf<Int>()
+        val weekData = mutableListOf<Int>()
 
-        // Get last 7 days starting from 6 days ago to today
-        for (i in 6 downTo 0) {
-            calendar.time = java.util.Date()
-            calendar.add(java.util.Calendar.DAY_OF_YEAR, -i)
+        android.util.Log.d("StatsActivity", "Getting this week data (Mon-Sun) from monthly_productivity")
+
+        // Set first day of week to Monday
+        calendar.firstDayOfWeek = java.util.Calendar.MONDAY
+        
+        // Get Monday of this week
+        calendar.time = java.util.Date()
+        val currentDayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK)
+        
+        // Calculate days to subtract to get to Monday
+        val daysFromMonday = when(currentDayOfWeek) {
+            java.util.Calendar.SUNDAY -> 6      // Sunday is 6 days after Monday
+            java.util.Calendar.MONDAY -> 0
+            java.util.Calendar.TUESDAY -> 1
+            java.util.Calendar.WEDNESDAY -> 2
+            java.util.Calendar.THURSDAY -> 3
+            java.util.Calendar.FRIDAY -> 4
+            java.util.Calendar.SATURDAY -> 5
+            else -> 0
+        }
+        
+        calendar.add(java.util.Calendar.DAY_OF_YEAR, -daysFromMonday)
+        android.util.Log.d("StatsActivity", "This week starts on: ${dateFormat.format(calendar.time)}")
+        
+        // Get data for Monday to Sunday (7 days)
+        for (i in 0 until 7) {
             val dateStr = dateFormat.format(calendar.time)
-
+            val dayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK)
+            
             val focusMinutes = stats.monthly_productivity
                 .firstOrNull { it.date == dateStr }
                 ?.focus_minutes ?: 0
 
-            last7Days.add(focusMinutes)
+            val dayName = when(dayOfWeek) {
+                java.util.Calendar.MONDAY -> "Mon(T2)"
+                java.util.Calendar.TUESDAY -> "Tue(T3)"
+                java.util.Calendar.WEDNESDAY -> "Wed(T4)"
+                java.util.Calendar.THURSDAY -> "Thu(T5)"
+                java.util.Calendar.FRIDAY -> "Fri(T6)"
+                java.util.Calendar.SATURDAY -> "Sat(T7)"
+                java.util.Calendar.SUNDAY -> "Sun(CN)"
+                else -> "Day$i"
+            }
+            
+            android.util.Log.d("StatsActivity", "$dayName ($dateStr): $focusMinutes minutes")
+            weekData.add(focusMinutes)
+            
+            // Move to next day
+            calendar.add(java.util.Calendar.DAY_OF_YEAR, 1)
         }
 
-        return last7Days
+        android.util.Log.d("StatsActivity", "This week data (Mon-Sun): $weekData")
+        return weekData
+    }
+
+    /**
+     * ゴールデンタイムヒートマップを更新
+     */
+    private fun updateGoldenTimeHeatmap(goldenTimeData: ecccomp.s2240788.mobile_android.data.models.GoldenTimeData) {
+        android.util.Log.d("StatsActivity", "Updating golden time heatmap: ${goldenTimeData.heatmap.size} rows x ${goldenTimeData.days} cols, max_minutes=${goldenTimeData.max_minutes}")
+
+        val heatmapContainer = binding.heatmapContainer
+        
+        // Get all row LinearLayouts (skip the header row at index 0)
+        val rows = mutableListOf<android.view.ViewGroup>()
+        for (i in 1 until heatmapContainer.childCount) {
+            val child = heatmapContainer.getChildAt(i)
+            if (child is android.view.ViewGroup) {
+                rows.add(child)
+            }
+        }
+
+        android.util.Log.d("StatsActivity", "Found ${rows.size} rows in heatmap container")
+
+        // Update each cell based on intensity
+        goldenTimeData.heatmap.forEachIndexed { rowIndex, rowData ->
+            if (rowIndex < rows.size) {
+                val row = rows[rowIndex]
+                rowData.forEachIndexed { colIndex, cellData ->
+                    if (colIndex < row.childCount) {
+                        val cell = row.getChildAt(colIndex) as? com.google.android.material.card.MaterialCardView
+                        cell?.let {
+                            // Set background color based on intensity
+                            val colorRes = when (cellData.intensity) {
+                                0 -> R.color.heatmap_level_0  // #E0E0E0 (no activity)
+                                1 -> R.color.heatmap_level_1  // #C8E6C9 (light)
+                                2 -> R.color.heatmap_level_2  // #81C784 (medium)
+                                3 -> R.color.heatmap_level_3  // #4CAF50 (heavy)
+                                4 -> R.color.heatmap_level_4  // #2E7D32 (very heavy)
+                                else -> R.color.heatmap_level_0
+                            }
+                            it.setCardBackgroundColor(androidx.core.content.ContextCompat.getColor(this, colorRes))
+                            
+                            if (cellData.minutes > 0) {
+                                android.util.Log.d("StatsActivity", "Cell[$rowIndex][$colIndex]: ${cellData.minutes}m, intensity=${cellData.intensity}")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
