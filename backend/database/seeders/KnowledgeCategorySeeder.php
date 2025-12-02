@@ -449,6 +449,16 @@ class KnowledgeCategorySeeder extends Seeder
                     ['user_id' => $userId, 'name' => 'コードスニペットライブラリ', 'color' => '#F39C12', 'sort_order' => 4],
                 ]
             ],
+
+            // 7. Note (フォーカスセッションのメモ)
+            [
+                'user_id' => $userId,
+                'name' => 'Note',
+                'description' => 'メモを保存',
+                'color' => '#0FA968',
+                'icon' => 'note',
+                'sort_order' => 7,
+            ],
         ];
     }
 }

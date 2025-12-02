@@ -1,6 +1,8 @@
 package ecccomp.s2240788.mobile_android.ui.activities
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -134,6 +136,20 @@ class FocusSessionActivity : BaseActivity() {
         binding.btnSkip.setOnClickListener {
             showGiveUpConfirmDialog()
         }
+
+        // メモのEditTextにTextWatcherを追加して、変更があるたびにViewModelに保存
+        binding.etNotes.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val notes = s?.toString()
+                if (!notes.isNullOrBlank()) {
+                    viewModel.setSessionNotes(notes)
+                } else {
+                    viewModel.setSessionNotes(null)
+                }
+            }
+        })
     }
 
     /**
@@ -166,41 +182,64 @@ class FocusSessionActivity : BaseActivity() {
         // Timer mode
         viewModel.timerMode.observe(this) { mode ->
             updateTimerModeUI(mode)
+            // 休憩モードに切り替わった時、タスク情報の表示を更新
+            updateTaskInfoForMode(mode)
+            
+            // 休憩モードに切り替わった時、メモ欄をクリア
+            if (mode == FocusSessionViewModel.TimerMode.SHORT_BREAK || 
+                mode == FocusSessionViewModel.TimerMode.LONG_BREAK) {
+                binding.etNotes.setText("")
+            }
         }
 
         // Current task
         viewModel.currentTask.observe(this) { task ->
-            task?.let {
-                binding.tvCurrentTask.text = it.title
-
-                // Display estimated time (ViewModel already set the timer duration correctly)
-                val estimatedMinutes = it.estimated_minutes ?: 25
-                binding.tvEstimatedTime.text = "⏱ $estimatedMinutes ${getString(R.string.minutes_unit)}"
-
-                // DO NOT call setTimerDuration() here - ViewModel already set it correctly in loadTask/loadTaskWithSubtask
-                // Calling it here would override the correct subtask time with the modified task's time
-
-                // Calculate target pomodoros (1 pomodoro = 25 min)
-                val targetPomodoros = (estimatedMinutes + 24) / 25  // Round up
-                binding.tvFocusCount.text = getString(R.string.pomodoro_count_format, viewModel.getPomodoroCount(), targetPomodoros)
-
-                // Update timer mode text based on category
-                val categoryText = when (it.category?.lowercase()) {
-                    "study" -> getString(R.string.category_study)
-                    "work" -> getString(R.string.category_work)
-                    "personal" -> getString(R.string.category_personal)
-                    "other" -> getString(R.string.category_other)
-                    else -> getString(R.string.timer_mode_work) // Default to "Working"
+            // 休憩モードの場合はタスク情報を非表示または休憩メッセージを表示
+            val timerMode = viewModel.timerMode.value
+            if (timerMode == FocusSessionViewModel.TimerMode.SHORT_BREAK || 
+                timerMode == FocusSessionViewModel.TimerMode.LONG_BREAK) {
+                // 休憩モード：タスク情報を非表示または休憩メッセージを表示
+                binding.tvCurrentTask.text = when (timerMode) {
+                    FocusSessionViewModel.TimerMode.SHORT_BREAK -> getString(R.string.timer_mode_short_break)
+                    FocusSessionViewModel.TimerMode.LONG_BREAK -> getString(R.string.timer_mode_long_break)
+                    else -> ""
                 }
-                binding.tvTimerMode.text = categoryText
+                binding.tvEstimatedTime.text = ""
+                binding.tvFocusCount.text = ""
+            } else {
+                // 作業モード：タスク情報を表示
+                task?.let {
+                    binding.tvCurrentTask.text = it.title
 
-                // CRITICAL: Update deep work mode UI immediately when task loads
-                // This ensures UI is updated even if isDeepWorkMode observer hasn't fired yet
-                val isDeepWork = it.requires_deep_focus
-                android.util.Log.d("FocusSessionActivity", "Task loaded - requires_deep_focus: $isDeepWork, allow_interruptions: ${it.allow_interruptions}, focus_difficulty: ${it.focus_difficulty}")
+                    // Display estimated time (ViewModel already set the timer duration correctly)
+                    val estimatedMinutes = it.estimated_minutes ?: 25
+                    binding.tvEstimatedTime.text = "⏱ $estimatedMinutes ${getString(R.string.minutes_unit)}"
 
-                // Always update UI based on task's requires_deep_focus value
-                updateDeepWorkModeUI(isDeepWork)
+                    // DO NOT call setTimerDuration() here - ViewModel already set it correctly in loadTask/loadTaskWithSubtask
+                    // Calling it here would override the correct subtask time with the modified task's time
+
+                    // Calculate target pomodoros (1 pomodoro = 25 min)
+                    val targetPomodoros = (estimatedMinutes + 24) / 25  // Round up
+                    binding.tvFocusCount.text = getString(R.string.pomodoro_count_format, viewModel.getPomodoroCount(), targetPomodoros)
+
+                    // Update timer mode text based on category
+                    val categoryText = when (it.category?.lowercase()) {
+                        "study" -> getString(R.string.category_study)
+                        "work" -> getString(R.string.category_work)
+                        "personal" -> getString(R.string.category_personal)
+                        "other" -> getString(R.string.category_other)
+                        else -> getString(R.string.timer_mode_work) // Default to "Working"
+                    }
+                    binding.tvTimerMode.text = categoryText
+
+                    // CRITICAL: Update deep work mode UI immediately when task loads
+                    // This ensures UI is updated even if isDeepWorkMode observer hasn't fired yet
+                    val isDeepWork = it.requires_deep_focus
+                    android.util.Log.d("FocusSessionActivity", "Task loaded - requires_deep_focus: $isDeepWork, allow_interruptions: ${it.allow_interruptions}, focus_difficulty: ${it.focus_difficulty}")
+
+                    // Always update UI based on task's requires_deep_focus value
+                    updateDeepWorkModeUI(isDeepWork)
+                }
             }
         }
 
@@ -219,11 +258,15 @@ class FocusSessionActivity : BaseActivity() {
                 // Play sound, show notification, etc.
                 Toast.makeText(this, getString(R.string.session_completed), Toast.LENGTH_LONG).show()
 
-                // Save notes if user entered any
-                val notes = binding.etNotes.text?.toString()
-                if (!notes.isNullOrBlank()) {
-                    viewModel.saveFocusSessionWithNotes(notes)
+                // タスクのステータスを確認して、完了していない場合はダイアログを表示
+                viewModel.currentTask.value?.let { task ->
+                    if (task.status != "completed") {
+                        showTaskCompleteDialog()
+                    }
                 }
+
+                // メモは既にTextWatcherでViewModelに設定されているため、ここでは何もしない
+                // stopFocusSession()で既にメモが保存されている
 
                 viewModel.clearSessionCompleted()
             }
@@ -302,9 +345,28 @@ class FocusSessionActivity : BaseActivity() {
             .setTitle("タスクを諦めますか？")
             .setMessage("タイマーを途中でやめると、このタスクは未完了として記録されます。")
             .setPositiveButton("諦める") { _, _ ->
+                // セッションを停止してから終了
                 viewModel.pauseTimer()
+                // セッションを停止（メモなし）
+                viewModel.stopFocusSessionForAbandon()
                 Toast.makeText(this, "タスクを中断しました", Toast.LENGTH_SHORT).show()
                 finish()
+            }
+            .setNegativeButton("続ける", null)
+            .show()
+    }
+
+    /**
+     * Task completion confirmation dialog
+     */
+    private fun showTaskCompleteDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("タスクを完了しますか？")
+            .setMessage("セッションは終了しましたが、タスクはまだ完了していません。タスクを完了としてマークしますか？")
+            .setPositiveButton("完了") { _, _ ->
+                // タスクを完了にマーク
+                viewModel.completeTaskManually()
+                Toast.makeText(this, "タスクを完了しました！", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("続ける", null)
             .show()
@@ -386,6 +448,33 @@ class FocusSessionActivity : BaseActivity() {
             binding.taskInfoCard.strokeWidth = 1
             
             // Reset timer mode badge (will be updated by updateTimerModeUI)
+        }
+    }
+
+    /**
+     * モードに応じてタスク情報の表示を更新
+     */
+    private fun updateTaskInfoForMode(mode: FocusSessionViewModel.TimerMode) {
+        val task = viewModel.currentTask.value
+        if (mode == FocusSessionViewModel.TimerMode.SHORT_BREAK || 
+            mode == FocusSessionViewModel.TimerMode.LONG_BREAK) {
+            // 休憩モード：タスク情報を非表示または休憩メッセージを表示
+            binding.tvCurrentTask.text = when (mode) {
+                FocusSessionViewModel.TimerMode.SHORT_BREAK -> getString(R.string.timer_mode_short_break)
+                FocusSessionViewModel.TimerMode.LONG_BREAK -> getString(R.string.timer_mode_long_break)
+                else -> ""
+            }
+            binding.tvEstimatedTime.text = ""
+            binding.tvFocusCount.text = ""
+        } else {
+            // 作業モード：タスク情報を表示
+            task?.let {
+                binding.tvCurrentTask.text = it.title
+                val estimatedMinutes = it.estimated_minutes ?: 25
+                binding.tvEstimatedTime.text = "⏱ $estimatedMinutes ${getString(R.string.minutes_unit)}"
+                val targetPomodoros = (estimatedMinutes + 24) / 25
+                binding.tvFocusCount.text = getString(R.string.pomodoro_count_format, viewModel.getPomodoroCount(), targetPomodoros)
+            }
         }
     }
 
