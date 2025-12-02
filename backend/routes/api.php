@@ -120,6 +120,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}/stop', [FocusSessionController::class, 'stop']);
         Route::put('/{id}/pause', [FocusSessionController::class, 'pause']);
         Route::put('/{id}/resume', [FocusSessionController::class, 'resume']);
+        Route::put('/{id}/notes', [FocusSessionController::class, 'updateNotes']);
         Route::get('/', [FocusSessionController::class, 'index']);
     });
 

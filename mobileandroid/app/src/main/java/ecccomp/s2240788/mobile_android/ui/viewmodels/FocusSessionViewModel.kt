@@ -9,6 +9,7 @@ import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.Task
 import ecccomp.s2240788.mobile_android.data.models.Subtask
 import ecccomp.s2240788.mobile_android.data.models.KnowledgeItem
+import ecccomp.s2240788.mobile_android.data.models.StopFocusSessionRequest
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import kotlinx.coroutines.launch
 
@@ -84,6 +85,8 @@ class FocusSessionViewModel : ViewModel() {
     private var sessionStartTimeMillis: Long = 0
     private var pomodoroCount: Int = 0
     private var lastTickTimeMillis: Long = 0
+    private var currentSessionId: Int? = null // 現在のセッションIDを保存
+    private var sessionNotes: String? = null // セッション後のメモを保存
 
     enum class TimerMode {
         WORK, SHORT_BREAK, LONG_BREAK
@@ -263,6 +266,11 @@ class FocusSessionViewModel : ViewModel() {
         lastTickTimeMillis = sessionStartTimeMillis
         _isTimerRunning.value = true
 
+        // セッションを開始（workモードの場合のみ）
+        if (_timerMode.value == TimerMode.WORK) {
+            startFocusSession()
+        }
+
         countDownTimer = object : CountDownTimer(timeRemainingMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val currentTime = System.currentTimeMillis()
@@ -296,6 +304,48 @@ class FocusSessionViewModel : ViewModel() {
     }
 
     /**
+     * タスクを諦めた時にセッションを停止（公開メソッド）
+     */
+    fun stopFocusSessionForAbandon() {
+        stopFocusSession(null)
+    }
+
+    /**
+     * タスクを完了してセッションを停止（公開メソッド）
+     */
+    fun stopFocusSessionAndCompleteTask(notes: String? = null) {
+        stopFocusSession(notes, forceCompleteTask = true)
+    }
+
+    /**
+     * タスクを手動で完了にマーク（公開メソッド）
+     */
+    fun completeTaskManually() {
+        viewModelScope.launch {
+            try {
+                val taskId = _currentTask.value?.id ?: return@launch
+                android.util.Log.d("FocusSessionViewModel", "completeTaskManually called: taskId=$taskId")
+                
+                val response = apiService.completeTask(taskId)
+                if (response.isSuccessful && response.body()?.success == true) {
+                    val completedTask = response.body()?.data
+                    if (completedTask != null) {
+                        _currentTask.value = completedTask
+                        android.util.Log.d("FocusSessionViewModel", "タスクを完了しました: taskId=$taskId")
+                        _toast.value = "タスクが完了しました！"
+                    }
+                } else {
+                    android.util.Log.e("FocusSessionViewModel", "タスク完了エラー: ${response.body()?.message}")
+                    _toast.value = "タスク完了に失敗しました"
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("FocusSessionViewModel", "タスク完了エラー", e)
+                _toast.value = "タスク完了に失敗しました"
+            }
+        }
+    }
+
+    /**
      * タイマーをリセット
      */
     fun resetTimer() {
@@ -307,6 +357,8 @@ class FocusSessionViewModel : ViewModel() {
         subtaskElapsedSeconds.clear()
         autoCompletedSubtaskIds.clear()
         _subtaskElapsedMinutes.value = emptyMap()
+        // セッションIDもクリア
+        currentSessionId = null
         updateTimerDisplay(timeRemainingMillis)
         updateProgress()
     }
@@ -334,15 +386,33 @@ class FocusSessionViewModel : ViewModel() {
     }
 
     /**
+     * セッション後のメモを設定（タイマー完了前に呼び出す）
+     */
+    fun setSessionNotes(notes: String?) {
+        val oldNotes = sessionNotes
+        sessionNotes = notes?.takeIf { it.isNotBlank() }
+        android.util.Log.d("FocusSessionViewModel", "setSessionNotes called: oldNotes=${oldNotes?.take(20)}, newNotes=${sessionNotes?.take(20)}, isTimerRunning=${_isTimerRunning.value}")
+    }
+
+    /**
      * タイマー完了時の処理
      */
     private fun onTimerComplete() {
         _isTimerRunning.value = false
         
+        android.util.Log.d("FocusSessionViewModel", "onTimerComplete called, timerMode=${_timerMode.value}")
+        
         when (_timerMode.value) {
             TimerMode.WORK -> {
                 pomodoroCount++
-                saveFocusSession()
+                
+                android.util.Log.d("FocusSessionViewModel", "WORK mode completed - sessionNotes: isNull=${sessionNotes == null}, content=${sessionNotes?.take(50)}")
+                
+                // セッションを終了（タスク完了チェックが実行される、メモも保存）
+                stopFocusSession(sessionNotes)
+                
+                // メモをクリア
+                sessionNotes = null
 
                 // Auto-complete subtask if focusing on specific subtask
                 completeCurrentSubtask()
@@ -380,75 +450,175 @@ class FocusSessionViewModel : ViewModel() {
     private fun switchToBreakMode(mode: TimerMode, minutes: Int) {
         _timerMode.value = mode
         setTimerDuration(minutes)
+        
+        // 休憩モードに切り替わる時、メモをクリア
+        sessionNotes = null
+        
+        // 休憩モードではタスク情報をクリアしない（前のタスク情報を保持）
+        // ただし、UIで休憩モードであることを明確に表示する
+        // タスク情報は保持するが、休憩中であることを示す
     }
 
     /**
-     * Focus Session をAPIに保存
+     * Focus Session を開始
      */
-    private fun saveFocusSession() {
+    private fun startFocusSession() {
         val task = _currentTask.value ?: return
-        val durationMinutes = ((totalTimeMillis - timeRemainingMillis) / 1000 / 60).toInt()
+        val durationMinutes = (totalTimeMillis / 1000 / 60).toInt()
+
+        android.util.Log.d("FocusSessionViewModel", "startFocusSession - totalTimeMillis: $totalTimeMillis, durationMinutes: $durationMinutes, taskId: ${task.id}")
+
+        // duration_minutesは最低1分必要
+        if (durationMinutes < 1) {
+            android.util.Log.e("FocusSessionViewModel", "セッション開始失敗: duration_minutes ($durationMinutes) は1分以上必要です")
+            return
+        }
 
         viewModelScope.launch {
             try {
-                val sessionType = when (_timerMode.value) {
-                    TimerMode.WORK -> "work"
-                    TimerMode.SHORT_BREAK -> "break"
-                    TimerMode.LONG_BREAK -> "long_break"
-                    else -> "work"
-                }
-
                 val request = ecccomp.s2240788.mobile_android.data.models.StartFocusSessionRequest(
                     task_id = task.id,
                     duration_minutes = durationMinutes,
-                    session_type = sessionType
+                    session_type = "work"
                 )
+                android.util.Log.d("FocusSessionViewModel", "Sending startFocusSession request: taskId=${request.task_id}, duration=${request.duration_minutes}, type=${request.session_type}")
                 val response = apiService.startFocusSession(request)
 
                 if (response.isSuccessful && response.body()?.success == true) {
-                    val totalMinutes = pomodoroCount * 25 // Each pomodoro is 25 minutes
-                    _toast.value = "Focus Session を保存しました (${totalMinutes}分)"
+                    val session = response.body()?.data
+                    currentSessionId = session?.id
+                    android.util.Log.d("FocusSessionViewModel", "セッション開始: sessionId=$currentSessionId")
                 } else {
-                    _toast.value = "保存に失敗しました: ${response.body()?.message}"
+                    android.util.Log.e("FocusSessionViewModel", "セッション開始失敗: ${response.body()?.message}")
                 }
             } catch (e: Exception) {
-                _toast.value = "保存に失敗しました: ${e.message}"
+                android.util.Log.e("FocusSessionViewModel", "セッション開始エラー", e)
+            }
+        }
+    }
+
+    /**
+     * Focus Session を終了（タスク完了チェックが実行される）
+     * @param notes セッション後のメモ（オプション）
+     * @param forceCompleteTask タスクを強制的に完了にする（オプション）
+     */
+    private fun stopFocusSession(notes: String? = null, forceCompleteTask: Boolean = false) {
+        viewModelScope.launch {
+            try {
+                // currentSessionIdがnullの場合、アクティブなセッションを検索
+                var sessionId = currentSessionId
+                if (sessionId == null) {
+                    android.util.Log.d("FocusSessionViewModel", "currentSessionId is null, searching for active session")
+                    val currentSessionResponse = apiService.getCurrentSession()
+                    if (currentSessionResponse.isSuccessful && currentSessionResponse.body()?.success == true) {
+                        sessionId = currentSessionResponse.body()?.data?.id
+                        currentSessionId = sessionId
+                        android.util.Log.d("FocusSessionViewModel", "Found active session: sessionId=$sessionId")
+                    } else {
+                        android.util.Log.w("FocusSessionViewModel", "No active session found, cannot stop")
+                        return@launch
+                    }
+                }
+
+                android.util.Log.d("FocusSessionViewModel", "stopFocusSession called: sessionId=$sessionId, notes=${notes?.take(50)}..., forceCompleteTask=$forceCompleteTask")
+                android.util.Log.d("FocusSessionViewModel", "notes details: isNull=${notes == null}, isBlank=${notes?.isBlank()}, length=${notes?.length}")
+                
+                val request = StopFocusSessionRequest(
+                    notes = notes?.takeIf { it.isNotBlank() },
+                    force_complete_task = if (forceCompleteTask) true else null
+                )
+                android.util.Log.d("FocusSessionViewModel", "Request created - notes: ${request.notes}, notes_length: ${request.notes?.length}, force_complete_task: ${request.force_complete_task}")
+                
+                val response = apiService.stopFocusSession(sessionId!!, request)
+                android.util.Log.d("FocusSessionViewModel", "API response received: success=${response.isSuccessful}, code=${response.code()}")
+
+                if (response.isSuccessful && response.body()?.success == true) {
+                    android.util.Log.d("FocusSessionViewModel", "セッション終了: sessionId=$sessionId")
+                    
+                    // セッション終了レスポンスからタスク完了情報を取得
+                    // バックエンドはApiResponseの直下にtask_completedを返すため、レスポンス全体をMapとして解析
+                    val taskCompleted = try {
+                        // Retrofitのレスポンスから直接Mapとして取得
+                        val responseBody = response.body()
+                        val gson = com.google.gson.Gson()
+                        val json = gson.toJson(responseBody)
+                        val map: Map<*, *> = gson.fromJson(json, Map::class.java)
+                        (map["task_completed"] as? Boolean) ?: false
+                    } catch (e: Exception) {
+                        android.util.Log.w("FocusSessionViewModel", "task_completed取得失敗: ${e.message}")
+                        false
+                    }
+                    
+                    // タスクをリロードして最新の状態を取得（ステータス更新を確認）
+                    val taskId = _currentTask.value?.id
+                    if (taskId != null) {
+                        // 少し待ってからタスクをリロード（バックエンドの処理完了を待つ）
+                        kotlinx.coroutines.delay(500)
+                        
+                        val taskResponse = apiService.getTask(taskId)
+                        if (taskResponse.isSuccessful && taskResponse.body()?.success == true) {
+                            val updatedTask = taskResponse.body()?.data
+                            if (updatedTask != null) {
+                                // ステータスに関係なく、常に最新のタスク情報を更新
+                                val oldStatus = _currentTask.value?.status
+                                val newStatus = updatedTask.status
+                                
+                                android.util.Log.d("FocusSessionViewModel", 
+                                    "タスクステータス更新: taskId=$taskId, oldStatus=$oldStatus, newStatus=$newStatus, taskCompleted=$taskCompleted")
+                                
+                                _currentTask.value = updatedTask
+                                
+                                // タスクが完了した場合、トーストを表示
+                                if (newStatus == "completed" && oldStatus != "completed") {
+                                    _toast.value = "タスクが完了しました！"
+                                    android.util.Log.d("FocusSessionViewModel", "タスク完了: taskId=$taskId")
+                                } else if (taskCompleted && newStatus != "completed") {
+                                    // バックエンドで完了とマークされたが、まだステータスが更新されていない場合
+                                    android.util.Log.w("FocusSessionViewModel", 
+                                        "タスク完了とマークされたが、ステータスが更新されていません: taskId=$taskId, status=$newStatus")
+                                    // 再度リロードを試みる
+                                    kotlinx.coroutines.delay(1000)
+                                    val retryResponse = apiService.getTask(taskId)
+                                    if (retryResponse.isSuccessful && retryResponse.body()?.success == true) {
+                                        val retryTask = retryResponse.body()?.data
+                                        if (retryTask != null && retryTask.status == "completed") {
+                                            _currentTask.value = retryTask
+                                            _toast.value = "タスクが完了しました！"
+                                        }
+                                    }
+                                } else if (newStatus == "in_progress" && oldStatus != "in_progress") {
+                                    android.util.Log.d("FocusSessionViewModel", "タスクが進行中に戻りました: taskId=$taskId")
+                                } else {
+                                    android.util.Log.d("FocusSessionViewModel", 
+                                        "タスクステータス変更なしまたは予期しない変更: oldStatus=$oldStatus, newStatus=$newStatus")
+                                }
+                            }
+                        } else {
+                            android.util.Log.e("FocusSessionViewModel", 
+                                "タスク取得失敗: ${taskResponse.body()?.message}")
+                        }
+                    } else {
+                        android.util.Log.w("FocusSessionViewModel", "taskId is null, cannot reload task")
+                    }
+                    
+                    currentSessionId = null
+                } else {
+                    android.util.Log.e("FocusSessionViewModel", "セッション終了失敗: ${response.body()?.message}")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("FocusSessionViewModel", "セッション終了エラー", e)
             }
         }
     }
     
     /**
-     * メモ付きでFocus Session を保存
+     * メモ付きでFocus Session を保存（非推奨：setSessionNotesを使用してください）
+     * このメソッドは後方互換性のために残していますが、メモはstopFocusSessionで保存されます
      */
     fun saveFocusSessionWithNotes(notes: String?) {
-        val task = _currentTask.value ?: return
-        val durationMinutes = ((totalTimeMillis - timeRemainingMillis) / 1000 / 60).toInt()
-
-        viewModelScope.launch {
-            try {
-                val sessionType = when (_timerMode.value) {
-                    TimerMode.WORK -> "work"
-                    TimerMode.SHORT_BREAK -> "break"
-                    TimerMode.LONG_BREAK -> "long_break"
-                    else -> "work"
-                }
-
-                val request = ecccomp.s2240788.mobile_android.data.models.StartFocusSessionRequest(
-                    task_id = task.id,
-                    duration_minutes = durationMinutes,
-                    session_type = sessionType
-                )
-                val response = apiService.startFocusSession(request)
-
-                if (response.isSuccessful && response.body()?.success == true) {
-                    _toast.value = "Focus Session を保存しました"
-                } else {
-                    _toast.value = "保存に失敗しました: ${response.body()?.message}"
-                }
-            } catch (e: Exception) {
-                _toast.value = "保存に失敗しました: ${e.message}"
-            }
-        }
+        // メモを設定（タイマー完了時にstopFocusSessionで保存される）
+        setSessionNotes(notes)
+        _toast.value = "メモはセッション終了時に保存されます"
     }
 
     /**

@@ -88,7 +88,7 @@ interface ApiService {
     suspend fun startFocusSession(@Body request: StartFocusSessionRequest): Response<ApiResponse<FocusSession>>
 
     @PUT("sessions/{id}/stop")
-    suspend fun stopFocusSession(@Path("id") sessionId: Int): Response<ApiResponse<FocusSession>>
+    suspend fun stopFocusSession(@Path("id") sessionId: Int, @Body request: StopFocusSessionRequest? = null): Response<ApiResponse<FocusSession>>
 
     @PUT("sessions/{id}/pause")
     suspend fun pauseFocusSession(@Path("id") sessionId: Int): Response<ApiResponse<FocusSession>>

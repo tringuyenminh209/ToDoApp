@@ -111,6 +111,11 @@ data class StartFocusSessionRequest(
     val session_type: String // "work", "break", "long_break"
 )
 
+data class StopFocusSessionRequest(
+    val notes: String? = null,
+    val force_complete_task: Boolean? = null
+)
+
 data class FocusSession(
     val id: Int,
     val task_id: Int,
