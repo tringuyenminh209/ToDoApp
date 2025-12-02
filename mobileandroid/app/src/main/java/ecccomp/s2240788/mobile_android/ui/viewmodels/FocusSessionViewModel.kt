@@ -160,8 +160,8 @@ class FocusSessionViewModel : ViewModel() {
                         setTimerDuration(timerMinutes)
 
                         // Load knowledge items for task and all subtasks
-                        // Pass subtasks and learning_path_id directly to avoid race condition with LiveData
-                        loadKnowledgeItemsInternal(taskId, subtasks, task.learning_path_id)
+                        // タスク固有の知識のみを表示するため、learning_path_idは使用しない
+                        loadKnowledgeItemsInternal(taskId, subtasks, null)
                     } else {
                         _toast.value = "タスクが見つかりません"
                     }
@@ -236,8 +236,8 @@ class FocusSessionViewModel : ViewModel() {
                             setTimerDuration(subtaskTime)
 
                             // Load knowledge items for task and all subtasks
-                            // Pass subtasks and learning_path_id directly to avoid race condition with LiveData
-                            loadKnowledgeItemsInternal(taskId, subtasks, task.learning_path_id)
+                            // タスク固有の知識のみを表示するため、learning_path_idは使用しない
+                            loadKnowledgeItemsInternal(taskId, subtasks, null)
                         } else {
                             android.util.Log.e("FocusSessionViewModel",
                                 "Subtask not found: subtaskId=$subtaskId in task $taskId with ${subtasks?.size ?: 0} subtasks")
@@ -826,7 +826,8 @@ class FocusSessionViewModel : ViewModel() {
                             "Public loadKnowledgeItems: taskId=$taskId, subtasks=${subtasks.size}")
 
                         // Load knowledge with all subtasks
-                        loadKnowledgeItemsInternal(taskId, subtasks, task.learning_path_id)
+                        // タスク固有の知識のみを表示するため、learning_path_idは使用しない
+                        loadKnowledgeItemsInternal(taskId, subtasks, null)
                     } else {
                         // Fallback: try without subtasks
                         loadKnowledgeItemsInternal(taskId, null, null)
@@ -846,9 +847,10 @@ class FocusSessionViewModel : ViewModel() {
 
     /**
      * Internal method to load knowledge items (can be called within other suspend functions)
+     * タスク固有の知識アイテムのみを取得（学習パス全体の知識は含めない）
      * @param taskId The task ID
      * @param subtasks List of subtasks (optional, will use _subtasks.value if null)
-     * @param learningPathId Learning path ID (optional, will use _currentTask.value?.learning_path_id if null)
+     * @param learningPathId Learning path ID (deprecated - タスク固有の知識のみを表示するため使用しない)
      */
     private suspend fun loadKnowledgeItemsInternal(taskId: Int, subtasks: List<Subtask>? = null, learningPathId: Int? = null) {
         try {
@@ -860,12 +862,10 @@ class FocusSessionViewModel : ViewModel() {
             val subtaskIds = currentSubtasks.map { it.id }
             val filterTaskIds = listOf(taskId) + subtaskIds
 
-            // Use provided learning_path_id or fallback to current task's learning_path_id
-            val finalLearningPathId = learningPathId ?: _currentTask.value?.learning_path_id
-
-            android.util.Log.d("FocusSessionViewModel", "Loading knowledge items for taskId=$taskId, learningPathId=$finalLearningPathId, subtaskIds=$subtaskIds (${currentSubtasks.size} subtasks)")
+            android.util.Log.d("FocusSessionViewModel", "Loading knowledge items for taskId=$taskId, subtaskIds=$subtaskIds (${currentSubtasks.size} subtasks)")
 
             // Load knowledge items with filters applied on server side
+            // タスク固有の知識のみを表示するため、sourceTaskIdのみを使用（learningPathIdは送信しない）
             val response = apiService.getKnowledgeItems(
                 categoryId = null,
                 itemType = null,
@@ -873,8 +873,8 @@ class FocusSessionViewModel : ViewModel() {
                 isArchived = false,  // Only non-archived items
                 search = null,
                 tags = null,
-                sourceTaskId = filterTaskIds,  // Filter by task and subtask IDs
-                learningPathId = finalLearningPathId,  // Filter by learning path ID
+                sourceTaskId = filterTaskIds,  // Filter by task and subtask IDs only
+                learningPathId = null,  // タスク固有の知識のみを表示するため、learningPathIdは送信しない
                 perPage = 1000  // Load all items
             )
 
