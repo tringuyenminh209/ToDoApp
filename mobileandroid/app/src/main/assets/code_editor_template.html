@@ -262,11 +262,48 @@
             updateTimeout = setTimeout(updateHighlighting, 100);
         });
 
-        // Prevent tab from losing focus
+        // Insert text at cursor position
+        function insertTextAtCursor(text) {
+            const selection = window.getSelection();
+            if (selection.rangeCount === 0) {
+                // No selection, append to end
+                const textNode = document.createTextNode(text);
+                editor.appendChild(textNode);
+                // Move cursor to end
+                const range = document.createRange();
+                range.selectNodeContents(editor);
+                range.collapse(false);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                return;
+            }
+
+            const range = selection.getRangeAt(0);
+            range.deleteContents();
+            
+            // Insert text node
+            const textNode = document.createTextNode(text);
+            range.insertNode(textNode);
+            
+            // Move cursor after inserted text
+            range.setStartAfter(textNode);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        // Prevent tab from losing focus and handle Enter key for new lines
         editor.addEventListener('keydown', function(e) {
             if (e.key === 'Tab') {
                 e.preventDefault();
-                document.execCommand('insertText', false, '    ');
+                insertTextAtCursor('    ');
+                // Trigger input event đểhighlighting được cập nhật
+                editor.dispatchEvent(new Event('input', { bubbles: true }));
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                insertTextAtCursor('\n');
+                // Trigger input event đểhighlighting được cập nhật
+                editor.dispatchEvent(new Event('input', { bubbles: true }));
             }
         });
 
