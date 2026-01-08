@@ -161,6 +161,7 @@ class FocusSessionViewModel : ViewModel() {
 
                         // Load knowledge items for task and all subtasks
                         // タスク固有の知識のみを表示するため、learning_path_idは使用しない
+                        // 確実にロードされるように、awaitで待つ
                         loadKnowledgeItemsInternal(taskId, subtasks, null)
                     } else {
                         _toast.value = "タスクが見つかりません"
@@ -237,6 +238,7 @@ class FocusSessionViewModel : ViewModel() {
 
                             // Load knowledge items for task and all subtasks
                             // タスク固有の知識のみを表示するため、learning_path_idは使用しない
+                            // 確実にロードされるように、awaitで待つ
                             loadKnowledgeItemsInternal(taskId, subtasks, null)
                         } else {
                             android.util.Log.e("FocusSessionViewModel",
@@ -853,8 +855,15 @@ class FocusSessionViewModel : ViewModel() {
      * @param learningPathId Learning path ID (deprecated - タスク固有の知識のみを表示するため使用しない)
      */
     private suspend fun loadKnowledgeItemsInternal(taskId: Int, subtasks: List<Subtask>? = null, learningPathId: Int? = null) {
+        // 変数を関数スコープで定義（try/catch/finallyで使用するため）
+        var taskItems = emptyList<KnowledgeItem>()
+        
         try {
+            // ローディング状態を設定（UIがローディング中であることを示す）
             _isLoadingKnowledge.value = true
+            
+            // 初期状態として空のリストを設定（以前のデータをクリア）
+            _knowledgeItems.postValue(emptyList())
 
             // Get IDs to filter: task ID + all subtask IDs
             // Use provided subtasks or fallback to LiveData value
@@ -866,43 +875,105 @@ class FocusSessionViewModel : ViewModel() {
 
             // Load knowledge items with filters applied on server side
             // タスク固有の知識のみを表示するため、sourceTaskIdのみを使用（learningPathIdは送信しない）
-            val response = apiService.getKnowledgeItems(
-                categoryId = null,
-                itemType = null,
-                isFavorite = null,
-                isArchived = false,  // Only non-archived items
-                search = null,
-                tags = null,
-                sourceTaskId = filterTaskIds,  // Filter by task and subtask IDs only
-                learningPathId = null,  // タスク固有の知識のみを表示するため、learningPathIdは送信しない
-                perPage = 1000  // Load all items
-            )
+            // リトライメカニズムを追加して、高速なデバイスでも確実にロードされるようにする
+            var retryCount = 0
+            val maxRetries = 3
+            
+            while (retryCount < maxRetries) {
+                try {
+                    val response = apiService.getKnowledgeItems(
+                        categoryId = null,
+                        itemType = null,
+                        isFavorite = null,
+                        isArchived = false,  // Only non-archived items
+                        search = null,
+                        tags = null,
+                        sourceTaskId = filterTaskIds,  // Filter by task and subtask IDs only
+                        learningPathId = null,  // タスク固有の知識のみを表示するため、learningPathIdは送信しない
+                        perPage = 1000  // Load all items
+                    )
 
-            if (response.isSuccessful) {
-                val apiResponse = response.body()
-                val taskItems = if (apiResponse?.success == true) {
-                    parseItemsFromResponse(apiResponse.data)
-                } else {
-                    emptyList()
+                    if (response.isSuccessful) {
+                        val apiResponse = response.body()
+                        
+                        // デバッグ用ログ：レスポンス構造を確認
+                        android.util.Log.d("FocusSessionViewModel", "API response received: success=${apiResponse?.success}, data type=${apiResponse?.data?.javaClass?.simpleName}")
+                        
+                        if (apiResponse?.success == true) {
+                            // データの構造をログに出力
+                            val responseData = apiResponse.data
+                            when (responseData) {
+                                is List<*> -> {
+                                    android.util.Log.d("FocusSessionViewModel", "Data is List with ${responseData.size} items")
+                                    if (responseData.isNotEmpty()) {
+                                        android.util.Log.d("FocusSessionViewModel", "First item type: ${responseData[0]?.javaClass?.simpleName}")
+                                    }
+                                }
+                                is Map<*, *> -> {
+                                    android.util.Log.d("FocusSessionViewModel", "Data is Map with keys: ${responseData.keys}")
+                                }
+                                else -> {
+                                    android.util.Log.w("FocusSessionViewModel", "Data is unexpected type: ${responseData?.javaClass?.simpleName}")
+                                }
+                            }
+                            
+                            taskItems = parseItemsFromResponse(responseData)
+                            
+                            android.util.Log.d("FocusSessionViewModel", "Parsed ${taskItems.size} knowledge items (attempt ${retryCount + 1})")
+                            
+                            // Log sample items for debugging
+                            if (taskItems.isNotEmpty()) {
+                                android.util.Log.d("FocusSessionViewModel", "Sample item: source_task_id=${taskItems[0].source_task_id}, learning_path_id=${taskItems[0].learning_path_id}, title=${taskItems[0].title}")
+                            } else {
+                                android.util.Log.w("FocusSessionViewModel", "No items parsed from response. Data type: ${responseData?.javaClass?.simpleName}, Data: $responseData")
+                            }
+                        } else {
+                            android.util.Log.w("FocusSessionViewModel", "API response success=false, message=${apiResponse?.message}")
+                            taskItems = emptyList()
+                        }
+
+                        // 成功したらループを抜ける（空のリストでも成功とみなす）
+                        break
+                    } else {
+                        android.util.Log.w("FocusSessionViewModel", "API response not successful: ${response.code()}, attempt ${retryCount + 1}")
+                        if (retryCount < maxRetries - 1) {
+                            // リトライ前に少し待つ
+                            kotlinx.coroutines.delay(200 * (retryCount + 1).toLong())
+                        }
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("FocusSessionViewModel", "Error loading knowledge items (attempt ${retryCount + 1}): ${e.message}", e)
+                    if (retryCount < maxRetries - 1) {
+                        // リトライ前に少し待つ
+                        kotlinx.coroutines.delay(200 * (retryCount + 1).toLong())
+                    }
                 }
+                
+                retryCount++
+            }
 
-                android.util.Log.d("FocusSessionViewModel", "Found ${taskItems.size} knowledge items")
-
-                // Log sample items for debugging
-                if (taskItems.isNotEmpty()) {
-                    android.util.Log.d("FocusSessionViewModel", "Sample item: source_task_id=${taskItems[0].source_task_id}, learning_path_id=${taskItems[0].learning_path_id}, title=${taskItems[0].title}")
-                }
-
-                _knowledgeItems.postValue(taskItems)
-            } else {
-                _knowledgeItems.postValue(emptyList())
-                _toast.value = "学習内容の読み込みに失敗しました"
+            // 最終結果を設定（成功または失敗に関わらず）
+            // 空のリストでも設定する（UIが正しく更新されるように）
+            
+            // 空のリストの場合、ログに記録（デバッグ用）
+            if (taskItems.isEmpty()) {
+                android.util.Log.d("FocusSessionViewModel", "No knowledge items found for taskId=$taskId, subtaskIds=$subtaskIds")
+                // エラーメッセージは表示しない（空のリストは正常な状態の可能性がある）
             }
         } catch (e: Exception) {
-            _knowledgeItems.postValue(emptyList())
+            android.util.Log.e("FocusSessionViewModel", "Error in loadKnowledgeItemsInternal", e)
+            taskItems = emptyList()
             _toast.value = "ネットワークエラー: ${e.message}"
         } finally {
+            // ローディング状態を解除してから、knowledge itemsを設定する
+            // これにより、observerが正しく更新される
             _isLoadingKnowledge.value = false
+            
+            // 少し遅延してからpostValueすることで、isLoadingKnowledgeのobserverが先に処理される
+            kotlinx.coroutines.delay(50)
+            _knowledgeItems.postValue(taskItems)
+            
+            android.util.Log.d("FocusSessionViewModel", "Posted ${taskItems.size} knowledge items after loading completed")
         }
     }
 
@@ -911,40 +982,66 @@ class FocusSessionViewModel : ViewModel() {
      */
     private fun parseItemsFromResponse(data: Any?): List<KnowledgeItem> {
         return try {
+            android.util.Log.d("FocusSessionViewModel", "parseItemsFromResponse: data type=${data?.javaClass?.simpleName}, data=$data")
+            
             when (data) {
                 is List<*> -> {
+                    android.util.Log.d("FocusSessionViewModel", "Parsing List with ${data.size} items")
                     // Retrofit/Gson returns List<LinkedHashMap>, not List<KnowledgeItem>
                     // Need to use Gson to convert each map to KnowledgeItem
                     val gson = com.google.gson.Gson()
-                    data.mapNotNull { item ->
+                    val parsedItems = data.mapIndexedNotNull { index, item ->
                         try {
                             when (item) {
-                                is KnowledgeItem -> item
+                                is KnowledgeItem -> {
+                                    android.util.Log.d("FocusSessionViewModel", "Item $index is already KnowledgeItem")
+                                    item
+                                }
                                 is Map<*, *> -> {
+                                    android.util.Log.d("FocusSessionViewModel", "Item $index is Map, converting...")
                                     // Convert Map to JSON string then parse to KnowledgeItem
                                     val json = gson.toJson(item)
-                                    gson.fromJson(json, KnowledgeItem::class.java)
+                                    val parsed = gson.fromJson(json, KnowledgeItem::class.java)
+                                    android.util.Log.d("FocusSessionViewModel", "Item $index parsed: id=${parsed.id}, title=${parsed.title}")
+                                    parsed
                                 }
-                                else -> null
+                                else -> {
+                                    android.util.Log.w("FocusSessionViewModel", "Item $index is unexpected type: ${item?.javaClass?.simpleName}")
+                                    null
+                                }
                             }
                         } catch (e: Exception) {
-                            android.util.Log.e("FocusSessionViewModel", "Error parsing knowledge item", e)
+                            android.util.Log.e("FocusSessionViewModel", "Error parsing knowledge item at index $index", e)
                             null
                         }
                     }
+                    android.util.Log.d("FocusSessionViewModel", "Successfully parsed ${parsedItems.size} items from List")
+                    parsedItems
                 }
                 is Map<*, *> -> {
-                    // Handle paginated response
+                    android.util.Log.d("FocusSessionViewModel", "Parsing Map with keys: ${data.keys}")
+                    // Handle paginated response or nested structure
                     val dataList = data["data"] as? List<*>
-                    dataList?.let { parseItemsFromResponse(it) } ?: emptyList()
+                    if (dataList != null) {
+                        android.util.Log.d("FocusSessionViewModel", "Found 'data' key in Map with ${dataList.size} items")
+                        parseItemsFromResponse(dataList)
+                    } else {
+                        android.util.Log.w("FocusSessionViewModel", "Map does not contain 'data' key")
+                        emptyList()
+                    }
+                }
+                null -> {
+                    android.util.Log.w("FocusSessionViewModel", "Data is null")
+                    emptyList()
                 }
                 else -> {
-                    android.util.Log.w("FocusSessionViewModel", "Unexpected data type: ${data?.javaClass?.simpleName}")
+                    android.util.Log.w("FocusSessionViewModel", "Unexpected data type: ${data?.javaClass?.simpleName}, value: $data")
                     emptyList()
                 }
             }
         } catch (e: Exception) {
             android.util.Log.e("FocusSessionViewModel", "Error in parseItemsFromResponse", e)
+            e.printStackTrace()
             emptyList()
         }
     }
