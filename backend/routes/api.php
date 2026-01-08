@@ -33,26 +33,26 @@ Route::get('/test', function(){
     ]);
 });
 
-// Authentication routes with rate limiting
+// 認証ルート（レート制限付き）
 Route::post('/register', [AuthController::class, 'register'])
-    ->middleware('throttle:3,1'); // 3 requests per minute
+    ->middleware('throttle:3,1'); // 1分あたり3リクエスト
 
 Route::post('/login', [AuthController::class, 'login'])
     ->name('login')
-    ->middleware('throttle:5,1'); // 5 requests per minute
+    ->middleware('throttle:5,1'); // 1分あたり5リクエスト
 
-// Password reset routes with rate limiting
+// パスワードリセットルート（レート制限付き）
 Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword'])
-    ->middleware('throttle:3,1'); // 3 requests per minute
+    ->middleware('throttle:3,1'); // 1分あたり3リクエスト
 
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])
-    ->middleware('throttle:5,1'); // 5 requests per minute
+    ->middleware('throttle:5,1'); // 1分あたり5リクエスト
 
-// Email verification routes
+// メール認証ルート
 Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
     ->name('verification.verify');
 
-// Cheat Code routes (public - no authentication required)
+// チートコードルート（公開 - 認証不要）
 Route::prefix('cheat-code')->group(function () {
     Route::get('/languages', [CheatCodeController::class, 'getLanguages']);
     Route::get('/languages/{id}', [CheatCodeController::class, 'getLanguage']);
@@ -62,30 +62,31 @@ Route::prefix('cheat-code')->group(function () {
     Route::get('/languages/{languageId}/sections/{sectionId}/examples/{exampleId}', [CheatCodeController::class, 'getExample']);
     Route::get('/categories', [CheatCodeController::class, 'getCategories']);
 
-    // Exercise routes
+    // 演習ルート
     Route::get('/languages/{languageId}/exercises', [ExerciseController::class, 'getExercises']);
     Route::get('/languages/{languageId}/exercises/{exerciseId}', [ExerciseController::class, 'getExercise']);
     Route::get('/languages/{languageId}/exercises/{exerciseId}/solution', [ExerciseController::class, 'getSolution']);
     Route::get('/languages/{languageId}/exercises/{exerciseId}/statistics', [ExerciseController::class, 'getStatistics']);
     Route::post('/languages/{languageId}/exercises/{exerciseId}/submit', [ExerciseController::class, 'submitSolution'])
-        ->middleware('throttle:10,1'); // 10 submissions per minute
+        ->middleware('throttle:10,1'); // 1分あたり10回の提出
 });
 
-// Roadmap API routes - Public endpoint for browsing popular roadmaps
+// ロードマップAPIルート - 人気のロードマップを閲覧するための公開エンドポイント
 Route::prefix('roadmaps')->group(function () {
     Route::get('/popular', [\App\Http\Controllers\RoadmapApiController::class, 'popular']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Email verification
+    // メール認証
     Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])
-        ->middleware('throttle:6,1'); // 6 requests per minute
+        ->middleware('throttle:6,1'); // 1分あたり6リクエスト
+
     Route::get('/user', [AuthController::class, 'getUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
     Route::post('/user/fcm-token', [AuthController::class, 'updateFCMToken']);
 
-    // Additional task routes (must be before apiResource)
+    // 追加タスクルート（apiResourceより前に配置する必要がある）
     Route::get('/tasks/stats', [TaskController::class, 'stats']);
     Route::get('/tasks/by-priority/{priority}', [TaskController::class, 'byPriority']);
     Route::get('/tasks/overdue', [TaskController::class, 'overdue']);
@@ -99,10 +100,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/tasks/{id}/abandon', [TaskTrackingController::class, 'abandonTask']);
     Route::post('/tasks/{id}/resume', [TaskTrackingController::class, 'resumeTask']);
 
-    // Task routes (Resource routes must be last)
+    // タスクルート（リソースルートは最後に配置する必要がある）
     Route::apiResource('tasks', TaskController::class);
 
-    // Subtask routes
+    // サブタスクルート
     Route::get('/tasks/{taskId}/subtasks', [SubtaskController::class, 'index']);
     Route::post('/tasks/{taskId}/subtasks', [SubtaskController::class, 'store']);
     Route::post('/tasks/{taskId}/subtasks/reorder', [SubtaskController::class, 'reorder']);
@@ -111,7 +112,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/subtasks/{id}/complete', [SubtaskController::class, 'complete']);
     Route::delete('/subtasks/{id}', [SubtaskController::class, 'destroy']);
 
-    // Focus Session routes
+    // フォーカスセッションルート
     Route::prefix('sessions')->group(function () {
         Route::post('/start', [FocusSessionController::class, 'start']);
         Route::get('/current', [FocusSessionController::class, 'current']);
@@ -124,11 +125,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [FocusSessionController::class, 'index']);
     });
 
-            // AI routes (with rate limiting to prevent abuse)
+            // AIルート（悪用防止のためのレート制限付き）
             Route::prefix('ai')->middleware('throttle:20,1')->group(function () {
                 Route::get('/status', [AIController::class, 'status']);
 
-                // Heavy AI operations - stricter rate limit (10 requests per minute)
+                // 重いAI操作 - より厳しいレート制限（1分あたり10リクエスト）
                 Route::middleware('throttle:10,1')->group(function () {
                     Route::post('/breakdown-task', [AIController::class, 'breakdownTask']);
                     Route::get('/daily-suggestions', [AIController::class, 'dailySuggestions']);
@@ -137,18 +138,18 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::post('/learning-recommendations', [AIController::class, 'learningRecommendations']);
                     Route::post('/focus-analysis', [AIController::class, 'focusAnalysis']);
 
-                    // Proactive AI Planning & Insights
+                    // プロアクティブなAI計画とインサイト
                     Route::get('/daily-plan', [AIController::class, 'getDailyPlan']);
                     Route::get('/weekly-insights', [AIController::class, 'getWeeklyInsights']);
                 });
 
-                // Lighter operations
+                // 軽量操作
                 Route::get('/suggestions', [AIController::class, 'suggestions']);
                 Route::put('/suggestions/{id}/read', [AIController::class, 'markSuggestionRead']);
                 Route::get('/summaries', [AIController::class, 'summaries']);
                 Route::post('/motivational-message', [AIController::class, 'motivationalMessage']);
 
-                // Chat routes - moderate rate limit (30 requests per minute for chat)
+                // チャットルート - 中程度のレート制限（チャットは1分あたり30リクエスト）
                 Route::prefix('chat')->middleware('throttle:30,1')->group(function () {
                     Route::get('/conversations', [AIController::class, 'getConversations']);
                     Route::post('/conversations', [AIController::class, 'createConversation']);
@@ -162,24 +163,24 @@ Route::middleware('auth:sanctum')->group(function () {
                 });
             });
 
-    // Focus Enhancement routes
+    // フォーカス強化ルート
     Route::prefix('focus')->group(function () {
-        // Environment Checklist
+        // 環境チェックリスト
         Route::post('/environment/check', [FocusEnhancementController::class, 'saveEnvironmentCheck']);
         Route::get('/environment/task/{taskId}', [FocusEnhancementController::class, 'getEnvironmentHistory']);
 
-        // Distraction Logging
+        // 気が散る記録
         Route::post('/distraction/log', [FocusEnhancementController::class, 'logDistraction']);
         Route::get('/distraction/task/{taskId}', [FocusEnhancementController::class, 'getDistractionLogs']);
         Route::get('/distraction/analytics', [FocusEnhancementController::class, 'getDistractionAnalytics']);
 
-        // Context Switching
+        // コンテキスト切り替え
         Route::post('/context-switch/check', [FocusEnhancementController::class, 'checkContextSwitch']);
         Route::put('/context-switch/{id}/proceed', [FocusEnhancementController::class, 'confirmContextSwitch']);
         Route::get('/context-switch/analytics', [FocusEnhancementController::class, 'getContextSwitchAnalytics']);
     });
 
-    // Stats routes
+    // 統計ルート
     Route::prefix('stats')->group(function () {
         Route::get('/user', [StatsController::class, 'getUserStats']);
         Route::get('/dashboard', [StatsController::class, 'dashboard']);
@@ -190,7 +191,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/golden-time', [StatsController::class, 'goldenTime']);
     });
 
-    // Daily Check-in routes
+    // デイリーチェックインルート
     Route::prefix('daily-checkin')->group(function () {
         Route::get('/today', [DailyCheckinController::class, 'today']);
         Route::get('/stats', [DailyCheckinController::class, 'stats']);
@@ -202,7 +203,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [DailyCheckinController::class, 'destroy']);
     });
 
-    // Daily Review routes
+    // デイリーレビュールート
     Route::prefix('daily-review')->group(function () {
         Route::get('/today', [DailyReviewController::class, 'today']);
         Route::get('/stats', [DailyReviewController::class, 'stats']);
@@ -215,22 +216,22 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [DailyReviewController::class, 'destroy']);
     });
 
-    // Timetable routes
+    // 時間割ルート
     Route::prefix('timetable')->group(function () {
         Route::get('/', [TimetableController::class, 'index']);
 
-        // Classes
+        // クラス
         Route::get('/classes', [TimetableController::class, 'getClasses']);
         Route::post('/classes', [TimetableController::class, 'createClass']);
         Route::put('/classes/{id}', [TimetableController::class, 'updateClass']);
         Route::delete('/classes/{id}', [TimetableController::class, 'deleteClass']);
 
-        // Weekly Content
+        // 週次コンテンツ
         Route::get('/classes/{id}/weekly-content', [TimetableController::class, 'getWeeklyContent']);
         Route::post('/classes/{id}/weekly-content', [TimetableController::class, 'updateWeeklyContent']);
         Route::delete('/weekly-content/{id}', [TimetableController::class, 'deleteWeeklyContent']);
 
-        // Studies (homework/review)
+        // 学習（宿題/復習）
         Route::get('/studies', [TimetableController::class, 'getStudies']);
         Route::post('/studies', [TimetableController::class, 'createStudy']);
         Route::put('/studies/{id}', [TimetableController::class, 'updateStudy']);
@@ -238,7 +239,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/studies/{id}', [TimetableController::class, 'deleteStudy']);
     });
 
-    // Learning Path routes
+    // 学習パスルート
     Route::prefix('learning-paths')->group(function () {
         Route::get('/stats', [LearningPathController::class, 'stats']);
         Route::get('/', [LearningPathController::class, 'index']);
@@ -248,15 +249,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [LearningPathController::class, 'destroy']);
         Route::put('/{id}/complete', [LearningPathController::class, 'complete']);
 
-        // Study schedules for specific learning path
+        // 特定の学習パスの学習スケジュール
         Route::get('/{id}/study-schedules', [\App\Http\Controllers\StudyScheduleController::class, 'index']);
         Route::post('/{id}/study-schedules', [\App\Http\Controllers\StudyScheduleController::class, 'store']);
 
-        // Assign tasks to study schedules
+        // 学習スケジュールにタスクを割り当て
         Route::post('/{id}/assign-schedules', [\App\Http\Controllers\RoadmapApiController::class, 'assignSchedules']);
     });
 
-    // Study Schedule routes
+    // 学習スケジュールルート
     Route::prefix('study-schedules')->group(function () {
         Route::get('/today', [\App\Http\Controllers\StudyScheduleController::class, 'todaySessions']);
         Route::get('/stats', [\App\Http\Controllers\StudyScheduleController::class, 'stats']);
@@ -268,31 +269,31 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{id}/missed', [\App\Http\Controllers\StudyScheduleController::class, 'markMissed']);
     });
 
-    // Roadmap API routes - External roadmap integration (requires authentication)
+    // ロードマップAPIルート - 外部ロードマップ統合（認証が必要）
     Route::prefix('roadmaps')->group(function () {
         Route::post('/generate', [\App\Http\Controllers\RoadmapApiController::class, 'generate']);
         Route::post('/import', [\App\Http\Controllers\RoadmapApiController::class, 'import']);
     });
 
-    // Learning Path Template routes
+    // 学習パステンプレートルート
     Route::prefix('learning-path-templates')->group(function () {
-        // Browse templates
+        // テンプレートを閲覧
         Route::get('/', [LearningPathTemplateController::class, 'index']);
         Route::get('/featured', [LearningPathTemplateController::class, 'featured']);
         Route::get('/popular', [LearningPathTemplateController::class, 'popular']);
         Route::get('/categories', [LearningPathTemplateController::class, 'categories']);
         Route::get('/category/{category}', [LearningPathTemplateController::class, 'byCategory']);
 
-        // Template detail
+        // テンプレート詳細
         Route::get('/{id}', [LearningPathTemplateController::class, 'show']);
 
-        // Clone template to user's learning path
+        // テンプレートをユーザーの学習パスにクローン
         Route::post('/{id}/clone', [LearningPathTemplateController::class, 'clone']);
     });
 
-    // Knowledge routes
+    // ナレッジルート
     Route::prefix('knowledge')->group(function () {
-        // Category routes
+        // カテゴリルート
         Route::prefix('categories')->group(function () {
             Route::get('/stats', [KnowledgeCategoryController::class, 'stats']);
             Route::get('/tree', [KnowledgeCategoryController::class, 'tree']);
@@ -306,12 +307,12 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/{id}/update-count', [KnowledgeCategoryController::class, 'updateItemCount']);
         });
 
-        // Knowledge item routes
+        // ナレッジアイテムルート
         Route::get('/stats', [KnowledgeController::class, 'stats']);
         Route::get('/due-review', [KnowledgeController::class, 'dueReview']);
         Route::post('/quick-capture', [KnowledgeController::class, 'quickCapture']);
 
-        // Smart AI features
+        // スマートAI機能
         Route::post('/suggest-category', [KnowledgeController::class, 'suggestCategory']);
         Route::post('/suggest-tags', [KnowledgeController::class, 'suggestTags']);
 
@@ -331,7 +332,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}/related', [KnowledgeController::class, 'related']);
     });
 
-    // Settings routes
+    // 設定ルート
     Route::prefix('settings')->group(function () {
         Route::get('/', [SettingsController::class, 'index']);
         Route::put('/', [SettingsController::class, 'update']);
@@ -339,7 +340,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/{key}', [SettingsController::class, 'updateSetting']);
     });
 
-    // Notification routes
+    // 通知ルート
     Route::prefix('notifications')->group(function () {
         Route::get('/', [NotificationController::class, 'index']);
         Route::get('/unread/count', [NotificationController::class, 'unreadCount']);
@@ -352,7 +353,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/clear-read', [NotificationController::class, 'clearRead']);
     });
 
-    // Abandonment statistics routes
+    // 放棄統計ルート
     Route::prefix('abandonments')->group(function () {
         Route::get('/', [TaskTrackingController::class, 'getUserAbandonments']);
         Route::get('/stats', [TaskTrackingController::class, 'getAbandonmentStats']);

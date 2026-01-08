@@ -49,7 +49,7 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             // セキュリティログ
-            Log::info("User registered successfully", [
+            Log::info("ユーザー登録が成功しました", [
                 'user_id' => $user->id,
                 'email' => $user->email,
                 'ip' => $request->ip(),
@@ -62,7 +62,7 @@ class AuthController extends Controller
             ], 201);
 
         } catch (\Exception $e) {
-            Log::error("Registration failed", [
+            Log::error("登録に失敗しました", [
                 'email' => $request->email,
                 'error' => $e->getMessage(),
                 'ip' => $request->ip(),
@@ -96,7 +96,7 @@ class AuthController extends Controller
         $attempts = Cache::get($attemptKey, 0);
 
         if ($attempts >= 5) {
-            Log::warning("Login blocked due to too many attempts", [
+            Log::warning("試行回数超過によりログインがブロックされました", [
                 'email' => $request->email,
                 'ip' => $request->ip(),
                 'attempts' => $attempts,
@@ -114,7 +114,7 @@ class AuthController extends Controller
             Cache::put($attemptKey, $attempts + 1, now()->addMinutes(10));
 
             // セキュリティログ
-            Log::warning("Login failed", [
+            Log::warning("ログインに失敗しました", [
                 'email' => $request->email,
                 'ip' => $request->ip(),
                 'attempts' => $attempts + 1,
@@ -133,7 +133,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         // セキュリティログ
-        Log::info("User logged in successfully", [
+        Log::info("ユーザーが正常にログインしました", [
             'user_id' => $user->id,
             'email' => $user->email,
             'ip' => $request->ip(),
@@ -155,7 +155,7 @@ class AuthController extends Controller
         $user = $request->user();
 
         // セキュリティログ
-        Log::info("User logged out", [
+        Log::info("ユーザーがログアウトしました", [
             'user_id' => $user->id,
             'email' => $user->email,
             'ip' => $request->ip(),
@@ -184,7 +184,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         // セキュリティログ
-        Log::info("Token refreshed", [
+        Log::info("トークンがリフレッシュされました", [
             'user_id' => $user->id,
             'email' => $user->email,
             'ip' => $request->ip(),
@@ -205,7 +205,7 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        Log::info("getUser called", [
+        Log::info("getUser()が呼び出されました", [
             'user' => $user ? $user->toArray() : null
         ]);
 
@@ -214,9 +214,9 @@ class AuthController extends Controller
                 'success' => false,
                 'data' => null,
                 'message' => 'ユーザーが見つかりません',
-                'error' => 'User not found'
-            ];
-            Log::info("getUser response (not found)", ['response' => $response]);
+                'error' => 'ユーザーが見つかりません'
+                ];
+                Log::info("getUser()のレスポンス (見つかりません)", ['response' => $response]);
             return response()->json($response, 404);
         }
 
@@ -227,7 +227,7 @@ class AuthController extends Controller
             'error' => null
         ];
 
-        Log::info("getUser response (success)", ['response' => $response]);
+        Log::info("getUser()のレスポンス (成功)", ['response' => $response]);
         return response()->json($response, 200);
     }
 
