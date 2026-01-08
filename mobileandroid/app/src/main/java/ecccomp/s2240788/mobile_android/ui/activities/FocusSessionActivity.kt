@@ -282,9 +282,26 @@ class FocusSessionActivity : BaseActivity() {
 
         // Knowledge items
         viewModel.knowledgeItems.observe(this) { items ->
+            android.util.Log.d("FocusSessionActivity", "Knowledge items observer: Received ${items?.size ?: 0} items")
+            
+            // ローディング状態を確認
+            val isLoading = viewModel.isLoadingKnowledge.value ?: false
+            
+            // ローディング中でも、itemsが空でない場合は更新する（初回ロード時）
+            // ローディング完了後は必ず更新する
+            if (isLoading && items.isNullOrEmpty()) {
+                android.util.Log.d("FocusSessionActivity", "Knowledge items observer: Loading in progress and items empty, skipping update")
+                return@observe
+            }
+            
+            android.util.Log.d("FocusSessionActivity", "Knowledge items observer: Updating UI with ${items?.size ?: 0} items")
+            
+            // 表示を更新
             if (items.isNullOrEmpty()) {
                 binding.learningContentCard.visibility = View.GONE
                 binding.emptyKnowledgeState.visibility = View.VISIBLE
+                // 空のリストをadapterに設定（以前のデータをクリア）
+                knowledgeAdapter.submitList(emptyList())
             } else {
                 binding.learningContentCard.visibility = View.VISIBLE
                 binding.emptyKnowledgeState.visibility = View.GONE
@@ -295,7 +312,28 @@ class FocusSessionActivity : BaseActivity() {
 
         // Knowledge loading state
         viewModel.isLoadingKnowledge.observe(this) { isLoading ->
-            // You can show a loading indicator if needed
+            android.util.Log.d("FocusSessionActivity", "Knowledge loading state changed: isLoading=$isLoading")
+            if (isLoading) {
+                // ローディング中は空の状態を非表示（ローディングインジケーターを表示する場合はここで）
+                binding.emptyKnowledgeState.visibility = View.GONE
+                // ローディング中はカードを非表示にしない（以前のデータを保持）
+            } else {
+                // ローディングが完了したら、knowledgeItemsの現在の値を確認して更新
+                val currentItems = viewModel.knowledgeItems.value
+                android.util.Log.d("FocusSessionActivity", "Knowledge loading completed, current items count: ${currentItems?.size ?: 0}")
+                
+                // 現在のitemsでUIを更新（observerが既に処理している可能性があるが、念のため）
+                if (currentItems.isNullOrEmpty()) {
+                    binding.learningContentCard.visibility = View.GONE
+                    binding.emptyKnowledgeState.visibility = View.VISIBLE
+                    knowledgeAdapter.submitList(emptyList())
+                } else {
+                    binding.learningContentCard.visibility = View.VISIBLE
+                    binding.emptyKnowledgeState.visibility = View.GONE
+                    knowledgeAdapter.submitList(currentItems)
+                    binding.tvKnowledgeCount.text = getString(R.string.items_count_format, currentItems.size)
+                }
+            }
         }
 
         // Subtasks
