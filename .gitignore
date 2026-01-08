@@ -103,3 +103,5 @@ docs/
 litho.docs/
 litho.log
 litho.toml
+
+mobileandroid/app/google-services.json

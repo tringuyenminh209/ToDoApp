@@ -79,7 +79,9 @@
             app:strokeWidth="1dp"
             android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:clipToPadding="false"
+            android:clipChildren="false">
 
             <WebView
                 android:id="@+id/webview_code"
@@ -87,7 +89,11 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:padding="12dp"
-                android:scrollbars="horizontal" />
+                android:scrollbars="horizontal|vertical"
+                android:overScrollMode="always"
+                android:clipToPadding="false"
+                android:clipChildren="false"
+                android:minHeight="50dp" />
 
         </com.google.android.material.card.MaterialCardView>
 

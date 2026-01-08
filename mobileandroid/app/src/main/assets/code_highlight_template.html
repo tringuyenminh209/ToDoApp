@@ -16,8 +16,11 @@
             line-height: 1.6;
             background: transparent;
             overflow-x: auto;
+            overflow-y: visible;
             margin: 0;
             padding: 8px;
+            width: 100%;
+            min-height: 100%;
         }
 
         pre {
@@ -26,6 +29,10 @@
             background: transparent;
             border: none;
             overflow-x: auto;
+            overflow-y: visible;
+            width: 100%;
+            word-wrap: break-word;
+            word-break: break-all;
         }
 
         code {
@@ -35,7 +42,14 @@
             background: transparent;
             display: block;
             padding: 0;
-            white-space: pre;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-all;
+            width: 100%;
+            overflow-wrap: break-word;
+            min-height: 1em;
+            /* コンテンツが確実に表示されるように */
+            overflow: visible;
         }
 
         /* Prism Theme - Custom Android Colors */
@@ -301,6 +315,50 @@
 
             // Apply highlighting
             code.innerHTML = highlight(text, language);
+            
+            // Force reflow đểDOMが更新されるのを待つ
+            void code.offsetHeight;
+            
+            // Notify Android that highlighting is complete and provide height
+            // 複数回試行して正確な高さを取得
+            function calculateAndNotifyHeight() {
+                // DOMが完全にレンダリングされるまで待つ
+                requestAnimationFrame(function() {
+                    requestAnimationFrame(function() {
+                        var body = document.body;
+                        var html = document.documentElement;
+                        var pre = document.querySelector('pre');
+                        var code = document.querySelector('code');
+                        
+                        // すべての要素の高さを取得
+                        var heights = [
+                            body.scrollHeight,
+                            body.offsetHeight,
+                            html.scrollHeight,
+                            html.offsetHeight
+                        ];
+                        
+                        if (pre) {
+                            heights.push(pre.scrollHeight, pre.offsetHeight, pre.clientHeight);
+                        }
+                        
+                        if (code) {
+                            heights.push(code.scrollHeight, code.offsetHeight, code.clientHeight);
+                        }
+                        
+                        // 最大値を取得
+                        var maxHeight = Math.max.apply(null, heights.filter(function(h) { return h > 0; }));
+                        
+                        // Call Android interface if available
+                        if (window.Android && window.Android.onHighlightComplete) {
+                            window.Android.onHighlightComplete(maxHeight);
+                        }
+                    });
+                });
+            }
+            
+            // 少し遅延してから計算（DOM更新を確実に待つ）
+            setTimeout(calculateAndNotifyHeight, 100);
         })();
     </script>
 </body>
