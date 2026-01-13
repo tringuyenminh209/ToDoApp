@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -197,26 +198,28 @@ export default function LoginPage() {
           <div className="bg-white/20 backdrop-blur-sm rounded-2xl lg:rounded-l-2xl lg:rounded-r-none lg:border-r border-white/20 shadow-2xl p-6 md:p-8 w-full flex flex-col justify-center h-full">
             <div className="text-center mb-8">
               {/* Logo */}
-              <div className="inline-flex items-center justify-center mb-4">
-                {!logoError ? (
-                  <Image
-                    src="/logo/logo.svg"
-                    alt="ToDoKizamu"
-                    width={96}
-                    height={96}
-                    className="object-contain rounded-2xl"
-                    priority
-                    onError={() => setLogoError(true)}
-                  />
-                ) : (
-                  <div className="flex items-center justify-center space-x-1">
-                    <Icon icon="mdi:leaf" className="text-4xl md:text-5xl text-white" />
-                    <Icon icon="mdi:leaf" className="text-4xl md:text-5xl text-white" />
-                    <Icon icon="mdi:leaf" className="text-4xl md:text-5xl text-white" />
-                  </div>
-                )}
-              </div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white drop-shadow-lg">ToDoKizamu</h1>
+              <Link href="/" className="inline-block cursor-pointer hover:opacity-80 transition-opacity">
+                <div className="inline-flex items-center justify-center mb-4">
+                  {!logoError ? (
+                    <Image
+                      src="/logo/logo.svg"
+                      alt="ToDoKizamu"
+                      width={96}
+                      height={96}
+                      className="object-contain rounded-2xl"
+                      priority
+                      onError={() => setLogoError(true)}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center space-x-1">
+                      <Icon icon="mdi:leaf" className="text-4xl md:text-5xl text-white" />
+                      <Icon icon="mdi:leaf" className="text-4xl md:text-5xl text-white" />
+                      <Icon icon="mdi:leaf" className="text-4xl md:text-5xl text-white" />
+                    </div>
+                  )}
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white drop-shadow-lg">ToDoKizamu</h1>
+              </Link>
               
               {/* Welcome Text */}
               <h2 className="text-xl md:text-2xl font-semibold mb-3 text-white drop-shadow-md">{t.welcome}</h2>
