@@ -17,6 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
             // Loại bỏ EnsureFrontendRequestsAreStateful để tránh CSRF issues
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ]);
+
+        // CORS設定を有効化
+        $middleware->validateCsrfTokens(except: [
+            'api/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // Xử lý authentication exception cho API
