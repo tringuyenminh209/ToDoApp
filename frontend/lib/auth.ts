@@ -6,10 +6,10 @@ export interface LoginCredentials {
 }
 
 export interface RegisterData {
-    name: string,
+    name: string;
     email: string;
     password: string;
-    passwor_confirmation: string;
+    // passwor_confirmation: string;
 }
 
 export interface User {
@@ -18,29 +18,61 @@ export interface User {
     email: string;
 }
 
+export interface AuthResponse {
+    user: User;
+    token: string;
+    message: string;
+}
+export interface LogoutResponse{
+    message: string;
+}
+
+
+export interface UserResponse{
+    success: boolean;
+    data: User | null;
+    message: string;
+    error: string | null;
+}
+
 //ログイン
-export async function login(credentials: LoginCredentials){
-    const response = await apiClient.post("/login", credentials);
+export async function login(credentials: LoginCredentials): Promise<AuthResponse>{
+    const response = await apiClient.post<AuthResponse>("/login", credentials);
+    
+    if(response.data.token){
+        localStorage.setItem("auth_token", response.data.token);
+    }
     return response.data;
 }
 
 //　登録
-export async function register(data: RegisterData){
-    const response = await apiClient.post("/register", data)
+export async function register(data: RegisterData) : Promise<AuthResponse>{
+    const response = await apiClient.post<AuthResponse>("/register", data)
+
+    if(response.data.token){
+        localStorage.setItem("auth_token", response.data.token);
+    }
     return response.data;
 }
 
 //ログアウト
-export async function logout() {
-    const response = await apiClient.post("/logout");
+export async function logout(): Promise<LogoutResponse>{
+    const response = await apiClient.post<LogoutResponse>("/logout");
+    // トークンを削除
+    localStorage.removeItem("auth_token");
     return response.data;
 }
 
 // ユーザーのデータ
-export async function getCurrentUer(): Promise<User | null>{
+export async function getCurrentUser(): Promise<User | null>{
     try{
-        const response =await apiClient.get("/user");
-        return response.data;
+        const response =await apiClient.get<UserResponse>("/user");
+
+        if(response.data.success && response.data.data){
+            return response.data.data;
+        }
+        return null;
+        
     }catch(error){
         return null;
     }
