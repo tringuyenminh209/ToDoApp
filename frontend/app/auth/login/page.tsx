@@ -112,7 +112,15 @@ export default function LoginPage() {
         router.push('/dashboard');
       }
     } catch (err: any) {
-      setError(t.errorMessage);
+      if (err.response?.data?.errors) {
+        const errors = err.response.data.errors;
+        const firstError = Object.values(errors)[0] as string[];
+        setError(firstError[0] || err.response?.data?.message || t.errorMessage);
+      } else if (err.response?.status === 429) {
+        setError(err.response?.data?.message || 'ログイン試行回数が上限に達しました');
+      } else {
+        setError(err.response?.data?.message || t.errorMessage);
+      }
       setTimeout(() => setError(''), 3000);
     } finally {
       setIsLoading(false);
