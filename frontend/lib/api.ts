@@ -1,9 +1,7 @@
 import axios from "axios";
-import { error } from "node:console";
-import { config } from "node:process";
 
 // backenからのAPIのURL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
 
 // Axiosインスタンス
 export const apiClient = axios.create({
@@ -19,6 +17,10 @@ export const apiClient = axios.create({
 apiClient.interceptors.request.use(
     (config) => {
         // 必要に応じてトークンを追加
+        const token = localStorage.getItem("auth_token");
+        if(token){
+            config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
     },
     (error) => {
@@ -30,9 +32,11 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => response,
     async (error) =>{
-        if(error.response?.status == 401){
-            // 未認証エラー時の処理
-            // ログインページへリダイレクトなど
+        if(error.response?.status === 401){
+            localStorage.removeItem("auth_token");
+            if(typeof window !== "undefined"){
+                window.location.href = "/auth/login"
+            }
         }
         return Promise.reject(error);
     }
