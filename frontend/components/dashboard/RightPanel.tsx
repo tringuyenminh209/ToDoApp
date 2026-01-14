@@ -1,7 +1,7 @@
 // frontend/components/dashboard/RightPanel.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import { translations, type Language } from '@/lib/i18n';
 import { aiService } from '@/lib/services/aiService';
@@ -15,36 +15,85 @@ interface RightPanelProps {
 
 export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps) {
   const [aiMessage, setAiMessage] = useState<string>('');
-  const [todayStats, setTodayStats] = useState<any>(null);
+  const [todayStats, setTodayStats] = useState<{
+    total_minutes: number;
+    sessions_count: number;
+  } | null>(null);
+  const [targetMinutes, setTargetMinutes] = useState<number>(240); // デフォルト4時間
   const [schedule, setSchedule] = useState<(TimetableClass | TimetableStudy)[]>([]);
   const [loading, setLoading] = useState(true);
+  const isLoadingAIRef = useRef(false);
+  const lastAILoadTimeRef = useRef<number>(0);
   const t = translations[currentLang];
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        // AIメッセージ取得
-        try {
-          const aiData = await aiService.getDailySuggestions();
-          if (aiData.success && aiData.data && aiData.data.length > 0) {
-            setAiMessage(aiData.data[0].message || '');
-          } else if (aiData.data && Array.isArray(aiData.data) && aiData.data.length > 0) {
-            setAiMessage(aiData.data[0].message || '');
+        // AIメッセージ取得（レート制限を避けるため、最後のリクエストから1分以上経過している場合のみ）
+        const now = Date.now();
+        const oneMinute = 60 * 1000;
+        if (!isLoadingAIRef.current && (now - lastAILoadTimeRef.current > oneMinute || lastAILoadTimeRef.current === 0)) {
+          try {
+            isLoadingAIRef.current = true;
+            lastAILoadTimeRef.current = now;
+            const aiData = await aiService.getDailySuggestions();
+            if (aiData.success && aiData.data) {
+              // レスポンス構造に応じてメッセージを取得
+              if (aiData.data.suggestions && Array.isArray(aiData.data.suggestions) && aiData.data.suggestions.length > 0) {
+                // suggestions配列から最初のメッセージを取得
+                const firstSuggestion = aiData.data.suggestions[0];
+                if (typeof firstSuggestion === 'string') {
+                  setAiMessage(firstSuggestion);
+                } else if (firstSuggestion && firstSuggestion.message) {
+                  setAiMessage(firstSuggestion.message);
+                } else if (firstSuggestion && firstSuggestion.content) {
+                  setAiMessage(firstSuggestion.content);
+                }
+              } else if (Array.isArray(aiData.data) && aiData.data.length > 0) {
+                const firstItem = aiData.data[0];
+                if (typeof firstItem === 'string') {
+                  setAiMessage(firstItem);
+                } else if (firstItem.message) {
+                  setAiMessage(firstItem.message);
+                } else if (firstItem.content) {
+                  setAiMessage(firstItem.content);
+                }
+              } else if (aiData.data.message) {
+                setAiMessage(aiData.data.message);
+              }
+            }
+          } catch (error: any) {
+            console.error('Failed to load AI suggestions:', error);
+            // 429エラー（レート制限）の場合は、最後のリクエスト時間をリセットしない
+            if (error.response?.status === 429) {
+              console.warn('AI suggestions rate limited. Will retry after cooldown period.');
+              // レート制限の場合は、次回のリクエストを遅らせる
+              lastAILoadTimeRef.current = now - oneMinute + 30000; // 30秒後に再試行可能にする
+            }
+            // エラーが発生してもデフォルトメッセージを表示
+            // エラーメッセージは設定しない（デフォルトメッセージを使用）
+          } finally {
+            isLoadingAIRef.current = false;
           }
-        } catch (error) {
-          console.error('Failed to load AI suggestions:', error);
         }
 
         // 今日の統計取得
         try {
           const statsData = await statsService.getSessionStats();
-          if (statsData.success && statsData.data) {
-            setTodayStats(statsData.data.today);
-          } else if (statsData.data) {
-            setTodayStats(statsData.data.today);
+          if (statsData.success && statsData.data && statsData.data.today) {
+            setTodayStats({
+              total_minutes: statsData.data.today.total_minutes || 0,
+              sessions_count: statsData.data.today.sessions_count || 0,
+            });
+          } else if (statsData.data && statsData.data.today) {
+            setTodayStats({
+              total_minutes: statsData.data.today.total_minutes || 0,
+              sessions_count: statsData.data.today.sessions_count || 0,
+            });
           }
         } catch (error) {
           console.error('Failed to load stats:', error);
+          setTodayStats({ total_minutes: 0, sessions_count: 0 });
         }
 
         // スケジュール取得
@@ -110,6 +159,123 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
     };
 
     loadData();
+
+    // 定期的に統計を更新（5分ごと）- AIリクエストは含めない
+    const interval = setInterval(() => {
+      // AIリクエストは別途制御するため、ここでは統計とスケジュールのみ更新
+      const updateStatsAndSchedule = async () => {
+        try {
+          // 今日の統計取得
+          try {
+            const statsData = await statsService.getSessionStats();
+            if (statsData.success && statsData.data && statsData.data.today) {
+              setTodayStats({
+                total_minutes: statsData.data.today.total_minutes || 0,
+                sessions_count: statsData.data.today.sessions_count || 0,
+              });
+            } else if (statsData.data && statsData.data.today) {
+              setTodayStats({
+                total_minutes: statsData.data.today.total_minutes || 0,
+                sessions_count: statsData.data.today.sessions_count || 0,
+              });
+            }
+          } catch (error) {
+            console.error('Failed to load stats:', error);
+          }
+
+          // スケジュール取得
+          try {
+            const timetableData = await timetableService.getTimetable();
+            if (timetableData.success && timetableData.data) {
+              const classes = timetableData.data.classes || [];
+              const studies = timetableData.data.studies || [];
+              
+              const today = new Date();
+              const dayIndex = today.getDay();
+              const dayNames: string[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+              const currentDayName = dayNames[dayIndex] || 'monday';
+              
+              const todayClasses = classes.filter((cls: TimetableClass) => cls.day === currentDayName);
+              const sortedClasses = todayClasses.sort((a: TimetableClass, b: TimetableClass) => {
+                const timeA = a.start_time || '00:00:00';
+                const timeB = b.start_time || '00:00:00';
+                return timeA.localeCompare(timeB);
+              });
+              
+              const todayStudies = studies.filter((study: TimetableStudy) => {
+                if (!study.due_date) return false;
+                const studyDate = new Date(study.due_date);
+                const todayDate = new Date();
+                return studyDate.toDateString() === todayDate.toDateString();
+              });
+              
+              const sortedStudies = todayStudies.sort((a: TimetableStudy, b: TimetableStudy) => {
+                const timeA = a.due_date || '';
+                const timeB = b.due_date || '';
+                return timeA.localeCompare(timeB);
+              });
+              
+              const allSchedule: (TimetableClass | TimetableStudy)[] = [...sortedClasses, ...sortedStudies];
+              allSchedule.sort((a, b) => {
+                const timeA = 'start_time' in a ? a.start_time : ('due_date' in a ? a.due_date : '');
+                const timeB = 'start_time' in b ? b.start_time : ('due_date' in b ? b.due_date : '');
+                return timeA.localeCompare(timeB);
+              });
+              
+              setSchedule(allSchedule.slice(0, 2));
+            }
+          } catch (error) {
+            console.error('Failed to load timetable:', error);
+          }
+
+          // AIリクエストは別途制御（レート制限を考慮）
+          const now = Date.now();
+          const oneMinute = 60 * 1000;
+          if (!isLoadingAIRef.current && (now - lastAILoadTimeRef.current > oneMinute || lastAILoadTimeRef.current === 0)) {
+            try {
+              isLoadingAIRef.current = true;
+              lastAILoadTimeRef.current = now;
+              const aiData = await aiService.getDailySuggestions();
+              if (aiData.success && aiData.data) {
+                if (aiData.data.suggestions && Array.isArray(aiData.data.suggestions) && aiData.data.suggestions.length > 0) {
+                  const firstSuggestion = aiData.data.suggestions[0];
+                  if (typeof firstSuggestion === 'string') {
+                    setAiMessage(firstSuggestion);
+                  } else if (firstSuggestion && firstSuggestion.message) {
+                    setAiMessage(firstSuggestion.message);
+                  } else if (firstSuggestion && firstSuggestion.content) {
+                    setAiMessage(firstSuggestion.content);
+                  }
+                } else if (Array.isArray(aiData.data) && aiData.data.length > 0) {
+                  const firstItem = aiData.data[0];
+                  if (typeof firstItem === 'string') {
+                    setAiMessage(firstItem);
+                  } else if (firstItem.message) {
+                    setAiMessage(firstItem.message);
+                  } else if (firstItem.content) {
+                    setAiMessage(firstItem.content);
+                  }
+                } else if (aiData.data.message) {
+                  setAiMessage(aiData.data.message);
+                }
+              }
+            } catch (error: any) {
+              if (error.response?.status === 429) {
+                console.warn('AI suggestions rate limited. Will retry after cooldown period.');
+                lastAILoadTimeRef.current = now - oneMinute + 30000;
+              }
+            } finally {
+              isLoadingAIRef.current = false;
+            }
+          }
+        } catch (error) {
+          console.error('Failed to update stats and schedule:', error);
+        }
+      };
+      updateStatsAndSchedule();
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -150,20 +316,22 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
                 <span>{t.focus}:</span>
                 <span className="font-semibold">
                   {todayStats
-                    ? `${Math.floor(todayStats.total_minutes / 60)}h ${todayStats.total_minutes % 60}m`
-                    : '0h 0m'}
+                    ? `${Math.floor(todayStats.total_minutes / 60)}h ${String(todayStats.total_minutes % 60).padStart(2, '0')}m`
+                    : '0h 00m'}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm text-white/90 mb-2">
                 <span>{t.target}:</span>
-                <span className="font-semibold">4h 00m</span>
+                <span className="font-semibold">
+                  {Math.floor(targetMinutes / 60)}h {String(targetMinutes % 60).padStart(2, '0')}m
+                </span>
               </div>
               <div className="w-full bg-white/20 rounded-full h-3 mt-3">
                 <div
-                  className="bg-[#0FA968] h-3 rounded-full"
+                  className="bg-[#0FA968] h-3 rounded-full transition-all duration-300"
                   style={{
-                    width: todayStats
-                      ? `${Math.min((todayStats.total_minutes / 240) * 100, 100)}%`
+                    width: todayStats && targetMinutes > 0
+                      ? `${Math.min((todayStats.total_minutes / targetMinutes) * 100, 100)}%`
                       : '0%',
                   }}
                 ></div>

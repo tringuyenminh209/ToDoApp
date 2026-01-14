@@ -88,28 +88,32 @@ export default function DashboardLayout({
       star.className = 'star';
       star.style.left = Math.random() * 100 + '%';
       star.style.top = Math.random() * 100 + '%';
-      star.style.animationDelay = Math.random() * 2 + 's';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (2 + Math.random() * 2) + 's';
       container.appendChild(star);
     };
 
-    // 初期化
-    for (let i = 0; i < 30; i++) {
-      setTimeout(() => createSparkle(), i * 200);
+    // 初期化 - より多くの星を生成
+    for (let i = 0; i < 40; i++) {
+      setTimeout(() => createSparkle(), i * 150);
     }
-    for (let i = 0; i < 20; i++) {
-      setTimeout(() => createParticle(), i * 300);
+    for (let i = 0; i < 25; i++) {
+      setTimeout(() => createParticle(), i * 250);
     }
-    for (let i = 0; i < 50; i++) {
-      createStar();
+    // より多くの星を生成（キラキラ効果を強化）
+    for (let i = 0; i < 80; i++) {
+      setTimeout(() => createStar(), i * 100);
     }
 
-    // 継続的な生成
-    const sparkleInterval = setInterval(createSparkle, 500);
-    const particleInterval = setInterval(createParticle, 2000);
+    // 継続的な生成 - より頻繁に生成
+    const sparkleInterval = setInterval(createSparkle, 400);
+    const particleInterval = setInterval(createParticle, 1800);
+    const starInterval = setInterval(createStar, 3000);
 
     return () => {
       clearInterval(sparkleInterval);
       clearInterval(particleInterval);
+      clearInterval(starInterval);
     };
   }, []);
 
@@ -176,7 +180,7 @@ export default function DashboardLayout({
         />
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto relative z-0">{children}</main>
+        <main className="flex-1 overflow-y-auto relative z-0 min-w-0">{children}</main>
 
         {/* Right Panel */}
         <RightPanel currentLang={currentLang} isCollapsed={isRightPanelCollapsed} />
