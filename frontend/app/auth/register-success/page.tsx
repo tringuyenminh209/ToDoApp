@@ -10,7 +10,7 @@ import { translations, type Language } from '@/lib/i18n';
 
 export default function RegisterSuccessPage() {
   const router = useRouter();
-  const [currentLang, setCurrentLang] = useState<Language>('vi');
+  const [currentLang, setCurrentLang] = useState<Language>('ja');
   const [showLangMenu, setShowLangMenu] = useState(false);
   const langMenuRef = useRef<HTMLDivElement>(null);
   const sparkleContainerRef = useRef<HTMLDivElement>(null);

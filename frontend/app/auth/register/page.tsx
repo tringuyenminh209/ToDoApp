@@ -14,7 +14,7 @@ import Image from 'next/image';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [currentLang, setCurrentLang] = useState<Language>('vi');
+  const [currentLang, setCurrentLang] = useState<Language>('ja');
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
