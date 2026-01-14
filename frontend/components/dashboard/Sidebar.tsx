@@ -30,6 +30,7 @@ export default function Sidebar({ currentLang, isCollapsed, onToggle }: SidebarP
   const menuItems = [
     { icon: 'mdi:home', label: t.home, href: '/dashboard' },
     { icon: 'mdi:format-list-checks', label: t.tasks, href: '/dashboard/tasks' },
+    { icon: 'mdi:calendar-month', label: t.calendar, href: '/dashboard/calendar' },
     { icon: 'mdi:school', label: t.learning, href: '/dashboard/learning-paths' },
     { icon: 'mdi:book-open-variant', label: t.knowledge, href: '/dashboard/knowledge' },
     { icon: 'mdi:code-tags', label: t.cheatCode, href: '/dashboard/cheat-code' },

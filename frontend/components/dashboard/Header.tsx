@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { translations, type Language } from '@/lib/i18n';
 import { useAuthStore } from '@/store/auth-store';
@@ -27,6 +28,7 @@ export default function Header({
   const { user } = useAuthStore();
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [logoError, setLogoError] = useState(false);
   const langMenuRef = useRef<HTMLDivElement>(null);
   const t = translations[currentLang];
 
@@ -58,8 +60,20 @@ export default function Header({
       <div className="w-full px-4 sm:px-6 lg:px-8 py-3 overflow-visible">
         <div className="flex items-center justify-between overflow-visible">
           <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#0FA968] to-[#1F6FEB] rounded-xl flex items-center justify-center shadow-lg">
-              <Icon icon="mdi:leaf" className="text-xl text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-[#0FA968] to-[#1F6FEB] rounded-xl flex items-center justify-center shadow-lg relative overflow-hidden">
+              {!logoError ? (
+                <Image
+                  src="/logo/logo.svg"
+                  alt="ToDoKizamu Logo"
+                  width={24}
+                  height={24}
+                  className="relative z-10"
+                  style={{ objectFit: 'contain' }}
+                  onError={() => setLogoError(true)}
+                />
+              ) : (
+                <Icon icon="mdi:leaf" className="text-xl text-white" />
+              )}
             </div>
             <div className="flex flex-col">
               <h1 className="text-xl font-bold text-white drop-shadow-lg">{t.dashboardTitle}</h1>
