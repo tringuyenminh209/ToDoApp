@@ -14,7 +14,7 @@ import Image from 'next/image';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [currentLang, setCurrentLang] = useState<Language>('vi');
+  const [currentLang, setCurrentLang] = useState<Language>('ja');
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
