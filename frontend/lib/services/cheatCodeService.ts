@@ -7,6 +7,7 @@ export interface CheatCodeLanguage {
   displayName: string;
   icon?: string;
   color?: string;
+  logoUrl?: string;
   description?: string;
   popularity: number;
   category: string;

@@ -1,4 +1,3 @@
-// frontend/app/dashboard/cheat-code/[languageId]/exercises/[exerciseId]/page.tsx
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -33,7 +32,6 @@ export default function ExerciseIDEPage() {
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const t = translations[currentLang];
 
-  // 言語設定をlocalStorageから復元
   useEffect(() => {
     const loadLanguage = () => {
       const savedLang = localStorage.getItem('selectedLanguage') as Language;
@@ -88,7 +86,6 @@ export default function ExerciseIDEPage() {
     loadLanguage();
   }, [loadExercise, loadLanguage]);
 
-  // Monaco Editor初期化
   useEffect(() => {
     if (!editorContainerRef.current || !exercise || editorRef.current) return;
 
@@ -98,10 +95,8 @@ export default function ExerciseIDEPage() {
         return;
       }
 
-      // Monaco EditorをCDNから読み込む
       const existingScript = document.querySelector('script[src*="monaco-editor"]');
       if (existingScript) {
-        // 既に読み込み済みの場合は、少し待ってから初期化
         setTimeout(() => {
           if (window.monaco && window.monaco.editor) {
             initializeEditor();
@@ -127,7 +122,6 @@ export default function ExerciseIDEPage() {
     const initializeEditor = () => {
       if (!editorContainerRef.current || !exercise || editorRef.current) return;
 
-      // 言語マッピング
       const languageMap: Record<string, string> = {
         javascript: 'javascript',
         js: 'javascript',
@@ -196,7 +190,6 @@ export default function ExerciseIDEPage() {
         setAllPassed(response.data.allPassed);
         setTestResults(response.data.results || []);
 
-        // 出力をフォーマット
         const outputLines: string[] = [];
         response.data.results?.forEach((result: any, index: number) => {
           if (result.is_sample) {

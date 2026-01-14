@@ -1,4 +1,3 @@
-// frontend/app/dashboard/cheat-code/page.tsx
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -18,7 +17,6 @@ export default function CheatCodePage() {
   const [loading, setLoading] = useState(true);
   const t = translations[currentLang];
 
-  // 言語設定をlocalStorageから復元
   useEffect(() => {
     const loadLanguage = () => {
       const savedLang = localStorage.getItem('selectedLanguage') as Language;
@@ -86,6 +84,51 @@ export default function CheatCodePage() {
   const getLanguageIcon = (icon?: string) => {
     if (icon) return icon;
     return 'mdi:code-tags';
+  };
+
+  const getLanguageLogoUrl = (language: CheatCodeLanguage): string | null => {
+    if (language.logoUrl) {
+      return language.logoUrl;
+    }
+
+    const logoMap: Record<string, string> = {
+      'php': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg',
+      'java': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
+      'python': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+      'javascript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+      'typescript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+      'go': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg',
+      'cpp': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg',
+      'c++': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg',
+      'c': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg',
+      'kotlin': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg',
+      'html': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
+      'html5': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
+      'css': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
+      'css3': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
+      'bash': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg',
+      'laravel': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg',
+      'docker': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
+      'react': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+      'vue': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg',
+      'nodejs': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+      'ruby': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg',
+      'rust': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg',
+      'swift': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg',
+      'scala': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scala/scala-original.svg',
+      'r': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/r/r-original.svg',
+      'sql': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg',
+      'mysql': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg',
+      'yaml': 'https://cdn.simpleicons.org/yaml/CB171E',
+      'mongodb': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+    };
+
+    const languageName = language.name.toLowerCase().trim();
+    const displayNameLower = language.displayName?.toLowerCase().trim() || '';
+    
+    const logoUrl = logoMap[languageName] || logoMap[displayNameLower] || null;
+    
+    return logoUrl;
   };
 
   const getDifficultyColor = (difficulty: string) => {
@@ -161,18 +204,41 @@ export default function CheatCodePage() {
             >
               <div className="flex items-start justify-between mb-4">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg overflow-hidden relative"
                   style={{
                     background: language.color
                       ? `linear-gradient(135deg, ${language.color}20, ${language.color}40)`
                       : 'linear-gradient(135deg, rgba(15, 169, 104, 0.2), rgba(31, 111, 235, 0.2))',
                   }}
                 >
-                  <Icon
-                    icon={getLanguageIcon(language.icon)}
-                    className="text-2xl"
-                    style={{ color: language.color || '#0FA968' }}
-                  />
+                  {getLanguageLogoUrl(language) ? (
+                    <>
+                      <img
+                        src={getLanguageLogoUrl(language)!}
+                        alt={language.displayName || language.name}
+                        className="w-8 h-8 object-contain"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const fallback = target.nextElementSibling as HTMLElement;
+                          if (fallback) {
+                            fallback.style.display = 'flex';
+                          }
+                        }}
+                      />
+                      <Icon
+                        icon={getLanguageIcon(language.icon)}
+                        className="text-2xl absolute hidden"
+                        style={{ color: language.color || '#0FA968' }}
+                      />
+                    </>
+                  ) : (
+                    <Icon
+                      icon={getLanguageIcon(language.icon)}
+                      className="text-2xl"
+                      style={{ color: language.color || '#0FA968' }}
+                    />
+                  )}
                 </div>
                 {language.popularity > 0 && (
                   <div className="flex items-center space-x-1 text-yellow-400">

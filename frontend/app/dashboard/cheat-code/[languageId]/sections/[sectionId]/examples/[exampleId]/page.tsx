@@ -1,4 +1,3 @@
-// frontend/app/dashboard/cheat-code/[languageId]/sections/[sectionId]/examples/[exampleId]/page.tsx
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -29,7 +28,6 @@ export default function ExampleDetailPage() {
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const t = translations[currentLang];
 
-  // 言語設定をlocalStorageから復元
   useEffect(() => {
     const loadLanguage = () => {
       const savedLang = localStorage.getItem('selectedLanguage') as Language;
@@ -98,7 +96,6 @@ export default function ExampleDetailPage() {
     loadData();
   }, [loadExample, loadLanguage, loadSection]);
 
-  // Monaco Editor初期化
   useEffect(() => {
     if (!editorContainerRef.current || !example || editorRef.current) return;
 

@@ -1,4 +1,3 @@
-// frontend/app/dashboard/cheat-code/[languageId]/page.tsx
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -21,7 +20,6 @@ export default function LanguageDetailPage() {
   const [loading, setLoading] = useState(true);
   const t = translations[currentLang];
 
-  // 言語設定をlocalStorageから復元
   useEffect(() => {
     const loadLanguage = () => {
       const savedLang = localStorage.getItem('selectedLanguage') as Language;
