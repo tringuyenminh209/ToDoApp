@@ -1,4 +1,3 @@
-// frontend/app/dashboard/calendar/page.tsx
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -75,14 +74,12 @@ export default function CalendarPage() {
         const scheduleData = response.data;
         const allSchedule: (TimetableClass | TimetableStudy)[] = [];
         
-        // Add classes
         if (scheduleData.classes && Array.isArray(scheduleData.classes)) {
           scheduleData.classes.forEach((cls: TimetableClass) => {
             allSchedule.push(cls);
           });
         }
         
-        // Add studies
         if (scheduleData.studies && Array.isArray(scheduleData.studies)) {
           scheduleData.studies.forEach((study: TimetableStudy) => {
             allSchedule.push(study);
@@ -116,25 +113,19 @@ export default function CalendarPage() {
   const getTasksForDate = (date: Date): Task[] => {
     const dateStr = date.toISOString().split('T')[0];
     const filteredTasks = tasks.filter((task) => {
-      // scheduled_timeは時間のみ（HH:MM:SS）なので、日付フィルタリングには使用しない
-      // deadlineのみを使用（Y-m-d形式で返される）
       if (!task.deadline) return false;
       
       try {
-        // deadlineはY-m-d形式（日付のみ）またはISO形式の可能性がある
         let taskDateStr: string | null = null;
         
         if (task.deadline.includes('T') || task.deadline.includes(' ')) {
-          // ISO形式またはdatetime形式の場合
           const parsedDate = new Date(task.deadline);
           if (!isNaN(parsedDate.getTime())) {
             taskDateStr = parsedDate.toISOString().split('T')[0];
           }
         } else if (task.deadline.match(/^\d{4}-\d{2}-\d{2}$/)) {
-          // Y-m-d形式の場合（そのまま使用）
           taskDateStr = task.deadline;
         } else {
-          // その他の形式の場合、パースを試みる
           const parsedDate = new Date(task.deadline);
           if (!isNaN(parsedDate.getTime())) {
             taskDateStr = parsedDate.toISOString().split('T')[0];
@@ -148,13 +139,10 @@ export default function CalendarPage() {
       }
     });
     
-    // 優先度順にソート（高い優先度が先）
     return filteredTasks.sort((a, b) => {
-      // 優先度が高い順（4 > 3 > 2 > 1）
       if (b.priority !== a.priority) {
         return b.priority - a.priority;
       }
-      // 優先度が同じ場合は、作成日時が新しい順
       if (a.created_at && b.created_at) {
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       }
@@ -169,10 +157,8 @@ export default function CalendarPage() {
 
     return schedule.filter((item) => {
       if ('day' in item) {
-        // TimetableClass
         return item.day.toLowerCase() === dayName;
       } else if ('due_date' in item) {
-        // TimetableStudy
         const dueDate = new Date(item.due_date);
         return (
           dueDate.getDate() === date.getDate() &&

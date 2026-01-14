@@ -1,4 +1,3 @@
-// frontend/app/dashboard/layout.tsx
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
@@ -26,19 +25,16 @@ export default function DashboardLayout({
   }, []);
 
   useEffect(() => {
-    // 言語設定をlocalStorageから復元（デフォルトは日本語）
     const savedLang = localStorage.getItem('selectedLanguage') as Language;
     if (savedLang && (savedLang === 'vi' || savedLang === 'en' || savedLang === 'ja')) {
       setCurrentLang(savedLang);
     } else {
-      // デフォルトを日本語に設定
       setCurrentLang('ja');
       localStorage.setItem('selectedLanguage', 'ja');
     }
   }, []);
 
   useEffect(() => {
-    // サイドバーの状態をlocalStorageから復元
     const sidebarState = localStorage.getItem('leftSidebarVisible');
     const rightPanelState = localStorage.getItem('rightPanelVisible');
     if (sidebarState === 'false') setIsSidebarCollapsed(true);
@@ -56,7 +52,6 @@ export default function DashboardLayout({
     }
   }, [isAuthenticated, isLoading, router]);
 
-  // 背景エフェクトの生成
   useEffect(() => {
     const container = sparkleContainerRef.current;
     if (!container) return;
@@ -93,19 +88,16 @@ export default function DashboardLayout({
       container.appendChild(star);
     };
 
-    // 初期化 - より多くの星を生成
     for (let i = 0; i < 40; i++) {
       setTimeout(() => createSparkle(), i * 150);
     }
     for (let i = 0; i < 25; i++) {
       setTimeout(() => createParticle(), i * 250);
     }
-    // より多くの星を生成（キラキラ効果を強化）
     for (let i = 0; i < 80; i++) {
       setTimeout(() => createStar(), i * 100);
     }
 
-    // 継続的な生成 - より頻繁に生成
     const sparkleInterval = setInterval(createSparkle, 400);
     const particleInterval = setInterval(createParticle, 1800);
     const starInterval = setInterval(createStar, 3000);
@@ -180,7 +172,7 @@ export default function DashboardLayout({
         />
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto relative z-0 min-w-0">{children}</main>
+        <main className="flex-1 overflow-y-auto overflow-x-hidden relative z-0 min-w-0">{children}</main>
 
         {/* Right Panel */}
         <RightPanel currentLang={currentLang} isCollapsed={isRightPanelCollapsed} />

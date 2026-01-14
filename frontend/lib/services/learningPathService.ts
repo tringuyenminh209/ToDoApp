@@ -23,10 +23,19 @@ export interface LearningMilestone {
   learning_path_id: number;
   title: string;
   description?: string;
-  status: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'skipped';
   progress_percentage: number;
+  sort_order: number;
   target_start_date?: string;
   target_end_date?: string;
+  estimated_hours?: number;
+  actual_hours?: number;
+  deliverables?: any[];
+  notes?: string;
+  tasks?: any[];
+  // For visual editor
+  position?: { x: number; y: number };
+  color?: string;
 }
 
 export const learningPathService = {
@@ -66,6 +75,14 @@ export const learningPathService = {
   // 学習パス統計取得
   getStats: async () => {
     const response = await apiClient.get('/learning-paths/stats');
+    return response.data;
+  },
+
+  // Milestone作成（Learning Pathに含まれる）
+  createMilestone: async (pathId: number, data: Partial<LearningMilestone>) => {
+    // Note: MilestoneはLearning Pathの更新時に含めるか、別途エンドポイントが必要
+    // 現在はLearning Pathの更新時にmilestonesを配列で送信する想定
+    const response = await apiClient.post(`/learning-paths/${pathId}/milestones`, data);
     return response.data;
   },
 };

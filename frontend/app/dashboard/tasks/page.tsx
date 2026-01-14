@@ -1,4 +1,3 @@
-// frontend/app/dashboard/tasks/page.tsx
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -31,7 +30,6 @@ export default function TasksPage() {
   });
   const [draggedTask, setDraggedTask] = useState<Task | null>(null);
 
-  // 言語設定をlocalStorageから復元（デフォルトは日本語）
   useEffect(() => {
     const loadLanguage = () => {
       const savedLang = localStorage.getItem('selectedLanguage') as Language;
@@ -45,7 +43,6 @@ export default function TasksPage() {
 
     loadLanguage();
 
-    // Headerからの言語変更を監視
     const handleLanguageChange = () => {
       loadLanguage();
     };
@@ -70,7 +67,6 @@ export default function TasksPage() {
 
       const response = await taskService.getTasks(params);
       if (response.success && response.data) {
-        // ページネーション対応
         const tasksData = Array.isArray(response.data) 
           ? response.data 
           : response.data.data || [];
@@ -104,7 +100,6 @@ export default function TasksPage() {
         setCurrentSession(response.data);
       }
     } catch (error) {
-      // セッションがない場合は無視
     }
   }, []);
 
@@ -115,7 +110,6 @@ export default function TasksPage() {
         setTodayCheckin(response.data);
       }
     } catch (error) {
-      // チェックインがない場合は無視
     }
   }, []);
 
