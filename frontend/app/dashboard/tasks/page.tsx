@@ -23,6 +23,11 @@ export default function TasksPage() {
   const [currentSession, setCurrentSession] = useState<any>(null);
   const [todayCheckin, setTodayCheckin] = useState<any>(null);
   const [userStats, setUserStats] = useState<any>(null);
+  const [visibleCounts, setVisibleCounts] = useState({
+    pending: 5,
+    in_progress: 5,
+    completed: 5,
+  });
   const [filters, setFilters] = useState({
     priority: '',
     category: '',
@@ -190,6 +195,36 @@ export default function TasksPage() {
     completed: tasks.filter((t) => t.status === 'completed'),
   };
 
+  const formatMinutes = (minutes: number) => {
+    const total = Math.max(0, Math.floor(minutes));
+    const hours = Math.floor(total / 60);
+    const mins = total % 60;
+    return `${hours}:${String(mins).padStart(2, '0')}`;
+  };
+
+  const getRemainingMinutes = (session: any) => {
+    if (!session?.duration_minutes) return 25;
+    if (!session?.started_at) return session.duration_minutes;
+    const startedAt = new Date(session.started_at).getTime();
+    if (Number.isNaN(startedAt)) return session.duration_minutes;
+    const elapsedMinutes = Math.floor((Date.now() - startedAt) / 60000);
+    return Math.max(session.duration_minutes - elapsedMinutes, 0);
+  };
+
+  const nextTask =
+    tasksByStatus.in_progress.length > 0
+      ? tasksByStatus.in_progress[0]
+      : tasksByStatus.pending.length > 0
+      ? tasksByStatus.pending[0]
+      : null;
+
+  const handleViewMore = (status: 'pending' | 'in_progress' | 'completed') => {
+    setVisibleCounts((prev) => ({
+      ...prev,
+      [status]: prev[status] + 5,
+    }));
+  };
+
   const getPriorityLabel = (priority: number) => {
     if (priority >= 5) return t.veryHigh;
     if (priority >= 4) return t.high;
@@ -241,13 +276,7 @@ export default function TasksPage() {
                 <div className="flex items-center space-x-3">
                   <div className="text-3xl font-bold text-white drop-shadow-lg flex items-center">
                     <Icon icon="mdi:clock" className="mr-3 text-2xl" />
-                    <span>
-                      {currentSession.duration_minutes
-                        ? `${Math.floor(currentSession.duration_minutes / 60)}:${String(
-                            currentSession.duration_minutes % 60
-                          ).padStart(2, '0')}`
-                        : '25:00'}
-                    </span>
+                    <span>{formatMinutes(getRemainingMinutes(currentSession))}</span>
                   </div>
                 </div>
                 <button
@@ -285,17 +314,11 @@ export default function TasksPage() {
                 <div className="flex items-center space-x-3">
                   <div className="text-3xl font-bold text-white drop-shadow-lg flex items-center">
                     <Icon icon="mdi:clock" className="mr-3 text-2xl" />
-                    <span>25:00</span>
+                    <span>{formatMinutes(nextTask?.estimated_minutes ?? 25)}</span>
                   </div>
                 </div>
                 <button
                   onClick={async () => {
-                    const nextTask =
-                      tasksByStatus.in_progress.length > 0
-                        ? tasksByStatus.in_progress[0]
-                        : tasksByStatus.pending.length > 0
-                        ? tasksByStatus.pending[0]
-                        : null;
                     if (nextTask) {
                       try {
                         await handleStartFocus(nextTask.id);
@@ -397,7 +420,7 @@ export default function TasksPage() {
             </div>
           </div>
           <div className="space-y-4">
-            {tasksByStatus.pending.map((task) => (
+            {tasksByStatus.pending.slice(0, visibleCounts.pending).map((task) => (
               <TaskCard
                 key={task.id}
                 task={task}
@@ -407,6 +430,14 @@ export default function TasksPage() {
               />
             ))}
           </div>
+          {tasksByStatus.pending.length > visibleCounts.pending && (
+            <button
+              onClick={() => handleViewMore('pending')}
+              className="mt-4 w-full px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl transition shadow-lg hover:shadow-xl font-semibold text-sm"
+            >
+              {t.viewMoreTasks}
+            </button>
+          )}
         </div>
 
         {/* Doing Column */}
@@ -428,7 +459,7 @@ export default function TasksPage() {
             </div>
           </div>
           <div className="space-y-4">
-            {tasksByStatus.in_progress.map((task) => (
+            {tasksByStatus.in_progress.slice(0, visibleCounts.in_progress).map((task) => (
               <TaskCard
                 key={task.id}
                 task={task}
@@ -438,6 +469,14 @@ export default function TasksPage() {
               />
             ))}
           </div>
+          {tasksByStatus.in_progress.length > visibleCounts.in_progress && (
+            <button
+              onClick={() => handleViewMore('in_progress')}
+              className="mt-4 w-full px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl transition shadow-lg hover:shadow-xl font-semibold text-sm"
+            >
+              {t.viewMoreTasks}
+            </button>
+          )}
         </div>
 
         {/* Done Column */}
@@ -459,7 +498,7 @@ export default function TasksPage() {
             </div>
           </div>
           <div className="space-y-4">
-            {tasksByStatus.completed.map((task) => (
+            {tasksByStatus.completed.slice(0, visibleCounts.completed).map((task) => (
               <TaskCard
                 key={task.id}
                 task={task}
@@ -469,6 +508,14 @@ export default function TasksPage() {
               />
             ))}
           </div>
+          {tasksByStatus.completed.length > visibleCounts.completed && (
+            <button
+              onClick={() => handleViewMore('completed')}
+              className="mt-4 w-full px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl transition shadow-lg hover:shadow-xl font-semibold text-sm"
+            >
+              {t.viewMoreTasks}
+            </button>
+          )}
         </div>
       </div>
 

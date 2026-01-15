@@ -14,15 +14,17 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { isAuthenticated, checkAuth, isLoading } = useAuthStore();
+  const { isAuthenticated, checkAuth, isLoading, hasHydrated } = useAuthStore();
   const [currentLang, setCurrentLang] = useState<Language>('ja');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
   const sparkleContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    checkAuth();
-  }, []);
+    if (hasHydrated) {
+      checkAuth();
+    }
+  }, [hasHydrated, checkAuth]);
 
   useEffect(() => {
     const savedLang = localStorage.getItem('selectedLanguage') as Language;
@@ -47,10 +49,10 @@ export default function DashboardLayout({
   };
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (hasHydrated && !isLoading && !isAuthenticated) {
       router.push('/auth/login');
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [hasHydrated, isAuthenticated, isLoading, router]);
 
   useEffect(() => {
     const container = sparkleContainerRef.current;
@@ -121,7 +123,7 @@ export default function DashboardLayout({
     localStorage.setItem('rightPanelVisible', String(!newState));
   };
 
-  if (isLoading) {
+  if (!hasHydrated || isLoading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-white">Loading...</div>

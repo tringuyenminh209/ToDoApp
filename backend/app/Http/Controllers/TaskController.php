@@ -23,8 +23,17 @@ class TaskController extends Controller
     {
         $user = $request->user();
 
-        $query = Task::with(['project', 'learningMilestone', 'subtasks', 'tags'])
-            ->where('user_id', $user->id);
+        $query = Task::where('user_id', $user->id);
+
+        // Optional includes to reduce payload/queries for list views
+        if ($request->has('include')) {
+            $allowedIncludes = ['project', 'learningMilestone', 'subtasks', 'tags'];
+            $includes = array_filter(array_map('trim', explode(',', $request->get('include'))));
+            $includes = array_values(array_intersect($includes, $allowedIncludes));
+            if (!empty($includes)) {
+                $query->with($includes);
+            }
+        }
 
         // Filtering
         if ($request->has('status')) {
@@ -87,6 +96,7 @@ class TaskController extends Controller
         // Pagination
         $perPage = min($request->get('per_page', 20), 100);
         $tasks = $query->paginate($perPage);
+        $tasks->getCollection()->each->setAppends([]);
 
         return response()->json([
             'success' => true,
