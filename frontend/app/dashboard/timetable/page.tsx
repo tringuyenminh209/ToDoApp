@@ -110,6 +110,26 @@ export default function TimetablePage() {
   const studies = timetable?.studies || [];
   const currentClassId = timetable?.current_class?.id;
   const nextClassId = timetable?.next_class?.id;
+  const formIdPrefix = showEditModal ? 'edit' : 'add';
+
+  const getAccentClass = (color?: string) => {
+    switch ((color || '').toLowerCase()) {
+      case '#0fa968':
+        return 'border-[#0FA968]';
+      case '#1f6feb':
+        return 'border-[#1F6FEB]';
+      case '#8b5cf6':
+        return 'border-[#8B5CF6]';
+      case '#ec4899':
+        return 'border-[#EC4899]';
+      case '#f59e0b':
+        return 'border-[#F59E0B]';
+      case '#22c55e':
+        return 'border-[#22C55E]';
+      default:
+        return 'border-[#1F6FEB]';
+    }
+  };
 
   const openDetail = (cls: TimetableClass) => {
     setSelectedClass(cls);
@@ -300,12 +320,10 @@ export default function TimetablePage() {
                       {dayClasses.map((cls) => {
                         const isCurrent = cls.id === currentClassId;
                         const isNext = cls.id === nextClassId;
-                        const accentColor = cls.color || '#1F6FEB';
                         return (
                           <div
                             key={cls.id}
-                            className="bg-white/10 rounded-lg p-3 border border-white/20 flex items-center justify-between cursor-pointer hover:bg-white/15 transition"
-                            style={{ borderLeft: `4px solid ${accentColor}` }}
+                            className={`bg-white/10 rounded-lg p-3 border border-white/20 border-l-4 ${getAccentClass(cls.color)} flex items-center justify-between cursor-pointer hover:bg-white/15 transition`}
                             onClick={() => openDetail(cls)}
                           >
                             <div className="min-w-0">
@@ -380,7 +398,12 @@ export default function TimetablePage() {
           <div className="w-full max-w-lg bg-[#0B1220] rounded-2xl p-6 border border-white/20 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-white">{t.classDetails}</h3>
-              <button onClick={closeModals} className="text-white/70 hover:text-white">
+              <button
+                onClick={closeModals}
+                className="text-white/70 hover:text-white"
+                aria-label={t.close}
+                title={t.close}
+              >
                 <Icon icon="mdi:close" />
               </button>
             </div>
@@ -455,22 +478,29 @@ export default function TimetablePage() {
               <h3 className="text-lg font-bold text-white">
                 {showEditModal ? t.editClass : t.addClass}
               </h3>
-              <button onClick={closeModals} className="text-white/70 hover:text-white">
+              <button
+                onClick={closeModals}
+                className="text-white/70 hover:text-white"
+                aria-label={t.close}
+                title={t.close}
+              >
                 <Icon icon="mdi:close" />
               </button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <label className="text-sm text-white/70">{t.className}</label>
+                <label className="text-sm text-white/70" htmlFor={`${formIdPrefix}-class-name`}>{t.className}</label>
                 <input
+                  id={`${formIdPrefix}-class-name`}
                   value={formData.name || ''}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
                 />
               </div>
               <div>
-                <label className="text-sm text-white/70">{t.day}</label>
+                <label className="text-sm text-white/70" htmlFor={`${formIdPrefix}-class-day`}>{t.day}</label>
                 <select
+                  id={`${formIdPrefix}-class-day`}
                   value={formData.day || 'monday'}
                   onChange={(e) => setFormData({ ...formData, day: e.target.value })}
                   className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
@@ -483,8 +513,9 @@ export default function TimetablePage() {
                 </select>
               </div>
               <div>
-                <label className="text-sm text-white/70">{t.period}</label>
+                <label className="text-sm text-white/70" htmlFor={`${formIdPrefix}-class-period`}>{t.period}</label>
                 <input
+                  id={`${formIdPrefix}-class-period`}
                   type="number"
                   min={1}
                   max={10}
@@ -494,8 +525,9 @@ export default function TimetablePage() {
                 />
               </div>
               <div>
-                <label className="text-sm text-white/70">{t.startTime}</label>
+                <label className="text-sm text-white/70" htmlFor={`${formIdPrefix}-class-start`}>{t.startTime}</label>
                 <input
+                  id={`${formIdPrefix}-class-start`}
                   type="time"
                   value={formData.start_time || '09:00'}
                   onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
@@ -503,8 +535,9 @@ export default function TimetablePage() {
                 />
               </div>
               <div>
-                <label className="text-sm text-white/70">{t.endTime}</label>
+                <label className="text-sm text-white/70" htmlFor={`${formIdPrefix}-class-end`}>{t.endTime}</label>
                 <input
+                  id={`${formIdPrefix}-class-end`}
                   type="time"
                   value={formData.end_time || '10:00'}
                   onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
@@ -512,24 +545,27 @@ export default function TimetablePage() {
                 />
               </div>
               <div>
-                <label className="text-sm text-white/70">{t.room}</label>
+                <label className="text-sm text-white/70" htmlFor={`${formIdPrefix}-class-room`}>{t.room}</label>
                 <input
+                  id={`${formIdPrefix}-class-room`}
                   value={formData.room || ''}
                   onChange={(e) => setFormData({ ...formData, room: e.target.value })}
                   className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
                 />
               </div>
               <div>
-                <label className="text-sm text-white/70">{t.instructor}</label>
+                <label className="text-sm text-white/70" htmlFor={`${formIdPrefix}-class-instructor`}>{t.instructor}</label>
                 <input
+                  id={`${formIdPrefix}-class-instructor`}
                   value={formData.instructor || ''}
                   onChange={(e) => setFormData({ ...formData, instructor: e.target.value })}
                   className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="text-sm text-white/70">{t.description}</label>
+                <label className="text-sm text-white/70" htmlFor={`${formIdPrefix}-class-description`}>{t.description}</label>
                 <textarea
+                  id={`${formIdPrefix}-class-description`}
                   value={formData.description || ''}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"

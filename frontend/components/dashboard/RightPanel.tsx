@@ -21,9 +21,21 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
   } | null>(null);
   const [schedule, setSchedule] = useState<(TimetableClass | TimetableStudy)[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showScheduleDetail, setShowScheduleDetail] = useState(false);
+  const [selectedSchedule, setSelectedSchedule] = useState<TimetableClass | TimetableStudy | null>(null);
   const isLoadingAIRef = useRef(false);
   const lastAILoadTimeRef = useRef<number>(0);
   const t = translations[currentLang];
+
+  const openScheduleDetail = (item: TimetableClass | TimetableStudy) => {
+    setSelectedSchedule(item);
+    setShowScheduleDetail(true);
+  };
+
+  const closeScheduleDetail = () => {
+    setShowScheduleDetail(false);
+    setSelectedSchedule(null);
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -364,9 +376,12 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
                       : currentLang === 'ja' ? 'クラス' : currentLang === 'en' ? 'Class' : 'Lớp học'));
                 
                 return (
-                  <div
+                  <button
                     key={item.id || index}
-                    className="flex items-center space-x-3 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20"
+                    onClick={() => openScheduleDetail(item)}
+                    className="w-full text-left flex items-center space-x-3 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/15 transition"
+                    aria-label={title}
+                    title={title}
                   >
                     <div className="w-12 h-12 rounded-lg bg-[#0FA968]/20 flex items-center justify-center flex-shrink-0">
                       <span className="text-white font-bold text-sm">{timeStr}</span>
@@ -375,7 +390,7 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
                       <p className="text-white font-medium truncate">{title}</p>
                       <p className="text-xs text-white/70 truncate">{location}</p>
                     </div>
-                  </div>
+                  </button>
                 );
               })
             ) : (
@@ -386,6 +401,88 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
           </div>
         </div>
       </div>
+
+      {/* Schedule Detail Modal */}
+      {showScheduleDetail && selectedSchedule && (
+        <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center px-4">
+          <div className="w-full max-w-md bg-[#0B1220] rounded-2xl p-6 border border-white/20 shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-white">
+                {'start_time' in selectedSchedule ? t.classDetails : t.studiesTitle}
+              </h3>
+              <button
+                onClick={closeScheduleDetail}
+                className="text-white/70 hover:text-white"
+                aria-label={t.close}
+                title={t.close}
+              >
+                <Icon icon="mdi:close" />
+              </button>
+            </div>
+            <div className="space-y-3 text-white/90 text-sm">
+              {'start_time' in selectedSchedule ? (
+                <>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/60">{t.className}</span>
+                    <span className="font-semibold">{selectedSchedule.name}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/60">{t.time}</span>
+                    <span>
+                      {selectedSchedule.start_time} - {selectedSchedule.end_time}
+                    </span>
+                  </div>
+                  {selectedSchedule.room && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/60">{t.room}</span>
+                      <span>{selectedSchedule.room}</span>
+                    </div>
+                  )}
+                  {selectedSchedule.instructor && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/60">{t.instructor}</span>
+                      <span>{selectedSchedule.instructor}</span>
+                    </div>
+                  )}
+                  {(selectedSchedule.notes || selectedSchedule.weekly_content?.content) && (
+                    <div>
+                      <div className="text-white/60 mb-1">{t.weeklyContent}</div>
+                      <div className="bg-white/10 rounded-lg p-3 border border-white/10">
+                        {selectedSchedule.weekly_content?.content || selectedSchedule.notes}
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/60">{t.className}</span>
+                    <span className="font-semibold">{selectedSchedule.title}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/60">{t.time}</span>
+                    <span>{selectedSchedule.due_date}</span>
+                  </div>
+                  {selectedSchedule.timetable_class?.name && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/60">{t.classDetails}</span>
+                      <span>{selectedSchedule.timetable_class.name}</span>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+            <div className="mt-6 flex items-center justify-end">
+              <button
+                onClick={closeScheduleDetail}
+                className="px-4 py-2 bg-[#1F6FEB] hover:bg-[#1E40AF] text-white rounded-xl transition text-sm"
+              >
+                {t.close}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </aside>
   );
 }

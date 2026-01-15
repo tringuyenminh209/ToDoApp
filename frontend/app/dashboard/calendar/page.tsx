@@ -23,6 +23,19 @@ export default function CalendarPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [schedule, setSchedule] = useState<(TimetableClass | TimetableStudy)[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCreateTask, setShowCreateTask] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
+  const [taskForm, setTaskForm] = useState({
+    title: '',
+    description: '',
+    category: 'other' as 'study' | 'work' | 'personal' | 'other',
+    priority: 3,
+    energy_level: 'medium' as 'low' | 'medium' | 'high',
+    estimated_minutes: 60,
+    deadline: '',
+    scheduled_time: '',
+  });
   const t = translations[currentLang];
 
   useEffect(() => {
@@ -170,40 +183,53 @@ export default function CalendarPage() {
     });
   };
 
+  const createCalendarDay = (date: Date, month: number): CalendarDay => {
+    const dateCopy = new Date(date);
+    dateCopy.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return {
+      date: dateCopy,
+      isCurrentMonth: dateCopy.getMonth() === month,
+      isToday: dateCopy.getTime() === today.getTime(),
+      tasks: getTasksForDate(dateCopy),
+      schedule: getScheduleForDate(dateCopy),
+    };
+  };
+
   const generateCalendarDays = (): CalendarDay[] => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
     const startDate = new Date(firstDay);
     startDate.setDate(startDate.getDate() - startDate.getDay()); // Start from Sunday
 
     const days: CalendarDay[] = [];
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
     for (let i = 0; i < 42; i++) {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
-      const dateCopy = new Date(date);
-      dateCopy.setHours(0, 0, 0, 0);
-
-      days.push({
-        date: dateCopy,
-        isCurrentMonth: date.getMonth() === month,
-        isToday: dateCopy.getTime() === today.getTime(),
-        tasks: getTasksForDate(dateCopy),
-        schedule: getScheduleForDate(dateCopy),
-      });
+      days.push(createCalendarDay(date, month));
     }
-
     return days;
   };
 
-  const changeMonth = (direction: number) => {
+  const getStartOfWeek = (date: Date) => {
+    const start = new Date(date);
+    start.setDate(start.getDate() - start.getDay());
+    start.setHours(0, 0, 0, 0);
+    return start;
+  };
+
+  const changePeriod = (direction: number) => {
     setCurrentDate((prev) => {
       const newDate = new Date(prev);
-      newDate.setMonth(prev.getMonth() + direction);
+      if (viewMode === 'month') {
+        newDate.setMonth(prev.getMonth() + direction);
+      } else if (viewMode === 'week') {
+        newDate.setDate(prev.getDate() + direction * 7);
+      } else {
+        newDate.setDate(prev.getDate() + direction);
+      }
       return newDate;
     });
   };
@@ -260,6 +286,53 @@ export default function CalendarPage() {
     return `${monthNames[currentLang][date.getMonth()]}, ${date.getFullYear()}`;
   };
 
+  const openCreateTask = () => {
+    setFormError('');
+    setTaskForm({
+      title: '',
+      description: '',
+      category: 'other',
+      priority: 3,
+      energy_level: 'medium',
+      estimated_minutes: 60,
+      deadline: '',
+      scheduled_time: '',
+    });
+    setShowCreateTask(true);
+  };
+
+  const closeCreateTask = () => {
+    setShowCreateTask(false);
+  };
+
+  const handleCreateTask = async () => {
+    if (!taskForm.title.trim()) {
+      setFormError(t.titleRequired);
+      return;
+    }
+    setIsSubmitting(true);
+    setFormError('');
+    try {
+      await taskService.createTask({
+        title: taskForm.title.trim(),
+        description: taskForm.description?.trim() || undefined,
+        category: taskForm.category,
+        priority: taskForm.priority,
+        energy_level: taskForm.energy_level,
+        estimated_minutes: taskForm.estimated_minutes || undefined,
+        deadline: taskForm.deadline || undefined,
+        scheduled_time: taskForm.scheduled_time || undefined,
+      });
+      setShowCreateTask(false);
+      await loadTasks();
+    } catch (error) {
+      console.error('Failed to create task:', error);
+      setFormError(t.errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const getPriorityClass = (priority: number): string => {
     if (priority >= 4) return 'high';
     if (priority >= 2) return 'medium';
@@ -273,6 +346,18 @@ export default function CalendarPage() {
   };
 
   const calendarDays = generateCalendarDays();
+  const currentMonth = currentDate.getMonth();
+  const displayedDays =
+    viewMode === 'month'
+      ? calendarDays
+      : viewMode === 'week'
+      ? Array.from({ length: 7 }, (_, i) => {
+          const start = getStartOfWeek(currentDate);
+          const date = new Date(start);
+          date.setDate(start.getDate() + i);
+          return createCalendarDay(date, currentMonth);
+        })
+      : [createCalendarDay(currentDate, currentMonth)];
   const weekDays = [t.sunday, t.monday, t.tuesday, t.wednesday, t.thursday, t.friday, t.saturday];
 
   return (
@@ -281,7 +366,7 @@ export default function CalendarPage() {
       <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center space-x-4">
           <button
-            onClick={() => changeMonth(-1)}
+            onClick={() => changePeriod(-1)}
             className="p-2.5 text-white hover:bg-white/20 rounded-xl transition backdrop-blur-sm border border-white/20"
             title={t.previousMonth}
           >
@@ -289,7 +374,7 @@ export default function CalendarPage() {
           </button>
           <h2 className="text-2xl font-bold text-white drop-shadow-lg">{getMonthName(currentDate)}</h2>
           <button
-            onClick={() => changeMonth(1)}
+            onClick={() => changePeriod(1)}
             className="p-2.5 text-white hover:bg-white/20 rounded-xl transition backdrop-blur-sm border border-white/20"
             title={t.nextMonth}
           >
@@ -305,7 +390,7 @@ export default function CalendarPage() {
             {t.goToToday}
           </button>
           <button
-            onClick={() => router.push('/dashboard/tasks?action=create')}
+            onClick={openCreateTask}
             className="px-5 py-2.5 bg-[#0FA968] hover:bg-[#0B8C57] text-white rounded-xl transition shadow-lg hover:shadow-xl font-semibold flex items-center space-x-2"
           >
             <Icon icon="mdi:plus" />
@@ -347,21 +432,23 @@ export default function CalendarPage() {
       </div>
 
       {/* Week View Header */}
-      <div className="grid grid-cols-7 gap-3 mb-3">
-        {weekDays.map((day, index) => (
-          <div key={index} className="text-center text-sm font-semibold text-white/80 py-2">
-            {day}
-          </div>
-        ))}
-      </div>
+      {viewMode !== 'day' && (
+        <div className="grid grid-cols-7 gap-3 mb-3">
+          {weekDays.map((day, index) => (
+            <div key={index} className="text-center text-sm font-semibold text-white/80 py-2">
+              {day}
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Calendar Grid */}
       {loading ? (
         <div className="text-center py-12 text-white/60">{t.loading}</div>
       ) : (
         <>
-          <div className="grid grid-cols-7 gap-3">
-            {calendarDays.map((day, index) => (
+          <div className={`grid ${viewMode === 'day' ? 'grid-cols-1' : 'grid-cols-7'} gap-3`}>
+            {displayedDays.map((day, index) => (
               <div
                 key={index}
                 className={`calendar-day rounded-xl p-3 min-h-[140px] ${
@@ -406,6 +493,138 @@ export default function CalendarPage() {
               </div>
             ))}
           </div>
+
+          {showCreateTask && (
+            <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center px-4">
+              <div className="w-full max-w-xl bg-[#0B1220] rounded-2xl p-6 border border-white/20 shadow-2xl">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-white">{t.createTask}</h3>
+                  <button
+                    onClick={closeCreateTask}
+                    className="text-white/70 hover:text-white"
+                    aria-label={t.close}
+                    title={t.close}
+                  >
+                    <Icon icon="mdi:close" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="md:col-span-2">
+                    <label className="text-sm text-white/70" htmlFor="calendar-create-title">{t.taskTitle}</label>
+                    <input
+                      id="calendar-create-title"
+                      value={taskForm.title}
+                      onChange={(e) => setTaskForm({ ...taskForm, title: e.target.value })}
+                      className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-white/70" htmlFor="calendar-create-category">{t.category}</label>
+                    <select
+                      id="calendar-create-category"
+                      value={taskForm.category}
+                      onChange={(e) =>
+                        setTaskForm({ ...taskForm, category: e.target.value as 'study' | 'work' | 'personal' | 'other' })
+                      }
+                      className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                    >
+                      <option value="study" className="text-black">{t.study}</option>
+                      <option value="work" className="text-black">{t.work}</option>
+                      <option value="personal" className="text-black">{t.personal}</option>
+                      <option value="other" className="text-black">{t.all}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-sm text-white/70" htmlFor="calendar-create-priority">{t.priority}</label>
+                    <select
+                      id="calendar-create-priority"
+                      value={taskForm.priority}
+                      onChange={(e) => setTaskForm({ ...taskForm, priority: Number(e.target.value) })}
+                      className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                    >
+                      <option value={5} className="text-black">{t.veryHigh}</option>
+                      <option value={4} className="text-black">{t.high}</option>
+                      <option value={3} className="text-black">{t.medium}</option>
+                      <option value={2} className="text-black">{t.low}</option>
+                      <option value={1} className="text-black">{t.low}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-sm text-white/70" htmlFor="calendar-create-energy">{t.energy}</label>
+                    <select
+                      id="calendar-create-energy"
+                      value={taskForm.energy_level}
+                      onChange={(e) => setTaskForm({ ...taskForm, energy_level: e.target.value as 'low' | 'medium' | 'high' })}
+                      className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                    >
+                      <option value="high" className="text-black">{t.high}</option>
+                      <option value="medium" className="text-black">{t.medium}</option>
+                      <option value="low" className="text-black">{t.low}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-sm text-white/70" htmlFor="calendar-create-estimated">{t.estimatedMinutes}</label>
+                    <input
+                      id="calendar-create-estimated"
+                      type="number"
+                      min={1}
+                      max={600}
+                      value={taskForm.estimated_minutes}
+                      onChange={(e) => setTaskForm({ ...taskForm, estimated_minutes: Number(e.target.value) })}
+                      className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-white/70" htmlFor="calendar-create-deadline">{t.deadline}</label>
+                    <input
+                      id="calendar-create-deadline"
+                      type="date"
+                      value={taskForm.deadline}
+                      onChange={(e) => setTaskForm({ ...taskForm, deadline: e.target.value })}
+                      className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-white/70" htmlFor="calendar-create-time">{t.scheduledTime}</label>
+                    <input
+                      id="calendar-create-time"
+                      type="time"
+                      value={taskForm.scheduled_time}
+                      onChange={(e) => setTaskForm({ ...taskForm, scheduled_time: e.target.value })}
+                      className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="text-sm text-white/70" htmlFor="calendar-create-desc">{t.taskDescription}</label>
+                    <textarea
+                      id="calendar-create-desc"
+                      value={taskForm.description}
+                      onChange={(e) => setTaskForm({ ...taskForm, description: e.target.value })}
+                      className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                      rows={3}
+                    />
+                  </div>
+                </div>
+                {formError && <div className="text-red-300 text-sm mt-3">{formError}</div>}
+                <div className="mt-6 flex items-center justify-end space-x-2">
+                  <button
+                    onClick={closeCreateTask}
+                    className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl transition text-sm"
+                    disabled={isSubmitting}
+                  >
+                    {t.cancel}
+                  </button>
+                  <button
+                    onClick={handleCreateTask}
+                    className="px-4 py-2 bg-[#0FA968] hover:bg-[#0B8C57] text-white rounded-xl transition text-sm"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? t.saving : t.createTask}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Legend */}
           <div className="mt-6 flex items-center space-x-6 flex-wrap gap-4">

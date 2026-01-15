@@ -10,9 +10,10 @@ interface TaskCardProps {
   currentLang: Language;
   onDragStart?: (e: React.DragEvent) => void;
   onDragEnd?: (e: React.DragEvent) => void;
+  onClick?: () => void;
 }
 
-export default function TaskCard({ task, currentLang, onDragStart, onDragEnd }: TaskCardProps) {
+export default function TaskCard({ task, currentLang, onDragStart, onDragEnd, onClick }: TaskCardProps) {
   const t = translations[currentLang];
 
   const getPriorityBadge = (priority: number) => {
@@ -65,15 +66,19 @@ export default function TaskCard({ task, currentLang, onDragStart, onDragEnd }: 
   const isCompleted = task.status === 'completed';
 
   return (
-    <div
-      className={`task-card rounded-2xl p-5 shadow-xl border ${
+    <button
+      type="button"
+      onClick={onClick}
+      className={`task-card w-full text-left rounded-2xl p-5 shadow-xl border transition ${
         isCompleted
           ? 'bg-white/90 opacity-80 border-gray-200 shadow-lg'
-          : 'bg-white border-gray-100'
+          : 'bg-white border-gray-100 hover:bg-gray-50'
       }`}
       draggable
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
+      aria-label={task.title}
+      title={task.title}
     >
       <div className="flex items-start justify-between mb-3">
         <h3
@@ -157,6 +162,6 @@ export default function TaskCard({ task, currentLang, onDragStart, onDragEnd }: 
           </span>
         </div>
       )}
-    </div>
+    </button>
   );
 }
