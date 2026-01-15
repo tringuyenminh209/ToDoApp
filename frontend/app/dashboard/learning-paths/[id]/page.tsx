@@ -250,7 +250,7 @@ export default function LearningPathDetailPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {/* Status */}
-        <div className="bg-white/20 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
+        <div className="bg-gradient-to-br from-[#0FA968]/15 via-white/10 to-[#1F6FEB]/15 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
           <div className="text-sm text-white/80 mb-2">{t.status}</div>
           <div className="flex items-center space-x-2">
             <span className={`px-3 py-1 rounded-lg text-xs font-bold border ${getStatusColor(learningPath.status)}`}>
@@ -260,7 +260,7 @@ export default function LearningPathDetailPage() {
         </div>
 
         {/* Progress */}
-        <div className="bg-white/20 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
+        <div className="bg-gradient-to-br from-[#1F6FEB]/15 via-white/10 to-[#0FA968]/15 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
           <div className="text-sm text-white/80 mb-2">{t.progress}</div>
           <div className="flex items-center space-x-2">
             <div className="flex-1 bg-white/20 rounded-full h-2">
@@ -274,7 +274,7 @@ export default function LearningPathDetailPage() {
         </div>
 
         {/* Milestones */}
-        <div className="bg-white/20 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
+        <div className="bg-gradient-to-br from-[#8B5CF6]/15 via-white/10 to-[#1F6FEB]/15 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
           <div className="text-sm text-white/80 mb-2">{t.milestone}</div>
           <div className="text-2xl font-bold text-white">
             {completedMilestones}/{totalMilestones}
@@ -283,7 +283,7 @@ export default function LearningPathDetailPage() {
 
         {/* Estimated Hours */}
         {learningPath.estimated_hours_total && (
-          <div className="bg-white/20 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
+          <div className="bg-gradient-to-br from-[#0FA968]/15 via-white/10 to-[#1F6FEB]/15 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
             <div className="text-sm text-white/80 mb-2">{t.estimatedHours || 'Estimated Hours'}</div>
             <div className="text-2xl font-bold text-white flex items-center space-x-2">
               <Icon icon="mdi:clock" />
@@ -295,7 +295,7 @@ export default function LearningPathDetailPage() {
 
       {/* Dates */}
       {(learningPath.target_start_date || learningPath.target_end_date) && (
-        <div className="bg-white/20 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl mb-6">
+        <div className="bg-gradient-to-br from-[#1F6FEB]/15 via-white/10 to-[#0FA968]/15 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {learningPath.target_start_date && (
               <div>
@@ -320,7 +320,7 @@ export default function LearningPathDetailPage() {
       )}
 
       {/* Milestones List */}
-      <div className="bg-white/20 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
+      <div className="bg-gradient-to-br from-[#1F6FEB]/15 via-white/10 to-[#0FA968]/15 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
         <h2 className="text-lg font-bold text-white mb-4 drop-shadow-md flex items-center">
           <Icon icon="mdi:flag" className="mr-2" />
           {t.milestone} ({totalMilestones})
@@ -341,7 +341,7 @@ export default function LearningPathDetailPage() {
               return (
                 <div
                   key={milestone.id}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/15 transition"
+                  className="bg-gradient-to-r from-white/10 via-white/5 to-[#1F6FEB]/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 border-l-4 border-[#1F6FEB]/40 hover:from-[#0FA968]/10 hover:to-[#1F6FEB]/15 transition"
                 >
                   {/* Milestone Header */}
                   <div
@@ -409,7 +409,7 @@ export default function LearningPathDetailPage() {
                       {tasks.map((task) => (
                         <div
                           key={task.id}
-                          className="bg-white/5 rounded-lg p-3 border border-white/5 hover:bg-white/10 transition"
+                          className="bg-white/10 rounded-lg p-3 border border-white/20 border-l-2 border-[#0FA968]/40 hover:bg-white/15 transition"
                         >
                           <div className="flex items-start justify-between">
                             <div className="flex-1">

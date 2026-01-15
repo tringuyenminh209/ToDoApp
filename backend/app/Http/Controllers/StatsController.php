@@ -56,11 +56,10 @@ class StatsController extends Controller
                 ->where('updated_at', '>=', $weekStart)
                 ->count();
 
-            $weeklyFocusSessions = FocusSession::where('user_id', $userId)
+            $weeklyFocusTime = FocusSession::where('user_id', $userId)
                 ->where('status', 'completed')
                 ->where('created_at', '>=', $weekStart)
-                ->get();
-            $weeklyFocusTime = $weeklyFocusSessions->sum('actual_minutes');
+                ->sum('actual_minutes');
 
             $daysActive = FocusSession::where('user_id', $userId)
                 ->where('status', 'completed')
@@ -123,9 +122,12 @@ class StatsController extends Controller
 
         $completionRate = $totalTasks > 0 ? ($completedTasks / $totalTasks) * 100 : 0;
 
-        $focusSessions = FocusSession::where('user_id', $userId)->where('status', 'completed')->get();
-        $totalFocusTime = $focusSessions->sum('actual_minutes');
-        $totalFocusSessions = $focusSessions->count();
+        $totalFocusTime = FocusSession::where('user_id', $userId)
+            ->where('status', 'completed')
+            ->sum('actual_minutes');
+        $totalFocusSessions = FocusSession::where('user_id', $userId)
+            ->where('status', 'completed')
+            ->count();
         $averageSessionDuration = $totalFocusSessions > 0
             ? round($totalFocusTime / $totalFocusSessions)
             : 0;
@@ -144,11 +146,10 @@ class StatsController extends Controller
             ->where('updated_at', '>=', $weekStart)
             ->count();
 
-        $weeklyFocusSessions = FocusSession::where('user_id', $userId)
+        $weeklyFocusTime = FocusSession::where('user_id', $userId)
             ->where('status', 'completed')
             ->where('created_at', '>=', $weekStart)
-            ->get();
-        $weeklyFocusTime = $weeklyFocusSessions->sum('actual_minutes');
+            ->sum('actual_minutes');
 
         $daysActive = FocusSession::where('user_id', $userId)
             ->where('status', 'completed')

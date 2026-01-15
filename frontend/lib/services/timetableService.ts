@@ -5,6 +5,7 @@ export interface TimetableClass {
   id: number;
   user_id: number;
   name: string;
+  description?: string;
   day: string;
   period: number;
   start_time: string;

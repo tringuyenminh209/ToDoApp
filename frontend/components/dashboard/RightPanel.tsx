@@ -19,7 +19,6 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
     total_minutes: number;
     sessions_count: number;
   } | null>(null);
-  const [targetMinutes, setTargetMinutes] = useState<number>(240); // デフォルト4時間
   const [schedule, setSchedule] = useState<(TimetableClass | TimetableStudy)[]>([]);
   const [loading, setLoading] = useState(true);
   const isLoadingAIRef = useRef(false);
@@ -142,13 +141,13 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
               return timeA.localeCompare(timeB);
             });
             
-            // 次の2つの予定を表示
-            setSchedule(allSchedule.slice(0, 2));
+            // 今日の全予定を表示
+            setSchedule(allSchedule);
           } else if (timetableData.data) {
             // レスポンス構造が異なる場合のフォールバック
             const classes = Array.isArray(timetableData.data.classes) ? timetableData.data.classes : [];
             const studies = Array.isArray(timetableData.data.studies) ? timetableData.data.studies : [];
-            setSchedule([...classes, ...studies].slice(0, 2));
+            setSchedule([...classes, ...studies]);
           }
         } catch (error) {
           console.error('Failed to load timetable:', error);
@@ -222,7 +221,7 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
                 return timeA.localeCompare(timeB);
               });
               
-              setSchedule(allSchedule.slice(0, 2));
+              setSchedule(allSchedule);
             }
           } catch (error) {
             console.error('Failed to load timetable:', error);
@@ -319,22 +318,6 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
                     ? `${Math.floor(todayStats.total_minutes / 60)}h ${String(todayStats.total_minutes % 60).padStart(2, '0')}m`
                     : '0h 00m'}
                 </span>
-              </div>
-              <div className="flex items-center justify-between text-sm text-white/90 mb-2">
-                <span>{t.target}:</span>
-                <span className="font-semibold">
-                  {Math.floor(targetMinutes / 60)}h {String(targetMinutes % 60).padStart(2, '0')}m
-                </span>
-              </div>
-              <div className="w-full bg-white/20 rounded-full h-3 mt-3">
-                <div
-                  className="bg-[#0FA968] h-3 rounded-full transition-all duration-300"
-                  style={{
-                    width: todayStats && targetMinutes > 0
-                      ? `${Math.min((todayStats.total_minutes / targetMinutes) * 100, 100)}%`
-                      : '0%',
-                  }}
-                ></div>
               </div>
             </div>
           </div>
