@@ -3,8 +3,10 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
+import { AiLogo } from '@/components/ui/AiLogo';
 import { translations, type Language } from '@/lib/i18n';
 import { aiService } from '@/lib/services/aiService';
+import { aiChatService, type ChatMessage } from '@/lib/services/aiChatService';
 import { statsService } from '@/lib/services/statsService';
 import { timetableService, TimetableClass, TimetableStudy } from '@/lib/services/timetableService';
 
@@ -15,6 +17,16 @@ interface RightPanelProps {
 
 export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps) {
   const [aiMessage, setAiMessage] = useState<string>('');
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [chatInput, setChatInput] = useState('');
+  const [chatLoading, setChatLoading] = useState(true);
+  const [chatSending, setChatSending] = useState(false);
+  const [chatError, setChatError] = useState<string | null>(null);
+  const [conversationId, setConversationId] = useState<number | null>(null);
+  const [isChatExpanded, setIsChatExpanded] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyItems, setHistoryItems] = useState<any[]>([]);
   const [todayStats, setTodayStats] = useState<{
     total_minutes: number;
     sessions_count: number;
@@ -25,7 +37,26 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
   const [selectedSchedule, setSelectedSchedule] = useState<TimetableClass | TimetableStudy | null>(null);
   const isLoadingAIRef = useRef(false);
   const lastAILoadTimeRef = useRef<number>(0);
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
   const t = translations[currentLang];
+
+  const normalizeMessages = (messages: ChatMessage[]) => {
+    return [...messages].sort((a, b) => {
+      const idA = typeof a.id === 'number' ? a.id : 0;
+      const idB = typeof b.id === 'number' ? b.id : 0;
+      if (idA && idB) return idA - idB;
+      const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
+      return timeA - timeB;
+    });
+  };
+
+  const appendMessage = (messages: ChatMessage[], message?: ChatMessage | null) => {
+    if (!message?.content) return messages;
+    const last = messages[messages.length - 1];
+    if (last && last.role === message.role && last.content === message.content) return messages;
+    return [...messages, message];
+  };
 
   const openScheduleDetail = (item: TimetableClass | TimetableStudy) => {
     setSelectedSchedule(item);
@@ -289,6 +320,258 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const loadLatestConversation = async () => {
+      setChatLoading(true);
+      setChatError(null);
+      try {
+        const conversations = await aiChatService.getConversations({
+          per_page: 1,
+          sort_by: 'last_message_at',
+          sort_order: 'desc',
+        });
+        const latestConversation = conversations?.data?.data?.[0];
+        if (latestConversation?.id) {
+          const conversationDetail = await aiChatService.getConversation(latestConversation.id);
+          const conversationData = conversationDetail?.data || latestConversation;
+          setConversationId(latestConversation.id);
+          setChatMessages(normalizeMessages(conversationData.messages || []));
+        } else {
+          setConversationId(null);
+          setChatMessages([]);
+        }
+      } catch (error) {
+        console.error('Failed to load chat conversations:', error);
+        setChatError(t.aiChatError);
+      } finally {
+        setChatLoading(false);
+      }
+    };
+
+    loadLatestConversation();
+  }, []);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages, chatSending]);
+
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    if (isChatExpanded) {
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isChatExpanded]);
+
+  const handleNewConversation = () => {
+    setConversationId(null);
+    setChatMessages([]);
+    setChatInput('');
+    setChatError(null);
+  };
+
+  const loadConversationById = async (id: number) => {
+    setChatLoading(true);
+    try {
+      const conversationDetail = await aiChatService.getConversation(id);
+      const conversationData = conversationDetail?.data;
+      setConversationId(id);
+      setChatMessages(normalizeMessages(conversationData?.messages || []));
+    } catch (error) {
+      console.error('Failed to load conversation:', error);
+      setChatError(t.aiChatError);
+    } finally {
+      setChatLoading(false);
+    }
+  };
+
+  const openHistory = async () => {
+    setIsHistoryOpen(true);
+    setHistoryLoading(true);
+    try {
+      const response = await aiChatService.getConversations({
+        per_page: 20,
+        sort_by: 'last_message_at',
+        sort_order: 'desc',
+      });
+      setHistoryItems(response?.data?.data || []);
+    } catch (error) {
+      console.error('Failed to load chat history:', error);
+      setChatError(t.aiChatError);
+    } finally {
+      setHistoryLoading(false);
+    }
+  };
+
+  const handleSendMessage = async () => {
+    const trimmed = chatInput.trim();
+    if (!trimmed || chatSending) return;
+
+    setChatSending(true);
+    setChatError(null);
+    setChatInput('');
+
+    const optimisticUserMessage: ChatMessage = {
+      id: `local-${Date.now()}`,
+      role: 'user',
+      content: trimmed,
+    };
+    setChatMessages((prev) => appendMessage(prev, optimisticUserMessage));
+
+    try {
+      if (!conversationId) {
+        const created = await aiChatService.createConversation({ message: trimmed });
+        const conversation = created?.data?.conversation;
+        if (conversation?.id) {
+          setConversationId(conversation.id);
+          setChatMessages(normalizeMessages(conversation.messages || []));
+        } else {
+          setChatMessages((prev) =>
+            appendMessage(prev, { role: 'assistant', content: created?.message || t.aiChatFallback })
+          );
+        }
+      } else {
+        const sent = await aiChatService.sendMessage(conversationId, trimmed, true);
+        const assistantMessage = sent?.data?.assistant_message;
+        if (assistantMessage?.content) {
+          setChatMessages((prev) => appendMessage(prev, assistantMessage));
+        } else {
+          setChatMessages((prev) => appendMessage(prev, { role: 'assistant', content: t.aiChatFallback }));
+        }
+      }
+    } catch (error) {
+      console.error('Failed to send chat message:', error);
+      setChatError(t.aiChatError);
+      setChatMessages((prev) => appendMessage(prev, { role: 'assistant', content: t.aiChatRetry }));
+    } finally {
+      setChatSending(false);
+    }
+  };
+
+  const chatPanelContent = (
+    <div
+      className={`bg-white/20 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl ${
+        isChatExpanded ? 'w-[90vw] max-w-5xl' : ''
+      }`}
+      onClick={(event) => event.stopPropagation()}
+    >
+      <div className="flex items-center justify-end mb-4">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={openHistory}
+            className="w-9 h-9 rounded-lg text-white/80 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition"
+            aria-label={t.aiChatHistory}
+            title={t.aiChatHistory}
+          >
+            <Icon icon="mdi:history" className="text-base" />
+          </button>
+          <button
+            onClick={() => setIsChatExpanded((prev) => !prev)}
+            className="w-9 h-9 rounded-lg text-white/80 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition"
+            aria-label={isChatExpanded ? t.aiChatCollapse : t.aiChatExpand}
+            title={isChatExpanded ? t.aiChatCollapse : t.aiChatExpand}
+          >
+            <Icon icon={isChatExpanded ? 'mdi:arrow-collapse' : 'mdi:arrow-expand'} className="text-base" />
+          </button>
+          <button
+            onClick={handleNewConversation}
+            className="w-9 h-9 rounded-lg text-white/80 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition"
+            aria-label={t.aiChatNew}
+            title={t.aiChatNew}
+          >
+            <Icon icon="mdi:plus" className="text-base" />
+          </button>
+        </div>
+      </div>
+      <div
+        className={`bg-white/30 backdrop-blur-sm rounded-xl p-4 border border-white/30 flex flex-col ${
+          isChatExpanded ? 'h-[70vh]' : 'h-[360px]'
+        }`}
+      >
+        <div className="flex-1 overflow-y-auto pr-1 space-y-3">
+          {chatLoading ? (
+            <div className="text-white/70 text-sm text-center py-6">{t.aiChatLoading}</div>
+          ) : chatMessages.length > 0 ? (
+            chatMessages.map((message, index) => {
+              const isUser = message.role === 'user';
+              return (
+                <div key={message.id || index} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+                  <div
+                    className={`max-w-[75%] rounded-xl px-3 py-2 text-sm leading-relaxed ${
+                      isUser ? 'bg-[#1F6FEB]/80 text-white' : 'bg-white/10 text-white/90 border border-white/10'
+                    }`}
+                  >
+                    {message.content}
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="text-white/80 text-sm space-y-3">
+              <div className="flex items-start space-x-3">
+                <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <AiLogo size={26} className="drop-shadow-sm" title={t.aiChatTitle} />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-white">{t.aiChatEmptyTitle}</p>
+                  <p className="text-xs text-white/70 mt-1">{t.aiChatEmptyBody}</p>
+                </div>
+              </div>
+              {aiMessage && (
+                <div className="bg-white/10 rounded-lg p-3 border border-white/10 text-xs text-white/80">
+                  <span className="font-semibold">{t.aiChatAssistantLabel}</span> {aiMessage}
+                </div>
+              )}
+            </div>
+          )}
+          {chatSending && (
+            <div className="flex items-start space-x-2">
+              <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">
+                <AiLogo size={16} className="drop-shadow-sm" title={t.aiChatTitle} />
+              </div>
+              <div className="bg-white/10 text-white/70 text-xs px-3 py-2 rounded-lg animate-pulse">
+                {t.aiChatTyping}
+              </div>
+            </div>
+          )}
+          <div ref={chatEndRef} />
+        </div>
+        <div className="pt-3 mt-3 border-t border-white/20">
+          <div className="flex items-end gap-2">
+            <textarea
+              value={chatInput}
+              onChange={(event) => setChatInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                  event.preventDefault();
+                  handleSendMessage();
+                }
+              }}
+              rows={2}
+              placeholder={t.aiChatPlaceholder}
+              className="flex-1 resize-none bg-white/10 text-white placeholder:text-white/50 text-sm rounded-lg border border-white/20 focus:outline-none focus:ring-2 focus:ring-[#1F6FEB]/60 px-3 py-2"
+            />
+            <button
+              onClick={handleSendMessage}
+              disabled={!chatInput.trim() || chatSending}
+              className="w-10 h-10 rounded-lg bg-[#1F6FEB] hover:bg-[#1E40AF] disabled:bg-white/20 disabled:text-white/40 text-white flex items-center justify-center transition"
+              aria-label={t.aiChatSend}
+              title={t.aiChatSend}
+            >
+              <Icon icon="mdi:send" />
+            </button>
+          </div>
+          <div className="flex items-center justify-between mt-2 text-xs text-white/60">
+            <span>{t.aiChatHint}</span>
+            {chatError && <span className="text-red-300">{chatError}</span>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <aside
       className={`${
@@ -297,23 +580,67 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
     >
       <div className="p-4 space-y-6">
         {/* AI Assistant Panel */}
-        <div className="bg-white/20 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
-          <h2 className="text-lg font-bold text-white mb-4 drop-shadow-md">{t.sidePanelAI}</h2>
-          <div className="bg-white/30 backdrop-blur-sm rounded-xl p-4 border border-white/30">
-            <div className="flex items-start space-x-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0FA968] to-[#1F6FEB] flex items-center justify-center flex-shrink-0">
-                <Icon icon="mdi:robot" className="text-white" />
+        {isChatExpanded ? (
+          <div
+            className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm flex items-center justify-center px-4 py-6"
+            onClick={() => setIsChatExpanded(false)}
+          >
+            {chatPanelContent}
+          </div>
+        ) : (
+          chatPanelContent
+        )}
+        {isHistoryOpen && (
+          <div
+            className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center px-4 py-6"
+            onClick={() => setIsHistoryOpen(false)}
+          >
+            <div
+              className="w-full max-w-lg bg-[#0B1220] rounded-2xl p-5 border border-white/20 shadow-2xl"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-white">{t.aiChatHistory}</h3>
+                <button
+                  onClick={() => setIsHistoryOpen(false)}
+                  className="text-white/70 hover:text-white"
+                  aria-label={t.close}
+                  title={t.close}
+                >
+                  <Icon icon="mdi:close" />
+                </button>
               </div>
-              <div className="flex-1">
-                <p className="text-sm text-white drop-shadow-sm leading-relaxed">
-                  <span className="font-semibold">AI Assistant:</span>{' '}
-                  {aiMessage ||
-                    'Bạn có 1 deadline vào 14:00 hôm nay. Hãy ưu tiên hoàn thành task API integration trước.'}
-                </p>
+              <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-1">
+                {historyLoading ? (
+                  <div className="text-white/70 text-sm text-center py-6">{t.aiChatLoading}</div>
+                ) : historyItems.length > 0 ? (
+                  historyItems.map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        setIsHistoryOpen(false);
+                        loadConversationById(item.id);
+                      }}
+                      className="w-full text-left p-3 bg-white/10 hover:bg-white/20 rounded-xl border border-white/10 transition"
+                    >
+                      <div className="text-sm text-white font-semibold truncate">
+                        {item.title || t.aiChatUntitled}
+                      </div>
+                      {item.messages?.[0]?.content && (
+                        <div className="text-xs text-white/60 truncate mt-1">{item.messages[0].content}</div>
+                      )}
+                      {item.last_message_at && (
+                        <div className="text-[11px] text-white/40 mt-1">{item.last_message_at}</div>
+                      )}
+                    </button>
+                  ))
+                ) : (
+                  <div className="text-white/60 text-sm text-center py-6">{t.aiChatNoHistory}</div>
+                )}
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Today Stats */}
         <div className="bg-white/20 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
