@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class AIController extends Controller
 {
@@ -575,13 +576,19 @@ class AIController extends Controller
                         $priorityInt = $priorityValue;
                     }
 
+                    $deadline = $taskData['deadline'] ?? null;
+                    if (!$deadline) {
+                        $deadline = $this->inferDeadlineFromMessage($request->message, now());
+                    }
+                    $deadline = $deadline ?? now()->format('Y-m-d');
+
                     $createdTask = Task::create([
                         'user_id' => $request->user()->id,
                         'title' => $taskData['title'],
                         'description' => $taskData['description'] ?? null,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
-                        'deadline' => $taskData['deadline'] ?? now()->format('Y-m-d'),
+                        'deadline' => $deadline,
                         'scheduled_time' => $taskData['scheduled_time'] ?? null,
                         'status' => 'pending',
                     ]);
@@ -758,13 +765,19 @@ class AIController extends Controller
                         $priorityInt = $priorityValue;
                     }
 
+                    $deadline = $taskData['deadline'] ?? null;
+                    if (!$deadline) {
+                        $deadline = $this->inferDeadlineFromMessage($request->message, now());
+                    }
+                    $deadline = $deadline ?? now()->format('Y-m-d');
+
                     $createdTask = Task::create([
                         'user_id' => $request->user()->id,
                         'title' => $taskData['title'],
                         'description' => $taskData['description'] ?? null,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
-                        'deadline' => $taskData['deadline'] ?? now()->format('Y-m-d'),
+                        'deadline' => $deadline,
                         'scheduled_time' => $taskData['scheduled_time'] ?? null,
                         'status' => 'pending',
                     ]);
@@ -1040,13 +1053,19 @@ class AIController extends Controller
                         $priorityInt = $priorityValue;
                     }
 
+                    $deadline = $taskData['deadline'] ?? null;
+                    if (!$deadline) {
+                        $deadline = $this->inferDeadlineFromMessage($request->message, now());
+                    }
+                    $deadline = $deadline ?? now()->format('Y-m-d');
+
                     $createdTask = Task::create([
                         'user_id' => $user->id,
                         'title' => $taskData['title'],
                         'description' => $taskData['description'] ?? null,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
-                        'deadline' => $taskData['deadline'] ?? now()->format('Y-m-d'),
+                        'deadline' => $deadline,
                         'scheduled_time' => $taskData['scheduled_time'] ?? null,
                         'status' => 'pending',
                     ]);
@@ -1728,5 +1747,119 @@ class AIController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    private function inferDeadlineFromMessage(string $message, Carbon $reference): ?string
+    {
+        $normalized = mb_strtolower($message, 'UTF-8');
+
+        if (preg_match('/\b(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})\b/', $normalized, $match)) {
+            $year = (int) $match[1];
+            $month = (int) $match[2];
+            $day = (int) $match[3];
+            if (checkdate($month, $day, $year)) {
+                return Carbon::create($year, $month, $day)->format('Y-m-d');
+            }
+        }
+
+        if (preg_match('/(\d{1,2})月(\d{1,2})日/u', $message, $match)) {
+            $month = (int) $match[1];
+            $day = (int) $match[2];
+            $year = $reference->year;
+            if (checkdate($month, $day, $year)) {
+                return Carbon::create($year, $month, $day)->format('Y-m-d');
+            }
+        }
+
+        if (preg_match('/(明後日|あさって|day after tomorrow|ngày mốt)/iu', $normalized)) {
+            return $reference->copy()->addDays(2)->format('Y-m-d');
+        }
+
+        if (preg_match('/(明日|tomorrow|ngày mai)/iu', $normalized)) {
+            return $reference->copy()->addDay()->format('Y-m-d');
+        }
+
+        if (preg_match('/(今日|today|tonight|hôm nay)/iu', $normalized)) {
+            return $reference->format('Y-m-d');
+        }
+
+        $isNextWeek = preg_match('/(来週|next week|tuần sau)/iu', $normalized);
+        $weekday = $this->inferWeekdayFromMessage($message);
+        if ($weekday) {
+            $target = $reference->copy()->startOfDay();
+            $daysUntil = ($weekday - $target->dayOfWeekIso + 7) % 7;
+            $target->addDays($daysUntil);
+            if ($isNextWeek) {
+                $target->addDays(7);
+            }
+            return $target->format('Y-m-d');
+        }
+
+        return null;
+    }
+
+    private function inferWeekdayFromMessage(string $message): ?int
+    {
+        if (preg_match('/(月曜|月曜日)/u', $message)) {
+            return 1;
+        }
+        if (preg_match('/(火曜|火曜日)/u', $message)) {
+            return 2;
+        }
+        if (preg_match('/(水曜|水曜日)/u', $message)) {
+            return 3;
+        }
+        if (preg_match('/(木曜|木曜日)/u', $message)) {
+            return 4;
+        }
+        if (preg_match('/(金曜|金曜日)/u', $message)) {
+            return 5;
+        }
+        if (preg_match('/(土曜|土曜日)/u', $message)) {
+            return 6;
+        }
+        if (preg_match('/(日曜|日曜日)/u', $message)) {
+            return 7;
+        }
+
+        if (preg_match('/\b(monday)\b/i', $message)) {
+            return 1;
+        }
+        if (preg_match('/\b(tuesday)\b/i', $message)) {
+            return 2;
+        }
+        if (preg_match('/\b(wednesday)\b/i', $message)) {
+            return 3;
+        }
+        if (preg_match('/\b(thursday)\b/i', $message)) {
+            return 4;
+        }
+        if (preg_match('/\b(friday)\b/i', $message)) {
+            return 5;
+        }
+        if (preg_match('/\b(saturday)\b/i', $message)) {
+            return 6;
+        }
+        if (preg_match('/\b(sunday)\b/i', $message)) {
+            return 7;
+        }
+
+        if (preg_match('/(chủ nhật|chu nhat)/iu', $message)) {
+            return 7;
+        }
+        if (preg_match('/(thứ|thu)\s*([2-7])/iu', $message, $match)) {
+            $day = (int) $match[2];
+            return match ($day) {
+                2 => 1,
+                3 => 2,
+                4 => 3,
+                5 => 4,
+                6 => 5,
+                7 => 6,
+                default => null,
+            };
+        }
+
+        return null;
     }
 }
