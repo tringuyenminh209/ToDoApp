@@ -604,8 +604,8 @@ export default function LearningPathsPage() {
       )}
 
       {showTemplateDetail && (
-        <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center px-4">
-          <div className="w-full max-w-2xl bg-[#0B1220] rounded-2xl p-6 border border-white/20 shadow-2xl">
+        <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center px-4 pt-24 pb-6">
+          <div className="w-full max-w-2xl bg-[#0B1220] rounded-2xl p-6 border border-white/20 shadow-2xl max-h-[calc(100vh-140px)] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-white">{t.templateDetails}</h3>
               <button
