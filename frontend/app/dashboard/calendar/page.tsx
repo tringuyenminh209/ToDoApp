@@ -26,6 +26,7 @@ export default function CalendarPage() {
   const [showCreateTask, setShowCreateTask] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [taskForm, setTaskForm] = useState({
     title: '',
     description: '',
@@ -123,28 +124,35 @@ export default function CalendarPage() {
     return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   };
 
+  const formatLocalDate = (value: Date): string => {
+    const year = value.getFullYear();
+    const month = `${value.getMonth() + 1}`.padStart(2, '0');
+    const day = `${value.getDate()}`.padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const normalizeDeadlineDate = (value?: string): string | null => {
+    if (!value) return null;
+    if (value.includes('T') || value.includes(' ')) {
+      return value.split(/[T ]/)[0];
+    }
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return value;
+    }
+    const parsed = new Date(value);
+    if (!isNaN(parsed.getTime())) {
+      return formatLocalDate(parsed);
+    }
+    return null;
+  };
+
   const getTasksForDate = (date: Date): Task[] => {
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = formatLocalDate(date);
     const filteredTasks = tasks.filter((task) => {
       if (!task.deadline) return false;
       
       try {
-        let taskDateStr: string | null = null;
-        
-        if (task.deadline.includes('T') || task.deadline.includes(' ')) {
-          const parsedDate = new Date(task.deadline);
-          if (!isNaN(parsedDate.getTime())) {
-            taskDateStr = parsedDate.toISOString().split('T')[0];
-          }
-        } else if (task.deadline.match(/^\d{4}-\d{2}-\d{2}$/)) {
-          taskDateStr = task.deadline;
-        } else {
-          const parsedDate = new Date(task.deadline);
-          if (!isNaN(parsedDate.getTime())) {
-            taskDateStr = parsedDate.toISOString().split('T')[0];
-          }
-        }
-        
+        const taskDateStr = normalizeDeadlineDate(task.deadline);
         return taskDateStr === dateStr;
       } catch (error) {
         console.error('Error parsing task deadline:', task.deadline, error);
@@ -345,6 +353,21 @@ export default function CalendarPage() {
     return t.lowPriority;
   };
 
+  const getStatusLabel = (status: Task['status']): string => {
+    if (status === 'completed') return t.completed;
+    if (status === 'in_progress') return t.inProgress;
+    if (status === 'cancelled') return t.cancelled;
+    return t.pending;
+  };
+
+  const formatDateOnly = (value?: string) => {
+    if (!value) return t.none;
+    if (value.includes('T') || value.includes(' ')) {
+      return value.split(/[T ]/)[0];
+    }
+    return value;
+  };
+
   const calendarDays = generateCalendarDays();
   const currentMonth = currentDate.getMonth();
   const displayedDays =
@@ -468,7 +491,9 @@ export default function CalendarPage() {
                   )}
                 </div>
                 <div className="space-y-1">
-                  {day.tasks.slice(0, 3).map((task) => (
+                  {day.tasks.slice(0, 3).map((task) => {
+                    const isCompleted = task.status === 'completed';
+                    return (
                     <div
                       key={task.id}
                       className={`task-item text-xs px-2 py-1.5 rounded-lg cursor-pointer transition ${
@@ -477,13 +502,16 @@ export default function CalendarPage() {
                           : getPriorityClass(task.priority) === 'medium'
                           ? 'medium'
                           : 'low'
-                      }`}
-                      onClick={() => router.push(`/dashboard/tasks?task=${task.id}`)}
+                      } ${isCompleted ? 'opacity-70' : ''}`}
+                      onClick={() => setSelectedTask(task)}
                       title={task.title}
                     >
-                      <span className="truncate block">{task.title}</span>
+                      <span className={`truncate block ${isCompleted ? 'line-through text-white/60' : ''}`}>
+                        {task.title}
+                      </span>
                     </div>
-                  ))}
+                    );
+                  })}
                   {day.tasks.length > 3 && (
                     <div className="text-xs text-white/60 px-2">
                       +{day.tasks.length - 3} {t.tasks}
@@ -620,6 +648,72 @@ export default function CalendarPage() {
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? t.saving : t.createTask}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {selectedTask && (
+            <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center px-4">
+              <div className="w-full max-w-lg bg-[#0B1220] rounded-2xl p-6 border border-white/20 shadow-2xl">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-white">{t.taskDetails}</h3>
+                  <button
+                    onClick={() => setSelectedTask(null)}
+                    className="text-white/70 hover:text-white"
+                    aria-label={t.close}
+                    title={t.close}
+                  >
+                    <Icon icon="mdi:close" />
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-sm text-white/60">{t.taskTitle}</div>
+                    <div className="text-white font-semibold">{selectedTask.title}</div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <div className="text-sm text-white/60">{t.status}</div>
+                      <div className="text-white">{getStatusLabel(selectedTask.status)}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-white/60">{t.priority}</div>
+                      <div className="text-white">{getPriorityLabel(selectedTask.priority)}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-white/60">{t.deadline}</div>
+                      <div className="text-white">{formatDateOnly(selectedTask.deadline)}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-white/60">{t.scheduledTime}</div>
+                      <div className="text-white">{selectedTask.scheduled_time || t.none}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-sm text-white/60">{t.estimatedMinutes}</div>
+                    <div className="text-white">{selectedTask.estimated_minutes ?? t.none}</div>
+                  </div>
+                  <div>
+                    <div className="text-sm text-white/60">{t.taskDescription}</div>
+                    <div className="text-white whitespace-pre-wrap">
+                      {selectedTask.description?.trim() || t.none}
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-6 flex items-center justify-end space-x-2">
+                  <button
+                    onClick={() => setSelectedTask(null)}
+                    className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl transition text-sm"
+                  >
+                    {t.close}
+                  </button>
+                  <button
+                    onClick={() => router.push(`/dashboard/tasks?task=${selectedTask.id}`)}
+                    className="px-4 py-2 bg-[#0FA968] hover:bg-[#0B8C57] text-white rounded-xl transition text-sm"
+                  >
+                    {t.view}
                   </button>
                 </div>
               </div>
