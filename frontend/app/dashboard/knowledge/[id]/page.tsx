@@ -207,6 +207,13 @@ export default function KnowledgeDetailPage() {
   const editorRef = useRef<HTMLDivElement>(null);
   const monacoEditorRef = useRef<any>(null);
   const t = translations[currentLang];
+  const handleBack = () => {
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      router.back();
+      return;
+    }
+    router.push('/dashboard/knowledge');
+  };
 
   // Enhanced markdown to HTML converter that handles code snippets
   const convertContentToHtml = (content: string, itemType: string, codeLanguage?: string): string => {
@@ -526,16 +533,54 @@ export default function KnowledgeDetailPage() {
 
   return (
     <div className="px-6 py-6 relative z-0 min-w-0">
+      <div className="mb-4 flex items-center space-x-2 flex-wrap">
+        <Link
+          href="/dashboard"
+          className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-sm text-white transition flex items-center"
+        >
+          <Icon icon="mdi:home" className="mr-1" />
+          {t.home}
+        </Link>
+        <div className="flex items-center space-x-2">
+          <Icon icon="mdi:chevron-right" className="text-white/40" />
+          <Link
+            href="/dashboard/knowledge"
+            className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-sm text-white transition"
+          >
+            {t.knowledge}
+          </Link>
+        </div>
+        {knowledgeItem?.category?.name && knowledgeItem.category_id && (
+          <div className="flex items-center space-x-2">
+            <Icon icon="mdi:chevron-right" className="text-white/40" />
+            <Link
+              href={`/dashboard/knowledge?category=${knowledgeItem.category_id}`}
+              className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-sm text-white transition"
+            >
+              {knowledgeItem.category.name}
+            </Link>
+          </div>
+        )}
+        {knowledgeItem?.title && (
+          <div className="flex items-center space-x-2">
+            <Icon icon="mdi:chevron-right" className="text-white/40" />
+            <span className="px-3 py-1.5 bg-white/5 rounded-lg text-sm text-white/80">
+              {knowledgeItem.title}
+            </span>
+          </div>
+        )}
+      </div>
       {/* Header */}
       <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center space-x-4">
-          <Link
-            href="/dashboard/knowledge"
+          <button
+            onClick={handleBack}
             className="p-2 hover:bg-white/10 rounded-xl transition"
             title={t.back}
+            aria-label={t.back}
           >
             <Icon icon="mdi:arrow-left" className="text-2xl text-white" />
-          </Link>
+          </button>
           <div>
             {isEditing ? (
               <input

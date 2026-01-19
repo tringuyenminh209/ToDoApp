@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { translations, type Language } from '@/lib/i18n';
@@ -14,6 +14,7 @@ interface CategoryWithItems extends KnowledgeCategory {
 
 export default function KnowledgePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [currentLang, setCurrentLang] = useState<Language>('ja');
   const [allCategories, setAllCategories] = useState<KnowledgeCategory[]>([]);
   const [allItems, setAllItems] = useState<KnowledgeItem[]>([]);
@@ -92,6 +93,17 @@ export default function KnowledgePage() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  useEffect(() => {
+    if (!allCategories.length) return;
+    const categoryParam = searchParams.get('category');
+    if (!categoryParam) return;
+    const categoryId = Number(categoryParam);
+    const category = allCategories.find((item) => item.id === categoryId);
+    if (category) {
+      navigateToCategory(category);
+    }
+  }, [allCategories, searchParams]);
 
   const navigateToRoot = () => {
     setCurrentCategoryId(null);
