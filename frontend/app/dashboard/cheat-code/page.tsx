@@ -181,9 +181,11 @@ export default function CheatCodePage() {
             aria-label={t.allCategories}
             className="bg-white/20 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30"
           >
-            <option value="">{t.allCategories}</option>
+            <option value="" className="bg-[#1f1f1f] text-white">
+              {t.allCategories}
+            </option>
             {categories.map((category) => (
-              <option key={category} value={category}>
+              <option key={category} value={category} className="bg-[#1f1f1f] text-white">
                 {category}
               </option>
             ))}

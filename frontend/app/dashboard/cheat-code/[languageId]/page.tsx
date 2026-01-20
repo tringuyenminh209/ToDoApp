@@ -124,6 +124,49 @@ export default function LanguageDetailPage() {
     }
   };
 
+  const getLanguageLogoUrl = (languageData: any): string | null => {
+    if (languageData?.logoUrl) {
+      return languageData.logoUrl;
+    }
+
+    const logoMap: Record<string, string> = {
+      php: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg',
+      java: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
+      python: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+      javascript: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+      typescript: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+      go: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg',
+      cpp: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg',
+      'c++': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg',
+      c: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg',
+      kotlin: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg',
+      html: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
+      html5: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
+      css: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
+      css3: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
+      bash: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg',
+      laravel: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg',
+      docker: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
+      react: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+      vue: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg',
+      nodejs: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+      ruby: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg',
+      rust: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg',
+      swift: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg',
+      scala: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scala/scala-original.svg',
+      r: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/r/r-original.svg',
+      sql: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg',
+      mysql: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg',
+      yaml: 'https://cdn.simpleicons.org/yaml/CB171E',
+      mongodb: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+    };
+
+    const languageName = languageData?.name?.toLowerCase().trim() || '';
+    const displayNameLower = languageData?.displayName?.toLowerCase().trim() || '';
+
+    return logoMap[languageName] || logoMap[displayNameLower] || null;
+  };
+
   return (
     <div className="px-6 py-6 relative z-0">
       {/* Header */}
@@ -138,18 +181,41 @@ export default function LanguageDetailPage() {
         {language && (
           <div className="flex items-start space-x-4">
             <div
-              className="w-16 h-16 rounded-xl flex items-center justify-center shadow-lg"
+              className="w-16 h-16 rounded-xl flex items-center justify-center shadow-lg overflow-hidden relative"
               style={{
                 background: language.color
                   ? `linear-gradient(135deg, ${language.color}20, ${language.color}40)`
                   : 'linear-gradient(135deg, rgba(15, 169, 104, 0.2), rgba(31, 111, 235, 0.2))',
               }}
             >
-              <Icon
-                icon={language.icon || 'mdi:code-tags'}
-                className="text-3xl"
-                style={{ color: language.color || '#0FA968' }}
-              />
+              {getLanguageLogoUrl(language) ? (
+                <>
+                  <img
+                    src={getLanguageLogoUrl(language)!}
+                    alt={language.displayName || language.name}
+                    className="w-10 h-10 object-contain"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = target.nextElementSibling as HTMLElement;
+                      if (fallback) {
+                        fallback.style.display = 'flex';
+                      }
+                    }}
+                  />
+                  <Icon
+                    icon={language.icon || 'mdi:code-tags'}
+                    className="text-3xl absolute hidden"
+                    style={{ color: language.color || '#0FA968' }}
+                  />
+                </>
+              ) : (
+                <Icon
+                  icon={language.icon || 'mdi:code-tags'}
+                  className="text-3xl"
+                  style={{ color: language.color || '#0FA968' }}
+                />
+              )}
             </div>
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-white drop-shadow-lg mb-1">
