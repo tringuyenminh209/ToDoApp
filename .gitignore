@@ -142,3 +142,4 @@ mobileandroid/app/build/
 mobileandroid/local.properties
 mobileandroid/.idea/
 mobileandroid/build_errors.txt
+mobileandroid/app/google-services.json
