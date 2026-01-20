@@ -8,6 +8,11 @@ WORKDIR /var/www
 RUN apt-get update && apt-get install -y \
     git \
     curl \
+    python3 \
+    golang-go \
+    default-jdk \
+    g++ \
+    kotlin \
     libpng-dev \
     libonig-dev \
     libxml2-dev \

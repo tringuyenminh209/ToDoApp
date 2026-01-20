@@ -37,6 +37,11 @@ export default function Header({
     en: 'English',
     ja: '日本語',
   };
+  const langFlags: Record<Language, string> = {
+    vi: '/flags/vi.svg',
+    en: '/flags/en.svg',
+    ja: '/flags/ja.svg',
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -154,9 +159,7 @@ export default function Header({
                       }`}
                     >
                       <div className="flex items-center space-x-3">
-                        <span className="text-lg">
-                          {lang === 'vi' ? '🇻🇳' : lang === 'en' ? '🇺🇸' : '🇯🇵'}
-                        </span>
+                        <Image src={langFlags[lang]} alt={langNames[lang]} width={18} height={12} />
                         <span className="text-gray-900">{langNames[lang]}</span>
                       </div>
                       {currentLang === lang && (

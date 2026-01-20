@@ -295,27 +295,24 @@ class ExerciseController extends Controller
      */
     private function executeCode(string $code, string $input, string $languageName): string
     {
-        // Create temporary file for code
+        // Create temporary workspace for code execution
         $filename = 'exercise_' . Str::random(10);
-        $filepath = null;
-        $inputFile = null;
+        $workDir = "/tmp/{$filename}";
+        $createdPaths = [];
 
         try {
+            if (!is_dir($workDir) && !mkdir($workDir, 0700, true) && !is_dir($workDir)) {
+                throw new \Exception('Failed to create execution directory');
+            }
+            $createdPaths[] = $workDir;
+
             switch (strtolower($languageName)) {
                 case 'bash':
-                    $filepath = "/tmp/{$filename}.sh";
+                    $filepath = "{$workDir}/main.sh";
                     file_put_contents($filepath, $code);
-                    chmod($filepath, 0755);
-
-                    // Execute with input
-                    if (!empty($input)) {
-                        $inputLines = explode("\n", $input);
-                        $command = $filepath . ' ' . implode(' ', array_map('escapeshellarg', $inputLines));
-                    } else {
-                        $command = $filepath;
-                    }
-
-                    $result = Process::timeout(5)->run($command);
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('bash ' . escapeshellarg($filepath));
 
                     if ($result->failed()) {
                         throw new \Exception('Execution error: ' . $result->errorOutput());
@@ -324,19 +321,11 @@ class ExerciseController extends Controller
                     return $result->output();
 
                 case 'python':
-                    $filepath = "/tmp/{$filename}.py";
+                    $filepath = "{$workDir}/main.py";
                     file_put_contents($filepath, $code);
-
-                    // Create input file if needed
-                    if (!empty($input)) {
-                        $inputFile = "/tmp/{$filename}_input.txt";
-                        file_put_contents($inputFile, $input);
-                        $command = "python3 {$filepath} < {$inputFile}";
-                    } else {
-                        $command = "python3 {$filepath}";
-                    }
-
-                    $result = Process::timeout(5)->run($command);
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('python3 ' . escapeshellarg($filepath));
 
                     if ($result->failed()) {
                         throw new \Exception('Execution error: ' . $result->errorOutput());
@@ -345,19 +334,103 @@ class ExerciseController extends Controller
                     return $result->output();
 
                 case 'php':
-                    $filepath = "/tmp/{$filename}.php";
+                    $filepath = "{$workDir}/main.php";
                     file_put_contents($filepath, $code);
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('php ' . escapeshellarg($filepath));
 
-                    // PHP scripts can read from argv or stdin
-                    if (!empty($input)) {
-                        $inputFile = "/tmp/{$filename}_input.txt";
-                        file_put_contents($inputFile, $input);
-                        $command = "php {$filepath} < {$inputFile}";
-                    } else {
-                        $command = "php {$filepath}";
+                    if ($result->failed()) {
+                        throw new \Exception('Execution error: ' . $result->errorOutput());
                     }
 
-                    $result = Process::timeout(5)->run($command);
+                    return $result->output();
+
+                case 'javascript':
+                case 'js':
+                    $filepath = "{$workDir}/main.js";
+                    file_put_contents($filepath, $code);
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('node ' . escapeshellarg($filepath));
+
+                    if ($result->failed()) {
+                        throw new \Exception('Execution error: ' . $result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'go':
+                    $filepath = "{$workDir}/main.go";
+                    file_put_contents($filepath, $code);
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('go run ' . escapeshellarg($filepath));
+
+                    if ($result->failed()) {
+                        throw new \Exception('Execution error: ' . $result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'java':
+                    $filepath = "{$workDir}/Main.java";
+                    file_put_contents($filepath, $code);
+                    $compile = Process::timeout(5)
+                        ->run('javac ' . escapeshellarg($filepath));
+
+                    if ($compile->failed()) {
+                        throw new \Exception('Compilation error: ' . $compile->errorOutput());
+                    }
+
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('java -cp ' . escapeshellarg($workDir) . ' Main');
+
+                    if ($result->failed()) {
+                        throw new \Exception('Execution error: ' . $result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'cpp':
+                case 'c++':
+                    $sourcePath = "{$workDir}/main.cpp";
+                    $binaryPath = "{$workDir}/main";
+                    file_put_contents($sourcePath, $code);
+                    $compile = Process::timeout(5)->run(
+                        'g++ ' . escapeshellarg($sourcePath) . ' -std=c++17 -O2 -o ' . escapeshellarg($binaryPath)
+                    );
+
+                    if ($compile->failed()) {
+                        throw new \Exception('Compilation error: ' . $compile->errorOutput());
+                    }
+
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run(escapeshellarg($binaryPath));
+
+                    if ($result->failed()) {
+                        throw new \Exception('Execution error: ' . $result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'kotlin':
+                    $filepath = "{$workDir}/Main.kt";
+                    $jarPath = "{$workDir}/main.jar";
+                    file_put_contents($filepath, $code);
+                    $compile = Process::timeout(5)->run(
+                        'kotlinc ' . escapeshellarg($filepath) . ' -include-runtime -d ' . escapeshellarg($jarPath)
+                    );
+
+                    if ($compile->failed()) {
+                        throw new \Exception('Compilation error: ' . $compile->errorOutput());
+                    }
+
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('java -jar ' . escapeshellarg($jarPath));
 
                     if ($result->failed()) {
                         throw new \Exception('Execution error: ' . $result->errorOutput());
@@ -370,11 +443,12 @@ class ExerciseController extends Controller
             }
         } finally {
             // Always clean up temp files
-            if ($filepath && file_exists($filepath)) {
-                @unlink($filepath);
-            }
-            if ($inputFile && file_exists($inputFile)) {
-                @unlink($inputFile);
+            if (is_dir($workDir)) {
+                $files = array_diff(scandir($workDir), ['.', '..']);
+                foreach ($files as $file) {
+                    @unlink($workDir . '/' . $file);
+                }
+                @rmdir($workDir);
             }
         }
     }

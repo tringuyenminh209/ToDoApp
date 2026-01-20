@@ -24,8 +24,15 @@ export default function ExampleDetailPage() {
   const [language, setLanguage] = useState<any>(null);
   const [section, setSection] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [runOutput, setRunOutput] = useState<string | null>(null);
+  const [runError, setRunError] = useState<string | null>(null);
+  const [runLoading, setRunLoading] = useState(false);
+  const [runTarget, setRunTarget] = useState<'user' | null>(null);
+  const [userCode, setUserCode] = useState<string>('');
   const editorRef = useRef<any>(null);
   const editorContainerRef = useRef<HTMLDivElement>(null);
+  const userEditorRef = useRef<any>(null);
+  const userEditorContainerRef = useRef<HTMLDivElement>(null);
   const t = translations[currentLang];
 
   useEffect(() => {
@@ -96,8 +103,40 @@ export default function ExampleDetailPage() {
     loadData();
   }, [loadExample, loadLanguage, loadSection]);
 
+  const getEditorLanguage = useCallback(() => {
+    const languageMap: Record<string, string> = {
+      javascript: 'javascript',
+      js: 'javascript',
+      typescript: 'typescript',
+      ts: 'typescript',
+      python: 'python',
+      py: 'python',
+      java: 'java',
+      php: 'php',
+      go: 'go',
+      cpp: 'cpp',
+      c: 'c',
+      csharp: 'csharp',
+      cs: 'csharp',
+      kotlin: 'kotlin',
+      rust: 'rust',
+      ruby: 'ruby',
+      swift: 'swift',
+      bash: 'shell',
+      shell: 'shell',
+      sql: 'sql',
+      html: 'html',
+      css: 'css',
+      json: 'json',
+      yaml: 'yaml',
+      xml: 'xml',
+    };
+
+    return languageMap[language?.name?.toLowerCase() || 'javascript'] || 'javascript';
+  }, [language]);
+
   useEffect(() => {
-    if (!editorContainerRef.current || !example || editorRef.current) return;
+    if (!editorContainerRef.current || !userEditorContainerRef.current || !example || editorRef.current || userEditorRef.current) return;
 
     const loadMonaco = async () => {
       if (window.monaco && window.monaco.editor) {
@@ -130,39 +169,11 @@ export default function ExampleDetailPage() {
     };
 
     const initializeEditor = () => {
-      if (!editorContainerRef.current || !example || editorRef.current) return;
+      if (!editorContainerRef.current || !userEditorContainerRef.current || !example || editorRef.current || userEditorRef.current) return;
 
-      const languageMap: Record<string, string> = {
-        javascript: 'javascript',
-        js: 'javascript',
-        typescript: 'typescript',
-        ts: 'typescript',
-        python: 'python',
-        py: 'python',
-        java: 'java',
-        php: 'php',
-        go: 'go',
-        cpp: 'cpp',
-        c: 'c',
-        csharp: 'csharp',
-        cs: 'csharp',
-        kotlin: 'kotlin',
-        rust: 'rust',
-        ruby: 'ruby',
-        swift: 'swift',
-        bash: 'shell',
-        shell: 'shell',
-        sql: 'sql',
-        html: 'html',
-        css: 'css',
-        json: 'json',
-        yaml: 'yaml',
-        xml: 'xml',
-      };
+      const editorLanguage = getEditorLanguage();
 
-      const editorLanguage = languageMap[language?.name?.toLowerCase() || 'javascript'] || 'javascript';
-
-      const editor = window.monaco.editor.create(editorContainerRef.current, {
+      const exampleEditor = window.monaco.editor.create(editorContainerRef.current, {
         value: example.code || '',
         language: editorLanguage,
         theme: 'vs-dark',
@@ -177,7 +188,28 @@ export default function ExampleDetailPage() {
         readOnly: true, // 例は読み取り専用
       });
 
-      editorRef.current = editor;
+      const userEditor = window.monaco.editor.create(userEditorContainerRef.current, {
+        value: '',
+        language: editorLanguage,
+        theme: 'vs-dark',
+        fontSize: 14,
+        minimap: { enabled: true },
+        automaticLayout: true,
+        scrollBeyondLastLine: false,
+        wordWrap: 'on',
+        lineNumbers: 'on',
+        roundedSelection: false,
+        cursorStyle: 'line',
+        readOnly: false,
+      });
+
+      userEditor.onDidChangeModelContent(() => {
+        setUserCode(userEditor.getValue());
+      });
+
+      editorRef.current = exampleEditor;
+      userEditorRef.current = userEditor;
+      setUserCode('');
     };
 
     loadMonaco();
@@ -187,8 +219,36 @@ export default function ExampleDetailPage() {
         editorRef.current.dispose();
         editorRef.current = null;
       }
+      if (userEditorRef.current) {
+        userEditorRef.current.dispose();
+        userEditorRef.current = null;
+      }
     };
-  }, [example, language]);
+  }, [example, getEditorLanguage]);
+
+  useEffect(() => {
+    if (!example) return;
+
+    if (editorRef.current) {
+      editorRef.current.setValue(example.code || '');
+    }
+    if (userEditorRef.current) {
+      userEditorRef.current.setValue('');
+    }
+    setUserCode('');
+  }, [example]);
+
+  useEffect(() => {
+    const editorLanguage = getEditorLanguage();
+    if (window.monaco?.editor?.setModelLanguage) {
+      if (editorRef.current?.getModel) {
+        window.monaco.editor.setModelLanguage(editorRef.current.getModel(), editorLanguage);
+      }
+      if (userEditorRef.current?.getModel) {
+        window.monaco.editor.setModelLanguage(userEditorRef.current.getModel(), editorLanguage);
+      }
+    }
+  }, [getEditorLanguage]);
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -213,6 +273,29 @@ export default function ExampleDetailPage() {
         return t.hard;
       default:
         return difficulty;
+    }
+  };
+
+  const handleRunUserCode = async () => {
+    if (!example || !userCode.trim()) return;
+    setRunLoading(true);
+    setRunError(null);
+    setRunOutput(null);
+    setRunTarget('user');
+
+    try {
+      const response = await cheatCodeService.runCustomExample(languageId, sectionId, exampleId, {
+        code: userCode,
+      });
+      if (response?.success) {
+        setRunOutput(response.data?.output ?? '');
+      } else {
+        setRunError(response?.message || t.error);
+      }
+    } catch (error: any) {
+      setRunError(error?.message || t.error);
+    } finally {
+      setRunLoading(false);
     }
   };
 
@@ -300,15 +383,32 @@ export default function ExampleDetailPage() {
           <div className="flex items-center space-x-2 flex-wrap gap-2 min-w-0">
             <div className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-t-xl text-sm text-white border-b-2 border-[#0FA968] flex-shrink-0">
               <Icon icon="mdi:code-tags" className="inline mr-2" />
-              {example?.title || 'example'}.{language?.name?.toLowerCase() || 'js'}
+              {t.exampleCode}: {example?.title || 'example'}.{language?.name?.toLowerCase() || 'js'}
             </div>
-            {section && (
-              <div className="text-xs text-white/70 flex-shrink-0">
-                {section.title}
-              </div>
-            )}
+            <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-t-xl text-sm text-white border-b-2 border-[#1F6FEB] flex-shrink-0">
+              <Icon icon="mdi:code-braces" className="inline mr-2" />
+              {t.yourCode}: {example?.title || 'solution'}.{language?.name?.toLowerCase() || 'js'}
+            </div>
+            {section && <div className="text-xs text-white/70 flex-shrink-0">{section.title}</div>}
           </div>
           <div className="flex items-center space-x-2 flex-shrink-0">
+            <button
+              onClick={handleRunUserCode}
+              disabled={runLoading || !example || !userCode.trim()}
+              className="px-4 py-2 bg-[#0FA968] hover:bg-[#0B8C57] text-white rounded-xl transition text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {runLoading && runTarget === 'user' ? (
+                <>
+                  <Icon icon="mdi:loading" className="inline mr-2 animate-spin" />
+                  {t.running}
+                </>
+              ) : (
+                <>
+                  <Icon icon="mdi:play" className="inline mr-2" />
+                  {t.runYourCode}
+                </>
+              )}
+            </button>
             <button
               onClick={() => {
                 if (example?.code && navigator.clipboard) {
@@ -326,8 +426,42 @@ export default function ExampleDetailPage() {
         </div>
 
         {/* Monaco Editor Container */}
-        <div className="flex-1 relative bg-zinc-950/50 backdrop-blur-sm">
-          <div ref={editorContainerRef} className="w-full h-full" />
+        <div className="flex-1 relative bg-zinc-950/50 backdrop-blur-sm p-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 h-full">
+            <div className="flex flex-col bg-black/20 border border-white/10 rounded-xl overflow-hidden">
+              <div className="px-3 py-2 text-xs text-white/70 border-b border-white/10">{t.exampleCode}</div>
+              <div ref={editorContainerRef} className="w-full flex-1" />
+            </div>
+            <div className="flex flex-col bg-black/20 border border-white/10 rounded-xl overflow-hidden">
+              <div className="px-3 py-2 text-xs text-white/70 border-b border-white/10">{t.yourCode}</div>
+              <div ref={userEditorContainerRef} className="w-full flex-1" />
+            </div>
+          </div>
+        </div>
+
+        {/* Run Output Panel */}
+        <div className="bg-white/10 backdrop-blur-md border-t border-white/20">
+          <div className="px-4 py-3 border-b border-white/20 flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-white drop-shadow-sm flex items-center">
+              <Icon icon="mdi:terminal" className="mr-2" />
+              {t.output}
+              {runTarget && (
+                <span className="ml-2 text-xs text-white/60">
+                  {runTarget === 'user' ? `(${t.yourCode})` : `(${t.exampleCode})`}
+                </span>
+              )}
+            </h3>
+          </div>
+          <div className="p-4 font-mono text-sm min-h-[100px] max-h-[200px] overflow-y-auto">
+            {runLoading && <div className="text-white/70">{t.running}</div>}
+            {!runLoading && runError && <div className="text-red-300 whitespace-pre-wrap">{runError}</div>}
+            {!runLoading && !runError && runOutput && (
+              <div className="text-white/80 whitespace-pre-wrap">{runOutput}</div>
+            )}
+            {!runLoading && !runError && !runOutput && (
+              <div className="text-white/60">{t.resultsWillAppear}</div>
+            )}
+          </div>
         </div>
 
         {/* Output Panel (if exists) */}
@@ -336,7 +470,7 @@ export default function ExampleDetailPage() {
             <div className="px-4 py-3 border-b border-white/20 flex items-center justify-between">
               <h3 className="text-sm font-semibold text-white drop-shadow-sm flex items-center">
                 <Icon icon="mdi:terminal" className="mr-2" />
-                {t.output}
+                {t.expectedOutput}
               </h3>
             </div>
             <div className="p-4 font-mono text-sm min-h-[100px] max-h-[200px] overflow-y-auto">

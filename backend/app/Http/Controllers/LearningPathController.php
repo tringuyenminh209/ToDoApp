@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LearningPath;
+use App\Models\LearningPathTemplate;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +47,7 @@ class LearningPathController extends Controller
             $query->orderBy($sortBy, $sortOrder);
 
             $paths = $query->get();
+            $this->hydratePathsIconColor($paths);
 
             return response()->json([
                 'success' => true,
@@ -78,6 +80,7 @@ class LearningPathController extends Controller
                     'studySchedules'
                 ])
                 ->findOrFail($id);
+            $this->hydratePathsIconColor(collect([$path]));
 
             return response()->json([
                 'success' => true,
@@ -289,6 +292,56 @@ class LearningPathController extends Controller
                 'message' => '統計の取得に失敗しました'
             ], 500);
         }
+    }
+
+    /**
+     * Backfill icon/color from templates for existing paths.
+     */
+    private function hydratePathsIconColor($paths): void
+    {
+        if ($paths->isEmpty()) {
+            return;
+        }
+
+        $missingTitles = $paths
+            ->filter(function ($path) {
+                $iconEmpty = !$path->icon || trim((string) $path->icon) === '';
+                $colorEmpty = !$path->color || trim((string) $path->color) === '';
+                return $iconEmpty || $colorEmpty;
+            })
+            ->pluck('title')
+            ->filter()
+            ->unique()
+            ->values();
+
+        if ($missingTitles->isEmpty()) {
+            return;
+        }
+
+        $templates = LearningPathTemplate::whereIn('title', $missingTitles)
+            ->get(['title', 'icon', 'color'])
+            ->keyBy('title');
+
+        $paths->each(function ($path) use ($templates) {
+            $template = $templates->get($path->title);
+            if (!$template) {
+                return;
+            }
+
+            $updates = [];
+            if ((!$path->icon || trim((string) $path->icon) === '') && $template->icon) {
+                $updates['icon'] = $template->icon;
+                $path->icon = $template->icon;
+            }
+            if ((!$path->color || trim((string) $path->color) === '') && $template->color) {
+                $updates['color'] = $template->color;
+                $path->color = $template->color;
+            }
+
+            if (!empty($updates)) {
+                $path->update($updates);
+            }
+        });
     }
 }
 
