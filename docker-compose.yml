@@ -29,9 +29,13 @@ services:
       - CACHE_DRIVER=redis
       - CACHE_STORE=redis
       - SESSION_DRIVER=redis
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-sk-dummy-key}
+      - OPENAI_BASE_URL=http://ollama:11434/v1
+      - OPENAI_MODEL=${OPENAI_MODEL:-qwen2.5:3b-instruct}
     depends_on:
       - mysql
       - redis
+      - ollama
     networks:
       - todo-network
     deploy:
@@ -114,10 +118,32 @@ services:
     networks:
       - todo-network
 
+  # Ollama (Local LLM)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: todo-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - todo-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+
 volumes:
   mysql_data:
     driver: local
   redis_data:
+    driver: local
+  ollama_data:
     driver: local
 
 networks:
