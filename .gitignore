@@ -34,6 +34,7 @@ mobile/android/app/release
 
 # Docker
 .env
+*.env.example
 docker-compose.override.yml
 
 # IDE
