@@ -16,6 +16,7 @@ class AIService
     private $maxTokens;
     private $temperature;
     private $timeout;
+    private $isLocalProvider;
 
     public function __construct()
     {
@@ -28,6 +29,13 @@ class AIService
         $this->maxTokens = config('services.openai.max_tokens') ?: env('OPENAI_MAX_TOKENS') ?: (int)($this->readEnvFile('OPENAI_MAX_TOKENS') ?: 1000);
         $this->temperature = config('services.openai.temperature') ?: env('OPENAI_TEMPERATURE') ?: (float)($this->readEnvFile('OPENAI_TEMPERATURE') ?: 0.7);
         $this->timeout = config('services.openai.timeout') ?: env('OPENAI_TIMEOUT') ?: (int)($this->readEnvFile('OPENAI_TIMEOUT') ?: 30);
+        $this->isLocalProvider = $this->isLocalOpenAICompatibleProvider();
+
+        if ($this->isLocalProvider) {
+            // Avoid fallback to OpenAI models when using local providers (e.g. Ollama)
+            $this->enableFallback = false;
+            $this->fallbackModel = $this->model;
+        }
     }
 
     /**
@@ -63,6 +71,19 @@ class AIService
         }
 
         return $default;
+    }
+
+    /**
+     * Detect if base URL points to a local OpenAI-compatible provider (Ollama, etc.)
+     */
+    private function isLocalOpenAICompatibleProvider(): bool
+    {
+        $baseUrl = strtolower($this->baseUrl ?? '');
+
+        return str_contains($baseUrl, 'ollama')
+            || str_contains($baseUrl, 'localhost:11434')
+            || str_contains($baseUrl, '127.0.0.1:11434')
+            || str_contains($baseUrl, 'host.docker.internal:11434');
     }
 
     /**
@@ -534,7 +555,16 @@ JSON形式で返してください：
                 'Authorization' => 'Bearer ' . $this->apiKey,
             ])->timeout((int)$testTimeout)->get($this->baseUrl . '/models');
 
-            return $response->successful();
+            if ($response->successful()) {
+                return true;
+            }
+
+            if ($this->isLocalProvider) {
+                $fallbackResponse = Http::timeout((int)$testTimeout)->get('http://ollama:11434/api/tags');
+                return $fallbackResponse->successful();
+            }
+
+            return false;
         } catch (\Exception $e) {
             Log::error('AI Service: Connection test failed', [
                 'error' => $e->getMessage()
