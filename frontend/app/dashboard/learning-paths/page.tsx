@@ -26,6 +26,7 @@ export default function LearningPathsPage() {
   const [showTemplateDetail, setShowTemplateDetail] = useState(false);
   const [templateDetail, setTemplateDetail] = useState<any>(null);
   const [isTemplateDetailLoading, setIsTemplateDetailLoading] = useState(false);
+  const [templateIconErrors, setTemplateIconErrors] = useState<Record<number, boolean>>({});
   const [scheduleRows, setScheduleRows] = useState<StudyScheduleInput[]>([
     { day_of_week: 1, study_time: '20:00', duration_minutes: 60 },
   ]);
@@ -216,8 +217,40 @@ export default function LearningPathsPage() {
     return icon.startsWith('http') || icon.startsWith('/') || /\.(png|jpg|jpeg|svg|webp)$/i.test(icon);
   };
 
+  const resolveCourseIcon = useCallback((icon?: string | null) => {
+    if (!icon) return 'mdi:school';
+    const normalized = icon.trim().toLowerCase().replace(/^ic_/, '');
+    const iconMap: Record<string, string> = {
+      javascript: 'logos:javascript',
+      js: 'logos:javascript',
+      typescript: 'logos:typescript-icon',
+      react: 'logos:react',
+      php: 'logos:php',
+      java: 'logos:java',
+      python: 'logos:python',
+      html: 'logos:html-5',
+      docker: 'logos:docker-icon',
+      git: 'logos:git-icon',
+      laravel: 'logos:laravel',
+      go: 'logos:go',
+      mysql: 'logos:mysql',
+      database: 'mdi:database',
+      bash: 'mdi:console',
+      'c++': 'mdi:language-cpp',
+      cpp: 'mdi:language-cpp',
+    };
+
+    if (iconMap[normalized]) return iconMap[normalized];
+    if (normalized.includes(':')) return normalized;
+    return `mdi:${normalized}`;
+  }, []);
+
+  const markTemplateIconError = useCallback((templateId: number) => {
+    setTemplateIconErrors((prev) => (prev[templateId] ? prev : { ...prev, [templateId]: true }));
+  }, []);
+
   const renderTemplateIcon = (template: LearningPathTemplate) => {
-    if (template.icon && isImageIcon(template.icon)) {
+    if (template.icon && isImageIcon(template.icon) && !templateIconErrors[template.id]) {
       return (
         <img
           src={template.icon}
@@ -226,13 +259,14 @@ export default function LearningPathsPage() {
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.style.display = 'none';
+            markTemplateIconError(template.id);
           }}
         />
       );
     }
     return (
       <Icon
-        icon={template.icon || 'mdi:school'}
+        icon={resolveCourseIcon(template.icon)}
         className="text-xl"
       />
     );
@@ -336,7 +370,7 @@ export default function LearningPathsPage() {
                   className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0 bg-gradient-to-br ${getColorTheme(path.color).bg}`}
                 >
                   <Icon
-                    icon={path.icon || 'mdi:school'}
+                    icon={resolveCourseIcon(path.icon)}
                     className={`${getColorTheme(path.color).text} text-2xl`}
                   />
                 </div>

@@ -60,6 +60,10 @@ Route::prefix('cheat-code')->group(function () {
     Route::get('/languages/{languageId}/sections/{sectionId}', [CheatCodeController::class, 'getSection']);
     Route::get('/languages/{languageId}/sections/{sectionId}/examples', [CheatCodeController::class, 'getExamples']);
     Route::get('/languages/{languageId}/sections/{sectionId}/examples/{exampleId}', [CheatCodeController::class, 'getExample']);
+    Route::post('/languages/{languageId}/sections/{sectionId}/examples/{exampleId}/run', [CheatCodeController::class, 'runExample'])
+        ->middleware('throttle:10,1');
+    Route::post('/languages/{languageId}/sections/{sectionId}/examples/{exampleId}/run-custom', [CheatCodeController::class, 'runCustomExample'])
+        ->middleware('throttle:10,1');
     Route::get('/categories', [CheatCodeController::class, 'getCategories']);
 
     // 演習ルート

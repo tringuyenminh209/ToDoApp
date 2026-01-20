@@ -176,6 +176,8 @@ class LearningPathTemplateController extends Controller
                 'description' => $template->description,
                 'goal_type' => $this->mapCategoryToGoalType($template->category),
                 'estimated_hours_total' => $template->estimated_hours_total ?? 0,
+                'icon' => $template->icon,
+                'color' => $template->color,
                 'status' => 'active',
                 'is_ai_generated' => false,
                 'ai_prompt' => null,

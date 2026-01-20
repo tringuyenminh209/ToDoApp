@@ -89,6 +89,34 @@ export const cheatCodeService = {
     return response.data;
   },
 
+  // 例のコードを実行
+  runExample: async (
+    languageId: string | number,
+    sectionId: string | number,
+    exampleId: string | number,
+    payload?: { input?: string }
+  ) => {
+    const response = await apiClient.post(
+      `/cheat-code/languages/${languageId}/sections/${sectionId}/examples/${exampleId}/run`,
+      payload || {}
+    );
+    return response.data;
+  },
+
+  // カスタムコードを実行
+  runCustomExample: async (
+    languageId: string | number,
+    sectionId: string | number,
+    exampleId: string | number,
+    payload: { code: string; input?: string }
+  ) => {
+    const response = await apiClient.post(
+      `/cheat-code/languages/${languageId}/sections/${sectionId}/examples/${exampleId}/run-custom`,
+      payload
+    );
+    return response.data;
+  },
+
   // カテゴリ一覧取得
   getCategories: async () => {
     const response = await apiClient.get('/cheat-code/categories');

@@ -6,6 +6,8 @@ use App\Models\CheatCodeLanguage;
 use App\Models\CheatCodeSection;
 use App\Models\CodeExample;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Str;
 
 class CheatCodeController extends Controller
 {
@@ -360,6 +362,267 @@ class CheatCodeController extends Controller
             'data' => $categories,
             'message' => 'Categories retrieved successfully'
         ]);
+    }
+
+    /**
+     * Run a code example
+     * コード例を実行
+     */
+    public function runExample(Request $request, $languageId, $sectionId, $exampleId)
+    {
+        $request->validate([
+            'input' => 'nullable|string',
+        ]);
+
+        $language = CheatCodeLanguage::where('is_active', true)
+            ->where(function ($query) use ($languageId) {
+                $query->where('id', $languageId)
+                    ->orWhere('slug', $languageId);
+            })
+            ->firstOrFail();
+
+        $section = CheatCodeSection::where('language_id', $language->id)
+            ->where(function ($query) use ($sectionId) {
+                $query->where('id', $sectionId)
+                    ->orWhere('slug', $sectionId);
+            })
+            ->firstOrFail();
+
+        $example = CodeExample::where('section_id', $section->id)
+            ->where(function ($query) use ($exampleId) {
+                $query->where('id', $exampleId)
+                    ->orWhere('slug', $exampleId);
+            })
+            ->where('is_published', true)
+            ->firstOrFail();
+
+        try {
+            $output = $this->executeCode($example->code ?? '', $request->input('input', ''), $language->name);
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'output' => $output,
+                ],
+                'message' => 'Execution completed'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Execution error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Run a custom code example
+     * カスタムコードを実行
+     */
+    public function runCustomExample(Request $request, $languageId, $sectionId, $exampleId)
+    {
+        $request->validate([
+            'code' => 'required|string|max:20000',
+            'input' => 'nullable|string',
+        ]);
+
+        $language = CheatCodeLanguage::where('is_active', true)
+            ->where(function ($query) use ($languageId) {
+                $query->where('id', $languageId)
+                    ->orWhere('slug', $languageId);
+            })
+            ->firstOrFail();
+
+        $section = CheatCodeSection::where('language_id', $language->id)
+            ->where(function ($query) use ($sectionId) {
+                $query->where('id', $sectionId)
+                    ->orWhere('slug', $sectionId);
+            })
+            ->firstOrFail();
+
+        CodeExample::where('section_id', $section->id)
+            ->where(function ($query) use ($exampleId) {
+                $query->where('id', $exampleId)
+                    ->orWhere('slug', $exampleId);
+            })
+            ->where('is_published', true)
+            ->firstOrFail();
+
+        try {
+            $output = $this->executeCode($request->input('code'), $request->input('input', ''), $language->name);
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'output' => $output,
+                ],
+                'message' => 'Execution completed'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Execution error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Execute code safely
+     * コードを安全に実行
+     */
+    private function executeCode(string $code, string $input, string $languageName): string
+    {
+        $filename = 'example_' . Str::random(10);
+        $workDir = "/tmp/{$filename}";
+
+        try {
+            if (!is_dir($workDir) && !mkdir($workDir, 0700, true) && !is_dir($workDir)) {
+                throw new \Exception('Failed to create execution directory');
+            }
+
+            switch (strtolower($languageName)) {
+                case 'bash':
+                    $filepath = "{$workDir}/main.sh";
+                    file_put_contents($filepath, $code);
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('bash ' . escapeshellarg($filepath));
+
+                    if ($result->failed()) {
+                        throw new \Exception($result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'python':
+                    $filepath = "{$workDir}/main.py";
+                    file_put_contents($filepath, $code);
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('python3 ' . escapeshellarg($filepath));
+
+                    if ($result->failed()) {
+                        throw new \Exception($result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'php':
+                    $filepath = "{$workDir}/main.php";
+                    file_put_contents($filepath, $code);
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('php ' . escapeshellarg($filepath));
+
+                    if ($result->failed()) {
+                        throw new \Exception($result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'javascript':
+                case 'js':
+                    $filepath = "{$workDir}/main.js";
+                    file_put_contents($filepath, $code);
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('node ' . escapeshellarg($filepath));
+
+                    if ($result->failed()) {
+                        throw new \Exception($result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'go':
+                    $filepath = "{$workDir}/main.go";
+                    file_put_contents($filepath, $code);
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('go run ' . escapeshellarg($filepath));
+
+                    if ($result->failed()) {
+                        throw new \Exception($result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'java':
+                    $filepath = "{$workDir}/Main.java";
+                    file_put_contents($filepath, $code);
+                    $compile = Process::timeout(5)
+                        ->run('javac ' . escapeshellarg($filepath));
+
+                    if ($compile->failed()) {
+                        throw new \Exception($compile->errorOutput());
+                    }
+
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('java -cp ' . escapeshellarg($workDir) . ' Main');
+
+                    if ($result->failed()) {
+                        throw new \Exception($result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'cpp':
+                case 'c++':
+                    $sourcePath = "{$workDir}/main.cpp";
+                    $binaryPath = "{$workDir}/main";
+                    file_put_contents($sourcePath, $code);
+                    $compile = Process::timeout(5)->run(
+                        'g++ ' . escapeshellarg($sourcePath) . ' -std=c++17 -O2 -o ' . escapeshellarg($binaryPath)
+                    );
+
+                    if ($compile->failed()) {
+                        throw new \Exception($compile->errorOutput());
+                    }
+
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run(escapeshellarg($binaryPath));
+
+                    if ($result->failed()) {
+                        throw new \Exception($result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                case 'kotlin':
+                    $filepath = "{$workDir}/Main.kt";
+                    $jarPath = "{$workDir}/main.jar";
+                    file_put_contents($filepath, $code);
+                    $compile = Process::timeout(5)->run(
+                        'kotlinc ' . escapeshellarg($filepath) . ' -include-runtime -d ' . escapeshellarg($jarPath)
+                    );
+
+                    if ($compile->failed()) {
+                        throw new \Exception($compile->errorOutput());
+                    }
+
+                    $result = Process::timeout(5)
+                        ->input($input)
+                        ->run('java -jar ' . escapeshellarg($jarPath));
+
+                    if ($result->failed()) {
+                        throw new \Exception($result->errorOutput());
+                    }
+
+                    return $result->output();
+
+                default:
+                    throw new \Exception("Language {$languageName} is not supported for execution");
+            }
+        } finally {
+            if (is_dir($workDir)) {
+                $files = array_diff(scandir($workDir), ['.', '..']);
+                foreach ($files as $file) {
+                    @unlink($workDir . '/' . $file);
+                }
+                @rmdir($workDir);
+            }
+        }
     }
 }
 

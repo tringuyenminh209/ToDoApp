@@ -194,8 +194,10 @@ export default function ExerciseIDEPage() {
         response.data.results?.forEach((result: any, index: number) => {
           if (result.is_sample) {
             outputLines.push(`${result.passed ? '✓' : '✗'} Test Case ${index + 1}: ${result.passed ? t.testCaseSuccess : t.testCaseFailed}`);
-            if (!result.passed && result.actualOutput) {
+            if (result.expectedOutput) {
               outputLines.push(`  ${t.expectedOutput}: ${result.expectedOutput}`);
+            }
+            if (result.actualOutput !== null && result.actualOutput !== undefined && result.actualOutput !== '') {
               outputLines.push(`  ${t.actualOutput}: ${result.actualOutput}`);
             }
             if (result.error) {
@@ -212,7 +214,9 @@ export default function ExerciseIDEPage() {
           outputLines.push(t.testCasesPassed.replace('{passed}', String(response.data.passedCount)).replace('{total}', String(response.data.totalCount)));
         }
 
-        setOutput(outputLines.join('\n'));
+        setOutput(outputLines.length > 0 ? outputLines.join('\n') : t.noRunOutput);
+      } else {
+        setOutput(`${t.error}: ${response?.message || t.noRunOutput}`);
       }
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
@@ -420,7 +424,7 @@ export default function ExerciseIDEPage() {
           </div>
           <div className="flex items-center space-x-2 flex-wrap gap-2 flex-shrink-0">
             <button
-              onClick={() => router.back()}
+              onClick={() => router.push(`/dashboard/cheat-code/${languageId}`)}
               className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/20 text-white rounded-xl hover:bg-white/30 transition text-sm"
             >
               <Icon icon="mdi:arrow-left" className="inline mr-2" />
