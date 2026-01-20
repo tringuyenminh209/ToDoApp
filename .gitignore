@@ -105,3 +105,39 @@ litho.log
 litho.toml
 
 mobileandroid/app/google-services.json
+
+# Frontend build artifacts
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/.turbo/
+frontend/.cache/
+
+# Backend caches
+backend/.phpunit.result.cache
+backend/.phpunit.cache/
+backend/.cache/
+
+# Vite / React caches
+frontend/.vite/
+
+# AI service (training/inference)
+ai-service/.venv/
+ai-service/__pycache__/
+ai-service/outputs/
+ai-service/models/
+ai-service/data/*.jsonl
+ai-service/*.pt
+ai-service/*.bin
+
+# Python generic
+**/__pycache__/
+*.pyc
+
+# Android (mobileandroid)
+mobileandroid/.gradle/
+mobileandroid/build/
+mobileandroid/app/build/
+mobileandroid/local.properties
+mobileandroid/.idea/
+mobileandroid/build_errors.txt
