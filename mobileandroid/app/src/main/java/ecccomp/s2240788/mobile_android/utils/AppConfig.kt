@@ -14,8 +14,9 @@ package ecccomp.s2240788.mobile_android.utils
 object AppConfig {
     // ⚠️ THAY ĐỔI URL Ở ĐÂY
     // 
-    // Cho local development (chỉ dùng khi test trên emulator cùng máy):
-    const val BASE_URL = "http://localhost:8080/api/"
+    // Cho local development (emulator Android):
+    // 10.0.2.2 は emulator からホストPCの localhost へアクセスするためのIP
+    const val BASE_URL = "http://10.0.2.2:8080/api/"
     
     // Cho Port Forwarding (thay YOUR_PUBLIC_IP bằng IP public của bạn):
     // const val BASE_URL = "http://123.45.67.89:8080/api/"

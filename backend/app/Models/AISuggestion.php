@@ -10,6 +10,8 @@ class AISuggestion extends Model
 {
     use HasFactory;
 
+    protected $table = 'ai_suggestions';
+
     protected $fillable = [
         'user_id',
         'type',

@@ -129,43 +129,41 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [FocusSessionController::class, 'index']);
     });
 
-            // AIルート（悪用防止のためのレート制限付き）
-            Route::prefix('ai')->middleware('throttle:20,1')->group(function () {
-                Route::get('/status', [AIController::class, 'status']);
+    // AIルート
+    Route::prefix('ai')->group(function () {
+        Route::get('/status', [AIController::class, 'status']);
 
-                // 重いAI操作 - より厳しいレート制限（1分あたり10リクエスト）
-                Route::middleware('throttle:10,1')->group(function () {
-                    Route::post('/breakdown-task', [AIController::class, 'breakdownTask']);
-                    Route::get('/daily-suggestions', [AIController::class, 'dailySuggestions']);
-                    Route::post('/daily-summary', [AIController::class, 'dailySummary']);
-                    Route::post('/insights', [AIController::class, 'insights']);
-                    Route::post('/learning-recommendations', [AIController::class, 'learningRecommendations']);
-                    Route::post('/focus-analysis', [AIController::class, 'focusAnalysis']);
+        // 重いAI操作
+        Route::post('/breakdown-task', [AIController::class, 'breakdownTask']);
+        Route::get('/daily-suggestions', [AIController::class, 'dailySuggestions']);
+        Route::post('/daily-summary', [AIController::class, 'dailySummary']);
+        Route::post('/insights', [AIController::class, 'insights']);
+        Route::post('/learning-recommendations', [AIController::class, 'learningRecommendations']);
+        Route::post('/focus-analysis', [AIController::class, 'focusAnalysis']);
 
-                    // プロアクティブなAI計画とインサイト
-                    Route::get('/daily-plan', [AIController::class, 'getDailyPlan']);
-                    Route::get('/weekly-insights', [AIController::class, 'getWeeklyInsights']);
-                });
+        // プロアクティブなAI計画とインサイト
+        Route::get('/daily-plan', [AIController::class, 'getDailyPlan']);
+        Route::get('/weekly-insights', [AIController::class, 'getWeeklyInsights']);
 
-                // 軽量操作
-                Route::get('/suggestions', [AIController::class, 'suggestions']);
-                Route::put('/suggestions/{id}/read', [AIController::class, 'markSuggestionRead']);
-                Route::get('/summaries', [AIController::class, 'summaries']);
-                Route::post('/motivational-message', [AIController::class, 'motivationalMessage']);
+        // 軽量操作
+        Route::get('/suggestions', [AIController::class, 'suggestions']);
+        Route::put('/suggestions/{id}/read', [AIController::class, 'markSuggestionRead']);
+        Route::get('/summaries', [AIController::class, 'summaries']);
+        Route::post('/motivational-message', [AIController::class, 'motivationalMessage']);
 
-                // チャットルート - 中程度のレート制限（チャットは1分あたり30リクエスト）
-                Route::prefix('chat')->middleware('throttle:30,1')->group(function () {
-                    Route::get('/conversations', [AIController::class, 'getConversations']);
-                    Route::post('/conversations', [AIController::class, 'createConversation']);
-                    Route::get('/conversations/{id}', [AIController::class, 'getConversation']);
-                    Route::put('/conversations/{id}', [AIController::class, 'updateConversation']);
-                    Route::delete('/conversations/{id}', [AIController::class, 'deleteConversation']);
-                    Route::post('/conversations/{id}/messages', [AIController::class, 'sendMessage']);
-                    Route::post('/conversations/{id}/messages/context-aware', [AIController::class, 'sendMessageWithContext']);
-                    Route::post('/task-suggestions/confirm', [AIController::class, 'confirmTaskSuggestion']);
-                    Route::post('/timetable-suggestions/confirm', [AIController::class, 'confirmTimetableSuggestion']);
-                });
-            });
+        // チャットルート
+        Route::prefix('chat')->group(function () {
+            Route::get('/conversations', [AIController::class, 'getConversations']);
+            Route::post('/conversations', [AIController::class, 'createConversation']);
+            Route::get('/conversations/{id}', [AIController::class, 'getConversation']);
+            Route::put('/conversations/{id}', [AIController::class, 'updateConversation']);
+            Route::delete('/conversations/{id}', [AIController::class, 'deleteConversation']);
+            Route::post('/conversations/{id}/messages', [AIController::class, 'sendMessage']);
+            Route::post('/conversations/{id}/messages/context-aware', [AIController::class, 'sendMessageWithContext']);
+            Route::post('/task-suggestions/confirm', [AIController::class, 'confirmTaskSuggestion']);
+            Route::post('/timetable-suggestions/confirm', [AIController::class, 'confirmTimetableSuggestion']);
+        });
+    });
 
     // フォーカス強化ルート
     Route::prefix('focus')->group(function () {

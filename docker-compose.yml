@@ -118,7 +118,7 @@ services:
     networks:
       - todo-network
 
-  # Ollama (Local LLM)
+  # Ollama (Local LLM) - GPU対応版
   ollama:
     image: ollama/ollama:latest
     container_name: todo-ollama
@@ -129,14 +129,31 @@ services:
       - ollama_data:/root/.ollama
     networks:
       - todo-network
+    environment:
+      # GPUメモリ使用量の制限（オプション）
+      - OLLAMA_GPU_MEMORY=0
+      # 並列リクエスト数
+      - OLLAMA_NUM_PARALLEL=2
+      # コンテキストサイズ
+      - OLLAMA_NUM_CTX=2048
+      # Keep-alive時間（モデルをメモリに保持）
+      - OLLAMA_KEEP_ALIVE=5m
+    # NVIDIA GPU サポート（GPUがある場合はコメントを外す）
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
     deploy:
       resources:
         limits:
+          cpus: '4.0'
+          memory: 8G
+        reservations:
           cpus: '2.0'
           memory: 4G
-        reservations:
-          cpus: '1.0'
-          memory: 2G
 
 volumes:
   mysql_data:
