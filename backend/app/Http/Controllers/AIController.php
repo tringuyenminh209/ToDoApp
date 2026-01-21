@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use App\Models\AISuggestion;
 use App\Models\AISummary;
 use App\Models\ChatConversation;
@@ -555,6 +556,33 @@ class AIController extends Controller
                 'content' => $request->message,
             ]);
 
+            $instantReply = $this->getInstantReplyResponse($request->message);
+            if ($instantReply !== null) {
+                $assistantMessage = ChatMessage::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $request->user()->id,
+                    'role' => 'assistant',
+                    'content' => $instantReply,
+                    'token_count' => null,
+                    'metadata' => [
+                        'model' => 'local_instant_reply',
+                        'finish_reason' => 'stop',
+                    ],
+                ]);
+
+                $conversation->updateStats();
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'user_message' => $userMessage,
+                        'assistant_message' => $assistantMessage,
+                    ],
+                    'message' => 'メッセージを送信しました！'
+                ], 201);
+            }
+
             // Parse task intent from user message
             $taskData = $this->aiService->parseTaskIntent($request->message);
             $createdTask = null;
@@ -627,29 +655,60 @@ class AIController extends Controller
                 }
             }
 
-            // Get AI response
-            $aiResponse = $this->aiService->chat([
-                [
-                    'role' => 'user',
-                    'content' => $request->message
-                ]
-            ]);
+            $isScheduleQuestion = $this->isScheduleQuestion($request->message);
+            if ($isScheduleQuestion) {
+                $userContext = $this->buildTimetableContext($request->user(), $request->message);
+                $aiResponse = $this->aiService->chatWithUserContext([
+                    [
+                        'role' => 'user',
+                        'content' => $request->message
+                    ]
+                ], $userContext, [
+                    'timeout' => $this->aiService->getContextChatTimeout(12),
+                    'max_tokens' => 400,
+                    'temperature' => 0.4,
+                ]);
+            } else {
+                // Get AI response
+                $aiResponse = $this->aiService->chat([
+                    [
+                        'role' => 'user',
+                        'content' => $request->message
+                    ]
+                ]);
+            }
 
             // Check if AI service returned an error
             if (!empty($aiResponse['error'])) {
-                DB::rollBack();
                 Log::warning('AI service error during conversation creation', [
                     'user_id' => $request->user()->id,
                     'message' => $aiResponse['message'] ?? 'Unknown error',
                     'debug_info' => $aiResponse['debug_info'] ?? null
                 ]);
 
+                $assistantMessage = ChatMessage::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $request->user()->id,
+                    'role' => 'assistant',
+                    'content' => $this->buildAiUnavailableResponse(),
+                    'token_count' => null,
+                    'metadata' => [
+                        'model' => 'fallback_unavailable',
+                        'finish_reason' => 'stop',
+                    ],
+                ]);
+
+                $conversation->updateStats();
+                DB::commit();
+
                 return response()->json([
-                    'success' => false,
-                    'message' => $aiResponse['message'] ?? 'AIサービスに接続できませんでした',
-                    'error' => 'ai_service_unavailable',
-                    'debug' => $aiResponse['debug_info'] ?? null
-                ], 503);
+                    'success' => true,
+                    'data' => [
+                        'user_message' => $userMessage,
+                        'assistant_message' => $assistantMessage,
+                    ],
+                    'message' => 'メッセージを送信しました！'
+                ], 201);
             }
 
             // If task was created, add confirmation to AI response
@@ -744,6 +803,33 @@ class AIController extends Controller
                 'content' => $request->message,
             ]);
 
+            $instantReply = $this->getInstantReplyResponse($request->message);
+            if ($instantReply !== null) {
+                $assistantMessage = ChatMessage::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $request->user()->id,
+                    'role' => 'assistant',
+                    'content' => $instantReply,
+                    'token_count' => null,
+                    'metadata' => [
+                        'model' => 'local_instant_reply',
+                        'finish_reason' => 'stop',
+                    ],
+                ]);
+
+                $conversation->updateStats();
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'user_message' => $userMessage,
+                        'assistant_message' => $assistantMessage,
+                    ],
+                    'message' => 'メッセージを送信しました！'
+                ], 201);
+            }
+
             // Parse task intent from user message
             $taskData = $this->aiService->parseTaskIntent($request->message);
             $createdTask = null;
@@ -819,7 +905,7 @@ class AIController extends Controller
             // Get conversation history (last 10 messages for context)
             $history = $conversation->messages()
                 ->orderBy('created_at', 'desc')
-                ->limit(10)
+                ->limit(6)
                 ->get()
                 ->reverse()
                 ->map(function($msg) {
@@ -835,7 +921,6 @@ class AIController extends Controller
 
             // Check if AI service returned an error
             if (!empty($aiResponse['error'])) {
-                DB::rollBack();
                 Log::warning('AI service error during message sending', [
                     'user_id' => $request->user()->id,
                     'conversation_id' => $conversation->id,
@@ -843,12 +928,29 @@ class AIController extends Controller
                     'debug_info' => $aiResponse['debug_info'] ?? null
                 ]);
 
+                $assistantMessage = ChatMessage::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $request->user()->id,
+                    'role' => 'assistant',
+                    'content' => $this->buildAiUnavailableResponse(),
+                    'token_count' => null,
+                    'metadata' => [
+                        'model' => 'fallback_unavailable',
+                        'finish_reason' => 'stop',
+                    ],
+                ]);
+
+                $conversation->updateStats();
+                DB::commit();
+
                 return response()->json([
-                    'success' => false,
-                    'message' => $aiResponse['message'] ?? 'AIサービスに接続できませんでした',
-                    'error' => 'ai_service_unavailable',
-                    'debug' => $aiResponse['debug_info'] ?? null
-                ], 503);
+                    'success' => true,
+                    'data' => [
+                        'user_message' => $userMessage,
+                        'assistant_message' => $assistantMessage,
+                    ],
+                    'message' => 'メッセージを送信しました！'
+                ], 201);
             }
 
             // If task was created, add confirmation to AI response
@@ -980,10 +1082,37 @@ class AIController extends Controller
                 'content' => $request->message,
             ]);
 
+            $instantReply = $this->getInstantReplyResponse($request->message);
+            if ($instantReply !== null) {
+                $assistantMessage = ChatMessage::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $user->id,
+                    'role' => 'assistant',
+                    'content' => $instantReply,
+                    'token_count' => null,
+                    'metadata' => [
+                        'model' => 'local_instant_reply',
+                        'finish_reason' => 'stop',
+                    ],
+                ]);
+
+                $conversation->updateStats();
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'user_message' => $userMessage,
+                        'assistant_message' => $assistantMessage,
+                    ],
+                    'message' => 'メッセージを送信しました！'
+                ], 201);
+            }
+
             // Get conversation history for context-aware intent parsing
             $historyForParsing = $conversation->messages()
                 ->orderBy('created_at', 'desc')
-                ->limit(5) // Last 5 messages for context
+                ->limit(3) // Shorter history for faster parsing
                 ->get()
                 ->reverse()
                 ->map(function($msg) {
@@ -994,36 +1123,74 @@ class AIController extends Controller
                 })
                 ->toArray();
 
-            // Parse BOTH intents independently (don't let one block the other)
-            $timetableData = $this->aiService->parseTimetableIntent($request->message, $historyForParsing);
-            Log::info('AIController: parseTimetableIntent returned', [
-                'has_data' => !is_null($timetableData),
-                'data' => $timetableData
-            ]);
+            $message = $request->message;
+            $shouldParseTask = preg_match('/(タスク|task|やる|やりたい|したい|作成|追加|登録|study|work|learn)/iu', $message);
+            $shouldParseTimetable = preg_match('/(授業|クラス|class|lecture|時間割|schedule|lịch học|thứ|monday|tuesday|wednesday|thursday|friday|saturday|sunday)/iu', $message);
+            $shouldParseKnowledgeQuery = preg_match('/(メモ|ノート|記録|コード|演習|問題|資料|リンク|review|復習|search|探して|見せて)/iu', $message);
+            $shouldParseKnowledgeCreation = preg_match('/(追加|作成|保存|記録|フォルダ|カテゴリ|knowledge|note|snippet|exercise|resource)/iu', $message);
 
-            $taskData = $this->aiService->parseTaskIntent($request->message);
-            Log::info('AIController: parseTaskIntent returned', [
-                'has_data' => !is_null($taskData),
-                'data' => $taskData
-            ]);
+            $taskData = null;
+            $timetableData = null;
+            $knowledgeQueryData = null;
+            $knowledgeCreationData = null;
+            $hasKnowledgeCreation = false;
 
-            // NEW: Parse knowledge query intent
-            $knowledgeQueryData = $this->aiService->parseKnowledgeQueryIntent($request->message, $historyForParsing);
-            Log::info('AIController: parseKnowledgeQueryIntent returned', [
-                'has_data' => !is_null($knowledgeQueryData),
-                'data' => $knowledgeQueryData
-            ]);
+            if ($shouldParseTask || $shouldParseTimetable || $shouldParseKnowledgeQuery || $shouldParseKnowledgeCreation) {
+                $quickParse = $this->aiService->parseQuickIntents($message, $historyForParsing);
 
-            // NEW: Parse knowledge CREATION intent
-            $knowledgeCreationData = $this->aiService->parseKnowledgeCreationIntent(
-                $request->message,
-                $historyForParsing,
-                $user
-            );
-            Log::info('AIController: parseKnowledgeCreationIntent returned', [
-                'has_data' => !is_null($knowledgeCreationData),
-                'data' => $knowledgeCreationData
-            ]);
+                if ($quickParse !== null) {
+                    $taskData = $quickParse['task'] ?? null;
+                    $timetableData = $quickParse['timetable'] ?? null;
+                    $knowledgeQueryData = $quickParse['knowledge_query'] ?? null;
+                    $hasKnowledgeCreation = !empty($quickParse['has_knowledge_creation']);
+
+                    Log::info('AIController: quick intent parse result', [
+                        'task' => !is_null($taskData),
+                        'timetable' => !is_null($timetableData),
+                        'knowledge_query' => !is_null($knowledgeQueryData),
+                        'has_knowledge_creation' => $hasKnowledgeCreation
+                    ]);
+                } else {
+                    // Fallback to individual parsers if quick parsing fails
+                    $timetableData = $shouldParseTimetable
+                        ? $this->aiService->parseTimetableIntent($message, $historyForParsing)
+                        : null;
+                    Log::info('AIController: parseTimetableIntent returned', [
+                        'has_data' => !is_null($timetableData),
+                        'data' => $timetableData
+                    ]);
+
+                    $taskData = $shouldParseTask
+                        ? $this->aiService->parseTaskIntent($message)
+                        : null;
+                    Log::info('AIController: parseTaskIntent returned', [
+                        'has_data' => !is_null($taskData),
+                        'data' => $taskData
+                    ]);
+
+                    $knowledgeQueryData = $shouldParseKnowledgeQuery
+                        ? $this->aiService->parseKnowledgeQueryIntent($message, $historyForParsing)
+                        : null;
+                    Log::info('AIController: parseKnowledgeQueryIntent returned', [
+                        'has_data' => !is_null($knowledgeQueryData),
+                        'data' => $knowledgeQueryData
+                    ]);
+
+                    $hasKnowledgeCreation = $shouldParseKnowledgeCreation;
+                }
+            }
+
+            if ($hasKnowledgeCreation) {
+                $knowledgeCreationData = $this->aiService->parseKnowledgeCreationIntent(
+                    $message,
+                    $historyForParsing,
+                    $user
+                );
+                Log::info('AIController: parseKnowledgeCreationIntent returned', [
+                    'has_data' => !is_null($knowledgeCreationData),
+                    'data' => $knowledgeCreationData
+                ]);
+            }
 
             // Allow ALL intents to execute simultaneously
             $createdTimetableClass = null;
@@ -1148,6 +1315,7 @@ class AIController extends Controller
                 ]);
 
                 try {
+                    $knowledgeLimit = $this->aiService->isLocalProvider() ? 3 : 5;
                     $query = \App\Models\KnowledgeItem::where('user_id', $user->id)
                         ->where('is_archived', false);
 
@@ -1184,7 +1352,7 @@ class AIController extends Controller
                         ->with(['category', 'learningPath'])
                         ->orderBy('last_reviewed_at', 'desc')
                         ->orderBy('view_count', 'desc')
-                        ->limit(10)
+                        ->limit($knowledgeLimit)
                         ->get();
 
                     Log::info('AIController: Knowledge search completed', [
@@ -1225,6 +1393,73 @@ class AIController extends Controller
                 }
             }
 
+            if (
+                $this->aiService->isLocalProvider()
+                && $this->isLightweightMessage($message)
+                && !$taskData
+                && !$timetableData
+                && !$knowledgeQueryData
+                && !$knowledgeCreationData
+            ) {
+                $history = $conversation->messages()
+                    ->orderBy('created_at', 'desc')
+                    ->limit(4)
+                    ->get()
+                    ->reverse()
+                    ->map(function($msg) {
+                        return [
+                            'role' => $msg->role,
+                            'content' => $msg->content
+                        ];
+                    })
+                    ->toArray();
+
+                $aiResponse = $this->aiService->chat($history, [
+                    'timeout' => 60,
+                    'max_tokens' => 200,
+                    'temperature' => 0.6,
+                ]);
+
+                if (!empty($aiResponse['error'])) {
+                    DB::rollBack();
+                    Log::warning('AI service error during lightweight message', [
+                        'user_id' => $user->id,
+                        'conversation_id' => $conversation->id,
+                        'message' => $aiResponse['message'] ?? 'Unknown error'
+                    ]);
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => $aiResponse['message'] ?? 'AIサービスに接続できませんでした',
+                        'error' => 'ai_service_unavailable'
+                    ], 503);
+                }
+
+                $assistantMessage = ChatMessage::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $user->id,
+                    'role' => 'assistant',
+                    'content' => $aiResponse['message'] ?? '応答を生成できませんでした',
+                    'token_count' => $aiResponse['tokens'] ?? null,
+                    'metadata' => [
+                        'model' => $aiResponse['model'] ?? null,
+                        'finish_reason' => $aiResponse['finish_reason'] ?? null,
+                    ],
+                ]);
+
+                $conversation->updateStats();
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'user_message' => $userMessage,
+                        'assistant_message' => $assistantMessage,
+                    ],
+                    'message' => 'メッセージを送信しました！'
+                ], 201);
+            }
+
             // Load user context: tasks + timetable
             $tasks = Task::where('user_id', $user->id)
                 ->where('status', '!=', 'completed')
@@ -1232,7 +1467,7 @@ class AIController extends Controller
                 ->with(['subtasks', 'tags'])
                 ->orderBy('priority', 'desc')
                 ->orderBy('deadline', 'asc')
-                ->limit(20) // Limit to avoid token overflow
+                ->limit(10) // Reduce context size for faster response
                 ->get();
 
             // Load all timetable (entire week) so AI can answer questions about any day
@@ -1272,11 +1507,11 @@ class AIController extends Controller
                         'id' => $item->id,
                         'title' => $item->title,
                         'type' => $item->item_type,
-                        'content' => $item->content ? substr($item->content, 0, 500) : null, // Limit content length
+                        'content' => $item->content ? substr($item->content, 0, 200) : null, // Limit content length
                         'code_language' => $item->code_language,
                         'url' => $item->url,
                         'question' => $item->question,
-                        'answer' => $item->answer ? substr($item->answer, 0, 500) : null,
+                        'answer' => $item->answer ? substr($item->answer, 0, 200) : null,
                         'tags' => $item->tags,
                         'category' => $item->category ? $item->category->name : null,
                         'learning_path' => $item->learningPath ? $item->learningPath->title : null,
@@ -1290,9 +1525,10 @@ class AIController extends Controller
             }
 
             // Get conversation history (last 10 messages for context)
+            $historyLimit = $this->aiService->isLocalProvider() ? 6 : 10;
             $history = $conversation->messages()
                 ->orderBy('created_at', 'desc')
-                ->limit(10)
+                ->limit($historyLimit)
                 ->get()
                 ->reverse()
                 ->map(function($msg) {
@@ -1304,7 +1540,12 @@ class AIController extends Controller
                 ->toArray();
 
             // Get AI response WITH CONTEXT
-            $aiResponse = $this->aiService->chatWithUserContext($history, $userContext);
+            $maxTokens = $this->aiService->isLocalProvider() ? 400 : 800;
+            $aiResponse = $this->aiService->chatWithUserContext($history, $userContext, [
+                'timeout' => $this->aiService->getContextChatTimeout(12),
+                'max_tokens' => $maxTokens,
+                'temperature' => 0.6,
+            ]);
 
             // Check if AI service returned an error
             if (!empty($aiResponse['error'])) {
@@ -1315,11 +1556,29 @@ class AIController extends Controller
                     'message' => $aiResponse['message'] ?? 'Unknown error'
                 ]);
 
+                $assistantMessage = ChatMessage::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $user->id,
+                    'role' => 'assistant',
+                    'content' => $this->buildAiUnavailableResponse(),
+                    'token_count' => null,
+                    'metadata' => [
+                        'model' => 'fallback_unavailable',
+                        'finish_reason' => 'stop',
+                    ],
+                ]);
+
+                $conversation->updateStats();
+                DB::commit();
+
                 return response()->json([
-                    'success' => false,
-                    'message' => $aiResponse['message'] ?? 'AIサービスに接続できませんでした',
-                    'error' => 'ai_service_unavailable'
-                ], 503);
+                    'success' => true,
+                    'data' => [
+                        'user_message' => $userMessage,
+                        'assistant_message' => $assistantMessage,
+                    ],
+                    'message' => 'メッセージを送信しました！'
+                ], 201);
             }
 
             // If task was created, add confirmation to AI response
@@ -1861,5 +2120,114 @@ class AIController extends Controller
         }
 
         return null;
+    }
+
+    private function isSimpleGreeting(string $message): bool
+    {
+        $normalized = trim(mb_strtolower($message));
+
+        if ($normalized === '' || mb_strlen($normalized) > 20) {
+            return false;
+        }
+
+        return (bool)preg_match('/^(hi|hello|hey|xin chào|xin chao|chào|chao|こんにちは|こんばんは|おはよう|やあ|もしもし)[!！。.\s]*$/u', $normalized);
+    }
+
+    private function buildGreetingResponse(): string
+    {
+        return 'こんにちは！今日は何をお手伝いしましょうか？';
+    }
+
+    private function getInstantReplyResponse(string $message): ?string
+    {
+        $normalized = trim(mb_strtolower($message));
+
+        if ($normalized === '') {
+            return null;
+        }
+
+        if ($this->isSimpleGreeting($message)) {
+            return $this->buildGreetingResponse();
+        }
+
+        if (preg_match('/^(help|ヘルプ|使い方|どう使う|使い方を教えて|hướng dẫn|huong dan)$/u', $normalized)) {
+            return "使い方: チャットで質問するか、\n- 「タスクを作成して」\n- 「時間割を追加」\n- 「ノートを探して」\nのように送ってください。";
+        }
+
+        if (preg_match('/(今何時|いま何時|時間|mấy giờ|may gio|time)/u', $normalized)) {
+            return '現在時刻は ' . now()->format('H:i') . ' です。';
+        }
+
+        if (preg_match('/(今日は何日|今日の日付|何日|hôm nay|hom nay|date)/u', $normalized)) {
+            return '今日は ' . now()->format('Y-m-d') . ' です。';
+        }
+
+        if (preg_match('/(あなたは誰|あなたはだれ|who are you|ban la ai|bạn là ai)/u', $normalized)) {
+            return '私はあなたの学習とタスク管理を手伝うアシスタントです。';
+        }
+
+        if (preg_match('/(できること|何ができる|chức năng|tính năng|what can you do)/u', $normalized)) {
+            return 'できること: タスク作成、時間割登録、Knowledge検索、学習アドバイス。';
+        }
+
+        return null;
+    }
+
+    private function buildAiUnavailableResponse(): string
+    {
+        return '申し訳ありません。AIが混雑中のため簡易返信になります。少し後で再度お試しください。';
+    }
+
+    private function isLightweightMessage(string $message): bool
+    {
+        $normalized = trim(mb_strtolower($message));
+
+        if ($normalized === '' || mb_strlen($normalized) > 40) {
+            return false;
+        }
+
+        return !preg_match('/(タスク|task|授業|クラス|class|lecture|時間割|schedule|lịch học|thứ|monday|tuesday|wednesday|thursday|friday|saturday|sunday|メモ|ノート|記録|コード|演習|問題|資料|リンク|review|復習|search|探して|見せて|追加|作成|保存|フォルダ|カテゴリ|knowledge|note|snippet|exercise|resource)/iu', $normalized);
+    }
+
+    private function isScheduleQuestion(string $message): bool
+    {
+        return (bool)preg_match('/(スケジュール|時間割|予定|授業|クラス|schedule|class|lecture|lịch học|thứ)/iu', $message);
+    }
+
+    private function buildTimetableContext(User $user, string $message): array
+    {
+        $today = now();
+        $dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        $todayDayName = $dayNames[$today->dayOfWeek];
+
+        $onlyToday = (bool)preg_match('/(今日|きょう|today|hôm nay|hom nay)/iu', $message);
+
+        $timetableQuery = \App\Models\TimetableClass::where('user_id', $user->id)
+            ->orderBy('day', 'asc')
+            ->orderBy('start_time', 'asc');
+
+        if ($onlyToday) {
+            $timetableQuery->where('day', $todayDayName);
+        }
+
+        $allTimetable = $timetableQuery->get();
+
+        $timetableByDay = [];
+        foreach ($allTimetable as $class) {
+            if (!isset($timetableByDay[$class->day])) {
+                $timetableByDay[$class->day] = [];
+            }
+            $timetableByDay[$class->day][] = [
+                'time' => $class->start_time,
+                'title' => $class->name,
+                'class_name' => $class->name,
+            ];
+        }
+
+        return [
+            'tasks' => [],
+            'timetable' => $timetableByDay,
+            'today' => $todayDayName,
+        ];
     }
 }

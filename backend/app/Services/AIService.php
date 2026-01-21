@@ -18,6 +18,8 @@ class AIService
     private $timeout;
     private $isLocalProvider;
 
+    private $cacheTtl;
+
     public function __construct()
     {
         // Try to get API key from config first, then from env, then from .env file directly
@@ -26,16 +28,35 @@ class AIService
         $this->model = config('services.openai.model') ?: env('OPENAI_MODEL') ?: $this->readEnvFile('OPENAI_MODEL', 'gpt-5');
         $this->fallbackModel = config('services.openai.fallback_model') ?: env('OPENAI_FALLBACK_MODEL') ?: $this->readEnvFile('OPENAI_FALLBACK_MODEL', 'gpt-4o-mini');
         $this->enableFallback = config('services.openai.enable_fallback') !== null ? config('services.openai.enable_fallback') : (env('OPENAI_ENABLE_FALLBACK') !== null ? env('OPENAI_ENABLE_FALLBACK') : ($this->readEnvFile('OPENAI_ENABLE_FALLBACK') ?: true));
-        $this->maxTokens = config('services.openai.max_tokens') ?: env('OPENAI_MAX_TOKENS') ?: (int)($this->readEnvFile('OPENAI_MAX_TOKENS') ?: 1000);
-        $this->temperature = config('services.openai.temperature') ?: env('OPENAI_TEMPERATURE') ?: (float)($this->readEnvFile('OPENAI_TEMPERATURE') ?: 0.7);
-        $this->timeout = config('services.openai.timeout') ?: env('OPENAI_TIMEOUT') ?: (int)($this->readEnvFile('OPENAI_TIMEOUT') ?: 30);
+        $this->maxTokens = config('services.openai.max_tokens') ?: env('OPENAI_MAX_TOKENS') ?: (int)($this->readEnvFile('OPENAI_MAX_TOKENS') ?: 500);
+        $this->temperature = config('services.openai.temperature') ?: env('OPENAI_TEMPERATURE') ?: (float)($this->readEnvFile('OPENAI_TEMPERATURE') ?: 0.5);
+        $this->timeout = config('services.openai.timeout') ?: env('OPENAI_TIMEOUT') ?: (int)($this->readEnvFile('OPENAI_TIMEOUT') ?: 120);
+        $this->cacheTtl = config('services.openai.cache_ttl') ?: env('OPENAI_CACHE_TTL') ?: 3600;
         $this->isLocalProvider = $this->isLocalOpenAICompatibleProvider();
 
         if ($this->isLocalProvider) {
-            // Avoid fallback to OpenAI models when using local providers (e.g. Ollama)
+            // Local provider最適化: fallback無効、タイムアウト延長
             $this->enableFallback = false;
             $this->fallbackModel = $this->model;
+            // Local providerの場合、最小タイムアウトを120秒に
+            $this->timeout = max(120, $this->timeout);
+            // トークン数を制限してレスポンス速度を向上
+            $this->maxTokens = min(500, $this->maxTokens);
         }
+    }
+
+    public function getContextChatTimeout(int $default = 12): int
+    {
+        if ($this->isLocalProvider) {
+            return max(120, (int)$this->timeout);
+        }
+
+        return max($default, (int)($this->timeout * 0.5));
+    }
+
+    public function isLocalProvider(): bool
+    {
+        return $this->isLocalProvider;
     }
 
     /**
@@ -188,8 +209,8 @@ class AIService
             return $this->getFallbackResponse($prompt);
         }
 
-        $maxRetries = 3;
-        $retryDelay = 1; // seconds
+        $maxRetries = 2;
+        $retryDelay = 0.5; // seconds
         $models = [$this->model];
 
         // Add fallback model if enabled
@@ -571,6 +592,222 @@ JSON形式で返してください：
             ]);
             return false;
         }
+    }
+
+    /**
+     * Parse task creation intent from user message
+     *
+     * @param string $message User message to analyze
+     * @return array|null Task data if task creation intent detected, null otherwise
+     */
+    public function parseQuickIntents(string $message, array $conversationHistory = []): ?array
+    {
+        if (!$this->apiKey) {
+            return null;
+        }
+
+        // Local provider用キャッシュ: 類似メッセージの結果を再利用
+        $cacheKey = 'ai_intent_' . md5($message);
+        if ($this->isLocalProvider) {
+            $cached = Cache::get($cacheKey);
+            if ($cached !== null) {
+                Log::info('parseQuickIntents: Using cached result');
+                return $cached;
+            }
+        }
+
+        $today = now()->format('Y-m-d');
+        $dayOfWeek = now()->locale('ja')->isoFormat('dddd');
+        $messageLength = mb_strlen($message);
+
+        // Local provider用: 短いメッセージの場合、ローカルパターンマッチングを先に試行
+        if ($this->isLocalProvider && $messageLength < 50) {
+            $localResult = $this->tryLocalPatternMatching($message);
+            if ($localResult !== null) {
+                Log::info('parseQuickIntents: Using local pattern matching');
+                Cache::put($cacheKey, $localResult, 300); // 5分キャッシュ
+                return $localResult;
+            }
+        }
+
+        $contextText = '';
+        if (!empty($conversationHistory) && $messageLength < 30) {
+            $recentHistory = array_slice($conversationHistory, -2); // 2つに削減
+            $contextText = "\n履歴:\n";
+            foreach ($recentHistory as $msg) {
+                $contextText .= ($msg['role'] === 'user' ? 'U' : 'A') . ": " . mb_substr($msg['content'], 0, 50) . "\n";
+            }
+        }
+
+        // Local provider用: 簡略化プロンプト
+        $prompt = $this->isLocalProvider
+            ? $this->buildSimplifiedIntentPrompt($message, $today, $contextText)
+            : $this->buildFullIntentPrompt($message, $today, $dayOfWeek, $contextText);
+
+        try {
+            // Local provider用: より長いタイムアウト
+            $parseTimeout = $this->isLocalProvider
+                ? min(60, max(30, (int)($this->timeout * 0.5)))
+                : min(12, (int)($this->timeout * 0.4));
+
+            $modelToUse = $this->model;
+            $useMaxCompletionTokens = in_array($modelToUse, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
+
+            $requestBody = [
+                'model' => $modelToUse,
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'JSON parser. Return only valid JSON.'
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => $prompt
+                    ]
+                ],
+                'temperature' => 0.1, // より低いtemperatureで安定性向上
+            ];
+
+            // Local provider用: トークン数を削減
+            $maxTokens = $this->isLocalProvider ? 300 : 700;
+            if ($useMaxCompletionTokens) {
+                $requestBody['max_completion_tokens'] = $maxTokens;
+            } else {
+                $requestBody['max_tokens'] = $maxTokens;
+            }
+
+            if (str_contains($modelToUse, 'gpt-4') || str_contains($modelToUse, 'gpt-5')) {
+                $requestBody['response_format'] = ['type' => 'json_object'];
+            }
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Content-Type' => 'application/json',
+            ])->timeout($parseTimeout)->post($this->baseUrl . '/chat/completions', $requestBody);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $content = $data['choices'][0]['message']['content'] ?? '';
+                $parsedContent = json_decode($content, true);
+
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $result = [
+                        'task' => $parsedContent['task'] ?? null,
+                        'timetable' => $parsedContent['timetable'] ?? null,
+                        'knowledge_query' => $parsedContent['knowledge_query'] ?? null,
+                        'has_knowledge_creation' => !empty($parsedContent['has_knowledge_creation']),
+                    ];
+
+                    // 結果をキャッシュ
+                    if ($this->isLocalProvider) {
+                        Cache::put($cacheKey, $result, 300);
+                    }
+
+                    return $result;
+                }
+            }
+        } catch (\Exception $e) {
+            Log::warning('Quick intent parsing failed', ['error' => $e->getMessage()]);
+        }
+
+        return null;
+    }
+
+    /**
+     * Local pattern matching for common intents (no AI call needed)
+     * ローカルパターンマッチング: AI呼び出し不要な意図を検出
+     */
+    private function tryLocalPatternMatching(string $message): ?array
+    {
+        $normalized = mb_strtolower(trim($message));
+
+        // 挨拶や単純な質問はスキップ
+        if (preg_match('/^(hi|hello|こんにちは|おはよう|ありがとう|ok|はい|いいえ)[!！。.\s]*$/u', $normalized)) {
+            return ['task' => null, 'timetable' => null, 'knowledge_query' => null, 'has_knowledge_creation' => false];
+        }
+
+        // スケジュール確認パターン
+        if (preg_match('/(今日|明日|スケジュール|予定|時間割|lịch|schedule).*?(確認|見せて|教えて|check|show)/iu', $normalized)) {
+            return ['task' => null, 'timetable' => null, 'knowledge_query' => null, 'has_knowledge_creation' => false];
+        }
+
+        // 時間・日付の質問パターン
+        if (preg_match('/(今何時|何日|何曜日|time|date)/iu', $normalized)) {
+            return ['task' => null, 'timetable' => null, 'knowledge_query' => null, 'has_knowledge_creation' => false];
+        }
+
+        return null; // パターンにマッチしない場合はAI呼び出し
+    }
+
+    /**
+     * Build simplified intent prompt for local providers
+     * Local provider用: 簡略化プロンプト
+     */
+    private function buildSimplifiedIntentPrompt(string $message, string $today, string $contextText): string
+    {
+        return "Analyze: \"{$message}\"
+Date: {$today}{$contextText}
+
+Return JSON only:
+{\"task\":null,\"timetable\":null,\"knowledge_query\":null,\"has_knowledge_creation\":false}
+
+If task intent: {\"task\":{\"title\":\"...\",\"priority\":\"medium\"}}
+If timetable: {\"timetable\":{\"name\":\"...\",\"day\":\"monday\",\"start_time\":\"09:00\",\"end_time\":\"10:00\"}}
+If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
+    }
+
+    /**
+     * Build full intent prompt for cloud providers
+     * Cloud provider用: 完全プロンプト
+     */
+    private function buildFullIntentPrompt(string $message, string $today, string $dayOfWeek, string $contextText): string
+    {
+        return "以下のメッセージを分析し、必要ならタスク・時間割・Knowledge検索の情報を抽出してください。
+意図がないものは null を返してください。Knowledge作成の意図があるかも判定してください。
+
+**今日の日付**: {$today} ({$dayOfWeek})
+{$contextText}
+メッセージ: {$message}
+
+出力は必ずJSONのみ:
+{
+  \"task\": null or {
+    \"title\": \"タスクのタイトル\",
+    \"description\": \"タスクの説明（オプション）\",
+    \"estimated_minutes\": 30,
+    \"priority\": \"high/medium/low\",
+    \"deadline\": \"YYYY-MM-DD\" (オプション),
+    \"scheduled_time\": \"HH:MM\" (オプション),
+    \"tags\": [\"タグ1\"],
+    \"subtasks\": [{\"title\": \"サブタスク\", \"estimated_minutes\": 15}]
+  },
+  \"timetable\": null or {
+    \"name\": \"授業名\",
+    \"day\": \"monday/tuesday/wednesday/thursday/friday/saturday/sunday\",
+    \"start_time\": \"HH:MM\",
+    \"end_time\": \"HH:MM\",
+    \"period\": 1,
+    \"room\": \"教室名\",
+    \"instructor\": \"教員名\",
+    \"description\": \"説明\",
+    \"color\": \"#6366f1\",
+    \"icon\": \"📚\"
+  },
+  \"knowledge_query\": null or {
+    \"item_type\": \"any/note/code_snippet/exercise/resource_link/attachment\",
+    \"keywords\": [\"keyword1\", \"keyword2\"],
+    \"learning_path_id\": null,
+    \"category_id\": null
+  },
+  \"has_knowledge_creation\": true/false
+}
+
+**重要**:
+- 意図がないものは必ず null
+- 予定確認や雑談は task/timetable にしない
+- 時間指定が無い場合は scheduled_time を省略
+- keywords は短い単語配列
+- JSON以外の文字を出力しない";
     }
 
     /**
@@ -1276,8 +1513,8 @@ Knowledge検索の意図がない場合:
             ];
         }
 
-        $maxRetries = 2; // Giảm từ 3 xuống 2 để nhanh hơn
-        $retryDelay = 0.5; // Giảm delay từ 1s xuống 0.5s
+        $maxRetries = 1; // Reduce retries for faster response
+        $retryDelay = 0.5;
         $models = [$this->model];
 
         if ($this->enableFallback && $this->fallbackModel !== $this->model) {
@@ -1287,35 +1524,50 @@ Knowledge検索の意図がない場合:
         foreach ($models as $model) {
             for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
                 try {
+                    // Local provider用: システムプロンプトを簡略化
+                    $systemPrompt = $options['system_prompt'] ?? ($this->isLocalProvider
+                        ? '日本語で簡潔に応答してください。' // 短いシステムプロンプト
+                        : 'You are a helpful productivity assistant. Always respond in Japanese in a friendly and encouraging manner.');
+
                     // Prepare messages array
                     $apiMessages = [
                         [
                             'role' => 'system',
-                            'content' => $options['system_prompt'] ?? 'You are a helpful productivity assistant. Always respond in Japanese in a friendly and encouraging manner.'
+                            'content' => $systemPrompt
                         ]
                     ];
 
-                    // Add conversation history
-                    foreach ($messages as $msg) {
+                    // Add conversation history (Local provider用: 制限)
+                    $historyLimit = $this->isLocalProvider ? 4 : count($messages);
+                    $limitedMessages = array_slice($messages, -$historyLimit);
+
+                    foreach ($limitedMessages as $msg) {
+                        // Local provider用: 長いメッセージを短縮
+                        $content = $msg['content'];
+                        if ($this->isLocalProvider && mb_strlen($content) > 500) {
+                            $content = mb_substr($content, 0, 500) . '...';
+                        }
                         $apiMessages[] = [
                             'role' => $msg['role'],
-                            'content' => $msg['content']
+                            'content' => $content
                         ];
                     }
 
-                    // Chat timeout: sử dụng config nhưng có thể override bằng options
-                    $chatTimeout = $options['timeout'] ?? ($this->timeout * 0.5); // Chat timeout = 50% của general timeout (15s nếu timeout=30s)
+                    // Chat timeout: Local provider用に長めに設定
+                    $chatTimeout = $options['timeout'] ?? ($this->isLocalProvider
+                        ? max(90, $this->timeout * 0.75) // Local: 最小90秒
+                        : $this->timeout * 0.5); // Cloud: 50%
 
                     // Determine which parameter to use based on model
-                    // Newer models (gpt-5, o1, etc.) use max_completion_tokens instead of max_tokens
                     $useMaxCompletionTokens = in_array($model, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
 
                     // Set appropriate max_tokens based on model and use case
-                    // For GPT-5 and o1 models, use higher token limits due to longer context and more detailed responses
                     if ($useMaxCompletionTokens) {
-                        $maxTokensValue = $options['max_tokens'] ?? 16000; // Higher limit for GPT-5 and o1 models (increased from 8000)
+                        $maxTokensValue = $options['max_tokens'] ?? 16000;
                     } else {
-                        $maxTokensValue = $options['max_tokens'] ?? 2000; // Standard limit for other models
+                        // Local provider用: トークン数を大幅に削減して高速化
+                        $defaultMaxTokens = $this->isLocalProvider ? 300 : 2000;
+                        $maxTokensValue = $options['max_tokens'] ?? $defaultMaxTokens;
                     }
 
                     $requestBody = [
@@ -1325,10 +1577,10 @@ Knowledge検索の意図がない場合:
                     ];
 
                     // Temperature support varies by model
-                    // GPT-5 and o1 series only support temperature=1 (default)
                     $noTemperatureModels = ['gpt-5', 'o1', 'o1-preview', 'o1-mini'];
                     if (!in_array($model, $noTemperatureModels)) {
-                        $requestBody['temperature'] = $options['temperature'] ?? 0.7;
+                        // Local provider用: 低いtemperatureで高速化・安定性向上
+                        $requestBody['temperature'] = $options['temperature'] ?? ($this->isLocalProvider ? 0.3 : 0.7);
                     }
 
                     // Use appropriate parameter based on model
@@ -1337,6 +1589,14 @@ Knowledge検索の意図がない場合:
                     } else {
                         $requestBody['max_tokens'] = $maxTokensValue;
                     }
+
+                    Log::info('AI Chat: Sending request', [
+                        'model' => $model,
+                        'timeout' => $chatTimeout,
+                        'max_tokens' => $maxTokensValue,
+                        'is_local' => $this->isLocalProvider,
+                        'message_count' => count($apiMessages)
+                    ]);
 
                     $response = Http::withHeaders([
                         'Authorization' => 'Bearer ' . $this->apiKey,
@@ -1382,7 +1642,7 @@ Knowledge検索の意図がない場合:
                                 'model' => $model,
                                 'error' => $errorMessage
                             ]);
-                            break; // Stop retrying this model
+                            break;
                         }
                     }
 
@@ -1395,7 +1655,7 @@ Knowledge検索の意図がない場合:
                 }
 
                 if ($attempt < $maxRetries) {
-                    usleep((int)($retryDelay * 1000000)); // Convert seconds to microseconds
+                    usleep((int)($retryDelay * 1000000));
                     $retryDelay *= 2;
                 }
             }
@@ -1414,8 +1674,6 @@ Knowledge検索の意図がない場合:
         if (empty($this->apiKey)) {
             $errorMsg = 'AIサービスが設定されていません。管理者にお問い合わせください。';
         } else {
-            // Check if it's a quota issue (this would be set if we detected quota error)
-            // For now, we'll use a generic message, but could be enhanced to detect quota errors
             $errorMsg = '申し訳ございません。AIサービスの利用制限に達したか、一時的に利用できません。しばらくしてからもう一度お試しください。';
         }
 

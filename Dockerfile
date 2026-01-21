@@ -59,6 +59,7 @@ RUN chown -R www-data:www-data /var/www \
 COPY docker/nginx.conf /etc/nginx/sites-available/default
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/php.ini /usr/local/etc/php/conf.d/custom.ini
+COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 
 # Create log directories
 RUN mkdir -p /var/log/supervisor \

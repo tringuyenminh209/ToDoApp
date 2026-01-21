@@ -29,10 +29,9 @@ object NetworkModule {
     }
 
     // Timeout constants - Đồng bộ với backend
-    // Backend chat timeout with GPT-5 can take 40-60s for complex context-aware responses
-    // Android timeout must be higher to avoid premature timeout
+    // Local LLM (qwen2.5:1.5b) は初回ロードが遅いので長めに設定
     private const val CONNECT_TIMEOUT_SECONDS = 30L    // Kết nối: 30s
-    private const val READ_TIMEOUT_SECONDS = 120L       // Đọc response: 120s (đủ cho GPT-5 với context dài)
+    private const val READ_TIMEOUT_SECONDS = 120L       // Đọc response: 120s
     private const val WRITE_TIMEOUT_SECONDS = 30L      // Ghi request: 30s
 
     /**
@@ -49,9 +48,9 @@ object NetworkModule {
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BASIC  // Changed from BODY to BASIC for better performance
             })                                              // Log request và response
-            .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)  // 20s - Đồng bộ với backend chat timeout (15s) + buffer
-            .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)        // 30s - Đồng bộ với backend general API timeout
-            .writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)      // 20s - Đủ cho request lớn
+            .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .build()
     }
 
