@@ -571,11 +571,21 @@ class AIController extends Controller
                 ]);
 
                 $conversation->updateStats();
+
+                // Generate title if not provided
+                if (!$request->title) {
+                    $conversation->generateTitle();
+                }
+
                 DB::commit();
+
+                // Load messages for response
+                $conversation->load('messages');
 
                 return response()->json([
                     'success' => true,
                     'data' => [
+                        'conversation' => $conversation,
                         'user_message' => $userMessage,
                         'assistant_message' => $assistantMessage,
                     ],
@@ -1541,21 +1551,86 @@ class AIController extends Controller
 
             // Get AI response WITH CONTEXT
             $maxTokens = $this->aiService->isLocalProvider() ? 400 : 800;
+            // Local provider用: タイムアウトを大幅に延長（180秒 = 3分）
+            $timeout = $this->aiService->isLocalProvider() ? 180 : $this->aiService->getContextChatTimeout(12);
             $aiResponse = $this->aiService->chatWithUserContext($history, $userContext, [
-                'timeout' => $this->aiService->getContextChatTimeout(12),
+                'timeout' => $timeout,
                 'max_tokens' => $maxTokens,
                 'temperature' => 0.6,
             ]);
 
             // Check if AI service returned an error
             if (!empty($aiResponse['error'])) {
-                DB::rollBack();
                 Log::warning('AI service error during context-aware message', [
                     'user_id' => $user->id,
                     'conversation_id' => $conversation->id,
-                    'message' => $aiResponse['message'] ?? 'Unknown error'
+                    'message' => $aiResponse['message'] ?? 'Unknown error',
+                    'debug_info' => $aiResponse['debug_info'] ?? null,
+                    'has_created_task' => !is_null($createdTask),
+                    'has_timetable_suggestion' => !is_null($timetableSuggestion),
                 ]);
 
+                // タスクや時間割が作成された場合、AI応答が失敗しても成功メッセージを返す
+                if ($createdTask || $timetableSuggestion || $knowledgeCreationResults) {
+                    $successMessage = '';
+
+                    if ($createdTask) {
+                        $successMessage .= "✅ タスクを作成しました: 「{$createdTask->title}」\n";
+                        if ($createdTask->subtasks->count() > 0) {
+                            $successMessage .= "📝 サブタスク: {$createdTask->subtasks->count()}個\n";
+                        }
+                    }
+
+                    if ($timetableSuggestion) {
+                        $successMessage .= "📅 時間割の提案を準備しました。確認してください。\n";
+                    }
+
+                    if ($knowledgeCreationResults && $knowledgeCreationResults['success']) {
+                        $itemsCount = $knowledgeCreationResults['summary']['items_created'] ?? 0;
+                        $successMessage .= "📚 Knowledgeアイテムを作成しました: {$itemsCount}個\n";
+                    }
+
+                    $successMessage .= "\n（AI応答の生成に失敗しましたが、リクエストは処理されました）";
+
+                    $assistantMessage = ChatMessage::create([
+                        'conversation_id' => $conversation->id,
+                        'user_id' => $user->id,
+                        'role' => 'assistant',
+                        'content' => $successMessage,
+                        'token_count' => null,
+                        'metadata' => [
+                            'model' => 'fallback_partial_success',
+                            'finish_reason' => 'stop',
+                        ],
+                    ]);
+
+                    $conversation->updateStats();
+                    DB::commit();
+
+                    $responseData = [
+                        'user_message' => $userMessage,
+                        'assistant_message' => $assistantMessage,
+                    ];
+
+                    if ($createdTask) {
+                        $responseData['created_task'] = $createdTask;
+                    }
+                    if ($timetableSuggestion) {
+                        $responseData['timetable_suggestion'] = $timetableSuggestion;
+                    }
+                    if ($knowledgeCreationResults) {
+                        $responseData['knowledge_creation'] = $knowledgeCreationResults;
+                    }
+
+                    return response()->json([
+                        'success' => true,
+                        'data' => $responseData,
+                        'message' => 'メッセージを送信しました！'
+                    ], 201);
+                }
+
+                // 何も作成されなかった場合のみ、エラーメッセージを返す
+                DB::rollBack();
                 $assistantMessage = ChatMessage::create([
                     'conversation_id' => $conversation->id,
                     'user_id' => $user->id,
@@ -1663,6 +1738,156 @@ class AIController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Context-aware chat message failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'メッセージの送信に失敗しました',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Send message with streaming response (Server-Sent Events)
+     * POST /api/ai/chat/conversations/{id}/messages/stream
+     */
+    public function sendMessageStream(Request $request, string $id)
+    {
+        $request->validate([
+            'message' => 'required|string|max:5000',
+        ]);
+
+        $conversation = ChatConversation::where('user_id', $request->user()->id)
+            ->findOrFail($id);
+
+        if ($conversation->status !== 'active') {
+            return response()->json([
+                'success' => false,
+                'message' => 'この会話は現在アクティブではありません'
+            ], 400);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $user = $request->user();
+
+            // Create user message
+            $userMessage = ChatMessage::create([
+                'conversation_id' => $conversation->id,
+                'user_id' => $user->id,
+                'role' => 'user',
+                'content' => $request->message,
+            ]);
+
+            // Get conversation history
+            $historyLimit = $this->aiService->isLocalProvider() ? 6 : 10;
+            $history = $conversation->messages()
+                ->orderBy('created_at', 'desc')
+                ->limit($historyLimit)
+                ->get()
+                ->reverse()
+                ->map(function($msg) {
+                    return [
+                        'role' => $msg->role,
+                        'content' => $msg->content
+                    ];
+                })
+                ->toArray();
+
+            DB::commit();
+
+            // Set headers for Server-Sent Events
+            return response()->stream(function() use ($conversation, $user, $userMessage, $history) {
+                $fullContent = '';
+                $hasError = false;
+
+                try {
+                    // Stream AI response
+                    foreach ($this->aiService->chatStream($history, [
+                        'timeout' => $this->aiService->getContextChatTimeout(12),
+                        'max_tokens' => $this->aiService->isLocalProvider() ? 400 : 800,
+                        'temperature' => 0.6,
+                    ]) as $chunk) {
+                        if (!empty($chunk['error'])) {
+                            $hasError = true;
+                            echo "data: " . json_encode([
+                                'type' => 'error',
+                                'content' => $chunk['content']
+                            ]) . "\n\n";
+                            flush();
+                            break;
+                        }
+
+                        if (!empty($chunk['content'])) {
+                            $fullContent .= $chunk['content'];
+                            echo "data: " . json_encode([
+                                'type' => 'chunk',
+                                'content' => $chunk['content']
+                            ]) . "\n\n";
+                            flush();
+                        }
+
+                        if (!empty($chunk['done'])) {
+                            if (!empty($chunk['full_message'])) {
+                                $fullContent = $chunk['full_message'];
+                            }
+                            break;
+                        }
+                    }
+
+                    // Save assistant message to database
+                    if (!$hasError && !empty($fullContent)) {
+                        try {
+                            DB::beginTransaction();
+                            $assistantMessage = ChatMessage::create([
+                                'conversation_id' => $conversation->id,
+                                'user_id' => $user->id,
+                                'role' => 'assistant',
+                                'content' => $fullContent,
+                                'token_count' => null,
+                                'metadata' => [
+                                    'model' => $this->aiService->isLocalProvider() ? 'ollama' : 'openai',
+                                    'finish_reason' => 'stop',
+                                ],
+                            ]);
+                            $conversation->updateStats();
+                            DB::commit();
+
+                            echo "data: " . json_encode([
+                                'type' => 'done',
+                                'message_id' => $assistantMessage->id,
+                                'full_content' => $fullContent
+                            ]) . "\n\n";
+                        } catch (\Exception $e) {
+                            DB::rollBack();
+                            Log::error('Failed to save streaming message: ' . $e->getMessage());
+                            echo "data: " . json_encode([
+                                'type' => 'error',
+                                'content' => 'メッセージの保存に失敗しました'
+                            ]) . "\n\n";
+                        }
+                    }
+
+                } catch (\Exception $e) {
+                    Log::error('Streaming error: ' . $e->getMessage());
+                    echo "data: " . json_encode([
+                        'type' => 'error',
+                        'content' => 'ストリーミング中にエラーが発生しました'
+                    ]) . "\n\n";
+                }
+
+                flush();
+            }, 200, [
+                'Content-Type' => 'text/event-stream',
+                'Cache-Control' => 'no-cache',
+                'Connection' => 'keep-alive',
+                'X-Accel-Buffering' => 'no', // Nginx bufferingを無効化
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Streaming chat message failed: ' . $e->getMessage());
 
             return response()->json([
                 'success' => false,
@@ -2146,6 +2371,11 @@ class AIController extends Controller
             return null;
         }
 
+        // 重要な意図（タスク作成、時間割作成など）を含むメッセージは除外
+        if ($this->hasImportantIntent($message)) {
+            return null;
+        }
+
         if ($this->isSimpleGreeting($message)) {
             return $this->buildGreetingResponse();
         }
@@ -2154,10 +2384,13 @@ class AIController extends Controller
             return "使い方: チャットで質問するか、\n- 「タスクを作成して」\n- 「時間割を追加」\n- 「ノートを探して」\nのように送ってください。";
         }
 
-        if (preg_match('/(今何時|いま何時|時間|mấy giờ|may gio|time)/u', $normalized)) {
+        // 時刻を尋ねる質問のみ（タスクの時間指定ではない）
+        // 「今何時」「いま何時」など、明確に現在時刻を尋ねる場合のみ
+        if (preg_match('/^(今何時|いま何時|現在何時|mấy giờ rồi|may gio roi|what time is it now)$/u', $normalized)) {
             return '現在時刻は ' . now()->format('H:i') . ' です。';
         }
 
+        // 日付を尋ねる質問のみ
         if (preg_match('/(今日は何日|今日の日付|何日|hôm nay|hom nay|date)/u', $normalized)) {
             return '今日は ' . now()->format('Y-m-d') . ' です。';
         }
@@ -2171,6 +2404,52 @@ class AIController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * Check if message contains important intent (task creation, timetable, etc.)
+     * These should not be handled by instant reply
+     */
+    private function hasImportantIntent(string $message): bool
+    {
+        $normalized = trim(mb_strtolower($message));
+
+        // タスク作成の意図（より包括的なパターン）
+        $taskKeywords = '/(タスク|task|やる|やりたい|したい|作成|追加|登録|つくって|作って|勉強|study|work|learn|作業|宿題|課題|準備|予習|復習|練習)/iu';
+        if (preg_match($taskKeywords, $normalized)) {
+            return true;
+        }
+
+        // 時間割・スケジュールの意図
+        if (preg_match('/(授業|クラス|class|lecture|時間割|schedule|スケジュール|lịch học|thứ|monday|tuesday|wednesday|thursday|friday|saturday|sunday|月曜|火曜|水曜|木曜|金曜|土曜|日曜)/iu', $normalized)) {
+            return true;
+        }
+
+        // Knowledge関連の意図
+        if (preg_match('/(メモ|ノート|記録|コード|演習|問題|資料|リンク|review|復習|search|探して|見せて|knowledge|保存|フォルダ|カテゴリ)/iu', $normalized)) {
+            return true;
+        }
+
+        // 時間指定 + 行動動詞の組み合わせ（タスクの時間指定の可能性が高い）
+        // 「10時に勉強する」「1時間で作る」などのパターン
+        if (preg_match('/(\d+時|\d+時間|\d+分|時|時間|分|hour|minute|h|m).*(する|やる|やりたい|したい|作成|追加|勉強|study|work|learn|作業|作る|つくる|準備)/iu', $normalized) ||
+            preg_match('/(する|やる|やりたい|したい|作成|追加|勉強|study|work|learn|作業|作る|つくる|準備).*(\d+時|\d+時間|\d+分|時|時間|分|hour|minute|h|m)/iu', $normalized)) {
+            return true;
+        }
+
+        // 日付・曜日指定 + 行動動詞の組み合わせ（タスクの期限指定の可能性が高い）
+        // 「来週の月曜日に勉強する」「明日やる」などのパターン
+        if (preg_match('/(来週|今週|来月|今月|明日|今日|明後日|月曜|火曜|水曜|木曜|金曜|土曜|日曜|next week|tomorrow|today|monday|tuesday|wednesday|thursday|friday|saturday|sunday).*(する|やる|やりたい|したい|作成|追加|勉強|study|work|learn|作業|作る|つくる|準備|開始|終了)/iu', $normalized) ||
+            preg_match('/(する|やる|やりたい|したい|作成|追加|勉強|study|work|learn|作業|作る|つくる|準備|開始|終了).*(来週|今週|来月|今月|明日|今日|明後日|月曜|火曜|水曜|木曜|金曜|土曜|日曜|next week|tomorrow|today|monday|tuesday|wednesday|thursday|friday|saturday|sunday)/iu', $normalized)) {
+            return true;
+        }
+
+        // 具体的な時間指定（「10時に」「14:30に」など）+ 何らかの行動
+        if (preg_match('/(\d{1,2}時|\d{1,2}:\d{2}).*(する|やる|やりたい|したい|作成|追加|勉強|study|work|learn|作業|作る|つくる|準備)/iu', $normalized)) {
+            return true;
+        }
+
+        return false;
     }
 
     private function buildAiUnavailableResponse(): string

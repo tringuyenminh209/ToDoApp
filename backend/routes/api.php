@@ -160,6 +160,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete('/conversations/{id}', [AIController::class, 'deleteConversation']);
             Route::post('/conversations/{id}/messages', [AIController::class, 'sendMessage']);
             Route::post('/conversations/{id}/messages/context-aware', [AIController::class, 'sendMessageWithContext']);
+            Route::post('/conversations/{id}/messages/stream', [AIController::class, 'sendMessageStream']);
             Route::post('/task-suggestions/confirm', [AIController::class, 'confirmTaskSuggestion']);
             Route::post('/timetable-suggestions/confirm', [AIController::class, 'confirmTimetableSuggestion']);
         });
