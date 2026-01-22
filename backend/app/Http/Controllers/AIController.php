@@ -2585,19 +2585,26 @@ class AIController extends Controller
             $title = $message;
         }
 
-        // Extract deadline (next Monday if "来週の月曜日" is mentioned)
-        $deadline = null;
-        if (preg_match('/来週の(月|火|水|木|金|土|日)曜日/', $message, $matches)) {
-            $dayNames = ['日' => 0, '月' => 1, '火' => 2, '水' => 3, '木' => 4, '金' => 5, '土' => 6];
-            $targetDay = $dayNames[$matches[1]] ?? null;
-            if ($targetDay !== null) {
-                $now = now();
-                $daysUntilTarget = ($targetDay - $now->dayOfWeek + 7) % 7;
-                if ($daysUntilTarget === 0) {
-                    $daysUntilTarget = 7; // Next week
-                }
-                $deadline = $now->copy()->addDays($daysUntilTarget)->format('Y-m-d');
+        // Extract deadline using the same logic as inferDeadlineFromMessage for consistency
+        // This ensures "来週の月曜日" is correctly calculated as next week's Monday
+        $deadline = $this->inferDeadlineFromMessage($message, now());
+
+        if (!$deadline) {
+            // Fallback: simple pattern matching for common phrases
+            if (preg_match('/(明日|あした|あす)/', $message)) {
+                $deadline = now()->addDay()->format('Y-m-d');
+            } elseif (preg_match('/(明後日|あさって)/', $message)) {
+                $deadline = now()->addDays(2)->format('Y-m-d');
+            } elseif (preg_match('/(今日|きょう)/', $message)) {
+                $deadline = now()->format('Y-m-d');
             }
+        }
+
+        if ($deadline) {
+            Log::info('Deadline extracted from message', [
+                'message' => $message,
+                'deadline' => $deadline
+            ]);
         }
 
         return [
