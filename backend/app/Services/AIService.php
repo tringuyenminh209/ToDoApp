@@ -929,14 +929,14 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
 - 疑わしい場合は false を返してください";
 
         try {
-            // Parse task intent timeout: ngắn hơn general timeout (10s)
-            $parseTimeout = min(10, $this->timeout * 0.33); // 33% của general timeout hoặc tối đa 10s
+            // Parse task intent timeout: ローカルプロバイダー用に延長（30秒）
+            $parseTimeout = $this->isLocalProvider ? 30 : min(10, $this->timeout * 0.33);
 
             // Determine which parameter to use based on model
             $useMaxCompletionTokens = in_array($this->fallbackModel, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
 
             $requestBody = [
-                'model' => $this->fallbackModel, // Use faster model for parsing
+                'model' => $this->model, // Use main model instead of fallback for better accuracy
                 'messages' => [
                     [
                         'role' => 'system',
@@ -949,6 +949,15 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
                 ],
                 'temperature' => 0.3, // Low temperature for consistent parsing
             ];
+
+            // Add keep_alive for local providers
+            $requestBody = $this->addKeepAlive($requestBody);
+
+            Log::info('parseTaskIntent: Sending request', [
+                'model' => $requestBody['model'],
+                'message_length' => mb_strlen($message),
+                'prompt_length' => mb_strlen($prompt)
+            ]);
 
             // Use appropriate parameter based on model
             if ($useMaxCompletionTokens) {
@@ -966,6 +975,11 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
                 $data = $response->json();
                 $content = $data['choices'][0]['message']['content'] ?? '';
 
+                Log::info('parseTaskIntent: Received response', [
+                    'content_length' => mb_strlen($content),
+                    'content_preview' => mb_substr($content, 0, 200)
+                ]);
+
                 // Parse JSON response
                 $parsedContent = json_decode($content, true);
 
@@ -973,7 +987,14 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
                     if (!empty($parsedContent['has_task_intent']) && $parsedContent['has_task_intent'] === true) {
                         Log::info('Task intent detected', ['task' => $parsedContent['task']]);
                         return $parsedContent['task'];
+                    } else {
+                        Log::info('Task intent not detected', ['parsed_content' => $parsedContent]);
                     }
+                } else {
+                    Log::warning('parseTaskIntent: JSON decode error', [
+                        'error' => json_last_error_msg(),
+                        'content' => $content
+                    ]);
                 }
 
                 // Try to extract JSON from response
@@ -982,10 +1003,18 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
                     $parsedContent = json_decode($jsonMatch[0], true);
                     if (json_last_error() === JSON_ERROR_NONE && !empty($parsedContent['has_task_intent'])) {
                         if ($parsedContent['has_task_intent'] === true) {
+                            Log::info('Task intent detected (extracted from text)', ['task' => $parsedContent['task']]);
                             return $parsedContent['task'];
                         }
                     }
+                } else {
+                    Log::warning('parseTaskIntent: No JSON found in response', ['content' => $content]);
                 }
+            } else {
+                Log::error('parseTaskIntent: API request failed', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
             }
         } catch (\Exception $e) {
             Log::error('Task intent parsing failed: ' . $e->getMessage());

@@ -597,6 +597,22 @@ class AIController extends Controller
             $taskData = $this->aiService->parseTaskIntent($request->message);
             $createdTask = null;
 
+            // Debug: Log task intent parsing result
+            Log::info('Task intent parsing result in createConversation', [
+                'message' => $request->message,
+                'has_task_data' => !is_null($taskData),
+                'task_data' => $taskData
+            ]);
+
+            // Fallback: If parseTaskIntent failed but message clearly indicates task creation, try simple extraction
+            if (!$taskData && $this->hasTaskCreationKeywords($request->message)) {
+                Log::info('parseTaskIntent failed but task keywords detected, trying simple extraction');
+                $taskData = $this->extractTaskFromMessage($request->message);
+                if ($taskData) {
+                    Log::info('Task extracted from message using fallback method', ['task_data' => $taskData]);
+                }
+            }
+
             // If task intent detected, create task
             if ($taskData) {
                 try {
@@ -2507,6 +2523,92 @@ class AIController extends Controller
             'tasks' => [],
             'timetable' => $timetableByDay,
             'today' => $todayDayName,
+        ];
+    }
+
+    /**
+     * Check if message has task creation keywords
+     */
+    private function hasTaskCreationKeywords(string $message): bool
+    {
+        $keywords = [
+            'タスク', 'task', 'つくって', '作って', '作成', '追加', '登録',
+            '勉強', 'study', '学習', '作業', 'やる', 'やりたい', 'したい'
+        ];
+
+        $normalized = mb_strtolower($message);
+        foreach ($keywords as $keyword) {
+            if (mb_strpos($normalized, $keyword) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Extract task information from message using simple pattern matching
+     * Fallback when parseTaskIntent times out
+     */
+    private function extractTaskFromMessage(string $message): ?array
+    {
+        // Extract time information
+        $scheduledTime = null;
+        if (preg_match('/(\d+)時/', $message, $matches)) {
+            $hour = (int)$matches[1];
+            $scheduledTime = sprintf('%02d:00:00', $hour);
+        }
+
+        // Extract duration
+        $estimatedMinutes = null;
+        if (preg_match('/(\d+)時間/', $message, $matches)) {
+            $estimatedMinutes = (int)$matches[1] * 60;
+        } elseif (preg_match('/(\d+)分/', $message, $matches)) {
+            $estimatedMinutes = (int)$matches[1];
+        }
+
+        // Extract task title (remove time/duration keywords)
+        $title = $message;
+        $title = preg_replace('/来週の/', '', $title);
+        $title = preg_replace('/月曜日|火曜日|水曜日|木曜日|金曜日|土曜日|日曜日/', '', $title);
+        $title = preg_replace('/\d+時/', '', $title);
+        $title = preg_replace('/\d+時間/', '', $title);
+        $title = preg_replace('/\d+分/', '', $title);
+        $title = preg_replace('/タスクを.*?つくって/', '', $title);
+        $title = preg_replace('/タスクを.*?作って/', '', $title);
+        $title = preg_replace('/タスクを.*?作成/', '', $title);
+        $title = preg_replace('/ください/', '', $title);
+        $title = trim($title);
+
+        // If title is too short or empty, use original message
+        if (mb_strlen($title) < 3) {
+            $title = $message;
+        }
+
+        // Extract deadline (next Monday if "来週の月曜日" is mentioned)
+        $deadline = null;
+        if (preg_match('/来週の(月|火|水|木|金|土|日)曜日/', $message, $matches)) {
+            $dayNames = ['日' => 0, '月' => 1, '火' => 2, '水' => 3, '木' => 4, '金' => 5, '土' => 6];
+            $targetDay = $dayNames[$matches[1]] ?? null;
+            if ($targetDay !== null) {
+                $now = now();
+                $daysUntilTarget = ($targetDay - $now->dayOfWeek + 7) % 7;
+                if ($daysUntilTarget === 0) {
+                    $daysUntilTarget = 7; // Next week
+                }
+                $deadline = $now->copy()->addDays($daysUntilTarget)->format('Y-m-d');
+            }
+        }
+
+        return [
+            'title' => $title,
+            'description' => null,
+            'estimated_minutes' => $estimatedMinutes,
+            'priority' => 'medium',
+            'deadline' => $deadline,
+            'scheduled_time' => $scheduledTime,
+            'tags' => [],
+            'subtasks' => []
         ];
     }
 }
