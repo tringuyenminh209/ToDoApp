@@ -31,7 +31,7 @@ services:
       - SESSION_DRIVER=redis
       - OPENAI_API_KEY=${OPENAI_API_KEY:-sk-dummy-key}
       - OPENAI_BASE_URL=http://ollama:11434/v1
-      - OPENAI_MODEL=${OPENAI_MODEL:-qwen2.5:3b-instruct}
+      - OPENAI_MODEL=gemma2:2b
     depends_on:
       - mysql
       - redis
@@ -132,12 +132,16 @@ services:
     environment:
       # GPUメモリ使用量の制限（オプション）
       - OLLAMA_GPU_MEMORY=0
-      # 並列リクエスト数
-      - OLLAMA_NUM_PARALLEL=2
-      # コンテキストサイズ
-      - OLLAMA_NUM_CTX=2048
-      # Keep-alive時間（モデルをメモリに保持）
-      - OLLAMA_KEEP_ALIVE=5m
+      # 並列リクエスト数（応答速度向上のため増加）
+      - OLLAMA_NUM_PARALLEL=4
+      # コンテキストサイズ（速度向上のため削減：2048→512）
+      - OLLAMA_NUM_CTX=512
+      # Keep-alive時間（モデルをメモリに保持、応答速度向上のため延長：5m→30m）
+      - OLLAMA_KEEP_ALIVE=30m
+      # バッチサイズ（速度向上のため調整）
+      - OLLAMA_NUM_GPU=0
+      # メモリ効率化
+      - OLLAMA_MAX_LOADED_MODELS=1
     # NVIDIA GPU サポート（GPUがある場合はコメントを外す）
     # deploy:
     #   resources:
@@ -149,11 +153,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '4.0'
-          memory: 8G
+          cpus: '6.0'  # CPUを増加して速度向上
+          memory: 3G  # gemma2:2b用にメモリを削減（約1.5GB使用、余裕を持たせる）
         reservations:
-          cpus: '2.0'
-          memory: 4G
+          cpus: '3.0'  # 予約CPUも増加
+          memory: 1.5G  # 予約メモリも削減（gemma2:2b用）
 
 volumes:
   mysql_data:

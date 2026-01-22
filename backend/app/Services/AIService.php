@@ -5,6 +5,8 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class AIService
 {
@@ -25,8 +27,8 @@ class AIService
         // Try to get API key from config first, then from env, then from .env file directly
         $this->apiKey = config('services.openai.api_key') ?: env('OPENAI_API_KEY') ?: $this->readEnvFile('OPENAI_API_KEY');
         $this->baseUrl = config('services.openai.base_url') ?: env('OPENAI_BASE_URL') ?: $this->readEnvFile('OPENAI_BASE_URL', 'https://api.openai.com/v1');
-        $this->model = config('services.openai.model') ?: env('OPENAI_MODEL') ?: $this->readEnvFile('OPENAI_MODEL', 'gpt-5');
-        $this->fallbackModel = config('services.openai.fallback_model') ?: env('OPENAI_FALLBACK_MODEL') ?: $this->readEnvFile('OPENAI_FALLBACK_MODEL', 'gpt-4o-mini');
+        $this->model = config('services.openai.model') ?: env('OPENAI_MODEL') ?: $this->readEnvFile('OPENAI_MODEL', 'gemma2:2b');
+        $this->fallbackModel = config('services.openai.fallback_model') ?: env('OPENAI_FALLBACK_MODEL') ?: $this->readEnvFile('OPENAI_FALLBACK_MODEL', 'gemma2:2b');
         $this->enableFallback = config('services.openai.enable_fallback') !== null ? config('services.openai.enable_fallback') : (env('OPENAI_ENABLE_FALLBACK') !== null ? env('OPENAI_ENABLE_FALLBACK') : ($this->readEnvFile('OPENAI_ENABLE_FALLBACK') ?: true));
         $this->maxTokens = config('services.openai.max_tokens') ?: env('OPENAI_MAX_TOKENS') ?: (int)($this->readEnvFile('OPENAI_MAX_TOKENS') ?: 500);
         $this->temperature = config('services.openai.temperature') ?: env('OPENAI_TEMPERATURE') ?: (float)($this->readEnvFile('OPENAI_TEMPERATURE') ?: 0.5);
@@ -57,6 +59,18 @@ class AIService
     public function isLocalProvider(): bool
     {
         return $this->isLocalProvider;
+    }
+
+    /**
+     * Add keep_alive parameter to request body for local providers
+     * This keeps the model in memory to reduce load_duration
+     */
+    private function addKeepAlive(array $requestBody): array
+    {
+        if ($this->isLocalProvider && !isset($requestBody['keep_alive'])) {
+            $requestBody['keep_alive'] = '30m'; // Keep model in memory for 30 minutes
+        }
+        return $requestBody;
     }
 
     /**
@@ -240,6 +254,9 @@ class AIService
                         ],
                         'temperature' => $options['temperature'] ?? $this->temperature,
                     ];
+
+                    // Local provider用: keep_aliveを追加
+                    $requestBody = $this->addKeepAlive($requestBody);
 
                     // Use appropriate parameter based on model
                     if ($useMaxCompletionTokens) {
@@ -667,6 +684,9 @@ JSON形式で返してください：
                 ],
                 'temperature' => 0.1, // より低いtemperatureで安定性向上
             ];
+
+            // Local provider用: keep_aliveを追加してモデルをメモリに保持
+            $requestBody = $this->addKeepAlive($requestBody);
 
             // Local provider用: トークン数を削減
             $maxTokens = $this->isLocalProvider ? 300 : 700;
@@ -1279,6 +1299,9 @@ Knowledge検索の意図がない場合:
                 'temperature' => 0.3,
             ];
 
+            // Local provider用: keep_aliveを追加
+            $requestBody = $this->addKeepAlive($requestBody);
+
             if ($useMaxCompletionTokens) {
                 $requestBody['max_completion_tokens'] = 500;
             } else {
@@ -1446,6 +1469,9 @@ Knowledge検索の意図がない場合:
                 $requestBody['response_format'] = ['type' => 'json_object'];
             }
 
+            // Local provider用: keep_aliveを追加
+            $requestBody = $this->addKeepAlive($requestBody);
+
             Log::info('parseKnowledgeCreationIntent: Sending request', [
                 'model' => $modelToUse,
                 'message' => $message
@@ -1524,9 +1550,9 @@ Knowledge検索の意図がない場合:
         foreach ($models as $model) {
             for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
                 try {
-                    // Local provider用: システムプロンプトを簡略化
+                    // Local provider用: システムプロンプトを簡略化（速度向上のため）
                     $systemPrompt = $options['system_prompt'] ?? ($this->isLocalProvider
-                        ? '日本語で簡潔に応答してください。' // 短いシステムプロンプト
+                        ? '日本語で簡潔に応答。' // 最短のシステムプロンプト
                         : 'You are a helpful productivity assistant. Always respond in Japanese in a friendly and encouraging manner.');
 
                     // Prepare messages array
@@ -1537,15 +1563,15 @@ Knowledge検索の意図がない場合:
                         ]
                     ];
 
-                    // Add conversation history (Local provider用: 制限)
-                    $historyLimit = $this->isLocalProvider ? 4 : count($messages);
+                    // Add conversation history (Local provider用: 制限を強化して速度向上)
+                    $historyLimit = $this->isLocalProvider ? 2 : count($messages); // 4→2に削減
                     $limitedMessages = array_slice($messages, -$historyLimit);
 
                     foreach ($limitedMessages as $msg) {
-                        // Local provider用: 長いメッセージを短縮
+                        // Local provider用: 長いメッセージを短縮（速度向上のため）
                         $content = $msg['content'];
-                        if ($this->isLocalProvider && mb_strlen($content) > 500) {
-                            $content = mb_substr($content, 0, 500) . '...';
+                        if ($this->isLocalProvider && mb_strlen($content) > 300) { // 500→300に削減
+                            $content = mb_substr($content, 0, 300) . '...';
                         }
                         $apiMessages[] = [
                             'role' => $msg['role'],
@@ -1553,9 +1579,9 @@ Knowledge検索の意図がない場合:
                         ];
                     }
 
-                    // Chat timeout: Local provider用に長めに設定
+                    // Chat timeout: Local provider用に長めに設定（タイムアウトを延長）
                     $chatTimeout = $options['timeout'] ?? ($this->isLocalProvider
-                        ? max(90, $this->timeout * 0.75) // Local: 最小90秒
+                        ? max(180, $this->timeout * 1.5) // Local: 最小180秒（3分）に延長
                         : $this->timeout * 0.5); // Cloud: 50%
 
                     // Determine which parameter to use based on model
@@ -1565,8 +1591,8 @@ Knowledge検索の意図がない場合:
                     if ($useMaxCompletionTokens) {
                         $maxTokensValue = $options['max_tokens'] ?? 16000;
                     } else {
-                        // Local provider用: トークン数を大幅に削減して高速化
-                        $defaultMaxTokens = $this->isLocalProvider ? 300 : 2000;
+                        // Local provider用: トークン数を大幅に削減して高速化（300→200に削減）
+                        $defaultMaxTokens = $this->isLocalProvider ? 200 : 2000;
                         $maxTokensValue = $options['max_tokens'] ?? $defaultMaxTokens;
                     }
 
@@ -1574,6 +1600,7 @@ Knowledge検索の意図がない場合:
                         'model' => $model,
                         'messages' => $apiMessages,
                         'stream' => false,
+                        'keep_alive' => '30m', // モデルをメモリに30分保持（load_duration削減）
                     ];
 
                     // Temperature support varies by model
@@ -1598,54 +1625,70 @@ Knowledge検索の意図がない場合:
                         'message_count' => count($apiMessages)
                     ]);
 
-                    $response = Http::withHeaders([
-                        'Authorization' => 'Bearer ' . $this->apiKey,
-                        'Content-Type' => 'application/json',
-                    ])->timeout((int)$chatTimeout)->post($this->baseUrl . '/chat/completions', $requestBody);
+                    try {
+                        $response = Http::withHeaders([
+                            'Authorization' => 'Bearer ' . $this->apiKey,
+                            'Content-Type' => 'application/json',
+                        ])->timeout((int)$chatTimeout)->post($this->baseUrl . '/chat/completions', $requestBody);
 
-                    if ($response->successful()) {
-                        $data = $response->json();
-                        $content = $data['choices'][0]['message']['content'] ?? '';
+                        if ($response->successful()) {
+                            $data = $response->json();
+                            $content = $data['choices'][0]['message']['content'] ?? '';
 
-                        Log::info('AI Chat: Success', [
-                            'model' => $model,
-                            'tokens' => $data['usage']['total_tokens'] ?? 0
-                        ]);
-
-                        return [
-                            'message' => $content,
-                            'model' => $model,
-                            'tokens' => $data['usage']['total_tokens'] ?? 0,
-                            'finish_reason' => $data['choices'][0]['finish_reason'] ?? 'stop',
-                            'error' => false
-                        ];
-                    } else {
-                        $errorBody = $response->json();
-                        $errorMessage = $errorBody['error']['message'] ?? $response->body();
-                        $errorCode = $errorBody['error']['code'] ?? null;
-                        $errorType = $errorBody['error']['type'] ?? null;
-
-                        Log::warning('AI Chat: API request failed', [
-                            'status' => $response->status(),
-                            'error' => $errorMessage,
-                            'error_code' => $errorCode,
-                            'error_type' => $errorType,
-                            'body' => $errorBody,
-                            'attempt' => $attempt,
-                            'model' => $model,
-                            'base_url' => $this->baseUrl
-                        ]);
-
-                        // If quota exceeded, don't retry
-                        if ($response->status() === 429 && ($errorType === 'insufficient_quota' || $errorCode === 'insufficient_quota')) {
-                            Log::error('AI Chat: Quota exceeded, stopping retries', [
+                            Log::info('AI Chat: Success', [
                                 'model' => $model,
-                                'error' => $errorMessage
+                                'tokens' => $data['usage']['total_tokens'] ?? 0
                             ]);
-                            break;
-                        }
-                    }
 
+                            return [
+                                'message' => $content,
+                                'model' => $model,
+                                'tokens' => $data['usage']['total_tokens'] ?? 0,
+                                'finish_reason' => $data['choices'][0]['finish_reason'] ?? 'stop',
+                                'error' => false
+                            ];
+                        } else {
+                            $errorBody = $response->json();
+                            $errorMessage = $errorBody['error']['message'] ?? $response->body();
+                            $errorCode = $errorBody['error']['code'] ?? null;
+                            $errorType = $errorBody['error']['type'] ?? null;
+
+                            Log::warning('AI Chat: API request failed', [
+                                'status' => $response->status(),
+                                'error' => $errorMessage,
+                                'error_code' => $errorCode,
+                                'error_type' => $errorType,
+                                'body' => $errorBody,
+                                'attempt' => $attempt,
+                                'model' => $model,
+                                'base_url' => $this->baseUrl
+                            ]);
+
+                            // If quota exceeded, don't retry
+                            if ($response->status() === 429 && ($errorType === 'insufficient_quota' || $errorCode === 'insufficient_quota')) {
+                                Log::error('AI Chat: Quota exceeded, stopping retries', [
+                                    'model' => $model,
+                                    'error' => $errorMessage
+                                ]);
+                                break;
+                            }
+                        }
+                    } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                        Log::error('AI Chat: Connection timeout or failed', [
+                            'error' => $e->getMessage(),
+                            'timeout' => $chatTimeout,
+                            'model' => $model,
+                            'base_url' => $this->baseUrl,
+                            'attempt' => $attempt
+                        ]);
+                    } catch (\Exception $e) {
+                        Log::error('AI Chat: Request exception', [
+                            'error' => $e->getMessage(),
+                            'model' => $model,
+                            'base_url' => $this->baseUrl,
+                            'attempt' => $attempt
+                        ]);
+                    }
                 } catch (\Exception $e) {
                     Log::error('AI Chat: API call failed', [
                         'error' => $e->getMessage(),
@@ -1686,6 +1729,237 @@ Knowledge検索の意図がない場合:
                 'base_url' => $this->baseUrl
             ]
         ];
+    }
+
+    /**
+     * Chat with AI using streaming (Server-Sent Events)
+     * Yields chunks of response as they are generated
+     *
+     * @param array $messages Array of messages in format: [['role' => 'user/assistant', 'content' => 'message']]
+     * @param array $options Additional options for the API call
+     * @return \Generator Yields arrays with 'content', 'done', 'error' keys
+     */
+    public function chatStream(array $messages, array $options = []): \Generator
+    {
+        if (!$this->apiKey) {
+            yield [
+                'content' => 'AI service is currently unavailable. Please try again later.',
+                'done' => true,
+                'error' => true
+            ];
+            return;
+        }
+
+        $model = $this->model;
+        $systemPrompt = $options['system_prompt'] ?? ($this->isLocalProvider
+            ? '日本語で簡潔に応答してください。'
+            : 'You are a helpful productivity assistant. Always respond in Japanese in a friendly and encouraging manner.');
+
+        // Prepare messages array
+        $apiMessages = [
+            [
+                'role' => 'system',
+                'content' => $systemPrompt
+            ]
+        ];
+
+        // Add conversation history (Local provider用: 制限)
+        $historyLimit = $this->isLocalProvider ? 4 : count($messages);
+        $limitedMessages = array_slice($messages, -$historyLimit);
+
+        foreach ($limitedMessages as $msg) {
+            // Local provider用: 長いメッセージを短縮
+            $content = $msg['content'];
+            if ($this->isLocalProvider && mb_strlen($content) > 500) {
+                $content = mb_substr($content, 0, 500) . '...';
+            }
+            $apiMessages[] = [
+                'role' => $msg['role'],
+                'content' => $content
+            ];
+        }
+
+        // Chat timeout: Local provider用に長めに設定
+        $chatTimeout = $options['timeout'] ?? ($this->isLocalProvider
+            ? max(90, $this->timeout * 0.75)
+            : $this->timeout * 0.5);
+
+        // Local provider用: トークン数を大幅に削減して高速化
+        $defaultMaxTokens = $this->isLocalProvider ? 300 : 2000;
+        $maxTokensValue = $options['max_tokens'] ?? $defaultMaxTokens;
+
+        $requestBody = [
+            'model' => $model,
+            'messages' => $apiMessages,
+            'stream' => true, // ストリーミングを有効化
+            'keep_alive' => '30m', // モデルをメモリに30分保持（load_duration削減）
+        ];
+
+        // Temperature support varies by model
+        $noTemperatureModels = ['gpt-5', 'o1', 'o1-preview', 'o1-mini'];
+        if (!in_array($model, $noTemperatureModels)) {
+            $requestBody['temperature'] = $options['temperature'] ?? ($this->isLocalProvider ? 0.3 : 0.7);
+        }
+
+        $requestBody['max_tokens'] = $maxTokensValue;
+
+        try {
+            // Guzzleクライアントを使用してストリーミングリクエストを送信
+            $client = new Client([
+                'timeout' => (int)$chatTimeout,
+                'stream' => true,
+            ]);
+
+            $response = $client->post($this->baseUrl . '/chat/completions', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->apiKey,
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $requestBody,
+            ]);
+
+            $statusCode = $response->getStatusCode();
+            if ($statusCode !== 200) {
+                // エラーレスポンスの読み取り（ストリーミングではない）
+                $errorBody = $response->getBody()->getContents();
+                $errorData = json_decode($errorBody, true);
+                $errorMessage = $errorData['error']['message'] ?? $errorBody ?? 'Unknown error';
+                yield [
+                    'content' => 'エラー: ' . $errorMessage,
+                    'done' => true,
+                    'error' => true
+                ];
+                return;
+            }
+
+            // ストリーミングレスポンスを処理
+            $body = $response->getBody();
+            $fullContent = '';
+            $buffer = '';
+
+            // ストリーミングデータを読み取る
+            while (!$body->eof()) {
+                $chunk = $body->read(8192); // 8KBずつ読み取る
+                if ($chunk === false || $chunk === '') {
+                    // 少し待ってから再試行（データがまだ来る可能性がある）
+                    usleep(100000); // 100ms待機
+                    if ($body->eof()) {
+                        break;
+                    }
+                    continue;
+                }
+
+                $buffer .= $chunk;
+                $lines = explode("\n", $buffer);
+
+                // 最後の行は完全でない可能性があるため、バッファに残す
+                $buffer = array_pop($lines) ?? '';
+
+                foreach ($lines as $line) {
+                    $line = trim($line);
+                    if (empty($line)) {
+                        continue;
+                    }
+
+                    // Server-Sent Events形式: "data: {...}"
+                    if (!str_starts_with($line, 'data: ')) {
+                        continue;
+                    }
+
+                    $data = substr($line, 6); // "data: " を削除
+                    if ($data === '[DONE]') {
+                        yield [
+                            'content' => '',
+                            'done' => true,
+                            'error' => false,
+                            'full_message' => $fullContent
+                        ];
+                        return;
+                    }
+
+                    $json = json_decode($data, true);
+                    if (!$json) {
+                        continue;
+                    }
+
+                    // Ollama/OpenAI互換形式の処理
+                    $content = null;
+                    if (isset($json['choices'][0]['delta']['content'])) {
+                        $content = $json['choices'][0]['delta']['content'];
+                    } elseif (isset($json['message']['content'])) {
+                        $content = $json['message']['content'];
+                    } elseif (isset($json['choices'][0]['message']['content'])) {
+                        // 一部の実装ではmessageに直接contentがある場合がある
+                        $content = $json['choices'][0]['message']['content'];
+                    }
+
+                    if ($content !== null && $content !== '') {
+                        $fullContent .= $content;
+                        yield [
+                            'content' => $content,
+                            'done' => false,
+                            'error' => false
+                        ];
+                    }
+                }
+            }
+
+            // 残りのバッファを処理
+            if (!empty($buffer)) {
+                $line = trim($buffer);
+                if (str_starts_with($line, 'data: ')) {
+                    $data = substr($line, 6);
+                    if ($data !== '[DONE]') {
+                        $json = json_decode($data, true);
+                        if ($json) {
+                            $content = $json['choices'][0]['delta']['content']
+                                ?? $json['message']['content']
+                                ?? $json['choices'][0]['message']['content']
+                                ?? null;
+                            if ($content) {
+                                $fullContent .= $content;
+                                yield [
+                                    'content' => $content,
+                                    'done' => false,
+                                    'error' => false
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 最終的な完全なメッセージを返す
+            yield [
+                'content' => '',
+                'done' => true,
+                'error' => false,
+                'full_message' => $fullContent
+            ];
+
+        } catch (RequestException $e) {
+            Log::error('AI Chat Stream: Request failed', [
+                'error' => $e->getMessage(),
+                'model' => $model
+            ]);
+
+            yield [
+                'content' => '申し訳ございません。AIサービスの接続に失敗しました。',
+                'done' => true,
+                'error' => true
+            ];
+        } catch (\Exception $e) {
+            Log::error('AI Chat Stream: API call failed', [
+                'error' => $e->getMessage(),
+                'model' => $model
+            ]);
+
+            yield [
+                'content' => '申し訳ございません。AIサービスの接続に失敗しました。',
+                'done' => true,
+                'error' => true
+            ];
+        }
     }
 
     /**

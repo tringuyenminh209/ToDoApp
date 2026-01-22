@@ -422,24 +422,91 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
 
     try {
       if (!conversationId) {
+        // 新しい会話の場合は通常のAPIを使用
         const created = await aiChatService.createConversation({ message: trimmed });
         const conversation = created?.data?.conversation;
         if (conversation?.id) {
           setConversationId(conversation.id);
           setChatMessages(normalizeMessages(conversation.messages || []));
         } else {
-          setChatMessages((prev) =>
-            appendMessage(prev, { role: 'assistant', content: created?.message || t.aiChatFallback })
-          );
+          // conversationが返されない場合（instantReplyなど）、assistant_messageから取得
+          const assistantMessage = created?.data?.assistant_message;
+          if (assistantMessage?.content) {
+            setChatMessages((prev) =>
+              appendMessage(prev, {
+                id: assistantMessage.id,
+                role: 'assistant',
+                content: assistantMessage.content,
+                created_at: assistantMessage.created_at,
+              })
+            );
+            // conversation_idも設定
+            if (created?.data?.user_message?.conversation_id) {
+              setConversationId(created.data.user_message.conversation_id);
+            }
+          } else {
+            setChatMessages((prev) =>
+              appendMessage(prev, { role: 'assistant', content: created?.message || t.aiChatFallback })
+            );
+          }
         }
       } else {
-        const sent = await aiChatService.sendMessage(conversationId, trimmed, true);
-        const assistantMessage = sent?.data?.assistant_message;
-        if (assistantMessage?.content) {
-          setChatMessages((prev) => appendMessage(prev, assistantMessage));
-        } else {
-          setChatMessages((prev) => appendMessage(prev, { role: 'assistant', content: t.aiChatFallback }));
-        }
+        // 既存の会話の場合はストリーミングを使用
+        const streamingAssistantMessage: ChatMessage = {
+          id: `streaming-${Date.now()}`,
+          role: 'assistant',
+          content: '',
+        };
+        setChatMessages((prev) => appendMessage(prev, streamingAssistantMessage));
+
+        await aiChatService.sendMessageStream(
+          conversationId,
+          trimmed,
+          // onChunk: チャンクごとに更新
+          (chunk: string) => {
+            setChatMessages((prev) => {
+              const updated = [...prev];
+              const lastIndex = updated.length - 1;
+              if (updated[lastIndex]?.id === streamingAssistantMessage.id) {
+                updated[lastIndex] = {
+                  ...updated[lastIndex],
+                  content: updated[lastIndex].content + chunk,
+                };
+              }
+              return updated;
+            });
+          },
+          // onDone: 完了時に最終メッセージを更新
+          (fullMessage: string, messageId?: number) => {
+            setChatMessages((prev) => {
+              const updated = [...prev];
+              const lastIndex = updated.length - 1;
+              if (updated[lastIndex]?.id === streamingAssistantMessage.id) {
+                updated[lastIndex] = {
+                  ...updated[lastIndex],
+                  id: messageId || updated[lastIndex].id,
+                  content: fullMessage,
+                };
+              }
+              return updated;
+            });
+          },
+          // onError: エラー処理
+          (error: string) => {
+            setChatError(error);
+            setChatMessages((prev) => {
+              const updated = [...prev];
+              const lastIndex = updated.length - 1;
+              if (updated[lastIndex]?.id === streamingAssistantMessage.id) {
+                updated[lastIndex] = {
+                  ...updated[lastIndex],
+                  content: error || t.aiChatRetry,
+                };
+              }
+              return updated;
+            });
+          }
+        );
       }
     } catch (error) {
       console.error('Failed to send chat message:', error);

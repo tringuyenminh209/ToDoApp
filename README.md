@@ -50,7 +50,7 @@ A modern To-Do application with AI integration built with Laravel 12 backend and
 - **Database**: MySQL 8.0
 - **Cache**: Redis 7
 - **Queue**: Laravel Horizon
-- **AI**: OpenAI GPT-4
+- **AI**: Ollama (Local LLM) - phi3:latest
 - **Auth**: Laravel Sanctum
 
 ### Mobile App
@@ -99,6 +99,50 @@ cp backend/env.example backend/.env
 
 # Or manually
 docker-compose up -d
+```
+
+### 3.1. Setup Ollama Model
+
+**推奨モデル（速度・メモリ重視）:**
+- `gemma2:2b` - 最も軽量で高速（推奨・デフォルト、約1.5GBメモリ）
+- `qwen2.5:1.5b` - 軽量で日本語対応良好（約3GBメモリ）
+- `phi3:mini` - 軽量（約2GBメモリ、ただし`phi3:latest`と同じファイルを参照する可能性あり）
+- `phi3:latest` - バランス型（約8GBメモリ必要、メモリが十分な場合のみ）
+
+```bash
+# Ollamaコンテナに入る
+docker-compose exec ollama bash
+
+# 軽量モデルをダウンロード（速度向上・メモリ節約のため推奨・デフォルト）
+ollama pull gemma2:2b
+
+# 注意: phi3:latestは約8GBのメモリが必要です。メモリが不足する場合はgemma2:2bを使用してください
+# ollama pull phi3:latest
+
+# モデルが正しくダウンロードされたか確認
+ollama list
+```
+
+**Ollama応答速度の最適化:**
+
+1. **軽量モデルの使用**: `gemma2:2b`は`phi3:latest`より約3-4倍高速で、メモリ使用量も約1/5
+2. **Keep-alive設定**: すべてのAPIリクエストに`keep_alive=30m`を追加（モデルをメモリに30分保持）
+3. **コンテキストサイズ**: 512に削減済み（速度向上、load_duration削減）
+4. **ストリーミング**: 既に実装済み（リアルタイム表示で体感速度向上）
+5. **モデルプリロード**: コンテナ起動時にモデルをメモリに読み込み（初回リクエストのload_duration削減）
+
+**応答速度改善のポイント:**
+- `load_duration`（モデル読み込み時間）: `keep_alive`パラメータにより60秒→0秒に削減
+- `prompt_eval_duration`（プロンプト評価時間）: コンテキストサイズ削減により短縮
+- `eval_duration`（生成時間）: 軽量モデル使用により短縮
+
+**モデル切り替え方法:**
+```bash
+# backend/.env を編集
+OPENAI_MODEL=gemma2:2b  # または qwen2.5:1.5b, phi3:mini
+
+# コンテナを再起動
+docker-compose restart app
 ```
 
 ### 4. Setup Laravel Backend
@@ -202,7 +246,11 @@ DB_PASSWORD=123qwecc
 REDIS_HOST=redis
 REDIS_PORT=6379
 
-OPENAI_API_KEY=your-openai-api-key
+# Ollama Local AI Configuration
+OPENAI_API_KEY=sk-dummy-key
+OPENAI_BASE_URL=http://ollama:11434/v1
+OPENAI_MODEL=phi3:latest
+OPENAI_TIMEOUT=120
 FCM_SERVER_KEY=your-fcm-server-key
 ```
 
