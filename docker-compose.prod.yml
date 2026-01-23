@@ -1,11 +1,6 @@
-# Docker Compose for Production
-# 本番環境用設定
-# AWS Academy用: ローカルのMySQLとRedisを使用（コスト削減）
-
-version: '3.8'
-
+# Docker Compose for Production (Optimized for 2 vCPUs)
 services:
-  # MySQL Database (AWS Academy用)
+  # MySQL Database
   mysql:
     image: mysql:8.0
     container_name: todo-mysql-prod
@@ -22,20 +17,20 @@ services:
     networks:
       - todo-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-your_secure_password}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-123qwecc}"]
       interval: 10s
       timeout: 5s
       retries: 5
     deploy:
       resources:
         limits:
-          cpus: '2.0'
-          memory: 2G
+          cpus: '0.5'    
+          memory: 1G    
         reservations:
-          cpus: '1.0'
-          memory: 1G
+          cpus: '0.2'
+          memory: 512M
 
-  # Redis Cache (AWS Academy用)
+  # Redis Cache
   redis:
     image: redis:7-alpine
     container_name: todo-redis-prod
@@ -52,11 +47,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 512M
-        reservations:
-          cpus: '0.25'
+          cpus: '0.2'
           memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
 
   # Laravel Backend
   app:
@@ -73,39 +68,23 @@ services:
     ports:
       - "${APP_PORT:-8080}:80"
     environment:
-      # Laravel基本設定
       - APP_ENV=production
       - APP_DEBUG=false
       - APP_KEY=${APP_KEY}
       - APP_URL=${APP_URL}
       - APP_TIMEZONE=${APP_TIMEZONE:-Asia/Tokyo}
-      
-      # データベース設定（ローカルMySQLを使用）
       - DB_CONNECTION=mysql
       - DB_HOST=mysql
       - DB_PORT=3306
       - DB_DATABASE=${DB_DATABASE:-todo_app}
       - DB_USERNAME=${DB_USERNAME:-root}
       - DB_PASSWORD=${DB_PASSWORD:-your_secure_password}
-      
-      # Redis設定（ローカルRedisを使用）
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - REDIS_PASSWORD=
       - QUEUE_CONNECTION=redis
       - CACHE_DRIVER=redis
-      - CACHE_STORE=redis
-      - SESSION_DRIVER=redis
-      
-      # AI設定
-      - OPENAI_API_KEY=${OPENAI_API_KEY:-sk-dummy-key}
       - OPENAI_BASE_URL=http://ollama:11434/v1
       - OPENAI_MODEL=${OPENAI_MODEL:-gemma2:2b}
-      - OPENAI_TIMEOUT=${OPENAI_TIMEOUT:-120}
-      
-      # その他
-      - LOG_CHANNEL=${LOG_CHANNEL:-stack}
-      - LOG_LEVEL=${LOG_LEVEL:-error}
     networks:
       - todo-network
     depends_on:
@@ -124,18 +103,13 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2.0'
-          memory: 2G
-        reservations:
-          cpus: '1.0'
+          cpus: '0.5'    
           memory: 1G
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+        reservations:
+          cpus: '0.3'
+          memory: 512M
 
-  # Next.js Frontend (Production Build)
+  # Next.js Frontend
   frontend:
     build:
       context: ./frontend
@@ -148,26 +122,15 @@ services:
       - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
       - NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-http://app:80}
-      - HOSTNAME=0.0.0.0
-      - PORT=3000
     depends_on:
       app:
         condition: service_healthy
     networks:
       - todo-network
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000", "||", "exit", "1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 1G
-        reservations:
-          cpus: '0.5'
+          cpus: '0.3'    # Giảm để nhường sức mạnh cho AI
           memory: 512M
     logging:
       driver: "json-file"
@@ -187,32 +150,17 @@ services:
     networks:
       - todo-network
     environment:
-      # パフォーマンス最適化設定
       - OLLAMA_GPU_MEMORY=0
-      - OLLAMA_NUM_PARALLEL=4
+      - OLLAMA_NUM_PARALLEL=1  
       - OLLAMA_NUM_CTX=512
-      - OLLAMA_KEEP_ALIVE=30m
-      - OLLAMA_NUM_GPU=0
-      - OLLAMA_MAX_LOADED_MODELS=1
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags", "||", "exit", "1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
     deploy:
       resources:
         limits:
-          cpus: '4.0'
-          memory: 3G
+          cpus: '1.5'    # Đảm bảo < 2.0
+          memory: 3G     # Ưu tiên RAM lớn cho AI
         reservations:
-          cpus: '2.0'
-          memory: 1.5G
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+          cpus: '1.0'
+          memory: 2G
 
 volumes:
   mysql_data:
