@@ -24,11 +24,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'    
-          memory: 1G    
+          cpus: '0.6'
+          memory: 1.25G
         reservations:
-          cpus: '0.2'
-          memory: 512M
+          cpus: '0.25'
+          memory: 640M
 
   # Redis Cache
   redis:
@@ -47,11 +47,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.2'
-          memory: 256M
+          cpus: '0.25'
+          memory: 384M
         reservations:
-          cpus: '0.1'
-          memory: 128M
+          cpus: '0.15'
+          memory: 192M
 
   # Laravel Backend
   app:
@@ -103,11 +103,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'    
-          memory: 1G
+          cpus: '0.6'
+          memory: 1.25G
         reservations:
-          cpus: '0.3'
-          memory: 512M
+          cpus: '0.4'
+          memory: 640M
 
   # Next.js Frontend
   frontend:
@@ -130,8 +130,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.3'    # Giảm để nhường sức mạnh cho AI
-          memory: 512M
+          cpus: '0.4'
+          memory: 640M
+        reservations:
+          cpus: '0.2'
+          memory: 256M
     logging:
       driver: "json-file"
       options:
@@ -151,16 +154,16 @@ services:
       - todo-network
     environment:
       - OLLAMA_GPU_MEMORY=0
-      - OLLAMA_NUM_PARALLEL=1  
-      - OLLAMA_NUM_CTX=512
+      - OLLAMA_NUM_PARALLEL=2
+      - OLLAMA_NUM_CTX=1024
     deploy:
       resources:
         limits:
-          cpus: '1.5'    # Đảm bảo < 2.0
-          memory: 3G     # Ưu tiên RAM lớn cho AI
+          cpus: '2.0'
+          memory: 4G
         reservations:
-          cpus: '1.0'
-          memory: 2G
+          cpus: '1.25'
+          memory: 2.5G
 
 volumes:
   mysql_data:
