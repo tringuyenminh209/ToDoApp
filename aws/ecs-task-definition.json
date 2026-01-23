@@ -1,0 +1,284 @@
+{
+  "family": "todo-app",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "4096",
+  "memory": "8192",
+  "executionRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/ecsTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "backend",
+      "image": "<AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/todo-app-backend:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "APP_ENV",
+          "value": "production"
+        },
+        {
+          "name": "APP_DEBUG",
+          "value": "false"
+        },
+        {
+          "name": "APP_TIMEZONE",
+          "value": "Asia/Tokyo"
+        },
+        {
+          "name": "DB_CONNECTION",
+          "value": "mysql"
+        },
+        {
+          "name": "DB_HOST",
+          "value": "<RDS_ENDPOINT>"
+        },
+        {
+          "name": "DB_PORT",
+          "value": "3306"
+        },
+        {
+          "name": "DB_DATABASE",
+          "value": "<DB_DATABASE>"
+        },
+        {
+          "name": "DB_USERNAME",
+          "value": "<DB_USERNAME>"
+        },
+        {
+          "name": "REDIS_HOST",
+          "value": "<ELASTICACHE_ENDPOINT>"
+        },
+        {
+          "name": "REDIS_PORT",
+          "value": "6379"
+        },
+        {
+          "name": "QUEUE_CONNECTION",
+          "value": "redis"
+        },
+        {
+          "name": "CACHE_DRIVER",
+          "value": "redis"
+        },
+        {
+          "name": "SESSION_DRIVER",
+          "value": "redis"
+        },
+        {
+          "name": "OPENAI_API_KEY",
+          "value": "sk-dummy-key"
+        },
+        {
+          "name": "OPENAI_BASE_URL",
+          "value": "http://localhost:11434/v1"
+        },
+        {
+          "name": "OPENAI_MODEL",
+          "value": "gemma2:2b"
+        },
+        {
+          "name": "OPENAI_TIMEOUT",
+          "value": "120"
+        },
+        {
+          "name": "LOG_CHANNEL",
+          "value": "stack"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "value": "error"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "APP_KEY",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<AWS_ACCOUNT_ID>:secret:todo-app/app-key"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<AWS_ACCOUNT_ID>:secret:todo-app/db-password"
+        },
+        {
+          "name": "REDIS_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<AWS_ACCOUNT_ID>:secret:todo-app/redis-password"
+        }
+      ],
+      "resourceRequirements": [
+        {
+          "type": "MEMORY",
+          "value": "2048"
+        },
+        {
+          "type": "CPU",
+          "value": "1024"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/todo-app",
+          "awslogs-region": "<REGION>",
+          "awslogs-stream-prefix": "backend"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost:80/health || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 10,
+        "retries": 3,
+        "startPeriod": 60
+      },
+      "dependsOn": [
+        {
+          "containerName": "ollama",
+          "condition": "START"
+        }
+      ]
+    },
+    {
+      "name": "frontend",
+      "image": "<AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/todo-app-frontend:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "name": "NEXT_PUBLIC_API_URL",
+          "value": "https://api.yourdomain.com/api"
+        },
+        {
+          "name": "NEXT_PUBLIC_BACKEND_URL",
+          "value": "http://backend:80"
+        },
+        {
+          "name": "HOSTNAME",
+          "value": "0.0.0.0"
+        },
+        {
+          "name": "PORT",
+          "value": "3000"
+        },
+        {
+          "name": "NEXT_TELEMETRY_DISABLED",
+          "value": "1"
+        }
+      ],
+      "resourceRequirements": [
+        {
+          "type": "MEMORY",
+          "value": "1024"
+        },
+        {
+          "type": "CPU",
+          "value": "512"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/todo-app",
+          "awslogs-region": "<REGION>",
+          "awslogs-stream-prefix": "frontend"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 10,
+        "retries": 3,
+        "startPeriod": 60
+      },
+      "dependsOn": [
+        {
+          "containerName": "backend",
+          "condition": "HEALTHY"
+        }
+      ]
+    },
+    {
+      "name": "ollama",
+      "image": "ollama/ollama:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 11434,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "OLLAMA_GPU_MEMORY",
+          "value": "0"
+        },
+        {
+          "name": "OLLAMA_NUM_PARALLEL",
+          "value": "4"
+        },
+        {
+          "name": "OLLAMA_NUM_CTX",
+          "value": "512"
+        },
+        {
+          "name": "OLLAMA_KEEP_ALIVE",
+          "value": "30m"
+        },
+        {
+          "name": "OLLAMA_NUM_GPU",
+          "value": "0"
+        },
+        {
+          "name": "OLLAMA_MAX_LOADED_MODELS",
+          "value": "1"
+        }
+      ],
+      "resourceRequirements": [
+        {
+          "type": "MEMORY",
+          "value": "3072"
+        },
+        {
+          "type": "CPU",
+          "value": "2048"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/todo-app",
+          "awslogs-region": "<REGION>",
+          "awslogs-stream-prefix": "ollama"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost:11434/api/tags || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 10,
+        "retries": 3,
+        "startPeriod": 120
+      }
+    }
+  ]
+}

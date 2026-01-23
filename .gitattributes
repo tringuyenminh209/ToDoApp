@@ -1,0 +1,57 @@
+# 改行コードの自動変換設定
+# Windows環境ではCRLF、Linux/MacではLFに自動変換
+
+# テキストファイルは自動検出
+* text=auto
+
+# ソースコードファイルはLFに統一（推奨）
+*.php text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+
+# 設定ファイル
+*.env text eol=lf
+*.env.example text eol=lf
+.gitignore text eol=lf
+.dockerignore text eol=lf
+.gitattributes text eol=lf
+
+# Docker関連
+Dockerfile text eol=lf
+docker-compose.yml text eol=lf
+docker-compose.prod.yml text eol=lf
+
+# バイナリファイルは変換しない
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.otf binary
+*.jar binary
+*.war binary
+*.ear binary
+*.zip binary
+*.tar.gz binary
+*.tgz binary
+
+# その他
+*.log text eol=lf
+*.cache text eol=lf

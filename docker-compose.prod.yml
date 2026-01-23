@@ -1,0 +1,166 @@
+# Docker Compose for Production
+# 本番環境用設定
+# 注意: MySQLとRedisは外部サービス（RDS、ElastiCache等）を使用することを想定
+
+version: '3.8'
+
+services:
+  # Laravel Backend
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todo-app-backend-prod
+    restart: always
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+      - ./docker/nginx.conf:/etc/nginx/sites-available/default
+      - ./docker/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+    ports:
+      - "${APP_PORT:-8080}:80"
+    environment:
+      # Laravel基本設定
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_KEY=${APP_KEY}
+      - APP_URL=${APP_URL}
+      - APP_TIMEZONE=${APP_TIMEZONE:-Asia/Tokyo}
+      
+      # データベース設定（外部RDS等を使用）
+      - DB_CONNECTION=mysql
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT:-3306}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      
+      # Redis設定（外部ElastiCache等を使用）
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - QUEUE_CONNECTION=redis
+      - CACHE_DRIVER=redis
+      - CACHE_STORE=redis
+      - SESSION_DRIVER=redis
+      
+      # AI設定
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-sk-dummy-key}
+      - OPENAI_BASE_URL=http://ollama:11434/v1
+      - OPENAI_MODEL=${OPENAI_MODEL:-gemma2:2b}
+      - OPENAI_TIMEOUT=${OPENAI_TIMEOUT:-120}
+      
+      # その他
+      - LOG_CHANNEL=${LOG_CHANNEL:-stack}
+      - LOG_LEVEL=${LOG_LEVEL:-error}
+    networks:
+      - todo-network
+    depends_on:
+      ollama:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Next.js Frontend (Production Build)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: todo-app-frontend-prod
+    restart: always
+    ports:
+      - "${FRONTEND_PORT:-8088}:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+      - NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-http://app:80}
+      - HOSTNAME=0.0.0.0
+      - PORT=3000
+    depends_on:
+      app:
+        condition: service_healthy
+    networks:
+      - todo-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Ollama (Local LLM)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: todo-ollama-prod
+    restart: always
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - todo-network
+    environment:
+      # パフォーマンス最適化設定
+      - OLLAMA_GPU_MEMORY=0
+      - OLLAMA_NUM_PARALLEL=4
+      - OLLAMA_NUM_CTX=512
+      - OLLAMA_KEEP_ALIVE=30m
+      - OLLAMA_NUM_GPU=0
+      - OLLAMA_MAX_LOADED_MODELS=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 3G
+        reservations:
+          cpus: '2.0'
+          memory: 1.5G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  ollama_data:
+    driver: local
+
+networks:
+  todo-network:
+    driver: bridge

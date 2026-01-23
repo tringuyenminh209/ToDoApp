@@ -2,6 +2,7 @@
 .git
 .gitignore
 .gitattributes
+.github/
 
 # Documentation
 README.md
@@ -9,44 +10,119 @@ docs/
 *.md
 
 # IDE
-.idea
-.vscode
+.idea/
+.vscode/
 *.swp
 *.swo
 *~
+*.sublime-project
+*.sublime-workspace
 
 # OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
-# Node
-node_modules/
-npm-debug.log
-yarn-error.log
+# Node.js (Frontend)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/.turbo/
+frontend/.cache/
+frontend/.vite/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/standalone/
+frontend/.next/standalone/
+frontend/coverage/
+frontend/.nyc_output/
 
-# Backend
+# Backend (Laravel)
 backend/vendor/
 backend/storage/logs/*.log
 backend/storage/framework/cache/*
 backend/storage/framework/sessions/*
 backend/storage/framework/views/*
 backend/bootstrap/cache/*
+backend/.env
 backend/.env.example
 backend/.env.testing
+backend/.env.production
+backend/.env.production.local
 backend/tests/
+backend/.phpunit.result.cache
+backend/.phpunit.cache/
+backend/.cache/
+backend/public/hot
+backend/public/storage
 
 # Mobile Android
 mobileandroid/
 mobile-android/
+mobile/
 
 # Build artifacts
 *.log
 *.cache
+*.tgz
+*.zip
+*.tar.gz
 
 # Docker
 docker-compose.override.yml
+docker-compose.prod.local.yml
 .dockerignore
+Dockerfile.dev
+docker-compose.dev.yml
+
+# Environment files
+.env
+.env.*
+!.env.example
+*.env.backup
+
+# AWS関連（デプロイ時に不要）
+aws/
+scripts/deploy-*.sh
+scripts/deploy-*.ps1
+
+# 一時ファイル
+tmp/
+temp/
+*.tmp
+*.temp
+
+# バックアップファイル
+*.bak
+*.backup
+*.old
+*.orig
+
+# SSL証明書
+*.crt
+*.cert
+*.pem
+*.key
+*.p12
+*.pfx
+ssl/
+certs/
+letsencrypt/
+
+# テスト関連
+coverage/
+.nyc_output/
+.phpunit.result.cache
 
 # Misc
-.env.backup
 .phpunit.result.cache
+*.pid
+*.seed
+*.pid.lock

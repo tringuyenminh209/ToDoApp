@@ -96,14 +96,9 @@ node_modules/
 tmp/
 temp/
 
-# Demo and Documentation
+# Demo
 demo/
 docs/
-
-# Litho
-litho.docs/
-litho.log
-litho.toml
 
 mobileandroid/app/google-services.json
 
@@ -113,6 +108,10 @@ frontend/out/
 frontend/dist/
 frontend/.turbo/
 frontend/.cache/
+frontend/standalone/
+frontend/.next/standalone/
+frontend/.env.production
+frontend/.env.production.local
 
 # Backend caches
 backend/.phpunit.result.cache
@@ -143,3 +142,50 @@ mobileandroid/local.properties
 mobileandroid/.idea/
 mobileandroid/build_errors.txt
 mobileandroid/app/google-services.json
+
+# 本番環境用設定
+.env.production
+.env.production.local
+docker-compose.prod.local.yml
+backend/.env.production
+backend/.env.production.local
+
+# デプロイスクリプトの一時ファイル
+scripts/*.log
+scripts/tmp/
+scripts/temp/
+deploy-*.log
+deploy.log
+
+# AWS関連（機密情報を含むファイル）
+# テンプレートファイル（ecs-task-definition.json）は含める
+aws/*.prod.json
+aws/*-prod.json
+aws/secrets/
+aws/.aws/
+aws/credentials
+aws/config
+.aws/
+aws-credentials
+aws/*.tfstate
+aws/*.tfstate.*
+aws/.terraform/
+aws/.terraform.lock.hcl
+
+# SSL証明書
+*.crt
+*.cert
+*.pem
+*.key
+*.p12
+*.pfx
+ssl/
+certs/
+letsencrypt/
+
+# バックアップファイル
+*.bak
+*.backup
+*.old
+*.orig
+*~
