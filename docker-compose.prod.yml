@@ -63,7 +63,7 @@ services:
     restart: always
     working_dir: /var/www
     volumes:
-      - ./backend:/var/www
+      # - ./backend:/var/www
       - ./docker/nginx.conf:/etc/nginx/sites-available/default
       - ./docker/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
     ports:
