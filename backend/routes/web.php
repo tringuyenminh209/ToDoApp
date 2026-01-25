@@ -16,8 +16,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-// Healthcheck: Session/Redis に依存しない（StartSession を除外して 500 を防ぐ）
+// Healthcheck: Session に依存する middleware を除外（StartSession, ShareErrorsFromSession）
 Route::get('/health', function () {
     return response()->json(['status' => 'ok']);
-})->withoutMiddleware([\Illuminate\Session\Middleware\StartSession::class]);
+})->withoutMiddleware([
+    \Illuminate\Session\Middleware\StartSession::class,
+    \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+]);
 require __DIR__.'/auth.php';
