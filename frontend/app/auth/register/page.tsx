@@ -2,6 +2,18 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+
+/** APIエラーから表示用メッセージを抽出。auth.tsは response.data を throw するため err.response は存在しない */
+function getRegisterErrorMessage(err: unknown, fallback: string): string {
+  if (!err || typeof err !== 'object') return fallback;
+  const e = err as { message?: string; errors?: Record<string, string[]> };
+  if (e.errors && typeof e.errors === 'object') {
+    const first = Object.values(e.errors)[0];
+    if (Array.isArray(first) && typeof first[0] === 'string') return first[0];
+  }
+  if (typeof e.message === 'string' && e.message.trim()) return e.message;
+  return fallback;
+}
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
@@ -143,7 +155,7 @@ export default function RegisterPage() {
         router.push('/auth/register-success');
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || t.errorFillAll);
+      setError(getRegisterErrorMessage(err, t.errorRegisterFailed));
     } finally {
       setIsLoading(false);
     }

@@ -9,7 +9,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-your_secure_password}
       MYSQL_DATABASE: ${DB_DATABASE:-todo_app}
-      MYSQL_USER: ${DB_USERNAME:-root}
+      MYSQL_USER: ${DB_USERNAME:-todo_user}
       MYSQL_PASSWORD: ${DB_PASSWORD:-your_secure_password}
     volumes:
       - mysql_data:/var/lib/mysql
@@ -86,6 +86,8 @@ services:
       - CACHE_DRIVER=redis
       - OPENAI_BASE_URL=http://ollama:11434/v1
       - OPENAI_MODEL=${OPENAI_MODEL:-gemma2:2b}
+      # CORS: フロントのOrigin（EC2例: http://52.21.89.124:8088）
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:8088}
     networks:
       - todo-network
     depends_on:
@@ -115,6 +117,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
+      args:
+        # ビルド時に必須: ブラウザがBackend APIを呼ぶURL（EC2例: http://52.21.89.124:8080/api）
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     container_name: todo-app-frontend-prod
     restart: always
     ports:

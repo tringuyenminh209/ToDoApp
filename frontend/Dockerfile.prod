@@ -24,6 +24,10 @@ RUN npm ci && npm cache clean --force
 # Copy source code
 COPY . .
 
+# Build-time: NEXT_PUBLIC_* はビルド時にバンドルに埋め込まれる（EC2のBackend URL必須）
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 # Set production environment variables
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production

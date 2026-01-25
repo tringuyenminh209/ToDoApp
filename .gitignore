@@ -34,8 +34,10 @@ mobile/android/app/release
 
 # Docker
 .env
+.env.prod
 *.env.example
 docker-compose.override.yml
+.env.prod.example
 
 # IDE
 .vscode/
@@ -91,7 +93,7 @@ node_modules/
 .env.development.local
 .env.test.local
 .env.production.local
-
+.env.prod.example
 # Temporary folders
 tmp/
 temp/

@@ -53,7 +53,8 @@ services:
     container_name: todo-mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      # DB_ROOT_PASSWORD 未設定時は DB_PASSWORD を使用（dev の .env に DB_ROOT_PASSWORD があればそれを使う）
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-${DB_PASSWORD}}
       MYSQL_DATABASE: ${DB_DATABASE:-todo_app}
       MYSQL_USER: ${DB_USERNAME:-todo_user}
       MYSQL_PASSWORD: ${DB_PASSWORD}
