@@ -7,10 +7,10 @@ services:
     container_name: todo-mysql-prod
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-your_secure_password}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE:-todo_app}
       MYSQL_USER: ${DB_USERNAME:-todo_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-your_secure_password}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
@@ -18,7 +18,7 @@ services:
     networks:
       - todo-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-123qwecc}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -79,11 +79,12 @@ services:
       - DB_PORT=3306
       - DB_DATABASE=${DB_DATABASE:-todo_app}
       - DB_USERNAME=${DB_USERNAME:-root}
-      - DB_PASSWORD=${DB_PASSWORD:-your_secure_password}
+      - DB_PASSWORD=${DB_PASSWORD}
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - QUEUE_CONNECTION=redis
       - CACHE_DRIVER=redis
+      - SESSION_DRIVER=redis
       - OPENAI_BASE_URL=http://ollama:11434/v1
       - OPENAI_MODEL=${OPENAI_MODEL:-gemma2:2b}
       # CORS: フロントのOrigin（EC2例: http://52.21.89.124:8088）
