@@ -148,7 +148,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  # Ollama (Local LLM)
+  # Ollama (Local LLM) - gemma2:2b は約 1.9 GiB 必要。limit を 2.5G に設定
   ollama:
     image: ollama/ollama:latest
     container_name: todo-ollama-prod
@@ -167,10 +167,10 @@ services:
       resources:
         limits:
           cpus: '0.4'
-          memory: 1.25G
+          memory: 2.5G
         reservations:
           cpus: '0.2'
-          memory: 768M
+          memory: 1G
 
 volumes:
   mysql_data:
