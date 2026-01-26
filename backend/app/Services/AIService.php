@@ -111,6 +111,10 @@ class AIService
     /**
      * Detect if base URL points to a local OpenAI-compatible provider (Ollama, etc.)
      */
+    /**
+     * Ollama / OpenAI互換の自前ホスト（localhost, Docker, 別サーバーの :11434）を判定。
+     * リモート 54.204.204.160:11434 も OLLAMA のため、timeout 延長・keep_alive を適用。
+     */
     private function isLocalOpenAICompatibleProvider(): bool
     {
         $baseUrl = strtolower($this->baseUrl ?? '');
@@ -118,7 +122,8 @@ class AIService
         return str_contains($baseUrl, 'ollama')
             || str_contains($baseUrl, 'localhost:11434')
             || str_contains($baseUrl, '127.0.0.1:11434')
-            || str_contains($baseUrl, 'host.docker.internal:11434');
+            || str_contains($baseUrl, 'host.docker.internal:11434')
+            || str_contains($baseUrl, ':11434'); // リモート Ollama (例: 54.204.204.160:11434) 含む
     }
 
     /**
@@ -969,7 +974,7 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type' => 'application/json',
-            ])->timeout((int)$parseTimeout)->post($this->baseUrl . '/chat/completions', $requestBody);
+            ])->connectTimeout(15)->timeout((int)$parseTimeout)->post($this->baseUrl . '/chat/completions', $requestBody);
 
             if ($response->successful()) {
                 $data = $response->json();
@@ -1658,7 +1663,7 @@ Knowledge検索の意図がない場合:
                         $response = Http::withHeaders([
                             'Authorization' => 'Bearer ' . $this->apiKey,
                             'Content-Type' => 'application/json',
-                        ])->timeout((int)$chatTimeout)->post($this->baseUrl . '/chat/completions', $requestBody);
+                        ])->connectTimeout(15)->timeout((int)$chatTimeout)->post($this->baseUrl . '/chat/completions', $requestBody);
 
                         if ($response->successful()) {
                             $data = $response->json();
