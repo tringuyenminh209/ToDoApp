@@ -1,16 +1,7 @@
 # Production Dockerfile for Next.js Frontend
-# Multi-stage build for optimized production image
+# Multi-stage build: builder (deps+build) → runner (chỉ runtime)
 
-# Stage 1: Dependencies (Production only - for final image)
-FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-
-# Copy package files
-COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev && npm cache clean --force
-
-# Stage 2: Builder (with devDependencies for build)
+# Stage 1: Builder (deps + build)
 FROM node:20-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
@@ -35,7 +26,7 @@ ENV NODE_ENV=production
 # Build Next.js application
 RUN npm run build
 
-# Stage 3: Runner (Production)
+# Stage 2: Runner (Production)
 FROM node:20-alpine AS runner
 WORKDIR /app
 
@@ -48,8 +39,8 @@ ENV HOSTNAME="0.0.0.0"
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Copy production dependencies
-COPY --from=deps /app/node_modules ./node_modules
+# node_modules from builder (avoids deps-stage npm ci failure)
+COPY --from=builder /app/node_modules ./node_modules
 
 # Copy built application
 COPY --from=builder /app/public ./public
