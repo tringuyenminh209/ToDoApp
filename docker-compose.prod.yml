@@ -149,28 +149,28 @@ services:
         max-file: "3"
 
   # Ollama (Local LLM) - gemma2:2b は約 1.9 GiB 必要。limit を 2.5G に設定
-  ollama:
-    image: ollama/ollama:latest
-    container_name: todo-ollama-prod
-    restart: always
-    ports:
-      - "${OLLAMA_PORT:-11434}:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    networks:
-      - todo-network
-    environment:
-      - OLLAMA_GPU_MEMORY=0
-      - OLLAMA_NUM_PARALLEL=1
-      - OLLAMA_NUM_CTX=1024
-    deploy:
-      resources:
-        limits:
-          cpus: '0.4'
-          memory: 2.5G
-        reservations:
-          cpus: '0.2'
-          memory: 1G
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: todo-ollama-prod
+  #   restart: always
+  #   ports:
+  #     - "${OLLAMA_PORT:-11434}:11434"
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   networks:
+  #     - todo-network
+  #   environment:
+  #     - OLLAMA_GPU_MEMORY=0
+  #     - OLLAMA_NUM_PARALLEL=1
+  #     - OLLAMA_NUM_CTX=1024
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '0.4'
+  #         memory: 2.5G
+  #       reservations:
+  #         cpus: '0.2'
+  #         memory: 1G
 
 volumes:
   mysql_data:
