@@ -1,0 +1,204 @@
+{
+    "_comment": "Vietnamese translations for Java Design Patterns Course (JavaDesignCourseSeeder)",
+    "template": {
+        "title": "Javaプログラミング設計演習",
+        "description": "オブジェクト指向プログラミングとデザインパターンを学ぶ実践的なコース。30回の課題を通じて、クラス設計からGoFデザインパターンまで段階的に学習します。"
+    },
+    "template_translations": {
+        "Javaプログラミング設計演習": {
+            "title": "Khóa học Thiết kế Lập trình Java",
+            "description": "Khóa học thực hành học lập trình hướng đối tượng và design patterns. Học từng bước từ thiết kế class đến GoF design patterns thông qua 30 bài tập."
+        }
+    },
+    "milestones": {
+        "オブジェクト指向プログラミング基礎": {
+            "title": "Cơ bản Lập trình Hướng đối tượng",
+            "description": "Fields, classes, constructors, đóng gói, static members",
+            "deliverables": [
+                "Hiểu fields và methods",
+                "Hiểu khái niệm class và instance",
+                "Triển khai constructors và đóng gói",
+                "Hiểu sự khác biệt giữa static và instance members"
+            ]
+        },
+        "継承とポリモーフィズム": {
+            "title": "Kế thừa và Đa hình",
+            "description": "Kế thừa class, đa hình, abstract class, interface, enumeration",
+            "deliverables": [
+                "Triển khai kế thừa class",
+                "Sử dụng đa hình",
+                "Tạo abstract class và interface",
+                "Sử dụng enumeration"
+            ]
+        },
+        "チャレンジ課題と中間テスト": {
+            "title": "Bài tập Thử thách và Kiểm tra Giữa kỳ",
+            "description": "Ôn tập tổng hợp và kiểm tra nửa đầu",
+            "deliverables": [
+                "Hoàn thành bài tập thử thách",
+                "Vượt qua kiểm tra giữa kỳ",
+                "Ôn tập các khái niệm đã học"
+            ]
+        },
+        "コレクションと例外処理": {
+            "title": "Collections và Xử lý Ngoại lệ",
+            "description": "Collections, xử lý ngoại lệ, threads, file I/O, streams",
+            "deliverables": [
+                "Sử dụng collections hiệu quả",
+                "Xử lý ngoại lệ",
+                "Làm việc với threads",
+                "Thực hiện thao tác file I/O"
+            ]
+        },
+        "ラムダ式とメモリ管理": {
+            "title": "Lambda Expression và Quản lý Bộ nhớ",
+            "description": "Lambda expressions, anonymous classes, garbage collection",
+            "deliverables": [
+                "Sử dụng lambda expressions",
+                "Tạo anonymous classes",
+                "Hiểu quản lý bộ nhớ"
+            ]
+        },
+        "デザインパターン基礎": {
+            "title": "Cơ bản Design Patterns",
+            "description": "Strategy, Composite, State, Iterator patterns",
+            "deliverables": [
+                "Triển khai Strategy pattern",
+                "Triển khai Composite pattern",
+                "Triển khai State pattern",
+                "Triển khai Iterator pattern"
+            ]
+        },
+        "デザインパターン応用と総合演習": {
+            "title": "Nâng cao Design Patterns và Bài tập Tổng hợp",
+            "description": "Adapter, Command, Visitor, Singleton, Observer patterns, kiểm tra cuối kỳ",
+            "deliverables": [
+                "Triển khai design patterns nâng cao",
+                "Hoàn thành bài tập tổng hợp",
+                "Vượt qua kiểm tra cuối kỳ"
+            ]
+        }
+    },
+    "tasks": {
+        "第1回：フィールド": {
+            "title": "Buổi 1: Fields",
+            "description": "Định nghĩa và sử dụng field (class variable), phạm vi biến"
+        },
+        "第2回：クラス": {
+            "title": "Buổi 2: Classes",
+            "description": "Classes và instances, khái niệm cơ bản về lập trình hướng đối tượng"
+        },
+        "第3回：コンストラクタとカプセル化": {
+            "title": "Buổi 3: Constructors và Đóng gói",
+            "description": "Định nghĩa constructor, access modifiers, đóng gói"
+        },
+        "第4回：インスタンスメンバとクラスメンバ": {
+            "title": "Buổi 4: Instance Members và Class Members",
+            "description": "Sự khác biệt giữa instance members và static members"
+        },
+        "第5回：クラスの継承": {
+            "title": "Buổi 5: Kế thừa Class",
+            "description": "Kế thừa class, ghi đè method, từ khóa super"
+        },
+        "第6回：ポリモーフィズム": {
+            "title": "Buổi 6: Đa hình",
+            "description": "Khái niệm và triển khai đa hình"
+        },
+        "第7回：抽象クラス": {
+            "title": "Buổi 7: Abstract Classes",
+            "description": "Định nghĩa và sử dụng abstract class"
+        },
+        "第8回：インターフェイス": {
+            "title": "Buổi 8: Interfaces",
+            "description": "Định nghĩa và triển khai interface"
+        },
+        "第9回：拡張for文と列挙型": {
+            "title": "Buổi 9: Enhanced For Loop và Enumerations",
+            "description": "Enhanced for loop, enum types"
+        },
+        "第10回：チャレンジ課題①（予備日）": {
+            "title": "Buổi 10: Bài tập Thử thách ① (Ngày Dự phòng)",
+            "description": "Bài tập thử thách tổng hợp"
+        },
+        "第11回：クラス替えテスト（練習問題）": {
+            "title": "Buổi 11: Kiểm tra Thay đổi Lớp (Bài tập Thực hành)",
+            "description": "Bài tập thực hành kiểm tra thay đổi lớp"
+        },
+        "第12回：チャレンジ課題②（予備日）": {
+            "title": "Buổi 12: Bài tập Thử thách ② (Ngày Dự phòng)",
+            "description": "Bài tập thử thách tổng hợp"
+        },
+        "第13回：コレクションとデータ構造": {
+            "title": "Buổi 13: Collections và Cấu trúc Dữ liệu",
+            "description": "Java Collections Framework, List, Set, Map"
+        },
+        "第14回：例外処理（try～catch）": {
+            "title": "Buổi 14: Xử lý Ngoại lệ (try-catch)",
+            "description": "Xử lý ngoại lệ với khối try-catch"
+        },
+        "第15回：スレッド": {
+            "title": "Buổi 15: Threads",
+            "description": "Tạo và quản lý threads"
+        },
+        "第16回：ファイル入出力": {
+            "title": "Buổi 16: File I/O",
+            "description": "Thao tác đọc và ghi file"
+        },
+        "第17回：ストリーム": {
+            "title": "Buổi 17: Streams",
+            "description": "Thao tác và xử lý streams"
+        },
+        "第18回：例外処理（throw、throws）": {
+            "title": "Buổi 18: Xử lý Ngoại lệ (throw, throws)",
+            "description": "Ném ngoại lệ, mệnh đề throws"
+        },
+        "第19回：ラムダ式": {
+            "title": "Buổi 19: Lambda Expressions",
+            "description": "Cú pháp và sử dụng lambda expression"
+        },
+        "第20回：メモリ管理、コレクションとラムダ式": {
+            "title": "Buổi 20: Quản lý Bộ nhớ, Collections và Lambda Expressions",
+            "description": "Quản lý bộ nhớ, collections với lambda expressions"
+        },
+        "第21回：チャレンジ課題③（予備日）": {
+            "title": "Buổi 21: Bài tập Thử thách ③ (Ngày Dự phòng)",
+            "description": "Bài tập thử thách tổng hợp"
+        },
+        "第22回：プログラム設計①（Strategy）": {
+            "title": "Buổi 22: Thiết kế Chương trình ① (Strategy Pattern)",
+            "description": "Triển khai Strategy design pattern"
+        },
+        "第23回：プログラム設計③（Composite）": {
+            "title": "Buổi 23: Thiết kế Chương trình ② (Composite Pattern)",
+            "description": "Triển khai Composite design pattern"
+        },
+        "第24回：プログラム設計③（State）": {
+            "title": "Buổi 24: Thiết kế Chương trình ③ (State Pattern)",
+            "description": "Triển khai State design pattern"
+        },
+        "第25回：プログラム設計④（Iterator）": {
+            "title": "Buổi 25: Thiết kế Chương trình ④ (Iterator Pattern)",
+            "description": "Triển khai Iterator design pattern"
+        },
+        "第26回：プログラム設計⑤（Adapter・Command）": {
+            "title": "Buổi 26: Thiết kế Chương trình ⑤ (Adapter và Command Patterns)",
+            "description": "Triển khai Adapter và Command design patterns"
+        },
+        "第27回：プログラム設計⑥（Visitor）": {
+            "title": "Buổi 27: Thiết kế Chương trình ⑥ (Visitor Pattern)",
+            "description": "Triển khai Visitor design pattern"
+        },
+        "第28回：プログラム設計⑦（Singleton・Observer）": {
+            "title": "Buổi 28: Thiết kế Chương trình ⑦ (Singleton và Observer Patterns)",
+            "description": "Triển khai Singleton và Observer design patterns"
+        },
+        "第29回：期末テスト（練習問題）": {
+            "title": "Buổi 29: Kiểm tra Cuối kỳ (Bài tập Thực hành)",
+            "description": "Bài tập thực hành kiểm tra cuối kỳ"
+        },
+        "第30回：チャレンジ課題④（予備日）": {
+            "title": "Buổi 30: Bài tập Thử thách ④ (Ngày Dự phòng)",
+            "description": "Bài tập thử thách tổng hợp cuối cùng"
+        }
+    }
+}

@@ -1,0 +1,105 @@
+{
+    "_comment": "Vietnamese translations for React.js Complete Course (ReactCourseSeeder)",
+    "template": {
+        "title": "React.js完全コース",
+        "description": "JavaScript経験者向けReact.jsコース。12週間でコンポーネント、Hooks、状態管理、ルーティングから実践的なアプリ開発まで学習します。"
+    },
+    "template_translations": {
+        "React.js完全コース": {
+            "title": "Khóa học React.js Hoàn chỉnh",
+            "description": "Khóa học React.js dành cho người đã có kinh nghiệm với JavaScript. Học từ components, Hooks, quản lý trạng thái, routing đến phát triển ứng dụng thực tế trong 12 tuần."
+        }
+    },
+    "milestones": {
+        "React基礎": {
+            "title": "Cơ bản React",
+            "description": "Thiết lập môi trường React, JSX, components, Props, State, xử lý sự kiện",
+            "deliverables": [
+                "Thiết lập môi trường phát triển React",
+                "Hiểu và sử dụng JSX",
+                "Tạo components",
+                "Quản lý Props/State"
+            ]
+        },
+        "Hooks": {
+            "title": "Hooks",
+            "description": "useState, useEffect, useContext, useReducer, custom hooks",
+            "deliverables": [
+                "Quản lý side effects với useEffect",
+                "Chia sẻ trạng thái toàn cục với useContext",
+                "Quản lý trạng thái phức tạp với useReducer",
+                "Tạo custom hooks"
+            ]
+        },
+        "State Management & Routing": {
+            "title": "Quản lý Trạng thái & Routing",
+            "description": "React Router, Redux Toolkit, xử lý bất đồng bộ, middleware",
+            "deliverables": [
+                "Triển khai routing với React Router",
+                "Quản lý trạng thái toàn cục với Redux Toolkit",
+                "Xử lý các action bất đồng bộ",
+                "Xây dựng SPA thực tế"
+            ]
+        },
+        "Advanced & Best Practices": {
+            "title": "Nâng cao & Best Practices",
+            "description": "Tối ưu hiệu suất, testing, TypeScript, deployment",
+            "deliverables": [
+                "Triển khai tối ưu hiệu suất",
+                "Viết test với Jest + RTL",
+                "Ứng dụng an toàn kiểu với TypeScript + React",
+                "Deploy lên môi trường production"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：Reactとは？環境構築とJSX": {
+            "title": "Tuần 1: React là gì? Thiết lập Môi trường và JSX",
+            "description": "Tổng quan React, Create React App, JSX, cơ bản về component"
+        },
+        "第2週：コンポーネント、Props、State": {
+            "title": "Tuần 2: Components, Props, State",
+            "description": "Tạo component, truyền dữ liệu với Props, quản lý trạng thái với State"
+        },
+        "第3週：イベント処理、リスト、フォーム": {
+            "title": "Tuần 3: Xử lý Sự kiện, Danh sách, Form",
+            "description": "Xử lý sự kiện, render danh sách, điều khiển form"
+        },
+        "第4週：useState、useEffect": {
+            "title": "Tuần 4: useState, useEffect",
+            "description": "Cơ bản quản lý trạng thái, xử lý side effects, lifecycle"
+        },
+        "第5週：useContext、useReducer": {
+            "title": "Tuần 5: useContext, useReducer",
+            "description": "Chia sẻ trạng thái với Context API, quản lý trạng thái phức tạp với useReducer"
+        },
+        "第6週：その他のHooksとカスタムフック": {
+            "title": "Tuần 6: Các Hooks khác và Custom Hooks",
+            "description": "useRef, useMemo, useCallback, tạo custom hook"
+        },
+        "第7週：React Router": {
+            "title": "Tuần 7: React Router",
+            "description": "Routing, navigation, dynamic routes, nested routes"
+        },
+        "第8週：Redux Toolkit基礎": {
+            "title": "Tuần 8: Cơ bản Redux Toolkit",
+            "description": "Redux Toolkit, Slice, Store, Reducer"
+        },
+        "第9週：非同期処理とミドルウェア": {
+            "title": "Tuần 9: Xử lý Bất đồng bộ và Middleware",
+            "description": "createAsyncThunk, RTK Query, middleware"
+        },
+        "第10週：パフォーマンス最適化": {
+            "title": "Tuần 10: Tối ưu Hiệu suất",
+            "description": "React.memo, Code Splitting, Lazy Loading, kỹ thuật tối ưu"
+        },
+        "第11週：テスト": {
+            "title": "Tuần 11: Testing",
+            "description": "Jest, React Testing Library, test component"
+        },
+        "第12週：TypeScript + React、デプロイ": {
+            "title": "Tuần 12: TypeScript + React, Deployment",
+            "description": "Tích hợp TypeScript và React, best practices, deployment"
+        }
+    }
+}

@@ -1,0 +1,118 @@
+{
+    "_comment": "English translations for HTML Course (HtmlCourseSeeder)",
+    "template_translations": {
+        "HTML基礎演習": {
+            "title": "HTML Basic Course",
+            "description": "Beginner-friendly HTML fundamentals course. Learn step by step from basic HTML structure to semantic HTML, forms, and multimedia through 15 weeks of practical exercises."
+        }
+    },
+    "milestones": {
+        "HTML基礎": {
+            "title": "HTML Basics",
+            "description": "Learn HTML basic structure and text elements",
+            "deliverables": [
+                "Understand HTML basic structure",
+                "Use text elements",
+                "Work with lists and images"
+            ]
+        },
+        "テーブルとフォーム": {
+            "title": "Tables and Forms",
+            "description": "Tables, forms, and form elements",
+            "deliverables": [
+                "Create tables with thead, tbody, tfoot",
+                "Create forms with various input types",
+                "Understand form attributes and validation"
+            ]
+        },
+        "セマンティックHTML": {
+            "title": "Semantic HTML",
+            "description": "Semantic tags and accessibility",
+            "deliverables": [
+                "Use semantic elements (header, nav, main, footer)",
+                "Understand SEO-friendly markup",
+                "Implement accessibility features"
+            ]
+        },
+        "マルチメディアと埋め込み": {
+            "title": "Multimedia and Embedding",
+            "description": "Video, audio, iframe, and other media",
+            "deliverables": [
+                "Embed videos and audio",
+                "Use iframe properly",
+                "Implement responsive media"
+            ]
+        },
+        "高度なHTML": {
+            "title": "Advanced HTML",
+            "description": "Canvas, SVG, web components",
+            "deliverables": [
+                "Draw with canvas",
+                "Create graphics with SVG",
+                "Understand web components"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：HTML入門・基本構造": {
+            "title": "Week 1: HTML Introduction and Basic Structure",
+            "description": "What is HTML, basic structure, DOCTYPE, head, body"
+        },
+        "第2週：テキスト要素とリンク": {
+            "title": "Week 2: Text Elements and Links",
+            "description": "Headings, paragraphs, emphasis, links"
+        },
+        "第3週：リストと画像": {
+            "title": "Week 3: Lists and Images",
+            "description": "Ordered lists, unordered lists, image embedding"
+        },
+        "第4週：テーブルの基礎": {
+            "title": "Week 4: Table Basics",
+            "description": "Basic table structure, thead, tbody, tfoot, colspan, rowspan"
+        },
+        "第5週：フォームの基礎": {
+            "title": "Week 5: Form Basics",
+            "description": "Form elements, input types, labels, buttons"
+        },
+        "第6週：フォームの応用": {
+            "title": "Week 6: Advanced Forms",
+            "description": "Form validation, new HTML5 input types, form attributes"
+        },
+        "第7週：セマンティックHTML": {
+            "title": "Week 7: Semantic HTML",
+            "description": "header, nav, main, article, section, aside, footer"
+        },
+        "第8週：メタデータとSEO": {
+            "title": "Week 8: Metadata and SEO",
+            "description": "Meta tags, OGP, favicon, SEO-friendly markup"
+        },
+        "第9週：アクセシビリティ": {
+            "title": "Week 9: Accessibility",
+            "description": "ARIA, alt attributes, focus management, screen reader support"
+        },
+        "第10週：動画と音声": {
+            "title": "Week 10: Video and Audio",
+            "description": "video tag, audio tag, source tag, embedding formats"
+        },
+        "第11週：埋め込みコンテンツ": {
+            "title": "Week 11: Embedded Content",
+            "description": "iframe, embed, object, Google Maps, YouTube embedding"
+        },
+        "第12週：レスポンシブ画像": {
+            "title": "Week 12: Responsive Images",
+            "description": "srcset, sizes, picture element, image optimization"
+        },
+        "第13週：Canvas基礎": {
+            "title": "Week 13: Canvas Basics",
+            "description": "Canvas element, 2D drawing, basic shapes, text"
+        },
+        "第14週：SVG基礎": {
+            "title": "Week 14: SVG Basics",
+            "description": "SVG elements, basic shapes, text, paths"
+        },
+        "第15週：総合演習": {
+            "title": "Week 15: Comprehensive Exercise",
+            "description": "Create a complete website using all learned elements"
+        }
+    }
+}

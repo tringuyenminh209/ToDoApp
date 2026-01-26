@@ -1,0 +1,97 @@
+{
+    "_comment": "Vietnamese translations for TypeScript Complete Course (TypeScriptCourseSeeder)",
+    "template": {
+        "title": "TypeScript完全コース",
+        "description": "JavaScript経験者向けTypeScriptコース。10週間で型システムの基礎から、高度な型操作、実践的なフレームワーク連携まで学習します。"
+    },
+    "template_translations": {
+        "TypeScript完全コース": {
+            "title": "Khóa học TypeScript Hoàn chỉnh",
+            "description": "Khóa học TypeScript dành cho người đã có kinh nghiệm với JavaScript. Học từ cơ bản hệ thống kiểu đến thao tác kiểu nâng cao và tích hợp framework thực tế trong 10 tuần."
+        }
+    },
+    "milestones": {
+        "TypeScript基礎": {
+            "title": "Cơ bản TypeScript",
+            "description": "Thiết lập môi trường, kiểu cơ bản, interface, gán kiểu cho hàm",
+            "deliverables": [
+                "Thiết lập môi trường phát triển TypeScript",
+                "Hiểu và sử dụng kiểu cơ bản",
+                "Định nghĩa interface",
+                "Triển khai gán kiểu cho hàm"
+            ]
+        },
+        "高度な型": {
+            "title": "Kiểu Nâng cao",
+            "description": "Union type, Intersection type, Generics, Utility types, Type guards",
+            "deliverables": [
+                "Sử dụng Union/Intersection types",
+                "Tạo code tái sử dụng với Generics",
+                "Thao tác kiểu với Utility types",
+                "Triển khai code an toàn kiểu với type guards"
+            ]
+        },
+        "オブジェクト指向とデコレータ": {
+            "title": "Lập trình Hướng đối tượng và Decorators",
+            "description": "Class, kế thừa, access modifiers, abstract class, decorators, Namespace",
+            "deliverables": [
+                "Triển khai OOP dựa trên class",
+                "Sử dụng decorators cho metaprogramming",
+                "Hiểu modules và Namespace",
+                "Thiết kế class an toàn kiểu"
+            ]
+        },
+        "実践的なTypeScript": {
+            "title": "TypeScript Thực tế",
+            "description": "React + TypeScript, Node.js + TypeScript, testing, best practices",
+            "deliverables": [
+                "Xây dựng UI với React + TypeScript",
+                "Xây dựng API với Node.js + TypeScript",
+                "Viết test bằng TypeScript",
+                "Hiểu best practices của TypeScript"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：TypeScriptとは？環境構築": {
+            "title": "Tuần 1: TypeScript là gì? Thiết lập Môi trường",
+            "description": "Tổng quan TypeScript, cài đặt, tsconfig.json, biên dịch"
+        },
+        "第2週：基本的な型": {
+            "title": "Tuần 2: Kiểu Cơ bản",
+            "description": "Kiểu nguyên thủy, mảng, tuple, Enum, Any, Unknown"
+        },
+        "第3週：関数とインターフェース": {
+            "title": "Tuần 3: Hàm và Interface",
+            "description": "Gán kiểu cho hàm, tham số tùy chọn, interface, type alias"
+        },
+        "第4週：Union型とIntersection型": {
+            "title": "Tuần 4: Union Type và Intersection Type",
+            "description": "Union types, Intersection types, type guards, Type Assertion"
+        },
+        "第5週：ジェネリクス": {
+            "title": "Tuần 5: Generics",
+            "description": "Generic functions, generic classes, constraints, default types"
+        },
+        "第6週：ユーティリティ型とMapped Types": {
+            "title": "Tuần 6: Utility Types và Mapped Types",
+            "description": "Partial, Required, Readonly, Pick, Omit, Record, Mapped Types"
+        },
+        "第7週：クラスとOOP": {
+            "title": "Tuần 7: Class và OOP",
+            "description": "Class, kế thừa, access modifiers, abstract class, implements"
+        },
+        "第8週：デコレータとモジュール": {
+            "title": "Tuần 8: Decorators và Modules",
+            "description": "Decorators, Namespace, hệ thống module"
+        },
+        "第9週：React/Vue + TypeScript": {
+            "title": "Tuần 9: React/Vue + TypeScript",
+            "description": "Sử dụng TypeScript với React/Vue, gán kiểu cho component"
+        },
+        "第10週：Node.js + TypeScript、テスト、ベストプラクティス": {
+            "title": "Tuần 10: Node.js + TypeScript, Testing, Best Practices",
+            "description": "Express + TypeScript, Jest, ESLint, best practices"
+        }
+    }
+}

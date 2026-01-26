@@ -71,6 +71,12 @@ class DatabaseSeeder extends Seeder
             KnowledgeCategorySeeder::class,
 
             KnowledgeItemSeeder::class,
+
+            // Knowledge Translations (chạy sau khi đã có dữ liệu)
+            KnowledgeTranslationSeeder::class,
+
+            // Course Translations (chạy sau khi đã có dữ liệu courses)
+            CourseTranslationSeeder::class,
         ]);
     }
 }

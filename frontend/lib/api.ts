@@ -13,14 +13,24 @@ export const apiClient = axios.create({
     withCredentials: true, // Cookie承認用 (Laravel Sanctum)
 });
 
-// リクエストインターセプター（トークン追加）
+// リクエストインターセプター（トークン追加 + ロケール追加）
 apiClient.interceptors.request.use(
     (config) => {
-        // 必要に応じてトークンを追加
+        // トークンを追加
         const token = localStorage.getItem("auth_token");
         if(token){
             config.headers.Authorization = `Bearer ${token}`;
         }
+        
+        // ロケールを追加（X-Locale ヘッダー）
+        if(typeof window !== "undefined"){
+            const locale = localStorage.getItem("selectedLanguage") || "ja";
+            // BackendのSetLocaleミドルウェアがX-Localeヘッダーをサポート
+            config.headers["X-Locale"] = locale;
+            // Accept-Languageヘッダーも追加（標準的な方法）
+            config.headers["Accept-Language"] = locale;
+        }
+        
         return config;
     },
     (error) => {

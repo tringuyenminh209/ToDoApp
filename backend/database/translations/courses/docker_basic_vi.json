@@ -1,0 +1,101 @@
+{
+    "_comment": "Vietnamese translations for Docker Master Course (DockerCourseSeeder)",
+    "template": {
+        "title": "Docker実践マスターコース",
+        "description": "WSL2 + Docker Desktop環境で学ぶ、初心者から実践まで完全対応のDockerコース。コンテナ化からCI/CD、セキュリティ、監視まで12週間で習得します。"
+    },
+    "template_translations": {
+        "Docker実践マスターコース": {
+            "title": "Khóa học Docker Master",
+            "description": "Khóa học Docker hoàn chỉnh từ cơ bản đến thực tế sử dụng môi trường WSL2 + Docker Desktop. Thành thạo containerization, CI/CD, bảo mật và giám sát trong 12 tuần."
+        }
+    },
+    "milestones": {
+        "Docker基礎": {
+            "title": "Cơ bản Docker",
+            "description": "Thiết lập môi trường, khái niệm Docker cơ bản, tạo Dockerfile, lệnh cơ bản",
+            "deliverables": [
+                "Hoàn thành thiết lập môi trường WSL2 + Docker Desktop",
+                "Chạy container Hello World",
+                "Tạo Dockerfile và build image tùy chỉnh",
+                "Thành thạo lệnh cơ bản"
+            ]
+        },
+        "Docker中級": {
+            "title": "Docker Trung cấp",
+            "description": "Quản lý nhiều container với Volumes, Networks, Docker Compose",
+            "deliverables": [
+                "Sử dụng Volumes cho lưu trữ dữ liệu bền vững",
+                "Tạo và quản lý Networks",
+                "Sử dụng Docker Compose cho ứng dụng multi-container"
+            ]
+        },
+        "Docker上級": {
+            "title": "Docker Nâng cao",
+            "description": "Multi-stage Build, Healthcheck, Private Registry, Bảo mật",
+            "deliverables": [
+                "Tạo image tối ưu với multi-stage build",
+                "Triển khai healthchecks",
+                "Thiết lập private registry",
+                "Áp dụng best practices bảo mật"
+            ]
+        },
+        "Docker実践": {
+            "title": "Docker Thực tế",
+            "description": "Orchestration, Monitoring, Kiến trúc Microservices",
+            "deliverables": [
+                "Thiết lập orchestration",
+                "Triển khai monitoring",
+                "Xây dựng kiến trúc microservices"
+            ]
+        },
+        "Capstone Project": {
+            "title": "Dự án Capstone",
+            "description": "Kiến trúc E-commerce hoàn chỉnh + CI/CD + Deployment Production",
+            "deliverables": [
+                "Xây dựng Full-stack E-commerce",
+                "Thiết lập GitHub Actions CI/CD",
+                "Tự động hóa security scanning",
+                "Hoàn thành thiết lập môi trường production"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：環境構築とDocker入門": {
+            "title": "Tuần 1: Thiết lập Môi trường và Giới thiệu Docker",
+            "description": "Thiết lập WSL2 + Docker Desktop, khái niệm Docker cơ bản, kiến trúc"
+        },
+        "第2週：Dockerfile作成と基本コマンド": {
+            "title": "Tuần 2: Tạo Dockerfile và Lệnh Cơ bản",
+            "description": "Tạo Dockerfile, build images, lệnh Docker cơ bản"
+        },
+        "第3週：Volumes & Networks": {
+            "title": "Tuần 3: Volumes & Networks",
+            "description": "Lưu trữ dữ liệu bền vững với volumes, mạng container"
+        },
+        "第4週：Docker Compose": {
+            "title": "Tuần 4: Docker Compose",
+            "description": "Quản lý ứng dụng multi-container với Docker Compose"
+        },
+        "第5週：Multi-stage Build & Healthcheck": {
+            "title": "Tuần 5: Multi-stage Build & Healthcheck",
+            "description": "Tối ưu images với multi-stage builds, triển khai healthchecks"
+        },
+        "第6週：Private Registry & セキュリティ": {
+            "title": "Tuần 6: Private Registry & Bảo mật",
+            "description": "Thiết lập private registry, security scanning, best practices"
+        },
+        "第7週：Orchestration & Monitoring": {
+            "title": "Tuần 7: Orchestration & Monitoring",
+            "description": "Container orchestration, thiết lập monitoring stack"
+        },
+        "第8週：Microservices構成": {
+            "title": "Tuần 8: Kiến trúc Microservices",
+            "description": "Xây dựng kiến trúc microservices với Docker"
+        },
+        "第9-12週：E-commerce Capstone": {
+            "title": "Tuần 9-12: Dự án Capstone E-commerce",
+            "description": "Kiến trúc Full-stack + CI/CD + Monitoring + Security"
+        }
+    }
+}

@@ -1,0 +1,97 @@
+{
+    "_comment": "English translations for Git/GitHub Complete Course (GitCourseSeeder)",
+    "template": {
+        "title": "Git/GitHub完全コース",
+        "description": "初心者から中級者向けGit/GitHubコース。10週間でバージョン管理の基礎から、チーム開発、CI/CD、GitHub Actionsまで実践的に学習します。"
+    },
+    "template_translations": {
+        "Git/GitHub完全コース": {
+            "title": "Git/GitHub Complete Course",
+            "description": "Git/GitHub course for beginners to intermediate users. Learn practically from version control fundamentals to team development, CI/CD, and GitHub Actions over 10 weeks."
+        }
+    },
+    "milestones": {
+        "Git基礎": {
+            "title": "Git Fundamentals",
+            "description": "Git installation, basic commands, commits, branches",
+            "deliverables": [
+                "Complete Git environment setup",
+                "Understand basic Git commands",
+                "Create and manage local repositories",
+                "Create and switch branches"
+            ]
+        },
+        "GitHub基礎": {
+            "title": "GitHub Fundamentals",
+            "description": "GitHub account creation, remote repositories, push/pull, pull requests",
+            "deliverables": [
+                "Create GitHub account",
+                "Set up remote repositories",
+                "Push and pull changes",
+                "Create and manage pull requests"
+            ]
+        },
+        "高度なGit操作": {
+            "title": "Advanced Git Operations",
+            "description": "Rebase, Cherry-pick, Stash, Reset, Revert, tag management",
+            "deliverables": [
+                "Use rebase for clean history",
+                "Apply cherry-pick",
+                "Use stash for temporary changes",
+                "Manage tags"
+            ]
+        },
+        "チーム開発とワークフロー": {
+            "title": "Team Development and Workflows",
+            "description": "Git Flow, GitHub Flow, collaboration, .gitignore, GitHub Actions basics",
+            "deliverables": [
+                "Understand Git Flow",
+                "Implement GitHub Flow",
+                "Collaborate effectively",
+                "Set up GitHub Actions"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：Gitとは？環境設定": {
+            "title": "Week 1: What is Git? Environment Setup",
+            "description": "Version control concepts, Git installation, initial configuration"
+        },
+        "第2週：基本コマンド（add, commit, log）": {
+            "title": "Week 2: Basic Commands (add, commit, log)",
+            "description": "Staging, commits, history viewing basics"
+        },
+        "第3週：ブランチとマージの基礎": {
+            "title": "Week 3: Branch and Merge Fundamentals",
+            "description": "Branch creation, switching, merging branches"
+        },
+        "第4週：GitHubとリモートリポジトリ": {
+            "title": "Week 4: GitHub and Remote Repositories",
+            "description": "GitHub account setup, creating remote repositories"
+        },
+        "第5週：Push、Pull、Fetch": {
+            "title": "Week 5: Push, Pull, Fetch",
+            "description": "Synchronizing local and remote repositories"
+        },
+        "第6週：プルリクエストとコードレビュー": {
+            "title": "Week 6: Pull Requests and Code Review",
+            "description": "Creating pull requests, code review process"
+        },
+        "第7週：Rebase、Stash、Reset": {
+            "title": "Week 7: Rebase, Stash, Reset",
+            "description": "Advanced Git operations for history management"
+        },
+        "第8週：タグ、Cherry-pick、高度なテクニック": {
+            "title": "Week 8: Tags, Cherry-pick, Advanced Techniques",
+            "description": "Tag management, cherry-pick, advanced Git techniques"
+        },
+        "第9週：ブランチ戦略とチーム開発": {
+            "title": "Week 9: Branch Strategy and Team Development",
+            "description": "Git Flow, GitHub Flow, collaboration strategies"
+        },
+        "第10週：.gitignore、GitHub Actions、ベストプラクティス": {
+            "title": "Week 10: .gitignore, GitHub Actions, Best Practices",
+            "description": ".gitignore configuration, GitHub Actions basics, best practices"
+        }
+    }
+}

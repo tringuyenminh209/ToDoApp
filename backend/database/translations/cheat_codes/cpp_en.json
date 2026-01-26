@@ -1,0 +1,280 @@
+{
+    "_comment": "English translations for C++ Cheat Code",
+    "language": {
+        "cpp": {
+            "description": "C++ reference cheat sheet providing basic syntax and methods."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "C++ basics and introduction"
+        },
+        "cpp-arrays": {
+            "title": "C++ Arrays",
+            "description": "Array operations"
+        },
+        "cpp-conditionals": {
+            "title": "C++ Conditionals",
+            "description": "Conditional statements"
+        },
+        "cpp-loops": {
+            "title": "C++ Loops",
+            "description": "Loop syntax"
+        },
+        "cpp-functions": {
+            "title": "C++ Functions",
+            "description": "Function definition and usage"
+        },
+        "cpp-classes": {
+            "title": "C++ Classes",
+            "description": "Object-oriented programming"
+        },
+        "cpp-preprocessor": {
+            "title": "C++ Preprocessor",
+            "description": "Preprocessor directives"
+        },
+        "miscellaneous": {
+            "title": "Miscellaneous",
+            "description": "Additional C++ features"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "hello.cpp": {
+                "title": "hello.cpp",
+                "description": "Basic Hello World program"
+            },
+            "コンパイルと実行": {
+                "title": "Compile and Run",
+                "description": "Compiling and running C++ programs"
+            },
+            "変数": {
+                "title": "Variables",
+                "description": "Variable declaration and types"
+            },
+            "一様初期化": {
+                "title": "Uniform Initialization",
+                "description": "Uniform initialization syntax"
+            },
+            "基本データ型": {
+                "title": "Primitive Data Types",
+                "description": "Primitive data types table"
+            },
+            "ユーザー入力": {
+                "title": "User Input",
+                "description": "Reading user input"
+            },
+            "交換": {
+                "title": "Swap",
+                "description": "Variable swapping"
+            },
+            "コメント": {
+                "title": "Comments",
+                "description": "Comment syntax"
+            },
+            "If文": {
+                "title": "If Statement",
+                "description": "Basic if statement"
+            },
+            "ループ": {
+                "title": "Loops",
+                "description": "For loop"
+            },
+            "関数": {
+                "title": "Functions",
+                "description": "Function declaration and definition"
+            },
+            "参照": {
+                "title": "References",
+                "description": "Reference - variable alias"
+            },
+            "名前空間": {
+                "title": "Namespaces",
+                "description": "Namespace usage"
+            },
+            "using namespace": {
+                "title": "using namespace",
+                "description": "using namespace directive"
+            }
+        },
+        "cpp-arrays": {
+            "宣言": {
+                "title": "Declaration",
+                "description": "Array declaration and initialization"
+            },
+            "操作": {
+                "title": "Manipulation",
+                "description": "Array manipulation"
+            },
+            "表示": {
+                "title": "Display",
+                "description": "Displaying array elements"
+            },
+            "多次元配列": {
+                "title": "Multidimensional Arrays",
+                "description": "Multidimensional arrays"
+            }
+        },
+        "cpp-conditionals": {
+            "If節": {
+                "title": "If Clause",
+                "description": "Basic if statement"
+            },
+            "If-Else": {
+                "title": "If-Else",
+                "description": "If-else statement"
+            },
+            "Else if文": {
+                "title": "Else if Statement",
+                "description": "Else-if chain"
+            },
+            "関係演算子": {
+                "title": "Relational Operators",
+                "description": "Relational operators table"
+            },
+            "代入演算子": {
+                "title": "Assignment Operators",
+                "description": "Assignment operators table"
+            },
+            "論理演算子": {
+                "title": "Logical Operators",
+                "description": "Logical operators table"
+            },
+            "ビット演算子": {
+                "title": "Bitwise Operators",
+                "description": "Bitwise operators table"
+            },
+            "三項演算子": {
+                "title": "Ternary Operator",
+                "description": "Ternary conditional operator"
+            }
+        },
+        "cpp-loops": {
+            "Forループ": {
+                "title": "For Loop",
+                "description": "Basic for loop"
+            },
+            "Whileループ": {
+                "title": "While Loop",
+                "description": "While loop"
+            },
+            "Do-Whileループ": {
+                "title": "Do-While Loop",
+                "description": "Do-while loop"
+            },
+            "範囲ベースForループ": {
+                "title": "Range-based For Loop",
+                "description": "Range-based for loop (C++11)"
+            },
+            "BreakとContinue": {
+                "title": "Break and Continue",
+                "description": "Break and continue statements"
+            }
+        },
+        "cpp-functions": {
+            "関数の宣言": {
+                "title": "Function Declaration",
+                "description": "Function declaration and definition"
+            },
+            "関数のパラメータ": {
+                "title": "Function Parameters",
+                "description": "Function with parameters"
+            },
+            "デフォルトパラメータ": {
+                "title": "Default Parameters",
+                "description": "Default function parameters"
+            },
+            "関数のオーバーロード": {
+                "title": "Function Overloading",
+                "description": "Function overloading"
+            },
+            "参照渡し": {
+                "title": "Pass by Reference",
+                "description": "Passing parameters by reference"
+            },
+            "ポインタ渡し": {
+                "title": "Pass by Pointer",
+                "description": "Passing parameters by pointer"
+            }
+        },
+        "cpp-classes": {
+            "クラスの定義": {
+                "title": "Class Definition",
+                "description": "Basic class definition"
+            },
+            "オブジェクトの作成": {
+                "title": "Creating Objects",
+                "description": "Object creation and usage"
+            },
+            "コンストラクタ": {
+                "title": "Constructor",
+                "description": "Class constructor"
+            },
+            "デストラクタ": {
+                "title": "Destructor",
+                "description": "Class destructor"
+            },
+            "クラスのメソッド": {
+                "title": "Class Methods",
+                "description": "Class methods"
+            },
+            "アクセス修飾子": {
+                "title": "Access Modifiers",
+                "description": "Access modifiers"
+            },
+            "ゲッターとセッター": {
+                "title": "Getters and Setters",
+                "description": "Getter and setter methods"
+            },
+            "継承": {
+                "title": "Inheritance",
+                "description": "Class inheritance"
+            }
+        },
+        "cpp-preprocessor": {
+            "インクルード": {
+                "title": "Include",
+                "description": "Include directive"
+            },
+            "定義": {
+                "title": "Define",
+                "description": "Macro definition and undefinition"
+            },
+            "If": {
+                "title": "If",
+                "description": "Conditional compilation"
+            },
+            "エラー": {
+                "title": "Error",
+                "description": "Error and warning directives"
+            },
+            "マクロ": {
+                "title": "Macro",
+                "description": "Function-like macros"
+            },
+            "トークン連結": {
+                "title": "Token Concatenation",
+                "description": "Token concatenation"
+            },
+            "文字列化": {
+                "title": "Stringification",
+                "description": "Stringification macro"
+            },
+            "__FILE__と__LINE__": {
+                "title": "__FILE__ and __LINE__",
+                "description": "File and line macros"
+            }
+        },
+        "miscellaneous": {
+            "エスケープシーケンス": {
+                "title": "Escape Sequences",
+                "description": "Escape sequences table"
+            },
+            "キーワード": {
+                "title": "Keywords",
+                "description": "C++ keywords list"
+            }
+        }
+    }
+}

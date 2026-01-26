@@ -1,0 +1,132 @@
+{
+    "_comment": "Vietnamese translations for Laravel Basic Course (LaravelCourseSeeder)",
+    "template": {
+        "title": "Laravel基礎演習",
+        "description": "初心者向けLaravelフレームワーク基礎コース。ルーティング、Bladeテンプレート、Eloquent ORM、API開発まで段階的に学習します。"
+    },
+    "template_translations": {
+        "Laravel基礎演習": {
+            "title": "Khóa học Laravel Cơ bản",
+            "description": "Khóa học framework Laravel cơ bản dành cho người mới bắt đầu. Học từng bước từ routing, Blade templates, Eloquent ORM đến phát triển API."
+        }
+    },
+    "milestones": {
+        "環境構築とLaravel基礎": {
+            "title": "Thiết lập Môi trường và Cơ bản Laravel",
+            "description": "Thiết lập môi trường phát triển, cấu trúc Laravel cơ bản, routing, controllers",
+            "deliverables": [
+                "Hoàn thành thiết lập môi trường phát triển",
+                "Tạo dự án Laravel",
+                "Hiểu routing và controllers"
+            ]
+        },
+        "Bladeテンプレートとビュー": {
+            "title": "Blade Templates và Views",
+            "description": "Cách sử dụng Blade template engine, layouts, components",
+            "deliverables": [
+                "Tạo views bằng Blade",
+                "Sử dụng layouts và components",
+                "Truyền dữ liệu từ controllers sang views"
+            ]
+        },
+        "リクエストとバリデーション": {
+            "title": "Requests và Validation",
+            "description": "Xử lý form request, quy tắc validation, thông báo lỗi",
+            "deliverables": [
+                "Xử lý form requests",
+                "Triển khai validation",
+                "Hiển thị thông báo lỗi"
+            ]
+        },
+        "データベース操作基礎": {
+            "title": "Cơ bản Thao tác Cơ sở Dữ liệu",
+            "description": "Migrations, Eloquent models, seeders, thao tác SELECT",
+            "deliverables": [
+                "Tạo và chạy migrations",
+                "Sử dụng Eloquent models",
+                "Thực hiện thao tác SELECT"
+            ]
+        },
+        "データベース操作応用": {
+            "title": "Nâng cao Thao tác Cơ sở Dữ liệu",
+            "description": "SELECT có điều kiện, INSERT, UPDATE, DELETE",
+            "deliverables": [
+                "Thực hiện truy vấn có điều kiện",
+                "Chèn dữ liệu",
+                "Cập nhật và xóa dữ liệu"
+            ]
+        },
+        "API開発とファイルアップロード": {
+            "title": "Phát triển API và Tải lên File",
+            "description": "Tạo RESTful API, xử lý tải lên file",
+            "deliverables": [
+                "Tạo RESTful API",
+                "Xử lý tải lên file",
+                "Trả về phản hồi JSON"
+            ]
+        },
+        "総合問題": {
+            "title": "Dự án Tổng hợp",
+            "description": "Ôn tập tổng hợp và ứng dụng nội dung đã học",
+            "deliverables": [
+                "Hoàn thành dự án tổng hợp",
+                "Áp dụng tất cả khái niệm đã học",
+                "Xây dựng ứng dụng Laravel hoàn chỉnh"
+            ]
+        }
+    },
+    "tasks": {
+        "第0回：環境構築": {
+            "title": "Buổi 0: Thiết lập Môi trường",
+            "description": "Cài đặt Composer, Node.js, Laravel và tạo dự án"
+        },
+        "第1回：Laravelの説明・ルーティングとコントローラ": {
+            "title": "Buổi 1: Tổng quan Laravel, Routing và Controllers",
+            "description": "Khái niệm cơ bản Laravel, routing, tạo controller"
+        },
+        "第2回：Bladeテンプレート": {
+            "title": "Buổi 2: Blade Templates",
+            "description": "Cú pháp Blade cơ bản, biến, directives, layouts"
+        },
+        "第3回：ビュー作成・ルーティング": {
+            "title": "Buổi 3: Tạo Views và Routing",
+            "description": "Tạo nhiều views, routing nâng cao, truyền dữ liệu sang views"
+        },
+        "第4回：リクエスト・バリデーション": {
+            "title": "Buổi 4: Requests và Validation",
+            "description": "Xử lý form request, quy tắc validation"
+        },
+        "第5回：マイグレーション、モデル、シーダー": {
+            "title": "Buổi 5: Migrations, Models, Seeders",
+            "description": "Database migrations, Eloquent models, seeders"
+        },
+        "第6回：DB処理（SELECT）": {
+            "title": "Buổi 6: Thao tác DB (SELECT)",
+            "description": "Thao tác SELECT bằng Eloquent"
+        },
+        "第7回：DB処理（条件付きSELECT、INSERT）": {
+            "title": "Buổi 7: Thao tác DB (SELECT có điều kiện, INSERT)",
+            "description": "Truy vấn có điều kiện và thao tác INSERT"
+        },
+        "第8回：DB処理（UPDATE）": {
+            "title": "Buổi 8: Thao tác DB (UPDATE)",
+            "description": "Thao tác UPDATE bằng Eloquent"
+        },
+        "第9回：DB処理（DELETE）": {
+            "title": "Buổi 9: Thao tác DB (DELETE)",
+            "description": "Thao tác DELETE bằng Eloquent"
+        },
+        "第10回：API": {
+            "title": "Buổi 10: API",
+            "description": "Phát triển RESTful API"
+        },
+        "第11回：ファイルアップロード": {
+            "title": "Buổi 11: Tải lên File",
+            "description": "Xử lý tải lên file trong Laravel"
+        },
+        "第12回：総合問題": {
+            "title": "Buổi 12: Dự án Tổng hợp",
+            "description": "Dự án tổng hợp sử dụng tất cả khái niệm đã học"
+        }
+    }
+}

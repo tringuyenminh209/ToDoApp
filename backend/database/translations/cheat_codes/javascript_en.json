@@ -1,0 +1,366 @@
+{
+    "_comment": "English translations for JavaScript Cheat Code",
+    "language": {
+        "javascript": {
+            "description": "JavaScript is a lightweight, interpreted programming language. A complete reference for beginners."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "JavaScript basics and introduction"
+        },
+        "javascript-conditionals": {
+            "title": "JavaScript Conditionals",
+            "description": "Conditional statements and operators"
+        },
+        "javascript-functions": {
+            "title": "JavaScript Functions",
+            "description": "Defining and using functions"
+        },
+        "javascript-scope": {
+            "title": "JavaScript Scope",
+            "description": "Variable scope and visibility"
+        },
+        "javascript-arrays": {
+            "title": "JavaScript Arrays",
+            "description": "Array manipulation and methods"
+        },
+        "javascript-objects": {
+            "title": "JavaScript Objects",
+            "description": "Creating and manipulating objects"
+        },
+        "javascript-loops": {
+            "title": "JavaScript Loops",
+            "description": "Loop structures"
+        },
+        "javascript-classes": {
+            "title": "JavaScript Classes",
+            "description": "ES6 classes and OOP"
+        },
+        "javascript-promises": {
+            "title": "JavaScript Promises",
+            "description": "Promise-based async programming"
+        },
+        "javascript-async-await": {
+            "title": "JavaScript Async-Await",
+            "description": "Async/await syntax for Promises"
+        },
+        "javascript-requests": {
+            "title": "JavaScript Requests",
+            "description": "HTTP requests and fetch API"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "Console": {
+                "title": "Console",
+                "description": "Console methods for output"
+            },
+            "数値": {
+                "title": "Numbers",
+                "description": "Number declaration"
+            },
+            "変数": {
+                "title": "Variables",
+                "description": "Variable declaration with let, const, var"
+            },
+            "文字列": {
+                "title": "Strings",
+                "description": "String declaration and properties"
+            },
+            "算術演算子": {
+                "title": "Arithmetic Operators",
+                "description": "Basic arithmetic operators"
+            },
+            "コメント": {
+                "title": "Comments",
+                "description": "Comment syntax"
+            },
+            "代入演算子": {
+                "title": "Assignment Operators",
+                "description": "Assignment operators"
+            },
+            "文字列補間": {
+                "title": "String Interpolation",
+                "description": "String concatenation and template literals"
+            },
+            "letキーワード": {
+                "title": "let Keyword",
+                "description": "Using the let keyword"
+            },
+            "constキーワード": {
+                "title": "const Keyword",
+                "description": "const keyword - immutable binding"
+            }
+        },
+        "javascript-conditionals": {
+            "if文": {
+                "title": "if Statement",
+                "description": "Basic if statement"
+            },
+            "三項演算子": {
+                "title": "Ternary Operator",
+                "description": "Ternary conditional operator"
+            },
+            "論理演算子 ||": {
+                "title": "Logical Operator ||",
+                "description": "Logical OR operator"
+            },
+            "論理演算子 &&": {
+                "title": "Logical Operator &&",
+                "description": "Logical AND operator"
+            },
+            "比較演算子": {
+                "title": "Comparison Operators",
+                "description": "Comparison operators"
+            },
+            "論理演算子 !": {
+                "title": "Logical Operator !",
+                "description": "Logical NOT operator"
+            },
+            "Null合体演算子 ??": {
+                "title": "Nullish Coalescing ??",
+                "description": "Nullish coalescing operator"
+            },
+            "else if": {
+                "title": "else if",
+                "description": "else if chain"
+            },
+            "switch文": {
+                "title": "switch Statement",
+                "description": "switch statement"
+            },
+            "== vs ===": {
+                "title": "== vs ===",
+                "description": "Equality operator comparison"
+            }
+        },
+        "javascript-functions": {
+            "関数": {
+                "title": "Functions",
+                "description": "Function declaration"
+            },
+            "無名関数": {
+                "title": "Anonymous Functions",
+                "description": "Named vs anonymous functions"
+            },
+            "アロー関数 - 2つの引数": {
+                "title": "Arrow Function - Two Arguments",
+                "description": "Arrow function with two parameters"
+            },
+            "アロー関数 - 引数なし": {
+                "title": "Arrow Function - No Arguments",
+                "description": "Arrow function without parameters"
+            },
+            "アロー関数 - 単一引数": {
+                "title": "Arrow Function - Single Argument",
+                "description": "Arrow function with single parameter"
+            },
+            "簡潔なアロー関数": {
+                "title": "Concise Arrow Function",
+                "description": "Concise arrow function syntax"
+            },
+            "returnキーワード": {
+                "title": "return Keyword",
+                "description": "Importance of return keyword"
+            },
+            "関数の呼び出し": {
+                "title": "Calling Functions",
+                "description": "Calling functions"
+            },
+            "関数式": {
+                "title": "Function Expression",
+                "description": "Function expression"
+            },
+            "関数パラメータ": {
+                "title": "Function Parameters",
+                "description": "Function parameters"
+            },
+            "関数宣言": {
+                "title": "Function Declaration",
+                "description": "Function declaration syntax"
+            }
+        },
+        "javascript-scope": {
+            "スコープ": {
+                "title": "Scope",
+                "description": "Function scope"
+            },
+            "ブロックスコープ変数": {
+                "title": "Block-scoped Variables",
+                "description": "Block scope with const"
+            },
+            "グローバル変数": {
+                "title": "Global Variables",
+                "description": "Global scope"
+            },
+            "let vs var": {
+                "title": "let vs var",
+                "description": "Scope difference between let and var"
+            },
+            "クロージャ付きループ": {
+                "title": "Loop with Closure",
+                "description": "Closure behavior with var vs let"
+            }
+        },
+        "javascript-arrays": {
+            "配列": {
+                "title": "Arrays",
+                "description": "Array declaration"
+            },
+            "プロパティ .length": {
+                "title": ".length Property",
+                "description": "Array length property"
+            },
+            "要素へのアクセス": {
+                "title": "Accessing Elements",
+                "description": "Accessing array elements by index"
+            },
+            ".push() メソッド": {
+                "title": ".push() Method",
+                "description": "Add element to end of array"
+            },
+            ".pop() メソッド": {
+                "title": ".pop() Method",
+                "description": "Remove last element from array"
+            },
+            ".shift() メソッド": {
+                "title": ".shift() Method",
+                "description": "Remove first element from array"
+            },
+            ".unshift() メソッド": {
+                "title": ".unshift() Method",
+                "description": "Add element to beginning of array"
+            },
+            ".slice() メソッド": {
+                "title": ".slice() Method",
+                "description": "Extract a portion of array"
+            },
+            ".splice() メソッド": {
+                "title": ".splice() Method",
+                "description": "Remove and insert elements"
+            },
+            ".forEach() メソッド": {
+                "title": ".forEach() Method",
+                "description": "Iterate over array elements"
+            },
+            ".map() メソッド": {
+                "title": ".map() Method",
+                "description": "Transform array elements"
+            },
+            ".filter() メソッド": {
+                "title": ".filter() Method",
+                "description": "Filter array elements"
+            },
+            ".reduce() メソッド": {
+                "title": ".reduce() Method",
+                "description": "Reduce array to single value"
+            }
+        },
+        "javascript-objects": {
+            "オブジェクトリテラル": {
+                "title": "Object Literal",
+                "description": "Object literal syntax"
+            },
+            "プロパティへのアクセス": {
+                "title": "Accessing Properties",
+                "description": "Accessing object properties"
+            },
+            "プロパティの追加": {
+                "title": "Adding Properties",
+                "description": "Adding properties to object"
+            },
+            "オブジェクトメソッド": {
+                "title": "Object Methods",
+                "description": "Object methods"
+            },
+            "Object.keys()": {
+                "title": "Object.keys()",
+                "description": "Get object keys"
+            },
+            "Object.values()": {
+                "title": "Object.values()",
+                "description": "Get object values"
+            }
+        },
+        "javascript-loops": {
+            "forループ": {
+                "title": "for Loop",
+                "description": "Basic for loop"
+            },
+            "for...ofループ": {
+                "title": "for...of Loop",
+                "description": "for...of loop for iterables"
+            },
+            "for...inループ": {
+                "title": "for...in Loop",
+                "description": "for...in loop for objects"
+            },
+            "whileループ": {
+                "title": "while Loop",
+                "description": "while loop"
+            },
+            "do...whileループ": {
+                "title": "do...while Loop",
+                "description": "do...while loop"
+            }
+        },
+        "javascript-classes": {
+            "クラス宣言": {
+                "title": "Class Declaration",
+                "description": "Class declaration and instantiation"
+            },
+            "クラス継承": {
+                "title": "Class Inheritance",
+                "description": "Class inheritance with extends"
+            }
+        },
+        "javascript-promises": {
+            "Promiseの作成": {
+                "title": "Creating Promises",
+                "description": "Creating and using Promises"
+            },
+            ".then() メソッド": {
+                "title": ".then() Method",
+                "description": "Promise then method"
+            },
+            ".catch() メソッド": {
+                "title": ".catch() Method",
+                "description": "Promise catch method"
+            },
+            "Promise.all()": {
+                "title": "Promise.all()",
+                "description": "Promise.all for multiple Promises"
+            }
+        },
+        "javascript-async-await": {
+            "Async関数": {
+                "title": "Async Functions",
+                "description": "Async/await basics"
+            },
+            "エラーハンドリング": {
+                "title": "Error Handling",
+                "description": "Try-catch error handling"
+            }
+        },
+        "javascript-requests": {
+            "JSON": {
+                "title": "JSON",
+                "description": "JSON object syntax"
+            },
+            "fetch API": {
+                "title": "fetch API",
+                "description": "Fetch API POST request"
+            },
+            "JSONフォーマット": {
+                "title": "JSON Format",
+                "description": "Fetch API with JSON response"
+            },
+            "async await構文": {
+                "title": "async await Syntax",
+                "description": "Fetch API with async/await"
+            }
+        }
+    }
+}

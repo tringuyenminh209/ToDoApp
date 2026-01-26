@@ -58,6 +58,8 @@ export default function Header({
     setShowLangMenu(false);
     // カスタムイベントを発火（同じタブ内の他のコンポーネントに通知）
     window.dispatchEvent(new Event('languageChange'));
+    // APIデータの再読み込みをトリガー
+    window.dispatchEvent(new CustomEvent('localeChanged', { detail: { locale: lang } }));
   };
 
   return (

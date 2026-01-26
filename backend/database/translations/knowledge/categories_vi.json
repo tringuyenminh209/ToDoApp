@@ -1,0 +1,433 @@
+{
+    "_comment": "Vietnamese translations for Knowledge Categories",
+    "categories": {
+        "プログラミング言語": {
+            "name": "Ngôn ngữ Lập trình",
+            "description": "Ghi chú ngôn ngữ lập trình, cú pháp và thực hành tốt nhất"
+        },
+        "コンピュータサイエンス基礎": {
+            "name": "Cơ sở Khoa học Máy tính",
+            "description": "Khái niệm CS cốt lõi, thuật toán và lý thuyết"
+        },
+        "Web開発": {
+            "name": "Phát triển Web",
+            "description": "Frontend, Backend, DevOps"
+        },
+        "ツール & ワークフロー": {
+            "name": "Công cụ & Quy trình làm việc",
+            "description": "Công cụ và tiện ích phát triển"
+        },
+        "面接準備": {
+            "name": "Chuẩn bị Phỏng vấn",
+            "description": "Thử thách coding và câu hỏi phỏng vấn"
+        },
+        "プロジェクト & アイデア": {
+            "name": "Dự án & Ý tưởng",
+            "description": "Ghi chú dự án cá nhân và code snippets"
+        },
+        "Note": {
+            "name": "Ghi chú",
+            "description": "Lưu ghi chú"
+        },
+        "Python": {
+            "name": "Python",
+            "description": "Ghi chú lập trình Python"
+        },
+        "Java": {
+            "name": "Java",
+            "description": "Ghi chú lập trình Java"
+        },
+        "JavaScript": {
+            "name": "JavaScript",
+            "description": "Ghi chú JavaScript và TypeScript"
+        },
+        "PHP": {
+            "name": "PHP",
+            "description": "Ghi chú PHP và Laravel"
+        },
+        "C/C++": {
+            "name": "C/C++",
+            "description": "Lập trình C và C++"
+        },
+        "Go": {
+            "name": "Go",
+            "description": "Lập trình Golang"
+        },
+        "基礎": {
+            "name": "Cơ bản",
+            "description": null
+        },
+        "データ構造": {
+            "name": "Cấu trúc Dữ liệu",
+            "description": "Mảng, danh sách liên kết, cây, đồ thị, v.v."
+        },
+        "ライブラリ": {
+            "name": "Thư viện",
+            "description": "pandas, numpy, requests, v.v."
+        },
+        "面接問題": {
+            "name": "Bài toán Phỏng vấn",
+            "description": null
+        },
+        "コアJava": {
+            "name": "Java Cốt lõi",
+            "description": null
+        },
+        "Spring Framework": {
+            "name": "Spring Framework",
+            "description": null
+        },
+        "デザインパターン": {
+            "name": "Mẫu Thiết kế",
+            "description": null
+        },
+        "ES6+機能": {
+            "name": "Tính năng ES6+",
+            "description": null
+        },
+        "React.js": {
+            "name": "React.js",
+            "description": null
+        },
+        "Node.js": {
+            "name": "Node.js",
+            "description": null
+        },
+        "TypeScript": {
+            "name": "TypeScript",
+            "description": null
+        },
+        "Laravel": {
+            "name": "Laravel",
+            "description": null
+        },
+        "ベストプラクティス": {
+            "name": "Thực hành Tốt nhất",
+            "description": null
+        },
+        "STL": {
+            "name": "STL",
+            "description": "Thư viện Mẫu Chuẩn"
+        },
+        "メモリ管理": {
+            "name": "Quản lý Bộ nhớ",
+            "description": null
+        },
+        "並行処理": {
+            "name": "Xử lý Đồng thời",
+            "description": null
+        },
+        "Webサービス": {
+            "name": "Dịch vụ Web",
+            "description": null
+        },
+        "アルゴリズム": {
+            "name": "Thuật toán",
+            "description": "Sắp xếp, tìm kiếm, quy hoạch động, v.v."
+        },
+        "データベース理論": {
+            "name": "Lý thuyết Cơ sở Dữ liệu",
+            "description": "SQL, chuẩn hóa, giao dịch"
+        },
+        "ネットワーク": {
+            "name": "Mạng",
+            "description": "TCP/IP, HTTP, DNS"
+        },
+        "オペレーティングシステム": {
+            "name": "Hệ điều hành",
+            "description": "Tiến trình, bộ nhớ, hệ thống tệp"
+        },
+        "配列 & 文字列": {
+            "name": "Mảng & Chuỗi",
+            "description": null
+        },
+        "連結リスト": {
+            "name": "Danh sách Liên kết",
+            "description": null
+        },
+        "木 & グラフ": {
+            "name": "Cây & Đồ thị",
+            "description": null
+        },
+        "ハッシュテーブル": {
+            "name": "Bảng Băm",
+            "description": null
+        },
+        "ヒープ & スタック": {
+            "name": "Heap & Stack",
+            "description": null
+        },
+        "ソート & 検索": {
+            "name": "Sắp xếp & Tìm kiếm",
+            "description": null
+        },
+        "動的計画法": {
+            "name": "Quy hoạch Động",
+            "description": null
+        },
+        "貪欲アルゴリズム": {
+            "name": "Thuật toán Tham lam",
+            "description": null
+        },
+        "グラフアルゴリズム": {
+            "name": "Thuật toán Đồ thị",
+            "description": null
+        },
+        "SQL基礎": {
+            "name": "Cơ bản SQL",
+            "description": null
+        },
+        "正規化": {
+            "name": "Chuẩn hóa",
+            "description": null
+        },
+        "インデックス": {
+            "name": "Chỉ mục",
+            "description": null
+        },
+        "トランザクション": {
+            "name": "Giao dịch",
+            "description": null
+        },
+        "TCP/IP": {
+            "name": "TCP/IP",
+            "description": null
+        },
+        "HTTP/HTTPS": {
+            "name": "HTTP/HTTPS",
+            "description": null
+        },
+        "DNS & ルーティング": {
+            "name": "DNS & Định tuyến",
+            "description": null
+        },
+        "プロセス管理": {
+            "name": "Quản lý Tiến trình",
+            "description": null
+        },
+        "ファイルシステム": {
+            "name": "Hệ thống Tệp",
+            "description": null
+        },
+        "フロントエンド": {
+            "name": "Frontend",
+            "description": "HTML, CSS, framework JavaScript"
+        },
+        "バックエンド": {
+            "name": "Backend",
+            "description": "API, xác thực, cơ sở dữ liệu"
+        },
+        "DevOps": {
+            "name": "DevOps",
+            "description": "CI/CD, giám sát, cloud"
+        },
+        "セキュリティ": {
+            "name": "Bảo mật",
+            "description": "OWASP, xác thực, mã hóa"
+        },
+        "HTML & CSS": {
+            "name": "HTML & CSS",
+            "description": null
+        },
+        "フレームワーク": {
+            "name": "Framework",
+            "description": "React, Vue, Angular"
+        },
+        "UI/UXベストプラクティス": {
+            "name": "Thực hành Tốt nhất UI/UX",
+            "description": null
+        },
+        "REST API": {
+            "name": "REST API",
+            "description": null
+        },
+        "認証": {
+            "name": "Xác thực",
+            "description": null
+        },
+        "キャッシング": {
+            "name": "Bộ nhớ đệm",
+            "description": null
+        },
+        "マイクロサービス": {
+            "name": "Microservices",
+            "description": null
+        },
+        "CI/CD": {
+            "name": "CI/CD",
+            "description": null
+        },
+        "モニタリング": {
+            "name": "Giám sát",
+            "description": null
+        },
+        "クラウドサービス": {
+            "name": "Dịch vụ Cloud",
+            "description": "AWS, Azure, GCP"
+        },
+        "OWASP Top 10": {
+            "name": "OWASP Top 10",
+            "description": null
+        },
+        "認証 & 認可": {
+            "name": "Xác thực & Phân quyền",
+            "description": null
+        },
+        "暗号化": {
+            "name": "Mã hóa",
+            "description": null
+        },
+        "Git & バージョン管理": {
+            "name": "Git & Quản lý Phiên bản",
+            "description": "Lệnh Git và quy trình làm việc"
+        },
+        "Docker": {
+            "name": "Docker",
+            "description": "Container hóa và điều phối"
+        },
+        "Linuxコマンド": {
+            "name": "Lệnh Linux",
+            "description": "Lệnh shell và script"
+        },
+        "IDE & エディタ": {
+            "name": "IDE & Trình soạn thảo",
+            "description": "Mẹo và phím tắt trình soạn thảo"
+        },
+        "テスト": {
+            "name": "Kiểm thử",
+            "description": "Kiểm thử đơn vị, tích hợp, E2E"
+        },
+        "基本コマンド": {
+            "name": "Lệnh Cơ bản",
+            "description": null
+        },
+        "ブランチ戦略": {
+            "name": "Chiến lược Nhánh",
+            "description": null
+        },
+        "マージコンフリクト": {
+            "name": "Xung đột Gộp",
+            "description": null
+        },
+        "Dockerfile": {
+            "name": "Dockerfile",
+            "description": null
+        },
+        "Docker Compose": {
+            "name": "Docker Compose",
+            "description": null
+        },
+        "コンテナオーケストレーション": {
+            "name": "Điều phối Container",
+            "description": null
+        },
+        "ファイル操作": {
+            "name": "Thao tác Tệp",
+            "description": null
+        },
+        "シェルスクリプト": {
+            "name": "Script Shell",
+            "description": null
+        },
+        "VS Codeヒント": {
+            "name": "Mẹo VS Code",
+            "description": null
+        },
+        "IntelliJ IDEA": {
+            "name": "IntelliJ IDEA",
+            "description": null
+        },
+        "Vim": {
+            "name": "Vim",
+            "description": null
+        },
+        "単体テスト": {
+            "name": "Kiểm thử Đơn vị",
+            "description": null
+        },
+        "統合テスト": {
+            "name": "Kiểm thử Tích hợp",
+            "description": null
+        },
+        "テスト駆動開発": {
+            "name": "Phát triển Hướng Kiểm thử",
+            "description": null
+        },
+        "コーディングチャレンジ": {
+            "name": "Thử thách Coding",
+            "description": "LeetCode, HackerRank, v.v."
+        },
+        "システム設計": {
+            "name": "Thiết kế Hệ thống",
+            "description": "Khả năng mở rộng và kiến trúc"
+        },
+        "行動面接質問": {
+            "name": "Câu hỏi Phỏng vấn Hành vi",
+            "description": "Phương pháp STAR và câu hỏi thường gặp"
+        },
+        "計算量解析": {
+            "name": "Phân tích Độ phức tạp",
+            "description": "Ký hiệu Big O"
+        },
+        "LeetCode Easy": {
+            "name": "LeetCode Dễ",
+            "description": null
+        },
+        "LeetCode Medium": {
+            "name": "LeetCode Trung bình",
+            "description": null
+        },
+        "LeetCode Hard": {
+            "name": "LeetCode Khó",
+            "description": null
+        },
+        "HackerRank": {
+            "name": "HackerRank",
+            "description": null
+        },
+        "スケーラビリティ": {
+            "name": "Khả năng Mở rộng",
+            "description": null
+        },
+        "ロードバランシング": {
+            "name": "Cân bằng Tải",
+            "description": null
+        },
+        "データベース設計": {
+            "name": "Thiết kế Cơ sở Dữ liệu",
+            "description": null
+        },
+        "STAR法": {
+            "name": "Phương pháp STAR",
+            "description": null
+        },
+        "一般的な質問": {
+            "name": "Câu hỏi Thường gặp",
+            "description": null
+        },
+        "時間計算量": {
+            "name": "Độ phức tạp Thời gian",
+            "description": null
+        },
+        "空間計算量": {
+            "name": "Độ phức tạp Không gian",
+            "description": null
+        },
+        "プロジェクトアイデア": {
+            "name": "Ý tưởng Dự án",
+            "description": null
+        },
+        "プロジェクトノート": {
+            "name": "Ghi chú Dự án",
+            "description": null
+        },
+        "アーキテクチャ決定": {
+            "name": "Quyết định Kiến trúc",
+            "description": null
+        },
+        "コードスニペットライブラリ": {
+            "name": "Thư viện Code Snippet",
+            "description": null
+        }
+    }
+}

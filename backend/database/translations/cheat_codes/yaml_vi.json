@@ -1,0 +1,158 @@
+{
+    "_comment": "Vietnamese translations for YAML Cheat Code",
+    "language": {
+        "yaml": {
+            "description": "Tham khảo để hiểu và viết các file cấu hình định dạng YAML."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Cơ bản và giới thiệu YAML"
+        },
+        "collections": {
+            "title": "Collection YAML",
+            "description": "Mảng, mapping và cấu trúc lồng nhau"
+        },
+        "reference": {
+            "title": "Tham khảo YAML",
+            "description": "Ký hiệu, escape và kiểu"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "YAMLの特徴": {
+                "title": "Đặc điểm YAML",
+                "description": "Đặc điểm và quy tắc YAML cơ bản"
+            },
+            "スカラー型": {
+                "title": "Kiểu Scalar",
+                "description": "Kiểu dữ liệu YAML cơ bản"
+            },
+            "変数": {
+                "title": "Biến",
+                "description": "Biến sử dụng anchor và alias"
+            },
+            "コメント": {
+                "title": "Chú thích",
+                "description": "Cách viết chú thích trong YAML"
+            },
+            "複数行文字列": {
+                "title": "Chuỗi nhiều dòng",
+                "description": "Chuỗi nhiều dòng (giữ nguyên xuống dòng)"
+            },
+            "継承": {
+                "title": "Kế thừa",
+                "description": "Kế thừa và merge mapping"
+            },
+            "参照": {
+                "title": "Tham chiếu",
+                "description": "Tham chiếu sử dụng anchor"
+            },
+            "折りたたみ文字列": {
+                "title": "Chuỗi gấp",
+                "description": "Chuỗi nhiều dòng (chuyển xuống dòng thành khoảng trắng)"
+            },
+            "複数ドキュメント": {
+                "title": "Nhiều Document",
+                "description": "Nhiều document trong một file YAML"
+            }
+        },
+        "collections": {
+            "シーケンス（配列）": {
+                "title": "Sequence (Mảng)",
+                "description": "Mảng cơ bản (sequence)"
+            },
+            "マッピング（辞書）": {
+                "title": "Mapping (Dictionary)",
+                "description": "Mapping cơ bản (cặp key-value)"
+            },
+            "マッピングからシーケンス": {
+                "title": "Mapping sang Sequence",
+                "description": "Sequence trong mapping"
+            },
+            "シーケンスのマッピング": {
+                "title": "Sequence của Mapping",
+                "description": "Mapping trong sequence"
+            },
+            "シーケンスのシーケンス": {
+                "title": "Sequence của Sequence",
+                "description": "Sequence lồng nhau"
+            },
+            "マッピングのマッピング": {
+                "title": "Mapping của Mapping",
+                "description": "Mapping lồng nhau"
+            },
+            "ネストされたコレクション": {
+                "title": "Collection lồng nhau",
+                "description": "Cấu trúc lồng nhau phức tạp"
+            },
+            "順序なしセット": {
+                "title": "Set không thứ tự",
+                "description": "Set (collection không trùng lặp)"
+            },
+            "順序付きマッピング": {
+                "title": "Mapping có thứ tự",
+                "description": "Mapping giữ thứ tự"
+            }
+        },
+        "reference": {
+            "用語": {
+                "title": "Thuật ngữ",
+                "description": "Thuật ngữ YAML cơ bản"
+            },
+            "ドキュメント指示子": {
+                "title": "Chỉ thị Document",
+                "description": "Ký hiệu phân cách document"
+            },
+            "コレクション指示子": {
+                "title": "Chỉ thị Collection",
+                "description": "Ký hiệu collection"
+            },
+            "エイリアス指示子": {
+                "title": "Chỉ thị Alias",
+                "description": "Anchor và alias"
+            },
+            "特殊キー": {
+                "title": "Key đặc biệt",
+                "description": "Key mapping đặc biệt"
+            },
+            "スカラー指示子": {
+                "title": "Chỉ thị Scalar",
+                "description": "Ký hiệu giá trị scalar"
+            },
+            "タグプロパティ": {
+                "title": "Thuộc tính Tag",
+                "description": "Các loại tag YAML"
+            },
+            "コア型": {
+                "title": "Kiểu cốt lõi",
+                "description": "Kiểu dữ liệu cốt lõi YAML"
+            },
+            "エスケープコード - 数値": {
+                "title": "Mã Escape - Số",
+                "description": "Mã escape số"
+            },
+            "エスケープコード - 保護": {
+                "title": "Mã Escape - Bảo vệ",
+                "description": "Mã escape bảo vệ"
+            },
+            "エスケープコード - Cスタイル": {
+                "title": "Mã Escape - Kiểu C",
+                "description": "Mã escape kiểu C"
+            },
+            "追加のエスケープコード": {
+                "title": "Mã Escape bổ sung",
+                "description": "Mã escape bổ sung"
+            },
+            "その他の型": {
+                "title": "Kiểu khác",
+                "description": "Set và mapping có thứ tự"
+            },
+            "言語独立スカラー型": {
+                "title": "Kiểu Scalar độc lập ngôn ngữ",
+                "description": "Biểu diễn kiểu scalar độc lập ngôn ngữ"
+            }
+        }
+    }
+}

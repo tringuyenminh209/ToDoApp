@@ -1,0 +1,122 @@
+{
+    "_comment": "Vietnamese translations for JavaScript Basic Course (JavaScriptCourseSeeder)",
+    "template": {
+        "title": "JavaScript基礎演習",
+        "description": "初心者向けJavaScriptプログラミング基礎コース。15週の実践的な課題を通じて、JavaScriptの基本からDOM操作、非同期処理、外部API連携まで段階的に学習します。"
+    },
+    "template_translations": {
+        "JavaScript基礎演習": {
+            "title": "Khóa học JavaScript Cơ bản",
+            "description": "Khóa học lập trình JavaScript cơ bản dành cho người mới bắt đầu. Học từng bước từ cơ bản JavaScript đến thao tác DOM, xử lý bất đồng bộ và tích hợp API bên ngoài thông qua 15 tuần bài tập thực hành."
+        }
+    },
+    "milestones": {
+        "JavaScript基礎": {
+            "title": "Cơ bản JavaScript",
+            "description": "Cú pháp JavaScript cơ bản, rẽ nhánh điều kiện, mảng, vòng lặp, hàm",
+            "deliverables": [
+                "Hiểu cú pháp JavaScript cơ bản",
+                "Có thể sử dụng rẽ nhánh điều kiện và vòng lặp",
+                "Có thể thao tác mảng",
+                "Có thể định nghĩa và gọi hàm"
+            ]
+        },
+        "DOM操作": {
+            "title": "Thao tác DOM",
+            "description": "Lấy và thao tác phần tử DOM, xử lý sự kiện, tạo, thêm và xóa phần tử",
+            "deliverables": [
+                "Có thể lấy và thao tác phần tử DOM",
+                "Có thể thiết lập event listener",
+                "Có thể tạo, thêm và xóa phần tử động"
+            ]
+        },
+        "中間評価と復習": {
+            "title": "Đánh giá Giữa kỳ và Ôn tập",
+            "description": "Ôn tập tổng hợp và đánh giá giữa kỳ từ tuần 1 đến tuần 7",
+            "deliverables": [
+                "Xác nhận nắm vững kiến thức cơ bản",
+                "Hoàn thành bài tập thực hành"
+            ]
+        },
+        "データ管理と非同期処理": {
+            "title": "Quản lý Dữ liệu và Xử lý Bất đồng bộ",
+            "description": "WebStorage, JSON, xử lý bất đồng bộ, tích hợp API bên ngoài",
+            "deliverables": [
+                "Có thể lưu dữ liệu bằng WebStorage",
+                "Có thể xử lý dữ liệu JSON",
+                "Hiểu xử lý bất đồng bộ",
+                "Có thể tích hợp với API bên ngoài"
+            ]
+        },
+        "総合課題": {
+            "title": "Dự án Tổng hợp",
+            "description": "Phát triển ứng dụng web tổng hợp sử dụng kiến thức đã học",
+            "deliverables": [
+                "Hoàn thành ứng dụng web tổng hợp",
+                "Tích hợp và thực hành nội dung đã học"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：JavaScriptの基礎・条件分岐": {
+            "title": "Tuần 1: Cơ bản JavaScript và Rẽ nhánh Điều kiện",
+            "description": "Cú pháp JavaScript cơ bản, biến, kiểu dữ liệu, toán tử, câu lệnh if, câu lệnh switch"
+        },
+        "第2週：配列・ループ・関数": {
+            "title": "Tuần 2: Mảng, Vòng lặp và Hàm",
+            "description": "Mảng, vòng lặp (for, while, forEach), định nghĩa và gọi hàm"
+        },
+        "第3週：DOM": {
+            "title": "Tuần 3: DOM",
+            "description": "Cơ bản DOM (Document Object Model), lấy và thao tác phần tử"
+        },
+        "第4週：イベント処理": {
+            "title": "Tuần 4: Xử lý Sự kiện",
+            "description": "Event listener, sự kiện click, sự kiện input, sự kiện bàn phím"
+        },
+        "第5週：ループとイベント": {
+            "title": "Tuần 5: Vòng lặp và Sự kiện",
+            "description": "Kết hợp vòng lặp với xử lý sự kiện, bài tập thực hành"
+        },
+        "第6週：Elementの作成・追加": {
+            "title": "Tuần 6: Tạo và Thêm Phần tử",
+            "description": "Tạo phần tử DOM động, thêm phần tử vào trang"
+        },
+        "第7週：Elementの削除・動的なElementへのイベント追加": {
+            "title": "Tuần 7: Xóa Phần tử và Thêm Sự kiện cho Phần tử Động",
+            "description": "Xóa phần tử, event delegation, thêm sự kiện cho phần tử được tạo động"
+        },
+        "第8週：予備日（中間評価週）": {
+            "title": "Tuần 8: Ngày Dự phòng (Tuần Đánh giá Giữa kỳ)",
+            "description": "Ôn tập tổng hợp và bài tập giữa kỳ từ tuần 1 đến tuần 7"
+        },
+        "第9週：WebStorageの利用": {
+            "title": "Tuần 9: Sử dụng WebStorage",
+            "description": "Lưu trữ dữ liệu bền vững bằng localStorage và sessionStorage"
+        },
+        "第10週：JSONについて": {
+            "title": "Tuần 10: Về JSON",
+            "description": "Định dạng JSON, parse và stringify dữ liệu JSON"
+        },
+        "第11週：非同期処理・タイマー関数": {
+            "title": "Tuần 11: Xử lý Bất đồng bộ và Hàm Timer",
+            "description": "setTimeout, setInterval, Promise, async/await"
+        },
+        "第12週：外部APIと非同期通信": {
+            "title": "Tuần 12: API Bên ngoài và Giao tiếp Bất đồng bộ",
+            "description": "Fetch API, thực hiện HTTP request, xử lý phản hồi API"
+        },
+        "第13週：総合課題①": {
+            "title": "Tuần 13: Dự án Tổng hợp ①",
+            "description": "Dự án ứng dụng web tổng hợp đầu tiên"
+        },
+        "第14週：総合課題②": {
+            "title": "Tuần 14: Dự án Tổng hợp ②",
+            "description": "Dự án ứng dụng web tổng hợp thứ hai"
+        },
+        "第15週：総合課題③（最終発表）": {
+            "title": "Tuần 15: Dự án Tổng hợp ③ (Thuyết trình Cuối kỳ)",
+            "description": "Dự án tổng hợp cuối cùng và thuyết trình"
+        }
+    }
+}

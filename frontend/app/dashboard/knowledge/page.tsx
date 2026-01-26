@@ -94,6 +94,18 @@ export default function KnowledgePage() {
     loadData();
   }, [loadData]);
 
+  // Reload data when locale changes
+  useEffect(() => {
+    const handleLocaleChange = () => {
+      loadData();
+    };
+
+    window.addEventListener('localeChanged', handleLocaleChange);
+    return () => {
+      window.removeEventListener('localeChanged', handleLocaleChange);
+    };
+  }, [loadData]);
+
   useEffect(() => {
     if (!allCategories.length) return;
     const categoryParam = searchParams.get('category');

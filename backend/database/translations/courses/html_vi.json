@@ -1,0 +1,118 @@
+{
+    "_comment": "Vietnamese translations for HTML Course (HtmlCourseSeeder)",
+    "template_translations": {
+        "HTML基礎演習": {
+            "title": "Khóa học cơ bản HTML",
+            "description": "Khóa học cơ bản HTML cho người mới bắt đầu. Học từng bước từ cấu trúc HTML cơ bản đến HTML ngữ nghĩa, form và đa phương tiện qua 15 tuần thực hành."
+        }
+    },
+    "milestones": {
+        "HTML基礎": {
+            "title": "Cơ bản HTML",
+            "description": "Học cấu trúc cơ bản HTML và các phần tử văn bản",
+            "deliverables": [
+                "Hiểu cấu trúc cơ bản HTML",
+                "Sử dụng các phần tử văn bản",
+                "Làm việc với danh sách và hình ảnh"
+            ]
+        },
+        "テーブルとフォーム": {
+            "title": "Bảng và Form",
+            "description": "Bảng, form và các phần tử form",
+            "deliverables": [
+                "Tạo bảng với thead, tbody, tfoot",
+                "Tạo form với các loại input khác nhau",
+                "Hiểu thuộc tính form và xác thực"
+            ]
+        },
+        "セマンティックHTML": {
+            "title": "HTML ngữ nghĩa",
+            "description": "Thẻ ngữ nghĩa và khả năng tiếp cận",
+            "deliverables": [
+                "Sử dụng phần tử ngữ nghĩa (header, nav, main, footer)",
+                "Hiểu markup thân thiện SEO",
+                "Triển khai tính năng khả năng tiếp cận"
+            ]
+        },
+        "マルチメディアと埋め込み": {
+            "title": "Đa phương tiện và nhúng",
+            "description": "Video, audio, iframe và các media khác",
+            "deliverables": [
+                "Nhúng video và audio",
+                "Sử dụng iframe đúng cách",
+                "Triển khai media responsive"
+            ]
+        },
+        "高度なHTML": {
+            "title": "HTML nâng cao",
+            "description": "Canvas, SVG, web components",
+            "deliverables": [
+                "Vẽ với canvas",
+                "Tạo đồ họa với SVG",
+                "Hiểu web components"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：HTML入門・基本構造": {
+            "title": "Tuần 1: Giới thiệu HTML và cấu trúc cơ bản",
+            "description": "HTML là gì, cấu trúc cơ bản, DOCTYPE, head, body"
+        },
+        "第2週：テキスト要素とリンク": {
+            "title": "Tuần 2: Phần tử văn bản và liên kết",
+            "description": "Tiêu đề, đoạn văn, nhấn mạnh, liên kết"
+        },
+        "第3週：リストと画像": {
+            "title": "Tuần 3: Danh sách và hình ảnh",
+            "description": "Danh sách có thứ tự, danh sách không thứ tự, nhúng hình ảnh"
+        },
+        "第4週：テーブルの基礎": {
+            "title": "Tuần 4: Cơ bản về bảng",
+            "description": "Cấu trúc bảng cơ bản, thead, tbody, tfoot, colspan, rowspan"
+        },
+        "第5週：フォームの基礎": {
+            "title": "Tuần 5: Cơ bản về Form",
+            "description": "Phần tử form, các loại input, label, button"
+        },
+        "第6週：フォームの応用": {
+            "title": "Tuần 6: Form nâng cao",
+            "description": "Xác thực form, các loại input mới HTML5, thuộc tính form"
+        },
+        "第7週：セマンティックHTML": {
+            "title": "Tuần 7: HTML ngữ nghĩa",
+            "description": "header, nav, main, article, section, aside, footer"
+        },
+        "第8週：メタデータとSEO": {
+            "title": "Tuần 8: Metadata và SEO",
+            "description": "Meta tags, OGP, favicon, markup thân thiện SEO"
+        },
+        "第9週：アクセシビリティ": {
+            "title": "Tuần 9: Khả năng tiếp cận",
+            "description": "ARIA, thuộc tính alt, quản lý focus, hỗ trợ trình đọc màn hình"
+        },
+        "第10週：動画と音声": {
+            "title": "Tuần 10: Video và Audio",
+            "description": "Thẻ video, thẻ audio, thẻ source, các định dạng nhúng"
+        },
+        "第11週：埋め込みコンテンツ": {
+            "title": "Tuần 11: Nội dung nhúng",
+            "description": "iframe, embed, object, nhúng Google Maps, YouTube"
+        },
+        "第12週：レスポンシブ画像": {
+            "title": "Tuần 12: Hình ảnh Responsive",
+            "description": "srcset, sizes, phần tử picture, tối ưu hóa hình ảnh"
+        },
+        "第13週：Canvas基礎": {
+            "title": "Tuần 13: Cơ bản Canvas",
+            "description": "Phần tử canvas, vẽ 2D, hình cơ bản, văn bản"
+        },
+        "第14週：SVG基礎": {
+            "title": "Tuần 14: Cơ bản SVG",
+            "description": "Phần tử SVG, hình cơ bản, văn bản, đường dẫn"
+        },
+        "第15週：総合演習": {
+            "title": "Tuần 15: Bài tập tổng hợp",
+            "description": "Tạo trang web hoàn chỉnh sử dụng tất cả các phần tử đã học"
+        }
+    }
+}

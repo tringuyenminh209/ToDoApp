@@ -1,0 +1,260 @@
+{
+    "_comment": "Vietnamese translations for Kotlin Cheat Code",
+    "language": {
+        "kotlin": {
+            "description": "Bảng tóm tắt Kotlin với cách sử dụng, ví dụ và nhiều hơn nữa."
+        }
+    },
+    "sections": {
+        "kotlin-introduction": {
+            "title": "Giới thiệu Kotlin",
+            "description": "Cơ bản và giới thiệu Kotlin"
+        },
+        "kotlin-data-types-variables": {
+            "title": "Kiểu dữ liệu và Biến",
+            "description": "Biến và kiểu dữ liệu"
+        },
+        "kotlin-conditionals": {
+            "title": "Biểu thức điều kiện",
+            "description": "Câu lệnh điều kiện"
+        },
+        "kotlin-collections": {
+            "title": "Collection",
+            "description": "List, Set, Map"
+        },
+        "kotlin-functions": {
+            "title": "Hàm",
+            "description": "Định nghĩa và sử dụng hàm"
+        },
+        "kotlin-classes": {
+            "title": "Lớp",
+            "description": "Lập trình hướng đối tượng"
+        }
+    },
+    "examples": {
+        "kotlin-introduction": {
+            "main()": {
+                "title": "main()",
+                "description": "Hàm main() là điểm bắt đầu của mọi chương trình Kotlin"
+            },
+            "Print文": {
+                "title": "Câu lệnh Print",
+                "description": "Câu lệnh print và println"
+            },
+            "コメント": {
+                "title": "Chú thích",
+                "description": "Cú pháp chú thích"
+            },
+            "実行順序": {
+                "title": "Thứ tự thực thi",
+                "description": "Thứ tự thực thi code"
+            }
+        },
+        "kotlin-data-types-variables": {
+            "可変変数": {
+                "title": "Biến có thể thay đổi",
+                "description": "Biến có thể thay đổi với var"
+            },
+            "不変変数": {
+                "title": "Biến bất biến",
+                "description": "Biến bất biến với val"
+            },
+            "型推論": {
+                "title": "Suy luận kiểu",
+                "description": "Suy luận kiểu trong Kotlin"
+            },
+            "文字列連結": {
+                "title": "Nối chuỗi",
+                "description": "Nối chuỗi"
+            },
+            "文字列テンプレート": {
+                "title": "Template chuỗi",
+                "description": "Template chuỗi với $"
+            },
+            "組み込みプロパティと関数": {
+                "title": "Thuộc tính và Hàm tích hợp",
+                "description": "Thuộc tính và hàm chuỗi"
+            },
+            "文字エスケープ": {
+                "title": "Escape ký tự",
+                "description": "Các ký tự escape"
+            },
+            "算術演算子": {
+                "title": "Toán tử số học",
+                "description": "Toán tử số học"
+            },
+            "演算順序": {
+                "title": "Thứ tự phép toán",
+                "description": "Độ ưu tiên toán tử"
+            },
+            "拡張代入演算子": {
+                "title": "Toán tử gán mở rộng",
+                "description": "Toán tử gán mở rộng"
+            },
+            "インクリメントとデクリメント演算子": {
+                "title": "Toán tử tăng và giảm",
+                "description": "Toán tử tăng và giảm"
+            },
+            "Mathライブラリ": {
+                "title": "Thư viện Math",
+                "description": "Các hàm thư viện Math"
+            }
+        },
+        "kotlin-conditionals": {
+            "If式": {
+                "title": "Biểu thức If",
+                "description": "Biểu thức if cơ bản"
+            },
+            "Else式": {
+                "title": "Biểu thức Else",
+                "description": "Biểu thức if-else"
+            },
+            "Else-If式": {
+                "title": "Biểu thức Else-If",
+                "description": "Chuỗi else-if"
+            },
+            "比較演算子": {
+                "title": "Toán tử so sánh",
+                "description": "Toán tử so sánh"
+            },
+            "論理演算子": {
+                "title": "Toán tử logic",
+                "description": "Toán tử logic"
+            },
+            "AND演算子: &&": {
+                "title": "Toán tử AND: &&",
+                "description": "Toán tử logic AND"
+            },
+            "OR演算子: ||": {
+                "title": "Toán tử OR: ||",
+                "description": "Toán tử logic OR"
+            },
+            "NOT演算子": {
+                "title": "Toán tử NOT",
+                "description": "Toán tử logic NOT"
+            },
+            "評価順序": {
+                "title": "Thứ tự đánh giá",
+                "description": "Thứ tự đánh giá toán tử"
+            },
+            "ネストされた条件": {
+                "title": "Điều kiện lồng nhau",
+                "description": "Câu lệnh if lồng nhau"
+            },
+            "When式": {
+                "title": "Biểu thức When",
+                "description": "Biểu thức when (giống switch)"
+            },
+            "範囲演算子": {
+                "title": "Toán tử phạm vi",
+                "description": "Toán tử phạm vi (in)"
+            },
+            "等価演算子": {
+                "title": "Toán tử bằng",
+                "description": "Toán tử bằng"
+            }
+        },
+        "kotlin-collections": {
+            "不変リスト": {
+                "title": "List bất biến",
+                "description": "Tạo list bất biến"
+            },
+            "可変リスト": {
+                "title": "List có thể thay đổi",
+                "description": "Tạo list có thể thay đổi"
+            },
+            "リストへのアクセス": {
+                "title": "Truy cập List",
+                "description": "Truy cập phần tử list"
+            },
+            "Size属性": {
+                "title": "Thuộc tính Size",
+                "description": "Lấy kích thước list"
+            },
+            "リスト操作": {
+                "title": "Thao tác List",
+                "description": "Thao tác list"
+            },
+            "不変セット": {
+                "title": "Set bất biến",
+                "description": "Tạo set bất biến"
+            },
+            "可変セット": {
+                "title": "Set có thể thay đổi",
+                "description": "Tạo set có thể thay đổi"
+            },
+            "コレクション要素へのアクセス": {
+                "title": "Truy cập phần tử Collection",
+                "description": "Truy cập phần tử set"
+            },
+            "不変マップ": {
+                "title": "Map bất biến",
+                "description": "Tạo map bất biến"
+            },
+            "可変マップ": {
+                "title": "Map có thể thay đổi",
+                "description": "Tạo map có thể thay đổi"
+            },
+            "マップのキーと値の取得": {
+                "title": "Lấy Key và Value của Map",
+                "description": "Truy cập key và value của map"
+            },
+            "マップエントリの追加と削除": {
+                "title": "Thêm và Xóa entry Map",
+                "description": "Thêm và xóa entry map"
+            }
+        },
+        "kotlin-functions": {
+            "関数": {
+                "title": "Hàm",
+                "description": "Định nghĩa hàm cơ bản"
+            },
+            "関数パラメータ": {
+                "title": "Tham số hàm",
+                "description": "Hàm với tham số"
+            },
+            "デフォルトパラメータ": {
+                "title": "Tham số mặc định",
+                "description": "Tham số hàm mặc định"
+            },
+            "名前付きパラメータ": {
+                "title": "Tham số có tên",
+                "description": "Tham số hàm được đặt tên"
+            },
+            "Return文": {
+                "title": "Câu lệnh Return",
+                "description": "Hàm với kiểu trả về"
+            },
+            "単一式関数": {
+                "title": "Hàm biểu thức đơn",
+                "description": "Hàm biểu thức đơn"
+            },
+            "関数リテラル": {
+                "title": "Function literal",
+                "description": "Hàm ẩn danh và biểu thức lambda"
+            }
+        },
+        "kotlin-classes": {
+            "クラスの例": {
+                "title": "Ví dụ Class",
+                "description": "Định nghĩa class cơ bản"
+            },
+            "クラスインスタンス": {
+                "title": "Instance Class",
+                "description": "Tạo instance của class"
+            },
+            "プライマリコンストラクタ": {
+                "title": "Primary Constructor",
+                "description": "Primary constructor"
+            },
+            "初期化ブロック": {
+                "title": "Khối Init",
+                "description": "Khối init"
+            },
+            "メンバー関数": {
+                "title": "Hàm thành viên",
+                "description": "Hàm thành viên của class"
+            }
+        }
+    }
+}

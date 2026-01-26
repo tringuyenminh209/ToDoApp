@@ -80,10 +80,6 @@ export default function LearningPathsPage() {
     }
   }, [filterStatus, filterGoalType]);
 
-  useEffect(() => {
-    loadLearningPaths();
-  }, [loadLearningPaths]);
-
   const loadTemplates = useCallback(async () => {
     try {
       setIsTemplateLoading(true);
@@ -101,8 +97,25 @@ export default function LearningPathsPage() {
   }, []);
 
   useEffect(() => {
+    loadLearningPaths();
+  }, [loadLearningPaths]);
+
+  useEffect(() => {
     loadTemplates();
   }, [loadTemplates]);
+
+  // Reload data when locale changes
+  useEffect(() => {
+    const handleLocaleChange = () => {
+      loadLearningPaths();
+      loadTemplates();
+    };
+
+    window.addEventListener('localeChanged', handleLocaleChange);
+    return () => {
+      window.removeEventListener('localeChanged', handleLocaleChange);
+    };
+  }, [loadLearningPaths, loadTemplates]);
 
   const getStatusColor = (status: string) => {
     switch (status) {

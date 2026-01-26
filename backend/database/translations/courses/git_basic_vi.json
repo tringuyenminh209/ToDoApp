@@ -1,0 +1,97 @@
+{
+    "_comment": "Vietnamese translations for Git/GitHub Complete Course (GitCourseSeeder)",
+    "template": {
+        "title": "Git/GitHub完全コース",
+        "description": "初心者から中級者向けGit/GitHubコース。10週間でバージョン管理の基礎から、チーム開発、CI/CD、GitHub Actionsまで実践的に学習します。"
+    },
+    "template_translations": {
+        "Git/GitHub完全コース": {
+            "title": "Khóa học Git/GitHub Hoàn chỉnh",
+            "description": "Khóa học Git/GitHub dành cho người mới bắt đầu đến trung cấp. Học thực tế từ cơ bản quản lý phiên bản đến phát triển nhóm, CI/CD và GitHub Actions trong 10 tuần."
+        }
+    },
+    "milestones": {
+        "Git基礎": {
+            "title": "Cơ bản Git",
+            "description": "Cài đặt Git, lệnh cơ bản, commits, branches",
+            "deliverables": [
+                "Hoàn thành thiết lập môi trường Git",
+                "Hiểu các lệnh Git cơ bản",
+                "Tạo và quản lý local repositories",
+                "Tạo và chuyển đổi branches"
+            ]
+        },
+        "GitHub基礎": {
+            "title": "Cơ bản GitHub",
+            "description": "Tạo tài khoản GitHub, remote repositories, push/pull, pull requests",
+            "deliverables": [
+                "Tạo tài khoản GitHub",
+                "Thiết lập remote repositories",
+                "Push và pull thay đổi",
+                "Tạo và quản lý pull requests"
+            ]
+        },
+        "高度なGit操作": {
+            "title": "Thao tác Git Nâng cao",
+            "description": "Rebase, Cherry-pick, Stash, Reset, Revert, quản lý tag",
+            "deliverables": [
+                "Sử dụng rebase cho lịch sử sạch",
+                "Áp dụng cherry-pick",
+                "Sử dụng stash cho thay đổi tạm thời",
+                "Quản lý tags"
+            ]
+        },
+        "チーム開発とワークフロー": {
+            "title": "Phát triển Nhóm và Quy trình Làm việc",
+            "description": "Git Flow, GitHub Flow, cộng tác, .gitignore, cơ bản GitHub Actions",
+            "deliverables": [
+                "Hiểu Git Flow",
+                "Triển khai GitHub Flow",
+                "Cộng tác hiệu quả",
+                "Thiết lập GitHub Actions"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：Gitとは？環境設定": {
+            "title": "Tuần 1: Git là gì? Thiết lập Môi trường",
+            "description": "Khái niệm quản lý phiên bản, cài đặt Git, cấu hình ban đầu"
+        },
+        "第2週：基本コマンド（add, commit, log）": {
+            "title": "Tuần 2: Lệnh Cơ bản (add, commit, log)",
+            "description": "Cơ bản về staging, commits, xem lịch sử"
+        },
+        "第3週：ブランチとマージの基礎": {
+            "title": "Tuần 3: Cơ bản Branch và Merge",
+            "description": "Tạo branch, chuyển đổi, merge branches"
+        },
+        "第4週：GitHubとリモートリポジトリ": {
+            "title": "Tuần 4: GitHub và Remote Repositories",
+            "description": "Thiết lập tài khoản GitHub, tạo remote repositories"
+        },
+        "第5週：Push、Pull、Fetch": {
+            "title": "Tuần 5: Push, Pull, Fetch",
+            "description": "Đồng bộ local và remote repositories"
+        },
+        "第6週：プルリクエストとコードレビュー": {
+            "title": "Tuần 6: Pull Requests và Code Review",
+            "description": "Tạo pull requests, quy trình code review"
+        },
+        "第7週：Rebase、Stash、Reset": {
+            "title": "Tuần 7: Rebase, Stash, Reset",
+            "description": "Thao tác Git nâng cao cho quản lý lịch sử"
+        },
+        "第8週：タグ、Cherry-pick、高度なテクニック": {
+            "title": "Tuần 8: Tags, Cherry-pick, Kỹ thuật Nâng cao",
+            "description": "Quản lý tag, cherry-pick, kỹ thuật Git nâng cao"
+        },
+        "第9週：ブランチ戦略とチーム開発": {
+            "title": "Tuần 9: Chiến lược Branch và Phát triển Nhóm",
+            "description": "Git Flow, GitHub Flow, chiến lược cộng tác"
+        },
+        "第10週：.gitignore、GitHub Actions、ベストプラクティス": {
+            "title": "Tuần 10: .gitignore, GitHub Actions, Best Practices",
+            "description": "Cấu hình .gitignore, cơ bản GitHub Actions, best practices"
+        }
+    }
+}

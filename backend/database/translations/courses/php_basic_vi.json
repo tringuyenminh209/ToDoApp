@@ -1,0 +1,123 @@
+{
+    "_comment": "Vietnamese translations for PHP Basic Course (PhpBasicCourseSeeder)",
+    "template": {
+        "title": "PHP基礎演習",
+        "description": "初心者向けPHPプログラミング基礎コース。Webサーバー開発の基礎からデータベース接続、API開発まで段階的に学習します。"
+    },
+    "template_translations": {
+        "PHP基礎演習": {
+            "title": "Khóa học PHP Cơ bản",
+            "description": "Khóa học lập trình PHP cơ bản dành cho người mới bắt đầu. Học từng bước từ cơ bản phát triển web server đến kết nối cơ sở dữ liệu và phát triển API."
+        }
+    },
+    "milestones": {
+        "環境構築とPHPの基本": {
+            "title": "Thiết lập Môi trường và PHP Cơ bản",
+            "description": "Học từ thiết lập môi trường phát triển đến cú pháp PHP cơ bản",
+            "deliverables": [
+                "Hoàn tất thiết lập môi trường phát triển",
+                "Hiểu cú pháp PHP cơ bản",
+                "Thành thạo biến và xuất dữ liệu"
+            ]
+        },
+        "配列とフォーム処理": {
+            "title": "Mảng và Xử lý Form",
+            "description": "Mảng, mảng kết hợp, hằng số, include file, xử lý form",
+            "deliverables": [
+                "Hiểu mảng và mảng kết hợp",
+                "Sử dụng hằng số và include file",
+                "Xử lý dữ liệu GET và POST"
+            ]
+        },
+        "ファイルアップロードとセッション管理": {
+            "title": "Upload File và Quản lý Session",
+            "description": "Upload file, cookies, quản lý session",
+            "deliverables": [
+                "Có thể upload file",
+                "Có thể quản lý cookies và sessions",
+                "Có thể triển khai chức năng đăng nhập"
+            ]
+        },
+        "データベース接続基礎": {
+            "title": "Cơ bản Kết nối Cơ sở Dữ liệu",
+            "description": "Kết nối MySQL, thao tác SELECT, INSERT",
+            "deliverables": [
+                "Có thể kết nối cơ sở dữ liệu",
+                "Có thể lấy dữ liệu bằng câu lệnh SELECT",
+                "Có thể thêm dữ liệu bằng câu lệnh INSERT"
+            ]
+        },
+        "データベース操作応用": {
+            "title": "Thao tác Cơ sở Dữ liệu Nâng cao",
+            "description": "UPDATE, DELETE, xử lý JSON",
+            "deliverables": [
+                "Có thể cập nhật dữ liệu bằng câu lệnh UPDATE",
+                "Có thể xóa dữ liệu bằng câu lệnh DELETE",
+                "Có thể xử lý dữ liệu JSON"
+            ]
+        },
+        "API開発": {
+            "title": "Phát triển API",
+            "description": "Tạo RESTful API, tích hợp frontend",
+            "deliverables": [
+                "Có thể triển khai RESTful API",
+                "Có thể tích hợp với frontend",
+                "Có thể xử lý CORS và xác thực"
+            ]
+        }
+    },
+    "tasks": {
+        "第0回：環境構築": {
+            "title": "Buổi 0: Thiết lập Môi trường",
+            "description": "Thiết lập môi trường phát triển PHP (XAMPP, MAMP, hoặc Docker)"
+        },
+        "第1回：PHPの基本": {
+            "title": "Buổi 1: PHP Cơ bản",
+            "description": "Biến, kiểu dữ liệu, toán tử, thao tác chuỗi cơ bản"
+        },
+        "第2回：配列・連想配列": {
+            "title": "Buổi 2: Mảng và Mảng Kết hợp",
+            "description": "Khai báo mảng và mảng kết hợp, thao tác, xử lý vòng lặp"
+        },
+        "第3回：定数・別ファイル読み込み・フォーム処理①": {
+            "title": "Buổi 3: Hằng số, Include File, Xử lý Form (Phần 1)",
+            "description": "Định nghĩa hằng số, require/include, cơ bản $_GET/$_POST"
+        },
+        "第4回：フォーム処理②": {
+            "title": "Buổi 4: Xử lý Form (Phần 2)",
+            "description": "Xác thực form, xử lý lỗi, biện pháp bảo mật"
+        },
+        "第5回：ファイルアップロード": {
+            "title": "Buổi 5: Upload File",
+            "description": "Xử lý upload file sử dụng $_FILES, upload và hiển thị hình ảnh"
+        },
+        "第6回：クッキー・セッション": {
+            "title": "Buổi 6: Cookies và Sessions",
+            "description": "Thiết lập, lấy, xóa cookies và sessions, triển khai chức năng đăng nhập"
+        },
+        "第8回：DB接続（SELECT）": {
+            "title": "Buổi 8: Kết nối DB (SELECT)",
+            "description": "Kết nối cơ sở dữ liệu sử dụng PDO, lấy dữ liệu bằng câu lệnh SELECT"
+        },
+        "第9回：DB接続（SELECT②条件付き）": {
+            "title": "Buổi 9: Kết nối DB (SELECT có Điều kiện)",
+            "description": "Mệnh đề WHERE, placeholder, prepared statements"
+        },
+        "第10回：DB接続（INSERT）": {
+            "title": "Buổi 10: Kết nối DB (INSERT)",
+            "description": "Thêm dữ liệu bằng câu lệnh INSERT, đăng ký dữ liệu form vào cơ sở dữ liệu"
+        },
+        "第11回：UPDATE・DELETE・Extra": {
+            "title": "Buổi 11: UPDATE, DELETE và Extra",
+            "description": "Câu lệnh UPDATE, DELETE, xử lý transaction"
+        },
+        "第12回：JSON": {
+            "title": "Buổi 12: JSON",
+            "description": "Mã hóa/giải mã JSON, tạo JSON API"
+        },
+        "第13回～第14回：自作API": {
+            "title": "Buổi 13-14: Phát triển API Tùy chỉnh",
+            "description": "Thiết kế và triển khai RESTful API, tích hợp với frontend"
+        }
+    }
+}

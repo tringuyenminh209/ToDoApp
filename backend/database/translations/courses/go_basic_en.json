@@ -1,0 +1,123 @@
+{
+    "_comment": "English translations for Go Basic Course (GoCourseSeeder)",
+    "template": {
+        "title": "Go言語基礎コース",
+        "description": "初心者向けGo言語プログラミング基礎コース。15週間の実践的な課題を通じて、Goの基本構文からゴルーチンまで段階的に学習します。"
+    },
+    "template_translations": {
+        "Go言語基礎コース": {
+            "title": "Go Language Basic Course",
+            "description": "Beginner-friendly Go language programming fundamentals course. Learn step by step from Go basic syntax to goroutines through 15 weeks of practical exercises."
+        }
+    },
+    "milestones": {
+        "Go基礎": {
+            "title": "Go Fundamentals",
+            "description": "Development environment setup, variables, data types, operators, input processing",
+            "deliverables": [
+                "Complete Go development environment setup",
+                "Create Hello World program",
+                "Program using variables and types",
+                "Program that receives user input"
+            ]
+        },
+        "制御フローと関数": {
+            "title": "Control Flow and Functions",
+            "description": "if/else, switch, loops, function definition and usage",
+            "deliverables": [
+                "Program using conditional branching",
+                "Program using loops",
+                "Program defining functions"
+            ]
+        },
+        "データ構造": {
+            "title": "Data Structures",
+            "description": "Usage of arrays, slices, maps, structs",
+            "deliverables": [
+                "Program using arrays and slices",
+                "Program using maps",
+                "Program using structs"
+            ]
+        },
+        "OOPとインターフェース": {
+            "title": "OOP and Interfaces",
+            "description": "Methods, receivers, interfaces, error handling",
+            "deliverables": [
+                "Implement methods with receivers",
+                "Use interfaces",
+                "Handle errors properly"
+            ]
+        },
+        "並行処理と高度なトピック": {
+            "title": "Concurrency and Advanced Topics",
+            "description": "Goroutines, channels, concurrency patterns",
+            "deliverables": [
+                "Create goroutines",
+                "Use channels for communication",
+                "Implement concurrency patterns"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：環境設定とHello World": {
+            "title": "Week 1: Environment Setup and Hello World",
+            "description": "Go development environment setup and screen output using fmt.Println()"
+        },
+        "第2週：変数とデータ型": {
+            "title": "Week 2: Variables and Data Types",
+            "description": "Learning Go variable declaration, basic data types, type inference"
+        },
+        "第3週：演算子と式": {
+            "title": "Week 3: Operators and Expressions",
+            "description": "Learning arithmetic operators, comparison operators, logical operators"
+        },
+        "第4週：ユーザー入力とフォーマット": {
+            "title": "Week 4: User Input and Formatting",
+            "description": "Input using fmt.Scan() and formatted output using fmt.Printf()"
+        },
+        "第5週：If/ElseとSwitch": {
+            "title": "Week 5: If/Else and Switch",
+            "description": "Conditional branching with if/else and switch statements"
+        },
+        "第6週：ループ（for）": {
+            "title": "Week 6: Loops (for)",
+            "description": "for loop syntax and usage"
+        },
+        "第7週：関数": {
+            "title": "Week 7: Functions",
+            "description": "Function definition, parameters, return values, multiple return values"
+        },
+        "第8週：配列とスライス": {
+            "title": "Week 8: Arrays and Slices",
+            "description": "Array and slice operations, methods"
+        },
+        "第9週：マップ": {
+            "title": "Week 9: Maps",
+            "description": "Map operations and usage"
+        },
+        "第10週：構造体": {
+            "title": "Week 10: Structs",
+            "description": "Struct definition, field access, struct methods"
+        },
+        "第11週：メソッドとレシーバー": {
+            "title": "Week 11: Methods and Receivers",
+            "description": "Method definition with receivers, value receivers vs pointer receivers"
+        },
+        "第12週：インターフェース": {
+            "title": "Week 12: Interfaces",
+            "description": "Interface definition and implementation"
+        },
+        "第13週：エラーハンドリング": {
+            "title": "Week 13: Error Handling",
+            "description": "Error handling patterns, error interface, custom errors"
+        },
+        "第14週：ゴルーチンとチャネル": {
+            "title": "Week 14: Goroutines and Channels",
+            "description": "Goroutine creation, channel operations, concurrent programming"
+        },
+        "第15週：高度なトピックとベストプラクティス": {
+            "title": "Week 15: Advanced Topics and Best Practices",
+            "description": "Go packages, testing, best practices"
+        }
+    }
+}

@@ -1,0 +1,366 @@
+{
+    "_comment": "Vietnamese translations for JavaScript Cheat Code",
+    "language": {
+        "javascript": {
+            "description": "JavaScript là ngôn ngữ lập trình nhẹ, thông dịch. Tài liệu tham khảo đầy đủ cho người mới bắt đầu."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Cơ bản và giới thiệu JavaScript"
+        },
+        "javascript-conditionals": {
+            "title": "Điều kiện JavaScript",
+            "description": "Câu lệnh điều kiện và toán tử"
+        },
+        "javascript-functions": {
+            "title": "Hàm JavaScript",
+            "description": "Định nghĩa và sử dụng hàm"
+        },
+        "javascript-scope": {
+            "title": "Phạm vi JavaScript",
+            "description": "Phạm vi và khả năng hiển thị của biến"
+        },
+        "javascript-arrays": {
+            "title": "Mảng JavaScript",
+            "description": "Xử lý mảng và các phương thức"
+        },
+        "javascript-objects": {
+            "title": "Đối tượng JavaScript",
+            "description": "Tạo và thao tác đối tượng"
+        },
+        "javascript-loops": {
+            "title": "Vòng lặp JavaScript",
+            "description": "Cấu trúc vòng lặp"
+        },
+        "javascript-classes": {
+            "title": "Lớp JavaScript",
+            "description": "Lớp ES6 và OOP"
+        },
+        "javascript-promises": {
+            "title": "Promise JavaScript",
+            "description": "Lập trình bất đồng bộ dựa trên Promise"
+        },
+        "javascript-async-await": {
+            "title": "Async-Await JavaScript",
+            "description": "Cú pháp Async/await cho Promises"
+        },
+        "javascript-requests": {
+            "title": "Request JavaScript",
+            "description": "Yêu cầu HTTP và fetch API"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "Console": {
+                "title": "Console",
+                "description": "Các phương thức console để xuất"
+            },
+            "数値": {
+                "title": "Số",
+                "description": "Khai báo số"
+            },
+            "変数": {
+                "title": "Biến",
+                "description": "Khai báo biến với let, const, var"
+            },
+            "文字列": {
+                "title": "Chuỗi",
+                "description": "Khai báo chuỗi và thuộc tính"
+            },
+            "算術演算子": {
+                "title": "Toán tử số học",
+                "description": "Các toán tử số học cơ bản"
+            },
+            "コメント": {
+                "title": "Chú thích",
+                "description": "Cú pháp chú thích"
+            },
+            "代入演算子": {
+                "title": "Toán tử gán",
+                "description": "Các toán tử gán"
+            },
+            "文字列補間": {
+                "title": "Nội suy chuỗi",
+                "description": "Nối chuỗi và template literals"
+            },
+            "letキーワード": {
+                "title": "Từ khóa let",
+                "description": "Sử dụng từ khóa let"
+            },
+            "constキーワード": {
+                "title": "Từ khóa const",
+                "description": "Từ khóa const - binding bất biến"
+            }
+        },
+        "javascript-conditionals": {
+            "if文": {
+                "title": "Câu lệnh if",
+                "description": "Câu lệnh if cơ bản"
+            },
+            "三項演算子": {
+                "title": "Toán tử 3 ngôi",
+                "description": "Toán tử điều kiện 3 ngôi"
+            },
+            "論理演算子 ||": {
+                "title": "Toán tử logic ||",
+                "description": "Toán tử OR logic"
+            },
+            "論理演算子 &&": {
+                "title": "Toán tử logic &&",
+                "description": "Toán tử AND logic"
+            },
+            "比較演算子": {
+                "title": "Toán tử so sánh",
+                "description": "Các toán tử so sánh"
+            },
+            "論理演算子 !": {
+                "title": "Toán tử logic !",
+                "description": "Toán tử NOT logic"
+            },
+            "Null合体演算子 ??": {
+                "title": "Nullish Coalescing ??",
+                "description": "Toán tử nullish coalescing"
+            },
+            "else if": {
+                "title": "else if",
+                "description": "Chuỗi else if"
+            },
+            "switch文": {
+                "title": "Câu lệnh switch",
+                "description": "Câu lệnh switch"
+            },
+            "== vs ===": {
+                "title": "== vs ===",
+                "description": "So sánh toán tử bằng"
+            }
+        },
+        "javascript-functions": {
+            "関数": {
+                "title": "Hàm",
+                "description": "Khai báo hàm"
+            },
+            "無名関数": {
+                "title": "Hàm ẩn danh",
+                "description": "Hàm có tên vs hàm ẩn danh"
+            },
+            "アロー関数 - 2つの引数": {
+                "title": "Arrow Function - Hai tham số",
+                "description": "Arrow function với hai tham số"
+            },
+            "アロー関数 - 引数なし": {
+                "title": "Arrow Function - Không tham số",
+                "description": "Arrow function không có tham số"
+            },
+            "アロー関数 - 単一引数": {
+                "title": "Arrow Function - Một tham số",
+                "description": "Arrow function với một tham số"
+            },
+            "簡潔なアロー関数": {
+                "title": "Arrow Function ngắn gọn",
+                "description": "Cú pháp arrow function ngắn gọn"
+            },
+            "returnキーワード": {
+                "title": "Từ khóa return",
+                "description": "Tầm quan trọng của từ khóa return"
+            },
+            "関数の呼び出し": {
+                "title": "Gọi hàm",
+                "description": "Gọi hàm"
+            },
+            "関数式": {
+                "title": "Biểu thức hàm",
+                "description": "Biểu thức hàm"
+            },
+            "関数パラメータ": {
+                "title": "Tham số hàm",
+                "description": "Tham số hàm"
+            },
+            "関数宣言": {
+                "title": "Khai báo hàm",
+                "description": "Cú pháp khai báo hàm"
+            }
+        },
+        "javascript-scope": {
+            "スコープ": {
+                "title": "Phạm vi",
+                "description": "Phạm vi hàm"
+            },
+            "ブロックスコープ変数": {
+                "title": "Biến phạm vi block",
+                "description": "Phạm vi block với const"
+            },
+            "グローバル変数": {
+                "title": "Biến toàn cục",
+                "description": "Phạm vi toàn cục"
+            },
+            "let vs var": {
+                "title": "let vs var",
+                "description": "Khác biệt phạm vi giữa let và var"
+            },
+            "クロージャ付きループ": {
+                "title": "Vòng lặp với Closure",
+                "description": "Hành vi closure với var vs let"
+            }
+        },
+        "javascript-arrays": {
+            "配列": {
+                "title": "Mảng",
+                "description": "Khai báo mảng"
+            },
+            "プロパティ .length": {
+                "title": "Thuộc tính .length",
+                "description": "Thuộc tính length của mảng"
+            },
+            "要素へのアクセス": {
+                "title": "Truy cập phần tử",
+                "description": "Truy cập phần tử mảng theo chỉ số"
+            },
+            ".push() メソッド": {
+                "title": "Phương thức .push()",
+                "description": "Thêm phần tử vào cuối mảng"
+            },
+            ".pop() メソッド": {
+                "title": "Phương thức .pop()",
+                "description": "Xóa phần tử cuối khỏi mảng"
+            },
+            ".shift() メソッド": {
+                "title": "Phương thức .shift()",
+                "description": "Xóa phần tử đầu khỏi mảng"
+            },
+            ".unshift() メソッド": {
+                "title": "Phương thức .unshift()",
+                "description": "Thêm phần tử vào đầu mảng"
+            },
+            ".slice() メソッド": {
+                "title": "Phương thức .slice()",
+                "description": "Trích xuất một phần của mảng"
+            },
+            ".splice() メソッド": {
+                "title": "Phương thức .splice()",
+                "description": "Xóa và chèn phần tử"
+            },
+            ".forEach() メソッド": {
+                "title": "Phương thức .forEach()",
+                "description": "Lặp qua các phần tử mảng"
+            },
+            ".map() メソッド": {
+                "title": "Phương thức .map()",
+                "description": "Biến đổi các phần tử mảng"
+            },
+            ".filter() メソッド": {
+                "title": "Phương thức .filter()",
+                "description": "Lọc các phần tử mảng"
+            },
+            ".reduce() メソッド": {
+                "title": "Phương thức .reduce()",
+                "description": "Thu gọn mảng thành một giá trị"
+            }
+        },
+        "javascript-objects": {
+            "オブジェクトリテラル": {
+                "title": "Object Literal",
+                "description": "Cú pháp object literal"
+            },
+            "プロパティへのアクセス": {
+                "title": "Truy cập thuộc tính",
+                "description": "Truy cập thuộc tính đối tượng"
+            },
+            "プロパティの追加": {
+                "title": "Thêm thuộc tính",
+                "description": "Thêm thuộc tính vào đối tượng"
+            },
+            "オブジェクトメソッド": {
+                "title": "Phương thức đối tượng",
+                "description": "Phương thức đối tượng"
+            },
+            "Object.keys()": {
+                "title": "Object.keys()",
+                "description": "Lấy các key của đối tượng"
+            },
+            "Object.values()": {
+                "title": "Object.values()",
+                "description": "Lấy các giá trị của đối tượng"
+            }
+        },
+        "javascript-loops": {
+            "forループ": {
+                "title": "Vòng lặp for",
+                "description": "Vòng lặp for cơ bản"
+            },
+            "for...ofループ": {
+                "title": "Vòng lặp for...of",
+                "description": "Vòng lặp for...of cho iterables"
+            },
+            "for...inループ": {
+                "title": "Vòng lặp for...in",
+                "description": "Vòng lặp for...in cho objects"
+            },
+            "whileループ": {
+                "title": "Vòng lặp while",
+                "description": "Vòng lặp while"
+            },
+            "do...whileループ": {
+                "title": "Vòng lặp do...while",
+                "description": "Vòng lặp do...while"
+            }
+        },
+        "javascript-classes": {
+            "クラス宣言": {
+                "title": "Khai báo lớp",
+                "description": "Khai báo và khởi tạo lớp"
+            },
+            "クラス継承": {
+                "title": "Kế thừa lớp",
+                "description": "Kế thừa lớp với extends"
+            }
+        },
+        "javascript-promises": {
+            "Promiseの作成": {
+                "title": "Tạo Promise",
+                "description": "Tạo và sử dụng Promises"
+            },
+            ".then() メソッド": {
+                "title": "Phương thức .then()",
+                "description": "Phương thức then của Promise"
+            },
+            ".catch() メソッド": {
+                "title": "Phương thức .catch()",
+                "description": "Phương thức catch của Promise"
+            },
+            "Promise.all()": {
+                "title": "Promise.all()",
+                "description": "Promise.all cho nhiều Promises"
+            }
+        },
+        "javascript-async-await": {
+            "Async関数": {
+                "title": "Hàm Async",
+                "description": "Cơ bản Async/await"
+            },
+            "エラーハンドリング": {
+                "title": "Xử lý lỗi",
+                "description": "Xử lý lỗi try-catch"
+            }
+        },
+        "javascript-requests": {
+            "JSON": {
+                "title": "JSON",
+                "description": "Cú pháp đối tượng JSON"
+            },
+            "fetch API": {
+                "title": "fetch API",
+                "description": "Yêu cầu POST với Fetch API"
+            },
+            "JSONフォーマット": {
+                "title": "Định dạng JSON",
+                "description": "Fetch API với phản hồi JSON"
+            },
+            "async await構文": {
+                "title": "Cú pháp async await",
+                "description": "Fetch API với async/await"
+            }
+        }
+    }
+}

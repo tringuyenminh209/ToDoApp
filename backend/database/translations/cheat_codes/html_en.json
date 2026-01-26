@@ -1,0 +1,188 @@
+{
+    "_comment": "English translations for HTML Cheat Code",
+    "language": {
+        "html": {
+            "description": "HTML (HyperText Markup Language) is the standard markup language for creating web pages and web applications."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "HTML basics and essential tags"
+        },
+        "html5-tags": {
+            "title": "HTML5 Tags",
+            "description": "Semantic HTML5 elements"
+        },
+        "html-tables": {
+            "title": "HTML Tables",
+            "description": "Table structure and organization"
+        },
+        "html-lists": {
+            "title": "HTML Lists",
+            "description": "Ordered, unordered, and definition lists"
+        },
+        "html-forms": {
+            "title": "HTML Forms",
+            "description": "Form elements and input types"
+        },
+        "html-meta-tags": {
+            "title": "HTML Meta Tags",
+            "description": "Metadata and SEO tags"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "Hello HTML": {
+                "title": "Hello HTML",
+                "description": "Basic HTML5 boilerplate structure"
+            },
+            "コメント": {
+                "title": "Comments",
+                "description": "Single-line and multi-line comment syntax"
+            },
+            "段落": {
+                "title": "Paragraphs",
+                "description": "Text paragraph elements"
+            },
+            "HTMLリンク": {
+                "title": "HTML Links",
+                "description": "Various link types including email, phone, and SMS"
+            },
+            "画像タグ": {
+                "title": "Image Tag",
+                "description": "Image element with lazy loading and alt attributes"
+            },
+            "テキストフォーマット": {
+                "title": "Text Formatting",
+                "description": "Various text emphasis and formatting tags"
+            },
+            "見出し": {
+                "title": "Headings",
+                "description": "6 levels of heading hierarchy (H1-H6)"
+            },
+            "セクション分割": {
+                "title": "Section Divisions",
+                "description": "Container elements for organizing page content: div, span, p, br, hr"
+            },
+            "インラインフレーム": {
+                "title": "Inline Frame",
+                "description": "Embedded content within web page"
+            },
+            "HTML内のJavaScript": {
+                "title": "JavaScript in HTML",
+                "description": "Embedded script tag for JavaScript code"
+            },
+            "HTML内のCSS": {
+                "title": "CSS in HTML",
+                "description": "Embedded stylesheet for CSS styling"
+            }
+        },
+        "html5-tags": {
+            "ドキュメント構造": {
+                "title": "Document Structure",
+                "description": "Semantic page layout elements: header, nav, main, footer"
+            },
+            "ヘッダーナビゲーション": {
+                "title": "Header Navigation",
+                "description": "Navigation menu within header element"
+            },
+            "HTML5動画": {
+                "title": "HTML5 Video",
+                "description": "Video embedding with controls and fallback message"
+            },
+            "HTML5音声": {
+                "title": "HTML5 Audio",
+                "description": "Audio or audio stream embedding with controls"
+            },
+            "HTML5 Ruby": {
+                "title": "HTML5 Ruby",
+                "description": "Ruby annotation for pronunciation guide (e.g., Chinese pronunciation)"
+            },
+            "HTML5 Progress": {
+                "title": "HTML5 Progress",
+                "description": "Progress bar visualization element"
+            },
+            "HTML5 Mark": {
+                "title": "HTML5 Mark",
+                "description": "Highlighted text element for emphasis"
+            }
+        },
+        "html-tables": {
+            "テーブルの例": {
+                "title": "Table Example",
+                "description": "Basic table with header and body sections"
+            }
+        },
+        "html-lists": {
+            "順序なしリスト": {
+                "title": "Unordered List",
+                "description": "Bulleted list"
+            },
+            "順序付きリスト": {
+                "title": "Ordered List",
+                "description": "Numbered list"
+            },
+            "定義リスト": {
+                "title": "Definition List",
+                "description": "Terms and their definitions"
+            }
+        },
+        "html-forms": {
+            "フォームタグ": {
+                "title": "Form Tag",
+                "description": "Complete form collecting email, password, and checkbox inputs"
+            },
+            "ラベルタグ": {
+                "title": "Label Tag",
+                "description": "Nested and referenced label patterns for form inputs"
+            },
+            "Textarea": {
+                "title": "Textarea",
+                "description": "Multi-line text input control"
+            },
+            "ラジオボタン": {
+                "title": "Radio Buttons",
+                "description": "Select exactly one option from a group"
+            },
+            "チェックボックス": {
+                "title": "Checkboxes",
+                "description": "Select one or more options"
+            },
+            "Selectタグ": {
+                "title": "Select Tag",
+                "description": "Dropdown list of options"
+            },
+            "Fieldsetタグ": {
+                "title": "Fieldset Tag",
+                "description": "Grouped form elements with legend title"
+            },
+            "Datalistタグ": {
+                "title": "Datalist Tag",
+                "description": "HTML5 predefined options for input field with autocomplete"
+            },
+            "送信とリセットボタン": {
+                "title": "Submit and Reset Buttons",
+                "description": "Form submission and reset controls"
+            }
+        },
+        "html-meta-tags": {
+            "メタタグ": {
+                "title": "Meta Tags",
+                "description": "Basic metadata including charset, title, URL, description, and image"
+            },
+            "Open Graph": {
+                "title": "Open Graph",
+                "description": "Social media metadata for Facebook, Instagram, Pinterest, LinkedIn"
+            },
+            "Twitter Cards": {
+                "title": "Twitter Cards",
+                "description": "Twitter-specific metadata for shared content cards"
+            },
+            "ジオタギング": {
+                "title": "Geotagging",
+                "description": "Geographic location metadata for content"
+            }
+        }
+    }
+}

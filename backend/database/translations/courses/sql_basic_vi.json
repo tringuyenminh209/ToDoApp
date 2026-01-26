@@ -1,0 +1,105 @@
+{
+    "_comment": "Vietnamese translations for SQL Basic Course (SqlCourseSeeder)",
+    "template": {
+        "title": "SQL/データベース基礎コース",
+        "description": "初心者向けSQL/データベース完全コース。12週間でデータベースの基礎から、SQL操作、データベース設計、最適化まで実践的に学習します。"
+    },
+    "template_translations": {
+        "SQL/データベース基礎コース": {
+            "title": "Khóa học SQL/Cơ sở Dữ liệu Cơ bản",
+            "description": "Khóa học SQL/cơ sở dữ liệu hoàn chỉnh dành cho người mới bắt đầu. Học thực hành từ cơ bản cơ sở dữ liệu đến thao tác SQL, thiết kế cơ sở dữ liệu và tối ưu hóa trong 12 tuần."
+        }
+    },
+    "milestones": {
+        "SQL基礎とCRUD操作": {
+            "title": "Cơ bản SQL và Thao tác CRUD",
+            "description": "Khái niệm cơ sở dữ liệu, tạo bảng, thao tác CRUD cơ bản (Tạo, Đọc, Cập nhật, Xóa)",
+            "deliverables": [
+                "Tạo cơ sở dữ liệu và bảng",
+                "Chèn dữ liệu bằng câu lệnh INSERT",
+                "Lấy dữ liệu bằng câu lệnh SELECT",
+                "Cập nhật và xóa dữ liệu bằng câu lệnh UPDATE/DELETE"
+            ]
+        },
+        "データ取得とJOIN": {
+            "title": "Lấy Dữ liệu và JOIN",
+            "description": "Mệnh đề WHERE, ORDER BY, GROUP BY, hàm tổng hợp, kết hợp bảng bằng JOIN",
+            "deliverables": [
+                "Chỉ định điều kiện bằng mệnh đề WHERE",
+                "Sắp xếp dữ liệu bằng ORDER BY và GROUP BY",
+                "Lấy thống kê bằng hàm tổng hợp",
+                "Kết hợp nhiều bảng bằng JOIN"
+            ]
+        },
+        "高度なSQL": {
+            "title": "SQL Nâng cao",
+            "description": "Truy vấn con, CTE, hàm cửa sổ, giao dịch, chỉ mục",
+            "deliverables": [
+                "Viết điều kiện phức tạp bằng truy vấn con",
+                "Tạo truy vấn dễ đọc bằng CTE",
+                "Phân tích bằng hàm cửa sổ",
+                "Đảm bảo tính toàn vẹn dữ liệu bằng giao dịch"
+            ]
+        },
+        "データベース設計と最適化": {
+            "title": "Thiết kế và Tối ưu hóa Cơ sở Dữ liệu",
+            "description": "Chuẩn hóa, ràng buộc, view, stored procedure, trigger",
+            "deliverables": [
+                "Thiết kế cơ sở dữ liệu đã chuẩn hóa",
+                "Đơn giản hóa truy vấn phức tạp bằng view",
+                "Tái sử dụng xử lý bằng stored procedure",
+                "Triển khai xử lý tự động bằng trigger"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：データベース基礎とセットアップ": {
+            "title": "Tuần 1: Cơ bản Cơ sở Dữ liệu và Thiết lập",
+            "description": "Khái niệm cơ sở dữ liệu, RDBMS, cài đặt MySQL và thao tác cơ bản"
+        },
+        "第2週：テーブル作成とデータ型": {
+            "title": "Tuần 2: Tạo Bảng và Kiểu Dữ liệu",
+            "description": "CREATE TABLE, kiểu dữ liệu, ràng buộc, câu lệnh INSERT"
+        },
+        "第3週：SELECT、UPDATE、DELETE": {
+            "title": "Tuần 3: SELECT, UPDATE, DELETE",
+            "description": "Thao tác cơ bản để lấy, cập nhật và xóa dữ liệu"
+        },
+        "第4週：WHERE句と条件指定": {
+            "title": "Tuần 4: Mệnh đề WHERE và Chỉ định Điều kiện",
+            "description": "Mệnh đề WHERE, toán tử so sánh, toán tử logic, LIKE, IN, BETWEEN"
+        },
+        "第5週：ORDER BY、GROUP BY、集計関数": {
+            "title": "Tuần 5: ORDER BY, GROUP BY, Hàm Tổng hợp",
+            "description": "Sắp xếp dữ liệu, nhóm, COUNT/SUM/AVG/MAX/MIN"
+        },
+        "第6週：JOIN（テーブル結合）": {
+            "title": "Tuần 6: JOIN (Kết hợp Bảng)",
+            "description": "INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN, tự kết hợp"
+        },
+        "第7週：サブクエリとCTE": {
+            "title": "Tuần 7: Truy vấn Con và CTE",
+            "description": "Truy vấn con (truy vấn lồng nhau), mệnh đề WITH (CTE)"
+        },
+        "第8週：ウィンドウ関数と高度な集計": {
+            "title": "Tuần 8: Hàm Cửa sổ và Tổng hợp Nâng cao",
+            "description": "ROW_NUMBER, RANK, LEAD/LAG, tổng hợp tích lũy"
+        },
+        "第9週：トランザクションとインデックス": {
+            "title": "Tuần 9: Giao dịch và Chỉ mục",
+            "description": "Thuộc tính ACID, COMMIT/ROLLBACK, tạo và tối ưu chỉ mục"
+        },
+        "第10週：データベース設計と正規化": {
+            "title": "Tuần 10: Thiết kế Cơ sở Dữ liệu và Chuẩn hóa",
+            "description": "Sơ đồ ER, chuẩn hóa (1NF đến 3NF), ràng buộc"
+        },
+        "第11週：ビューとストアドプロシージャ": {
+            "title": "Tuần 11: View và Stored Procedure",
+            "description": "VIEW, STORED PROCEDURE, FUNCTION"
+        },
+        "第12週：トリガーとベストプラクティス": {
+            "title": "Tuần 12: Trigger và Thực hành Tốt nhất",
+            "description": "TRIGGER, sao lưu, bảo mật, tinh chỉnh hiệu suất"
+        }
+    }
+}

@@ -1,0 +1,132 @@
+{
+    "_comment": "English translations for Laravel Basic Course (LaravelCourseSeeder)",
+    "template": {
+        "title": "Laravel基礎演習",
+        "description": "初心者向けLaravelフレームワーク基礎コース。ルーティング、Bladeテンプレート、Eloquent ORM、API開発まで段階的に学習します。"
+    },
+    "template_translations": {
+        "Laravel基礎演習": {
+            "title": "Laravel Basic Course",
+            "description": "Beginner-friendly Laravel framework fundamentals course. Learn step by step from routing, Blade templates, Eloquent ORM to API development."
+        }
+    },
+    "milestones": {
+        "環境構築とLaravel基礎": {
+            "title": "Environment Setup and Laravel Fundamentals",
+            "description": "Development environment setup, Laravel basic structure, routing, controllers",
+            "deliverables": [
+                "Complete development environment setup",
+                "Create Laravel project",
+                "Understand routing and controllers"
+            ]
+        },
+        "Bladeテンプレートとビュー": {
+            "title": "Blade Templates and Views",
+            "description": "Usage of Blade template engine, layouts, components",
+            "deliverables": [
+                "Create views using Blade",
+                "Use layouts and components",
+                "Pass data from controllers to views"
+            ]
+        },
+        "リクエストとバリデーション": {
+            "title": "Requests and Validation",
+            "description": "Form request processing, validation rules, error messages",
+            "deliverables": [
+                "Process form requests",
+                "Implement validation",
+                "Display error messages"
+            ]
+        },
+        "データベース操作基礎": {
+            "title": "Database Operations Fundamentals",
+            "description": "Migrations, Eloquent models, seeders, SELECT operations",
+            "deliverables": [
+                "Create and run migrations",
+                "Use Eloquent models",
+                "Perform SELECT operations"
+            ]
+        },
+        "データベース操作応用": {
+            "title": "Database Operations Advanced",
+            "description": "Conditional SELECT, INSERT, UPDATE, DELETE operations",
+            "deliverables": [
+                "Perform conditional queries",
+                "Insert data",
+                "Update and delete data"
+            ]
+        },
+        "API開発とファイルアップロード": {
+            "title": "API Development and File Upload",
+            "description": "RESTful API creation, file upload processing",
+            "deliverables": [
+                "Create RESTful API",
+                "Handle file uploads",
+                "Return JSON responses"
+            ]
+        },
+        "総合問題": {
+            "title": "Comprehensive Project",
+            "description": "Comprehensive review and application of learned content",
+            "deliverables": [
+                "Complete comprehensive project",
+                "Apply all learned concepts",
+                "Build a full Laravel application"
+            ]
+        }
+    },
+    "tasks": {
+        "第0回：環境構築": {
+            "title": "Session 0: Environment Setup",
+            "description": "Composer, Node.js, Laravel installation and project creation"
+        },
+        "第1回：Laravelの説明・ルーティングとコントローラ": {
+            "title": "Session 1: Laravel Overview, Routing and Controllers",
+            "description": "Laravel basic concepts, routing, controller creation"
+        },
+        "第2回：Bladeテンプレート": {
+            "title": "Session 2: Blade Templates",
+            "description": "Blade basic syntax, variables, directives, layouts"
+        },
+        "第3回：ビュー作成・ルーティング": {
+            "title": "Session 3: View Creation and Routing",
+            "description": "Create multiple views, advanced routing, pass data to views"
+        },
+        "第4回：リクエスト・バリデーション": {
+            "title": "Session 4: Requests and Validation",
+            "description": "Form request processing, validation rules"
+        },
+        "第5回：マイグレーション、モデル、シーダー": {
+            "title": "Session 5: Migrations, Models, Seeders",
+            "description": "Database migrations, Eloquent models, seeders"
+        },
+        "第6回：DB処理（SELECT）": {
+            "title": "Session 6: Database Operations (SELECT)",
+            "description": "SELECT operations using Eloquent"
+        },
+        "第7回：DB処理（条件付きSELECT、INSERT）": {
+            "title": "Session 7: Database Operations (Conditional SELECT, INSERT)",
+            "description": "Conditional queries and INSERT operations"
+        },
+        "第8回：DB処理（UPDATE）": {
+            "title": "Session 8: Database Operations (UPDATE)",
+            "description": "UPDATE operations using Eloquent"
+        },
+        "第9回：DB処理（DELETE）": {
+            "title": "Session 9: Database Operations (DELETE)",
+            "description": "DELETE operations using Eloquent"
+        },
+        "第10回：API": {
+            "title": "Session 10: API",
+            "description": "RESTful API development"
+        },
+        "第11回：ファイルアップロード": {
+            "title": "Session 11: File Upload",
+            "description": "File upload handling in Laravel"
+        },
+        "第12回：総合問題": {
+            "title": "Session 12: Comprehensive Project",
+            "description": "Comprehensive project using all learned concepts"
+        }
+    }
+}

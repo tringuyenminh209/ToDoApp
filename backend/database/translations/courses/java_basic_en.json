@@ -1,0 +1,205 @@
+{
+    "_comment": "English translations for Java Basic Course (JavaBasicCourseSeeder)",
+    "template": {
+        "title": "Java基礎演習",
+        "description": "初心者向けJavaプログラミング基礎コース。30回の実践的な課題を通じて、Javaの基本構文からアルゴリズムまで段階的に学習します。"
+    },
+    "template_translations": {
+        "Java基礎演習": {
+            "title": "Java Basic Course",
+            "description": "Beginner-friendly Java programming fundamentals course. Learn step by step from Java basic syntax to algorithms through 30 practical exercises."
+        }
+    },
+    "milestones": {
+        "環境設定と基本構文": {
+            "title": "Environment Setup and Basic Syntax",
+            "description": "Learn from development environment setup to variables, expressions, and string input",
+            "deliverables": [
+                "Complete development environment setup",
+                "Create Hello World program",
+                "Calculation program using variables and expressions",
+                "Program that receives keyboard input"
+            ]
+        },
+        "条件分岐とループ基礎": {
+            "title": "Conditional Statements and Loop Basics",
+            "description": "if statements, while statements, nesting and indentation",
+            "deliverables": [
+                "Conditional branching program using if statements",
+                "Loop program using while statements",
+                "Understanding nested loops"
+            ]
+        },
+        "チャレンジ課題と復習": {
+            "title": "Challenge Exercises and Review",
+            "description": "Comprehensive review and application of previously learned content",
+            "deliverables": [
+                "Complete Challenge Exercise 1",
+                "Practice Class Test 1",
+                "Complete Challenge Exercise 2"
+            ]
+        },
+        "高度な条件分岐とループ": {
+            "title": "Advanced Conditional Statements and Loops",
+            "description": "if-else if, logical operators, do-while, for statements, arrays",
+            "deliverables": [
+                "Master if-else if statements",
+                "Understand logical operators and boolean type",
+                "Use do-while, break, continue",
+                "Manipulate arrays",
+                "Loop processing using for statements"
+            ]
+        },
+        "チャレンジ課題と中間テスト": {
+            "title": "Challenge Exercises and Midterm Test",
+            "description": "Midterm review and test",
+            "deliverables": [
+                "Complete Challenge Exercise 3",
+                "Practice Class Test 2",
+                "Complete Challenge Exercise 4"
+            ]
+        },
+        "高度なプログラミング技法": {
+            "title": "Advanced Programming Techniques",
+            "description": "Nested loops, multidimensional arrays, methods, switch statements, string manipulation, bitwise operations",
+            "deliverables": [
+                "Master nested loops and multidimensional arrays",
+                "Define and use methods",
+                "Branching processing using switch statements",
+                "Understand string manipulation",
+                "Understand bitwise and shift operations"
+            ]
+        },
+        "アルゴリズムと実践プロジェクト": {
+            "title": "Algorithms and Practical Projects",
+            "description": "Sorting algorithms, practical programming exercises",
+            "deliverables": [
+                "Implement bubble sort and merge sort",
+                "Implement quick sort",
+                "Complete Reversi game"
+            ]
+        }
+    },
+    "tasks": {
+        "第1回：環境設定と画面出力": {
+            "title": "Session 1: Environment Setup and Screen Output",
+            "description": "Java development environment setup and screen output using System.out.println()"
+        },
+        "第2回：変数と式①（int型①）": {
+            "title": "Session 2: Variables and Expressions 1 (int type 1)",
+            "description": "int type variable declaration, assignment, four arithmetic operations, modulo operation"
+        },
+        "第3回：変数と式②（int型②）": {
+            "title": "Session 3: Variables and Expressions 2 (int type 2)",
+            "description": "Compound assignment operators, increment/decrement operators"
+        },
+        "第4回：String型とキーボード入力": {
+            "title": "Session 4: String Type and Keyboard Input",
+            "description": "String type, Scanner class, keyboard input"
+        },
+        "第5回：if文①": {
+            "title": "Session 5: if Statement 1",
+            "description": "Conditional branching using if statements, comparison operators"
+        },
+        "第6回：while文①": {
+            "title": "Session 6: while Statement 1",
+            "description": "Loop processing using while statements"
+        },
+        "第7回：ネストとインデント": {
+            "title": "Session 7: Nesting and Indentation",
+            "description": "Nested if statements, nested loops, importance of indentation"
+        },
+        "第8回：チャレンジ課題①": {
+            "title": "Session 8: Challenge Exercise 1",
+            "description": "Comprehensive review exercise covering Sessions 1-7"
+        },
+        "第9回：クラス替えテスト①（練習問題）": {
+            "title": "Session 9: Class Test 1 (Practice Problems)",
+            "description": "Test practice to check understanding of Sessions 1-8"
+        },
+        "第10回：チャレンジ課題②": {
+            "title": "Session 10: Challenge Exercise 2",
+            "description": "More advanced comprehensive exercise"
+        },
+        "第11回：変数と式③（整数型と実数型）": {
+            "title": "Session 11: Variables and Expressions 3 (Integer and Real Types)",
+            "description": "Usage of long type, double type, float type"
+        },
+        "第12回：if文②（if～else if）": {
+            "title": "Session 12: if Statement 2 (if-else if)",
+            "description": "if-else if-else syntax, multiple conditional branches"
+        },
+        "第13回：if文③（論理演算子、boolean）": {
+            "title": "Session 13: if Statement 3 (Logical Operators, boolean)",
+            "description": "&& (AND), || (OR), ! (NOT), boolean type"
+        },
+        "第14回：while文②（do～while、break、continue）": {
+            "title": "Session 14: while Statement 2 (do-while, break, continue)",
+            "description": "do-while statements, break and continue statements"
+        },
+        "第15回：配列": {
+            "title": "Session 15: Arrays",
+            "description": "Array declaration, initialization, element access"
+        },
+        "第16回：for文①（for文の基本と配列）": {
+            "title": "Session 16: for Statement 1 (for Statement Basics and Arrays)",
+            "description": "Basic for statement syntax, using for with arrays"
+        },
+        "第17回：for文②（ループ処理の流れ、スコープ）": {
+            "title": "Session 17: for Statement 2 (Loop Flow, Scope)",
+            "description": "Loop processing flow, variable scope"
+        },
+        "第18回：チャレンジ課題③": {
+            "title": "Session 18: Challenge Exercise 3",
+            "description": "Comprehensive review exercise covering Sessions 11-17"
+        },
+        "第19回：クラス替えテスト②（練習問題）": {
+            "title": "Session 19: Class Test 2 (Practice Problems)",
+            "description": "Test practice to check understanding of Sessions 11-18"
+        },
+        "第20回：チャレンジ課題④": {
+            "title": "Session 20: Challenge Exercise 4",
+            "description": "More advanced comprehensive exercise"
+        },
+        "第21回：多重ループと多次元配列": {
+            "title": "Session 21: Nested Loops and Multidimensional Arrays",
+            "description": "Nested for statements, 2D arrays, 3D arrays"
+        },
+        "第22回：メソッド①": {
+            "title": "Session 22: Methods 1",
+            "description": "Method definition, parameters, return values"
+        },
+        "第23回：メソッド②": {
+            "title": "Session 23: Methods 2",
+            "description": "Method overloading, recursive calls"
+        },
+        "第24回：switch文": {
+            "title": "Session 24: switch Statement",
+            "description": "switch statement syntax, case and break"
+        },
+        "第25回：文字と文字列": {
+            "title": "Session 25: Characters and Strings",
+            "description": "char type, String class methods, string manipulation"
+        },
+        "第26回：ビット演算とシフト演算": {
+            "title": "Session 26: Bitwise and Shift Operations",
+            "description": "Bitwise operators (&, |, ^, ~), shift operators (<<, >>, >>>)"
+        },
+        "第27回：プログラミング演習①（バブルソート・マージソート）": {
+            "title": "Session 27: Programming Exercise 1 (Bubble Sort, Merge Sort)",
+            "description": "Understand and implement bubble sort and merge sort algorithms"
+        },
+        "第28回：プログラミング演習②（クイックソートに挑戦！）": {
+            "title": "Session 28: Programming Exercise 2 (Challenge Quick Sort!)",
+            "description": "Understand and implement quick sort algorithm"
+        },
+        "第29回：プログラミング演習（総合練習）": {
+            "title": "Session 29: Programming Exercise (Comprehensive Practice)",
+            "description": "Comprehensive programming practice"
+        },
+        "第30回：プログラミング演習③（リバーシ！）": {
+            "title": "Session 30: Programming Exercise 3 (Reversi!)",
+            "description": "Complete Reversi game implementation"
+        }
+    }
+}

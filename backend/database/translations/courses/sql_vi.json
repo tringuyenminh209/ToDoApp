@@ -1,0 +1,101 @@
+{
+    "_comment": "Vietnamese translations for SQL Course (SqlCourseSeeder)",
+    "template_translations": {
+        "SQL/データベース基礎コース": {
+            "title": "Khóa học cơ bản SQL/Database",
+            "description": "Khóa học SQL/Database hoàn chỉnh cho người mới bắt đầu. Học từ cơ bản database đến thao tác SQL, thiết kế và tối ưu hóa database trong 12 tuần."
+        }
+    },
+    "milestones": {
+        "SQL基礎とCRUD操作": {
+            "title": "Cơ bản SQL và thao tác CRUD",
+            "description": "Khái niệm database, tạo bảng, thao tác CRUD cơ bản (Create, Read, Update, Delete)",
+            "deliverables": [
+                "Tạo database và bảng",
+                "Chèn dữ liệu với INSERT",
+                "Lấy dữ liệu với SELECT",
+                "Cập nhật/xóa dữ liệu với UPDATE/DELETE"
+            ]
+        },
+        "データ取得とJOIN": {
+            "title": "Lấy dữ liệu và JOIN",
+            "description": "Mệnh đề WHERE, ORDER BY, GROUP BY, hàm tổng hợp, JOIN kết hợp bảng",
+            "deliverables": [
+                "Lọc với WHERE",
+                "Sắp xếp dữ liệu với ORDER BY, GROUP BY",
+                "Lấy thống kê với hàm tổng hợp",
+                "Kết hợp nhiều bảng với JOIN"
+            ]
+        },
+        "高度なSQL": {
+            "title": "SQL nâng cao",
+            "description": "Subquery, CTE, hàm window, transaction, index",
+            "deliverables": [
+                "Viết điều kiện phức tạp với subquery",
+                "Tạo câu truy vấn dễ đọc với CTE",
+                "Phân tích với hàm window",
+                "Đảm bảo tính toàn vẹn dữ liệu với transaction"
+            ]
+        },
+        "データベース設計と最適化": {
+            "title": "Thiết kế và tối ưu hóa Database",
+            "description": "Chuẩn hóa, ràng buộc, view, stored procedure, trigger",
+            "deliverables": [
+                "Thiết kế database chuẩn hóa",
+                "Đơn giản hóa câu truy vấn phức tạp với view",
+                "Tái sử dụng logic với stored procedure",
+                "Tự động hóa với trigger"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：データベース基礎とセットアップ": {
+            "title": "Tuần 1: Cơ bản Database và cài đặt",
+            "description": "Khái niệm database, RDBMS, cài đặt MySQL và thao tác cơ bản"
+        },
+        "第2週：テーブル作成とデータ型": {
+            "title": "Tuần 2: Tạo bảng và kiểu dữ liệu",
+            "description": "CREATE TABLE, kiểu dữ liệu, ràng buộc, câu lệnh INSERT"
+        },
+        "第3週：SELECT、UPDATE、DELETE": {
+            "title": "Tuần 3: SELECT, UPDATE, DELETE",
+            "description": "Thao tác cơ bản lấy, cập nhật và xóa dữ liệu"
+        },
+        "第4週：WHERE句と条件指定": {
+            "title": "Tuần 4: Mệnh đề WHERE và điều kiện",
+            "description": "Mệnh đề WHERE, toán tử so sánh, toán tử logic, LIKE, IN, BETWEEN"
+        },
+        "第5週：ORDER BY、GROUP BY、集計関数": {
+            "title": "Tuần 5: ORDER BY, GROUP BY, hàm tổng hợp",
+            "description": "Sắp xếp dữ liệu, nhóm, COUNT/SUM/AVG/MAX/MIN"
+        },
+        "第6週：JOIN（テーブル結合）": {
+            "title": "Tuần 6: JOIN (Kết hợp bảng)",
+            "description": "INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN, self join"
+        },
+        "第7週：サブクエリとCTE": {
+            "title": "Tuần 7: Subquery và CTE",
+            "description": "Subquery, mệnh đề WITH (CTE)"
+        },
+        "第8週：ウィンドウ関数と高度な集計": {
+            "title": "Tuần 8: Hàm Window và tổng hợp nâng cao",
+            "description": "ROW_NUMBER, RANK, LEAD/LAG, tổng hợp tích lũy"
+        },
+        "第9週：トランザクションとインデックス": {
+            "title": "Tuần 9: Transaction và Index",
+            "description": "Thuộc tính ACID, COMMIT/ROLLBACK, tạo và tối ưu hóa index"
+        },
+        "第10週：データベース設計と正規化": {
+            "title": "Tuần 10: Thiết kế Database và chuẩn hóa",
+            "description": "Sơ đồ ER, chuẩn hóa (1NF-3NF), ràng buộc"
+        },
+        "第11週：ビューとストアドプロシージャ": {
+            "title": "Tuần 11: View và Stored Procedure",
+            "description": "VIEW, STORED PROCEDURE, FUNCTION"
+        },
+        "第12週：トリガーとベストプラクティス": {
+            "title": "Tuần 12: Trigger và thực hành tốt nhất",
+            "description": "TRIGGER, backup, bảo mật, điều chỉnh hiệu suất"
+        }
+    }
+}

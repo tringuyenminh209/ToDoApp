@@ -1,0 +1,123 @@
+{
+    "_comment": "Vietnamese translations for Python Basic Course (PythonCourseSeeder)",
+    "template": {
+        "title": "Python基礎コース",
+        "description": "初心者向けPythonプログラミング基礎コース。15週間の実践的な課題を通じて、Pythonの基本構文からオブジェクト指向プログラミング、データ分析まで段階的に学習します。"
+    },
+    "template_translations": {
+        "Python基礎コース": {
+            "title": "Khóa học Python Cơ bản",
+            "description": "Khóa học lập trình Python cơ bản dành cho người mới bắt đầu. Học từng bước từ cú pháp Python cơ bản đến lập trình hướng đối tượng và phân tích dữ liệu thông qua 15 tuần bài tập thực hành."
+        }
+    },
+    "milestones": {
+        "Python基礎": {
+            "title": "Cơ bản Python",
+            "description": "Thiết lập môi trường phát triển, biến, kiểu dữ liệu, toán tử, xử lý đầu vào",
+            "deliverables": [
+                "Hoàn thành thiết lập môi trường phát triển Python",
+                "Tạo chương trình Hello World",
+                "Chương trình sử dụng biến và kiểu",
+                "Chương trình nhận đầu vào từ người dùng"
+            ]
+        },
+        "制御フローと関数": {
+            "title": "Luồng Điều khiển và Hàm",
+            "description": "if/elif/else, while, for, định nghĩa và sử dụng hàm",
+            "deliverables": [
+                "Chương trình sử dụng rẽ nhánh điều kiện",
+                "Chương trình sử dụng vòng lặp",
+                "Chương trình định nghĩa hàm"
+            ]
+        },
+        "データ構造": {
+            "title": "Cấu trúc Dữ liệu",
+            "description": "Cách sử dụng list, tuple, dictionary, set và list comprehension",
+            "deliverables": [
+                "Chương trình sử dụng list",
+                "Chương trình sử dụng dictionary",
+                "Chương trình sử dụng list comprehension"
+            ]
+        },
+        "オブジェクト指向プログラミング": {
+            "title": "Lập trình Hướng đối tượng",
+            "description": "Class, object, kế thừa, đóng gói, đa hình",
+            "deliverables": [
+                "Chương trình định nghĩa class",
+                "Chương trình sử dụng kế thừa",
+                "Chương trình triển khai đóng gói"
+            ]
+        },
+        "モジュールとファイル操作": {
+            "title": "Modules và Thao tác File",
+            "description": "Import module, thao tác file, xử lý ngoại lệ, thư viện chuẩn",
+            "deliverables": [
+                "Tạo và import modules",
+                "Chương trình đọc/ghi file",
+                "Chương trình triển khai xử lý ngoại lệ"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：環境設定とHello World": {
+            "title": "Tuần 1: Thiết lập Môi trường và Hello World",
+            "description": "Thiết lập môi trường phát triển Python và xuất màn hình bằng print()"
+        },
+        "第2週：変数とデータ型": {
+            "title": "Tuần 2: Biến và Kiểu Dữ liệu",
+            "description": "Học khai báo biến Python, kiểu dữ liệu cơ bản, chuyển đổi kiểu"
+        },
+        "第3週：演算子と文字列操作": {
+            "title": "Tuần 3: Toán tử và Thao tác Chuỗi",
+            "description": "Học toán tử số học, toán tử so sánh, toán tử logic, thao tác chuỗi"
+        },
+        "第4週：ユーザー入力とフォーマット": {
+            "title": "Tuần 4: Đầu vào Người dùng và Định dạng",
+            "description": "Đầu vào bằng input() và xuất định dạng bằng f-string"
+        },
+        "第5週：条件分岐（if/elif/else）": {
+            "title": "Tuần 5: Rẽ nhánh Điều kiện (if/elif/else)",
+            "description": "Cơ bản về rẽ nhánh điều kiện và câu lệnh điều kiện lồng nhau"
+        },
+        "第6週：ループ（while, for）": {
+            "title": "Tuần 6: Vòng lặp (while, for)",
+            "description": "Vòng lặp while và for, cách sử dụng range()"
+        },
+        "第7週：関数": {
+            "title": "Tuần 7: Hàm",
+            "description": "Định nghĩa hàm, đối số, giá trị trả về, đối số mặc định, đối số độ dài biến"
+        },
+        "第8週：リストとタプル": {
+            "title": "Tuần 8: List và Tuple",
+            "description": "Thao tác list và tuple, phương thức, sự khác biệt"
+        },
+        "第9週：辞書とセット": {
+            "title": "Tuần 9: Dictionary và Set",
+            "description": "Thao tác dictionary (dict) và set"
+        },
+        "第10週：リスト内包表記とイテレータ": {
+            "title": "Tuần 10: List Comprehension và Iterator",
+            "description": "List comprehension, dictionary comprehension, generator"
+        },
+        "第11週：クラスとオブジェクト": {
+            "title": "Tuần 11: Class và Object",
+            "description": "Định nghĩa class, constructor, biến instance và phương thức"
+        },
+        "第12週：継承とポリモーフィズム": {
+            "title": "Tuần 12: Kế thừa và Đa hình",
+            "description": "Kế thừa class, ghi đè phương thức, super()"
+        },
+        "第13週：カプセル化と特殊メソッド": {
+            "title": "Tuần 13: Đóng gói và Phương thức Đặc biệt",
+            "description": "Biến private, property, phương thức đặc biệt (__str__, __repr__, v.v.)"
+        },
+        "第14週：モジュールと例外処理": {
+            "title": "Tuần 14: Modules và Xử lý Ngoại lệ",
+            "description": "Import module, tạo module, xử lý ngoại lệ"
+        },
+        "第15週：ファイル操作と実践プロジェクト": {
+            "title": "Tuần 15: Thao tác File và Dự án Thực tế",
+            "description": "Đọc/ghi file, file CSV, file JSON"
+        }
+    }
+}

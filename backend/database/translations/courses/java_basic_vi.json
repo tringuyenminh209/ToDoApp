@@ -1,0 +1,205 @@
+{
+    "_comment": "Vietnamese translations for Java Basic Course (JavaBasicCourseSeeder)",
+    "template": {
+        "title": "Java基礎演習",
+        "description": "初心者向けJavaプログラミング基礎コース。30回の実践的な課題を通じて、Javaの基本構文からアルゴリズムまで段階的に学習します。"
+    },
+    "template_translations": {
+        "Java基礎演習": {
+            "title": "Bài tập cơ bản Java",
+            "description": "Khóa học cơ bản lập trình Java cho người mới bắt đầu. Học từng bước từ cú pháp cơ bản Java đến thuật toán qua 30 bài tập thực hành."
+        }
+    },
+    "milestones": {
+        "環境設定と基本構文": {
+            "title": "Cài đặt môi trường và cú pháp cơ bản",
+            "description": "Học từ cài đặt môi trường phát triển đến biến, biểu thức và nhập chuỗi",
+            "deliverables": [
+                "Hoàn thành cài đặt môi trường phát triển",
+                "Tạo chương trình Hello World",
+                "Chương trình tính toán với biến và biểu thức",
+                "Chương trình nhận đầu vào từ bàn phím"
+            ]
+        },
+        "条件分岐とループ基礎": {
+            "title": "Cơ bản về rẽ nhánh và vòng lặp",
+            "description": "Câu lệnh if, while, lồng nhau và thụt đầu dòng",
+            "deliverables": [
+                "Chương trình rẽ nhánh với if",
+                "Chương trình vòng lặp với while",
+                "Hiểu cấu trúc lồng nhau"
+            ]
+        },
+        "チャレンジ課題と復習": {
+            "title": "Bài tập thách thức và ôn tập",
+            "description": "Ôn tập và ứng dụng tổng hợp các nội dung đã học",
+            "deliverables": [
+                "Hoàn thành bài thách thức ①",
+                "Luyện tập bài kiểm tra xếp lớp ①",
+                "Hoàn thành bài thách thức ②"
+            ]
+        },
+        "高度な条件分岐とループ": {
+            "title": "Rẽ nhánh và vòng lặp nâng cao",
+            "description": "if-else if, toán tử logic, do-while, for, mảng",
+            "deliverables": [
+                "Thành thạo if-else if",
+                "Hiểu toán tử logic và kiểu boolean",
+                "Sử dụng được do-while, break, continue",
+                "Thao tác được với mảng",
+                "Xử lý vòng lặp với for"
+            ]
+        },
+        "チャレンジ課題と中間テスト": {
+            "title": "Bài tập thách thức và kiểm tra giữa kỳ",
+            "description": "Ôn tập giữa kỳ và kiểm tra",
+            "deliverables": [
+                "Hoàn thành bài thách thức ③",
+                "Luyện tập bài kiểm tra xếp lớp ②",
+                "Hoàn thành bài thách thức ④"
+            ]
+        },
+        "高度なプログラミング技法": {
+            "title": "Kỹ thuật lập trình nâng cao",
+            "description": "Vòng lặp lồng, mảng đa chiều, phương thức, switch, xử lý chuỗi, toán tử bit",
+            "deliverables": [
+                "Thành thạo vòng lặp lồng và mảng đa chiều",
+                "Định nghĩa và sử dụng phương thức",
+                "Xử lý rẽ nhánh với switch",
+                "Hiểu xử lý chuỗi",
+                "Hiểu toán tử bit và dịch bit"
+            ]
+        },
+        "アルゴリズムと実践プロジェクト": {
+            "title": "Thuật toán và dự án thực tế",
+            "description": "Thuật toán sắp xếp, bài tập lập trình thực tế",
+            "deliverables": [
+                "Triển khai bubble sort và merge sort",
+                "Triển khai quick sort",
+                "Hoàn thành game Reversi"
+            ]
+        }
+    },
+    "tasks": {
+        "第1回：環境設定と画面出力": {
+            "title": "Buổi 1: Cài đặt môi trường và xuất màn hình",
+            "description": "Cài đặt môi trường phát triển Java và xuất màn hình với System.out.println()"
+        },
+        "第2回：変数と式①（int型①）": {
+            "title": "Buổi 2: Biến và biểu thức ① (kiểu int ①)",
+            "description": "Khai báo biến kiểu int, gán giá trị, phép tính cơ bản, phép chia lấy dư"
+        },
+        "第3回：変数と式②（int型②）": {
+            "title": "Buổi 3: Biến và biểu thức ② (kiểu int ②)",
+            "description": "Toán tử gán kết hợp, toán tử tăng giảm"
+        },
+        "第4回：String型とキーボード入力": {
+            "title": "Buổi 4: Kiểu String và nhập từ bàn phím",
+            "description": "Kiểu String, lớp Scanner, nhập từ bàn phím"
+        },
+        "第5回：if文①": {
+            "title": "Buổi 5: Câu lệnh if ①",
+            "description": "Rẽ nhánh với if, toán tử so sánh"
+        },
+        "第6回：while文①": {
+            "title": "Buổi 6: Câu lệnh while ①",
+            "description": "Xử lý vòng lặp với while"
+        },
+        "第7回：ネストとインデント": {
+            "title": "Buổi 7: Lồng nhau và thụt đầu dòng",
+            "description": "Lồng if, lồng vòng lặp, tầm quan trọng của thụt đầu dòng"
+        },
+        "第8回：チャレンジ課題①": {
+            "title": "Buổi 8: Bài thách thức ①",
+            "description": "Bài tập tổng hợp từ buổi 1 đến buổi 7"
+        },
+        "第9回：クラス替えテスト①（練習問題）": {
+            "title": "Buổi 9: Bài kiểm tra xếp lớp ① (Bài luyện tập)",
+            "description": "Luyện tập kiểm tra mức độ hiểu từ buổi 1 đến buổi 8"
+        },
+        "第10回：チャレンジ課題②": {
+            "title": "Buổi 10: Bài thách thức ②",
+            "description": "Bài tập tổng hợp nâng cao"
+        },
+        "第11回：変数と式③（整数型と実数型）": {
+            "title": "Buổi 11: Biến và biểu thức ③ (kiểu số nguyên và số thực)",
+            "description": "Cách sử dụng kiểu long, double, float"
+        },
+        "第12回：if文②（if～else if）": {
+            "title": "Buổi 12: Câu lệnh if ② (if～else if)",
+            "description": "Cấu trúc if-else if-else, rẽ nhánh nhiều điều kiện"
+        },
+        "第13回：if文③（論理演算子、boolean）": {
+            "title": "Buổi 13: Câu lệnh if ③ (toán tử logic, boolean)",
+            "description": "&& (AND), || (OR), ! (NOT), kiểu boolean"
+        },
+        "第14回：while文②（do～while、break、continue）": {
+            "title": "Buổi 14: Câu lệnh while ② (do～while, break, continue)",
+            "description": "Câu lệnh do-while, break, continue"
+        },
+        "第15回：配列": {
+            "title": "Buổi 15: Mảng",
+            "description": "Khai báo mảng, khởi tạo, truy cập phần tử"
+        },
+        "第16回：for文①（for文の基本と配列）": {
+            "title": "Buổi 16: Câu lệnh for ① (cơ bản for và mảng)",
+            "description": "Cú pháp cơ bản for, kết hợp với mảng"
+        },
+        "第17回：for文②（ループ処理の流れ、スコープ）": {
+            "title": "Buổi 17: Câu lệnh for ② (luồng xử lý vòng lặp, phạm vi biến)",
+            "description": "Luồng thực thi for, phạm vi biến"
+        },
+        "第18回：チャレンジ課題③": {
+            "title": "Buổi 18: Bài thách thức ③",
+            "description": "Bài tập tổng hợp từ buổi 11 đến buổi 17"
+        },
+        "第19回：クラス替えテスト②（練習問題）": {
+            "title": "Buổi 19: Bài kiểm tra xếp lớp ② (Bài luyện tập)",
+            "description": "Luyện tập kiểm tra mức độ hiểu từ buổi 11 đến buổi 18"
+        },
+        "第20回：チャレンジ課題④": {
+            "title": "Buổi 20: Bài thách thức ④",
+            "description": "Bài tập tổng hợp nâng cao"
+        },
+        "第21回：多重ループと多次元配列": {
+            "title": "Buổi 21: Vòng lặp lồng và mảng đa chiều",
+            "description": "Lồng for, mảng 2 chiều, mảng 3 chiều"
+        },
+        "第22回：メソッド①": {
+            "title": "Buổi 22: Phương thức ①",
+            "description": "Định nghĩa phương thức, tham số, giá trị trả về"
+        },
+        "第23回：メソッド②": {
+            "title": "Buổi 23: Phương thức ②",
+            "description": "Nạp chồng phương thức, gọi đệ quy"
+        },
+        "第24回：switch文": {
+            "title": "Buổi 24: Câu lệnh switch",
+            "description": "Cú pháp switch, case và break"
+        },
+        "第25回：文字と文字列": {
+            "title": "Buổi 25: Ký tự và chuỗi",
+            "description": "Kiểu char, các phương thức lớp String, xử lý chuỗi"
+        },
+        "第26回：ビット演算とシフト演算": {
+            "title": "Buổi 26: Toán tử bit và dịch bit",
+            "description": "Toán tử bit (&, |, ^, ~), toán tử dịch (<<, >>, >>>)"
+        },
+        "第27回：プログラミング演習①（バブルソート・マージソート）": {
+            "title": "Buổi 27: Bài tập lập trình ① (Bubble Sort, Merge Sort)",
+            "description": "Hiểu và triển khai thuật toán bubble sort và merge sort"
+        },
+        "第28回：プログラミング演習②（クイックソートに挑戦！）": {
+            "title": "Buổi 28: Bài tập lập trình ② (Thử thách Quick Sort!)",
+            "description": "Hiểu và triển khai thuật toán quick sort"
+        },
+        "第29回：プログラミング演習（総合練習）": {
+            "title": "Buổi 29: Bài tập lập trình (Tổng hợp)",
+            "description": "Luyện tập lập trình tổng hợp"
+        },
+        "第30回：プログラミング演習③（リバーシ！）": {
+            "title": "Buổi 30: Bài tập lập trình ③ (Reversi!)",
+            "description": "Hoàn thành triển khai game Reversi"
+        }
+    }
+}

@@ -1,0 +1,314 @@
+{
+    "_comment": "English translations for Python Cheat Code",
+    "language": {
+        "python": {
+            "description": "Python cheat sheet is a one-page reference sheet for the Python 3 programming language."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "Python basics and introduction"
+        },
+        "python-built-in-data-types": {
+            "title": "Python Built-in Data Types",
+            "description": "Python's basic data types"
+        },
+        "python-advanced-data-types": {
+            "title": "Python Advanced Data Types",
+            "description": "Advanced data structures"
+        },
+        "python-strings": {
+            "title": "Python Strings",
+            "description": "String manipulation"
+        },
+        "python-functions": {
+            "title": "Python Functions",
+            "description": "Defining and using functions"
+        },
+        "python-modules": {
+            "title": "Python Modules",
+            "description": "Importing and using modules"
+        },
+        "python-file-handling": {
+            "title": "Python File Handling",
+            "description": "Reading and writing files"
+        },
+        "python-classes-inheritance": {
+            "title": "Python Classes & Inheritance",
+            "description": "Object-oriented programming"
+        },
+        "miscellaneous": {
+            "title": "Miscellaneous",
+            "description": "Additional Python features"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "Hello World": {
+                "title": "Hello World",
+                "description": "The famous 'Hello World' program in Python"
+            },
+            "変数": {
+                "title": "Variables",
+                "description": "Python cannot declare variables without assignment"
+            },
+            "データ型": {
+                "title": "Data Types",
+                "description": "Python's built-in data types"
+            },
+            "文字列スライス": {
+                "title": "String Slicing",
+                "description": "String slicing"
+            },
+            "リスト": {
+                "title": "Lists",
+                "description": "List operations"
+            },
+            "If Else": {
+                "title": "If Else",
+                "description": "If-else statement"
+            },
+            "ループ": {
+                "title": "Loops",
+                "description": "For loop with break and else"
+            },
+            "関数": {
+                "title": "Functions",
+                "description": "Function definition and calling"
+            },
+            "ファイル処理": {
+                "title": "File Handling",
+                "description": "Reading file line by line"
+            },
+            "算術演算": {
+                "title": "Arithmetic Operations",
+                "description": "Arithmetic operators"
+            },
+            "複合代入": {
+                "title": "Compound Assignment",
+                "description": "Compound assignment operators"
+            },
+            "f-文字列（Python 3.6+）": {
+                "title": "f-Strings (Python 3.6+)",
+                "description": "Formatted string literals"
+            }
+        },
+        "python-built-in-data-types": {
+            "文字列": {
+                "title": "Strings",
+                "description": "String declaration"
+            },
+            "数値": {
+                "title": "Numbers",
+                "description": "Numeric types"
+            },
+            "ブール型": {
+                "title": "Booleans",
+                "description": "Boolean type and conversion"
+            },
+            "リスト": {
+                "title": "Lists",
+                "description": "Creating lists"
+            },
+            "タプル": {
+                "title": "Tuples",
+                "description": "Creating tuples - immutable sequences"
+            },
+            "セット": {
+                "title": "Sets",
+                "description": "Creating sets - unique elements"
+            },
+            "辞書": {
+                "title": "Dictionaries",
+                "description": "Dictionary operations"
+            },
+            "キャスト - 整数": {
+                "title": "Casting - Integer",
+                "description": "Type casting to integer"
+            },
+            "キャスト - 浮動小数点": {
+                "title": "Casting - Float",
+                "description": "Type casting to float"
+            },
+            "キャスト - 文字列": {
+                "title": "Casting - String",
+                "description": "Type casting to string"
+            }
+        },
+        "python-advanced-data-types": {
+            "ヒープ": {
+                "title": "Heap",
+                "description": "Heap operations"
+            },
+            "最小ヒープを使った最大ヒープ": {
+                "title": "Max Heap using Min Heap",
+                "description": "Using min heap as max heap"
+            },
+            "スタックとキュー": {
+                "title": "Stack and Queue",
+                "description": "Deque for stack and queue"
+            }
+        },
+        "python-strings": {
+            "配列風": {
+                "title": "Array-like",
+                "description": "Accessing string characters"
+            },
+            "ループ": {
+                "title": "Loop",
+                "description": "Looping through strings"
+            },
+            "文字列スライス": {
+                "title": "String Slicing",
+                "description": "String slicing examples"
+            },
+            "文字列メソッド": {
+                "title": "String Methods",
+                "description": "Common string methods"
+            }
+        },
+        "python-functions": {
+            "位置引数": {
+                "title": "Positional Arguments",
+                "description": "Function arguments by position"
+            },
+            "キーワード引数": {
+                "title": "Keyword Arguments",
+                "description": "Keyword arguments with **kwargs"
+            },
+            "複数の戻り値": {
+                "title": "Multiple Return Values",
+                "description": "Returning multiple values"
+            },
+            "デフォルト値": {
+                "title": "Default Values",
+                "description": "Default parameter values"
+            },
+            "無名関数": {
+                "title": "Anonymous Functions",
+                "description": "Lambda functions"
+            }
+        },
+        "python-modules": {
+            "モジュールのインポート": {
+                "title": "Import Module",
+                "description": "Import entire module"
+            },
+            "モジュールから": {
+                "title": "From Module",
+                "description": "Import specific functions"
+            },
+            "すべてインポート": {
+                "title": "Import All",
+                "description": "Import everything from module"
+            },
+            "モジュールの短縮": {
+                "title": "Module Alias",
+                "description": "Module aliasing"
+            },
+            "関数と属性": {
+                "title": "Functions and Attributes",
+                "description": "List module functions and attributes"
+            }
+        },
+        "python-file-handling": {
+            "ファイル読み込み - 行ごと": {
+                "title": "File Read - Line by Line",
+                "description": "Reading file line by line"
+            },
+            "ファイル読み込み - 行番号付き": {
+                "title": "File Read - With Line Numbers",
+                "description": "Reading file with line numbers"
+            },
+            "文字列の書き込み": {
+                "title": "Write String",
+                "description": "Writing string to file"
+            },
+            "文字列の読み込み": {
+                "title": "Read String",
+                "description": "Reading string from file"
+            },
+            "オブジェクトの書き込み": {
+                "title": "Write Object",
+                "description": "Writing JSON object to file"
+            },
+            "オブジェクトの読み込み": {
+                "title": "Read Object",
+                "description": "Reading JSON object from file"
+            },
+            "ファイルの削除": {
+                "title": "Delete File",
+                "description": "Deleting a file"
+            },
+            "確認して削除": {
+                "title": "Check and Delete",
+                "description": "Check file existence before deleting"
+            },
+            "フォルダの削除": {
+                "title": "Delete Folder",
+                "description": "Deleting a folder"
+            }
+        },
+        "python-classes-inheritance": {
+            "定義": {
+                "title": "Definition",
+                "description": "Basic class definition"
+            },
+            "コンストラクタ": {
+                "title": "Constructor",
+                "description": "Class constructor"
+            },
+            "メソッド": {
+                "title": "Methods",
+                "description": "Class methods"
+            },
+            "クラス変数": {
+                "title": "Class Variables",
+                "description": "Class variables"
+            },
+            "Super()関数": {
+                "title": "Super() Function",
+                "description": "Calling parent method with super()"
+            },
+            "__repr__()メソッド": {
+                "title": "__repr__() Method",
+                "description": "String representation method"
+            },
+            "ユーザー定義例外": {
+                "title": "User-defined Exceptions",
+                "description": "Custom exception class"
+            },
+            "ポリモーフィズム": {
+                "title": "Polymorphism",
+                "description": "Polymorphism example"
+            },
+            "オーバーライド": {
+                "title": "Override",
+                "description": "Method overriding"
+            },
+            "継承": {
+                "title": "Inheritance",
+                "description": "Class inheritance"
+            }
+        },
+        "miscellaneous": {
+            "コメント": {
+                "title": "Comments",
+                "description": "Comment syntax"
+            },
+            "ジェネレータ": {
+                "title": "Generators",
+                "description": "Generator functions"
+            },
+            "ジェネレータからリストへ": {
+                "title": "Generator to List",
+                "description": "Converting generator to list"
+            },
+            "例外の処理": {
+                "title": "Exception Handling",
+                "description": "Exception handling with try-except-else-finally"
+            }
+        }
+    }
+}

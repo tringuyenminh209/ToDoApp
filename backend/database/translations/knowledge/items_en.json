@@ -1,0 +1,317 @@
+{
+    "_comment": "English translations for Knowledge Items",
+    "items": {
+        "Python List Comprehension ガイド": {
+            "title": "Python List Comprehension Guide",
+            "content": "# Python List Comprehension\n\n## Basic Syntax\n```python\n[expression for item in iterable]\n```\n\n## With Condition\n```python\n[expression for item in iterable if condition]\n```\n\n## Nested\n```python\n[[i*j for j in range(3)] for i in range(3)]\n```\n\n## Benefits\n- Readable\n- Fast\n- Memory efficient"
+        },
+        "Python Decorators 解説": {
+            "title": "Python Decorators Explanation",
+            "content": "# Python Decorators\n\nDecorators are a pattern for wrapping functions to add functionality.\n\n## Basic Usage\n```python\n@decorator\ndef my_function():\n    pass\n```\n\n## Use Cases\n- Timer\n- Logging\n- Authentication check\n- Caching"
+        },
+        "Python Generators の仕組み": {
+            "title": "How Python Generators Work",
+            "content": "# Python Generators\n\nGenerators are memory-efficient iterators.\n\n## Features\n- Use `yield` keyword\n- Lazy evaluation\n- Memory efficient\n\n## Use Cases\n- Processing large datasets\n- Infinite sequences\n- Pipeline processing"
+        },
+        "Python Virtual Environment セットアップ": {
+            "title": "Python Virtual Environment Setup",
+            "content": "# Python Virtual Environment\n\n## Create\n```bash\npython -m venv venv\n```\n\n## Activate\n```bash\n# Windows\nvenv\\Scripts\\activate\n\n# Linux/Mac\nsource venv/bin/activate\n```\n\n## Install Packages\n```bash\npip install package_name\n```\n\n## requirements.txt\n```bash\npip freeze > requirements.txt\npip install -r requirements.txt\n```"
+        },
+        "Fibonacci Sequence": {
+            "question": "Implement a function that returns the nth number in the Fibonacci sequence.\n\nExample: fibonacci(5) → 5",
+            "content": "Learn both recursive and memoization approaches"
+        },
+        "Palindrome Check": {
+            "question": "Implement a function to check if a string is a palindrome.\n\nExample: \"racecar\" → True, \"hello\" → False",
+            "content": "Practice string manipulation and recursion"
+        },
+        "Two Sum Problem": {
+            "question": "Return the indices of two numbers in an array whose sum equals the target.\n\nExample: nums = [2,7,11,15], target = 9 → [0,1]",
+            "content": "LeetCode Easy problem - Using hash map"
+        },
+        "Binary Search Algorithm": {
+            "title": "Binary Search Algorithm",
+            "content": null
+        },
+        "Quick Sort Implementation": {
+            "title": "Quick Sort Implementation",
+            "content": null
+        },
+        "Python Decorators": {
+            "title": "Python Decorators",
+            "content": null
+        },
+        "List Comprehension Examples": {
+            "title": "List Comprehension Examples",
+            "content": null
+        },
+        "Generator Functions": {
+            "title": "Generator Functions",
+            "content": null
+        },
+        "Context Managers": {
+            "title": "Context Managers",
+            "content": null
+        },
+        "Async/Await Example": {
+            "title": "Async/Await Example",
+            "content": null
+        },
+        "Class Example with Properties": {
+            "title": "Class Example with Properties",
+            "content": null
+        },
+        "Singleton Pattern": {
+            "title": "Singleton Pattern",
+            "content": null
+        },
+        "Factory Pattern": {
+            "title": "Factory Pattern",
+            "content": null
+        },
+        "Java Collections Example": {
+            "title": "Java Collections Example",
+            "content": null
+        },
+        "Java Streams API": {
+            "title": "Java Streams API",
+            "content": null
+        },
+        "Lambda Expressions": {
+            "title": "Lambda Expressions",
+            "content": null
+        },
+        "Exception Handling": {
+            "title": "Exception Handling",
+            "content": null
+        },
+        "Promises and Async/Await": {
+            "title": "Promises and Async/Await",
+            "content": null
+        },
+        "Closures Example": {
+            "title": "Closures Example",
+            "content": null
+        },
+        "Destructuring Assignment": {
+            "title": "Destructuring Assignment",
+            "content": null
+        },
+        "Array Methods": {
+            "title": "Array Methods",
+            "content": null
+        },
+        "Event Handling": {
+            "title": "Event Handling",
+            "content": null
+        },
+        "React Hooks Example": {
+            "title": "React Hooks Example",
+            "content": null
+        },
+        "Binary Search (Python)": {
+            "title": "Binary Search (Python)",
+            "content": null
+        },
+        "Binary Search (Java)": {
+            "title": "Binary Search (Java)",
+            "content": null
+        },
+        "Binary Search (JavaScript)": {
+            "title": "Binary Search (JavaScript)",
+            "content": null
+        },
+        "Quick Sort (Python)": {
+            "title": "Quick Sort (Python)",
+            "content": null
+        },
+        "Merge Sort (Python)": {
+            "title": "Merge Sort (Python)",
+            "content": null
+        },
+        "DFS (Depth-First Search)": {
+            "title": "DFS (Depth-First Search)",
+            "content": null
+        },
+        "BFS (Breadth-First Search)": {
+            "title": "BFS (Breadth-First Search)",
+            "content": null
+        },
+        "Fibonacci with Memoization": {
+            "title": "Fibonacci with Memoization",
+            "content": null
+        },
+        "Java Collections Framework": {
+            "title": "Java Collections Framework",
+            "content": "# Java Collections Framework\n\n## Main Interfaces\n- **List**: ArrayList, LinkedList\n- **Set**: HashSet, TreeSet\n- **Map**: HashMap, TreeMap"
+        },
+        "Java Streams API ガイド": {
+            "title": "Java Streams API Guide",
+            "content": "# Java Streams API\n\n## Main Operations\n- filter(): Filter by condition\n- map(): Transform\n- reduce(): Aggregate\n- collect(): Collect results"
+        },
+        "OOP Principles in Java": {
+            "title": "OOP Principles in Java",
+            "content": "# OOP Principles\n\n1. Encapsulation\n2. Inheritance\n3. Polymorphism\n4. Abstraction"
+        },
+        "Java Annotations": {
+            "title": "Java Annotations",
+            "content": "# Java Annotations\n\n- @Override\n- @Deprecated\n- @SuppressWarnings"
+        },
+        "Valid Parentheses": {
+            "question": "Determine if the combination of parentheses is valid.",
+            "content": "Validate parentheses using Stack"
+        },
+        "Reverse Linked List": {
+            "question": "Reverse a singly linked list.",
+            "content": "Linked list reversal algorithm"
+        },
+        "JavaScript Closures 解説": {
+            "title": "JavaScript Closures Explanation",
+            "content": "# JavaScript Closures\n\n## Definition\nClosures allow inner functions to access variables from outer functions.\n\n## Features\n- Variable privatization\n- Data persistence\n- Function factories\n\n## Use Cases\n- Counters\n- Module pattern\n- Callback functions"
+        },
+        "Event Loop の仕組み": {
+            "title": "How Event Loop Works",
+            "content": "# JavaScript Event Loop\n\n## Execution Order\n1. Call Stack (synchronous code)\n2. Web APIs (asynchronous processing)\n3. Callback Queue\n4. Event Loop\n\n## Asynchronous Processing\n- setTimeout\n- Promise\n- async/await\n\n## Notes\n- Be careful with blocking code\n- Avoid infinite loops"
+        },
+        "Hoisting とは": {
+            "title": "What is Hoisting",
+            "content": "# JavaScript Hoisting\n\n## Definition\nBehavior where variable and function declarations are moved to the top of their scope.\n\n## var vs let/const\n- **var**: Hoisted (undefined)\n- **let/const**: TDZ (Temporal Dead Zone)\n\n## Function Declaration\n```javascript\n// Function declarations are hoisted\nsayHello(); // Works\n\nfunction sayHello() {\n    console.log(\"Hello\");\n}\n```"
+        },
+        "Prototype Chain": {
+            "title": "Prototype Chain",
+            "content": "# JavaScript Prototype Chain\n\n## Prototype Inheritance\nJavaScript uses prototype-based inheritance.\n\n## Prototype Chain\n```javascript\nObject.prototype\n  ↑\nArray.prototype\n  ↑\n[1, 2, 3]\n```\n\n## Use Cases\n- Method sharing\n- Inheritance implementation\n- Memory efficiency"
+        },
+        "Debounce Function": {
+            "question": "Implement a debounce function. Execute a function only once after a specified time, even if called multiple times.",
+            "content": "Performance optimization technique"
+        },
+        "Throttle Function": {
+            "question": "Implement a throttle function. Execute a function only once within a specified time period.",
+            "content": "Event handler optimization"
+        },
+        "アルゴリズムの時間計算量": {
+            "title": "Algorithm Time Complexity",
+            "content": "# Time Complexity\n\n## Common Complexities\n- O(1): Constant time\n- O(log n): Logarithmic time (binary search)\n- O(n): Linear time (linear search)\n- O(n log n): Merge sort, Quick sort\n- O(n²): Bubble sort, Selection sort\n- O(2ⁿ): Exponential time (recursive Fibonacci)"
+        },
+        "動的計画法の基本": {
+            "title": "Dynamic Programming Basics",
+            "content": "# Dynamic Programming\n\n## Features\n- Reuse subproblem results\n- Memoization\n- Bottom-up approach\n\n## Applications\n- Fibonacci sequence\n- Knapsack problem\n- Longest Common Subsequence (LCS)"
+        },
+        "Two Sum (LeetCode Easy)": {
+            "question": "Return the indices of two numbers in an array whose sum equals the target.\n\nExample: nums = [2,7,11,15], target = 9 → [0,1]",
+            "content": "LeetCode #1 - Using hash map"
+        },
+        "Valid Parentheses (LeetCode Easy)": {
+            "question": "Determine if the combination of parentheses is valid.\n\nExample: \"()[]{}\" → true, \"([)]\" → false",
+            "content": "LeetCode #20 - Using Stack"
+        },
+        "Palindrome Number (LeetCode Easy)": {
+            "question": "Determine if an integer is a palindrome.\n\nExample: 121 → true, -121 → false",
+            "content": "LeetCode #9 - Number reversal"
+        },
+        "Reverse String (LeetCode Easy)": {
+            "question": "Reverse a string (in-place).\n\nExample: [\"h\",\"e\",\"l\",\"l\",\"o\"] → [\"o\",\"l\",\"l\",\"e\",\"h\"]",
+            "content": "LeetCode #344 - Two Pointers"
+        },
+        "Contains Duplicate (LeetCode Easy)": {
+            "question": "Determine if an array contains duplicate elements.",
+            "content": "LeetCode #217 - Using Set"
+        },
+        "Longest Substring (LeetCode Medium)": {
+            "question": "Return the length of the longest substring without repeating characters.\n\nExample: \"abcabcbb\" → 3 (\"abc\")",
+            "content": "LeetCode #3 - Sliding Window"
+        },
+        "Binary Tree Traversal (LeetCode Medium)": {
+            "question": "Implement Inorder Traversal of a binary tree.",
+            "content": "LeetCode #94 - Recursion and iteration"
+        },
+        "Product of Array Except Self": {
+            "question": "Create an array that returns the product of all elements except itself (without using division).",
+            "content": "LeetCode #238 - Two Pass"
+        },
+        "Group Anagrams": {
+            "question": "Group anagrams together.",
+            "content": "LeetCode #49 - Using sort as key"
+        },
+        "Merge Intervals": {
+            "question": "Merge overlapping intervals.",
+            "content": "LeetCode #56 - Sort and merge"
+        },
+        "Rotate Array": {
+            "question": "Rotate an array k steps to the right.",
+            "content": "LeetCode #189 - Reverse Technique"
+        },
+        "Three Sum": {
+            "question": "Find all combinations of three numbers that sum to 0.",
+            "content": "LeetCode #15 - Two Pointers"
+        },
+        "Load Balancing Strategies": {
+            "title": "Load Balancing Strategies",
+            "content": "# Load Balancing Strategies\n\n## Algorithms\n1. **Round Robin**: Distribute in order\n2. **Least Connections**: To server with fewer connections\n3. **IP Hash**: Hash by IP address\n4. **Weighted Round Robin**: With weights\n\n## Benefits\n- High availability\n- Scalability\n- Performance improvement"
+        },
+        "Caching Strategies": {
+            "title": "Caching Strategies",
+            "content": "# Caching Strategies\n\n## Cache Strategies\n- **Cache-Aside**: Managed by application\n- **Write-Through**: Write to both cache and DB\n- **Write-Back**: Write to cache, later to DB\n\n## Cache Types\n- Redis\n- Memcached\n- CDN"
+        },
+        "Database Sharding": {
+            "title": "Database Sharding",
+            "content": "# Database Sharding\n\n## Sharding Strategies\n- **Horizontal Sharding**: Split rows\n- **Vertical Sharding**: Split columns\n- **Directory-based**: Lookup table\n\n## Benefits\n- Scalability\n- Performance improvement\n\n## Challenges\n- Data redistribution\n- Query complexity"
+        },
+        "SQL JOIN Types": {
+            "title": "SQL JOIN Types",
+            "content": "# SQL JOIN Types\n\n## INNER JOIN\n```sql\nSELECT * FROM orders\nINNER JOIN customers ON orders.customer_id = customers.id;\n```\n\n## LEFT JOIN\n```sql\nSELECT * FROM customers\nLEFT JOIN orders ON customers.id = orders.customer_id;\n```\n\n## RIGHT JOIN\n```sql\nSELECT * FROM orders\nRIGHT JOIN customers ON orders.customer_id = customers.id;\n```\n\n## FULL OUTER JOIN\n```sql\nSELECT * FROM customers\nFULL OUTER JOIN orders ON customers.id = orders.customer_id;\n```"
+        },
+        "Database Normalization": {
+            "title": "Database Normalization",
+            "content": "# Database Normalization\n\n## Purpose\n- Reduce data duplication\n- Improve consistency\n- Storage efficiency\n\n## Normal Forms\n- **1NF**: Atomicity (one value per cell)\n- **2NF**: 1NF + eliminate partial functional dependencies\n- **3NF**: 2NF + eliminate transitive dependencies\n\n## Disadvantages\n- Queries become complex\n- More JOINs"
+        },
+        "Database Indexing": {
+            "title": "Database Indexing",
+            "content": "# Database Indexing\n\n## Index Types\n- **B-Tree**: Common index\n- **Hash**: Optimal for equality search\n- **Full-Text**: Text search\n\n## Benefits\n- Faster search\n- Faster WHERE clauses\n\n## Disadvantages\n- Increased storage usage\n- Slower INSERT/UPDATE"
+        },
+        "ACID Properties": {
+            "title": "ACID Properties",
+            "content": "# ACID Properties\n\n## ACID\n- **Atomicity**: All succeed or all fail\n- **Consistency**: Maintain data integrity\n- **Isolation**: Independence between transactions\n- **Durability**: Persisted after commit\n\n## Transaction Isolation Levels\n- Read Uncommitted\n- Read Committed\n- Repeatable Read\n- Serializable"
+        },
+        "React Official Documentation": {
+            "title": "React Official Documentation",
+            "content": "React official documentation - Hooks, components, best practices"
+        },
+        "Vue.js Official Guide": {
+            "title": "Vue.js Official Guide",
+            "content": "Vue.js official guide - Components, reactivity, routing"
+        },
+        "Docker Compose Tutorial": {
+            "title": "Docker Compose Tutorial",
+            "content": "Docker Compose official documentation - Define and run multi-container applications"
+        },
+        "Docker Official Documentation": {
+            "title": "Docker Official Documentation",
+            "content": "Docker official documentation - Containers, images, networks"
+        },
+        "Git Cheat Sheet": {
+            "title": "Git Cheat Sheet",
+            "content": "Quick reference for Git commands"
+        },
+        "Python Official Tutorial": {
+            "title": "Python Official Tutorial",
+            "content": "Python official tutorial - From basics to advanced"
+        },
+        "Java Documentation": {
+            "title": "Java Documentation",
+            "content": "Oracle Java official tutorial - Language specification, API, best practices"
+        },
+        "MDN Web Docs - JavaScript": {
+            "title": "MDN Web Docs - JavaScript",
+            "content": "MDN JavaScript reference - Comprehensive documentation and examples"
+        },
+        "Laravel Documentation": {
+            "title": "Laravel Documentation",
+            "content": "Laravel official documentation - Framework, Eloquent, routing"
+        },
+        "LeetCode - Practice Problems": {
+            "title": "LeetCode - Practice Problems",
+            "content": "LeetCode - Coding interview practice problems"
+        }
+    }
+}

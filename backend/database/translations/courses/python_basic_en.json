@@ -1,0 +1,123 @@
+{
+    "_comment": "English translations for Python Basic Course (PythonCourseSeeder)",
+    "template": {
+        "title": "Python基礎コース",
+        "description": "初心者向けPythonプログラミング基礎コース。15週間の実践的な課題を通じて、Pythonの基本構文からオブジェクト指向プログラミング、データ分析まで段階的に学習します。"
+    },
+    "template_translations": {
+        "Python基礎コース": {
+            "title": "Python Basic Course",
+            "description": "Beginner-friendly Python programming fundamentals course. Learn step by step from Python basic syntax to object-oriented programming and data analysis through 15 weeks of practical exercises."
+        }
+    },
+    "milestones": {
+        "Python基礎": {
+            "title": "Python Fundamentals",
+            "description": "Development environment setup, variables, data types, operators, input processing",
+            "deliverables": [
+                "Complete Python development environment setup",
+                "Create Hello World program",
+                "Program using variables and types",
+                "Program that receives user input"
+            ]
+        },
+        "制御フローと関数": {
+            "title": "Control Flow and Functions",
+            "description": "if/elif/else, while, for, function definition and usage",
+            "deliverables": [
+                "Program using conditional branching",
+                "Program using loops",
+                "Program defining functions"
+            ]
+        },
+        "データ構造": {
+            "title": "Data Structures",
+            "description": "Usage of lists, tuples, dictionaries, sets, and list comprehensions",
+            "deliverables": [
+                "Program using lists",
+                "Program using dictionaries",
+                "Program using list comprehensions"
+            ]
+        },
+        "オブジェクト指向プログラミング": {
+            "title": "Object-Oriented Programming",
+            "description": "Classes, objects, inheritance, encapsulation, polymorphism",
+            "deliverables": [
+                "Program defining classes",
+                "Program using inheritance",
+                "Program implementing encapsulation"
+            ]
+        },
+        "モジュールとファイル操作": {
+            "title": "Modules and File Operations",
+            "description": "Module imports, file operations, exception handling, standard library",
+            "deliverables": [
+                "Create and import modules",
+                "File read/write program",
+                "Program implementing exception handling"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：環境設定とHello World": {
+            "title": "Week 1: Environment Setup and Hello World",
+            "description": "Python development environment setup and screen output using print()"
+        },
+        "第2週：変数とデータ型": {
+            "title": "Week 2: Variables and Data Types",
+            "description": "Learning Python variable declaration, basic data types, type conversion"
+        },
+        "第3週：演算子と文字列操作": {
+            "title": "Week 3: Operators and String Operations",
+            "description": "Learning arithmetic operators, comparison operators, logical operators, string operations"
+        },
+        "第4週：ユーザー入力とフォーマット": {
+            "title": "Week 4: User Input and Formatting",
+            "description": "Input using input() and formatted output using f-string"
+        },
+        "第5週：条件分岐（if/elif/else）": {
+            "title": "Week 5: Conditional Branching (if/elif/else)",
+            "description": "Basics of conditional branching and nested conditionals"
+        },
+        "第6週：ループ（while, for）": {
+            "title": "Week 6: Loops (while, for)",
+            "description": "while loops and for loops, usage of range()"
+        },
+        "第7週：関数": {
+            "title": "Week 7: Functions",
+            "description": "Function definition, arguments, return values, default arguments, variable-length arguments"
+        },
+        "第8週：リストとタプル": {
+            "title": "Week 8: Lists and Tuples",
+            "description": "List and tuple operations, methods, differences"
+        },
+        "第9週：辞書とセット": {
+            "title": "Week 9: Dictionaries and Sets",
+            "description": "Dictionary (dict) and set operations"
+        },
+        "第10週：リスト内包表記とイテレータ": {
+            "title": "Week 10: List Comprehensions and Iterators",
+            "description": "List comprehensions, dictionary comprehensions, generators"
+        },
+        "第11週：クラスとオブジェクト": {
+            "title": "Week 11: Classes and Objects",
+            "description": "Class definition, constructor, instance variables and methods"
+        },
+        "第12週：継承とポリモーフィズム": {
+            "title": "Week 12: Inheritance and Polymorphism",
+            "description": "Class inheritance, method overriding, super()"
+        },
+        "第13週：カプセル化と特殊メソッド": {
+            "title": "Week 13: Encapsulation and Special Methods",
+            "description": "Private variables, properties, special methods (__str__, __repr__, etc.)"
+        },
+        "第14週：モジュールと例外処理": {
+            "title": "Week 14: Modules and Exception Handling",
+            "description": "Module imports, creation, exception handling"
+        },
+        "第15週：ファイル操作と実践プロジェクト": {
+            "title": "Week 15: File Operations and Practical Project",
+            "description": "File read/write, CSV files, JSON files"
+        }
+    }
+}

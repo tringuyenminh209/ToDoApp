@@ -1,0 +1,123 @@
+{
+    "_comment": "English translations for PHP Basic Course (PhpBasicCourseSeeder)",
+    "template": {
+        "title": "PHP基礎演習",
+        "description": "初心者向けPHPプログラミング基礎コース。Webサーバー開発の基礎からデータベース接続、API開発まで段階的に学習します。"
+    },
+    "template_translations": {
+        "PHP基礎演習": {
+            "title": "PHP Basic Course",
+            "description": "Beginner-friendly PHP programming fundamentals course. Learn step by step from web server development basics to database connections and API development."
+        }
+    },
+    "milestones": {
+        "環境構築とPHPの基本": {
+            "title": "Environment Setup and PHP Basics",
+            "description": "Learn from development environment setup to PHP basic syntax",
+            "deliverables": [
+                "Complete development environment setup",
+                "Understand PHP basic syntax",
+                "Master variables and output"
+            ]
+        },
+        "配列とフォーム処理": {
+            "title": "Arrays and Form Processing",
+            "description": "Arrays, associative arrays, constants, file includes, form processing",
+            "deliverables": [
+                "Understand arrays and associative arrays",
+                "Use constants and file includes",
+                "Process GET and POST data"
+            ]
+        },
+        "ファイルアップロードとセッション管理": {
+            "title": "File Upload and Session Management",
+            "description": "File upload, cookies, session management",
+            "deliverables": [
+                "Can upload files",
+                "Can manage cookies and sessions",
+                "Can implement login functionality"
+            ]
+        },
+        "データベース接続基礎": {
+            "title": "Database Connection Basics",
+            "description": "MySQL connection, SELECT, INSERT operations",
+            "deliverables": [
+                "Can connect to database",
+                "Can retrieve data with SELECT statements",
+                "Can add data with INSERT statements"
+            ]
+        },
+        "データベース操作応用": {
+            "title": "Advanced Database Operations",
+            "description": "UPDATE, DELETE, JSON processing",
+            "deliverables": [
+                "Can update data with UPDATE statements",
+                "Can delete data with DELETE statements",
+                "Can process JSON data"
+            ]
+        },
+        "API開発": {
+            "title": "API Development",
+            "description": "RESTful API creation, frontend integration",
+            "deliverables": [
+                "Can implement RESTful API",
+                "Can integrate with frontend",
+                "Can handle CORS and authentication"
+            ]
+        }
+    },
+    "tasks": {
+        "第0回：環境構築": {
+            "title": "Session 0: Environment Setup",
+            "description": "PHP development environment setup (XAMPP, MAMP, or Docker)"
+        },
+        "第1回：PHPの基本": {
+            "title": "Session 1: PHP Basics",
+            "description": "Variables, data types, operators, string operations basics"
+        },
+        "第2回：配列・連想配列": {
+            "title": "Session 2: Arrays and Associative Arrays",
+            "description": "Array and associative array declaration, operations, loop processing"
+        },
+        "第3回：定数・別ファイル読み込み・フォーム処理①": {
+            "title": "Session 3: Constants, File Includes, Form Processing (Part 1)",
+            "description": "Constant definition, require/include, $_GET/$_POST basics"
+        },
+        "第4回：フォーム処理②": {
+            "title": "Session 4: Form Processing (Part 2)",
+            "description": "Form validation, error handling, security measures"
+        },
+        "第5回：ファイルアップロード": {
+            "title": "Session 5: File Upload",
+            "description": "File upload processing using $_FILES, image upload and display"
+        },
+        "第6回：クッキー・セッション": {
+            "title": "Session 6: Cookies and Sessions",
+            "description": "Cookie and session setup, retrieval, deletion, login functionality implementation"
+        },
+        "第8回：DB接続（SELECT）": {
+            "title": "Session 8: Database Connection (SELECT)",
+            "description": "Database connection using PDO, data retrieval with SELECT statements"
+        },
+        "第9回：DB接続（SELECT②条件付き）": {
+            "title": "Session 9: Database Connection (SELECT with Conditions)",
+            "description": "WHERE clause, placeholders, prepared statements"
+        },
+        "第10回：DB接続（INSERT）": {
+            "title": "Session 10: Database Connection (INSERT)",
+            "description": "Add data with INSERT statements, register form data to database"
+        },
+        "第11回：UPDATE・DELETE・Extra": {
+            "title": "Session 11: UPDATE, DELETE, and Extra",
+            "description": "UPDATE statements, DELETE statements, transaction processing"
+        },
+        "第12回：JSON": {
+            "title": "Session 12: JSON",
+            "description": "JSON encoding/decoding, JSON API creation"
+        },
+        "第13回～第14回：自作API": {
+            "title": "Session 13-14: Custom API Development",
+            "description": "RESTful API design and implementation, integration with frontend"
+        }
+    }
+}

@@ -1,0 +1,314 @@
+{
+    "_comment": "Vietnamese translations for Python Cheat Code",
+    "language": {
+        "python": {
+            "description": "Bảng tóm tắt Python là tài liệu tham khảo một trang cho ngôn ngữ lập trình Python 3."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Cơ bản và giới thiệu Python"
+        },
+        "python-built-in-data-types": {
+            "title": "Kiểu dữ liệu tích hợp Python",
+            "description": "Các kiểu dữ liệu cơ bản của Python"
+        },
+        "python-advanced-data-types": {
+            "title": "Kiểu dữ liệu nâng cao Python",
+            "description": "Cấu trúc dữ liệu nâng cao"
+        },
+        "python-strings": {
+            "title": "Chuỗi Python",
+            "description": "Xử lý chuỗi"
+        },
+        "python-functions": {
+            "title": "Hàm Python",
+            "description": "Định nghĩa và sử dụng hàm"
+        },
+        "python-modules": {
+            "title": "Module Python",
+            "description": "Import và sử dụng modules"
+        },
+        "python-file-handling": {
+            "title": "Xử lý tệp Python",
+            "description": "Đọc và ghi tệp"
+        },
+        "python-classes-inheritance": {
+            "title": "Lớp và Kế thừa Python",
+            "description": "Lập trình hướng đối tượng"
+        },
+        "miscellaneous": {
+            "title": "Khác",
+            "description": "Các tính năng Python bổ sung"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "Hello World": {
+                "title": "Hello World",
+                "description": "Chương trình 'Hello World' nổi tiếng trong Python"
+            },
+            "変数": {
+                "title": "Biến",
+                "description": "Python không thể khai báo biến mà không gán giá trị"
+            },
+            "データ型": {
+                "title": "Kiểu dữ liệu",
+                "description": "Các kiểu dữ liệu tích hợp của Python"
+            },
+            "文字列スライス": {
+                "title": "Cắt chuỗi",
+                "description": "Cắt chuỗi"
+            },
+            "リスト": {
+                "title": "Danh sách",
+                "description": "Thao tác danh sách"
+            },
+            "If Else": {
+                "title": "If Else",
+                "description": "Câu lệnh if-else"
+            },
+            "ループ": {
+                "title": "Vòng lặp",
+                "description": "Vòng lặp for với break và else"
+            },
+            "関数": {
+                "title": "Hàm",
+                "description": "Định nghĩa và gọi hàm"
+            },
+            "ファイル処理": {
+                "title": "Xử lý tệp",
+                "description": "Đọc tệp từng dòng"
+            },
+            "算術演算": {
+                "title": "Phép toán số học",
+                "description": "Các toán tử số học"
+            },
+            "複合代入": {
+                "title": "Gán phức hợp",
+                "description": "Các toán tử gán phức hợp"
+            },
+            "f-文字列（Python 3.6+）": {
+                "title": "f-Strings (Python 3.6+)",
+                "description": "Chuỗi format"
+            }
+        },
+        "python-built-in-data-types": {
+            "文字列": {
+                "title": "Chuỗi",
+                "description": "Khai báo chuỗi"
+            },
+            "数値": {
+                "title": "Số",
+                "description": "Các kiểu số"
+            },
+            "ブール型": {
+                "title": "Boolean",
+                "description": "Kiểu boolean và chuyển đổi"
+            },
+            "リスト": {
+                "title": "Danh sách",
+                "description": "Tạo danh sách"
+            },
+            "タプル": {
+                "title": "Tuple",
+                "description": "Tạo tuple - dãy bất biến"
+            },
+            "セット": {
+                "title": "Set",
+                "description": "Tạo set - phần tử duy nhất"
+            },
+            "辞書": {
+                "title": "Dictionary",
+                "description": "Thao tác dictionary"
+            },
+            "キャスト - 整数": {
+                "title": "Ép kiểu - Số nguyên",
+                "description": "Ép kiểu sang số nguyên"
+            },
+            "キャスト - 浮動小数点": {
+                "title": "Ép kiểu - Số thực",
+                "description": "Ép kiểu sang số thực"
+            },
+            "キャスト - 文字列": {
+                "title": "Ép kiểu - Chuỗi",
+                "description": "Ép kiểu sang chuỗi"
+            }
+        },
+        "python-advanced-data-types": {
+            "ヒープ": {
+                "title": "Heap",
+                "description": "Thao tác heap"
+            },
+            "最小ヒープを使った最大ヒープ": {
+                "title": "Max Heap dùng Min Heap",
+                "description": "Sử dụng min heap như max heap"
+            },
+            "スタックとキュー": {
+                "title": "Stack và Queue",
+                "description": "Deque cho stack và queue"
+            }
+        },
+        "python-strings": {
+            "配列風": {
+                "title": "Kiểu mảng",
+                "description": "Truy cập ký tự chuỗi"
+            },
+            "ループ": {
+                "title": "Vòng lặp",
+                "description": "Lặp qua chuỗi"
+            },
+            "文字列スライス": {
+                "title": "Cắt chuỗi",
+                "description": "Ví dụ cắt chuỗi"
+            },
+            "文字列メソッド": {
+                "title": "Phương thức chuỗi",
+                "description": "Các phương thức chuỗi thông dụng"
+            }
+        },
+        "python-functions": {
+            "位置引数": {
+                "title": "Tham số vị trí",
+                "description": "Tham số hàm theo vị trí"
+            },
+            "キーワード引数": {
+                "title": "Tham số từ khóa",
+                "description": "Tham số từ khóa với **kwargs"
+            },
+            "複数の戻り値": {
+                "title": "Nhiều giá trị trả về",
+                "description": "Trả về nhiều giá trị"
+            },
+            "デフォルト値": {
+                "title": "Giá trị mặc định",
+                "description": "Giá trị tham số mặc định"
+            },
+            "無名関数": {
+                "title": "Hàm ẩn danh",
+                "description": "Hàm lambda"
+            }
+        },
+        "python-modules": {
+            "モジュールのインポート": {
+                "title": "Import Module",
+                "description": "Import toàn bộ module"
+            },
+            "モジュールから": {
+                "title": "Từ Module",
+                "description": "Import các hàm cụ thể"
+            },
+            "すべてインポート": {
+                "title": "Import tất cả",
+                "description": "Import mọi thứ từ module"
+            },
+            "モジュールの短縮": {
+                "title": "Bí danh Module",
+                "description": "Đặt bí danh cho module"
+            },
+            "関数と属性": {
+                "title": "Hàm và thuộc tính",
+                "description": "Liệt kê hàm và thuộc tính của module"
+            }
+        },
+        "python-file-handling": {
+            "ファイル読み込み - 行ごと": {
+                "title": "Đọc tệp - Từng dòng",
+                "description": "Đọc tệp từng dòng"
+            },
+            "ファイル読み込み - 行番号付き": {
+                "title": "Đọc tệp - Có số dòng",
+                "description": "Đọc tệp với số dòng"
+            },
+            "文字列の書き込み": {
+                "title": "Ghi chuỗi",
+                "description": "Ghi chuỗi vào tệp"
+            },
+            "文字列の読み込み": {
+                "title": "Đọc chuỗi",
+                "description": "Đọc chuỗi từ tệp"
+            },
+            "オブジェクトの書き込み": {
+                "title": "Ghi đối tượng",
+                "description": "Ghi đối tượng JSON vào tệp"
+            },
+            "オブジェクトの読み込み": {
+                "title": "Đọc đối tượng",
+                "description": "Đọc đối tượng JSON từ tệp"
+            },
+            "ファイルの削除": {
+                "title": "Xóa tệp",
+                "description": "Xóa một tệp"
+            },
+            "確認して削除": {
+                "title": "Kiểm tra và xóa",
+                "description": "Kiểm tra tồn tại tệp trước khi xóa"
+            },
+            "フォルダの削除": {
+                "title": "Xóa thư mục",
+                "description": "Xóa một thư mục"
+            }
+        },
+        "python-classes-inheritance": {
+            "定義": {
+                "title": "Định nghĩa",
+                "description": "Định nghĩa lớp cơ bản"
+            },
+            "コンストラクタ": {
+                "title": "Constructor",
+                "description": "Constructor của lớp"
+            },
+            "メソッド": {
+                "title": "Phương thức",
+                "description": "Phương thức của lớp"
+            },
+            "クラス変数": {
+                "title": "Biến lớp",
+                "description": "Biến lớp"
+            },
+            "Super()関数": {
+                "title": "Hàm Super()",
+                "description": "Gọi phương thức cha với super()"
+            },
+            "__repr__()メソッド": {
+                "title": "Phương thức __repr__()",
+                "description": "Phương thức biểu diễn chuỗi"
+            },
+            "ユーザー定義例外": {
+                "title": "Ngoại lệ tự định nghĩa",
+                "description": "Lớp ngoại lệ tùy chỉnh"
+            },
+            "ポリモーフィズム": {
+                "title": "Đa hình",
+                "description": "Ví dụ đa hình"
+            },
+            "オーバーライド": {
+                "title": "Ghi đè",
+                "description": "Ghi đè phương thức"
+            },
+            "継承": {
+                "title": "Kế thừa",
+                "description": "Kế thừa lớp"
+            }
+        },
+        "miscellaneous": {
+            "コメント": {
+                "title": "Chú thích",
+                "description": "Cú pháp chú thích"
+            },
+            "ジェネレータ": {
+                "title": "Generator",
+                "description": "Hàm generator"
+            },
+            "ジェネレータからリストへ": {
+                "title": "Generator sang List",
+                "description": "Chuyển đổi generator sang list"
+            },
+            "例外の処理": {
+                "title": "Xử lý ngoại lệ",
+                "description": "Xử lý ngoại lệ với try-except-else-finally"
+            }
+        }
+    }
+}

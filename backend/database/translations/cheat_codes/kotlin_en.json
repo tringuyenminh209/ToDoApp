@@ -1,0 +1,260 @@
+{
+    "_comment": "English translations for Kotlin Cheat Code",
+    "language": {
+        "kotlin": {
+            "description": "Kotlin reference cheat sheet with usage, examples, and more."
+        }
+    },
+    "sections": {
+        "kotlin-introduction": {
+            "title": "Introduction to Kotlin",
+            "description": "Kotlin basics and introduction"
+        },
+        "kotlin-data-types-variables": {
+            "title": "Data Types and Variables",
+            "description": "Variables and data types"
+        },
+        "kotlin-conditionals": {
+            "title": "Conditional Expressions",
+            "description": "Conditional statements"
+        },
+        "kotlin-collections": {
+            "title": "Collections",
+            "description": "Lists, Sets, Maps"
+        },
+        "kotlin-functions": {
+            "title": "Functions",
+            "description": "Function definition and usage"
+        },
+        "kotlin-classes": {
+            "title": "Classes",
+            "description": "Object-oriented programming"
+        }
+    },
+    "examples": {
+        "kotlin-introduction": {
+            "main()": {
+                "title": "main()",
+                "description": "main() function is the entry point of all Kotlin programs"
+            },
+            "Print文": {
+                "title": "Print Statements",
+                "description": "Print and println statements"
+            },
+            "コメント": {
+                "title": "Comments",
+                "description": "Comment syntax"
+            },
+            "実行順序": {
+                "title": "Execution Order",
+                "description": "Code execution order"
+            }
+        },
+        "kotlin-data-types-variables": {
+            "可変変数": {
+                "title": "Mutable Variables",
+                "description": "Mutable variables with var"
+            },
+            "不変変数": {
+                "title": "Immutable Variables",
+                "description": "Immutable variables with val"
+            },
+            "型推論": {
+                "title": "Type Inference",
+                "description": "Type inference in Kotlin"
+            },
+            "文字列連結": {
+                "title": "String Concatenation",
+                "description": "String concatenation"
+            },
+            "文字列テンプレート": {
+                "title": "String Templates",
+                "description": "String templates with $"
+            },
+            "組み込みプロパティと関数": {
+                "title": "Built-in Properties and Functions",
+                "description": "String properties and functions"
+            },
+            "文字エスケープ": {
+                "title": "Character Escaping",
+                "description": "Character escape sequences"
+            },
+            "算術演算子": {
+                "title": "Arithmetic Operators",
+                "description": "Arithmetic operators"
+            },
+            "演算順序": {
+                "title": "Order of Operations",
+                "description": "Operator precedence"
+            },
+            "拡張代入演算子": {
+                "title": "Augmented Assignment Operators",
+                "description": "Augmented assignment operators"
+            },
+            "インクリメントとデクリメント演算子": {
+                "title": "Increment and Decrement Operators",
+                "description": "Increment and decrement operators"
+            },
+            "Mathライブラリ": {
+                "title": "Math Library",
+                "description": "Math library functions"
+            }
+        },
+        "kotlin-conditionals": {
+            "If式": {
+                "title": "If Expression",
+                "description": "Basic if expression"
+            },
+            "Else式": {
+                "title": "Else Expression",
+                "description": "If-else expression"
+            },
+            "Else-If式": {
+                "title": "Else-If Expression",
+                "description": "Else-if chain"
+            },
+            "比較演算子": {
+                "title": "Comparison Operators",
+                "description": "Comparison operators"
+            },
+            "論理演算子": {
+                "title": "Logical Operators",
+                "description": "Logical operators"
+            },
+            "AND演算子: &&": {
+                "title": "AND Operator: &&",
+                "description": "Logical AND operator"
+            },
+            "OR演算子: ||": {
+                "title": "OR Operator: ||",
+                "description": "Logical OR operator"
+            },
+            "NOT演算子": {
+                "title": "NOT Operator",
+                "description": "Logical NOT operator"
+            },
+            "評価順序": {
+                "title": "Evaluation Order",
+                "description": "Operator evaluation order"
+            },
+            "ネストされた条件": {
+                "title": "Nested Conditionals",
+                "description": "Nested if statements"
+            },
+            "When式": {
+                "title": "When Expression",
+                "description": "When expression (switch-like)"
+            },
+            "範囲演算子": {
+                "title": "Range Operator",
+                "description": "Range operator (in)"
+            },
+            "等価演算子": {
+                "title": "Equality Operators",
+                "description": "Equality operators"
+            }
+        },
+        "kotlin-collections": {
+            "不変リスト": {
+                "title": "Immutable List",
+                "description": "Creating immutable lists"
+            },
+            "可変リスト": {
+                "title": "Mutable List",
+                "description": "Creating mutable lists"
+            },
+            "リストへのアクセス": {
+                "title": "Accessing Lists",
+                "description": "Accessing list elements"
+            },
+            "Size属性": {
+                "title": "Size Property",
+                "description": "Getting list size"
+            },
+            "リスト操作": {
+                "title": "List Operations",
+                "description": "List operations"
+            },
+            "不変セット": {
+                "title": "Immutable Set",
+                "description": "Creating immutable sets"
+            },
+            "可変セット": {
+                "title": "Mutable Set",
+                "description": "Creating mutable sets"
+            },
+            "コレクション要素へのアクセス": {
+                "title": "Accessing Collection Elements",
+                "description": "Accessing set elements"
+            },
+            "不変マップ": {
+                "title": "Immutable Map",
+                "description": "Creating immutable maps"
+            },
+            "可変マップ": {
+                "title": "Mutable Map",
+                "description": "Creating mutable maps"
+            },
+            "マップのキーと値の取得": {
+                "title": "Getting Map Keys and Values",
+                "description": "Accessing map keys and values"
+            },
+            "マップエントリの追加と削除": {
+                "title": "Adding and Removing Map Entries",
+                "description": "Adding and removing map entries"
+            }
+        },
+        "kotlin-functions": {
+            "関数": {
+                "title": "Functions",
+                "description": "Basic function definition"
+            },
+            "関数パラメータ": {
+                "title": "Function Parameters",
+                "description": "Functions with parameters"
+            },
+            "デフォルトパラメータ": {
+                "title": "Default Parameters",
+                "description": "Default function parameters"
+            },
+            "名前付きパラメータ": {
+                "title": "Named Parameters",
+                "description": "Named function parameters"
+            },
+            "Return文": {
+                "title": "Return Statement",
+                "description": "Functions with return types"
+            },
+            "単一式関数": {
+                "title": "Single Expression Functions",
+                "description": "Single expression functions"
+            },
+            "関数リテラル": {
+                "title": "Function Literals",
+                "description": "Anonymous functions and lambda expressions"
+            }
+        },
+        "kotlin-classes": {
+            "クラスの例": {
+                "title": "Class Example",
+                "description": "Basic class definition"
+            },
+            "クラスインスタンス": {
+                "title": "Class Instance",
+                "description": "Creating class instances"
+            },
+            "プライマリコンストラクタ": {
+                "title": "Primary Constructor",
+                "description": "Primary constructor"
+            },
+            "初期化ブロック": {
+                "title": "Init Block",
+                "description": "Init block"
+            },
+            "メンバー関数": {
+                "title": "Member Functions",
+                "description": "Class member functions"
+            }
+        }
+    }
+}

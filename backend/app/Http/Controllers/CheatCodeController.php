@@ -39,14 +39,14 @@ class CheatCodeController extends Controller
         $sortOrder = $request->input('sort_order', 'asc');
         $query->orderBy($sortBy, $sortOrder);
 
-        $languages = $query->get()->map(function ($language) {
+        $languages = $query->withTranslations()->get()->map(function ($language) {
             return [
                 'id' => $language->id,
                 'name' => $language->name,
                 'displayName' => $language->display_name,
                 'icon' => $language->icon,
                 'color' => $language->color,
-                'description' => $language->description,
+                'description' => $language->getTranslation('description') ?? $language->description,
                 'popularity' => $language->popularity,
                 'category' => $language->category,
                 'sectionsCount' => $language->sections_count,
@@ -75,6 +75,7 @@ class CheatCodeController extends Controller
                 $query->where('id', $identifier)
                     ->orWhere('slug', $identifier);
             })
+            ->withTranslations()
             ->firstOrFail();
 
         $languageData = [
@@ -83,7 +84,7 @@ class CheatCodeController extends Controller
             'displayName' => $language->display_name,
             'icon' => $language->icon,
             'color' => $language->color,
-            'description' => $language->description,
+            'description' => $language->getTranslation('description') ?? $language->description,
             'popularity' => $language->popularity,
             'category' => $language->category,
             'sectionsCount' => $language->sections_count,
@@ -115,8 +116,10 @@ class CheatCodeController extends Controller
 
         $query = CheatCodeSection::where('language_id', $language->id)
             ->where('is_published', true)
+            ->withTranslations()
             ->with(['examples' => function ($query) {
                 $query->where('is_published', true)
+                    ->withTranslations()
                     ->orderBy('sort_order');
             }])
             ->orderBy('sort_order');
@@ -125,16 +128,16 @@ class CheatCodeController extends Controller
             return [
                 'id' => $section->id,
                 'languageId' => $section->language_id,
-                'title' => $section->title,
-                'description' => $section->description,
+                'title' => $section->getTranslation('title') ?? $section->title,
+                'description' => $section->getTranslation('description') ?? $section->description,
                 'sortOrder' => $section->sort_order,
                 'examples' => $section->examples->map(function ($example) {
                     return [
                         'id' => $example->id,
                         'sectionId' => $example->section_id,
-                        'title' => $example->title,
+                        'title' => $example->getTranslation('title') ?? $example->title,
                         'code' => $example->code,
-                        'description' => $example->description,
+                        'description' => $example->getTranslation('description') ?? $example->description,
                         'output' => $example->output,
                         'tags' => $example->tags,
                         'difficulty' => $example->difficulty,
@@ -154,7 +157,7 @@ class CheatCodeController extends Controller
             'displayName' => $language->display_name,
             'icon' => $language->icon,
             'color' => $language->color,
-            'description' => $language->description,
+            'description' => $language->getTranslation('description') ?? $language->description,
             'popularity' => $language->popularity,
             'category' => $language->category,
             'sectionsCount' => $language->sections_count,
@@ -193,8 +196,10 @@ class CheatCodeController extends Controller
                 $query->where('id', $sectionId)
                     ->orWhere('slug', $sectionId);
             })
+            ->withTranslations()
             ->with(['examples' => function ($query) {
                 $query->where('is_published', true)
+                    ->withTranslations()
                     ->orderBy('sort_order');
             }])
             ->firstOrFail();
@@ -202,16 +207,16 @@ class CheatCodeController extends Controller
         $sectionData = [
             'id' => $section->id,
             'languageId' => $section->language_id,
-            'title' => $section->title,
-            'description' => $section->description,
+            'title' => $section->getTranslation('title') ?? $section->title,
+            'description' => $section->getTranslation('description') ?? $section->description,
             'sortOrder' => $section->sort_order,
             'examples' => $section->examples->map(function ($example) {
                 return [
                     'id' => $example->id,
                     'sectionId' => $example->section_id,
-                    'title' => $example->title,
+                    'title' => $example->getTranslation('title') ?? $example->title,
                     'code' => $example->code,
-                    'description' => $example->description,
+                    'description' => $example->getTranslation('description') ?? $example->description,
                     'output' => $example->output,
                     'tags' => $example->tags,
                     'difficulty' => $example->difficulty,
@@ -252,7 +257,8 @@ class CheatCodeController extends Controller
             ->firstOrFail();
 
         $query = CodeExample::where('section_id', $section->id)
-            ->where('is_published', true);
+            ->where('is_published', true)
+            ->withTranslations();
 
         // Filter by difficulty
         if ($request->has('difficulty')) {
@@ -275,9 +281,9 @@ class CheatCodeController extends Controller
             return [
                 'id' => $example->id,
                 'sectionId' => $example->section_id,
-                'title' => $example->title,
+                'title' => $example->getTranslation('title') ?? $example->title,
                 'code' => $example->code,
-                'description' => $example->description,
+                'description' => $example->getTranslation('description') ?? $example->description,
                 'output' => $example->output,
                 'tags' => $example->tags,
                 'difficulty' => $example->difficulty,

@@ -1,0 +1,210 @@
+{
+    "_comment": "Vietnamese translations for Java Cheat Code",
+    "language": {
+        "java": {
+            "description": "Java là ngôn ngữ lập trình hướng đối tượng, dựa trên class, được thiết kế cho tính di động và phát triển đa nền tảng."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Cơ bản lập trình Java"
+        },
+        "java-strings": {
+            "title": "Chuỗi Java",
+            "description": "Xử lý chuỗi trong Java"
+        },
+        "java-arrays": {
+            "title": "Mảng Java",
+            "description": "Xử lý mảng trong Java"
+        },
+        "java-conditionals": {
+            "title": "Điều kiện Java",
+            "description": "Câu lệnh điều kiện trong Java"
+        },
+        "java-loops": {
+            "title": "Vòng lặp Java",
+            "description": "Cấu trúc vòng lặp trong Java"
+        },
+        "java-collections": {
+            "title": "Collections Java",
+            "description": "Java Collections Framework"
+        },
+        "miscellaneous": {
+            "title": "Khác",
+            "description": "Xử lý lỗi và các tính năng Java khác"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "Hello.java": {
+                "title": "Hello.java",
+                "description": "Cấu trúc chương trình Java cơ bản với phương thức main và xuất console"
+            },
+            "変数": {
+                "title": "Biến",
+                "description": "Khai báo và khởi tạo kiểu nguyên thủy và String"
+            },
+            "プリミティブデータ型": {
+                "title": "Kiểu dữ liệu nguyên thủy",
+                "description": "Bảng tham chiếu các kiểu nguyên thủy với kích thước, giá trị mặc định và phạm vi"
+            },
+            "ループ": {
+                "title": "Vòng lặp",
+                "description": "Vòng lặp for nâng cao lặp qua mảng ký tự"
+            },
+            "配列": {
+                "title": "Mảng",
+                "description": "Cách khai báo và khởi tạo mảng"
+            },
+            "型キャスト": {
+                "title": "Ép kiểu",
+                "description": "Chuyển đổi mở rộng/thu hẹp và parse String"
+            },
+            "条件分岐": {
+                "title": "Điều kiện",
+                "description": "Cấu trúc câu lệnh if-else-if"
+            },
+            "ユーザー入力": {
+                "title": "Nhập liệu",
+                "description": "Đọc input từ người dùng với Scanner"
+            }
+        },
+        "java-strings": {
+            "連結": {
+                "title": "Nối chuỗi",
+                "description": "Ví dụ nối chuỗi và số"
+            },
+            "StringBuilder": {
+                "title": "StringBuilder",
+                "description": "Các thao tác append, delete, insert của StringBuilder"
+            },
+            "比較": {
+                "title": "So sánh",
+                "description": "So sánh tham chiếu vs giá trị, so khớp không phân biệt hoa thường"
+            },
+            "操作": {
+                "title": "Xử lý",
+                "description": "Các phương thức biến đổi chuỗi"
+            },
+            "情報取得": {
+                "title": "Lấy thông tin",
+                "description": "Trích xuất ký tự và chuỗi con với chức năng tìm kiếm"
+            }
+        },
+        "java-arrays": {
+            "宣言": {
+                "title": "Khai báo",
+                "description": "Các cú pháp khai báo mảng"
+            },
+            "変更": {
+                "title": "Thay đổi",
+                "description": "Gán phần tử và thuộc tính length"
+            },
+            "ループ（読み取りと変更）": {
+                "title": "Vòng lặp (Đọc & Sửa)",
+                "description": "Lặp với chỉ số để sửa đổi phần tử"
+            },
+            "ループ（読み取り専用）": {
+                "title": "Vòng lặp (Chỉ đọc)",
+                "description": "Vòng lặp for nâng cao để lặp chỉ đọc"
+            },
+            "多次元配列": {
+                "title": "Mảng đa chiều",
+                "description": "Truy cập mảng 2D và chuyển đổi sang String"
+            },
+            "ソート": {
+                "title": "Sắp xếp",
+                "description": "Sắp xếp mảng và hiển thị nội dung"
+            }
+        },
+        "java-conditionals": {
+            "If文": {
+                "title": "Câu lệnh If",
+                "description": "Câu lệnh if cơ bản"
+            },
+            "If-Else文": {
+                "title": "Câu lệnh If-Else",
+                "description": "Phân nhánh if-else"
+            },
+            "Switch文": {
+                "title": "Câu lệnh Switch",
+                "description": "Phân nhánh đa hướng dựa trên giá trị rời rạc"
+            },
+            "三項演算子": {
+                "title": "Toán tử 3 ngôi",
+                "description": "Biểu thức điều kiện gọn cho lựa chọn đơn giản"
+            }
+        },
+        "java-loops": {
+            "Forループ": {
+                "title": "Vòng lặp For",
+                "description": "Lặp có chỉ số tiêu chuẩn"
+            },
+            "拡張Forループ": {
+                "title": "Vòng lặp For nâng cao",
+                "description": "Lặp đơn giản hóa cho collections và mảng"
+            },
+            "Whileループ": {
+                "title": "Vòng lặp While",
+                "description": "Lặp có điều kiện với kiểm tra trước"
+            },
+            "Do-Whileループ": {
+                "title": "Vòng lặp Do-While",
+                "description": "Vòng lặp kiểm tra sau đảm bảo thực thi ít nhất một lần"
+            },
+            "Continue文": {
+                "title": "Câu lệnh Continue",
+                "description": "Bỏ qua lần lặp hiện tại và tiếp tục lần tiếp theo"
+            },
+            "Break文": {
+                "title": "Câu lệnh Break",
+                "description": "Thoát vòng lặp hoàn toàn khi điều kiện thỏa mãn"
+            }
+        },
+        "java-collections": {
+            "ArrayList": {
+                "title": "ArrayList",
+                "description": "Thao tác và lặp mảng động"
+            },
+            "ArrayList反復処理": {
+                "title": "Lặp ArrayList",
+                "description": "Lặp ArrayList với vòng lặp for nâng cao"
+            },
+            "HashMap": {
+                "title": "HashMap",
+                "description": "Lưu trữ key-value với thao tác get và put"
+            },
+            "HashMap反復処理": {
+                "title": "Lặp HashMap",
+                "description": "Lặp HashMap với biểu thức lambda"
+            },
+            "HashSet": {
+                "title": "HashSet",
+                "description": "Collection phần tử duy nhất với kiểm tra thành viên"
+            },
+            "ArrayDeque": {
+                "title": "ArrayDeque",
+                "description": "Thao tác hàng đợi hai đầu (Stack/Queue)"
+            }
+        },
+        "miscellaneous": {
+            "Try-Catch-Finally": {
+                "title": "Try-Catch-Finally",
+                "description": "Xử lý ngoại lệ với dọn dẹp đảm bảo"
+            },
+            "正規表現": {
+                "title": "Biểu thức chính quy",
+                "description": "Regex để xóa khoảng trắng và tách String"
+            },
+            "Mathメソッド": {
+                "title": "Phương thức Math",
+                "description": "Các phép toán thông dụng"
+            },
+            "ラムダ式": {
+                "title": "Biểu thức Lambda",
+                "description": "Biểu thức lambda với forEach (Java 8+)"
+            }
+        }
+    }
+}

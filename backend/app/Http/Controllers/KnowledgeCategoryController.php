@@ -21,9 +21,17 @@ class KnowledgeCategoryController extends Controller
         $user = $request->user();
 
         $categories = KnowledgeCategory::where('user_id', $user->id)
-            ->with(['parent', 'children'])
+            ->withTranslations()
+            ->with(['parent' => function ($q) {
+                $q->withTranslations();
+            }, 'children' => function ($q) {
+                $q->withTranslations();
+            }])
             ->ordered()
-            ->get();
+            ->get()
+            ->map(function ($category) {
+                return $category->toArrayWithTranslations();
+            });
 
         // Get item counts for all categories in one query (more efficient)
         $categoryIds = $categories->pluck('id');
@@ -54,7 +62,9 @@ class KnowledgeCategoryController extends Controller
         $user = $request->user();
 
         // Get all categories for this user
-        $allCategories = KnowledgeCategory::where('user_id', $user->id)->get();
+        $allCategories = KnowledgeCategory::where('user_id', $user->id)
+            ->withTranslations()
+            ->get();
 
         // Get item counts for all categories in one query (more efficient)
         $categoryIds = $allCategories->pluck('id');
@@ -91,8 +101,14 @@ class KnowledgeCategoryController extends Controller
         $user = $request->user();
 
         $category = KnowledgeCategory::where('user_id', $user->id)
-            ->with(['parent', 'children', 'knowledgeItems' => function($query) {
+            ->withTranslations()
+            ->with(['parent' => function ($q) {
+                $q->withTranslations();
+            }, 'children' => function ($q) {
+                $q->withTranslations();
+            }, 'knowledgeItems' => function($query) {
                 $query->where('is_archived', false)
+                      ->withTranslations()
                       ->orderBy('created_at', 'desc');
             }])
             ->findOrFail($id);
@@ -105,7 +121,15 @@ class KnowledgeCategoryController extends Controller
         // Get breadcrumb path
         $breadcrumb = $this->getBreadcrumb($category);
 
-        $response = $category->toArray();
+        $response = $category->toArrayWithTranslations();
+        // Transform breadcrumb with translations
+        $breadcrumb = array_map(function ($item) {
+            $cat = KnowledgeCategory::withTranslations()->find($item['id']);
+            return [
+                'id' => $item['id'],
+                'name' => $cat ? ($cat->getTranslation('name') ?? $cat->name) : $item['name']
+            ];
+        }, $breadcrumb);
         $response['breadcrumb'] = $breadcrumb;
 
         return response()->json([
@@ -576,7 +600,8 @@ class KnowledgeCategoryController extends Controller
      */
     private function buildCategoryTreeWithCounts(KnowledgeCategory $category, $allCategories, $itemCounts): array
     {
-        $data = $category->toArray();
+        // Get translated data
+        $data = $category->toArrayWithTranslations();
 
         // Set item count from pre-calculated counts
         $data['item_count'] = $itemCounts->get($category->id, 0);

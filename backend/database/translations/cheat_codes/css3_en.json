@@ -1,0 +1,336 @@
+{
+    "_comment": "English translations for CSS3 Cheat Code",
+    "language": {
+        "css3": {
+            "description": "CSS reference cheat sheet listing selector syntax, properties, units, and other useful information."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "CSS3 basics and introduction"
+        },
+        "css-selectors": {
+            "title": "CSS Selectors",
+            "description": "CSS selector syntax"
+        },
+        "css-animations": {
+            "title": "CSS Animations",
+            "description": "CSS animations and keyframes"
+        },
+        "css-flexbox": {
+            "title": "CSS Flexbox",
+            "description": "Flexbox layout system"
+        },
+        "css-flexbox-tricks": {
+            "title": "CSS Flexbox Tricks",
+            "description": "Flexbox tips and tricks"
+        },
+        "css-grid-layout": {
+            "title": "CSS Grid Layout",
+            "description": "CSS Grid system"
+        },
+        "css-dynamic-content": {
+            "title": "CSS Dynamic Content",
+            "description": "CSS variables and counters"
+        },
+        "css-tricks": {
+            "title": "CSS 3 Tricks",
+            "description": "CSS tips and tricks"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "外部スタイルシート": {
+                "title": "External Stylesheet",
+                "description": "Linking external CSS files"
+            },
+            "内部スタイルシート": {
+                "title": "Internal Stylesheet",
+                "description": "Internal CSS in HTML"
+            },
+            "インラインスタイル": {
+                "title": "Inline Styles",
+                "description": "Inline CSS styles"
+            },
+            "クラスの追加": {
+                "title": "Adding Classes",
+                "description": "Adding CSS classes to HTML elements"
+            },
+            "!important": {
+                "title": "!important",
+                "description": "Using !important to override styles"
+            },
+            "セレクタ": {
+                "title": "Selectors",
+                "description": "Basic CSS selectors"
+            },
+            "テキストの色": {
+                "title": "Text Color",
+                "description": "Text color values"
+            },
+            "背景": {
+                "title": "Background",
+                "description": "Background properties"
+            },
+            "フォント": {
+                "title": "Font",
+                "description": "Font properties"
+            },
+            "位置": {
+                "title": "Position",
+                "description": "Position properties"
+            },
+            "アニメーション": {
+                "title": "Animation",
+                "description": "CSS animation shorthand"
+            },
+            "コメント": {
+                "title": "Comments",
+                "description": "CSS comment syntax"
+            },
+            "Flexレイアウト": {
+                "title": "Flex Layout",
+                "description": "Flexbox layout"
+            },
+            "Gridレイアウト": {
+                "title": "Grid Layout",
+                "description": "CSS Grid layout"
+            },
+            "変数とカウンター": {
+                "title": "Variables and Counters",
+                "description": "CSS variables and counters"
+            }
+        },
+        "css-selectors": {
+            "グループセレクタ": {
+                "title": "Group Selector",
+                "description": "Grouping selectors"
+            },
+            "チェーンセレクタ": {
+                "title": "Chaining Selector",
+                "description": "Chaining selectors"
+            },
+            "属性セレクタ": {
+                "title": "Attribute Selector",
+                "description": "Attribute selector"
+            },
+            "最初の子要素セレクタ": {
+                "title": "First Child Selector",
+                "description": "First child pseudo-class"
+            },
+            "子要素なしセレクタ": {
+                "title": "No Children Selector",
+                "description": "Empty pseudo-class"
+            },
+            "基本セレクタの表": {
+                "title": "Basic Selectors Table",
+                "description": "Basic selector types"
+            },
+            "結合子の表": {
+                "title": "Combinators Table",
+                "description": "Combinator selectors"
+            },
+            "属性セレクタの表": {
+                "title": "Attribute Selectors Table",
+                "description": "Attribute selector syntax"
+            },
+            "ユーザーアクション疑似クラス": {
+                "title": "User Action Pseudo-classes",
+                "description": "Link pseudo-classes"
+            },
+            "疑似クラスの表": {
+                "title": "Pseudo-classes Table",
+                "description": "Pseudo-classes and pseudo-elements"
+            },
+            "入力疑似クラス": {
+                "title": "Input Pseudo-classes",
+                "description": "Input pseudo-classes"
+            },
+            "構造的疑似クラス": {
+                "title": "Structural Pseudo-classes",
+                "description": "Structural pseudo-classes"
+            }
+        },
+        "css-animations": {
+            "アニメーションプロパティ": {
+                "title": "Animation Properties",
+                "description": "Animation properties"
+            },
+            "アニメーションの例": {
+                "title": "Animation Examples",
+                "description": "Animation shorthand examples"
+            },
+            "JavaScriptイベント": {
+                "title": "JavaScript Events",
+                "description": "JavaScript animation end events"
+            }
+        },
+        "css-flexbox": {
+            "簡単な例": {
+                "title": "Simple Example",
+                "description": "Basic flexbox setup"
+            },
+            "コンテナ - Display": {
+                "title": "Container - Display",
+                "description": "Flexbox display values"
+            },
+            "コンテナ - flex-direction": {
+                "title": "Container - flex-direction",
+                "description": "Flex direction options"
+            },
+            "コンテナ - flex-wrap": {
+                "title": "Container - flex-wrap",
+                "description": "Flex wrap options"
+            },
+            "コンテナ - align-items": {
+                "title": "Container - align-items",
+                "description": "Align items options"
+            },
+            "コンテナ - justify-content": {
+                "title": "Container - justify-content",
+                "description": "Justify content options"
+            },
+            "子要素 - flex": {
+                "title": "Child - flex",
+                "description": "Flex shorthand property"
+            },
+            "子要素 - order": {
+                "title": "Child - order",
+                "description": "Order property"
+            },
+            "子要素 - align-self": {
+                "title": "Child - align-self",
+                "description": "Align self property"
+            }
+        },
+        "css-flexbox-tricks": {
+            "垂直中央揃え": {
+                "title": "Vertical Centering",
+                "description": "Centering with margin auto"
+            },
+            "垂直中央揃え（2）": {
+                "title": "Vertical Centering (2)",
+                "description": "Centering with align-items and justify-content"
+            },
+            "並び替え": {
+                "title": "Reordering",
+                "description": "Reordering flex items"
+            },
+            "モバイルレイアウト": {
+                "title": "Mobile Layout",
+                "description": "Mobile-friendly flex layout"
+            },
+            "テーブル風": {
+                "title": "Table-like",
+                "description": "Table-like layout with flexbox"
+            },
+            "垂直": {
+                "title": "Vertical",
+                "description": "Vertically center all items"
+            },
+            "左と右": {
+                "title": "Left and Right",
+                "description": "Left and right alignment"
+            }
+        },
+        "css-grid-layout": {
+            "Grid Template Columns": {
+                "title": "Grid Template Columns",
+                "description": "Grid template columns"
+            },
+            "fr相対単位": {
+                "title": "fr Relative Unit",
+                "description": "Fractional unit (fr)"
+            },
+            "Grid Gap": {
+                "title": "Grid Gap",
+                "description": "Grid gap property"
+            },
+            "CSSブロックレベルGrid": {
+                "title": "CSS Block Level Grid",
+                "description": "Block level grid"
+            },
+            "grid-row": {
+                "title": "grid-row",
+                "description": "Grid row property"
+            },
+            "CSSインラインレベルGrid": {
+                "title": "CSS Inline Level Grid",
+                "description": "Inline level grid"
+            },
+            "minmax()関数": {
+                "title": "minmax() Function",
+                "description": "Minmax function"
+            },
+            "grid-row-startとgrid-row-end": {
+                "title": "grid-row-start and grid-row-end",
+                "description": "Grid row start and end"
+            },
+            "CSS grid-row-gap": {
+                "title": "CSS grid-row-gap",
+                "description": "Grid row gap"
+            },
+            "CSS grid-area": {
+                "title": "CSS grid-area",
+                "description": "Grid area shorthand"
+            },
+            "Justify Items": {
+                "title": "Justify Items",
+                "description": "Justify items property"
+            },
+            "CSS grid-template-areas": {
+                "title": "CSS grid-template-areas",
+                "description": "Grid template areas"
+            },
+            "Justify Self": {
+                "title": "Justify Self",
+                "description": "Justify self property"
+            },
+            "Align Items": {
+                "title": "Align Items",
+                "description": "Align items property"
+            }
+        },
+        "css-dynamic-content": {
+            "変数 - 定義": {
+                "title": "Variables - Definition",
+                "description": "CSS variable definition"
+            },
+            "変数 - 使用": {
+                "title": "Variables - Usage",
+                "description": "CSS variable usage"
+            },
+            "カウンター - 設定": {
+                "title": "Counter - Set",
+                "description": "CSS counter setup"
+            },
+            "カウンター - 増加": {
+                "title": "Counter - Increment",
+                "description": "CSS counter increment"
+            },
+            "カウンター - 減少": {
+                "title": "Counter - Decrement",
+                "description": "CSS counter decrement"
+            },
+            "カウンター - リセット": {
+                "title": "Counter - Reset",
+                "description": "CSS counter reset"
+            },
+            "カウンターの使用 - 基本": {
+                "title": "Counter Usage - Basic",
+                "description": "Basic counter usage"
+            },
+            "カウンターの使用 - ネスト": {
+                "title": "Counter Usage - Nested",
+                "description": "Nested counters"
+            }
+        },
+        "css-tricks": {
+            "スクロールバースムーズ": {
+                "title": "Smooth Scrollbar",
+                "description": "Smooth scroll behavior"
+            }
+        }
+    }
+}

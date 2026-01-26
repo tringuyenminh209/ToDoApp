@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ]);
 
+        // Thêm middleware SetLocale cho đa ngôn ngữ
+        $middleware->api(append: [
+            \App\Http\Middleware\SetLocale::class,
+        ]);
+
         // CORS設定を有効化
         $middleware->validateCsrfTokens(except: [
             'api/*',

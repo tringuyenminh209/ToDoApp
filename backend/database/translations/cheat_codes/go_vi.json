@@ -1,0 +1,256 @@
+{
+    "_comment": "Vietnamese translations for Go Cheat Code",
+    "language": {
+        "go": {
+            "description": "Go là ngôn ngữ lập trình mã nguồn mở giúp dễ dàng xây dựng phần mềm đơn giản, đáng tin cậy và hiệu quả."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Cơ bản lập trình Go"
+        },
+        "go-basic-types": {
+            "title": "Kiểu cơ bản Go",
+            "description": "Các kiểu dữ liệu Go"
+        },
+        "go-strings": {
+            "title": "Chuỗi Go",
+            "description": "Xử lý chuỗi trong Go"
+        },
+        "go-functions": {
+            "title": "Hàm Go",
+            "description": "Định nghĩa và sử dụng hàm"
+        },
+        "go-packages": {
+            "title": "Package Go",
+            "description": "Quản lý package"
+        },
+        "go-concurrency": {
+            "title": "Đồng thời Go",
+            "description": "Goroutine và channel"
+        },
+        "go-error-control": {
+            "title": "Xử lý lỗi Go",
+            "description": "Xử lý lỗi"
+        },
+        "go-methods": {
+            "title": "Phương thức Go",
+            "description": "Phương thức và receiver"
+        },
+        "go-interfaces": {
+            "title": "Interface Go",
+            "description": "Triển khai interface"
+        },
+        "miscellaneous": {
+            "title": "Khác",
+            "description": "Từ khóa và toán tử"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "hello.go": {
+                "title": "hello.go",
+                "description": "Chương trình Hello World cơ bản"
+            },
+            "直接実行": {
+                "title": "Chạy trực tiếp",
+                "description": "Chạy chương trình Go"
+            },
+            "変数": {
+                "title": "Biến",
+                "description": "Khai báo biến"
+            },
+            "短縮宣言": {
+                "title": "Khai báo ngắn",
+                "description": "Khai báo biến ngắn gọn"
+            },
+            "関数": {
+                "title": "Hàm",
+                "description": "Định nghĩa hàm"
+            },
+            "コメント": {
+                "title": "Chú thích",
+                "description": "Cú pháp chú thích"
+            },
+            "If文": {
+                "title": "Câu lệnh If",
+                "description": "Cú pháp câu lệnh if"
+            }
+        },
+        "go-basic-types": {
+            "文字列": {
+                "title": "Chuỗi",
+                "description": "Thao tác và nối chuỗi"
+            },
+            "数値": {
+                "title": "Số",
+                "description": "Các kiểu số"
+            },
+            "演算子": {
+                "title": "Toán tử",
+                "description": "Toán tử số học"
+            },
+            "ブール値": {
+                "title": "Boolean",
+                "description": "Kiểu boolean"
+            },
+            "ブール演算子": {
+                "title": "Toán tử Boolean",
+                "description": "Toán tử boolean"
+            },
+            "配列": {
+                "title": "Mảng",
+                "description": "Khai báo mảng và slicing"
+            },
+            "配列の宣言": {
+                "title": "Khai báo mảng",
+                "description": "Mảng với kích thước cố định"
+            },
+            "2次元配列": {
+                "title": "Mảng 2D",
+                "description": "Mảng đa chiều"
+            },
+            "ポインタ": {
+                "title": "Con trỏ",
+                "description": "Cơ bản về con trỏ"
+            },
+            "newによるポインタ": {
+                "title": "Con trỏ với new",
+                "description": "Tạo con trỏ với new"
+            },
+            "スライス": {
+                "title": "Slice",
+                "description": "Thao tác slice"
+            },
+            "スライスリテラル": {
+                "title": "Slice literal",
+                "description": "Cú pháp slice literal"
+            },
+            "定数": {
+                "title": "Hằng số",
+                "description": "Khai báo hằng số"
+            },
+            "型変換": {
+                "title": "Ép kiểu",
+                "description": "Ép kiểu"
+            },
+            "Intから文字列へ": {
+                "title": "Int sang String",
+                "description": "Chuyển đổi int sang string"
+            }
+        },
+        "go-strings": {
+            "文字列関数": {
+                "title": "Hàm chuỗi",
+                "description": "Các hàm chuỗi"
+            },
+            "fmt.Printf": {
+                "title": "fmt.Printf",
+                "description": "Xuất có định dạng với fmt.Printf"
+            }
+        },
+        "go-functions": {
+            "複数の戻り値": {
+                "title": "Nhiều giá trị trả về",
+                "description": "Hàm với nhiều giá trị trả về"
+            },
+            "名前付き戻り値": {
+                "title": "Giá trị trả về có tên",
+                "description": "Giá trị trả về được đặt tên"
+            },
+            "可変長引数関数": {
+                "title": "Hàm tham số động",
+                "description": "Hàm với số lượng tham số động"
+            },
+            "関数を値として": {
+                "title": "Hàm như giá trị",
+                "description": "Hàm là giá trị first-class"
+            },
+            "クロージャ": {
+                "title": "Closure",
+                "description": "Ví dụ closure"
+            }
+        },
+        "go-packages": {
+            "インポート": {
+                "title": "Import",
+                "description": "Import cơ bản"
+            },
+            "インポートブロック": {
+                "title": "Khối Import",
+                "description": "Cú pháp khối import"
+            },
+            "エイリアス": {
+                "title": "Bí danh",
+                "description": "Bí danh import"
+            },
+            "名前のエクスポート": {
+                "title": "Tên được Export",
+                "description": "Các tên được export"
+            }
+        },
+        "go-concurrency": {
+            "Goroutine": {
+                "title": "Goroutine",
+                "description": "Cơ bản goroutine"
+            },
+            "WaitGroup": {
+                "title": "WaitGroup",
+                "description": "WaitGroup để đồng bộ"
+            },
+            "チャネルのクローズ": {
+                "title": "Đóng Channel",
+                "description": "Đóng và lặp channel"
+            },
+            "バッファ付きチャネル": {
+                "title": "Channel có Buffer",
+                "description": "Channel có buffer"
+            }
+        },
+        "go-error-control": {
+            "関数の遅延実行": {
+                "title": "Hàm trì hoãn",
+                "description": "Câu lệnh defer"
+            },
+            "Defer": {
+                "title": "Defer",
+                "description": "Defer đơn giản"
+            }
+        },
+        "go-methods": {
+            "レシーバ": {
+                "title": "Receiver",
+                "description": "Phương thức với value receiver"
+            },
+            "変更": {
+                "title": "Thay đổi",
+                "description": "Phương thức với pointer receiver"
+            }
+        },
+        "go-interfaces": {
+            "基本的なインターフェース": {
+                "title": "Interface cơ bản",
+                "description": "Định nghĩa interface"
+            },
+            "構造体": {
+                "title": "Struct",
+                "description": "Định nghĩa struct"
+            },
+            "メソッド": {
+                "title": "Phương thức",
+                "description": "Triển khai phương thức interface"
+            },
+            "インターフェースの例": {
+                "title": "Ví dụ Interface",
+                "description": "Sử dụng interface"
+            }
+        },
+        "miscellaneous": {
+            "キーワード": {
+                "title": "Từ khóa",
+                "description": "Từ khóa Go"
+            }
+        }
+    }
+}

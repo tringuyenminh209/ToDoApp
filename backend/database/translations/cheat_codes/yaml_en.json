@@ -1,0 +1,158 @@
+{
+    "_comment": "English translations for YAML Cheat Code",
+    "language": {
+        "yaml": {
+            "description": "Reference for understanding and writing YAML format configuration files."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "YAML basics and introduction"
+        },
+        "collections": {
+            "title": "YAML Collections",
+            "description": "Arrays, mappings, and nested structures"
+        },
+        "reference": {
+            "title": "YAML Reference",
+            "description": "Symbols, escaping, and types"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "YAMLの特徴": {
+                "title": "YAML Features",
+                "description": "Basic YAML features and rules"
+            },
+            "スカラー型": {
+                "title": "Scalar Types",
+                "description": "Basic YAML data types"
+            },
+            "変数": {
+                "title": "Variables",
+                "description": "Variables using anchors and aliases"
+            },
+            "コメント": {
+                "title": "Comments",
+                "description": "How to write comments in YAML"
+            },
+            "複数行文字列": {
+                "title": "Multi-line Strings",
+                "description": "Multi-line string (preserves newlines)"
+            },
+            "継承": {
+                "title": "Inheritance",
+                "description": "Mapping inheritance and merging"
+            },
+            "参照": {
+                "title": "References",
+                "description": "References using anchors"
+            },
+            "折りたたみ文字列": {
+                "title": "Folded Strings",
+                "description": "Multi-line string (converts newlines to spaces)"
+            },
+            "複数ドキュメント": {
+                "title": "Multiple Documents",
+                "description": "Multiple documents in a YAML file"
+            }
+        },
+        "collections": {
+            "シーケンス（配列）": {
+                "title": "Sequences (Arrays)",
+                "description": "Basic array (sequence)"
+            },
+            "マッピング（辞書）": {
+                "title": "Mappings (Dictionaries)",
+                "description": "Basic mapping (key-value pairs)"
+            },
+            "マッピングからシーケンス": {
+                "title": "Mapping to Sequence",
+                "description": "Sequences within mappings"
+            },
+            "シーケンスのマッピング": {
+                "title": "Sequence of Mappings",
+                "description": "Mappings within sequences"
+            },
+            "シーケンスのシーケンス": {
+                "title": "Sequence of Sequences",
+                "description": "Nested sequences"
+            },
+            "マッピングのマッピング": {
+                "title": "Mapping of Mappings",
+                "description": "Nested mappings"
+            },
+            "ネストされたコレクション": {
+                "title": "Nested Collections",
+                "description": "Complex nested structures"
+            },
+            "順序なしセット": {
+                "title": "Unordered Sets",
+                "description": "Sets (no duplicates collection)"
+            },
+            "順序付きマッピング": {
+                "title": "Ordered Mappings",
+                "description": "Ordered preserving mappings"
+            }
+        },
+        "reference": {
+            "用語": {
+                "title": "Terminology",
+                "description": "Basic YAML terminology"
+            },
+            "ドキュメント指示子": {
+                "title": "Document Indicators",
+                "description": "Document delimiter symbols"
+            },
+            "コレクション指示子": {
+                "title": "Collection Indicators",
+                "description": "Collection symbols"
+            },
+            "エイリアス指示子": {
+                "title": "Alias Indicators",
+                "description": "Anchors and aliases"
+            },
+            "特殊キー": {
+                "title": "Special Keys",
+                "description": "Special mapping keys"
+            },
+            "スカラー指示子": {
+                "title": "Scalar Indicators",
+                "description": "Scalar value symbols"
+            },
+            "タグプロパティ": {
+                "title": "Tag Properties",
+                "description": "YAML tag types"
+            },
+            "コア型": {
+                "title": "Core Types",
+                "description": "YAML core data types"
+            },
+            "エスケープコード - 数値": {
+                "title": "Escape Codes - Numeric",
+                "description": "Numeric escape codes"
+            },
+            "エスケープコード - 保護": {
+                "title": "Escape Codes - Protection",
+                "description": "Protection escape codes"
+            },
+            "エスケープコード - Cスタイル": {
+                "title": "Escape Codes - C-style",
+                "description": "C-style escape codes"
+            },
+            "追加のエスケープコード": {
+                "title": "Additional Escape Codes",
+                "description": "Additional escape codes"
+            },
+            "その他の型": {
+                "title": "Other Types",
+                "description": "Sets and ordered mappings"
+            },
+            "言語独立スカラー型": {
+                "title": "Language Independent Scalar Types",
+                "description": "Language-independent scalar type representations"
+            }
+        }
+    }
+}

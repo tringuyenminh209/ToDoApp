@@ -1,0 +1,204 @@
+{
+    "_comment": "English translations for Java Design Patterns Course (JavaDesignCourseSeeder)",
+    "template": {
+        "title": "Javaプログラミング設計演習",
+        "description": "オブジェクト指向プログラミングとデザインパターンを学ぶ実践的なコース。30回の課題を通じて、クラス設計からGoFデザインパターンまで段階的に学習します。"
+    },
+    "template_translations": {
+        "Javaプログラミング設計演習": {
+            "title": "Java Programming Design Course",
+            "description": "Practical course learning object-oriented programming and design patterns. Learn step by step from class design to GoF design patterns through 30 exercises."
+        }
+    },
+    "milestones": {
+        "オブジェクト指向プログラミング基礎": {
+            "title": "Object-Oriented Programming Fundamentals",
+            "description": "Fields, classes, constructors, encapsulation, static members",
+            "deliverables": [
+                "Understand fields and methods",
+                "Understand class and instance concepts",
+                "Implement constructors and encapsulation",
+                "Understand difference between static and instance members"
+            ]
+        },
+        "継承とポリモーフィズム": {
+            "title": "Inheritance and Polymorphism",
+            "description": "Class inheritance, polymorphism, abstract classes, interfaces, enumerations",
+            "deliverables": [
+                "Implement class inheritance",
+                "Use polymorphism",
+                "Create abstract classes and interfaces",
+                "Use enumerations"
+            ]
+        },
+        "チャレンジ課題と中間テスト": {
+            "title": "Challenge Exercises and Mid-term Test",
+            "description": "Comprehensive review and test of first half",
+            "deliverables": [
+                "Complete challenge exercises",
+                "Pass mid-term test",
+                "Review learned concepts"
+            ]
+        },
+        "コレクションと例外処理": {
+            "title": "Collections and Exception Handling",
+            "description": "Collections, exception handling, threads, file I/O, streams",
+            "deliverables": [
+                "Use collections effectively",
+                "Handle exceptions",
+                "Work with threads",
+                "Perform file I/O operations"
+            ]
+        },
+        "ラムダ式とメモリ管理": {
+            "title": "Lambda Expressions and Memory Management",
+            "description": "Lambda expressions, anonymous classes, garbage collection",
+            "deliverables": [
+                "Use lambda expressions",
+                "Create anonymous classes",
+                "Understand memory management"
+            ]
+        },
+        "デザインパターン基礎": {
+            "title": "Design Patterns Fundamentals",
+            "description": "Strategy, Composite, State, Iterator patterns",
+            "deliverables": [
+                "Implement Strategy pattern",
+                "Implement Composite pattern",
+                "Implement State pattern",
+                "Implement Iterator pattern"
+            ]
+        },
+        "デザインパターン応用と総合演習": {
+            "title": "Design Patterns Advanced and Comprehensive Exercises",
+            "description": "Adapter, Command, Visitor, Singleton, Observer patterns, final test",
+            "deliverables": [
+                "Implement advanced design patterns",
+                "Complete comprehensive exercises",
+                "Pass final test"
+            ]
+        }
+    },
+    "tasks": {
+        "第1回：フィールド": {
+            "title": "Session 1: Fields",
+            "description": "Field (class variable) definition and usage, variable scope"
+        },
+        "第2回：クラス": {
+            "title": "Session 2: Classes",
+            "description": "Classes and instances, basic concepts of object-oriented programming"
+        },
+        "第3回：コンストラクタとカプセル化": {
+            "title": "Session 3: Constructors and Encapsulation",
+            "description": "Constructor definition, access modifiers, encapsulation"
+        },
+        "第4回：インスタンスメンバとクラスメンバ": {
+            "title": "Session 4: Instance Members and Class Members",
+            "description": "Difference between instance members and static members"
+        },
+        "第5回：クラスの継承": {
+            "title": "Session 5: Class Inheritance",
+            "description": "Class inheritance, method overriding, super keyword"
+        },
+        "第6回：ポリモーフィズム": {
+            "title": "Session 6: Polymorphism",
+            "description": "Polymorphism concepts and implementation"
+        },
+        "第7回：抽象クラス": {
+            "title": "Session 7: Abstract Classes",
+            "description": "Abstract class definition and usage"
+        },
+        "第8回：インターフェイス": {
+            "title": "Session 8: Interfaces",
+            "description": "Interface definition and implementation"
+        },
+        "第9回：拡張for文と列挙型": {
+            "title": "Session 9: Enhanced For Loop and Enumerations",
+            "description": "Enhanced for loop, enum types"
+        },
+        "第10回：チャレンジ課題①（予備日）": {
+            "title": "Session 10: Challenge Exercise 1 (Reserve Day)",
+            "description": "Comprehensive challenge exercise"
+        },
+        "第11回：クラス替えテスト（練習問題）": {
+            "title": "Session 11: Class Test (Practice Problem)",
+            "description": "Practice test for class replacement"
+        },
+        "第12回：チャレンジ課題②（予備日）": {
+            "title": "Session 12: Challenge Exercise 2 (Reserve Day)",
+            "description": "Comprehensive challenge exercise"
+        },
+        "第13回：コレクションとデータ構造": {
+            "title": "Session 13: Collections and Data Structures",
+            "description": "Java Collections Framework, List, Set, Map"
+        },
+        "第14回：例外処理（try～catch）": {
+            "title": "Session 14: Exception Handling (try-catch)",
+            "description": "Exception handling with try-catch blocks"
+        },
+        "第15回：スレッド": {
+            "title": "Session 15: Threads",
+            "description": "Thread creation and management"
+        },
+        "第16回：ファイル入出力": {
+            "title": "Session 16: File I/O",
+            "description": "File reading and writing operations"
+        },
+        "第17回：ストリーム": {
+            "title": "Session 17: Streams",
+            "description": "Stream operations and processing"
+        },
+        "第18回：例外処理（throw、throws）": {
+            "title": "Session 18: Exception Handling (throw, throws)",
+            "description": "Throwing exceptions, throws clause"
+        },
+        "第19回：ラムダ式": {
+            "title": "Session 19: Lambda Expressions",
+            "description": "Lambda expression syntax and usage"
+        },
+        "第20回：メモリ管理、コレクションとラムダ式": {
+            "title": "Session 20: Memory Management, Collections and Lambda Expressions",
+            "description": "Memory management, collections with lambda expressions"
+        },
+        "第21回：チャレンジ課題③（予備日）": {
+            "title": "Session 21: Challenge Exercise 3 (Reserve Day)",
+            "description": "Comprehensive challenge exercise"
+        },
+        "第22回：プログラム設計①（Strategy）": {
+            "title": "Session 22: Program Design 1 (Strategy Pattern)",
+            "description": "Strategy design pattern implementation"
+        },
+        "第23回：プログラム設計③（Composite）": {
+            "title": "Session 23: Program Design 2 (Composite Pattern)",
+            "description": "Composite design pattern implementation"
+        },
+        "第24回：プログラム設計③（State）": {
+            "title": "Session 24: Program Design 3 (State Pattern)",
+            "description": "State design pattern implementation"
+        },
+        "第25回：プログラム設計④（Iterator）": {
+            "title": "Session 25: Program Design 4 (Iterator Pattern)",
+            "description": "Iterator design pattern implementation"
+        },
+        "第26回：プログラム設計⑤（Adapter・Command）": {
+            "title": "Session 26: Program Design 5 (Adapter and Command Patterns)",
+            "description": "Adapter and Command design patterns implementation"
+        },
+        "第27回：プログラム設計⑥（Visitor）": {
+            "title": "Session 27: Program Design 6 (Visitor Pattern)",
+            "description": "Visitor design pattern implementation"
+        },
+        "第28回：プログラム設計⑦（Singleton・Observer）": {
+            "title": "Session 28: Program Design 7 (Singleton and Observer Patterns)",
+            "description": "Singleton and Observer design patterns implementation"
+        },
+        "第29回：期末テスト（練習問題）": {
+            "title": "Session 29: Final Test (Practice Problem)",
+            "description": "Final test practice problem"
+        },
+        "第30回：チャレンジ課題④（予備日）": {
+            "title": "Session 30: Challenge Exercise 4 (Reserve Day)",
+            "description": "Final comprehensive challenge exercise"
+        }
+    }
+}

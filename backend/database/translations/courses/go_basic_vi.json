@@ -1,0 +1,123 @@
+{
+    "_comment": "Vietnamese translations for Go Basic Course (GoCourseSeeder)",
+    "template": {
+        "title": "Go言語基礎コース",
+        "description": "初心者向けGo言語プログラミング基礎コース。15週間の実践的な課題を通じて、Goの基本構文からゴルーチンまで段階的に学習します。"
+    },
+    "template_translations": {
+        "Go言語基礎コース": {
+            "title": "Khóa học Go Cơ bản",
+            "description": "Khóa học lập trình Go cơ bản dành cho người mới bắt đầu. Học từng bước từ cú pháp Go cơ bản đến goroutines thông qua 15 tuần bài tập thực hành."
+        }
+    },
+    "milestones": {
+        "Go基礎": {
+            "title": "Cơ bản Go",
+            "description": "Thiết lập môi trường phát triển, biến, kiểu dữ liệu, toán tử, xử lý đầu vào",
+            "deliverables": [
+                "Hoàn thành thiết lập môi trường phát triển Go",
+                "Tạo chương trình Hello World",
+                "Chương trình sử dụng biến và kiểu",
+                "Chương trình nhận đầu vào từ người dùng"
+            ]
+        },
+        "制御フローと関数": {
+            "title": "Luồng Điều khiển và Hàm",
+            "description": "if/else, switch, vòng lặp, định nghĩa và sử dụng hàm",
+            "deliverables": [
+                "Chương trình sử dụng rẽ nhánh điều kiện",
+                "Chương trình sử dụng vòng lặp",
+                "Chương trình định nghĩa hàm"
+            ]
+        },
+        "データ構造": {
+            "title": "Cấu trúc Dữ liệu",
+            "description": "Cách sử dụng arrays, slices, maps, structs",
+            "deliverables": [
+                "Chương trình sử dụng arrays và slices",
+                "Chương trình sử dụng maps",
+                "Chương trình sử dụng structs"
+            ]
+        },
+        "OOPとインターフェース": {
+            "title": "OOP và Interfaces",
+            "description": "Methods, receivers, interfaces, xử lý lỗi",
+            "deliverables": [
+                "Triển khai methods với receivers",
+                "Sử dụng interfaces",
+                "Xử lý lỗi đúng cách"
+            ]
+        },
+        "並行処理と高度なトピック": {
+            "title": "Xử lý Đồng thời và Chủ đề Nâng cao",
+            "description": "Goroutines, channels, mẫu xử lý đồng thời",
+            "deliverables": [
+                "Tạo goroutines",
+                "Sử dụng channels để giao tiếp",
+                "Triển khai mẫu xử lý đồng thời"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：環境設定とHello World": {
+            "title": "Tuần 1: Thiết lập Môi trường và Hello World",
+            "description": "Thiết lập môi trường phát triển Go và xuất màn hình bằng fmt.Println()"
+        },
+        "第2週：変数とデータ型": {
+            "title": "Tuần 2: Biến và Kiểu Dữ liệu",
+            "description": "Học khai báo biến Go, kiểu dữ liệu cơ bản, type inference"
+        },
+        "第3週：演算子と式": {
+            "title": "Tuần 3: Toán tử và Biểu thức",
+            "description": "Học toán tử số học, toán tử so sánh, toán tử logic"
+        },
+        "第4週：ユーザー入力とフォーマット": {
+            "title": "Tuần 4: Đầu vào Người dùng và Định dạng",
+            "description": "Đầu vào bằng fmt.Scan() và xuất định dạng bằng fmt.Printf()"
+        },
+        "第5週：If/ElseとSwitch": {
+            "title": "Tuần 5: If/Else và Switch",
+            "description": "Rẽ nhánh điều kiện với if/else và switch statements"
+        },
+        "第6週：ループ（for）": {
+            "title": "Tuần 6: Vòng lặp (for)",
+            "description": "Cú pháp và sử dụng vòng lặp for"
+        },
+        "第7週：関数": {
+            "title": "Tuần 7: Hàm",
+            "description": "Định nghĩa hàm, tham số, giá trị trả về, nhiều giá trị trả về"
+        },
+        "第8週：配列とスライス": {
+            "title": "Tuần 8: Arrays và Slices",
+            "description": "Thao tác array và slice, phương thức"
+        },
+        "第9週：マップ": {
+            "title": "Tuần 9: Maps",
+            "description": "Thao tác và sử dụng map"
+        },
+        "第10週：構造体": {
+            "title": "Tuần 10: Structs",
+            "description": "Định nghĩa struct, truy cập field, struct methods"
+        },
+        "第11週：メソッドとレシーバー": {
+            "title": "Tuần 11: Methods và Receivers",
+            "description": "Định nghĩa method với receivers, value receivers vs pointer receivers"
+        },
+        "第12週：インターフェース": {
+            "title": "Tuần 12: Interfaces",
+            "description": "Định nghĩa và triển khai interface"
+        },
+        "第13週：エラーハンドリング": {
+            "title": "Tuần 13: Xử lý Lỗi",
+            "description": "Mẫu xử lý lỗi, error interface, custom errors"
+        },
+        "第14週：ゴルーチンとチャネル": {
+            "title": "Tuần 14: Goroutines và Channels",
+            "description": "Tạo goroutine, thao tác channel, lập trình đồng thời"
+        },
+        "第15週：高度なトピックとベストプラクティス": {
+            "title": "Tuần 15: Chủ đề Nâng cao và Best Practices",
+            "description": "Go packages, testing, best practices"
+        }
+    }
+}

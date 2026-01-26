@@ -1,0 +1,210 @@
+{
+    "_comment": "English translations for Java Cheat Code",
+    "language": {
+        "java": {
+            "description": "Java is a class-based, object-oriented programming language designed for portability and cross-platform development."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "Java programming basics"
+        },
+        "java-strings": {
+            "title": "Java Strings",
+            "description": "String manipulation in Java"
+        },
+        "java-arrays": {
+            "title": "Java Arrays",
+            "description": "Array manipulation in Java"
+        },
+        "java-conditionals": {
+            "title": "Java Conditionals",
+            "description": "Conditional statements in Java"
+        },
+        "java-loops": {
+            "title": "Java Loops",
+            "description": "Loop structures in Java"
+        },
+        "java-collections": {
+            "title": "Java Collections",
+            "description": "Java Collections Framework"
+        },
+        "miscellaneous": {
+            "title": "Miscellaneous",
+            "description": "Error handling and other Java features"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "Hello.java": {
+                "title": "Hello.java",
+                "description": "Basic Java program structure with main method and console output"
+            },
+            "変数": {
+                "title": "Variables",
+                "description": "Declaring and initializing primitive types and String"
+            },
+            "プリミティブデータ型": {
+                "title": "Primitive Data Types",
+                "description": "Reference table of primitive types with size, default values, and range"
+            },
+            "ループ": {
+                "title": "Loops",
+                "description": "Enhanced for loop iterating through character array"
+            },
+            "配列": {
+                "title": "Arrays",
+                "description": "Array declaration and initialization methods"
+            },
+            "型キャスト": {
+                "title": "Type Casting",
+                "description": "Widening/narrowing conversion and String parsing"
+            },
+            "条件分岐": {
+                "title": "Conditionals",
+                "description": "If-else-if statement structure"
+            },
+            "ユーザー入力": {
+                "title": "User Input",
+                "description": "Reading user input with Scanner"
+            }
+        },
+        "java-strings": {
+            "連結": {
+                "title": "Concatenation",
+                "description": "String and number concatenation examples"
+            },
+            "StringBuilder": {
+                "title": "StringBuilder",
+                "description": "StringBuilder append, delete, insert operations"
+            },
+            "比較": {
+                "title": "Comparison",
+                "description": "Reference vs value comparison, case-insensitive matching"
+            },
+            "操作": {
+                "title": "Manipulation",
+                "description": "String transformation methods"
+            },
+            "情報取得": {
+                "title": "Information Retrieval",
+                "description": "Character and substring extraction with search functionality"
+            }
+        },
+        "java-arrays": {
+            "宣言": {
+                "title": "Declaration",
+                "description": "Various array declaration syntax"
+            },
+            "変更": {
+                "title": "Modification",
+                "description": "Element assignment and length property"
+            },
+            "ループ（読み取りと変更）": {
+                "title": "Loop (Read & Modify)",
+                "description": "Indexed iteration for modifying elements"
+            },
+            "ループ（読み取り専用）": {
+                "title": "Loop (Read-only)",
+                "description": "Enhanced for loop for read-only iteration"
+            },
+            "多次元配列": {
+                "title": "Multidimensional Arrays",
+                "description": "2D array access and String representation conversion"
+            },
+            "ソート": {
+                "title": "Sorting",
+                "description": "Sorting array and displaying contents"
+            }
+        },
+        "java-conditionals": {
+            "If文": {
+                "title": "If Statement",
+                "description": "Basic if statement"
+            },
+            "If-Else文": {
+                "title": "If-Else Statement",
+                "description": "If-else branching"
+            },
+            "Switch文": {
+                "title": "Switch Statement",
+                "description": "Multi-way branching based on discrete values"
+            },
+            "三項演算子": {
+                "title": "Ternary Operator",
+                "description": "Compact conditional expression for simple selection"
+            }
+        },
+        "java-loops": {
+            "Forループ": {
+                "title": "For Loop",
+                "description": "Standard indexed iteration"
+            },
+            "拡張Forループ": {
+                "title": "Enhanced For Loop",
+                "description": "Simplified iteration for collections and arrays"
+            },
+            "Whileループ": {
+                "title": "While Loop",
+                "description": "Conditional repetition with pre-test"
+            },
+            "Do-Whileループ": {
+                "title": "Do-While Loop",
+                "description": "Post-test loop guaranteeing at least one execution"
+            },
+            "Continue文": {
+                "title": "Continue Statement",
+                "description": "Skip current iteration and continue to next"
+            },
+            "Break文": {
+                "title": "Break Statement",
+                "description": "Exit loop completely when condition is met"
+            }
+        },
+        "java-collections": {
+            "ArrayList": {
+                "title": "ArrayList",
+                "description": "Dynamic array operations and iteration"
+            },
+            "ArrayList反復処理": {
+                "title": "ArrayList Iteration",
+                "description": "ArrayList iteration with enhanced for loop"
+            },
+            "HashMap": {
+                "title": "HashMap",
+                "description": "Key-value storage with get and put operations"
+            },
+            "HashMap反復処理": {
+                "title": "HashMap Iteration",
+                "description": "HashMap iteration with lambda expression"
+            },
+            "HashSet": {
+                "title": "HashSet",
+                "description": "Unique element collection with membership test"
+            },
+            "ArrayDeque": {
+                "title": "ArrayDeque",
+                "description": "Double-ended queue operations (Stack/Queue)"
+            }
+        },
+        "miscellaneous": {
+            "Try-Catch-Finally": {
+                "title": "Try-Catch-Finally",
+                "description": "Exception handling with guaranteed cleanup"
+            },
+            "正規表現": {
+                "title": "Regular Expressions",
+                "description": "Regex for whitespace removal and String splitting"
+            },
+            "Mathメソッド": {
+                "title": "Math Methods",
+                "description": "Common math operations"
+            },
+            "ラムダ式": {
+                "title": "Lambda Expressions",
+                "description": "Lambda expression with forEach (Java 8+)"
+            }
+        }
+    }
+}

@@ -1,0 +1,317 @@
+{
+    "_comment": "Vietnamese translations for Knowledge Items",
+    "items": {
+        "Python List Comprehension ガイド": {
+            "title": "Hướng dẫn List Comprehension Python",
+            "content": "# Python List Comprehension\n\n## Cú pháp Cơ bản\n```python\n[expression for item in iterable]\n```\n\n## Có Điều kiện\n```python\n[expression for item in iterable if condition]\n```\n\n## Lồng nhau\n```python\n[[i*j for j in range(3)] for i in range(3)]\n```\n\n## Lợi ích\n- Dễ đọc\n- Nhanh\n- Hiệu quả bộ nhớ"
+        },
+        "Python Decorators 解説": {
+            "title": "Giải thích Python Decorators",
+            "content": "# Python Decorators\n\nDecorator là mẫu bọc hàm để thêm chức năng.\n\n## Cách sử dụng Cơ bản\n```python\n@decorator\ndef my_function():\n    pass\n```\n\n## Ví dụ Sử dụng\n- Timer\n- Ghi log\n- Kiểm tra xác thực\n- Bộ nhớ đệm"
+        },
+        "Python Generators の仕組み": {
+            "title": "Cách Generators Python Hoạt động",
+            "content": "# Python Generators\n\nGenerator là iterator hiệu quả bộ nhớ.\n\n## Đặc điểm\n- Sử dụng từ khóa `yield`\n- Đánh giá lười (lazy evaluation)\n- Hiệu quả bộ nhớ\n\n## Ví dụ Sử dụng\n- Xử lý tập dữ liệu lớn\n- Chuỗi vô hạn\n- Xử lý pipeline"
+        },
+        "Python Virtual Environment セットアップ": {
+            "title": "Thiết lập Python Virtual Environment",
+            "content": "# Python Virtual Environment\n\n## Tạo\n```bash\npython -m venv venv\n```\n\n## Kích hoạt\n```bash\n# Windows\nvenv\\Scripts\\activate\n\n# Linux/Mac\nsource venv/bin/activate\n```\n\n## Cài đặt Gói\n```bash\npip install package_name\n```\n\n## requirements.txt\n```bash\npip freeze > requirements.txt\npip install -r requirements.txt\n```"
+        },
+        "Fibonacci Sequence": {
+            "question": "Triển khai hàm trả về số thứ n trong dãy Fibonacci.\n\nVí dụ: fibonacci(5) → 5",
+            "content": "Học cả cách tiếp cận đệ quy và ghi nhớ"
+        },
+        "Palindrome Check": {
+            "question": "Triển khai hàm kiểm tra xem chuỗi có phải là palindrome không.\n\nVí dụ: \"racecar\" → True, \"hello\" → False",
+            "content": "Luyện tập thao tác chuỗi và đệ quy"
+        },
+        "Two Sum Problem": {
+            "question": "Trả về chỉ số của hai số trong mảng có tổng bằng target.\n\nVí dụ: nums = [2,7,11,15], target = 9 → [0,1]",
+            "content": "Bài LeetCode Dễ - Sử dụng bảng băm"
+        },
+        "Binary Search Algorithm": {
+            "title": "Thuật toán Tìm kiếm Nhị phân",
+            "content": null
+        },
+        "Quick Sort Implementation": {
+            "title": "Triển khai Quick Sort",
+            "content": null
+        },
+        "Python Decorators": {
+            "title": "Python Decorators",
+            "content": null
+        },
+        "List Comprehension Examples": {
+            "title": "Ví dụ List Comprehension",
+            "content": null
+        },
+        "Generator Functions": {
+            "title": "Hàm Generator",
+            "content": null
+        },
+        "Context Managers": {
+            "title": "Context Managers",
+            "content": null
+        },
+        "Async/Await Example": {
+            "title": "Ví dụ Async/Await",
+            "content": null
+        },
+        "Class Example with Properties": {
+            "title": "Ví dụ Lớp với Properties",
+            "content": null
+        },
+        "Singleton Pattern": {
+            "title": "Mẫu Singleton",
+            "content": null
+        },
+        "Factory Pattern": {
+            "title": "Mẫu Factory",
+            "content": null
+        },
+        "Java Collections Example": {
+            "title": "Ví dụ Java Collections",
+            "content": null
+        },
+        "Java Streams API": {
+            "title": "Java Streams API",
+            "content": null
+        },
+        "Lambda Expressions": {
+            "title": "Biểu thức Lambda",
+            "content": null
+        },
+        "Exception Handling": {
+            "title": "Xử lý Ngoại lệ",
+            "content": null
+        },
+        "Promises and Async/Await": {
+            "title": "Promises và Async/Await",
+            "content": null
+        },
+        "Closures Example": {
+            "title": "Ví dụ Closures",
+            "content": null
+        },
+        "Destructuring Assignment": {
+            "title": "Gán Phân rã",
+            "content": null
+        },
+        "Array Methods": {
+            "title": "Phương thức Mảng",
+            "content": null
+        },
+        "Event Handling": {
+            "title": "Xử lý Sự kiện",
+            "content": null
+        },
+        "React Hooks Example": {
+            "title": "Ví dụ React Hooks",
+            "content": null
+        },
+        "Binary Search (Python)": {
+            "title": "Tìm kiếm Nhị phân (Python)",
+            "content": null
+        },
+        "Binary Search (Java)": {
+            "title": "Tìm kiếm Nhị phân (Java)",
+            "content": null
+        },
+        "Binary Search (JavaScript)": {
+            "title": "Tìm kiếm Nhị phân (JavaScript)",
+            "content": null
+        },
+        "Quick Sort (Python)": {
+            "title": "Quick Sort (Python)",
+            "content": null
+        },
+        "Merge Sort (Python)": {
+            "title": "Merge Sort (Python)",
+            "content": null
+        },
+        "DFS (Depth-First Search)": {
+            "title": "DFS (Tìm kiếm Theo chiều sâu)",
+            "content": null
+        },
+        "BFS (Breadth-First Search)": {
+            "title": "BFS (Tìm kiếm Theo chiều rộng)",
+            "content": null
+        },
+        "Fibonacci with Memoization": {
+            "title": "Fibonacci với Ghi nhớ",
+            "content": null
+        },
+        "Java Collections Framework": {
+            "title": "Java Collections Framework",
+            "content": "# Java Collections Framework\n\n## Giao diện Chính\n- **List**: ArrayList, LinkedList\n- **Set**: HashSet, TreeSet\n- **Map**: HashMap, TreeMap"
+        },
+        "Java Streams API ガイド": {
+            "title": "Hướng dẫn Java Streams API",
+            "content": "# Java Streams API\n\n## Thao tác Chính\n- filter(): Lọc theo điều kiện\n- map(): Chuyển đổi\n- reduce(): Tổng hợp\n- collect(): Thu thập kết quả"
+        },
+        "OOP Principles in Java": {
+            "title": "Nguyên tắc OOP trong Java",
+            "content": "# Nguyên tắc OOP\n\n1. Đóng gói (Encapsulation)\n2. Kế thừa (Inheritance)\n3. Đa hình (Polymorphism)\n4. Trừu tượng (Abstraction)"
+        },
+        "Java Annotations": {
+            "title": "Java Annotations",
+            "content": "# Java Annotations\n\n- @Override\n- @Deprecated\n- @SuppressWarnings"
+        },
+        "Valid Parentheses": {
+            "question": "Xác định xem tổ hợp dấu ngoặc có hợp lệ không.",
+            "content": "Xác thực dấu ngoặc bằng Stack"
+        },
+        "Reverse Linked List": {
+            "question": "Đảo ngược danh sách liên kết đơn.",
+            "content": "Thuật toán đảo ngược danh sách liên kết"
+        },
+        "JavaScript Closures 解説": {
+            "title": "Giải thích JavaScript Closures",
+            "content": "# JavaScript Closures\n\n## Định nghĩa\nClosure cho phép hàm bên trong truy cập biến từ hàm bên ngoài.\n\n## Đặc điểm\n- Tư nhân hóa biến\n- Duy trì dữ liệu\n- Nhà máy hàm\n\n## Ví dụ Sử dụng\n- Bộ đếm\n- Mẫu module\n- Hàm callback"
+        },
+        "Event Loop の仕組み": {
+            "title": "Cách Event Loop Hoạt động",
+            "content": "# JavaScript Event Loop\n\n## Thứ tự Thực thi\n1. Call Stack (mã đồng bộ)\n2. Web APIs (xử lý bất đồng bộ)\n3. Callback Queue\n4. Event Loop\n\n## Xử lý Bất đồng bộ\n- setTimeout\n- Promise\n- async/await\n\n## Lưu ý\n- Cẩn thận với mã chặn\n- Tránh vòng lặp vô hạn"
+        },
+        "Hoisting とは": {
+            "title": "Hoisting là gì",
+            "content": "# JavaScript Hoisting\n\n## Định nghĩa\nHành vi khi khai báo biến và hàm được di chuyển lên đầu phạm vi của chúng.\n\n## var vs let/const\n- **var**: Được hoisting (undefined)\n- **let/const**: TDZ (Temporal Dead Zone)\n\n## Khai báo Hàm\n```javascript\n// Khai báo hàm được hoisting\nsayHello(); // Hoạt động\n\nfunction sayHello() {\n    console.log(\"Hello\");\n}\n```"
+        },
+        "Prototype Chain": {
+            "title": "Prototype Chain",
+            "content": "# JavaScript Prototype Chain\n\n## Kế thừa Prototype\nJavaScript sử dụng kế thừa dựa trên prototype.\n\n## Prototype Chain\n```javascript\nObject.prototype\n  ↑\nArray.prototype\n  ↑\n[1, 2, 3]\n```\n\n## Ví dụ Sử dụng\n- Chia sẻ phương thức\n- Triển khai kế thừa\n- Hiệu quả bộ nhớ"
+        },
+        "Debounce Function": {
+            "question": "Triển khai hàm debounce. Thực thi hàm chỉ một lần sau thời gian chỉ định, ngay cả khi được gọi nhiều lần.",
+            "content": "Kỹ thuật tối ưu hiệu suất"
+        },
+        "Throttle Function": {
+            "question": "Triển khai hàm throttle. Thực thi hàm chỉ một lần trong khoảng thời gian chỉ định.",
+            "content": "Tối ưu trình xử lý sự kiện"
+        },
+        "アルゴリズムの時間計算量": {
+            "title": "Độ phức tạp Thời gian Thuật toán",
+            "content": "# Độ phức tạp Thời gian\n\n## Độ phức tạp Thường gặp\n- O(1): Thời gian hằng số\n- O(log n): Thời gian logarit (tìm kiếm nhị phân)\n- O(n): Thời gian tuyến tính (tìm kiếm tuyến tính)\n- O(n log n): Sắp xếp merge, Quick sort\n- O(n²): Sắp xếp bubble, Selection sort\n- O(2ⁿ): Thời gian mũ (Fibonacci đệ quy)"
+        },
+        "動的計画法の基本": {
+            "title": "Cơ bản Quy hoạch Động",
+            "content": "# Quy hoạch Động\n\n## Đặc điểm\n- Tái sử dụng kết quả bài toán con\n- Ghi nhớ (Memoization)\n- Tiếp cận từ dưới lên\n\n## Ứng dụng\n- Dãy Fibonacci\n- Bài toán cái túi\n- Chuỗi con chung dài nhất (LCS)"
+        },
+        "Two Sum (LeetCode Easy)": {
+            "question": "Trả về chỉ số của hai số trong mảng có tổng bằng target.\n\nVí dụ: nums = [2,7,11,15], target = 9 → [0,1]",
+            "content": "LeetCode #1 - Sử dụng bảng băm"
+        },
+        "Valid Parentheses (LeetCode Easy)": {
+            "question": "Xác định xem tổ hợp dấu ngoặc có hợp lệ không.\n\nVí dụ: \"()[]{}\" → true, \"([)]\" → false",
+            "content": "LeetCode #20 - Sử dụng Stack"
+        },
+        "Palindrome Number (LeetCode Easy)": {
+            "question": "Xác định xem số nguyên có phải là số palindrome không.\n\nVí dụ: 121 → true, -121 → false",
+            "content": "LeetCode #9 - Đảo ngược số"
+        },
+        "Reverse String (LeetCode Easy)": {
+            "question": "Đảo ngược chuỗi (tại chỗ).\n\nVí dụ: [\"h\",\"e\",\"l\",\"l\",\"o\"] → [\"o\",\"l\",\"l\",\"e\",\"h\"]",
+            "content": "LeetCode #344 - Hai con trỏ"
+        },
+        "Contains Duplicate (LeetCode Easy)": {
+            "question": "Xác định xem mảng có chứa phần tử trùng lặp không.",
+            "content": "LeetCode #217 - Sử dụng Set"
+        },
+        "Longest Substring (LeetCode Medium)": {
+            "question": "Trả về độ dài của chuỗi con dài nhất không có ký tự lặp lại.\n\nVí dụ: \"abcabcbb\" → 3 (\"abc\")",
+            "content": "LeetCode #3 - Cửa sổ trượt"
+        },
+        "Binary Tree Traversal (LeetCode Medium)": {
+            "question": "Triển khai Inorder Traversal của cây nhị phân.",
+            "content": "LeetCode #94 - Đệ quy và lặp"
+        },
+        "Product of Array Except Self": {
+            "question": "Tạo mảng trả về tích của tất cả phần tử trừ chính nó (không dùng phép chia).",
+            "content": "LeetCode #238 - Hai lần duyệt"
+        },
+        "Group Anagrams": {
+            "question": "Nhóm các anagram lại với nhau.",
+            "content": "LeetCode #49 - Sử dụng sắp xếp làm khóa"
+        },
+        "Merge Intervals": {
+            "question": "Gộp các khoảng trùng lặp.",
+            "content": "LeetCode #56 - Sắp xếp và gộp"
+        },
+        "Rotate Array": {
+            "question": "Xoay mảng k bước sang phải.",
+            "content": "LeetCode #189 - Kỹ thuật Đảo ngược"
+        },
+        "Three Sum": {
+            "question": "Tìm tất cả tổ hợp của ba số có tổng bằng 0.",
+            "content": "LeetCode #15 - Hai con trỏ"
+        },
+        "Load Balancing Strategies": {
+            "title": "Chiến lược Cân bằng Tải",
+            "content": "# Chiến lược Cân bằng Tải\n\n## Thuật toán\n1. **Round Robin**: Phân phối theo thứ tự\n2. **Least Connections**: Đến máy chủ có ít kết nối hơn\n3. **IP Hash**: Băm theo địa chỉ IP\n4. **Weighted Round Robin**: Có trọng số\n\n## Lợi ích\n- Tính khả dụng cao\n- Khả năng mở rộng\n- Cải thiện hiệu suất"
+        },
+        "Caching Strategies": {
+            "title": "Chiến lược Bộ nhớ đệm",
+            "content": "# Chiến lược Bộ nhớ đệm\n\n## Chiến lược Cache\n- **Cache-Aside**: Quản lý bởi ứng dụng\n- **Write-Through**: Ghi vào cả cache và DB\n- **Write-Back**: Ghi vào cache, sau đó vào DB\n\n## Loại Cache\n- Redis\n- Memcached\n- CDN"
+        },
+        "Database Sharding": {
+            "title": "Sharding Cơ sở Dữ liệu",
+            "content": "# Database Sharding\n\n## Chiến lược Sharding\n- **Horizontal Sharding**: Chia theo hàng\n- **Vertical Sharding**: Chia theo cột\n- **Directory-based**: Bảng tra cứu\n\n## Lợi ích\n- Khả năng mở rộng\n- Cải thiện hiệu suất\n\n## Thách thức\n- Phân phối lại dữ liệu\n- Độ phức tạp truy vấn"
+        },
+        "SQL JOIN Types": {
+            "title": "Các loại SQL JOIN",
+            "content": "# Các loại SQL JOIN\n\n## INNER JOIN\n```sql\nSELECT * FROM orders\nINNER JOIN customers ON orders.customer_id = customers.id;\n```\n\n## LEFT JOIN\n```sql\nSELECT * FROM customers\nLEFT JOIN orders ON customers.id = orders.customer_id;\n```\n\n## RIGHT JOIN\n```sql\nSELECT * FROM orders\nRIGHT JOIN customers ON orders.customer_id = customers.id;\n```\n\n## FULL OUTER JOIN\n```sql\nSELECT * FROM customers\nFULL OUTER JOIN orders ON customers.id = orders.customer_id;\n```"
+        },
+        "Database Normalization": {
+            "title": "Chuẩn hóa Cơ sở Dữ liệu",
+            "content": "# Chuẩn hóa Cơ sở Dữ liệu\n\n## Mục đích\n- Giảm trùng lặp dữ liệu\n- Cải thiện tính nhất quán\n- Hiệu quả lưu trữ\n\n## Dạng Chuẩn\n- **1NF**: Tính nguyên tử (một giá trị mỗi ô)\n- **2NF**: 1NF + loại bỏ phụ thuộc hàm một phần\n- **3NF**: 2NF + loại bỏ phụ thuộc bắc cầu\n\n## Nhược điểm\n- Truy vấn trở nên phức tạp\n- Nhiều JOIN hơn"
+        },
+        "Database Indexing": {
+            "title": "Đánh chỉ mục Cơ sở Dữ liệu",
+            "content": "# Đánh chỉ mục Cơ sở Dữ liệu\n\n## Loại Chỉ mục\n- **B-Tree**: Chỉ mục thông thường\n- **Hash**: Tối ưu cho tìm kiếm đẳng thức\n- **Full-Text**: Tìm kiếm văn bản\n\n## Lợi ích\n- Tìm kiếm nhanh hơn\n- Mệnh đề WHERE nhanh hơn\n\n## Nhược điểm\n- Tăng sử dụng lưu trữ\n- INSERT/UPDATE chậm hơn"
+        },
+        "ACID Properties": {
+            "title": "Thuộc tính ACID",
+            "content": "# Thuộc tính ACID\n\n## ACID\n- **Atomicity**: Tất cả thành công hoặc tất cả thất bại\n- **Consistency**: Duy trì tính toàn vẹn dữ liệu\n- **Isolation**: Độc lập giữa các giao dịch\n- **Durability**: Được lưu trữ sau khi commit\n\n## Mức Cô lập Giao dịch\n- Read Uncommitted\n- Read Committed\n- Repeatable Read\n- Serializable"
+        },
+        "React Official Documentation": {
+            "title": "Tài liệu Chính thức React",
+            "content": "Tài liệu chính thức React - Hooks, components, thực hành tốt nhất"
+        },
+        "Vue.js Official Guide": {
+            "title": "Hướng dẫn Chính thức Vue.js",
+            "content": "Hướng dẫn chính thức Vue.js - Components, reactivity, routing"
+        },
+        "Docker Compose Tutorial": {
+            "title": "Hướng dẫn Docker Compose",
+            "content": "Tài liệu chính thức Docker Compose - Định nghĩa và chạy ứng dụng đa container"
+        },
+        "Docker Official Documentation": {
+            "title": "Tài liệu Chính thức Docker",
+            "content": "Tài liệu chính thức Docker - Containers, images, networks"
+        },
+        "Git Cheat Sheet": {
+            "title": "Bảng Tra cứu Nhanh Git",
+            "content": "Tham khảo nhanh các lệnh Git"
+        },
+        "Python Official Tutorial": {
+            "title": "Hướng dẫn Chính thức Python",
+            "content": "Hướng dẫn chính thức Python - Từ cơ bản đến nâng cao"
+        },
+        "Java Documentation": {
+            "title": "Tài liệu Java",
+            "content": "Hướng dẫn chính thức Oracle Java - Đặc tả ngôn ngữ, API, thực hành tốt nhất"
+        },
+        "MDN Web Docs - JavaScript": {
+            "title": "MDN Web Docs - JavaScript",
+            "content": "Tham khảo JavaScript MDN - Tài liệu và ví dụ toàn diện"
+        },
+        "Laravel Documentation": {
+            "title": "Tài liệu Laravel",
+            "content": "Tài liệu chính thức Laravel - Framework, Eloquent, routing"
+        },
+        "LeetCode - Practice Problems": {
+            "title": "LeetCode - Bài tập Thực hành",
+            "content": "LeetCode - Tập bài tập phỏng vấn coding"
+        }
+    }
+}

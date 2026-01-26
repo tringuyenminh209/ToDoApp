@@ -51,6 +51,10 @@ export default function DashboardLayout({
   const handleLanguageChange = (lang: Language) => {
     setCurrentLang(lang);
     localStorage.setItem('selectedLanguage', lang);
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new Event('languageChange'));
+    // Dispatch localeChanged event to trigger API data reload
+    window.dispatchEvent(new CustomEvent('localeChanged', { detail: { locale: lang } }));
   };
 
   useEffect(() => {

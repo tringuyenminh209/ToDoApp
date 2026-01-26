@@ -1,0 +1,256 @@
+{
+    "_comment": "Vietnamese translations for Laravel Cheat Code",
+    "language": {
+        "laravel": {
+            "description": "Laravel là framework PHP web application mạnh mẽ và tiến bộ. Tham khảo các lệnh và tính năng Laravel 8 phổ biến."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Cài đặt Laravel và yêu cầu"
+        },
+        "configuration": {
+            "title": "Cấu hình",
+            "description": "File .env và lấy giá trị config"
+        },
+        "routing": {
+            "title": "Routing",
+            "description": "Route HTTP và tham số route"
+        },
+        "helpers": {
+            "title": "Helper",
+            "description": "Các hàm helper hữu ích"
+        },
+        "validation": {
+            "title": "Validation",
+            "description": "Validation form"
+        },
+        "session": {
+            "title": "Session",
+            "description": "Quản lý session"
+        },
+        "logging": {
+            "title": "Logging",
+            "description": "Sử dụng các cấp độ log"
+        },
+        "deployment": {
+            "title": "Deploy",
+            "description": "Deploy lên production"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "要件": {
+                "title": "Yêu cầu",
+                "description": "Yêu cầu hệ thống Laravel"
+            },
+            "Composerでインストール": {
+                "title": "Cài đặt với Composer",
+                "description": "Cài đặt Laravel bằng Composer"
+            },
+            "Dockerでインストール": {
+                "title": "Cài đặt với Docker",
+                "description": "Cài đặt bằng Laravel Sail (Docker)"
+            }
+        },
+        "configuration": {
+            ".env値の取得": {
+                "title": "Lấy giá trị .env",
+                "description": "Lấy giá trị từ file .env"
+            },
+            "環境の判定": {
+                "title": "Xác định môi trường",
+                "description": "Xác định môi trường hiện tại"
+            },
+            "設定値の取得": {
+                "title": "Lấy giá trị Config",
+                "description": "Lấy giá trị config bằng dot notation"
+            },
+            "設定値の設定": {
+                "title": "Đặt giá trị Config",
+                "description": "Đặt giá trị config lúc runtime"
+            },
+            "デバッグモード": {
+                "title": "Chế độ Debug",
+                "description": "Bật/tắt chế độ debug"
+            },
+            "メンテナンスモード": {
+                "title": "Chế độ Bảo trì",
+                "description": "Cài đặt chế độ bảo trì"
+            }
+        },
+        "routing": {
+            "HTTPメソッド": {
+                "title": "HTTP Method",
+                "description": "Các method route HTTP cơ bản"
+            },
+            "複数HTTPメソッド": {
+                "title": "Nhiều HTTP Method",
+                "description": "Route đáp ứng nhiều HTTP method"
+            },
+            "基本的な定義": {
+                "title": "Định nghĩa cơ bản",
+                "description": "Closure và controller action"
+            },
+            "依存性注入": {
+                "title": "Dependency Injection",
+                "description": "Dependency injection trong route"
+            },
+            "ビュールート": {
+                "title": "View Route",
+                "description": "Route trả về view"
+            },
+            "ルートモデルバインディング": {
+                "title": "Route Model Binding",
+                "description": "Route model binding ngầm định"
+            },
+            "カスタム解決カラム": {
+                "title": "Cột Resolution tùy chỉnh",
+                "description": "Model resolution bằng slug"
+            },
+            "ルートパラメータ": {
+                "title": "Tham số Route",
+                "description": "Tham số bắt buộc"
+            },
+            "オプショナルパラメータ": {
+                "title": "Tham số tùy chọn",
+                "description": "Tham số route tùy chọn"
+            },
+            "リダイレクトルート": {
+                "title": "Route Redirect",
+                "description": "Route redirect HTTP"
+            },
+            "正規表現制約": {
+                "title": "Ràng buộc Regex",
+                "description": "Ràng buộc regex cho tham số route"
+            },
+            "名前付きルート": {
+                "title": "Route có tên",
+                "description": "Đặt tên route"
+            },
+            "フォールバックルート": {
+                "title": "Route Fallback",
+                "description": "Route thực thi khi không có route nào khớp"
+            },
+            "ルートグループ - ミドルウェア": {
+                "title": "Nhóm Route - Middleware",
+                "description": "Nhóm route dùng chung middleware"
+            },
+            "ルートグループ - URIプレフィックス": {
+                "title": "Nhóm Route - URI Prefix",
+                "description": "Nhóm route dùng chung URI prefix"
+            },
+            "現在のルートへのアクセス": {
+                "title": "Truy cập Route hiện tại",
+                "description": "Lấy thông tin route hiện tại"
+            }
+        },
+        "helpers": {
+            "route() - 名前付きルート": {
+                "title": "route() - Route có tên",
+                "description": "Tạo URL cho route có tên"
+            },
+            "route() - パラメータ付き": {
+                "title": "route() - Có tham số",
+                "description": "Tạo URL route với tham số"
+            },
+            "route() - クエリ文字列": {
+                "title": "route() - Query String",
+                "description": "URL route với query string"
+            },
+            "url() - URL生成": {
+                "title": "url() - Tạo URL",
+                "description": "Tạo URL tuyệt đối"
+            },
+            "asset() - アセットURL": {
+                "title": "asset() - URL Asset",
+                "description": "Tạo URL cho file asset"
+            },
+            "redirect() - リダイレクト": {
+                "title": "redirect() - Redirect",
+                "description": "Tạo response redirect"
+            }
+        },
+        "validation": {
+            "基本的なバリデーション": {
+                "title": "Validation cơ bản",
+                "description": "Validate dữ liệu request"
+            },
+            "バリデーションルール": {
+                "title": "Quy tắc Validation",
+                "description": "Các quy tắc validation phổ biến"
+            },
+            "パスワードバリデーション": {
+                "title": "Validation Password",
+                "description": "Yêu cầu độ phức tạp password"
+            },
+            "バリデーションエラーの表示": {
+                "title": "Hiển thị lỗi Validation",
+                "description": "Hiển thị lỗi trong template Blade"
+            },
+            "オプショナルフィールド": {
+                "title": "Field tùy chọn",
+                "description": "Validate field nullable"
+            },
+            "バリデーション済みデータの取得": {
+                "title": "Lấy dữ liệu đã Validate",
+                "description": "Lấy dữ liệu đã validate"
+            }
+        },
+        "session": {
+            "セッションの存在確認": {
+                "title": "Kiểm tra Session tồn tại",
+                "description": "Kiểm tra giá trị session có tồn tại"
+            },
+            "セッション値の取得": {
+                "title": "Lấy giá trị Session",
+                "description": "Lấy giá trị từ session"
+            },
+            "session()ヘルパー": {
+                "title": "Helper session()",
+                "description": "Sử dụng helper session() global"
+            },
+            "全セッションデータの取得": {
+                "title": "Lấy tất cả dữ liệu Session",
+                "description": "Lấy tất cả dữ liệu session"
+            },
+            "取得と削除": {
+                "title": "Lấy và Xóa",
+                "description": "Lấy giá trị từ session và xóa nó"
+            },
+            "セッション値の保存": {
+                "title": "Lưu giá trị Session",
+                "description": "Lưu giá trị vào session"
+            }
+        },
+        "logging": {
+            "ログレベル": {
+                "title": "Cấp độ Log",
+                "description": "Sử dụng tất cả cấp độ log"
+            },
+            "コンテキスト情報": {
+                "title": "Thông tin ngữ cảnh",
+                "description": "Ghi log với thông tin ngữ cảnh"
+            }
+        },
+        "deployment": {
+            "Composerオートローダーの最適化": {
+                "title": "Tối ưu Composer Autoloader",
+                "description": "Tối ưu autoloader map của Composer"
+            },
+            "設定のキャッシュ": {
+                "title": "Cache Config",
+                "description": "Cache các file config"
+            },
+            "ルートのキャッシュ": {
+                "title": "Cache Route",
+                "description": "Cache các file route"
+            },
+            "ビューのキャッシュ": {
+                "title": "Cache View",
+                "description": "Cache các file view"
+            }
+        }
+    }
+}

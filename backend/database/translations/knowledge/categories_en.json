@@ -1,0 +1,433 @@
+{
+    "_comment": "English translations for Knowledge Categories",
+    "categories": {
+        "プログラミング言語": {
+            "name": "Programming Languages",
+            "description": "Programming language notes, syntax, and best practices"
+        },
+        "コンピュータサイエンス基礎": {
+            "name": "Computer Science Fundamentals",
+            "description": "Core CS concepts, algorithms, and theory"
+        },
+        "Web開発": {
+            "name": "Web Development",
+            "description": "Frontend, Backend, DevOps"
+        },
+        "ツール & ワークフロー": {
+            "name": "Tools & Workflow",
+            "description": "Development tools and utilities"
+        },
+        "面接準備": {
+            "name": "Interview Preparation",
+            "description": "Coding challenges and interview questions"
+        },
+        "プロジェクト & アイデア": {
+            "name": "Projects & Ideas",
+            "description": "Personal project notes and code snippets"
+        },
+        "Note": {
+            "name": "Note",
+            "description": "Save notes"
+        },
+        "Python": {
+            "name": "Python",
+            "description": "Python programming notes"
+        },
+        "Java": {
+            "name": "Java",
+            "description": "Java programming notes"
+        },
+        "JavaScript": {
+            "name": "JavaScript",
+            "description": "JavaScript and TypeScript notes"
+        },
+        "PHP": {
+            "name": "PHP",
+            "description": "PHP and Laravel notes"
+        },
+        "C/C++": {
+            "name": "C/C++",
+            "description": "C and C++ programming"
+        },
+        "Go": {
+            "name": "Go",
+            "description": "Golang programming"
+        },
+        "基礎": {
+            "name": "Basics",
+            "description": null
+        },
+        "データ構造": {
+            "name": "Data Structures",
+            "description": "Arrays, linked lists, trees, graphs, etc."
+        },
+        "ライブラリ": {
+            "name": "Libraries",
+            "description": "pandas, numpy, requests, etc."
+        },
+        "面接問題": {
+            "name": "Interview Problems",
+            "description": null
+        },
+        "コアJava": {
+            "name": "Core Java",
+            "description": null
+        },
+        "Spring Framework": {
+            "name": "Spring Framework",
+            "description": null
+        },
+        "デザインパターン": {
+            "name": "Design Patterns",
+            "description": null
+        },
+        "ES6+機能": {
+            "name": "ES6+ Features",
+            "description": null
+        },
+        "React.js": {
+            "name": "React.js",
+            "description": null
+        },
+        "Node.js": {
+            "name": "Node.js",
+            "description": null
+        },
+        "TypeScript": {
+            "name": "TypeScript",
+            "description": null
+        },
+        "Laravel": {
+            "name": "Laravel",
+            "description": null
+        },
+        "ベストプラクティス": {
+            "name": "Best Practices",
+            "description": null
+        },
+        "STL": {
+            "name": "STL",
+            "description": "Standard Template Library"
+        },
+        "メモリ管理": {
+            "name": "Memory Management",
+            "description": null
+        },
+        "並行処理": {
+            "name": "Concurrency",
+            "description": null
+        },
+        "Webサービス": {
+            "name": "Web Services",
+            "description": null
+        },
+        "アルゴリズム": {
+            "name": "Algorithms",
+            "description": "Sorting, searching, dynamic programming, etc."
+        },
+        "データベース理論": {
+            "name": "Database Theory",
+            "description": "SQL, normalization, transactions"
+        },
+        "ネットワーク": {
+            "name": "Networks",
+            "description": "TCP/IP, HTTP, DNS"
+        },
+        "オペレーティングシステム": {
+            "name": "Operating Systems",
+            "description": "Processes, memory, file systems"
+        },
+        "配列 & 文字列": {
+            "name": "Arrays & Strings",
+            "description": null
+        },
+        "連結リスト": {
+            "name": "Linked Lists",
+            "description": null
+        },
+        "木 & グラフ": {
+            "name": "Trees & Graphs",
+            "description": null
+        },
+        "ハッシュテーブル": {
+            "name": "Hash Tables",
+            "description": null
+        },
+        "ヒープ & スタック": {
+            "name": "Heaps & Stacks",
+            "description": null
+        },
+        "ソート & 検索": {
+            "name": "Sorting & Searching",
+            "description": null
+        },
+        "動的計画法": {
+            "name": "Dynamic Programming",
+            "description": null
+        },
+        "貪欲アルゴリズム": {
+            "name": "Greedy Algorithms",
+            "description": null
+        },
+        "グラフアルゴリズム": {
+            "name": "Graph Algorithms",
+            "description": null
+        },
+        "SQL基礎": {
+            "name": "SQL Fundamentals",
+            "description": null
+        },
+        "正規化": {
+            "name": "Normalization",
+            "description": null
+        },
+        "インデックス": {
+            "name": "Indexes",
+            "description": null
+        },
+        "トランザクション": {
+            "name": "Transactions",
+            "description": null
+        },
+        "TCP/IP": {
+            "name": "TCP/IP",
+            "description": null
+        },
+        "HTTP/HTTPS": {
+            "name": "HTTP/HTTPS",
+            "description": null
+        },
+        "DNS & ルーティング": {
+            "name": "DNS & Routing",
+            "description": null
+        },
+        "プロセス管理": {
+            "name": "Process Management",
+            "description": null
+        },
+        "ファイルシステム": {
+            "name": "File Systems",
+            "description": null
+        },
+        "フロントエンド": {
+            "name": "Frontend",
+            "description": "HTML, CSS, JavaScript frameworks"
+        },
+        "バックエンド": {
+            "name": "Backend",
+            "description": "API, authentication, databases"
+        },
+        "DevOps": {
+            "name": "DevOps",
+            "description": "CI/CD, monitoring, cloud"
+        },
+        "セキュリティ": {
+            "name": "Security",
+            "description": "OWASP, authentication, encryption"
+        },
+        "HTML & CSS": {
+            "name": "HTML & CSS",
+            "description": null
+        },
+        "フレームワーク": {
+            "name": "Frameworks",
+            "description": "React, Vue, Angular"
+        },
+        "UI/UXベストプラクティス": {
+            "name": "UI/UX Best Practices",
+            "description": null
+        },
+        "REST API": {
+            "name": "REST API",
+            "description": null
+        },
+        "認証": {
+            "name": "Authentication",
+            "description": null
+        },
+        "キャッシング": {
+            "name": "Caching",
+            "description": null
+        },
+        "マイクロサービス": {
+            "name": "Microservices",
+            "description": null
+        },
+        "CI/CD": {
+            "name": "CI/CD",
+            "description": null
+        },
+        "モニタリング": {
+            "name": "Monitoring",
+            "description": null
+        },
+        "クラウドサービス": {
+            "name": "Cloud Services",
+            "description": "AWS, Azure, GCP"
+        },
+        "OWASP Top 10": {
+            "name": "OWASP Top 10",
+            "description": null
+        },
+        "認証 & 認可": {
+            "name": "Authentication & Authorization",
+            "description": null
+        },
+        "暗号化": {
+            "name": "Encryption",
+            "description": null
+        },
+        "Git & バージョン管理": {
+            "name": "Git & Version Control",
+            "description": "Git commands and workflows"
+        },
+        "Docker": {
+            "name": "Docker",
+            "description": "Containerization and orchestration"
+        },
+        "Linuxコマンド": {
+            "name": "Linux Commands",
+            "description": "Shell commands and scripts"
+        },
+        "IDE & エディタ": {
+            "name": "IDE & Editors",
+            "description": "Editor tips and shortcuts"
+        },
+        "テスト": {
+            "name": "Testing",
+            "description": "Unit tests, integration tests, E2E tests"
+        },
+        "基本コマンド": {
+            "name": "Basic Commands",
+            "description": null
+        },
+        "ブランチ戦略": {
+            "name": "Branching Strategies",
+            "description": null
+        },
+        "マージコンフリクト": {
+            "name": "Merge Conflicts",
+            "description": null
+        },
+        "Dockerfile": {
+            "name": "Dockerfile",
+            "description": null
+        },
+        "Docker Compose": {
+            "name": "Docker Compose",
+            "description": null
+        },
+        "コンテナオーケストレーション": {
+            "name": "Container Orchestration",
+            "description": null
+        },
+        "ファイル操作": {
+            "name": "File Operations",
+            "description": null
+        },
+        "シェルスクリプト": {
+            "name": "Shell Scripts",
+            "description": null
+        },
+        "VS Codeヒント": {
+            "name": "VS Code Tips",
+            "description": null
+        },
+        "IntelliJ IDEA": {
+            "name": "IntelliJ IDEA",
+            "description": null
+        },
+        "Vim": {
+            "name": "Vim",
+            "description": null
+        },
+        "単体テスト": {
+            "name": "Unit Tests",
+            "description": null
+        },
+        "統合テスト": {
+            "name": "Integration Tests",
+            "description": null
+        },
+        "テスト駆動開発": {
+            "name": "Test-Driven Development",
+            "description": null
+        },
+        "コーディングチャレンジ": {
+            "name": "Coding Challenges",
+            "description": "LeetCode, HackerRank, etc."
+        },
+        "システム設計": {
+            "name": "System Design",
+            "description": "Scalability and architecture"
+        },
+        "行動面接質問": {
+            "name": "Behavioral Interview Questions",
+            "description": "STAR method and common questions"
+        },
+        "計算量解析": {
+            "name": "Complexity Analysis",
+            "description": "Big O notation"
+        },
+        "LeetCode Easy": {
+            "name": "LeetCode Easy",
+            "description": null
+        },
+        "LeetCode Medium": {
+            "name": "LeetCode Medium",
+            "description": null
+        },
+        "LeetCode Hard": {
+            "name": "LeetCode Hard",
+            "description": null
+        },
+        "HackerRank": {
+            "name": "HackerRank",
+            "description": null
+        },
+        "スケーラビリティ": {
+            "name": "Scalability",
+            "description": null
+        },
+        "ロードバランシング": {
+            "name": "Load Balancing",
+            "description": null
+        },
+        "データベース設計": {
+            "name": "Database Design",
+            "description": null
+        },
+        "STAR法": {
+            "name": "STAR Method",
+            "description": null
+        },
+        "一般的な質問": {
+            "name": "Common Questions",
+            "description": null
+        },
+        "時間計算量": {
+            "name": "Time Complexity",
+            "description": null
+        },
+        "空間計算量": {
+            "name": "Space Complexity",
+            "description": null
+        },
+        "プロジェクトアイデア": {
+            "name": "Project Ideas",
+            "description": null
+        },
+        "プロジェクトノート": {
+            "name": "Project Notes",
+            "description": null
+        },
+        "アーキテクチャ決定": {
+            "name": "Architecture Decisions",
+            "description": null
+        },
+        "コードスニペットライブラリ": {
+            "name": "Code Snippet Library",
+            "description": null
+        }
+    }
+}

@@ -1,0 +1,101 @@
+{
+    "_comment": "English translations for Docker Master Course (DockerCourseSeeder)",
+    "template": {
+        "title": "Docker実践マスターコース",
+        "description": "WSL2 + Docker Desktop環境で学ぶ、初心者から実践まで完全対応のDockerコース。コンテナ化からCI/CD、セキュリティ、監視まで12週間で習得します。"
+    },
+    "template_translations": {
+        "Docker実践マスターコース": {
+            "title": "Docker Master Course",
+            "description": "Complete Docker course from beginner to practical level using WSL2 + Docker Desktop environment. Master containerization, CI/CD, security, and monitoring over 12 weeks."
+        }
+    },
+    "milestones": {
+        "Docker基礎": {
+            "title": "Docker Fundamentals",
+            "description": "Environment setup, Docker basic concepts, Dockerfile creation, basic commands",
+            "deliverables": [
+                "Complete WSL2 + Docker Desktop environment setup",
+                "Run Hello World container",
+                "Create Dockerfile and build custom image",
+                "Master basic commands"
+            ]
+        },
+        "Docker中級": {
+            "title": "Docker Intermediate",
+            "description": "Managing multiple containers with Volumes, Networks, Docker Compose",
+            "deliverables": [
+                "Use Volumes for data persistence",
+                "Create and manage Networks",
+                "Use Docker Compose for multi-container applications"
+            ]
+        },
+        "Docker上級": {
+            "title": "Docker Advanced",
+            "description": "Multi-stage Build, Healthcheck, Private Registry, Security",
+            "deliverables": [
+                "Create optimized images with multi-stage build",
+                "Implement healthchecks",
+                "Set up private registry",
+                "Apply security best practices"
+            ]
+        },
+        "Docker実践": {
+            "title": "Docker Practice",
+            "description": "Orchestration, Monitoring, Microservices architecture",
+            "deliverables": [
+                "Set up orchestration",
+                "Implement monitoring",
+                "Build microservices architecture"
+            ]
+        },
+        "Capstone Project": {
+            "title": "Capstone Project",
+            "description": "Complete E-commerce architecture + CI/CD + Production deployment",
+            "deliverables": [
+                "Build Full-stack E-commerce",
+                "Set up GitHub Actions CI/CD",
+                "Automate security scanning",
+                "Complete production environment setup"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：環境構築とDocker入門": {
+            "title": "Week 1: Environment Setup and Docker Introduction",
+            "description": "WSL2 + Docker Desktop setup, Docker basic concepts, architecture"
+        },
+        "第2週：Dockerfile作成と基本コマンド": {
+            "title": "Week 2: Dockerfile Creation and Basic Commands",
+            "description": "Create Dockerfile, build images, basic Docker commands"
+        },
+        "第3週：Volumes & Networks": {
+            "title": "Week 3: Volumes & Networks",
+            "description": "Data persistence with volumes, container networking"
+        },
+        "第4週：Docker Compose": {
+            "title": "Week 4: Docker Compose",
+            "description": "Multi-container application management with Docker Compose"
+        },
+        "第5週：Multi-stage Build & Healthcheck": {
+            "title": "Week 5: Multi-stage Build & Healthcheck",
+            "description": "Optimize images with multi-stage builds, implement healthchecks"
+        },
+        "第6週：Private Registry & セキュリティ": {
+            "title": "Week 6: Private Registry & Security",
+            "description": "Set up private registry, security scanning, best practices"
+        },
+        "第7週：Orchestration & Monitoring": {
+            "title": "Week 7: Orchestration & Monitoring",
+            "description": "Container orchestration, monitoring stack setup"
+        },
+        "第8週：Microservices構成": {
+            "title": "Week 8: Microservices Architecture",
+            "description": "Build microservices architecture with Docker"
+        },
+        "第9-12週：E-commerce Capstone": {
+            "title": "Week 9-12: E-commerce Capstone",
+            "description": "Full-stack architecture + CI/CD + Monitoring + Security"
+        }
+    }
+}

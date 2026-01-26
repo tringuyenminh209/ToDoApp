@@ -1,0 +1,188 @@
+{
+    "_comment": "Vietnamese translations for HTML Cheat Code",
+    "language": {
+        "html": {
+            "description": "HTML (HyperText Markup Language) là ngôn ngữ đánh dấu tiêu chuẩn để tạo trang web và ứng dụng web."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Cơ bản HTML và các thẻ thiết yếu"
+        },
+        "html5-tags": {
+            "title": "Thẻ HTML5",
+            "description": "Các phần tử HTML5 ngữ nghĩa"
+        },
+        "html-tables": {
+            "title": "Bảng HTML",
+            "description": "Cấu trúc và tổ chức bảng"
+        },
+        "html-lists": {
+            "title": "Danh sách HTML",
+            "description": "Danh sách có thứ tự, không thứ tự và định nghĩa"
+        },
+        "html-forms": {
+            "title": "Form HTML",
+            "description": "Các phần tử form và kiểu input"
+        },
+        "html-meta-tags": {
+            "title": "Thẻ Meta HTML",
+            "description": "Metadata và thẻ SEO"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "Hello HTML": {
+                "title": "Hello HTML",
+                "description": "Cấu trúc boilerplate HTML5 cơ bản"
+            },
+            "コメント": {
+                "title": "Chú thích",
+                "description": "Cú pháp chú thích một dòng và nhiều dòng"
+            },
+            "段落": {
+                "title": "Đoạn văn",
+                "description": "Phần tử đoạn văn bản"
+            },
+            "HTMLリンク": {
+                "title": "Link HTML",
+                "description": "Các loại link bao gồm email, điện thoại và SMS"
+            },
+            "画像タグ": {
+                "title": "Thẻ hình ảnh",
+                "description": "Phần tử hình ảnh với lazy loading và thuộc tính alt"
+            },
+            "テキストフォーマット": {
+                "title": "Định dạng văn bản",
+                "description": "Các thẻ nhấn mạnh và định dạng văn bản"
+            },
+            "見出し": {
+                "title": "Tiêu đề",
+                "description": "6 cấp độ tiêu đề (H1-H6)"
+            },
+            "セクション分割": {
+                "title": "Phân chia Section",
+                "description": "Các phần tử container để tổ chức nội dung: div, span, p, br, hr"
+            },
+            "インラインフレーム": {
+                "title": "Iframe",
+                "description": "Nội dung nhúng trong trang web"
+            },
+            "HTML内のJavaScript": {
+                "title": "JavaScript trong HTML",
+                "description": "Thẻ script nhúng cho code JavaScript"
+            },
+            "HTML内のCSS": {
+                "title": "CSS trong HTML",
+                "description": "Stylesheet nhúng cho CSS"
+            }
+        },
+        "html5-tags": {
+            "ドキュメント構造": {
+                "title": "Cấu trúc Document",
+                "description": "Các phần tử layout ngữ nghĩa: header, nav, main, footer"
+            },
+            "ヘッダーナビゲーション": {
+                "title": "Navigation Header",
+                "description": "Menu navigation trong phần tử header"
+            },
+            "HTML5動画": {
+                "title": "Video HTML5",
+                "description": "Nhúng video với controls và thông báo fallback"
+            },
+            "HTML5音声": {
+                "title": "Audio HTML5",
+                "description": "Nhúng audio với controls"
+            },
+            "HTML5 Ruby": {
+                "title": "Ruby HTML5",
+                "description": "Ruby annotation cho hướng dẫn phát âm"
+            },
+            "HTML5 Progress": {
+                "title": "Progress HTML5",
+                "description": "Phần tử thanh tiến trình"
+            },
+            "HTML5 Mark": {
+                "title": "Mark HTML5",
+                "description": "Phần tử văn bản highlight để nhấn mạnh"
+            }
+        },
+        "html-tables": {
+            "テーブルの例": {
+                "title": "Ví dụ bảng",
+                "description": "Bảng cơ bản với header và body"
+            }
+        },
+        "html-lists": {
+            "順序なしリスト": {
+                "title": "Danh sách không thứ tự",
+                "description": "Danh sách có dấu đầu dòng"
+            },
+            "順序付きリスト": {
+                "title": "Danh sách có thứ tự",
+                "description": "Danh sách đánh số"
+            },
+            "定義リスト": {
+                "title": "Danh sách định nghĩa",
+                "description": "Thuật ngữ và định nghĩa của chúng"
+            }
+        },
+        "html-forms": {
+            "フォームタグ": {
+                "title": "Thẻ Form",
+                "description": "Form hoàn chỉnh thu thập email, password và checkbox"
+            },
+            "ラベルタグ": {
+                "title": "Thẻ Label",
+                "description": "Mẫu label lồng nhau và tham chiếu cho input form"
+            },
+            "Textarea": {
+                "title": "Textarea",
+                "description": "Điều khiển nhập văn bản nhiều dòng"
+            },
+            "ラジオボタン": {
+                "title": "Radio Button",
+                "description": "Chọn đúng một tùy chọn từ nhóm"
+            },
+            "チェックボックス": {
+                "title": "Checkbox",
+                "description": "Chọn một hoặc nhiều tùy chọn"
+            },
+            "Selectタグ": {
+                "title": "Thẻ Select",
+                "description": "Danh sách dropdown các tùy chọn"
+            },
+            "Fieldsetタグ": {
+                "title": "Thẻ Fieldset",
+                "description": "Các phần tử form được nhóm với tiêu đề legend"
+            },
+            "Datalistタグ": {
+                "title": "Thẻ Datalist",
+                "description": "Tùy chọn định sẵn HTML5 cho trường input với autocomplete"
+            },
+            "送信とリセットボタン": {
+                "title": "Nút Submit và Reset",
+                "description": "Điều khiển gửi và reset form"
+            }
+        },
+        "html-meta-tags": {
+            "メタタグ": {
+                "title": "Thẻ Meta",
+                "description": "Metadata cơ bản bao gồm charset, title, URL, description và image"
+            },
+            "Open Graph": {
+                "title": "Open Graph",
+                "description": "Metadata mạng xã hội cho Facebook, Instagram, Pinterest, LinkedIn"
+            },
+            "Twitter Cards": {
+                "title": "Twitter Cards",
+                "description": "Metadata riêng cho Twitter khi chia sẻ nội dung"
+            },
+            "ジオタギング": {
+                "title": "Geotagging",
+                "description": "Metadata vị trí địa lý cho nội dung"
+            }
+        }
+    }
+}

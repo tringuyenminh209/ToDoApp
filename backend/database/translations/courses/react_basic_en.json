@@ -1,0 +1,105 @@
+{
+    "_comment": "English translations for React.js Complete Course (ReactCourseSeeder)",
+    "template": {
+        "title": "React.js完全コース",
+        "description": "JavaScript経験者向けReact.jsコース。12週間でコンポーネント、Hooks、状態管理、ルーティングから実践的なアプリ開発まで学習します。"
+    },
+    "template_translations": {
+        "React.js完全コース": {
+            "title": "React.js Complete Course",
+            "description": "React.js course for JavaScript developers. Learn from components, Hooks, state management, and routing to practical app development over 12 weeks."
+        }
+    },
+    "milestones": {
+        "React基礎": {
+            "title": "React Fundamentals",
+            "description": "React environment setup, JSX, components, Props, State, event handling",
+            "deliverables": [
+                "Set up React development environment",
+                "Understand and use JSX",
+                "Create components",
+                "Manage Props/State"
+            ]
+        },
+        "Hooks": {
+            "title": "Hooks",
+            "description": "useState, useEffect, useContext, useReducer, custom hooks",
+            "deliverables": [
+                "Manage side effects with useEffect",
+                "Share global state with useContext",
+                "Manage complex state with useReducer",
+                "Create custom hooks"
+            ]
+        },
+        "State Management & Routing": {
+            "title": "State Management & Routing",
+            "description": "React Router, Redux Toolkit, asynchronous processing, middleware",
+            "deliverables": [
+                "Implement routing with React Router",
+                "Manage global state with Redux Toolkit",
+                "Handle asynchronous actions",
+                "Build practical SPA"
+            ]
+        },
+        "Advanced & Best Practices": {
+            "title": "Advanced & Best Practices",
+            "description": "Performance optimization, testing, TypeScript, deployment",
+            "deliverables": [
+                "Implement performance optimization",
+                "Write tests with Jest + RTL",
+                "Type-safe app with TypeScript + React",
+                "Deploy to production environment"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：Reactとは？環境構築とJSX": {
+            "title": "Week 1: What is React? Environment Setup and JSX",
+            "description": "React overview, Create React App, JSX, component basics"
+        },
+        "第2週：コンポーネント、Props、State": {
+            "title": "Week 2: Components, Props, State",
+            "description": "Component creation, data passing with Props, state management with State"
+        },
+        "第3週：イベント処理、リスト、フォーム": {
+            "title": "Week 3: Event Handling, Lists, Forms",
+            "description": "Event handling, list rendering, form control"
+        },
+        "第4週：useState、useEffect": {
+            "title": "Week 4: useState, useEffect",
+            "description": "State management basics, side effect handling, lifecycle"
+        },
+        "第5週：useContext、useReducer": {
+            "title": "Week 5: useContext, useReducer",
+            "description": "State sharing with Context API, complex state management with useReducer"
+        },
+        "第6週：その他のHooksとカスタムフック": {
+            "title": "Week 6: Other Hooks and Custom Hooks",
+            "description": "useRef, useMemo, useCallback, custom hook creation"
+        },
+        "第7週：React Router": {
+            "title": "Week 7: React Router",
+            "description": "Routing, navigation, dynamic routes, nested routes"
+        },
+        "第8週：Redux Toolkit基礎": {
+            "title": "Week 8: Redux Toolkit Fundamentals",
+            "description": "Redux Toolkit, Slice, Store, Reducer"
+        },
+        "第9週：非同期処理とミドルウェア": {
+            "title": "Week 9: Asynchronous Processing and Middleware",
+            "description": "createAsyncThunk, RTK Query, middleware"
+        },
+        "第10週：パフォーマンス最適化": {
+            "title": "Week 10: Performance Optimization",
+            "description": "React.memo, Code Splitting, Lazy Loading, optimization techniques"
+        },
+        "第11週：テスト": {
+            "title": "Week 11: Testing",
+            "description": "Jest, React Testing Library, component testing"
+        },
+        "第12週：TypeScript + React、デプロイ": {
+            "title": "Week 12: TypeScript + React, Deployment",
+            "description": "TypeScript and React integration, best practices, deployment"
+        }
+    }
+}

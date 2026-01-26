@@ -1,0 +1,268 @@
+{
+    "_comment": "English translations for Bash Cheat Code",
+    "language": {
+        "bash": {
+            "description": "Bash shell scripting reference. From basics to advanced shell scripting in Linux/Unix environments."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "Bash script basics and introduction"
+        },
+        "parameter-expansions": {
+            "title": "Parameter Expansions",
+            "description": "Variable expansion and manipulation"
+        },
+        "arrays": {
+            "title": "Arrays",
+            "description": "Array definition and manipulation"
+        },
+        "dictionaries": {
+            "title": "Associative Arrays",
+            "description": "Associative array (dictionary) operations"
+        },
+        "conditionals": {
+            "title": "Conditionals",
+            "description": "Conditional statements and comparison operators"
+        },
+        "loops": {
+            "title": "Loops",
+            "description": "for, while, until loops"
+        },
+        "functions": {
+            "title": "Functions",
+            "description": "Function definition and usage"
+        },
+        "options-settings": {
+            "title": "Options & Settings",
+            "description": "Bash options and glob settings"
+        },
+        "history": {
+            "title": "History",
+            "description": "Command history manipulation"
+        },
+        "miscellaneous": {
+            "title": "Miscellaneous",
+            "description": "Other useful features"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "Hello World": {
+                "title": "Hello World",
+                "description": "Basic Bash script example"
+            },
+            "スクリプトの実行": {
+                "title": "Running Scripts",
+                "description": "How to run Bash scripts"
+            },
+            "変数": {
+                "title": "Variables",
+                "description": "Variable declaration and usage"
+            },
+            "コメント": {
+                "title": "Comments",
+                "description": "Inline and multi-line comments"
+            },
+            "引数": {
+                "title": "Arguments",
+                "description": "Script argument special variables"
+            },
+            "関数": {
+                "title": "Functions",
+                "description": "Function definition and calling"
+            },
+            "条件分岐": {
+                "title": "Conditionals",
+                "description": "Basic if-elif-else syntax"
+            },
+            "ブレース展開": {
+                "title": "Brace Expansion",
+                "description": "Brace expansion examples"
+            },
+            "コマンド置換": {
+                "title": "Command Substitution",
+                "description": "Two methods of command substitution"
+            }
+        },
+        "parameter-expansions": {
+            "接頭辞・接尾辞の削除": {
+                "title": "Prefix/Suffix Removal",
+                "description": "String manipulation with parameter expansion"
+            },
+            "文字列置換": {
+                "title": "String Replacement",
+                "description": "String replacement"
+            },
+            "部分文字列": {
+                "title": "Substring",
+                "description": "Extracting substrings"
+            },
+            "文字列の長さ": {
+                "title": "String Length",
+                "description": "Getting string length"
+            },
+            "デフォルト値": {
+                "title": "Default Values",
+                "description": "Default value when variable is unset"
+            },
+            "大文字・小文字変換": {
+                "title": "Case Conversion",
+                "description": "String case conversion"
+            }
+        },
+        "arrays": {
+            "配列の定義": {
+                "title": "Array Definition",
+                "description": "Array definition methods"
+            },
+            "配列のインデックス": {
+                "title": "Array Indexing",
+                "description": "Accessing array elements"
+            },
+            "配列の反復処理": {
+                "title": "Array Iteration",
+                "description": "Iterating over all array elements"
+            },
+            "インデックス付き反復処理": {
+                "title": "Indexed Iteration",
+                "description": "Getting index and value simultaneously"
+            },
+            "配列操作": {
+                "title": "Array Operations",
+                "description": "Adding and removing array elements"
+            }
+        },
+        "dictionaries": {
+            "連想配列の定義": {
+                "title": "Associative Array Definition",
+                "description": "Declaring and initializing associative arrays"
+            },
+            "連想配列の操作": {
+                "title": "Associative Array Operations",
+                "description": "Getting values and keys from associative arrays"
+            },
+            "連想配列の反復処理": {
+                "title": "Associative Array Iteration",
+                "description": "Iterating over values and keys"
+            }
+        },
+        "conditionals": {
+            "整数の比較": {
+                "title": "Integer Comparison",
+                "description": "Integer comparison operators"
+            },
+            "文字列の比較": {
+                "title": "String Comparison",
+                "description": "String comparison operators"
+            },
+            "ファイル条件": {
+                "title": "File Conditions",
+                "description": "File/directory condition checks"
+            },
+            "論理演算子": {
+                "title": "Logical Operators",
+                "description": "Logical operators"
+            }
+        },
+        "loops": {
+            "Forループ": {
+                "title": "For Loop",
+                "description": "For loop with file patterns"
+            },
+            "Cスタイルforループ": {
+                "title": "C-style For Loop",
+                "description": "C-style for loop"
+            },
+            "範囲forループ": {
+                "title": "Range For Loop",
+                "description": "For loop with numeric range"
+            },
+            "Whileループ": {
+                "title": "While Loop",
+                "description": "Basic while loop"
+            },
+            "Untilループ": {
+                "title": "Until Loop",
+                "description": "Until loop (runs while condition is false)"
+            },
+            "BreakとContinue": {
+                "title": "Break and Continue",
+                "description": "Break statement to exit loop"
+            }
+        },
+        "functions": {
+            "関数の定義": {
+                "title": "Function Definition",
+                "description": "Basic function definition"
+            },
+            "関数の引数": {
+                "title": "Function Arguments",
+                "description": "Passing arguments to functions"
+            },
+            "戻り値": {
+                "title": "Return Values",
+                "description": "Function return values (exit codes)"
+            }
+        },
+        "options-settings": {
+            "Bashオプション": {
+                "title": "Bash Options",
+                "description": "Important Bash option settings"
+            },
+            "グロブオプション": {
+                "title": "Glob Options",
+                "description": "Glob (wildcard) options"
+            }
+        },
+        "history": {
+            "履歴コマンド": {
+                "title": "History Commands",
+                "description": "Basic history operations"
+            },
+            "履歴展開": {
+                "title": "History Expansion",
+                "description": "History expansion examples"
+            }
+        },
+        "miscellaneous": {
+            "数値計算": {
+                "title": "Numeric Calculation",
+                "description": "Arithmetic expansion for calculations"
+            },
+            "サブシェル": {
+                "title": "Subshell",
+                "description": "Subshell usage (doesn't affect current shell)"
+            },
+            "リダイレクション": {
+                "title": "Redirection",
+                "description": "Input/output redirection"
+            },
+            "Case/Switch": {
+                "title": "Case/Switch",
+                "description": "Case statement branching"
+            },
+            "エラートラップ": {
+                "title": "Error Trap",
+                "description": "Trap setting for error occurrence"
+            },
+            "printf": {
+                "title": "printf",
+                "description": "Formatted output with printf"
+            },
+            "オプション解析": {
+                "title": "Option Parsing",
+                "description": "Command-line option parsing"
+            },
+            "条件実行": {
+                "title": "Conditional Execution",
+                "description": "Conditional command execution"
+            },
+            "厳密モード": {
+                "title": "Strict Mode",
+                "description": "Bash strict mode settings"
+            }
+        }
+    }
+}

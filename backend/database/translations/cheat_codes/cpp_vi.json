@@ -1,0 +1,280 @@
+{
+    "_comment": "Vietnamese translations for C++ Cheat Code",
+    "language": {
+        "cpp": {
+            "description": "Bảng tóm tắt C++ cung cấp cú pháp và phương thức cơ bản."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Cơ bản và giới thiệu C++"
+        },
+        "cpp-arrays": {
+            "title": "Mảng C++",
+            "description": "Thao tác mảng"
+        },
+        "cpp-conditionals": {
+            "title": "Điều kiện C++",
+            "description": "Câu lệnh điều kiện"
+        },
+        "cpp-loops": {
+            "title": "Vòng lặp C++",
+            "description": "Cú pháp vòng lặp"
+        },
+        "cpp-functions": {
+            "title": "Hàm C++",
+            "description": "Định nghĩa và sử dụng hàm"
+        },
+        "cpp-classes": {
+            "title": "Lớp C++",
+            "description": "Lập trình hướng đối tượng"
+        },
+        "cpp-preprocessor": {
+            "title": "Preprocessor C++",
+            "description": "Các chỉ thị tiền xử lý"
+        },
+        "miscellaneous": {
+            "title": "Khác",
+            "description": "Các tính năng C++ bổ sung"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "hello.cpp": {
+                "title": "hello.cpp",
+                "description": "Chương trình Hello World cơ bản"
+            },
+            "コンパイルと実行": {
+                "title": "Biên dịch và Chạy",
+                "description": "Biên dịch và chạy chương trình C++"
+            },
+            "変数": {
+                "title": "Biến",
+                "description": "Khai báo biến và kiểu"
+            },
+            "一様初期化": {
+                "title": "Khởi tạo đồng nhất",
+                "description": "Cú pháp khởi tạo đồng nhất"
+            },
+            "基本データ型": {
+                "title": "Kiểu dữ liệu nguyên thủy",
+                "description": "Bảng kiểu dữ liệu nguyên thủy"
+            },
+            "ユーザー入力": {
+                "title": "Nhập liệu",
+                "description": "Đọc input từ người dùng"
+            },
+            "交換": {
+                "title": "Hoán đổi",
+                "description": "Hoán đổi biến"
+            },
+            "コメント": {
+                "title": "Chú thích",
+                "description": "Cú pháp chú thích"
+            },
+            "If文": {
+                "title": "Câu lệnh If",
+                "description": "Câu lệnh if cơ bản"
+            },
+            "ループ": {
+                "title": "Vòng lặp",
+                "description": "Vòng lặp for"
+            },
+            "関数": {
+                "title": "Hàm",
+                "description": "Khai báo và định nghĩa hàm"
+            },
+            "参照": {
+                "title": "Tham chiếu",
+                "description": "Tham chiếu - bí danh biến"
+            },
+            "名前空間": {
+                "title": "Namespace",
+                "description": "Sử dụng namespace"
+            },
+            "using namespace": {
+                "title": "using namespace",
+                "description": "Chỉ thị using namespace"
+            }
+        },
+        "cpp-arrays": {
+            "宣言": {
+                "title": "Khai báo",
+                "description": "Khai báo và khởi tạo mảng"
+            },
+            "操作": {
+                "title": "Thao tác",
+                "description": "Thao tác mảng"
+            },
+            "表示": {
+                "title": "Hiển thị",
+                "description": "Hiển thị phần tử mảng"
+            },
+            "多次元配列": {
+                "title": "Mảng đa chiều",
+                "description": "Mảng đa chiều"
+            }
+        },
+        "cpp-conditionals": {
+            "If節": {
+                "title": "Mệnh đề If",
+                "description": "Câu lệnh if cơ bản"
+            },
+            "If-Else": {
+                "title": "If-Else",
+                "description": "Câu lệnh if-else"
+            },
+            "Else if文": {
+                "title": "Câu lệnh Else if",
+                "description": "Chuỗi else-if"
+            },
+            "関係演算子": {
+                "title": "Toán tử quan hệ",
+                "description": "Bảng toán tử quan hệ"
+            },
+            "代入演算子": {
+                "title": "Toán tử gán",
+                "description": "Bảng toán tử gán"
+            },
+            "論理演算子": {
+                "title": "Toán tử logic",
+                "description": "Bảng toán tử logic"
+            },
+            "ビット演算子": {
+                "title": "Toán tử bit",
+                "description": "Bảng toán tử bit"
+            },
+            "三項演算子": {
+                "title": "Toán tử 3 ngôi",
+                "description": "Toán tử điều kiện 3 ngôi"
+            }
+        },
+        "cpp-loops": {
+            "Forループ": {
+                "title": "Vòng lặp For",
+                "description": "Vòng lặp for cơ bản"
+            },
+            "Whileループ": {
+                "title": "Vòng lặp While",
+                "description": "Vòng lặp while"
+            },
+            "Do-Whileループ": {
+                "title": "Vòng lặp Do-While",
+                "description": "Vòng lặp do-while"
+            },
+            "範囲ベースForループ": {
+                "title": "Vòng lặp For theo phạm vi",
+                "description": "Vòng lặp for theo phạm vi (C++11)"
+            },
+            "BreakとContinue": {
+                "title": "Break và Continue",
+                "description": "Câu lệnh break và continue"
+            }
+        },
+        "cpp-functions": {
+            "関数の宣言": {
+                "title": "Khai báo hàm",
+                "description": "Khai báo và định nghĩa hàm"
+            },
+            "関数のパラメータ": {
+                "title": "Tham số hàm",
+                "description": "Hàm với tham số"
+            },
+            "デフォルトパラメータ": {
+                "title": "Tham số mặc định",
+                "description": "Tham số hàm mặc định"
+            },
+            "関数のオーバーロード": {
+                "title": "Nạp chồng hàm",
+                "description": "Nạp chồng hàm"
+            },
+            "参照渡し": {
+                "title": "Truyền tham chiếu",
+                "description": "Truyền tham số bằng tham chiếu"
+            },
+            "ポインタ渡し": {
+                "title": "Truyền con trỏ",
+                "description": "Truyền tham số bằng con trỏ"
+            }
+        },
+        "cpp-classes": {
+            "クラスの定義": {
+                "title": "Định nghĩa lớp",
+                "description": "Định nghĩa lớp cơ bản"
+            },
+            "オブジェクトの作成": {
+                "title": "Tạo đối tượng",
+                "description": "Tạo và sử dụng đối tượng"
+            },
+            "コンストラクタ": {
+                "title": "Constructor",
+                "description": "Constructor của lớp"
+            },
+            "デストラクタ": {
+                "title": "Destructor",
+                "description": "Destructor của lớp"
+            },
+            "クラスのメソッド": {
+                "title": "Phương thức lớp",
+                "description": "Phương thức của lớp"
+            },
+            "アクセス修飾子": {
+                "title": "Access Modifier",
+                "description": "Các access modifier"
+            },
+            "ゲッターとセッター": {
+                "title": "Getter và Setter",
+                "description": "Phương thức getter và setter"
+            },
+            "継承": {
+                "title": "Kế thừa",
+                "description": "Kế thừa lớp"
+            }
+        },
+        "cpp-preprocessor": {
+            "インクルード": {
+                "title": "Include",
+                "description": "Chỉ thị include"
+            },
+            "定義": {
+                "title": "Define",
+                "description": "Định nghĩa và hủy định nghĩa macro"
+            },
+            "If": {
+                "title": "If",
+                "description": "Biên dịch có điều kiện"
+            },
+            "エラー": {
+                "title": "Error",
+                "description": "Chỉ thị error và warning"
+            },
+            "マクロ": {
+                "title": "Macro",
+                "description": "Macro kiểu hàm"
+            },
+            "トークン連結": {
+                "title": "Nối token",
+                "description": "Nối token"
+            },
+            "文字列化": {
+                "title": "Chuỗi hóa",
+                "description": "Macro chuỗi hóa"
+            },
+            "__FILE__と__LINE__": {
+                "title": "__FILE__ và __LINE__",
+                "description": "Macro file và dòng"
+            }
+        },
+        "miscellaneous": {
+            "エスケープシーケンス": {
+                "title": "Escape Sequence",
+                "description": "Bảng escape sequence"
+            },
+            "キーワード": {
+                "title": "Từ khóa",
+                "description": "Danh sách từ khóa C++"
+            }
+        }
+    }
+}

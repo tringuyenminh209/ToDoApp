@@ -81,6 +81,19 @@ export default function CheatCodePage() {
     loadCategories();
   }, [loadLanguages, loadCategories]);
 
+  // Reload data when locale changes
+  useEffect(() => {
+    const handleLocaleChange = () => {
+      loadLanguages();
+      loadCategories();
+    };
+
+    window.addEventListener('localeChanged', handleLocaleChange);
+    return () => {
+      window.removeEventListener('localeChanged', handleLocaleChange);
+    };
+  }, [loadLanguages, loadCategories]);
+
   const getLanguageIcon = (icon?: string) => {
     if (icon) return icon;
     return 'mdi:code-tags';

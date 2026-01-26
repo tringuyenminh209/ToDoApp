@@ -1,0 +1,154 @@
+{
+    "_comment": "Vietnamese translations for Docker Cheat Code",
+    "language": {
+        "docker": {
+            "description": "Tham khảo Docker. Bạn có thể tìm các lệnh Docker phổ biến nhất ở đây."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Thao tác cơ bản Docker"
+        },
+        "containers": {
+            "title": "Docker Container",
+            "description": "Thao tác và quản lý container"
+        },
+        "images": {
+            "title": "Docker Image",
+            "description": "Thao tác và build image"
+        },
+        "networking": {
+            "title": "Docker Network",
+            "description": "Tạo và quản lý network"
+        },
+        "cleanup": {
+            "title": "Dọn dẹp",
+            "description": "Xóa tài nguyên không dùng"
+        },
+        "docker-hub": {
+            "title": "Docker Hub",
+            "description": "Thao tác Docker Hub"
+        },
+        "miscellaneous": {
+            "title": "Khác",
+            "description": "Các lệnh hữu ích khác"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "バックグラウンドでコンテナを実行": {
+                "title": "Chạy Container nền",
+                "description": "Tạo và chạy container ở chế độ detached"
+            },
+            "フォアグラウンドでコンテナを実行": {
+                "title": "Chạy Container trực tiếp",
+                "description": "Chạy container ở chế độ tương tác"
+            },
+            "一般的なコマンド": {
+                "title": "Lệnh phổ biến",
+                "description": "Các lệnh Docker phổ biến nhất"
+            }
+        },
+        "containers": {
+            "開始と停止": {
+                "title": "Bắt đầu và Dừng",
+                "description": "Bắt đầu, dừng và khởi động lại container"
+            },
+            "情報の取得": {
+                "title": "Lấy thông tin",
+                "description": "Lấy thông tin container"
+            },
+            "コンテナの作成": {
+                "title": "Tạo Container",
+                "description": "Tùy chọn tạo container"
+            },
+            "コンテナ作成の例": {
+                "title": "Ví dụ tạo Container",
+                "description": "Ví dụ tạo container Redis"
+            },
+            "コンテナの操作": {
+                "title": "Thao tác Container",
+                "description": "Đổi tên, xóa và cập nhật container"
+            }
+        },
+        "images": {
+            "イメージの操作": {
+                "title": "Thao tác Image",
+                "description": "Liệt kê, xóa, lưu và tải image"
+            },
+            "イメージのビルド": {
+                "title": "Build Image",
+                "description": "Build image từ Dockerfile"
+            }
+        },
+        "networking": {
+            "ネットワークの操作": {
+                "title": "Thao tác Network",
+                "description": "Tạo, kết nối và ngắt kết nối network"
+            },
+            "ネットワークの作成": {
+                "title": "Tạo Network",
+                "description": "Tạo network với cấu hình tùy chỉnh"
+            }
+        },
+        "cleanup": {
+            "すべてをクリーンアップ": {
+                "title": "Dọn dẹp tất cả",
+                "description": "Dọn dẹp toàn hệ thống"
+            },
+            "コンテナのクリーンアップ": {
+                "title": "Dọn dẹp Container",
+                "description": "Xóa container đã dừng"
+            },
+            "イメージのクリーンアップ": {
+                "title": "Dọn dẹp Image",
+                "description": "Xóa image không dùng"
+            },
+            "ボリュームのクリーンアップ": {
+                "title": "Dọn dẹp Volume",
+                "description": "Xóa volume không dùng"
+            }
+        },
+        "docker-hub": {
+            "Docker Hubコマンド": {
+                "title": "Lệnh Docker Hub",
+                "description": "Thao tác cơ bản Docker Hub"
+            },
+            "レジストリへのログイン": {
+                "title": "Đăng nhập Registry",
+                "description": "Xác thực Docker registry"
+            },
+            "レジストリからのログアウト": {
+                "title": "Đăng xuất Registry",
+                "description": "Đăng xuất Docker registry"
+            },
+            "イメージの検索": {
+                "title": "Tìm kiếm Image",
+                "description": "Tìm kiếm image trên Docker Hub"
+            },
+            "イメージのプル": {
+                "title": "Pull Image",
+                "description": "Tải image từ Docker Hub"
+            },
+            "イメージのプッシュ": {
+                "title": "Push Image",
+                "description": "Tải image lên Docker Hub"
+            }
+        },
+        "miscellaneous": {
+            "一括クリーンアップ": {
+                "title": "Dọn dẹp hàng loạt",
+                "description": "Xóa tất cả container và image cùng lúc"
+            },
+            "ボリュームの確認": {
+                "title": "Kiểm tra Volume",
+                "description": "Liệt kê volume"
+            },
+            "未使用ボリュームのクリーンアップ": {
+                "title": "Dọn dẹp Volume không dùng",
+                "description": "Xóa volume không dùng"
+            }
+        }
+    }
+}

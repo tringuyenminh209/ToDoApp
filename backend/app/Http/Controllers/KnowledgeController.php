@@ -17,7 +17,10 @@ class KnowledgeController extends Controller
     {
         $user = $request->user();
         $query = KnowledgeItem::where('user_id', $user->id)
-            ->with(['category', 'learningPath', 'sourceTask']);
+            ->withTranslations()
+            ->with(['category' => function ($q) {
+                $q->withTranslations();
+            }, 'learningPath', 'sourceTask']);
 
         // Debug logging - check all query params
         Log::info('Knowledge API request', [
@@ -178,7 +181,30 @@ class KnowledgeController extends Controller
             'bindings' => $query->getBindings(),
         ]);
 
-        $items = $query->get();
+        $items = $query->get()->map(function ($item) {
+            $itemArray = $item->toArray();
+            // Apply translations
+            if (method_exists($item, 'getTranslatableFields')) {
+                foreach ($item->getTranslatableFields() as $field) {
+                    $translated = $item->getTranslation($field);
+                    if ($translated !== null) {
+                        $itemArray[$field] = $translated;
+                    }
+                }
+            }
+            // Apply category translations if exists
+            if ($item->category && method_exists($item->category, 'getTranslatableFields')) {
+                $categoryArray = $item->category->toArray();
+                foreach ($item->category->getTranslatableFields() as $field) {
+                    $translated = $item->category->getTranslation($field);
+                    if ($translated !== null) {
+                        $categoryArray[$field] = $translated;
+                    }
+                }
+                $itemArray['category'] = $categoryArray;
+            }
+            return $itemArray;
+        });
 
         // Debug logging - detailed
         Log::info('Knowledge API response', [
@@ -186,7 +212,7 @@ class KnowledgeController extends Controller
             'source_task_id_filter' => $request->source_task_id,
             'learning_path_id_filter' => $request->learning_path_id,
             'user_id' => $user->id,
-            'first_item_id' => $items->first()?->id,
+            'first_item_id' => $items->first()['id'] ?? null,
             'all_query_params' => $request->all(),
             'query_string' => $request->getQueryString(),
         ]);

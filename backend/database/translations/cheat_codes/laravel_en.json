@@ -1,0 +1,256 @@
+{
+    "_comment": "English translations for Laravel Cheat Code",
+    "language": {
+        "laravel": {
+            "description": "Laravel is an expressive and progressive PHP web application framework. Reference for common Laravel 8 commands and features."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "Laravel installation and requirements"
+        },
+        "configuration": {
+            "title": "Configuration",
+            "description": ".env file and retrieving config values"
+        },
+        "routing": {
+            "title": "Routing",
+            "description": "HTTP routes and route parameters"
+        },
+        "helpers": {
+            "title": "Helpers",
+            "description": "Useful helper functions"
+        },
+        "validation": {
+            "title": "Validation",
+            "description": "Form validation"
+        },
+        "session": {
+            "title": "Session",
+            "description": "Session management"
+        },
+        "logging": {
+            "title": "Logging",
+            "description": "Using log levels"
+        },
+        "deployment": {
+            "title": "Deployment",
+            "description": "Deploying to production"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "要件": {
+                "title": "Requirements",
+                "description": "Laravel system requirements"
+            },
+            "Composerでインストール": {
+                "title": "Install with Composer",
+                "description": "Installing Laravel using Composer"
+            },
+            "Dockerでインストール": {
+                "title": "Install with Docker",
+                "description": "Installation using Laravel Sail (Docker)"
+            }
+        },
+        "configuration": {
+            ".env値の取得": {
+                "title": "Retrieving .env Values",
+                "description": "Getting values from .env file"
+            },
+            "環境の判定": {
+                "title": "Determining Environment",
+                "description": "Determine current environment"
+            },
+            "設定値の取得": {
+                "title": "Retrieving Config Values",
+                "description": "Get config values using dot notation"
+            },
+            "設定値の設定": {
+                "title": "Setting Config Values",
+                "description": "Set config values at runtime"
+            },
+            "デバッグモード": {
+                "title": "Debug Mode",
+                "description": "Turning debug mode on/off"
+            },
+            "メンテナンスモード": {
+                "title": "Maintenance Mode",
+                "description": "Setting maintenance mode"
+            }
+        },
+        "routing": {
+            "HTTPメソッド": {
+                "title": "HTTP Methods",
+                "description": "Basic HTTP route methods"
+            },
+            "複数HTTPメソッド": {
+                "title": "Multiple HTTP Methods",
+                "description": "Routes responding to multiple HTTP methods"
+            },
+            "基本的な定義": {
+                "title": "Basic Definition",
+                "description": "Closures and controller actions"
+            },
+            "依存性注入": {
+                "title": "Dependency Injection",
+                "description": "Dependency injection in routes"
+            },
+            "ビュールート": {
+                "title": "View Routes",
+                "description": "Routes that return views"
+            },
+            "ルートモデルバインディング": {
+                "title": "Route Model Binding",
+                "description": "Implicit route model binding"
+            },
+            "カスタム解決カラム": {
+                "title": "Custom Resolution Column",
+                "description": "Model resolution using slug"
+            },
+            "ルートパラメータ": {
+                "title": "Route Parameters",
+                "description": "Required parameters"
+            },
+            "オプショナルパラメータ": {
+                "title": "Optional Parameters",
+                "description": "Optional route parameters"
+            },
+            "リダイレクトルート": {
+                "title": "Redirect Routes",
+                "description": "HTTP redirect routes"
+            },
+            "正規表現制約": {
+                "title": "Regular Expression Constraints",
+                "description": "Regular expression constraints for route parameters"
+            },
+            "名前付きルート": {
+                "title": "Named Routes",
+                "description": "Naming routes"
+            },
+            "フォールバックルート": {
+                "title": "Fallback Route",
+                "description": "Route executed when no other routes match"
+            },
+            "ルートグループ - ミドルウェア": {
+                "title": "Route Groups - Middleware",
+                "description": "Route groups sharing middleware"
+            },
+            "ルートグループ - URIプレフィックス": {
+                "title": "Route Groups - URI Prefix",
+                "description": "Route groups sharing URI prefix"
+            },
+            "現在のルートへのアクセス": {
+                "title": "Accessing Current Route",
+                "description": "Getting current route information"
+            }
+        },
+        "helpers": {
+            "route() - 名前付きルート": {
+                "title": "route() - Named Route",
+                "description": "Generate URL for a named route"
+            },
+            "route() - パラメータ付き": {
+                "title": "route() - With Parameters",
+                "description": "Generate route URL with parameters"
+            },
+            "route() - クエリ文字列": {
+                "title": "route() - Query String",
+                "description": "Route URL with query string"
+            },
+            "url() - URL生成": {
+                "title": "url() - URL Generation",
+                "description": "Generate absolute URL"
+            },
+            "asset() - アセットURL": {
+                "title": "asset() - Asset URL",
+                "description": "Generate URL for asset file"
+            },
+            "redirect() - リダイレクト": {
+                "title": "redirect() - Redirect",
+                "description": "Generate redirect response"
+            }
+        },
+        "validation": {
+            "基本的なバリデーション": {
+                "title": "Basic Validation",
+                "description": "Validating request data"
+            },
+            "バリデーションルール": {
+                "title": "Validation Rules",
+                "description": "Common validation rules"
+            },
+            "パスワードバリデーション": {
+                "title": "Password Validation",
+                "description": "Password complexity requirements"
+            },
+            "バリデーションエラーの表示": {
+                "title": "Displaying Validation Errors",
+                "description": "Display errors in Blade templates"
+            },
+            "オプショナルフィールド": {
+                "title": "Optional Fields",
+                "description": "Validating nullable fields"
+            },
+            "バリデーション済みデータの取得": {
+                "title": "Retrieving Validated Data",
+                "description": "Retrieving validated data"
+            }
+        },
+        "session": {
+            "セッションの存在確認": {
+                "title": "Checking Session Existence",
+                "description": "Checking if session value exists"
+            },
+            "セッション値の取得": {
+                "title": "Retrieving Session Value",
+                "description": "Get value from session"
+            },
+            "session()ヘルパー": {
+                "title": "session() Helper",
+                "description": "Using global session() helper"
+            },
+            "全セッションデータの取得": {
+                "title": "Retrieving All Session Data",
+                "description": "Get all session data"
+            },
+            "取得と削除": {
+                "title": "Retrieve and Delete",
+                "description": "Get value from session and delete it"
+            },
+            "セッション値の保存": {
+                "title": "Storing Session Value",
+                "description": "Store value in session"
+            }
+        },
+        "logging": {
+            "ログレベル": {
+                "title": "Log Levels",
+                "description": "Using all log levels"
+            },
+            "コンテキスト情報": {
+                "title": "Context Information",
+                "description": "Logging with context information"
+            }
+        },
+        "deployment": {
+            "Composerオートローダーの最適化": {
+                "title": "Optimizing Composer Autoloader",
+                "description": "Optimize Composer's autoloader map"
+            },
+            "設定のキャッシュ": {
+                "title": "Config Caching",
+                "description": "Cache config files"
+            },
+            "ルートのキャッシュ": {
+                "title": "Route Caching",
+                "description": "Cache route files"
+            },
+            "ビューのキャッシュ": {
+                "title": "View Caching",
+                "description": "Cache view files"
+            }
+        }
+    }
+}

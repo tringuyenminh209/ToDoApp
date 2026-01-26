@@ -1,0 +1,256 @@
+{
+    "_comment": "English translations for Go Cheat Code",
+    "language": {
+        "go": {
+            "description": "Go is an open source programming language that makes it easy to build simple, reliable, and efficient software."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "Go programming basics"
+        },
+        "go-basic-types": {
+            "title": "Go Basic Types",
+            "description": "Go data types"
+        },
+        "go-strings": {
+            "title": "Go Strings",
+            "description": "String manipulation in Go"
+        },
+        "go-functions": {
+            "title": "Go Functions",
+            "description": "Function definition and usage"
+        },
+        "go-packages": {
+            "title": "Go Packages",
+            "description": "Package management"
+        },
+        "go-concurrency": {
+            "title": "Go Concurrency",
+            "description": "Goroutines and channels"
+        },
+        "go-error-control": {
+            "title": "Go Error Control",
+            "description": "Error handling"
+        },
+        "go-methods": {
+            "title": "Go Methods",
+            "description": "Methods and receivers"
+        },
+        "go-interfaces": {
+            "title": "Go Interfaces",
+            "description": "Interface implementation"
+        },
+        "miscellaneous": {
+            "title": "Miscellaneous",
+            "description": "Keywords and operators"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "hello.go": {
+                "title": "hello.go",
+                "description": "Basic Hello World program"
+            },
+            "直接実行": {
+                "title": "Direct Run",
+                "description": "Running Go programs"
+            },
+            "変数": {
+                "title": "Variables",
+                "description": "Variable declaration"
+            },
+            "短縮宣言": {
+                "title": "Short Declaration",
+                "description": "Short variable declaration"
+            },
+            "関数": {
+                "title": "Functions",
+                "description": "Function definition"
+            },
+            "コメント": {
+                "title": "Comments",
+                "description": "Comment syntax"
+            },
+            "If文": {
+                "title": "If Statement",
+                "description": "If statement syntax"
+            }
+        },
+        "go-basic-types": {
+            "文字列": {
+                "title": "Strings",
+                "description": "String operations and concatenation"
+            },
+            "数値": {
+                "title": "Numbers",
+                "description": "Numeric types"
+            },
+            "演算子": {
+                "title": "Operators",
+                "description": "Arithmetic operators"
+            },
+            "ブール値": {
+                "title": "Booleans",
+                "description": "Boolean type"
+            },
+            "ブール演算子": {
+                "title": "Boolean Operators",
+                "description": "Boolean operators"
+            },
+            "配列": {
+                "title": "Arrays",
+                "description": "Array declaration and slicing"
+            },
+            "配列の宣言": {
+                "title": "Array Declaration",
+                "description": "Explicit size arrays"
+            },
+            "2次元配列": {
+                "title": "2D Arrays",
+                "description": "Multidimensional arrays"
+            },
+            "ポインタ": {
+                "title": "Pointers",
+                "description": "Pointer basics"
+            },
+            "newによるポインタ": {
+                "title": "Pointers with new",
+                "description": "Creating pointers with new"
+            },
+            "スライス": {
+                "title": "Slices",
+                "description": "Slice operations"
+            },
+            "スライスリテラル": {
+                "title": "Slice Literal",
+                "description": "Slice literal syntax"
+            },
+            "定数": {
+                "title": "Constants",
+                "description": "Constant declaration"
+            },
+            "型変換": {
+                "title": "Type Conversion",
+                "description": "Type conversion"
+            },
+            "Intから文字列へ": {
+                "title": "Int to String",
+                "description": "Int to string conversion"
+            }
+        },
+        "go-strings": {
+            "文字列関数": {
+                "title": "String Functions",
+                "description": "String functions"
+            },
+            "fmt.Printf": {
+                "title": "fmt.Printf",
+                "description": "Formatted output with fmt.Printf"
+            }
+        },
+        "go-functions": {
+            "複数の戻り値": {
+                "title": "Multiple Return Values",
+                "description": "Functions with multiple return values"
+            },
+            "名前付き戻り値": {
+                "title": "Named Return Values",
+                "description": "Named return values"
+            },
+            "可変長引数関数": {
+                "title": "Variadic Functions",
+                "description": "Variadic functions"
+            },
+            "関数を値として": {
+                "title": "Functions as Values",
+                "description": "Functions as first-class values"
+            },
+            "クロージャ": {
+                "title": "Closures",
+                "description": "Closure example"
+            }
+        },
+        "go-packages": {
+            "インポート": {
+                "title": "Import",
+                "description": "Basic import"
+            },
+            "インポートブロック": {
+                "title": "Import Block",
+                "description": "Import block syntax"
+            },
+            "エイリアス": {
+                "title": "Alias",
+                "description": "Import alias"
+            },
+            "名前のエクスポート": {
+                "title": "Exported Names",
+                "description": "Exported names"
+            }
+        },
+        "go-concurrency": {
+            "Goroutine": {
+                "title": "Goroutines",
+                "description": "Goroutine basics"
+            },
+            "WaitGroup": {
+                "title": "WaitGroup",
+                "description": "WaitGroup for synchronization"
+            },
+            "チャネルのクローズ": {
+                "title": "Closing Channels",
+                "description": "Closing and iterating channels"
+            },
+            "バッファ付きチャネル": {
+                "title": "Buffered Channels",
+                "description": "Buffered channels"
+            }
+        },
+        "go-error-control": {
+            "関数の遅延実行": {
+                "title": "Deferred Functions",
+                "description": "Defer statement"
+            },
+            "Defer": {
+                "title": "Defer",
+                "description": "Simple defer"
+            }
+        },
+        "go-methods": {
+            "レシーバ": {
+                "title": "Receivers",
+                "description": "Methods with value receiver"
+            },
+            "変更": {
+                "title": "Mutation",
+                "description": "Methods with pointer receiver"
+            }
+        },
+        "go-interfaces": {
+            "基本的なインターフェース": {
+                "title": "Basic Interface",
+                "description": "Interface definition"
+            },
+            "構造体": {
+                "title": "Struct",
+                "description": "Struct definition"
+            },
+            "メソッド": {
+                "title": "Methods",
+                "description": "Implementing interface methods"
+            },
+            "インターフェースの例": {
+                "title": "Interface Example",
+                "description": "Using interfaces"
+            }
+        },
+        "miscellaneous": {
+            "キーワード": {
+                "title": "Keywords",
+                "description": "Go keywords"
+            }
+        }
+    }
+}

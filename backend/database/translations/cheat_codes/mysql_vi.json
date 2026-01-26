@@ -1,0 +1,294 @@
+{
+    "_comment": "Vietnamese translations for MySQL Cheat Code",
+    "language": {
+        "mysql": {
+            "description": "Tham khảo MySQL. Bạn có thể tìm các câu lệnh SQL được sử dụng phổ biến nhất ở đây."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Kết nối MySQL và các thao tác cơ bản"
+        },
+        "managing-tables": {
+            "title": "Quản lý bảng",
+            "description": "Tạo, sửa đổi và xóa bảng"
+        },
+        "querying-data": {
+            "title": "Truy vấn dữ liệu",
+            "description": "Câu lệnh SELECT và lọc"
+        },
+        "joins": {
+            "title": "Kết hợp",
+            "description": "Kết hợp bảng"
+        },
+        "constraints": {
+            "title": "Ràng buộc",
+            "description": "Sử dụng ràng buộc SQL"
+        },
+        "modifying-data": {
+            "title": "Sửa đổi dữ liệu",
+            "description": "INSERT, UPDATE, DELETE"
+        },
+        "views": {
+            "title": "View",
+            "description": "Tạo và quản lý view"
+        },
+        "data-types": {
+            "title": "Kiểu dữ liệu",
+            "description": "Kiểu chuỗi, ngày và số"
+        },
+        "functions": {
+            "title": "Hàm và toán tử",
+            "description": "Tổng quan hàm MySQL"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "MySQLへの接続": {
+                "title": "Kết nối MySQL",
+                "description": "Cách kết nối MySQL"
+            },
+            "データベース操作": {
+                "title": "Thao tác Database",
+                "description": "Tạo, liệt kê, chuyển đổi và xóa database"
+            },
+            "テーブル操作": {
+                "title": "Thao tác Table",
+                "description": "Liệt kê, xem cấu trúc và xóa bảng"
+            },
+            "プロセス操作": {
+                "title": "Thao tác Process",
+                "description": "Xem và kết thúc các process đang chạy"
+            },
+            "バックアップの作成": {
+                "title": "Tạo Backup",
+                "description": "Backup và restore database"
+            }
+        },
+        "managing-tables": {
+            "テーブルの作成": {
+                "title": "Tạo bảng",
+                "description": "Tạo bảng với 3 cột"
+            },
+            "テーブルの削除": {
+                "title": "Xóa bảng",
+                "description": "Xóa bảng khỏi database"
+            },
+            "カラムの追加": {
+                "title": "Thêm cột",
+                "description": "Thêm cột mới vào bảng"
+            },
+            "カラムの削除": {
+                "title": "Xóa cột",
+                "description": "Xóa cột khỏi bảng"
+            },
+            "制約の追加": {
+                "title": "Thêm ràng buộc",
+                "description": "Thêm ràng buộc vào bảng"
+            },
+            "制約の削除": {
+                "title": "Xóa ràng buộc",
+                "description": "Xóa ràng buộc khỏi bảng"
+            },
+            "テーブル名の変更": {
+                "title": "Đổi tên bảng",
+                "description": "Đổi tên bảng từ t1 sang t2"
+            },
+            "カラム名の変更": {
+                "title": "Đổi tên cột",
+                "description": "Đổi tên cột từ c1 sang c2"
+            },
+            "テーブルデータの全削除": {
+                "title": "Xóa toàn bộ dữ liệu bảng",
+                "description": "Xóa tất cả dữ liệu trong bảng"
+            }
+        },
+        "querying-data": {
+            "基本的なSELECT": {
+                "title": "SELECT cơ bản",
+                "description": "Lấy dữ liệu từ cột c1, c2"
+            },
+            "すべてのカラムを取得": {
+                "title": "Lấy tất cả cột",
+                "description": "Lấy tất cả hàng và cột"
+            },
+            "WHERE句でフィルタリング": {
+                "title": "Lọc với WHERE",
+                "description": "Lọc các hàng khớp điều kiện"
+            },
+            "DISTINCTで重複を除外": {
+                "title": "Loại trừ trùng lặp với DISTINCT",
+                "description": "Lấy các hàng không trùng lặp"
+            },
+            "ORDER BYでソート": {
+                "title": "Sắp xếp với ORDER BY",
+                "description": "Sắp xếp kết quả tăng dần hoặc giảm dần"
+            },
+            "LIMITとOFFSET": {
+                "title": "LIMIT và OFFSET",
+                "description": "Bỏ qua offset hàng và trả về n hàng tiếp theo"
+            },
+            "GROUP BYでグループ化": {
+                "title": "Nhóm với GROUP BY",
+                "description": "Nhóm các hàng bằng hàm tổng hợp"
+            },
+            "HAVING句でグループをフィルタ": {
+                "title": "Lọc nhóm với HAVING",
+                "description": "Lọc nhóm bằng mệnh đề HAVING"
+            }
+        },
+        "joins": {
+            "INNER JOIN": {
+                "title": "INNER JOIN",
+                "description": "Inner join của t1 và t2"
+            },
+            "LEFT JOIN": {
+                "title": "LEFT JOIN",
+                "description": "Left outer join của t1 và t2"
+            },
+            "RIGHT JOIN": {
+                "title": "RIGHT JOIN",
+                "description": "Right outer join của t1 và t2"
+            },
+            "FULL OUTER JOIN": {
+                "title": "FULL OUTER JOIN",
+                "description": "Thực hiện full outer join"
+            },
+            "CROSS JOIN": {
+                "title": "CROSS JOIN",
+                "description": "Tạo tích Descartes của các hàng bảng"
+            },
+            "自己結合": {
+                "title": "Self Join",
+                "description": "Kết hợp t1 với chính nó bằng INNER JOIN"
+            },
+            "UNION": {
+                "title": "UNION",
+                "description": "Kết hợp các hàng từ hai truy vấn"
+            },
+            "LIKEパターンマッチング": {
+                "title": "So khớp mẫu LIKE",
+                "description": "Truy vấn hàng bằng so khớp mẫu %, _"
+            },
+            "IN句": {
+                "title": "Mệnh đề IN",
+                "description": "Truy vấn các hàng trong danh sách"
+            },
+            "BETWEEN句": {
+                "title": "Mệnh đề BETWEEN",
+                "description": "Truy vấn các hàng giữa hai giá trị"
+            },
+            "NULLチェック": {
+                "title": "Kiểm tra NULL",
+                "description": "Kiểm tra xem giá trị có NULL trong bảng không"
+            }
+        },
+        "constraints": {
+            "主キー": {
+                "title": "Primary Key",
+                "description": "Đặt c1 và c2 làm primary key"
+            },
+            "外部キー": {
+                "title": "Foreign Key",
+                "description": "Đặt cột c2 làm foreign key"
+            },
+            "UNIQUE制約": {
+                "title": "Ràng buộc UNIQUE",
+                "description": "Làm cho giá trị c1 và c2 là duy nhất"
+            },
+            "CHECK制約": {
+                "title": "Ràng buộc CHECK",
+                "description": "Đảm bảo c1 > 0 và c1 >= c2"
+            },
+            "NOT NULL制約": {
+                "title": "Ràng buộc NOT NULL",
+                "description": "Đặt giá trị cột c2 là NOT NULL"
+            }
+        },
+        "modifying-data": {
+            "1行の挿入": {
+                "title": "Chèn một hàng",
+                "description": "Chèn một hàng vào bảng"
+            },
+            "複数行の挿入": {
+                "title": "Chèn nhiều hàng",
+                "description": "Chèn nhiều hàng vào bảng"
+            },
+            "SELECTからINSERT": {
+                "title": "INSERT từ SELECT",
+                "description": "Chèn các hàng từ t2 vào t1"
+            },
+            "すべての行を更新": {
+                "title": "Cập nhật tất cả hàng",
+                "description": "Cập nhật cột c1 với giá trị mới cho tất cả hàng"
+            },
+            "条件付きUPDATE": {
+                "title": "UPDATE có điều kiện",
+                "description": "Cập nhật cột c1, c2 khớp điều kiện"
+            },
+            "すべてのデータを削除": {
+                "title": "Xóa tất cả dữ liệu",
+                "description": "Xóa tất cả dữ liệu trong bảng"
+            },
+            "条件付きDELETE": {
+                "title": "DELETE có điều kiện",
+                "description": "Xóa tập hợp con các hàng trong bảng"
+            }
+        },
+        "views": {
+            "ビューの作成": {
+                "title": "Tạo View",
+                "description": "Tạo view mới với c1 và c2"
+            },
+            "CHECK OPTION付きビュー": {
+                "title": "View với CHECK OPTION",
+                "description": "Tạo view mới với check option"
+            }
+        },
+        "data-types": {
+            "文字列型": {
+                "title": "Kiểu chuỗi",
+                "description": "Kiểu dữ liệu chuỗi MySQL"
+            },
+            "日付・時刻型": {
+                "title": "Kiểu ngày/giờ",
+                "description": "Kiểu dữ liệu ngày/giờ MySQL"
+            },
+            "数値型": {
+                "title": "Kiểu số",
+                "description": "Kiểu dữ liệu số MySQL"
+            }
+        },
+        "functions": {
+            "文字列関数": {
+                "title": "Hàm chuỗi",
+                "description": "Các hàm chuỗi chính"
+            },
+            "日付・時刻関数": {
+                "title": "Hàm ngày/giờ",
+                "description": "Các hàm ngày/giờ chính"
+            },
+            "数値関数": {
+                "title": "Hàm số",
+                "description": "Các hàm số chính"
+            },
+            "集約関数": {
+                "title": "Hàm tổng hợp",
+                "description": "Các hàm tổng hợp chính"
+            },
+            "JSON関数": {
+                "title": "Hàm JSON",
+                "description": "Các hàm JSON chính"
+            },
+            "型変換関数": {
+                "title": "Hàm chuyển đổi kiểu",
+                "description": "Hàm chuyển đổi kiểu"
+            },
+            "制御フロー関数": {
+                "title": "Hàm luồng điều khiển",
+                "description": "Hàm luồng điều khiển"
+            }
+        }
+    }
+}

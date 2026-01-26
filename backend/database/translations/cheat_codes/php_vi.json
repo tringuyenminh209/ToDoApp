@@ -1,0 +1,190 @@
+{
+    "_comment": "Vietnamese translations for PHP Cheat Code",
+    "language": {
+        "php": {
+            "description": "PHP là ngôn ngữ lập trình kịch bản để sử dụng chung phổ biến, đặc biệt phù hợp cho phát triển web."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Cơ bản lập trình PHP"
+        },
+        "php-types": {
+            "title": "Kiểu dữ liệu PHP",
+            "description": "Các kiểu dữ liệu trong PHP"
+        },
+        "php-strings": {
+            "title": "Chuỗi PHP",
+            "description": "Xử lý chuỗi trong PHP"
+        },
+        "php-arrays": {
+            "title": "Mảng PHP",
+            "description": "Xử lý mảng trong PHP"
+        },
+        "php-functions": {
+            "title": "Hàm PHP",
+            "description": "Định nghĩa và sử dụng hàm"
+        },
+        "php-classes": {
+            "title": "Lớp PHP",
+            "description": "Lập trình hướng đối tượng"
+        },
+        "miscellaneous": {
+            "title": "Khác",
+            "description": "Xử lý lỗi và các tính năng khác"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "hellophp": {
+                "title": "hello.php",
+                "description": "Bắt đầu với thẻ mở PHP"
+            },
+            "変数": {
+                "title": "Biến",
+                "description": "Khai báo biến và kiểu dữ liệu"
+            },
+            "文字列": {
+                "title": "Chuỗi",
+                "description": "Thao tác và nối chuỗi"
+            },
+            "配列": {
+                "title": "Mảng",
+                "description": "Thao tác mảng"
+            },
+            "演算子": {
+                "title": "Toán tử",
+                "description": "Các toán tử số học cơ bản"
+            },
+            "インクルード": {
+                "title": "Include",
+                "description": "Câu lệnh include và require"
+            },
+            "関数": {
+                "title": "Hàm",
+                "description": "Định nghĩa hàm với tham số mặc định"
+            },
+            "コメント": {
+                "title": "Chú thích",
+                "description": "Cú pháp chú thích PHP"
+            },
+            "定数": {
+                "title": "Hằng số",
+                "description": "Khai báo hằng số"
+            },
+            "クラス": {
+                "title": "Lớp",
+                "description": "Định nghĩa lớp cơ bản và khởi tạo"
+            }
+        },
+        "php-types": {
+            "ブール型": {
+                "title": "Boolean",
+                "description": "Kiểu boolean và ép kiểu"
+            },
+            "整数型": {
+                "title": "Số nguyên",
+                "description": "Kiểu số nguyên và định dạng"
+            },
+            "浮動小数点型": {
+                "title": "Số thực",
+                "description": "Kiểu float/double và chuỗi số"
+            },
+            "null": {
+                "title": "Null",
+                "description": "Toán tử null coalescing và kiểm tra null"
+            }
+        },
+        "php-strings": {
+            "文字列": {
+                "title": "Chuỗi",
+                "description": "Nháy đơn và nháy kép"
+            },
+            "複数行": {
+                "title": "Nhiều dòng",
+                "description": "Cú pháp Heredoc và Nowdoc"
+            },
+            "操作": {
+                "title": "Thao tác",
+                "description": "Các hàm chuỗi thông dụng"
+            }
+        },
+        "php-arrays": {
+            "定義": {
+                "title": "Định nghĩa",
+                "description": "Các cách khác nhau để định nghĩa mảng"
+            },
+            "混合キー": {
+                "title": "Khóa hỗn hợp",
+                "description": "Mảng với khóa số nguyên và chuỗi"
+            },
+            "多次元配列": {
+                "title": "Mảng đa chiều",
+                "description": "Mảng đa chiều"
+            },
+            "配列操作": {
+                "title": "Thao tác mảng",
+                "description": "Các hàm xử lý mảng"
+            },
+            "foreach反復": {
+                "title": "Vòng lặp Foreach",
+                "description": "Lặp với vòng lặp foreach"
+            },
+            "キー・値の反復": {
+                "title": "Lặp Khóa-Giá trị",
+                "description": "Lặp qua các cặp khóa-giá trị"
+            }
+        },
+        "php-functions": {
+            "戻り値": {
+                "title": "Giá trị trả về",
+                "description": "Hàm cơ bản với giá trị trả về"
+            },
+            "戻り値の型": {
+                "title": "Kiểu trả về",
+                "description": "Khai báo kiểu trả về"
+            },
+            "デフォルトパラメータ": {
+                "title": "Tham số mặc định",
+                "description": "Hàm với tham số mặc định"
+            },
+            "無名関数": {
+                "title": "Hàm ẩn danh",
+                "description": "Hàm ẩn danh (Closures)"
+            },
+            "アロー関数": {
+                "title": "Hàm mũi tên",
+                "description": "Hàm mũi tên (PHP 7.4+)"
+            }
+        },
+        "php-classes": {
+            "コンストラクタ": {
+                "title": "Constructor",
+                "description": "Constructor và phương thức của lớp"
+            },
+            "継承": {
+                "title": "Kế thừa",
+                "description": "Kế thừa lớp"
+            },
+            "クラス変数": {
+                "title": "Biến lớp",
+                "description": "Hằng số lớp và biến tĩnh"
+            },
+            "インターフェース": {
+                "title": "Interface",
+                "description": "Interface và triển khai đa giao diện"
+            }
+        },
+        "miscellaneous": {
+            "エラーハンドリング": {
+                "title": "Xử lý lỗi",
+                "description": "Khối try-catch-finally"
+            },
+            "正規表現": {
+                "title": "Biểu thức chính quy",
+                "description": "Biểu thức chính quy với preg_match"
+            }
+        }
+    }
+}

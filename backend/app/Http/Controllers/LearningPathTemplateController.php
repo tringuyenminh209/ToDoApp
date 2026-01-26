@@ -27,7 +27,7 @@ class LearningPathTemplateController extends Controller
     public function index(Request $request)
     {
         try {
-            $query = LearningPathTemplate::query();
+            $query = LearningPathTemplate::query()->withTranslations();
 
             // Filter by category
             if ($request->has('category')) {
@@ -52,8 +52,13 @@ class LearningPathTemplateController extends Controller
             // Paginate or get all
             if ($request->has('per_page')) {
                 $templates = $query->paginate($request->per_page);
+                $templates->getCollection()->transform(function ($template) {
+                    return $template->toArrayWithTranslations();
+                });
             } else {
-                $templates = $query->get();
+                $templates = $query->get()->map(function ($template) {
+                    return $template->toArrayWithTranslations();
+                });
             }
 
             return response()->json([
@@ -75,15 +80,39 @@ class LearningPathTemplateController extends Controller
     public function show($id)
     {
         try {
-            $template = LearningPathTemplate::with([
-                'milestones.tasks' => function ($query) {
-                    $query->orderBy('sort_order');
-                }
-            ])->findOrFail($id);
+            $template = LearningPathTemplate::withTranslations()
+                ->with([
+                    'milestones' => function ($query) {
+                        $query->withTranslations()
+                            ->with(['tasks' => function ($q) {
+                                $q->withTranslations()->orderBy('sort_order');
+                            }])
+                            ->orderBy('sort_order');
+                    }
+                ])
+                ->findOrFail($id);
+
+            // Transform template with translations
+            $templateData = $template->toArrayWithTranslations();
+            
+            // Transform milestones and tasks using the loaded relationships
+            if ($template->milestones && $template->milestones->isNotEmpty()) {
+                $templateData['milestones'] = $template->milestones->map(function ($milestoneModel) {
+                    $milestone = $milestoneModel->toArrayWithTranslations();
+                    if ($milestoneModel->tasks && $milestoneModel->tasks->isNotEmpty()) {
+                        $milestone['tasks'] = $milestoneModel->tasks->map(function ($taskModel) {
+                            return $taskModel->toArrayWithTranslations();
+                        })->values()->toArray();
+                    } else {
+                        $milestone['tasks'] = [];
+                    }
+                    return $milestone;
+                })->values()->toArray();
+            }
 
             return response()->json([
                 'success' => true,
-                'data' => $template
+                'data' => $templateData
             ]);
         } catch (\Exception $e) {
             Log::error('Error fetching template detail: ' . $e->getMessage());
@@ -101,9 +130,13 @@ class LearningPathTemplateController extends Controller
     {
         try {
             $templates = LearningPathTemplate::featured()
+                ->withTranslations()
                 ->orderBy('usage_count', 'desc')
                 ->limit(6)
-                ->get();
+                ->get()
+                ->map(function ($template) {
+                    return $template->toArrayWithTranslations();
+                });
 
             return response()->json([
                 'success' => true,

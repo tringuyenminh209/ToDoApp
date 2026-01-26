@@ -1,0 +1,154 @@
+{
+    "_comment": "English translations for Docker Cheat Code",
+    "language": {
+        "docker": {
+            "description": "Docker reference. You can find the most common Docker commands here."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "Docker basic operations"
+        },
+        "containers": {
+            "title": "Docker Containers",
+            "description": "Container operations and management"
+        },
+        "images": {
+            "title": "Docker Images",
+            "description": "Image operations and building"
+        },
+        "networking": {
+            "title": "Docker Networking",
+            "description": "Network creation and management"
+        },
+        "cleanup": {
+            "title": "Clean Up",
+            "description": "Removing unused resources"
+        },
+        "docker-hub": {
+            "title": "Docker Hub",
+            "description": "Docker Hub operations"
+        },
+        "miscellaneous": {
+            "title": "Miscellaneous",
+            "description": "Other useful commands"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "バックグラウンドでコンテナを実行": {
+                "title": "Run Container in Background",
+                "description": "Create and run container in detached mode"
+            },
+            "フォアグラウンドでコンテナを実行": {
+                "title": "Run Container in Foreground",
+                "description": "Run container in interactive mode"
+            },
+            "一般的なコマンド": {
+                "title": "Common Commands",
+                "description": "Most common Docker commands"
+            }
+        },
+        "containers": {
+            "開始と停止": {
+                "title": "Start and Stop",
+                "description": "Starting, stopping, and restarting containers"
+            },
+            "情報の取得": {
+                "title": "Getting Information",
+                "description": "Getting container information"
+            },
+            "コンテナの作成": {
+                "title": "Creating Containers",
+                "description": "Container creation options"
+            },
+            "コンテナ作成の例": {
+                "title": "Container Creation Example",
+                "description": "Redis container creation example"
+            },
+            "コンテナの操作": {
+                "title": "Container Operations",
+                "description": "Renaming, removing, and updating containers"
+            }
+        },
+        "images": {
+            "イメージの操作": {
+                "title": "Image Operations",
+                "description": "Listing, removing, saving, and loading images"
+            },
+            "イメージのビルド": {
+                "title": "Building Images",
+                "description": "Building images from Dockerfile"
+            }
+        },
+        "networking": {
+            "ネットワークの操作": {
+                "title": "Network Operations",
+                "description": "Creating, connecting, and disconnecting networks"
+            },
+            "ネットワークの作成": {
+                "title": "Creating Networks",
+                "description": "Creating networks with custom configuration"
+            }
+        },
+        "cleanup": {
+            "すべてをクリーンアップ": {
+                "title": "Clean Up Everything",
+                "description": "System-wide cleanup"
+            },
+            "コンテナのクリーンアップ": {
+                "title": "Container Cleanup",
+                "description": "Removing stopped containers"
+            },
+            "イメージのクリーンアップ": {
+                "title": "Image Cleanup",
+                "description": "Removing unused images"
+            },
+            "ボリュームのクリーンアップ": {
+                "title": "Volume Cleanup",
+                "description": "Removing unused volumes"
+            }
+        },
+        "docker-hub": {
+            "Docker Hubコマンド": {
+                "title": "Docker Hub Commands",
+                "description": "Docker Hub basic operations"
+            },
+            "レジストリへのログイン": {
+                "title": "Registry Login",
+                "description": "Docker registry authentication"
+            },
+            "レジストリからのログアウト": {
+                "title": "Registry Logout",
+                "description": "Docker registry logout"
+            },
+            "イメージの検索": {
+                "title": "Image Search",
+                "description": "Searching for images on Docker Hub"
+            },
+            "イメージのプル": {
+                "title": "Image Pull",
+                "description": "Downloading images from Docker Hub"
+            },
+            "イメージのプッシュ": {
+                "title": "Image Push",
+                "description": "Uploading images to Docker Hub"
+            }
+        },
+        "miscellaneous": {
+            "一括クリーンアップ": {
+                "title": "Bulk Cleanup",
+                "description": "Deleting all containers and images at once"
+            },
+            "ボリュームの確認": {
+                "title": "Volume Check",
+                "description": "Listing volumes"
+            },
+            "未使用ボリュームのクリーンアップ": {
+                "title": "Unused Volume Cleanup",
+                "description": "Removing unused volumes"
+            }
+        }
+    }
+}

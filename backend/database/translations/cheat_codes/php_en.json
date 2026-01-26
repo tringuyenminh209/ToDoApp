@@ -1,0 +1,190 @@
+{
+    "_comment": "English translations for PHP Cheat Code",
+    "language": {
+        "php": {
+            "description": "PHP is a popular general-purpose scripting language that is especially suited for web development."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Getting Started",
+            "description": "PHP programming basics"
+        },
+        "php-types": {
+            "title": "PHP Types",
+            "description": "PHP data types"
+        },
+        "php-strings": {
+            "title": "PHP Strings",
+            "description": "String manipulation in PHP"
+        },
+        "php-arrays": {
+            "title": "PHP Arrays",
+            "description": "Array manipulation in PHP"
+        },
+        "php-functions": {
+            "title": "PHP Functions",
+            "description": "Defining and using functions"
+        },
+        "php-classes": {
+            "title": "PHP Classes",
+            "description": "Object-oriented programming"
+        },
+        "miscellaneous": {
+            "title": "Miscellaneous",
+            "description": "Error handling and other features"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "hellophp": {
+                "title": "hello.php",
+                "description": "Start with PHP opening tag"
+            },
+            "変数": {
+                "title": "Variables",
+                "description": "Variable declaration and types"
+            },
+            "文字列": {
+                "title": "Strings",
+                "description": "String operations and concatenation"
+            },
+            "配列": {
+                "title": "Arrays",
+                "description": "Array operations"
+            },
+            "演算子": {
+                "title": "Operators",
+                "description": "Basic arithmetic operators"
+            },
+            "インクルード": {
+                "title": "Include",
+                "description": "Include and require statements"
+            },
+            "関数": {
+                "title": "Functions",
+                "description": "Function definition with default parameters"
+            },
+            "コメント": {
+                "title": "Comments",
+                "description": "PHP comment syntax"
+            },
+            "定数": {
+                "title": "Constants",
+                "description": "Constant declaration"
+            },
+            "クラス": {
+                "title": "Classes",
+                "description": "Basic class definition and instantiation"
+            }
+        },
+        "php-types": {
+            "ブール型": {
+                "title": "Boolean",
+                "description": "Boolean type and casting"
+            },
+            "整数型": {
+                "title": "Integer",
+                "description": "Integer type and formats"
+            },
+            "浮動小数点型": {
+                "title": "Float",
+                "description": "Float/double type and numeric strings"
+            },
+            "null": {
+                "title": "Null",
+                "description": "Null coalescing operator and null check"
+            }
+        },
+        "php-strings": {
+            "文字列": {
+                "title": "Strings",
+                "description": "Single quotes and double quotes"
+            },
+            "複数行": {
+                "title": "Multi-line",
+                "description": "Heredoc and Nowdoc syntax"
+            },
+            "操作": {
+                "title": "Operations",
+                "description": "Common string functions"
+            }
+        },
+        "php-arrays": {
+            "定義": {
+                "title": "Definition",
+                "description": "Various ways to define arrays"
+            },
+            "混合キー": {
+                "title": "Mixed Keys",
+                "description": "Arrays with mixed integer and string keys"
+            },
+            "多次元配列": {
+                "title": "Multidimensional Arrays",
+                "description": "Multidimensional arrays"
+            },
+            "配列操作": {
+                "title": "Array Operations",
+                "description": "Array manipulation functions"
+            },
+            "foreach反復": {
+                "title": "Foreach Iteration",
+                "description": "Foreach loop iteration"
+            },
+            "キー・値の反復": {
+                "title": "Key-Value Iteration",
+                "description": "Iterating key-value pairs"
+            }
+        },
+        "php-functions": {
+            "戻り値": {
+                "title": "Return Values",
+                "description": "Basic function with return value"
+            },
+            "戻り値の型": {
+                "title": "Return Type",
+                "description": "Return type declaration"
+            },
+            "デフォルトパラメータ": {
+                "title": "Default Parameters",
+                "description": "Function with default parameters"
+            },
+            "無名関数": {
+                "title": "Anonymous Functions",
+                "description": "Anonymous functions (Closures)"
+            },
+            "アロー関数": {
+                "title": "Arrow Functions",
+                "description": "Arrow functions (PHP 7.4+)"
+            }
+        },
+        "php-classes": {
+            "コンストラクタ": {
+                "title": "Constructor",
+                "description": "Class constructor and methods"
+            },
+            "継承": {
+                "title": "Inheritance",
+                "description": "Class inheritance"
+            },
+            "クラス変数": {
+                "title": "Class Variables",
+                "description": "Class constants and static variables"
+            },
+            "インターフェース": {
+                "title": "Interfaces",
+                "description": "Interfaces and multiple implementations"
+            }
+        },
+        "miscellaneous": {
+            "エラーハンドリング": {
+                "title": "Error Handling",
+                "description": "Try-catch-finally block"
+            },
+            "正規表現": {
+                "title": "Regular Expressions",
+                "description": "Regular expressions with preg_match"
+            }
+        }
+    }
+}

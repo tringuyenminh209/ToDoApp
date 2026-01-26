@@ -1,0 +1,97 @@
+{
+    "_comment": "English translations for TypeScript Complete Course (TypeScriptCourseSeeder)",
+    "template": {
+        "title": "TypeScript完全コース",
+        "description": "JavaScript経験者向けTypeScriptコース。10週間で型システムの基礎から、高度な型操作、実践的なフレームワーク連携まで学習します。"
+    },
+    "template_translations": {
+        "TypeScript完全コース": {
+            "title": "TypeScript Complete Course",
+            "description": "TypeScript course for JavaScript developers. Learn from type system fundamentals to advanced type manipulation and practical framework integration over 10 weeks."
+        }
+    },
+    "milestones": {
+        "TypeScript基礎": {
+            "title": "TypeScript Fundamentals",
+            "description": "Environment setup, basic types, interfaces, function typing",
+            "deliverables": [
+                "Set up TypeScript development environment",
+                "Understand and use basic types",
+                "Define interfaces",
+                "Implement function typing"
+            ]
+        },
+        "高度な型": {
+            "title": "Advanced Types",
+            "description": "Union types, Intersection types, Generics, Utility types, Type guards",
+            "deliverables": [
+                "Use Union/Intersection types",
+                "Create reusable code with Generics",
+                "Manipulate types with Utility types",
+                "Implement type-safe code with type guards"
+            ]
+        },
+        "オブジェクト指向とデコレータ": {
+            "title": "Object-Oriented Programming and Decorators",
+            "description": "Classes, inheritance, access modifiers, abstract classes, decorators, Namespace",
+            "deliverables": [
+                "Implement class-based OOP",
+                "Use decorators for metaprogramming",
+                "Understand modules and Namespace",
+                "Design type-safe classes"
+            ]
+        },
+        "実践的なTypeScript": {
+            "title": "Practical TypeScript",
+            "description": "React + TypeScript, Node.js + TypeScript, testing, best practices",
+            "deliverables": [
+                "Build UI with React + TypeScript",
+                "Build API with Node.js + TypeScript",
+                "Write tests in TypeScript",
+                "Understand TypeScript best practices"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：TypeScriptとは？環境構築": {
+            "title": "Week 1: What is TypeScript? Environment Setup",
+            "description": "TypeScript overview, installation, tsconfig.json, compilation"
+        },
+        "第2週：基本的な型": {
+            "title": "Week 2: Basic Types",
+            "description": "Primitive types, arrays, tuples, Enum, Any, Unknown"
+        },
+        "第3週：関数とインターフェース": {
+            "title": "Week 3: Functions and Interfaces",
+            "description": "Function typing, optional parameters, interfaces, type aliases"
+        },
+        "第4週：Union型とIntersection型": {
+            "title": "Week 4: Union Types and Intersection Types",
+            "description": "Union types, Intersection types, type guards, Type Assertion"
+        },
+        "第5週：ジェネリクス": {
+            "title": "Week 5: Generics",
+            "description": "Generic functions, generic classes, constraints, default types"
+        },
+        "第6週：ユーティリティ型とMapped Types": {
+            "title": "Week 6: Utility Types and Mapped Types",
+            "description": "Partial, Required, Readonly, Pick, Omit, Record, Mapped Types"
+        },
+        "第7週：クラスとOOP": {
+            "title": "Week 7: Classes and OOP",
+            "description": "Classes, inheritance, access modifiers, abstract classes, implements"
+        },
+        "第8週：デコレータとモジュール": {
+            "title": "Week 8: Decorators and Modules",
+            "description": "Decorators, Namespace, module system"
+        },
+        "第9週：React/Vue + TypeScript": {
+            "title": "Week 9: React/Vue + TypeScript",
+            "description": "Using TypeScript with React/Vue, component typing"
+        },
+        "第10週：Node.js + TypeScript、テスト、ベストプラクティス": {
+            "title": "Week 10: Node.js + TypeScript, Testing, Best Practices",
+            "description": "Express + TypeScript, Jest, ESLint, best practices"
+        }
+    }
+}

@@ -98,6 +98,23 @@ export default function LanguageDetailPage() {
     loadData();
   }, [loadLanguage, loadSections, loadExercises]);
 
+  // Reload data when locale changes
+  useEffect(() => {
+    const handleLocaleChange = () => {
+      const loadData = async () => {
+        setLoading(true);
+        await Promise.all([loadLanguage(), loadSections(), loadExercises()]);
+        setLoading(false);
+      };
+      loadData();
+    };
+
+    window.addEventListener('localeChanged', handleLocaleChange);
+    return () => {
+      window.removeEventListener('localeChanged', handleLocaleChange);
+    };
+  }, [loadLanguage, loadSections, loadExercises]);
+
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'easy':

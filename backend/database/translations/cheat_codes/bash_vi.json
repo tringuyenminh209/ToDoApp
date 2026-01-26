@@ -1,0 +1,268 @@
+{
+    "_comment": "Vietnamese translations for Bash Cheat Code",
+    "language": {
+        "bash": {
+            "description": "Tham khảo Bash shell scripting. Từ cơ bản đến nâng cao trong môi trường Linux/Unix."
+        }
+    },
+    "sections": {
+        "getting-started": {
+            "title": "Bắt đầu",
+            "description": "Cơ bản và giới thiệu Bash script"
+        },
+        "parameter-expansions": {
+            "title": "Mở rộng tham số",
+            "description": "Mở rộng và xử lý biến"
+        },
+        "arrays": {
+            "title": "Mảng",
+            "description": "Định nghĩa và xử lý mảng"
+        },
+        "dictionaries": {
+            "title": "Mảng liên kết",
+            "description": "Thao tác mảng liên kết (dictionary)"
+        },
+        "conditionals": {
+            "title": "Điều kiện",
+            "description": "Câu lệnh điều kiện và toán tử so sánh"
+        },
+        "loops": {
+            "title": "Vòng lặp",
+            "description": "Vòng lặp for, while, until"
+        },
+        "functions": {
+            "title": "Hàm",
+            "description": "Định nghĩa và sử dụng hàm"
+        },
+        "options-settings": {
+            "title": "Tùy chọn & Cài đặt",
+            "description": "Tùy chọn Bash và cài đặt glob"
+        },
+        "history": {
+            "title": "Lịch sử",
+            "description": "Thao tác lịch sử lệnh"
+        },
+        "miscellaneous": {
+            "title": "Khác",
+            "description": "Các tính năng hữu ích khác"
+        }
+    },
+    "examples": {
+        "getting-started": {
+            "Hello World": {
+                "title": "Hello World",
+                "description": "Ví dụ Bash script cơ bản"
+            },
+            "スクリプトの実行": {
+                "title": "Chạy Script",
+                "description": "Cách chạy Bash script"
+            },
+            "変数": {
+                "title": "Biến",
+                "description": "Khai báo và sử dụng biến"
+            },
+            "コメント": {
+                "title": "Chú thích",
+                "description": "Chú thích dòng và nhiều dòng"
+            },
+            "引数": {
+                "title": "Tham số",
+                "description": "Biến đặc biệt cho tham số script"
+            },
+            "関数": {
+                "title": "Hàm",
+                "description": "Định nghĩa và gọi hàm"
+            },
+            "条件分岐": {
+                "title": "Điều kiện",
+                "description": "Cú pháp if-elif-else cơ bản"
+            },
+            "ブレース展開": {
+                "title": "Mở rộng ngoặc",
+                "description": "Ví dụ mở rộng ngoặc"
+            },
+            "コマンド置換": {
+                "title": "Thay thế lệnh",
+                "description": "Hai cách thay thế lệnh"
+            }
+        },
+        "parameter-expansions": {
+            "接頭辞・接尾辞の削除": {
+                "title": "Xóa tiền tố/hậu tố",
+                "description": "Xử lý chuỗi với mở rộng tham số"
+            },
+            "文字列置換": {
+                "title": "Thay thế chuỗi",
+                "description": "Thay thế chuỗi"
+            },
+            "部分文字列": {
+                "title": "Chuỗi con",
+                "description": "Trích xuất chuỗi con"
+            },
+            "文字列の長さ": {
+                "title": "Độ dài chuỗi",
+                "description": "Lấy độ dài chuỗi"
+            },
+            "デフォルト値": {
+                "title": "Giá trị mặc định",
+                "description": "Giá trị mặc định khi biến chưa đặt"
+            },
+            "大文字・小文字変換": {
+                "title": "Chuyển đổi chữ hoa/thường",
+                "description": "Chuyển đổi chữ hoa/thường của chuỗi"
+            }
+        },
+        "arrays": {
+            "配列の定義": {
+                "title": "Định nghĩa mảng",
+                "description": "Các cách định nghĩa mảng"
+            },
+            "配列のインデックス": {
+                "title": "Chỉ mục mảng",
+                "description": "Truy cập phần tử mảng"
+            },
+            "配列の反復処理": {
+                "title": "Lặp mảng",
+                "description": "Lặp qua tất cả phần tử mảng"
+            },
+            "インデックス付き反復処理": {
+                "title": "Lặp có chỉ mục",
+                "description": "Lấy chỉ mục và giá trị đồng thời"
+            },
+            "配列操作": {
+                "title": "Thao tác mảng",
+                "description": "Thêm và xóa phần tử mảng"
+            }
+        },
+        "dictionaries": {
+            "連想配列の定義": {
+                "title": "Định nghĩa mảng liên kết",
+                "description": "Khai báo và khởi tạo mảng liên kết"
+            },
+            "連想配列の操作": {
+                "title": "Thao tác mảng liên kết",
+                "description": "Lấy giá trị và khóa từ mảng liên kết"
+            },
+            "連想配列の反復処理": {
+                "title": "Lặp mảng liên kết",
+                "description": "Lặp qua giá trị và khóa"
+            }
+        },
+        "conditionals": {
+            "整数の比較": {
+                "title": "So sánh số nguyên",
+                "description": "Toán tử so sánh số nguyên"
+            },
+            "文字列の比較": {
+                "title": "So sánh chuỗi",
+                "description": "Toán tử so sánh chuỗi"
+            },
+            "ファイル条件": {
+                "title": "Điều kiện tệp",
+                "description": "Kiểm tra điều kiện tệp/thư mục"
+            },
+            "論理演算子": {
+                "title": "Toán tử logic",
+                "description": "Toán tử logic"
+            }
+        },
+        "loops": {
+            "Forループ": {
+                "title": "Vòng lặp For",
+                "description": "Vòng lặp for với mẫu tệp"
+            },
+            "Cスタイルforループ": {
+                "title": "Vòng lặp For kiểu C",
+                "description": "Vòng lặp for kiểu C"
+            },
+            "範囲forループ": {
+                "title": "Vòng lặp For phạm vi",
+                "description": "Vòng lặp for với phạm vi số"
+            },
+            "Whileループ": {
+                "title": "Vòng lặp While",
+                "description": "Vòng lặp while cơ bản"
+            },
+            "Untilループ": {
+                "title": "Vòng lặp Until",
+                "description": "Vòng lặp until (chạy khi điều kiện sai)"
+            },
+            "BreakとContinue": {
+                "title": "Break và Continue",
+                "description": "Câu lệnh break để thoát vòng lặp"
+            }
+        },
+        "functions": {
+            "関数の定義": {
+                "title": "Định nghĩa hàm",
+                "description": "Định nghĩa hàm cơ bản"
+            },
+            "関数の引数": {
+                "title": "Tham số hàm",
+                "description": "Truyền tham số cho hàm"
+            },
+            "戻り値": {
+                "title": "Giá trị trả về",
+                "description": "Giá trị trả về của hàm (mã thoát)"
+            }
+        },
+        "options-settings": {
+            "Bashオプション": {
+                "title": "Tùy chọn Bash",
+                "description": "Cài đặt tùy chọn Bash quan trọng"
+            },
+            "グロブオプション": {
+                "title": "Tùy chọn Glob",
+                "description": "Tùy chọn glob (wildcard)"
+            }
+        },
+        "history": {
+            "履歴コマンド": {
+                "title": "Lệnh lịch sử",
+                "description": "Thao tác lịch sử cơ bản"
+            },
+            "履歴展開": {
+                "title": "Mở rộng lịch sử",
+                "description": "Ví dụ mở rộng lịch sử"
+            }
+        },
+        "miscellaneous": {
+            "数値計算": {
+                "title": "Tính toán số",
+                "description": "Mở rộng số học để tính toán"
+            },
+            "サブシェル": {
+                "title": "Subshell",
+                "description": "Sử dụng subshell (không ảnh hưởng shell hiện tại)"
+            },
+            "リダイレクション": {
+                "title": "Chuyển hướng",
+                "description": "Chuyển hướng đầu vào/đầu ra"
+            },
+            "Case/Switch": {
+                "title": "Case/Switch",
+                "description": "Phân nhánh với câu lệnh case"
+            },
+            "エラートラップ": {
+                "title": "Bẫy lỗi",
+                "description": "Cài đặt bẫy khi xảy ra lỗi"
+            },
+            "printf": {
+                "title": "printf",
+                "description": "Xuất có định dạng với printf"
+            },
+            "オプション解析": {
+                "title": "Phân tích tùy chọn",
+                "description": "Phân tích tùy chọn dòng lệnh"
+            },
+            "条件実行": {
+                "title": "Thực thi có điều kiện",
+                "description": "Thực thi lệnh có điều kiện"
+            },
+            "厳密モード": {
+                "title": "Chế độ nghiêm ngặt",
+                "description": "Cài đặt chế độ nghiêm ngặt Bash"
+            }
+        }
+    }
+}

@@ -1,0 +1,101 @@
+{
+    "_comment": "English translations for SQL Course (SqlCourseSeeder)",
+    "template_translations": {
+        "SQL/データベース基礎コース": {
+            "title": "SQL/Database Fundamentals",
+            "description": "Beginner-friendly SQL/Database complete course. Learn from database fundamentals to SQL operations, database design, and optimization in 12 weeks."
+        }
+    },
+    "milestones": {
+        "SQL基礎とCRUD操作": {
+            "title": "SQL Basics and CRUD Operations",
+            "description": "Database concepts, table creation, basic CRUD operations (Create, Read, Update, Delete)",
+            "deliverables": [
+                "Create databases and tables",
+                "Insert data with INSERT statements",
+                "Retrieve data with SELECT statements",
+                "Update/delete data with UPDATE/DELETE statements"
+            ]
+        },
+        "データ取得とJOIN": {
+            "title": "Data Retrieval and JOIN",
+            "description": "WHERE clause, ORDER BY, GROUP BY, aggregate functions, JOIN to combine tables",
+            "deliverables": [
+                "Filter with WHERE clause",
+                "Organize data with ORDER BY, GROUP BY",
+                "Retrieve statistics with aggregate functions",
+                "Combine multiple tables with JOIN"
+            ]
+        },
+        "高度なSQL": {
+            "title": "Advanced SQL",
+            "description": "Subqueries, CTE, window functions, transactions, indexes",
+            "deliverables": [
+                "Write complex conditions with subqueries",
+                "Create readable queries with CTE",
+                "Analyze with window functions",
+                "Ensure data integrity with transactions"
+            ]
+        },
+        "データベース設計と最適化": {
+            "title": "Database Design and Optimization",
+            "description": "Normalization, constraints, views, stored procedures, triggers",
+            "deliverables": [
+                "Design normalized databases",
+                "Simplify complex queries with views",
+                "Reuse logic with stored procedures",
+                "Implement automation with triggers"
+            ]
+        }
+    },
+    "tasks": {
+        "第1週：データベース基礎とセットアップ": {
+            "title": "Week 1: Database Basics and Setup",
+            "description": "Database concepts, RDBMS, MySQL installation and basic operations"
+        },
+        "第2週：テーブル作成とデータ型": {
+            "title": "Week 2: Table Creation and Data Types",
+            "description": "CREATE TABLE, data types, constraints, INSERT statements"
+        },
+        "第3週：SELECT、UPDATE、DELETE": {
+            "title": "Week 3: SELECT, UPDATE, DELETE",
+            "description": "Basic operations for retrieving, updating, and deleting data"
+        },
+        "第4週：WHERE句と条件指定": {
+            "title": "Week 4: WHERE Clause and Conditions",
+            "description": "WHERE clause, comparison operators, logical operators, LIKE, IN, BETWEEN"
+        },
+        "第5週：ORDER BY、GROUP BY、集計関数": {
+            "title": "Week 5: ORDER BY, GROUP BY, Aggregate Functions",
+            "description": "Data sorting, grouping, COUNT/SUM/AVG/MAX/MIN"
+        },
+        "第6週：JOIN（テーブル結合）": {
+            "title": "Week 6: JOIN (Table Joins)",
+            "description": "INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN, self join"
+        },
+        "第7週：サブクエリとCTE": {
+            "title": "Week 7: Subqueries and CTE",
+            "description": "Subqueries, WITH clause (CTE)"
+        },
+        "第8週：ウィンドウ関数と高度な集計": {
+            "title": "Week 8: Window Functions and Advanced Aggregation",
+            "description": "ROW_NUMBER, RANK, LEAD/LAG, cumulative aggregation"
+        },
+        "第9週：トランザクションとインデックス": {
+            "title": "Week 9: Transactions and Indexes",
+            "description": "ACID properties, COMMIT/ROLLBACK, index creation and optimization"
+        },
+        "第10週：データベース設計と正規化": {
+            "title": "Week 10: Database Design and Normalization",
+            "description": "ER diagrams, normalization (1NF-3NF), constraints"
+        },
+        "第11週：ビューとストアドプロシージャ": {
+            "title": "Week 11: Views and Stored Procedures",
+            "description": "VIEW, STORED PROCEDURE, FUNCTION"
+        },
+        "第12週：トリガーとベストプラクティス": {
+            "title": "Week 12: Triggers and Best Practices",
+            "description": "TRIGGER, backup, security, performance tuning"
+        }
+    }
+}
