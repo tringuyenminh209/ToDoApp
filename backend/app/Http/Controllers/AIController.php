@@ -1441,7 +1441,7 @@ class AIController extends Controller
                     ->toArray();
 
                 $aiResponse = $this->aiService->chat($history, [
-                    'timeout' => 60,
+                    'timeout' => 180, // Ollama 別サーバー: 応答 ~40–60s のため 120s
                     'max_tokens' => 200,
                     'temperature' => 0.6,
                 ]);
@@ -2578,6 +2578,9 @@ class AIController extends Controller
         $title = preg_replace('/タスクを.*?作って/', '', $title);
         $title = preg_replace('/タスクを.*?作成/', '', $title);
         $title = preg_replace('/ください/', '', $title);
+        $title = trim($title);
+        // 日付・時刻パターン除去後の残り「の」(例: 水曜日の)、「に」(例: 10時に) を先頭から削除
+        $title = preg_replace('/^[のに\s]+/u', '', $title);
         $title = trim($title);
 
         // If title is too short or empty, use original message

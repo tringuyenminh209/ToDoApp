@@ -934,8 +934,8 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
 - 疑わしい場合は false を返してください";
 
         try {
-            // Parse task intent timeout: ローカルプロバイダー用に延長（30秒）
-            $parseTimeout = $this->isLocalProvider ? 30 : min(10, $this->timeout * 0.33);
+            // Parse task intent: Ollama/別サーバー:11434 は応答 ~40–60s のため 60s。Cloud は 10s
+            $parseTimeout = $this->isLocalProvider ? 60 : min(10, $this->timeout * 0.33);
 
             // Determine which parameter to use based on model
             $useMaxCompletionTokens = in_array($this->fallbackModel, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
@@ -1157,7 +1157,8 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
 - 疑わしい場合は false を返してください";
 
         try {
-            $parseTimeout = min(10, $this->timeout * 0.33);
+            // Ollama/別サーバー:11434 は応答が遅いため 60s。Cloud は 10s
+            $parseTimeout = $this->isLocalProvider ? 60 : min(10, $this->timeout * 0.33);
 
             $useMaxCompletionTokens = in_array($this->fallbackModel, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
 
@@ -1315,7 +1316,8 @@ Knowledge検索の意図がない場合:
 - 疑わしい場合は false を返してください";
 
         try {
-            $parseTimeout = min(10, $this->timeout * 0.33);
+            // Ollama/別サーバー:11434 は応答が遅いため 60s。Cloud は 10s
+            $parseTimeout = $this->isLocalProvider ? 60 : min(10, $this->timeout * 0.33);
             $useMaxCompletionTokens = in_array($this->fallbackModel, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
 
             $requestBody = [
