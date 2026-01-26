@@ -19,11 +19,12 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-        'http://localhost:8088',
-        'http://localhost:3000',
-        env('FRONTEND_URL', 'http://localhost:8088'),
-    ],
+    // FRONTEND_URL (vd: https://todokizamu.me), FRONTEND_URL_WWW (vd: https://www.todokizamu.me) từ .env
+    'allowed_origins' => array_values(array_filter(array_merge(
+        ['http://localhost:8088', 'http://localhost:3000'],
+        [env('FRONTEND_URL', 'http://localhost:8088')],
+        [env('FRONTEND_URL_WWW')] // tùy chọn: https://www.todokizamu.me
+    ))),
 
     'allowed_origins_patterns' => [],
 
