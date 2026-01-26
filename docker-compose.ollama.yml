@@ -1,0 +1,42 @@
+# Ollama 専用サーバー用 (t3.large 8GB RAM 想定)
+# モデル例: ollama pull qwen2.5:3b または gemma2:2b
+#
+# 起動: docker compose -f docker-compose.ollama.yml up -d
+# モデル取得: docker exec ollama ollama pull qwen2.5:3b
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_GPU_MEMORY=0
+      # コンテキスト: 4096=会話の長さ。8GB なら 2–3B モデルで余裕
+      - OLLAMA_NUM_CTX=4096
+      # モデルを RAM に保持 (再ロード防止)
+      - OLLAMA_KEEP_ALIVE=60m
+      # 同時リクエスト数 (2-3B なら 2 が安全)
+      - OLLAMA_NUM_PARALLEL=2
+      # 1 モデルのみロード (メモリ節約)
+      - OLLAMA_MAX_LOADED_MODELS=1
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 7G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 90s
+
+volumes:
+  ollama_data:
