@@ -90,7 +90,7 @@ services:
       - OPENAI_BASE_URL=${OLLAMA_BASE_URL}
       - OPENAI_MODEL=${OPENAI_MODEL:-qwen2.5:3b}
       # CORS: フロントのOrigin（EC2例: http://52.21.89.124:8088 / ドメイン: https://todokizamu.me）
-      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:8088}
+      - FRONTEND_URL=${FRONTEND_URL:-https://todokizamu.me}
       - FRONTEND_URL_WWW=${FRONTEND_URL_WWW}
     networks:
       - todo-network
