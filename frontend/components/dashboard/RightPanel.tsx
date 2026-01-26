@@ -62,7 +62,9 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
   };
 
   const appendMessage = (messages: ChatMessage[], message?: ChatMessage | null) => {
-    if (!message?.content) return messages;
+    // Cho phép assistant content rỗng (streaming placeholder)
+    if (message == null) return messages;
+    if (!message.content && message.role !== 'assistant') return messages;
     const last = messages[messages.length - 1];
     if (last && last.role === message.role && last.content === message.content) return messages;
     return [...messages, message];
@@ -428,10 +430,10 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
       role: 'user',
       content: trimmed,
     };
-    setChatMessages((prev) => appendMessage(prev, optimisticUserMessage));
 
     try {
       if (!conversationId) {
+        setChatMessages((prev) => appendMessage(prev, optimisticUserMessage));
         // 新しい会話の場合は通常のAPIを使用
         const created = await aiChatService.createConversation({ message: trimmed });
         const conversation = created?.data?.conversation;
@@ -461,57 +463,50 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
           }
         }
       } else {
-        // 既存の会話の場合はストリーミングを使用
+        // 既存の会話: ユーザーメッセージとストリーミング用プレースホルダを1回の setState で追加（バッチで上書きされるのを防止）
         const streamingAssistantMessage: ChatMessage = {
           id: `streaming-${Date.now()}`,
           role: 'assistant',
           content: '',
         };
-        setChatMessages((prev) => appendMessage(prev, streamingAssistantMessage));
+        setChatMessages((prev) =>
+          appendMessage(appendMessage(prev, optimisticUserMessage), streamingAssistantMessage)
+        );
 
         await aiChatService.sendMessageStream(
           conversationId,
           trimmed,
-          // onChunk: チャンクごとに更新
           (chunk: string) => {
             setChatMessages((prev) => {
               const updated = [...prev];
-              const lastIndex = updated.length - 1;
-              if (updated[lastIndex]?.id === streamingAssistantMessage.id) {
-                updated[lastIndex] = {
-                  ...updated[lastIndex],
-                  content: updated[lastIndex].content + chunk,
-                };
+              const idx = updated.findIndex((m) => m.id === streamingAssistantMessage.id);
+              if (idx >= 0) {
+                updated[idx] = { ...updated[idx], content: updated[idx].content + chunk };
               }
               return updated;
             });
           },
-          // onDone: 完了時に最終メッセージを更新
           (fullMessage: string, messageId?: number) => {
             setChatMessages((prev) => {
               const updated = [...prev];
-              const lastIndex = updated.length - 1;
-              if (updated[lastIndex]?.id === streamingAssistantMessage.id) {
-                updated[lastIndex] = {
-                  ...updated[lastIndex],
-                  id: messageId || updated[lastIndex].id,
+              const idx = updated.findIndex((m) => m.id === streamingAssistantMessage.id);
+              if (idx >= 0) {
+                updated[idx] = {
+                  ...updated[idx],
+                  id: messageId ?? updated[idx].id,
                   content: fullMessage,
                 };
               }
               return updated;
             });
           },
-          // onError: エラー処理
           (error: string) => {
             setChatError(error);
             setChatMessages((prev) => {
               const updated = [...prev];
-              const lastIndex = updated.length - 1;
-              if (updated[lastIndex]?.id === streamingAssistantMessage.id) {
-                updated[lastIndex] = {
-                  ...updated[lastIndex],
-                  content: error || t.aiChatRetry,
-                };
+              const idx = updated.findIndex((m) => m.id === streamingAssistantMessage.id);
+              if (idx >= 0) {
+                updated[idx] = { ...updated[idx], content: error || t.aiChatRetry };
               }
               return updated;
             });
