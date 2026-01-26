@@ -659,7 +659,7 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
       <aside
         className={`fixed right-0 top-14 bottom-0 z-[19] md:relative md:right-auto md:top-auto md:bottom-auto md:z-10 max-w-[90vw] md:max-w-none overflow-y-auto transition-all duration-300 ease-in-out bg-white/10 backdrop-blur-md border-l border-white/20 shadow-xl ${
           isCollapsed
-            ? 'translate-x-full w-80 md:translate-x-0 md:w-0 md:-mr-80 md:opacity-0'
+            ? 'translate-x-full w-80 md:hidden'
             : 'translate-x-0 w-80 md:w-80'
         }`}
       >

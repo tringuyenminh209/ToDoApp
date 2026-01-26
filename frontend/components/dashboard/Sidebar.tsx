@@ -52,7 +52,7 @@ export default function Sidebar({ currentLang, isCollapsed, onToggle }: SidebarP
       <aside
         className={`fixed left-0 top-14 bottom-0 md:relative md:top-auto md:left-auto md:bottom-auto z-[19] md:z-10 w-64 max-w-[85vw] md:max-w-none bg-white/10 backdrop-blur-md border-r border-white/20 shadow-xl overflow-y-auto transition-all duration-300 ease-in-out ${
           isCollapsed
-            ? '-translate-x-full md:translate-x-0 md:w-0 md:-ml-64 md:opacity-0'
+            ? '-translate-x-full md:hidden'
             : 'translate-x-0 md:w-64'
         }`}
       >

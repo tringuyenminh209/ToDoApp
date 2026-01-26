@@ -131,6 +131,26 @@ export default function TimetablePage() {
     }
   };
 
+  const getColorStyles = (color?: string) => {
+    const defaultColor = '#1F6FEB';
+    const hexColor = color || defaultColor;
+    // 背景色を透明度付きで適用、テキスト色は明るい色を使用
+    return {
+      backgroundColor: `${hexColor}20`, // 20% opacity
+      borderColor: hexColor,
+      color: '#FFFFFF',
+    };
+  };
+
+  const colorOptions = [
+    { value: '#0FA968', label: t.color, name: 'Green' },
+    { value: '#1F6FEB', label: t.color, name: 'Blue' },
+    { value: '#8B5CF6', label: t.color, name: 'Purple' },
+    { value: '#EC4899', label: t.color, name: 'Pink' },
+    { value: '#F59E0B', label: t.color, name: 'Orange' },
+    { value: '#22C55E', label: t.color, name: 'Lime' },
+  ];
+
   const openDetail = (cls: TimetableClass) => {
     setSelectedClass(cls);
     setShowDetailModal(true);
@@ -167,6 +187,7 @@ export default function TimetablePage() {
       room: '',
       instructor: '',
       description: '',
+      color: '#1F6FEB', // デフォルト色を設定
     });
     setShowAddModal(true);
   };
@@ -265,8 +286,16 @@ export default function TimetablePage() {
           </div>
           {timetable?.current_class ? (
             <div className="text-white">
-              <div className="text-lg font-bold">{timetable.current_class.name}</div>
-              <div className="text-sm text-white/70">
+              <div 
+                className="text-lg font-bold inline-block px-2 py-1 rounded"
+                style={{
+                  backgroundColor: getColorStyles(timetable.current_class.color).backgroundColor,
+                  borderLeft: `4px solid ${timetable.current_class.color || '#1F6FEB'}`,
+                }}
+              >
+                {timetable.current_class.name}
+              </div>
+              <div className="text-sm text-white/70 mt-2">
                 {timetable.current_class.start_time} - {timetable.current_class.end_time}
                 {timetable.current_class.room ? ` · ${timetable.current_class.room}` : ''}
               </div>
@@ -282,8 +311,16 @@ export default function TimetablePage() {
           </div>
           {timetable?.next_class ? (
             <div className="text-white">
-              <div className="text-lg font-bold">{timetable.next_class.name}</div>
-              <div className="text-sm text-white/70">
+              <div 
+                className="text-lg font-bold inline-block px-2 py-1 rounded"
+                style={{
+                  backgroundColor: getColorStyles(timetable.next_class.color).backgroundColor,
+                  borderLeft: `4px solid ${timetable.next_class.color || '#1F6FEB'}`,
+                }}
+              >
+                {timetable.next_class.name}
+              </div>
+              <div className="text-sm text-white/70 mt-2">
                 {timetable.next_class.start_time} - {timetable.next_class.end_time}
                 {timetable.next_class.room ? ` · ${timetable.next_class.room}` : ''}
               </div>
@@ -320,10 +357,18 @@ export default function TimetablePage() {
                       {dayClasses.map((cls) => {
                         const isCurrent = cls.id === currentClassId;
                         const isNext = cls.id === nextClassId;
+                        const colorStyles = getColorStyles(cls.color);
                         return (
                           <div
                             key={cls.id}
-                            className={`bg-white/10 rounded-lg p-3 border border-white/20 border-l-4 ${getAccentClass(cls.color)} flex items-center justify-between cursor-pointer hover:bg-white/15 transition`}
+                            className={`rounded-lg p-3 border-l-4 flex items-center justify-between cursor-pointer hover:opacity-90 transition`}
+                            style={{
+                              backgroundColor: colorStyles.backgroundColor,
+                              borderColor: colorStyles.borderColor,
+                              borderRightColor: colorStyles.borderColor,
+                              borderTopColor: colorStyles.borderColor,
+                              borderBottomColor: colorStyles.borderColor,
+                            }}
                             onClick={() => openDetail(cls)}
                           >
                             <div className="min-w-0">
@@ -410,8 +455,28 @@ export default function TimetablePage() {
             <div className="space-y-3 text-white/90 text-sm">
               <div className="flex items-center justify-between">
                 <span className="text-white/60">{t.className}</span>
-                <span className="font-semibold">{selectedClass.name}</span>
+                <span 
+                  className="font-semibold px-2 py-1 rounded"
+                  style={{
+                    backgroundColor: getColorStyles(selectedClass.color).backgroundColor,
+                    borderLeft: `4px solid ${selectedClass.color || '#1F6FEB'}`,
+                  }}
+                >
+                  {selectedClass.name}
+                </span>
               </div>
+              {selectedClass.color && (
+                <div className="flex items-center justify-between">
+                  <span className="text-white/60">{t.color}</span>
+                  <div className="flex items-center space-x-2">
+                    <div
+                      className="w-6 h-6 rounded border border-white/30"
+                      style={{ backgroundColor: selectedClass.color }}
+                    />
+                    <span>{selectedClass.color}</span>
+                  </div>
+                </div>
+              )}
               <div className="flex items-center justify-between">
                 <span className="text-white/60">{t.day}</span>
                 <span>{dayLabels[selectedClass.day]}</span>
@@ -571,6 +636,31 @@ export default function TimetablePage() {
                   className="w-full mt-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
                   rows={3}
                 />
+              </div>
+              <div className="md:col-span-2">
+                <label className="text-sm text-white/70 mb-2 block">{t.color}</label>
+                <div className="flex flex-wrap gap-2">
+                  {colorOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, color: option.value })}
+                      className={`w-10 h-10 rounded-lg border-2 transition-all ${
+                        formData.color === option.value
+                          ? 'border-white scale-110 shadow-lg'
+                          : 'border-white/30 hover:border-white/60'
+                      }`}
+                      style={{ backgroundColor: option.value }}
+                      title={option.name}
+                      aria-label={`${t.color}: ${option.name}`}
+                    />
+                  ))}
+                </div>
+                {formData.color && (
+                  <div className="mt-2 text-xs text-white/60">
+                    {t.color}: <span style={{ color: formData.color }}>{formData.color}</span>
+                  </div>
+                )}
               </div>
             </div>
             {formError && <div className="text-red-300 text-sm mt-3">{formError}</div>}

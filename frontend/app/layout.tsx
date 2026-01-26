@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://todokizamu.me"),
   title: "ToDoKizamu - Task Management",
   description: "Modern task and learning management platform",
+  icons: {
+    icon: "/logo/logo.png",
+    shortcut: "/logo/logo.png",
+    apple: "/logo/logo.png",
+  },
   openGraph: {
     title: "ToDoKizamu - Task Management",
     description: "Modern task and learning management platform",
