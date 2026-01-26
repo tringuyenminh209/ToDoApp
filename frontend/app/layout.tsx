@@ -17,8 +17,23 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://todokizamu.me"),
   title: "ToDoKizamu - Task Management",
   description: "Modern task and learning management platform",
+  openGraph: {
+    title: "ToDoKizamu - Task Management",
+    description: "Modern task and learning management platform",
+    url: "/",
+    siteName: "ToDoKizamu",
+    images: [{ url: "/logo/logo.png", width: 512, height: 512, alt: "ToDoKizamu" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ToDoKizamu - Task Management",
+    description: "Modern task and learning management platform",
+    images: ["/logo/logo.png"],
+  },
 };
 
 export default function RootLayout({
