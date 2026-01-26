@@ -40,8 +40,8 @@ class AIService
             // Local provider最適化: fallback無効、タイムアウト延長
             $this->enableFallback = false;
             $this->fallbackModel = $this->model;
-            // Local providerの場合、最小タイムアウトを120秒に
-            $this->timeout = max(120, $this->timeout);
+            // Local provider: 最小 5分(300s)
+            $this->timeout = max(300, (int)$this->timeout);
             // トークン数を制限してレスポンス速度を向上
             $this->maxTokens = min(500, $this->maxTokens);
         }
@@ -50,7 +50,7 @@ class AIService
     public function getContextChatTimeout(int $default = 12): int
     {
         if ($this->isLocalProvider) {
-            return max(120, (int)$this->timeout);
+            return max(300, (int)$this->timeout); // 5分
         }
 
         return max($default, (int)($this->timeout * 0.5));
@@ -934,8 +934,8 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
 - 疑わしい場合は false を返してください";
 
         try {
-            // Parse task intent: Ollama/別サーバー:11434 は応答 ~40–60s のため 60s。Cloud は 10s
-            $parseTimeout = $this->isLocalProvider ? 60 : min(10, $this->timeout * 0.33);
+            // Parse task intent: Ollama/別サーバー:11434 は 5分(300s)。Cloud は 10s
+            $parseTimeout = $this->isLocalProvider ? 300 : min(10, $this->timeout * 0.33);
 
             // Determine which parameter to use based on model
             $useMaxCompletionTokens = in_array($this->fallbackModel, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
@@ -1157,8 +1157,8 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
 - 疑わしい場合は false を返してください";
 
         try {
-            // Ollama/別サーバー:11434 は応答が遅いため 60s。Cloud は 10s
-            $parseTimeout = $this->isLocalProvider ? 60 : min(10, $this->timeout * 0.33);
+            // Ollama/別サーバー:11434 は 5分(300s)。Cloud は 10s
+            $parseTimeout = $this->isLocalProvider ? 300 : min(10, $this->timeout * 0.33);
 
             $useMaxCompletionTokens = in_array($this->fallbackModel, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
 
@@ -1316,8 +1316,8 @@ Knowledge検索の意図がない場合:
 - 疑わしい場合は false を返してください";
 
         try {
-            // Ollama/別サーバー:11434 は応答が遅いため 60s。Cloud は 10s
-            $parseTimeout = $this->isLocalProvider ? 60 : min(10, $this->timeout * 0.33);
+            // Ollama/別サーバー:11434 は 5分(300s)。Cloud は 10s
+            $parseTimeout = $this->isLocalProvider ? 300 : min(10, $this->timeout * 0.33);
             $useMaxCompletionTokens = in_array($this->fallbackModel, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
 
             $requestBody = [
@@ -1478,7 +1478,7 @@ Knowledge検索の意図がない場合:
         try {
             // Use fallback model for faster parsing (like parseKnowledgeQueryIntent)
             $modelToUse = $this->fallbackModel;
-            $parseTimeout = 60; // Increased timeout for knowledge creation parsing
+            $parseTimeout = 300; // 5分。knowledge creation parsing
 
             $messages = [
                 ['role' => 'system', 'content' => $systemPrompt],
@@ -1615,10 +1615,10 @@ Knowledge検索の意図がない場合:
                         ];
                     }
 
-                    // Chat timeout: Local provider用に長めに設定（タイムアウトを延長）
+                    // Chat timeout: Local provider は 5分(300s)。Cloud は 50%
                     $chatTimeout = $options['timeout'] ?? ($this->isLocalProvider
-                        ? max(180, $this->timeout * 1.5) // Local: 最小180秒（3分）に延長
-                        : $this->timeout * 0.5); // Cloud: 50%
+                        ? max(300, (int)$this->timeout)
+                        : $this->timeout * 0.5);
 
                     // Determine which parameter to use based on model
                     $useMaxCompletionTokens = in_array($model, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
@@ -1815,9 +1815,9 @@ Knowledge検索の意図がない場合:
             ];
         }
 
-        // Chat timeout: Local provider用に長めに設定
+        // Chat timeout: Local provider は 5分(300s)。Cloud は 50%
         $chatTimeout = $options['timeout'] ?? ($this->isLocalProvider
-            ? max(90, $this->timeout * 0.75)
+            ? max(300, (int)$this->timeout)
             : $this->timeout * 0.5);
 
         // Local provider用: トークン数を大幅に削減して高速化

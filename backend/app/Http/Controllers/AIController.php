@@ -1441,7 +1441,7 @@ class AIController extends Controller
                     ->toArray();
 
                 $aiResponse = $this->aiService->chat($history, [
-                    'timeout' => 180, // Ollama 別サーバー: 応答 ~40–60s のため 120s
+                    'timeout' => 300, // 5分。Ollama 別サーバー用
                     'max_tokens' => 200,
                     'temperature' => 0.6,
                 ]);
@@ -1567,8 +1567,8 @@ class AIController extends Controller
 
             // Get AI response WITH CONTEXT
             $maxTokens = $this->aiService->isLocalProvider() ? 400 : 800;
-            // Local provider用: タイムアウトを大幅に延長（180秒 = 3分）
-            $timeout = $this->aiService->isLocalProvider() ? 180 : $this->aiService->getContextChatTimeout(12);
+            // Local provider: 5分(300s)。Cloud は getContextChatTimeout
+            $timeout = $this->aiService->isLocalProvider() ? 300 : $this->aiService->getContextChatTimeout(12);
             $aiResponse = $this->aiService->chatWithUserContext($history, $userContext, [
                 'timeout' => $timeout,
                 'max_tokens' => $maxTokens,
