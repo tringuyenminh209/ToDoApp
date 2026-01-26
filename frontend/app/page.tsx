@@ -162,10 +162,10 @@ export default function LandingPage() {
       />
 
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass py-3 sm:py-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
               {!logoError ? (
                 <Image
                   src="/logo/logo.svg"
@@ -181,17 +181,17 @@ export default function LandingPage() {
                   <Icon icon="mdi:leaf" className="text-2xl text-white" />
                 </div>
               )}
-              <span className="text-xl font-bold text-white">ToDoKizamu</span>
+              <span className="text-base sm:text-xl font-bold text-white truncate">ToDoKizamu</span>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               {/* Language Selector */}
               <div className="relative" ref={langMenuRef}>
                 <button
                   onClick={() => setShowLangMenu(!showLangMenu)}
-                  className="flex items-center justify-center space-x-2 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm text-white font-medium text-sm hover:bg-white/20 transition-all duration-200 border border-white/20 min-w-[100px]"
+                  className="flex items-center justify-center gap-1.5 sm:space-x-2 px-2.5 sm:px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm text-white font-medium text-sm hover:bg-white/20 transition-all duration-200 border border-white/20 min-w-[44px] sm:min-w-[100px]"
                 >
-                  <Icon icon="mdi:globe" className="text-base" />
-                  <span>{langNames[currentLang]}</span>
+                  <Icon icon="mdi:globe" className="text-base flex-shrink-0" />
+                  <span className="hidden sm:inline truncate max-w-[5rem]">{langNames[currentLang]}</span>
                   <Icon
                     icon="mdi:chevron-down"
                     className={`text-xs transition-transform duration-200 ${showLangMenu ? 'rotate-180' : ''}`}
@@ -221,12 +221,12 @@ export default function LandingPage() {
                   </div>
                 )}
               </div>
-              <Link href="/auth/login" className="px-4 py-2 text-white/80 hover:text-white transition">
+              <Link href="/auth/login" className="px-3 sm:px-4 py-2 text-sm sm:text-base text-white/80 hover:text-white transition flex-shrink-0">
                 {t.landingNavLogin}
               </Link>
               <Link
                 href="/auth/register"
-                className="px-5 py-2 bg-white text-black rounded-lg font-semibold hover:bg-white/90 transition"
+                className="px-4 sm:px-5 py-2 bg-white text-black rounded-lg font-semibold hover:bg-white/90 transition text-sm sm:text-base flex-shrink-0"
               >
                 {t.register}
               </Link>
@@ -236,28 +236,28 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
+      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
         <div className="max-w-7xl mx-auto w-full relative z-10">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 sm:mb-12">
             {/* Badge */}
-            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass mb-8">
-              <Icon icon="mdi:sparkles" className="text-[#0FA968]" />
-              <span className="text-sm text-white/90">{t.landingBadge}</span>
+            <div className="inline-flex items-center space-x-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full glass mb-6 sm:mb-8">
+              <Icon icon="mdi:sparkles" className="text-[#0FA968] text-sm sm:text-base" />
+              <span className="text-xs sm:text-sm text-white/90">{t.landingBadge}</span>
             </div>
 
             {/* Headline */}
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-4 sm:mb-6 leading-tight px-1">
               <span className="gradient-text block">{t.landingHeadline1}</span>
               <span className="gradient-text block">{t.landingHeadline2}</span>
-          </h1>
+            </h1>
 
             {/* Subtext */}
-            <p className="text-xl md:text-2xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed whitespace-pre-line">
+            <p className="text-base sm:text-xl md:text-2xl text-zinc-400 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed whitespace-pre-line px-1">
               {t.landingSubtext}
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-12 sm:mb-16">
               <Link
                 href="/auth/register"
                 className="px-8 py-4 bg-[#0FA968] hover:bg-[#0B8C57] text-white rounded-xl font-semibold text-lg transition shadow-lg hover:shadow-xl"
@@ -274,8 +274,8 @@ export default function LandingPage() {
             </div>
 
             {/* Hero Image / Mockup */}
-            <div className="relative mt-16">
-              <div className="dashboard-mockup bg-zinc-900 rounded-2xl p-6 shadow-2xl border border-zinc-800 max-w-4xl mx-auto">
+            <div className="relative mt-8 sm:mt-16 px-0">
+              <div className="dashboard-mockup bg-zinc-900 rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-2xl border border-zinc-800 max-w-4xl mx-auto">
                 <div className="bg-zinc-950 rounded-xl p-4 border border-zinc-800">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
@@ -543,91 +543,65 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-800 py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* Footer: nền đặc chặn sparkle, tương phản tốt, bố cục rõ */}
+      <footer className="relative z-20 border-t border-zinc-800 bg-zinc-950 py-10 sm:py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 sm:gap-10 mb-10 sm:mb-12">
+            <div className="col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-1">
+              <Link href="/" className="inline-flex items-center gap-2 mb-4">
                 {!logoError ? (
                   <Image
                     src="/logo/logo.svg"
                     alt="ToDoKizamu"
-                    width={32}
-                    height={32}
+                    width={36}
+                    height={36}
                     className="object-contain rounded-lg"
                     onError={() => setLogoError(true)}
                   />
                 ) : (
-                  <div className="w-8 h-8 bg-gradient-to-br from-[#0FA968] to-[#1F6FEB] rounded-lg flex items-center justify-center">
-                    <Icon icon="mdi:leaf" className="text-lg text-white" />
+                  <div className="w-9 h-9 bg-gradient-to-br from-[#0FA968] to-[#1F6FEB] rounded-lg flex items-center justify-center">
+                    <Icon icon="mdi:leaf" className="text-xl text-white" />
                   </div>
                 )}
-                <span className="font-bold text-white">ToDoKizamu</span>
-              </div>
+                <span className="font-bold text-white text-lg">ToDoKizamu</span>
+              </Link>
+              <p className="text-zinc-400 text-sm max-w-[200px] hidden sm:block">{t.landingFooterTagline}</p>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">{t.landingFooterProduct}</h4>
-              <ul className="space-y-2 text-zinc-400 text-sm">
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    {t.landingFooterUpdates}
-                  </a>
-                </li>
-                <li>
-                  <a href="#pricing" className="hover:text-white transition">
-                    {t.landingNavPricing}
-                  </a>
-                </li>
+              <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider text-zinc-300">{t.landingFooterProduct}</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition">{t.landingFooterUpdates}</a></li>
+                <li><a href="#pricing" className="text-zinc-400 hover:text-white text-sm transition">{t.landingNavPricing}</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">{t.landingFooterResources}</h4>
-              <ul className="space-y-2 text-zinc-400 text-sm">
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    {t.landingFooterCommunity}
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    {t.landingFooterHelp}
-                  </a>
-                </li>
+              <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider text-zinc-300">{t.landingFooterResources}</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition">{t.landingFooterCommunity}</a></li>
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition">{t.landingFooterHelp}</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">{t.landingFooterCompany}</h4>
-              <ul className="space-y-2 text-zinc-400 text-sm">
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    {t.landingFooterAbout}
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    {t.landingFooterContact}
-                  </a>
-                </li>
+              <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider text-zinc-300">{t.landingFooterCompany}</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition">{t.landingFooterAbout}</a></li>
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition">{t.landingFooterContact}</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">{t.landingFooterLegal}</h4>
-              <ul className="space-y-2 text-zinc-400 text-sm">
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    {t.landingFooterPrivacy}
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition">
-                    {t.landingFooterTerms}
-                  </a>
-                </li>
+              <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider text-zinc-300">{t.landingFooterLegal}</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition">{t.landingFooterPrivacy}</a></li>
+                <li><a href="#" className="text-zinc-400 hover:text-white text-sm transition">{t.landingFooterTerms}</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-zinc-800 pt-8 text-center text-zinc-500 text-sm">
+          <div className="border-t border-zinc-800 pt-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-zinc-500 text-sm">
+            {!logoError ? (
+              <Image src="/logo/logo.svg" alt="" width={20} height={20} className="opacity-60" onError={() => setLogoError(true)} />
+            ) : (
+              <Icon icon="mdi:leaf" className="text-zinc-500 text-lg" />
+            )}
             <p>{t.landingFooterCopyright}</p>
           </div>
         </div>

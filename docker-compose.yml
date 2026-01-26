@@ -30,12 +30,12 @@ services:
       - CACHE_STORE=redis
       - SESSION_DRIVER=redis
       - OPENAI_API_KEY=${OPENAI_API_KEY:-sk-dummy-key}
-      - OPENAI_BASE_URL=http://ollama:11434/v1
-      - OPENAI_MODEL=gemma2:2b
+      # リモート Ollama (54.204.204.160) 使用。ローカル ollama は不要
+      - OPENAI_BASE_URL=http://54.204.204.160:11434/v1
+      - OPENAI_MODEL=qwen2.5:3b
     depends_on:
       - mysql
       - redis
-      - ollama
     networks:
       - todo-network
     deploy:
@@ -119,54 +119,39 @@ services:
     networks:
       - todo-network
 
-  # Ollama (Local LLM) - GPU対応版
-  ollama:
-    image: ollama/ollama:latest
-    container_name: todo-ollama
-    restart: unless-stopped
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    networks:
-      - todo-network
-    environment:
-      # GPUメモリ使用量の制限（オプション）
-      - OLLAMA_GPU_MEMORY=0
-      # 並列リクエスト数（応答速度向上のため増加）
-      - OLLAMA_NUM_PARALLEL=4
-      # コンテキストサイズ（速度向上のため削減：2048→512）
-      - OLLAMA_NUM_CTX=512
-      # Keep-alive時間（モデルをメモリに保持、応答速度向上のため延長：5m→30m）
-      - OLLAMA_KEEP_ALIVE=30m
-      # バッチサイズ（速度向上のため調整）
-      - OLLAMA_NUM_GPU=0
-      # メモリ効率化
-      - OLLAMA_MAX_LOADED_MODELS=1
-    # NVIDIA GPU サポート（GPUがある場合はコメントを外す）
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: 1
-    #           capabilities: [gpu]
-    deploy:
-      resources:
-        limits:
-          cpus: '6.0'  # CPUを増加して速度向上
-          memory: 3G  # gemma2:2b用にメモリを削減（約1.5GB使用、余裕を持たせる）
-        reservations:
-          cpus: '3.0'  # 予約CPUも増加
-          memory: 1.5G  # 予約メモリも削減（gemma2:2b用）
+  # Ollama (Local LLM) - 使用リモート 54.204.204.160 のためコメントアウト
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: todo-ollama
+  #   restart: unless-stopped
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   networks:
+  #     - todo-network
+  #   environment:
+  #     - OLLAMA_GPU_MEMORY=0
+  #     - OLLAMA_NUM_PARALLEL=4
+  #     - OLLAMA_NUM_CTX=512
+  #     - OLLAMA_KEEP_ALIVE=30m
+  #     - OLLAMA_NUM_GPU=0
+  #     - OLLAMA_MAX_LOADED_MODELS=1
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '6.0'
+  #         memory: 3G
+  #       reservations:
+  #         cpus: '3.0'
+  #         memory: 1.5G
 
 volumes:
   mysql_data:
     driver: local
   redis_data:
     driver: local
-  ollama_data:
-    driver: local
+  # ollama_data:  # ローカル ollama 不要のためコメント
 
 networks:
   todo-network:

@@ -140,7 +140,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex p-4 md:p-8 relative overflow-x-hidden">
+    <div className="min-h-screen flex p-3 sm:p-4 md:p-8 relative overflow-x-hidden">
       {/* Background Effects */}
       <div className="fixed inset-0 bg-black -z-10" />
       <div className="fixed inset-0 bg-gradient-to-br from-[rgba(15,169,104,0.15)] via-transparent to-[rgba(31,111,235,0.15)] animate-[backgroundShift_20s_ease-in-out_infinite] -z-10" />
@@ -152,14 +152,15 @@ export default function LoginPage() {
       />
 
       {/* Language Selector */}
-      <div className="absolute top-4 right-4 md:top-6 md:right-6 z-20">
+      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 md:top-6 md:right-6 z-20">
         <div className="relative" ref={langMenuRef}>
           <button
             onClick={() => setShowLangMenu(!showLangMenu)}
-            className="flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl bg-white/20 backdrop-blur-sm text-white font-medium text-sm hover:bg-white/30 transition-all duration-200 shadow-lg hover:shadow-xl border border-white/20 min-w-[100px]"
+            className="flex items-center justify-center gap-1.5 sm:space-x-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white/20 backdrop-blur-sm text-white font-medium text-sm hover:bg-white/30 transition-all duration-200 shadow-lg hover:shadow-xl border border-white/20 min-w-[44px] sm:min-w-[100px]"
+            aria-label="Language"
           >
-            <Icon icon="mdi:globe" className="text-base" />
-            <span>{langNames[currentLang]}</span>
+            <Icon icon="mdi:globe" className="text-base flex-shrink-0" />
+            <span className="hidden sm:inline truncate">{langNames[currentLang]}</span>
             <Icon 
               icon="mdi:chevron-down" 
               className={`text-xs transition-transform duration-200 ${showLangMenu ? 'rotate-180' : ''}`}
@@ -191,12 +192,12 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Main Container */}
-      <div className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-0 items-stretch min-h-[600px] relative z-10">
+      {/* Main Container: モバイルでは min-h を抑えてスクロールしやすく */}
+      <div className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-4 lg:gap-0 items-stretch min-h-0 md:min-h-[600px] relative z-10">
         {/* Left Section: Logo & Welcome */}
         <div className="w-full lg:w-1/2 flex">
-          <div className="bg-white/20 backdrop-blur-sm rounded-2xl lg:rounded-l-2xl lg:rounded-r-none lg:border-r border-white/20 shadow-2xl p-6 md:p-8 w-full flex flex-col justify-center h-full">
-            <div className="text-center mb-8">
+          <div className="bg-white/20 backdrop-blur-sm rounded-2xl lg:rounded-l-2xl lg:rounded-r-none lg:border-r border-white/20 shadow-2xl p-4 sm:p-6 md:p-8 w-full flex flex-col justify-center min-h-0">
+            <div className="text-center mb-6 sm:mb-8">
               {/* Logo */}
               <Link href="/" className="inline-block cursor-pointer hover:opacity-80 transition-opacity">
                 <div className="inline-flex items-center justify-center mb-4">
@@ -246,8 +247,8 @@ export default function LoginPage() {
 
         {/* Right Section: Login Form */}
         <div className="w-full lg:w-1/2 flex">
-          <div className="bg-white/20 backdrop-blur-sm rounded-2xl lg:rounded-r-2xl lg:rounded-l-none shadow-2xl p-6 md:p-8 w-full flex flex-col h-full justify-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-white drop-shadow-lg">{t.login}</h2>
+          <div className="bg-white/20 backdrop-blur-sm rounded-2xl lg:rounded-r-2xl lg:rounded-l-none shadow-2xl p-4 sm:p-6 md:p-8 w-full flex flex-col min-h-0 justify-center">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-center text-white drop-shadow-lg">{t.login}</h2>
             <form onSubmit={handleSubmit} className="space-y-5 flex flex-col">
               {/* Email Field */}
               <div>

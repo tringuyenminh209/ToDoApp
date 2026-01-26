@@ -280,12 +280,12 @@ export default function TasksPage() {
   };
 
   return (
-    <div className="px-6 py-6 relative z-0">
+    <div className="px-4 py-4 sm:px-6 sm:py-6 relative z-0">
       {/* Header Section: Daily Check-in */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-2xl font-bold text-white drop-shadow-lg mb-1 flex items-center">
+      <div className="mb-4 sm:mb-6">
+        <div className="flex flex-wrap items-start sm:items-center justify-between gap-3 mb-4">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg mb-1 flex items-center flex-wrap">
               {t.goodMorning}, {user?.name || 'User'}!
               <Icon icon="mdi:fire" className="text-orange-400 ml-2" />
             </h1>
@@ -295,7 +295,7 @@ export default function TasksPage() {
           </div>
           <button
             onClick={openCreateTask}
-            className="px-5 py-2.5 bg-[#0FA968] hover:bg-[#0B8C57] text-white rounded-xl transition shadow-lg hover:shadow-xl font-semibold flex items-center space-x-2"
+            className="px-4 sm:px-5 py-2.5 bg-[#0FA968] hover:bg-[#0B8C57] text-white rounded-xl transition shadow-lg hover:shadow-xl font-semibold flex items-center space-x-2 flex-shrink-0"
           >
             <Icon icon="mdi:plus" />
             <span>{t.createTask}</span>
@@ -647,10 +647,11 @@ export default function TasksPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-1 mb-6">
+      {/* モバイル: 横スクロール / デスクトップ: 3カラムグリッド */}
+      <div className="touch-scroll-x flex flex-nowrap overflow-x-auto gap-4 md:gap-6 pl-2 pr-2 md:pl-0 md:pr-0 pb-2 md:pb-0 md:grid md:grid-cols-3 md:flex-wrap md:overflow-visible relative z-1 mb-6 -mx-2 md:mx-0">
         {/* To Do Column */}
         <div
-          className="kanban-column column-pending min-h-[600px]"
+          className="kanban-column column-pending min-h-[320px] md:min-h-[600px] min-w-[280px] md:min-w-0 flex-shrink-0 md:flex-shrink"
           data-status="pending"
           onDragOver={handleDragOver}
           onDrop={(e) => handleDrop(e, 'pending')}
@@ -690,7 +691,7 @@ export default function TasksPage() {
 
         {/* Doing Column */}
         <div
-          className="kanban-column column-in-progress min-h-[600px]"
+          className="kanban-column column-in-progress min-h-[320px] md:min-h-[600px] min-w-[280px] md:min-w-0 flex-shrink-0 md:flex-shrink"
           data-status="in_progress"
           onDragOver={handleDragOver}
           onDrop={(e) => handleDrop(e, 'in_progress')}
@@ -730,7 +731,7 @@ export default function TasksPage() {
 
         {/* Done Column */}
         <div
-          className="kanban-column column-completed min-h-[600px]"
+          className="kanban-column column-completed min-h-[320px] md:min-h-[600px] min-w-[280px] md:min-w-0 flex-shrink-0 md:flex-shrink"
           data-status="completed"
           onDragOver={handleDragOver}
           onDrop={(e) => handleDrop(e, 'completed')}

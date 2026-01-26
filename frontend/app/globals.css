@@ -160,9 +160,18 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* モバイル横スクロール: iOS でなめらかに（-webkit- は古い iOS 用） */
+.touch-scroll-x {
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes backgroundShift {
@@ -1000,4 +1009,113 @@
 .category-item.active {
   background: rgba(15, 169, 104, 0.2);
   border-left: 3px solid #0FA968;
+}
+
+/* ========== Mobile Responsive (max-width: 768px) ========== */
+@media (max-width: 768px) {
+  /* Kanban: カラム高さ・タッチ操作性 */
+  .kanban-column {
+    min-height: 320px;
+  }
+  .task-card {
+    padding: 0.75rem 1rem;
+    min-height: 44px; /* タップターゲット */
+  }
+  .task-card:hover {
+    transform: none; /* モバイルでhoverジャンプ防止 */
+  }
+  .column-header {
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+
+  /* Calendar: 日付セル縮小 */
+  .calendar-day {
+    min-height: 100px;
+    font-size: 0.8125rem;
+  }
+  .task-item {
+    font-size: 0.6875rem;
+    padding: 0.25rem 0.375rem;
+  }
+
+  /* ランディング: 3D transform オフ（描画負荷軽減） */
+  .dashboard-mockup {
+    transform: none;
+  }
+  .dashboard-mockup:hover {
+    transform: none;
+  }
+  .bento-card:hover {
+    transform: none;
+  }
+
+  /* Success checkmark: 縮小 */
+  .success-checkmark {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+  }
+  .success-checkmark .check-icon {
+    width: 56px;
+    height: 56px;
+    border-width: 3px;
+  }
+  .success-checkmark .icon-line.line-tip {
+    top: 32px;
+    left: 10px;
+    width: 18px;
+  }
+  .success-checkmark .icon-line.line-long {
+    top: 26px;
+    right: 6px;
+    width: 34px;
+  }
+
+  /* Mindmap: ノード最小幅 */
+  .mindmap-node {
+    min-width: 140px;
+    padding: 12px;
+    font-size: 0.875rem;
+  }
+  .mindmap-node:hover {
+    transform: scale(1.02); /* モバイルで控えめに */
+  }
+
+  /* Markdown: フォント・余白 */
+  .markdown-editor {
+    font-size: 14px;
+  }
+  .markdown-preview h1 { font-size: 1.5em; }
+  .markdown-preview h2 { font-size: 1.25em; }
+  .markdown-preview h3 { font-size: 1.1em; }
+  .markdown-preview pre,
+  .markdown-preview .code-block {
+    padding: 0.75rem;
+    font-size: 0.8125rem;
+  }
+  .markdown-preview code {
+    font-size: 0.8125rem;
+  }
+
+  /* モバイル: アニメーション軽減（オプション・省電力） */
+  .sparkle,
+  .particle,
+  .star {
+    animation-duration: 1.5s;
+  }
+}
+
+/* 極小画面 (max-width: 375px) */
+@media (max-width: 375px) {
+  .kanban-column {
+    min-height: 280px;
+  }
+  .column-header {
+    padding: 8px 10px;
+    font-size: 0.9375rem;
+  }
+  .task-card {
+    padding: 0.5rem 0.75rem;
+  }
 }

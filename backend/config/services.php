@@ -34,13 +34,13 @@ return [
     'openai' => [
         'api_key' => env('OPENAI_API_KEY'),
         'base_url' => env('OPENAI_BASE_URL', 'http://ollama:11434/v1'),
-        // 軽量モデル推奨: gemma2:2b (約1.5GB), qwen2.5:1.5b (約3GB), phi3:mini (約2GBだが、phi3:latestと同じファイルを参照する可能性あり)
-        'model' => env('OPENAI_MODEL', 'gemma2:2b'),
+        // 推奨: qwen2.5:3b, gemma2:2b (軽量)
+        'model' => env('OPENAI_MODEL', 'qwen2.5:3b'),
         'max_tokens' => env('OPENAI_MAX_TOKENS', 500),
         'temperature' => env('OPENAI_TEMPERATURE', 0.5),
         // Local AI用に長めのタイムアウト設定
         'timeout' => env('OPENAI_TIMEOUT', 120),
-        'fallback_model' => env('OPENAI_FALLBACK_MODEL', 'gemma2:2b'),
+        'fallback_model' => env('OPENAI_FALLBACK_MODEL', 'qwen2.5:3b'),
         'enable_fallback' => env('OPENAI_ENABLE_FALLBACK', false),
         // キャッシュ設定
         'cache_ttl' => env('OPENAI_CACHE_TTL', 3600),

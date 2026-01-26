@@ -106,6 +106,7 @@ export const translations = {
     landingFooterPrivacy: 'Quyền riêng tư',
     landingFooterTerms: 'Điều khoản',
     landingFooterCopyright: '© 2026 ToDoKizamu. Được xây dựng bởi Dat.',
+    landingFooterTagline: 'Công việc và học tập trong một nơi.',
     // Dashboard translations
     dashboardTitle: 'Bảng điều khiển',
     dashboardSubtitle: 'Quản lý nhiệm vụ và dự án',
@@ -584,6 +585,7 @@ export const translations = {
     landingFooterPrivacy: 'Privacy',
     landingFooterTerms: 'Terms',
     landingFooterCopyright: '© 2026 ToDoKizamu. Built by Dat.',
+    landingFooterTagline: 'Tasks and learning in one place.',
     // Dashboard translations
     dashboardTitle: 'Dashboard',
     dashboardSubtitle: 'Manage tasks and projects',
@@ -1062,6 +1064,7 @@ export const translations = {
     landingFooterPrivacy: 'プライバシー',
     landingFooterTerms: '利用規約',
     landingFooterCopyright: '© 2026 ToDoKizamu. Datによって構築。',
+    landingFooterTagline: 'タスクと学習を一つの場所で。',
     // Dashboard translations
     dashboardTitle: 'ダッシュボード',
     dashboardSubtitle: 'タスクとプロジェクト管理',

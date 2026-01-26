@@ -38,11 +38,24 @@ export default function Sidebar({ currentLang, isCollapsed, onToggle }: SidebarP
   ];
 
   return (
-    <aside
-      className={`${
-        isCollapsed ? 'w-0 -ml-64 opacity-0' : 'w-64'
-      } bg-white/10 backdrop-blur-md border-r border-white/20 shadow-xl relative z-10 overflow-y-auto transition-all duration-300 ease-in-out`}
-    >
+    <>
+      {!isCollapsed && (
+        <div
+          className="fixed inset-0 top-14 bg-black/50 z-[18] md:hidden"
+          onClick={onToggle}
+          onKeyDown={(e) => e.key === 'Escape' && onToggle()}
+          role="button"
+          tabIndex={-1}
+          aria-label="Close menu"
+        />
+      )}
+      <aside
+        className={`fixed left-0 top-14 bottom-0 md:relative md:top-auto md:left-auto md:bottom-auto z-[19] md:z-10 w-64 max-w-[85vw] md:max-w-none bg-white/10 backdrop-blur-md border-r border-white/20 shadow-xl overflow-y-auto transition-all duration-300 ease-in-out ${
+          isCollapsed
+            ? '-translate-x-full md:translate-x-0 md:w-0 md:-ml-64 md:opacity-0'
+            : 'translate-x-0 md:w-64'
+        }`}
+      >
       <div className="p-4">
         <h2 className="text-lg font-bold text-white mb-6 drop-shadow-md">MENU</h2>
         <nav className="space-y-2">
@@ -82,5 +95,6 @@ export default function Sidebar({ currentLang, isCollapsed, onToggle }: SidebarP
         </button>
       </div>
     </aside>
+    </>
   );
 }

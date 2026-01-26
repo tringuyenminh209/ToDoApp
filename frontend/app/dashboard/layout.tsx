@@ -37,6 +37,11 @@ export default function DashboardLayout({
   }, []);
 
   useEffect(() => {
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) {
+      setIsRightPanelCollapsed(true);
+      return;
+    }
     const sidebarState = localStorage.getItem('leftSidebarVisible');
     const rightPanelState = localStorage.getItem('rightPanelVisible');
     if (sidebarState === 'false') setIsSidebarCollapsed(true);
@@ -164,8 +169,8 @@ export default function DashboardLayout({
         isRightPanelCollapsed={isRightPanelCollapsed}
       />
 
-      {/* Main Layout */}
-      <div className="flex h-[calc(100vh-85px)] relative z-10">
+      {/* Main Layout: モバイルはヘッダー高さに合わせて calc を調整 */}
+      <div className="flex h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] md:h-[calc(100vh-85px)] relative z-10">
         {/* Sidebar */}
         <Sidebar
           currentLang={currentLang}
@@ -173,11 +178,11 @@ export default function DashboardLayout({
           onToggle={handleToggleSidebar}
         />
 
-        {/* Main Content */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden relative z-0 min-w-0">{children}</main>
+        {/* Main Content: モバイルで横はみ出し防止 */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden relative z-0 min-w-0 overscroll-behavior-y-auto">{children}</main>
 
         {/* Right Panel */}
-        <RightPanel currentLang={currentLang} isCollapsed={isRightPanelCollapsed} />
+        <RightPanel currentLang={currentLang} isCollapsed={isRightPanelCollapsed} onToggle={handleToggleRightPanel} />
       </div>
     </div>
   );

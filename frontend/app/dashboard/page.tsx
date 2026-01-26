@@ -103,15 +103,15 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white drop-shadow-lg mb-2">
+    <div className="p-4 sm:p-6">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg mb-2">
           {t.goodMorning}, {user?.name || 'User'}!
         </h1>
         <p className="text-white/70">{t.dashboardSubtitle}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {dashboardCards.map((card) => (
           <Link
             key={card.href}
@@ -127,9 +127,9 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="mt-8 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl">
-        <h2 className="text-xl font-bold text-white mb-4">{t.quickActions}</h2>
-        <div className="flex flex-wrap gap-4">
+      <div className="mt-6 sm:mt-8 bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-white/20 shadow-xl">
+        <h2 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">{t.quickActions}</h2>
+        <div className="flex flex-wrap gap-3 sm:gap-4">
           <button
             onClick={openCreateTask}
             className="px-6 py-3 bg-[#0FA968] hover:bg-[#0B8C57] text-white rounded-xl transition shadow-lg hover:shadow-xl font-semibold flex items-center space-x-2"

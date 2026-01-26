@@ -13,10 +13,20 @@ import { timetableService, TimetableClass, TimetableStudy } from '@/lib/services
 interface RightPanelProps {
   currentLang: Language;
   isCollapsed: boolean;
+  onToggle?: () => void;
 }
 
-export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps) {
+export default function RightPanel({ currentLang, isCollapsed, onToggle }: RightPanelProps) {
+  const [isMobile, setIsMobile] = useState(false);
   const [aiMessage, setAiMessage] = useState<string>('');
+
+  useEffect(() => {
+    const m = window.matchMedia('(max-width: 768px)');
+    const upd = () => setIsMobile(m.matches);
+    upd();
+    m.addEventListener('change', upd);
+    return () => m.removeEventListener('change', upd);
+  }, []);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState('');
   const [chatLoading, setChatLoading] = useState(true);
@@ -640,11 +650,24 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
   );
 
   return (
-    <aside
-      className={`${
-        isCollapsed ? 'w-0 -mr-80 opacity-0' : 'w-80'
-      } bg-white/10 backdrop-blur-md border-l border-white/20 shadow-xl relative z-10 overflow-y-auto transition-all duration-300 ease-in-out`}
-    >
+    <>
+      {!isCollapsed && isMobile && onToggle && (
+        <div
+          className="fixed inset-0 top-14 bg-black/50 z-[18] md:hidden"
+          onClick={onToggle}
+          onKeyDown={(e) => e.key === 'Escape' && onToggle()}
+          role="button"
+          tabIndex={-1}
+          aria-label="Close panel"
+        />
+      )}
+      <aside
+        className={`fixed right-0 top-14 bottom-0 z-[19] md:relative md:right-auto md:top-auto md:bottom-auto md:z-10 max-w-[90vw] md:max-w-none overflow-y-auto transition-all duration-300 ease-in-out bg-white/10 backdrop-blur-md border-l border-white/20 shadow-xl ${
+          isCollapsed
+            ? 'translate-x-full w-80 md:translate-x-0 md:w-0 md:-mr-80 md:opacity-0'
+            : 'translate-x-0 w-80 md:w-80'
+        }`}
+      >
       <div className="p-4 space-y-6">
         {/* AI Assistant Panel */}
         {isChatExpanded ? (
@@ -878,5 +901,6 @@ export default function RightPanel({ currentLang, isCollapsed }: RightPanelProps
         </div>
       )}
     </aside>
+    </>
   );
 }
