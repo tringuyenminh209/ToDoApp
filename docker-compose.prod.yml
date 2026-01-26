@@ -86,6 +86,7 @@ services:
       - CACHE_DRIVER=redis
       - SESSION_DRIVER=redis
       # Ollama が別サーバー: .env.prod に OLLAMA_BASE_URL=http://<OllamaのIP>:11434/v1 を設定
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-sk-dummy-key}
       - OPENAI_BASE_URL=${OLLAMA_BASE_URL}
       - OPENAI_MODEL=${OPENAI_MODEL:-qwen2.5:3b}
       # CORS: フロントのOrigin（EC2例: http://52.21.89.124:8088）
