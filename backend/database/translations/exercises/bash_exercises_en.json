@@ -1,0 +1,105 @@
+{
+    "_comment": "English translations for Bash Exercises (CheatCodeBashExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Hello World Output",
+            "description": "Bash Script Basics",
+            "question": "Write a Bash script that outputs the string \"Hello, World!\"."
+        },
+        "変数を使った挨拶": {
+            "title": "Greeting with Variable",
+            "description": "Variable Declaration and Usage",
+            "question": "Assign \"Alice\" to variable NAME and output \"Hello, Alice!\"."
+        },
+        "コマンドライン引数を使う": {
+            "title": "Use Command Line Arguments",
+            "description": "Script Argument Processing",
+            "question": "Use the name passed as a command line argument to output \"Hello, [name]!\". Use the first argument ($1)."
+        },
+        "2つの数値の合計": {
+            "title": "Sum of Two Numbers",
+            "description": "Arithmetic Expansion",
+            "question": "Assign two numbers (10 and 20) to variables and calculate and output their sum."
+        },
+        "文字列が空かチェック": {
+            "title": "Check if String is Empty",
+            "description": "Basic Conditional Branching",
+            "question": "If variable STR is empty, output \"Empty\"; if not empty, output \"Not empty\"."
+        },
+        "数値の大小比較": {
+            "title": "Compare Number Sizes",
+            "description": "Integer Comparison Operators",
+            "question": "Receive two arguments (integers) and if the first argument is greater than the second, output \"Greater\"; if equal, output \"Equal\"; if less, output \"Less\"."
+        },
+        "1から5までの数値を出力": {
+            "title": "Output Numbers from 1 to 5",
+            "description": "Basic For Loop",
+            "question": "Use a for loop to output numbers from 1 to 5, one per line."
+        },
+        "Whileループで5回カウント": {
+            "title": "Count 5 Times with While Loop",
+            "description": "Using While Loop",
+            "question": "Use a while loop to count from 0 to 4 and output one per line."
+        },
+        "配列の最初と最後の要素": {
+            "title": "First and Last Elements of Array",
+            "description": "Basic Array Operations",
+            "question": "Define array Fruits=(\"Apple\" \"Banana\" \"Orange\") and output the first and last elements, one per line."
+        },
+        "配列の全要素を出力": {
+            "title": "Output All Array Elements",
+            "description": "Array Iteration",
+            "question": "Output all elements of array Colors=(\"Red\" \"Green\" \"Blue\") one per line."
+        },
+        "挨拶関数を作成": {
+            "title": "Create Greeting Function",
+            "description": "Function Basics",
+            "question": "Define a greet function that takes a name as an argument and outputs \"Hello, [name]!\". Call it with \"World\" as an argument."
+        },
+        "文字列の一部を置換": {
+            "title": "Replace Part of String",
+            "description": "Parameter Expansion",
+            "question": "There is a variable STR=\"Hello World\". Replace \"World\" with \"Bash\" and output it."
+        },
+        "文字列の一部を抽出": {
+            "title": "Extract Part of String",
+            "description": "Substring",
+            "question": "Extract and output the first 4 characters from variable TEXT=\"Programming\"."
+        },
+        "ファイルの存在確認": {
+            "title": "Check File Existence",
+            "description": "File Condition Test",
+            "question": "If the filename passed as an argument exists, output \"File exists\"; if it doesn't exist, output \"File not found\"."
+        },
+        "曜日の判定": {
+            "title": "Determine Day of Week",
+            "description": "Branching with Case Statement",
+            "question": "Receive a day of week (1-7) as an argument and use a case statement to output the corresponding day name. 1=Monday, 2=Tuesday, ..., 7=Sunday. If it doesn't match, output \"Invalid day\"."
+        },
+        "連想配列で値を取得": {
+            "title": "Get Value from Associative Array",
+            "description": "Using Associative Array",
+            "question": "Use an associative array to manage animal sounds. Declare with declare -A sounds, set sounds[dog]=\"bark\" and sounds[cat]=\"meow\", and output the sound of the animal name passed as an argument."
+        },
+        "すべての引数の合計": {
+            "title": "Sum of All Arguments",
+            "description": "Argument Iteration",
+            "question": "Calculate and output the sum of all numeric values passed as command line arguments. You can access all arguments using $@."
+        },
+        "文字列の文字数をカウント": {
+            "title": "Count String Characters",
+            "description": "Get String Length",
+            "question": "Output the length (number of characters) of the string passed as an argument."
+        },
+        "デフォルト値の設定": {
+            "title": "Set Default Value",
+            "description": "Default Value with Parameter Expansion",
+            "question": "If no argument is passed, use \"Guest\"; if an argument is passed, use that value to output \"Hello, [name]!\". Use ${1:-default value}."
+        },
+        "文字列を大文字に変換": {
+            "title": "Convert String to Uppercase",
+            "description": "Uppercase Conversion",
+            "question": "Convert the string passed as an argument to all uppercase and output it."
+        }
+    }
+}

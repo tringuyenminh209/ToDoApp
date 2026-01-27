@@ -86,6 +86,19 @@ export default function ExerciseIDEPage() {
     loadLanguage();
   }, [loadExercise, loadLanguage]);
 
+  // Reload data when locale changes
+  useEffect(() => {
+    const handleLocaleChange = () => {
+      loadExercise();
+      loadLanguage();
+    };
+
+    window.addEventListener('localeChanged', handleLocaleChange);
+    return () => {
+      window.removeEventListener('localeChanged', handleLocaleChange);
+    };
+  }, [loadExercise, loadLanguage]);
+
   useEffect(() => {
     if (!editorContainerRef.current || !exercise || editorRef.current) return;
 

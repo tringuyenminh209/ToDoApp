@@ -27,7 +27,8 @@
             "deliverables": [
                 "Use Volumes for data persistence",
                 "Create and manage Networks",
-                "Use Docker Compose for multi-container applications"
+                "Use Docker Compose for multi-container applications",
+                "Manage environment variables and Secrets"
             ]
         },
         "Docker上級": {
@@ -44,9 +45,10 @@
             "title": "Docker Practice",
             "description": "Orchestration, Monitoring, Microservices architecture",
             "deliverables": [
-                "Set up orchestration",
-                "Implement monitoring",
-                "Build microservices architecture"
+                "Set up orchestration with Docker Swarm",
+                "Implement monitoring with Prometheus + Grafana",
+                "Build Microservices + API Gateway architecture",
+                "Set up logging system"
             ]
         },
         "Capstone Project": {
@@ -63,39 +65,114 @@
     "tasks": {
         "第1週：環境構築とDocker入門": {
             "title": "Week 1: Environment Setup and Docker Introduction",
-            "description": "WSL2 + Docker Desktop setup, Docker basic concepts, architecture"
+            "description": "WSL2 + Docker Desktop setup, Docker basic concepts, architecture",
+            "subtasks": {
+                "WSL2を有効化": "Enable WSL2",
+                "Docker Desktopをインストール": "Install Docker Desktop",
+                "BuildKitを有効化": "Enable BuildKit",
+                "Hello Worldコンテナを実行": "Run Hello World container",
+                "Nginx Webサーバーを起動": "Start Nginx Web server"
+            },
+            "knowledge_items": {
+                "Dockerとは？": {
+                    "title": "What is Docker?",
+                    "content": "# What is Docker?\n\n**Docker** is a platform for containerizing and running applications.\n\n## Docker Features\n\n1. **Environment Consistency**: Works the same in Dev→Prod environments\n2. **Lightweight**: Faster startup than VMs, resource-efficient\n3. **Portability**: Works the same anywhere\n4. **Scalability**: Easy to scale out\n5. **Isolation**: Run applications independently\n\n## Container vs VM\n\n| Feature | Container | VM |\n|---------|-----------|----|\n| Startup Time | Seconds | Minutes |\n| Size | MB | GB |\n| OS | Shares host OS | Independent OS |\n| Overhead | Low | High |\n\n## Docker Use Cases\n\n- Microservices architecture\n- CI/CD pipelines\n- Unified development environments\n- Cloud-native applications"
+                },
+                "WSL2 + Docker Desktop環境構築": {
+                    "title": "WSL2 + Docker Desktop Environment Setup",
+                    "content": "# WSL2 + Docker Desktop Environment Setup\n\n## 1. Enable WSL2\n\nRun in PowerShell (as Administrator):\n```powershell\nwsl --install\n```\n\n## 2. Install Docker Desktop\n\n- Download from Docker official website\n- Settings → General → Check \"Use WSL 2 based engine\"\n\n## 3. Enable BuildKit\n\nAdd the following in Settings → Docker Engine:\n```json\n{\n  \"features\": {\n    \"buildkit\": true\n  }\n}\n```\n\nOr set via environment variable:\n```bash\nexport DOCKER_BUILDKIT=1\n```\n\n## 4. Project Placement\n\nPlace in WSL filesystem (fast I/O):\n```bash\n/home/<username>/projects/...\n```\n\nAvoid Windows filesystem (slow):\n```bash\n/mnt/c/Users/...\n```\n\n## 5. Create .dockerignore File\n\n```\nnode_modules\n.git\n.env\nDockerfile*\ndocker-compose*.yml\nlogs\ndist\ncoverage\n**/__pycache__\n**/.pytest_cache\n```"
+                },
+                "Hello World実行": {
+                    "title": "Hello World Execution",
+                    "content": "# Hello World Container Execution\ndocker run hello-world\n\n# List images\ndocker images\n\n# List running containers\ndocker ps\n\n# List all containers (including stopped)\ndocker ps -a\n\n# Remove container\ndocker rm <container_id>\n\n# Remove image\ndocker rmi hello-world"
+                },
+                "Nginx Webサーバーの起動": {
+                    "title": "Start Nginx Web Server",
+                    "content": "# Start Nginx container in background\ndocker run -d -p 8080:80 --name my-nginx nginx\n\n# Access http://localhost:8080 in browser\n\n# Check logs\ndocker logs my-nginx\n\n# Show logs in real-time\ndocker logs -f my-nginx\n\n# Stop container\ndocker stop my-nginx\n\n# Restart container\ndocker restart my-nginx\n\n# Remove container (after stopping)\ndocker rm my-nginx"
+                },
+                "演習：初めてのDockerコンテナ": {
+                    "title": "Exercise: First Docker Container",
+                    "content": "# Exercise: First Docker Container\n\n## Goal\nStart multiple containers and master basic operations\n\n## Steps\n\n### 1. Interactive Shell with Ubuntu Container\n```bash\ndocker run -it ubuntu bash\n\n# Inside container\napt-get update\napt-get install -y curl\ncurl https://example.com\nexit\n```\n\n### 2. Run Script with Python Container\n```bash\necho 'print(\"Hello Docker\")' > hello.py\ndocker run -v $(pwd):/app python:3.11 python /app/hello.py\n```\n\n### 3. Start MySQL Container\n```bash\ndocker run -d \\\n  --name mysql \\\n  -e MYSQL_ROOT_PASSWORD=password \\\n  -e MYSQL_DATABASE=testdb \\\n  -p 3306:3306 \\\n  mysql:8.0\n\n# Connection test\ndocker exec -it mysql mysql -u root -ppassword\n```\n\n### 4. Container Cleanup\n```bash\n# Stop all containers\ndocker stop $(docker ps -aq)\n\n# Remove all containers\ndocker rm $(docker ps -aq)\n\n# Remove unused images\ndocker image prune -a\n```\n\n## Checkpoints\n- [ ] Executed commands inside container\n- [ ] Shared files via volume mount\n- [ ] Network communication between containers\n- [ ] Understood cleanup methods"
+                },
+                "トラブルシューティング：よくある問題": {
+                    "title": "Troubleshooting: Common Issues",
+                    "content": "# Troubleshooting: Common Issues\n\n## Issue 1: Port Already in Use\n\n**Error:**\n```\nError: bind: address already in use\n```\n\n**Solution:**\n```bash\n# Check port in use (Windows)\nnetstat -ano | findstr :8080\n\n# Check port in use (Linux/Mac)\nlsof -i :8080\n\n# Use different port\ndocker run -p 8081:80 nginx\n```\n\n## Issue 2: Slow Image Pull\n\n**Solution:**\n```json\n// Docker Desktop > Settings > Docker Engine\n{\n  \"registry-mirrors\": [\n    \"https://mirror.gcr.io\"\n  ]\n}\n```\n\n## Issue 3: WSL2 Disk Space Insufficient\n\n**Check:**\n```bash\ndocker system df\n```\n\n**Solution:**\n```bash\n# Remove unused resources\ndocker system prune -a --volumes\n\n# WSL2 disk compression (PowerShell)\nwsl --shutdown\noptimize-vhd -Path $env:LOCALAPPDATA\\Packages\\CanonicalGroupLimited*\\LocalState\\ext4.vhdx -Mode Full\n```\n\n## Issue 4: Container Won't Start\n\n**Diagnosis:**\n```bash\n# Check logs\ndocker logs <container_name>\n\n# Check details\ndocker inspect <container_name>\n\n# Check events\ndocker events --since 30m\n```\n\n## Issue 5: Permission Denied\n\n**Cause:** File access with non-root user\n\n**Solution:**\n```dockerfile\n# Set permissions in Dockerfile\nRUN chown -R app:app /app\nUSER app\n```"
+                }
+            }
         },
         "第2週：Dockerfile作成と基本コマンド": {
             "title": "Week 2: Dockerfile Creation and Basic Commands",
-            "description": "Create Dockerfile, build images, basic Docker commands"
+            "description": "Create Dockerfile, build images, basic Docker commands",
+            "subtasks": {
+                "Node.js Dockerfileを作成": "Create Node.js Dockerfile",
+                "イメージをビルド": "Build image",
+                "Non-rootユーザーで実行": "Run as non-root user",
+                "基本コマンドを練習": "Practice basic commands"
+            }
         },
         "第3週：Volumes & Networks": {
             "title": "Week 3: Volumes & Networks",
-            "description": "Data persistence with volumes, container networking"
+            "description": "Data persistence with volumes, container networking",
+            "subtasks": {
+                "Named Volumesを使う": "Use Named Volumes",
+                "Bind Mountsを使う": "Use Bind Mounts",
+                "Custom Networkを作成": "Create Custom Network"
+            }
         },
         "第4週：Docker Compose": {
             "title": "Week 4: Docker Compose",
-            "description": "Multi-container application management with Docker Compose"
+            "description": "Multi-container application management with Docker Compose",
+            "subtasks": {
+                "compose.ymlを作成": "Create compose.yml",
+                "2-tier構成を構築": "Build 2-tier architecture",
+                "Networksを分離": "Separate Networks"
+            }
         },
         "第5週：Multi-stage Build & Healthcheck": {
             "title": "Week 5: Multi-stage Build & Healthcheck",
-            "description": "Optimize images with multi-stage builds, implement healthchecks"
+            "description": "Optimize images with multi-stage builds, implement healthchecks",
+            "subtasks": {
+                "Multi-stage Buildを作成": "Create Multi-stage Build",
+                "Healthcheckを追加": "Add Healthcheck",
+                "イメージサイズを比較": "Compare image sizes"
+            }
         },
         "第6週：Private Registry & セキュリティ": {
             "title": "Week 6: Private Registry & Security",
-            "description": "Set up private registry, security scanning, best practices"
+            "description": "Set up private registry, security scanning, best practices",
+            "subtasks": {
+                "Private Registryを構築": "Build Private Registry",
+                "Trivyでスキャン": "Scan with Trivy",
+                "Non-rootユーザーで実行": "Run as non-root user"
+            }
         },
         "第7週：Orchestration & Monitoring": {
             "title": "Week 7: Orchestration & Monitoring",
-            "description": "Container orchestration, monitoring stack setup"
+            "description": "Container orchestration, monitoring stack setup",
+            "subtasks": {
+                "Docker Swarmを初期化": "Initialize Docker Swarm",
+                "Monitoring stackを構築": "Build Monitoring stack"
+            }
         },
         "第8週：Microservices構成": {
             "title": "Week 8: Microservices Architecture",
-            "description": "Build microservices architecture with Docker"
+            "description": "Build microservices architecture with Docker",
+            "subtasks": {
+                "API Gatewayを構築": "Build API Gateway",
+                "Microservicesを作成": "Create Microservices"
+            }
         },
         "第9-12週：E-commerce Capstone": {
             "title": "Week 9-12: E-commerce Capstone",
-            "description": "Full-stack architecture + CI/CD + Monitoring + Security"
+            "description": "Full-stack architecture + CI/CD + Monitoring + Security",
+            "subtasks": {
+                "Frontend（React + Nginx）": "Frontend (React + Nginx)",
+                "Backend（Node/Express）": "Backend (Node/Express)",
+                "DB/Cache（Postgres + Redis）": "DB/Cache (Postgres + Redis)",
+                "CI/CD構築": "Build CI/CD",
+                "Monitoring & Logging": "Monitoring & Logging",
+                "Security強化": "Security Hardening"
+            }
         }
     }
 }

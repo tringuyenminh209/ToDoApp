@@ -1,0 +1,105 @@
+{
+    "_comment": "English translations for Python Exercises (CheatCodePythonExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Hello World Output",
+            "description": "Python Basics",
+            "question": "Write a Python program that outputs the string \"Hello, World!\"."
+        },
+        "2つの数値の合計": {
+            "title": "Sum of Two Numbers",
+            "description": "Variables and Arithmetic Operations",
+            "question": "Assign two numbers (10 and 20) to variables and calculate and output their sum."
+        },
+        "名前を入力して挨拶": {
+            "title": "Input Name and Greet",
+            "description": "Receiving Input",
+            "question": "Use input() to receive a name as input and output \"Hello, [name]!\"."
+        },
+        "数値が正か負かゼロか判定": {
+            "title": "Determine if Number is Positive, Negative, or Zero",
+            "description": "Conditional Branching",
+            "question": "Receive an integer as input. If it's positive, output \"Positive\"; if negative, output \"Negative\"; if 0, output \"Zero\"."
+        },
+        "1から5までの数値を出力": {
+            "title": "Output Numbers from 1 to 5",
+            "description": "For Loop",
+            "question": "Use a for loop to output numbers from 1 to 5, one per line."
+        },
+        "Whileループで5回カウント": {
+            "title": "Count 5 Times with While Loop",
+            "description": "While Loop",
+            "question": "Use a while loop to count from 0 to 4 and output one per line."
+        },
+        "リストの最初と最後の要素": {
+            "title": "First and Last Elements of List",
+            "description": "List Operations",
+            "question": "Define list fruits = [\"Apple\", \"Banana\", \"Orange\"] and output the first and last elements, one per line."
+        },
+        "リストの全要素を出力": {
+            "title": "Output All List Elements",
+            "description": "List Iteration",
+            "question": "Output all elements of list colors = [\"Red\", \"Green\", \"Blue\"] one per line."
+        },
+        "挨拶関数を作成": {
+            "title": "Create Greeting Function",
+            "description": "Function Basics",
+            "question": "Define a greet function that takes a name as an argument and returns \"Hello, [name]!\". Call it with \"World\" as an argument and output the result."
+        },
+        "1から5の2乗をリストで生成": {
+            "title": "Generate Squares from 1 to 5 in List",
+            "description": "List Comprehension",
+            "question": "Use list comprehension to generate a list of squares of numbers from 1 to 5 and output it."
+        },
+        "辞書で値を取得": {
+            "title": "Get Value from Dictionary",
+            "description": "Using Dictionary",
+            "question": "Use a dictionary to manage animal sounds. Create sounds = {\"dog\": \"bark\", \"cat\": \"meow\"} and output the sound of the animal name passed as input."
+        },
+        "文字列を大文字に変換": {
+            "title": "Convert String to Uppercase",
+            "description": "String Methods",
+            "question": "Convert the string passed as input to all uppercase and output it."
+        },
+        "文字列の一部を抽出": {
+            "title": "Extract Part of String",
+            "description": "String Slicing",
+            "question": "Extract and output the first 4 characters from variable text = \"Programming\"."
+        },
+        "文字列の長さを取得": {
+            "title": "Get String Length",
+            "description": "len() Function",
+            "question": "Output the length of the string passed as input."
+        },
+        "リストの最大値と最小値": {
+            "title": "Maximum and Minimum Values of List",
+            "description": "max() and min() Functions",
+            "question": "Output the maximum and minimum values of list numbers = [3, 1, 4, 1, 5, 9, 2, 6], one per line."
+        },
+        "リストの要素の合計": {
+            "title": "Sum of List Elements",
+            "description": "sum() Function",
+            "question": "Output the sum of all elements in list numbers = [1, 2, 3, 4, 5]."
+        },
+        "偶数のみを抽出": {
+            "title": "Extract Only Even Numbers",
+            "description": "List Comprehension with if",
+            "question": "Extract only even numbers from list numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] to create a new list and output it."
+        },
+        "リストを文字列に結合": {
+            "title": "Join List into String",
+            "description": "join() Method",
+            "question": "Join list words = [\"Hello\", \"World\", \"Python\"] with spaces and output as a single string."
+        },
+        "文字列をリストに分割": {
+            "title": "Split String into List",
+            "description": "split() Method",
+            "question": "Split string \"apple,banana,orange\" by comma into a list and output it."
+        },
+        "整数変換のエラー処理": {
+            "title": "Error Handling for Integer Conversion",
+            "description": "try-except",
+            "question": "Receive input, convert it to an integer, and output it. If conversion fails, output \"Invalid input\"."
+        }
+    }
+}

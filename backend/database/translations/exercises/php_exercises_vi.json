@@ -1,0 +1,200 @@
+{
+    "_comment": "Vietnamese translations for PHP Exercises (CheatCodePhpExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Xuất Hello World",
+            "description": "Cơ bản PHP",
+            "question": "Viết chương trình PHP xuất chuỗi \"Hello, World!\"."
+        },
+        "2つの数値の合計": {
+            "title": "Tổng Hai Số",
+            "description": "Biến và Phép toán Số học",
+            "question": "Gán hai số (10 và 20) vào biến và tính toán, xuất tổng của chúng."
+        },
+        "文字列を連結して挨拶": {
+            "title": "Nối Chuỗi để Chào hỏi",
+            "description": "Nối Chuỗi",
+            "question": "Định nghĩa biến $name = \"Alice\" và xuất \"Hello, Alice!\". Sử dụng toán tử nối chuỗi (.)."
+        },
+        "数値が正か負かゼロか判定": {
+            "title": "Xác định Số là Dương, Âm hay Không",
+            "description": "Rẽ nhánh Điều kiện",
+            "question": "Có biến $num = -5. Nếu số này dương, xuất \"Positive\"; nếu âm, xuất \"Negative\"; nếu 0, xuất \"Zero\"."
+        },
+        "1から5までの数値を出力": {
+            "title": "Xuất Số từ 1 đến 5",
+            "description": "Vòng lặp For",
+            "question": "Sử dụng vòng lặp for để xuất số từ 1 đến 5, mỗi số một dòng."
+        },
+        "Whileループで5回カウント": {
+            "title": "Đếm 5 Lần với Vòng lặp While",
+            "description": "Vòng lặp While",
+            "question": "Sử dụng vòng lặp while để đếm từ 0 đến 4 và xuất mỗi số một dòng."
+        },
+        "配列の最初と最後の要素": {
+            "title": "Phần tử Đầu và Cuối của Mảng",
+            "description": "Thao tác Mảng",
+            "question": "Định nghĩa mảng $fruits = [\"Apple\", \"Banana\", \"Orange\"] và xuất phần tử đầu và cuối, mỗi phần tử một dòng."
+        },
+        "配列の全要素を出力": {
+            "title": "Xuất Tất cả Phần tử Mảng",
+            "description": "Câu lệnh Foreach",
+            "question": "Xuất tất cả phần tử của mảng $colors = [\"Red\", \"Green\", \"Blue\"] mỗi phần tử một dòng."
+        },
+        "挨拶関数を作成": {
+            "title": "Tạo Hàm Chào hỏi",
+            "description": "Cơ bản về Hàm",
+            "question": "Định nghĩa hàm greet nhận tên làm đối số và trả về \"Hello, [tên]!\". Gọi hàm với \"World\" làm đối số và xuất kết quả."
+        },
+        "連想配列で値を取得": {
+            "title": "Lấy Giá trị từ Mảng Liên kết",
+            "description": "Sử dụng Mảng Liên kết",
+            "question": "Sử dụng mảng liên kết để quản lý tiếng kêu động vật. Tạo $sounds = [\"dog\" => \"bark\", \"cat\" => \"meow\"] và xuất tiếng kêu của \"dog\"."
+        },
+        "文字列を大文字に変換": {
+            "title": "Chuyển Chuỗi sang Chữ hoa",
+            "description": "Hàm Chuỗi",
+            "question": "Chuyển biến $text = \"hello\" sang chữ hoa và xuất."
+        },
+        "文字列の長さを取得": {
+            "title": "Lấy Độ dài Chuỗi",
+            "description": "Hàm strlen()",
+            "question": "Xuất độ dài của chuỗi trong biến $text = \"Programming\"."
+        },
+        "配列の要素数を取得": {
+            "title": "Lấy Số lượng Phần tử Mảng",
+            "description": "Hàm count()",
+            "question": "Xuất số lượng phần tử trong mảng $numbers = [1, 2, 3, 4, 5]."
+        },
+        "配列の要素の合計": {
+            "title": "Tổng Phần tử Mảng",
+            "description": "Hàm array_sum()",
+            "question": "Xuất tổng tất cả phần tử trong mảng $numbers = [1, 2, 3, 4, 5]."
+        },
+        "配列の最大値と最小値": {
+            "title": "Giá trị Lớn nhất và Nhỏ nhất của Mảng",
+            "description": "Hàm max() và min()",
+            "question": "Xuất giá trị lớn nhất và nhỏ nhất của mảng $numbers = [3, 1, 4, 1, 5, 9, 2, 6], mỗi giá trị một dòng."
+        },
+        "偶数のみを抽出": {
+            "title": "Trích xuất Chỉ Số Chẵn",
+            "description": "Hàm array_filter()",
+            "question": "Trích xuất chỉ số chẵn từ mảng $numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], tái chỉ mục với array_values(), và xuất."
+        },
+        "配列を文字列に結合": {
+            "title": "Nối Mảng thành Chuỗi",
+            "description": "Hàm implode()",
+            "question": "Nối mảng $words = [\"Hello\", \"World\", \"PHP\"] bằng khoảng trắng và xuất dưới dạng một chuỗi."
+        },
+        "文字列を配列に分割": {
+            "title": "Chia Chuỗi thành Mảng",
+            "description": "Hàm explode()",
+            "question": "Chia chuỗi \"apple,banana,orange\" bằng dấu phẩy thành mảng và xuất bằng print_r()."
+        },
+        "文字列の一部を置換": {
+            "title": "Thay thế Một phần Chuỗi",
+            "description": "Hàm str_replace()",
+            "question": "Thay thế \"World\" bằng \"PHP\" trong biến $text = \"Hello World\" và xuất."
+        },
+        "曜日の判定": {
+            "title": "Xác định Thứ trong Tuần",
+            "description": "Câu lệnh Switch",
+            "question": "Có biến $day = 1. Sử dụng câu lệnh switch để xuất tên thứ tương ứng. 1=Monday, 2=Tuesday, ..., 7=Sunday. Nếu không khớp, xuất \"Invalid day\"."
+        },
+        "配列の各要素を2倍にする": {
+            "title": "Nhân đôi Mỗi Phần tử Mảng",
+            "description": "Hàm Mảng - array_map",
+            "question": "Nhân đôi mỗi phần tử của mảng [1, 2, 3, 4, 5] và xuất. Sử dụng hàm array_map. Định dạng xuất: \"2,4,6,8,10\""
+        },
+        "配列内の要素を検索": {
+            "title": "Tìm Phần tử trong Mảng",
+            "description": "Hàm Mảng - in_array",
+            "question": "Kiểm tra xem \"banana\" có trong mảng [\"apple\", \"banana\", \"orange\"] không. Nếu tìm thấy, xuất \"Found\"; nếu không, xuất \"Not found\"."
+        },
+        "配列の合計を計算": {
+            "title": "Tính Tổng Mảng",
+            "description": "Hàm Mảng - array_reduce",
+            "question": "Tính và xuất tổng của mảng [1, 2, 3, 4, 5] bằng hàm array_reduce."
+        },
+        "現在の日付をフォーマット": {
+            "title": "Định dạng Ngày hiện tại",
+            "description": "Ngày và Giờ",
+            "question": "Xuất ngày hiện tại theo định dạng \"2025-01-15\" (Y-m-d). Sử dụng hàm date."
+        },
+        "配列をJSONに変換": {
+            "title": "Chuyển Mảng sang JSON",
+            "description": "Xử lý JSON",
+            "question": "Chuyển mảng liên kết [\"name\" => \"John\", \"age\" => 30] sang chuỗi JSON và xuất."
+        },
+        "JSONから値を取得": {
+            "title": "Lấy Giá trị từ JSON",
+            "description": "Xử lý JSON",
+            "question": "Giải mã chuỗi JSON \"{\\\"name\\\":\\\"Alice\\\",\\\"age\\\":25}\" và xuất giá trị của name."
+        },
+        "シンプルなクラスを作成": {
+            "title": "Tạo Class Đơn giản",
+            "description": "Hướng đối tượng - Class",
+            "question": "Tạo class Person với thuộc tính name và phương thức getName(). Tạo instance với tên \"John\" và xuất tên."
+        },
+        "クラスの継承": {
+            "title": "Kế thừa Class",
+            "description": "Hướng đối tượng - Kế thừa",
+            "question": "Tạo class Animal với phương thức speak. Tạo class Dog kế thừa Animal và ghi đè phương thức speak để xuất \"Woof!\"."
+        },
+        "静的メソッドの使用": {
+            "title": "Sử dụng Phương thức Tĩnh",
+            "description": "Hướng đối tượng - Static",
+            "question": "Tạo phương thức tĩnh add($a, $b) trong class MathUtils và xuất kết quả cộng 5 và 10."
+        },
+        "定数の定義と使用": {
+            "title": "Định nghĩa và Sử dụng Hằng số",
+            "description": "Hằng số",
+            "question": "Định nghĩa hằng số tên PI với giá trị 3.14159 và xuất giá trị của nó."
+        },
+        "型キャスト": {
+            "title": "Ép kiểu",
+            "description": "Chuyển đổi Kiểu Dữ liệu",
+            "question": "Chuyển chuỗi \"123\" sang số nguyên, cộng 10 vào nó, và xuất kết quả."
+        },
+        "三項演算子": {
+            "title": "Toán tử Ba ngôi",
+            "description": "Toán tử Ba ngôi",
+            "question": "Có biến $age = 18. Sử dụng toán tử ba ngôi để xuất \"Adult\" nếu 18 tuổi trở lên, hoặc \"Minor\" nếu nhỏ hơn."
+        },
+        "Null合体演算子": {
+            "title": "Toán tử Hợp nhất Null",
+            "description": "Toán tử Hợp nhất Null",
+            "question": "Có biến $name = null. Sử dụng toán tử hợp nhất null (??) để xuất \"Guest\" nếu $name là null, nếu không thì xuất giá trị của $name."
+        },
+        "スプレッド演算子": {
+            "title": "Toán tử Trải rộng",
+            "description": "Toán tử Trải rộng",
+            "question": "Có mảng $arr1 = [1, 2] và $arr2 = [3, 4]. Sử dụng toán tử trải rộng (...) để kết hợp chúng và xuất với dấu phẩy phân cách."
+        },
+        "無名関数（クロージャ）": {
+            "title": "Hàm Vô danh (Closure)",
+            "description": "Hàm Vô danh",
+            "question": "Tạo hàm nhân hai số bằng hàm vô danh, và xuất kết quả nhân 5 và 6."
+        },
+        "アロー関数": {
+            "title": "Hàm Mũi tên",
+            "description": "Hàm Mũi tên",
+            "question": "Tạo hàm bình phương một số bằng hàm mũi tên (fn), và xuất kết quả bình phương 7."
+        },
+        "配列の要素数を数える": {
+            "title": "Đếm Số lượng Phần tử Mảng",
+            "description": "Hàm Mảng - count",
+            "question": "Đếm và xuất số lượng phần tử trong mảng [\"red\", \"green\", \"blue\", \"yellow\"]."
+        },
+        "複数の文字列を置換": {
+            "title": "Thay thế Nhiều Chuỗi",
+            "description": "Hàm Chuỗi - str_replace",
+            "question": "Thay thế \"apples\" bằng \"oranges\" trong chuỗi \"I like apples and apples are good\" và xuất."
+        },
+        "変数が定義されているか確認": {
+            "title": "Kiểm tra Biến có được Định nghĩa",
+            "description": "Kiểm tra Biến - isset",
+            "question": "Kiểm tra xem biến $value = \"Hello\" có được định nghĩa không. Nếu được định nghĩa, xuất \"Defined\"; nếu chưa định nghĩa, xuất \"Undefined\"."
+        }
+    }
+}

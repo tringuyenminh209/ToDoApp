@@ -1,0 +1,205 @@
+{
+    "_comment": "English translations for MySQL Exercises (CheatCodeMysqlExerciseSeeder)",
+    "exercises": {
+        "全てのカラムを選択": {
+            "title": "Select All Columns",
+            "description": "SELECT - Basic",
+            "question": "Write a query to retrieve all columns from the users table."
+        },
+        "特定のカラムを選択": {
+            "title": "Select Specific Columns",
+            "description": "SELECT - Column Specification",
+            "question": "Write a query to retrieve only the name and email columns from the users table."
+        },
+        "WHERE句で条件指定": {
+            "title": "Specify Conditions with WHERE Clause",
+            "description": "WHERE - Condition",
+            "question": "Write a query to retrieve users from the users table where age is greater than 20."
+        },
+        "複数条件（AND）": {
+            "title": "Multiple Conditions (AND)",
+            "description": "WHERE - AND",
+            "question": "Write a query to retrieve users from the users table where age is 20 or more AND city is 'Tokyo'."
+        },
+        "複数条件（OR）": {
+            "title": "Multiple Conditions (OR)",
+            "description": "WHERE - OR",
+            "question": "Write a query to retrieve users from the users table where city is 'Tokyo' OR 'Osaka'."
+        },
+        "昇順で並べ替え": {
+            "title": "Sort in Ascending Order",
+            "description": "ORDER BY - ASC",
+            "question": "Write a query to sort data from the users table in ascending order by the age column."
+        },
+        "降順で並べ替え": {
+            "title": "Sort in Descending Order",
+            "description": "ORDER BY - DESC",
+            "question": "Write a query to sort data from the users table in descending order by the created_at column."
+        },
+        "取得件数を制限": {
+            "title": "Limit Number of Results",
+            "description": "LIMIT",
+            "question": "Write a query to retrieve only the first 10 records from the users table."
+        },
+        "レコード数をカウント": {
+            "title": "Count Number of Records",
+            "description": "Aggregate Function - COUNT",
+            "question": "Write a query to count the number of records in the users table."
+        },
+        "合計を計算": {
+            "title": "Calculate Sum",
+            "description": "Aggregate Function - SUM",
+            "question": "Write a query to calculate the sum of the amount column in the orders table."
+        },
+        "平均を計算": {
+            "title": "Calculate Average",
+            "description": "Aggregate Function - AVG",
+            "question": "Write a query to calculate the average of the age column in the users table."
+        },
+        "最大値を取得": {
+            "title": "Get Maximum Value",
+            "description": "Aggregate Function - MAX",
+            "question": "Write a query to get the maximum value of the price column in the products table."
+        },
+        "最小値を取得": {
+            "title": "Get Minimum Value",
+            "description": "Aggregate Function - MIN",
+            "question": "Write a query to get the minimum value of the price column in the products table."
+        },
+        "グループ化": {
+            "title": "Grouping",
+            "description": "GROUP BY",
+            "question": "Write a query to group the orders table by user_id and count the number of orders for each user."
+        },
+        "グループ化後の条件": {
+            "title": "Condition After Grouping",
+            "description": "HAVING",
+            "question": "Write a query to group the orders table by user_id and retrieve only users with 5 or more orders."
+        },
+        "重複を除外": {
+            "title": "Exclude Duplicates",
+            "description": "DISTINCT",
+            "question": "Write a query to retrieve user_id from the orders table excluding duplicates."
+        },
+        "パターンマッチング": {
+            "title": "Pattern Matching",
+            "description": "LIKE",
+            "question": "Write a query to retrieve users from the users table where name starts with '田中'."
+        },
+        "IN演算子": {
+            "title": "IN Operator",
+            "description": "IN",
+            "question": "Write a query to retrieve users from the users table where city is any of 'Tokyo', 'Osaka', or 'Kyoto'."
+        },
+        "範囲指定": {
+            "title": "Specify Range",
+            "description": "BETWEEN",
+            "question": "Write a query to retrieve users from the users table where age is between 20 and 30."
+        },
+        "NULL判定": {
+            "title": "NULL Check",
+            "description": "IS NULL",
+            "question": "Write a query to retrieve users from the users table where email is NULL."
+        },
+        "NOT NULL判定": {
+            "title": "NOT NULL Check",
+            "description": "IS NOT NULL",
+            "question": "Write a query to retrieve users from the users table where email is NOT NULL."
+        },
+        "内部結合": {
+            "title": "Inner Join",
+            "description": "JOIN - INNER",
+            "question": "Write a query to perform an inner join between the users and orders tables on user_id."
+        },
+        "左外部結合": {
+            "title": "Left Outer Join",
+            "description": "JOIN - LEFT",
+            "question": "Write a query to perform a left outer join between the users and orders tables on user_id."
+        },
+        "右外部結合": {
+            "title": "Right Outer Join",
+            "description": "JOIN - RIGHT",
+            "question": "Write a query to perform a right outer join between the users and orders tables on user_id."
+        },
+        "データの挿入": {
+            "title": "Insert Data",
+            "description": "INSERT",
+            "question": "Write a query to insert data with name='Taro' and age=25 into the users table."
+        },
+        "複数行の挿入": {
+            "title": "Insert Multiple Rows",
+            "description": "INSERT - Multiple Rows",
+            "question": "Write a query to insert two users (name='Hanako', age=30 and name='Jiro', age=22) into the users table at once."
+        },
+        "データの更新": {
+            "title": "Update Data",
+            "description": "UPDATE",
+            "question": "Write a query to update the age of the user with id=1 to 30 in the users table."
+        },
+        "複数カラムの更新": {
+            "title": "Update Multiple Columns",
+            "description": "UPDATE - Multiple Columns",
+            "question": "Write a query to update the name to 'Yuki' and age to 28 for the user with id=2 in the users table."
+        },
+        "データの削除": {
+            "title": "Delete Data",
+            "description": "DELETE",
+            "question": "Write a query to delete the user with id=5 from the users table."
+        },
+        "テーブルの作成": {
+            "title": "Create Table",
+            "description": "CREATE TABLE",
+            "question": "Write a query to create a users table with columns: id (INT, primary key, auto increment), name (VARCHAR(100)), and age (INT)."
+        },
+        "カラムの追加": {
+            "title": "Add Column",
+            "description": "ALTER TABLE - ADD",
+            "question": "Write a query to add an email (VARCHAR(255)) column to the users table."
+        },
+        "カラムの削除": {
+            "title": "Drop Column",
+            "description": "ALTER TABLE - DROP",
+            "question": "Write a query to remove the age column from the users table."
+        },
+        "サブクエリ": {
+            "title": "Subquery",
+            "description": "Subquery",
+            "question": "Write a query using IN and a subquery to retrieve only users from the users table who have orders in the orders table."
+        },
+        "クエリの結合": {
+            "title": "Combine Queries",
+            "description": "UNION",
+            "question": "Write a query to combine two SELECT statements (SELECT name FROM users WHERE age > 30 and SELECT name FROM users WHERE city = 'Tokyo') using UNION."
+        },
+        "別名（エイリアス）": {
+            "title": "Alias",
+            "description": "AS",
+            "question": "Write a query to retrieve the name column from the users table with the alias 'user_name'."
+        },
+        "文字列の結合": {
+            "title": "Concatenate Strings",
+            "description": "String Function - CONCAT",
+            "question": "Write a query to concatenate first_name and last_name from the users table with a space and retrieve it as full_name."
+        },
+        "大文字小文字変換": {
+            "title": "Case Conversion",
+            "description": "String Function - UPPER",
+            "question": "Write a query to retrieve the email column from the users table converted to uppercase."
+        },
+        "現在日時の取得": {
+            "title": "Get Current Date and Time",
+            "description": "Date Function - NOW",
+            "question": "Write a query to get the current date and time."
+        },
+        "条件分岐": {
+            "title": "Conditional Branching",
+            "description": "CASE",
+            "question": "Write a query to display '未成年' (minor) if age is less than 20, or '成人' (adult) if 20 or more, from the users table."
+        },
+        "インデックスの作成": {
+            "title": "Create Index",
+            "description": "INDEX",
+            "question": "Write a query to create an index named idx_email on the email column of the users table."
+        }
+    }
+}

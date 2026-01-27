@@ -77,6 +77,9 @@ class DatabaseSeeder extends Seeder
 
             // Course Translations (chạy sau khi đã có dữ liệu courses)
             CourseTranslationSeeder::class,
+
+            // Exercise Translations (chạy sau khi đã có dữ liệu exercises)
+            ExerciseTranslationSeeder::class,
         ]);
     }
 }

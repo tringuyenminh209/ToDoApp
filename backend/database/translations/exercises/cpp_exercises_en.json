@@ -1,0 +1,205 @@
+{
+    "_comment": "English translations for C++ Exercises (CheatCodeCppExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Hello World Output",
+            "description": "C++ Basics",
+            "question": "Write a C++ program that outputs the string \"Hello, World!\"."
+        },
+        "2つの数値の合計": {
+            "title": "Sum of Two Numbers",
+            "description": "Variables and Arithmetic Operations",
+            "question": "Assign two integers (10 and 20) to variables and calculate and output their sum."
+        },
+        "文字列を連結して挨拶": {
+            "title": "Concatenate Strings for Greeting",
+            "description": "String Concatenation",
+            "question": "Define a string variable name = \"Alice\" and output \"Hello, Alice!\"."
+        },
+        "数値が正か負かゼロか判定": {
+            "title": "Determine if Number is Positive, Negative, or Zero",
+            "description": "Conditional Branching",
+            "question": "There is a variable num = -5. If this number is positive, output \"Positive\"; if negative, output \"Negative\"; if 0, output \"Zero\"."
+        },
+        "1から5まで出力": {
+            "title": "Output Numbers from 1 to 5",
+            "description": "Loop - for",
+            "question": "Use a for loop to output numbers from 1 to 5, each on a new line."
+        },
+        "whileループで合計計算": {
+            "title": "Calculate Sum with While Loop",
+            "description": "Loop - while",
+            "question": "Define variables sum = 0 and i = 1, and use a while loop to add i to sum while i is 5 or less, then output the final sum value."
+        },
+        "配列の要素を出力": {
+            "title": "Output Array Elements",
+            "description": "Array",
+            "question": "Declare an integer array {10, 20, 30, 40, 50} and output each element separated by commas on one line."
+        },
+        "関数で2つの数を足す": {
+            "title": "Add Two Numbers with Function",
+            "description": "Function",
+            "question": "Create a function add(int a, int b) that returns the sum of two integers. Call it from main with 5 and 10 and output the result."
+        },
+        "配列の最大値を求める": {
+            "title": "Find Maximum Value in Array",
+            "description": "Array and Loop",
+            "question": "Find and output the maximum value from integer array {15, 42, 8, 27, 33}."
+        },
+        "曜日の判定": {
+            "title": "Determine Day of Week",
+            "description": "Switch Statement",
+            "question": "There is a variable day = 1. Use a switch statement to output the corresponding day name. 1=Monday, 2=Tuesday, ..., 7=Sunday. If it doesn't match, output \"Invalid day\"."
+        },
+        "ポインタで値を出力": {
+            "title": "Output Value with Pointer",
+            "description": "Pointer",
+            "question": "Store the address of integer variable num = 42 in pointer ptr, and output the value using the pointer."
+        },
+        "参照渡しで値を変更": {
+            "title": "Change Value with Reference",
+            "description": "Reference",
+            "question": "Create a function double_value(int &n) that doubles the passed value. Pass 5 from main and output the changed value."
+        },
+        "vectorに要素を追加": {
+            "title": "Add Elements to vector",
+            "description": "STL - vector",
+            "question": "Create a vector<int>, add 1, 2, 3, and output them separated by commas."
+        },
+        "シンプルなクラスを作成": {
+            "title": "Create Simple Class",
+            "description": "Object-Oriented - Class",
+            "question": "Create a Person class with a name member variable and getName() method, create an instance with name \"John\", and output the name."
+        },
+        "クラスの継承": {
+            "title": "Class Inheritance",
+            "description": "Object-Oriented - Inheritance",
+            "question": "Create an Animal class with a speak method, and a Dog class that inherits from Animal and overrides the speak method to return \"Woof!\"."
+        },
+        "文字列の長さを取得": {
+            "title": "Get String Length",
+            "description": "String Methods",
+            "question": "Get and output the length of string type \"Hello C++\"."
+        },
+        "文字列の一部を抽出": {
+            "title": "Extract Part of String",
+            "description": "String Methods",
+            "question": "Extract and output 5 characters from index 0 of string \"Hello World\"."
+        },
+        "範囲ベースforループ": {
+            "title": "Range-based For Loop",
+            "description": "Loop - Range-based for",
+            "question": "Output each element of array {1, 2, 3, 4, 5} separated by commas. Use a range-based for loop."
+        },
+        "mapに追加と取得": {
+            "title": "Add and Get from map",
+            "description": "STL - map",
+            "question": "Create a map<string, int>, add \"age\" -> 25, and output the value of \"age\"."
+        },
+        "三項演算子": {
+            "title": "Ternary Operator",
+            "description": "Ternary Operator",
+            "question": "There is a variable age = 18. Use the ternary operator to output \"Adult\" if 18 or older, or \"Minor\" if younger."
+        },
+        "定数の定義と使用": {
+            "title": "Define and Use Constants",
+            "description": "Constants",
+            "question": "Define a const variable named PI with value 3.14159 and output its value."
+        },
+        "構造体の定義と使用": {
+            "title": "Define and Use Struct",
+            "description": "Struct",
+            "question": "Define a Person struct with name(string) and age(int), create an instance with \"John\", 25, and output the name."
+        },
+        "除算の結果を小数で出力": {
+            "title": "Output Division Result as Decimal",
+            "description": "Arithmetic Operations",
+            "question": "Output the result of dividing 10 by 3 with decimal points."
+        },
+        "1から10の偶数を出力": {
+            "title": "Output Even Numbers from 1 to 10",
+            "description": "Loop and Conditional Branching",
+            "question": "Output only even numbers from 1 to 10, separated by commas."
+        },
+        "stringstreamで文字列を分割": {
+            "title": "Split String with stringstream",
+            "description": "stringstream",
+            "question": "Use stringstream to convert string \"1 2 3 4 5\" to numbers and output the sum."
+        },
+        "配列を昇順にソート": {
+            "title": "Sort Array in Ascending Order",
+            "description": "STL - sort",
+            "question": "Sort vector<int> {5, 2, 8, 1, 9} in ascending order using the sort function and output them separated by commas."
+        },
+        "ラムダ式で関数を定義": {
+            "title": "Define Function with Lambda Expression",
+            "description": "Lambda Expression",
+            "question": "Create a function that multiplies two numbers using a lambda expression, and output the result of multiplying 5 and 6."
+        },
+        "setで重複を除去": {
+            "title": "Remove Duplicates with set",
+            "description": "STL - set",
+            "question": "Use set<int> to remove duplicates from array {1, 2, 2, 3, 3, 3, 4} and output them separated by commas."
+        },
+        "テンプレート関数": {
+            "title": "Template Function",
+            "description": "Template",
+            "question": "Create a template function max_value<T> that returns the larger of two values. Call it with int values 5 and 10 and output the result."
+        },
+        "2次元配列の合計": {
+            "title": "Sum of 2D Array",
+            "description": "Multidimensional Array",
+            "question": "Calculate and output the sum of all elements in 2D array {{1, 2}, {3, 4}, {5, 6}}."
+        },
+        "Continue文で3の倍数をスキップ": {
+            "title": "Skip Multiples of 3 with Continue Statement",
+            "description": "Loop Control - Continue",
+            "question": "Output numbers from 1 to 10 except multiples of 3, separated by commas. Use the continue statement."
+        },
+        "Break文で5以上でループを終了": {
+            "title": "Exit Loop at 5 or Above with Break Statement",
+            "description": "Loop Control - Break",
+            "question": "Loop from 1 to 10, and exit the loop when reaching 5. Output numbers 1 to 4 separated by commas."
+        },
+        "型キャスト": {
+            "title": "Type Casting",
+            "description": "Type Conversion",
+            "question": "Cast a double variable num = 3.14 to int type and output it."
+        },
+        "インクリメントとデクリメント": {
+            "title": "Increment and Decrement",
+            "description": "Operators",
+            "question": "There is a variable num = 5. Increment it by 1 with ++num, then decrement it by 1 with --num, and output the final value."
+        },
+        "論理演算子": {
+            "title": "Logical Operators",
+            "description": "Logical Operations",
+            "question": "There are variables a = 5, b = 10. If a > 3 && b < 15 is true, output \"True\"; if false, output \"False\"."
+        },
+        "文字列に部分文字列が含まれるか確認": {
+            "title": "Check if String Contains Substring",
+            "description": "String Methods",
+            "question": "Check if string \"Hello C++\" contains \"C++\". If found, output \"Found\"; if not, output \"Not found\"."
+        },
+        "再帰で階乗を計算": {
+            "title": "Calculate Factorial with Recursion",
+            "description": "Recursion",
+            "question": "Create a recursive function factorial(int n) and calculate and output the factorial of 5 (120)."
+        },
+        "名前空間の定義と使用": {
+            "title": "Define and Use Namespace",
+            "description": "namespace",
+            "question": "Define an int add(int a, int b) function in MyNamespace namespace and output the result of adding 5 and 10."
+        },
+        "デフォルト引数": {
+            "title": "Default Argument",
+            "description": "Function",
+            "question": "Create a greet(string name, string greeting = \"Hello\") function so that calling it with one argument uses the default value. Call it with \"John\" and output the result."
+        },
+        "列挙型の使用": {
+            "title": "Using Enum",
+            "description": "Enumeration Type - enum",
+            "question": "Define a Day enum (MONDAY, TUESDAY, WEDNESDAY) and output the value of MONDAY (0)."
+        }
+    }
+}

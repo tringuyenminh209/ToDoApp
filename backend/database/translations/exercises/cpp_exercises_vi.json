@@ -1,0 +1,205 @@
+{
+    "_comment": "Vietnamese translations for C++ Exercises (CheatCodeCppExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Xuất Hello World",
+            "description": "Cơ bản C++",
+            "question": "Viết chương trình C++ xuất chuỗi \"Hello, World!\"."
+        },
+        "2つの数値の合計": {
+            "title": "Tổng Hai Số",
+            "description": "Biến và Phép toán Số học",
+            "question": "Gán hai số nguyên (10 và 20) vào biến và tính toán, xuất tổng của chúng."
+        },
+        "文字列を連結して挨拶": {
+            "title": "Nối Chuỗi để Chào hỏi",
+            "description": "Nối Chuỗi",
+            "question": "Định nghĩa biến chuỗi name = \"Alice\" và xuất \"Hello, Alice!\"."
+        },
+        "数値が正か負かゼロか判定": {
+            "title": "Xác định Số là Dương, Âm hay Không",
+            "description": "Rẽ nhánh Điều kiện",
+            "question": "Có biến num = -5. Nếu số này dương, xuất \"Positive\"; nếu âm, xuất \"Negative\"; nếu 0, xuất \"Zero\"."
+        },
+        "1から5まで出力": {
+            "title": "Xuất Số từ 1 đến 5",
+            "description": "Vòng lặp - for",
+            "question": "Sử dụng vòng lặp for để xuất số từ 1 đến 5, mỗi số một dòng."
+        },
+        "whileループで合計計算": {
+            "title": "Tính Tổng với Vòng lặp While",
+            "description": "Vòng lặp - while",
+            "question": "Định nghĩa biến sum = 0 và i = 1, và sử dụng vòng lặp while để cộng i vào sum khi i nhỏ hơn hoặc bằng 5, sau đó xuất giá trị tổng cuối cùng."
+        },
+        "配列の要素を出力": {
+            "title": "Xuất Phần tử Mảng",
+            "description": "Mảng",
+            "question": "Khai báo mảng số nguyên {10, 20, 30, 40, 50} và xuất mỗi phần tử cách nhau bởi dấu phẩy trên một dòng."
+        },
+        "関数で2つの数を足す": {
+            "title": "Cộng Hai Số bằng Hàm",
+            "description": "Hàm",
+            "question": "Tạo hàm add(int a, int b) trả về tổng hai số nguyên. Gọi từ main với 5 và 10 và xuất kết quả."
+        },
+        "配列の最大値を求める": {
+            "title": "Tìm Giá trị Lớn nhất trong Mảng",
+            "description": "Mảng và Vòng lặp",
+            "question": "Tìm và xuất giá trị lớn nhất từ mảng số nguyên {15, 42, 8, 27, 33}."
+        },
+        "曜日の判定": {
+            "title": "Xác định Thứ trong Tuần",
+            "description": "Câu lệnh Switch",
+            "question": "Có biến day = 1. Sử dụng câu lệnh switch để xuất tên thứ tương ứng. 1=Monday, 2=Tuesday, ..., 7=Sunday. Nếu không khớp, xuất \"Invalid day\"."
+        },
+        "ポインタで値を出力": {
+            "title": "Xuất Giá trị bằng Con trỏ",
+            "description": "Con trỏ",
+            "question": "Lưu địa chỉ của biến số nguyên num = 42 vào con trỏ ptr, và xuất giá trị bằng con trỏ."
+        },
+        "参照渡しで値を変更": {
+            "title": "Thay đổi Giá trị bằng Truyền Tham chiếu",
+            "description": "Tham chiếu",
+            "question": "Tạo hàm double_value(int &n) nhân đôi giá trị được truyền. Truyền 5 từ main và xuất giá trị đã thay đổi."
+        },
+        "vectorに要素を追加": {
+            "title": "Thêm Phần tử vào vector",
+            "description": "STL - vector",
+            "question": "Tạo vector<int>, thêm 1, 2, 3, và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "シンプルなクラスを作成": {
+            "title": "Tạo Class Đơn giản",
+            "description": "Hướng đối tượng - Class",
+            "question": "Tạo class Person với biến thành viên name và phương thức getName(), tạo instance với tên \"John\", và xuất tên."
+        },
+        "クラスの継承": {
+            "title": "Kế thừa Class",
+            "description": "Hướng đối tượng - Kế thừa",
+            "question": "Tạo class Animal với phương thức speak, và class Dog kế thừa từ Animal và ghi đè phương thức speak để trả về \"Woof!\"."
+        },
+        "文字列の長さを取得": {
+            "title": "Lấy Độ dài Chuỗi",
+            "description": "Phương thức Chuỗi",
+            "question": "Lấy và xuất độ dài của kiểu chuỗi \"Hello C++\"."
+        },
+        "文字列の一部を抽出": {
+            "title": "Trích xuất Một phần Chuỗi",
+            "description": "Phương thức Chuỗi",
+            "question": "Trích xuất và xuất 5 ký tự từ chỉ mục 0 của chuỗi \"Hello World\"."
+        },
+        "範囲ベースforループ": {
+            "title": "Vòng lặp For Dựa trên Phạm vi",
+            "description": "Vòng lặp - Range-based for",
+            "question": "Xuất mỗi phần tử của mảng {1, 2, 3, 4, 5} cách nhau bởi dấu phẩy. Sử dụng vòng lặp for dựa trên phạm vi."
+        },
+        "mapに追加と取得": {
+            "title": "Thêm và Lấy từ map",
+            "description": "STL - map",
+            "question": "Tạo map<string, int>, thêm \"age\" -> 25, và xuất giá trị của \"age\"."
+        },
+        "三項演算子": {
+            "title": "Toán tử Ba ngôi",
+            "description": "Toán tử Ba ngôi",
+            "question": "Có biến age = 18. Sử dụng toán tử ba ngôi để xuất \"Adult\" nếu 18 tuổi trở lên, hoặc \"Minor\" nếu nhỏ hơn."
+        },
+        "定数の定義と使用": {
+            "title": "Định nghĩa và Sử dụng Hằng số",
+            "description": "Hằng số",
+            "question": "Định nghĩa biến const tên PI với giá trị 3.14159 và xuất giá trị của nó."
+        },
+        "構造体の定義と使用": {
+            "title": "Định nghĩa và Sử dụng Struct",
+            "description": "Struct",
+            "question": "Định nghĩa struct Person với name(string) và age(int), tạo instance với \"John\", 25, và xuất tên."
+        },
+        "除算の結果を小数で出力": {
+            "title": "Xuất Kết quả Chia dưới dạng Số thập phân",
+            "description": "Phép toán Số học",
+            "question": "Xuất kết quả chia 10 cho 3 với dấu thập phân."
+        },
+        "1から10の偶数を出力": {
+            "title": "Xuất Số Chẵn từ 1 đến 10",
+            "description": "Vòng lặp và Rẽ nhánh Điều kiện",
+            "question": "Xuất chỉ số chẵn từ 1 đến 10, cách nhau bởi dấu phẩy."
+        },
+        "stringstreamで文字列を分割": {
+            "title": "Chia Chuỗi bằng stringstream",
+            "description": "stringstream",
+            "question": "Sử dụng stringstream để chuyển chuỗi \"1 2 3 4 5\" sang số và xuất tổng."
+        },
+        "配列を昇順にソート": {
+            "title": "Sắp xếp Mảng theo Thứ tự Tăng dần",
+            "description": "STL - sort",
+            "question": "Sắp xếp vector<int> {5, 2, 8, 1, 9} theo thứ tự tăng dần bằng hàm sort và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "ラムダ式で関数を定義": {
+            "title": "Định nghĩa Hàm bằng Biểu thức Lambda",
+            "description": "Biểu thức Lambda",
+            "question": "Tạo hàm nhân hai số bằng biểu thức lambda, và xuất kết quả nhân 5 và 6."
+        },
+        "setで重複を除去": {
+            "title": "Xóa Trùng lặp bằng set",
+            "description": "STL - set",
+            "question": "Sử dụng set<int> để xóa trùng lặp từ mảng {1, 2, 2, 3, 3, 3, 4} và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "テンプレート関数": {
+            "title": "Hàm Template",
+            "description": "Template",
+            "question": "Tạo hàm template max_value<T> trả về giá trị lớn hơn của hai giá trị. Gọi với giá trị int 5 và 10 và xuất kết quả."
+        },
+        "2次元配列の合計": {
+            "title": "Tổng Mảng 2 Chiều",
+            "description": "Mảng Đa chiều",
+            "question": "Tính và xuất tổng tất cả phần tử trong mảng 2 chiều {{1, 2}, {3, 4}, {5, 6}}."
+        },
+        "Continue文で3の倍数をスキップ": {
+            "title": "Bỏ qua Bội số của 3 bằng Câu lệnh Continue",
+            "description": "Điều khiển Vòng lặp - Continue",
+            "question": "Xuất số từ 1 đến 10 ngoại trừ bội số của 3, cách nhau bởi dấu phẩy. Sử dụng câu lệnh continue."
+        },
+        "Break文で5以上でループを終了": {
+            "title": "Kết thúc Vòng lặp ở 5 trở lên bằng Câu lệnh Break",
+            "description": "Điều khiển Vòng lặp - Break",
+            "question": "Lặp từ 1 đến 10, và kết thúc vòng lặp khi đạt 5. Xuất số từ 1 đến 4 cách nhau bởi dấu phẩy."
+        },
+        "型キャスト": {
+            "title": "Ép kiểu",
+            "description": "Chuyển đổi Kiểu",
+            "question": "Ép kiểu biến double num = 3.14 sang kiểu int và xuất."
+        },
+        "インクリメントとデクリメント": {
+            "title": "Tăng và Giảm",
+            "description": "Toán tử",
+            "question": "Có biến num = 5. Tăng 1 bằng ++num, sau đó giảm 1 bằng --num, và xuất giá trị cuối cùng."
+        },
+        "論理演算子": {
+            "title": "Toán tử Logic",
+            "description": "Phép toán Logic",
+            "question": "Có biến a = 5, b = 10. Nếu a > 3 && b < 15 là true, xuất \"True\"; nếu false, xuất \"False\"."
+        },
+        "文字列に部分文字列が含まれるか確認": {
+            "title": "Kiểm tra Chuỗi có Chứa Chuỗi con",
+            "description": "Phương thức Chuỗi",
+            "question": "Kiểm tra xem chuỗi \"Hello C++\" có chứa \"C++\" không. Nếu tìm thấy, xuất \"Found\"; nếu không, xuất \"Not found\"."
+        },
+        "再帰で階乗を計算": {
+            "title": "Tính Giai thừa bằng Đệ quy",
+            "description": "Đệ quy",
+            "question": "Tạo hàm đệ quy factorial(int n) và tính, xuất giai thừa của 5 (120)."
+        },
+        "名前空間の定義と使用": {
+            "title": "Định nghĩa và Sử dụng Namespace",
+            "description": "namespace",
+            "question": "Định nghĩa hàm int add(int a, int b) trong namespace MyNamespace và xuất kết quả cộng 5 và 10."
+        },
+        "デフォルト引数": {
+            "title": "Tham số Mặc định",
+            "description": "Hàm",
+            "question": "Tạo hàm greet(string name, string greeting = \"Hello\") để khi gọi với một đối số sẽ sử dụng giá trị mặc định. Gọi với \"John\" và xuất kết quả."
+        },
+        "列挙型の使用": {
+            "title": "Sử dụng Enum",
+            "description": "Kiểu Liệt kê - enum",
+            "question": "Định nghĩa enum Day (MONDAY, TUESDAY, WEDNESDAY) và xuất giá trị của MONDAY (0)."
+        }
+    }
+}

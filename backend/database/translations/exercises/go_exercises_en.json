@@ -1,0 +1,205 @@
+{
+    "_comment": "English translations for Go Exercises (CheatCodeGoExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Hello World Output",
+            "description": "Go Basics",
+            "question": "Write a Go program that outputs the string \"Hello, World!\"."
+        },
+        "2つの数値の合計": {
+            "title": "Sum of Two Numbers",
+            "description": "Variables and Arithmetic Operations",
+            "question": "Assign two integers (10 and 20) to variables and calculate and output their sum."
+        },
+        "文字列を連結して挨拶": {
+            "title": "Concatenate Strings for Greeting",
+            "description": "String Concatenation",
+            "question": "Define variable name := \"Alice\" and output \"Hello, Alice!\"."
+        },
+        "数値が正か負かゼロか判定": {
+            "title": "Determine if Number is Positive, Negative, or Zero",
+            "description": "Conditional Branching",
+            "question": "There is a variable num := -5. If this number is positive, output \"Positive\"; if negative, output \"Negative\"; if 0, output \"Zero\"."
+        },
+        "1から5まで出力": {
+            "title": "Output Numbers from 1 to 5",
+            "description": "Loop - for",
+            "question": "Use a for loop to output numbers from 1 to 5, each on a new line."
+        },
+        "forループで合計計算": {
+            "title": "Calculate Sum with For Loop",
+            "description": "Loop - for (while style)",
+            "question": "Define variables sum := 0 and i := 1, and use a for loop to add i to sum while i is 5 or less, then output the final sum value."
+        },
+        "スライスの要素を出力": {
+            "title": "Output Slice Elements",
+            "description": "Slice",
+            "question": "Declare an integer slice []int{10, 20, 30, 40, 50} and output each element separated by commas on one line."
+        },
+        "関数で2つの数を足す": {
+            "title": "Add Two Numbers with Function",
+            "description": "Function",
+            "question": "Create a function add(a int, b int) int that returns the sum of two integers. Call it from main with 5 and 10 and output the result."
+        },
+        "スライスの最大値を求める": {
+            "title": "Find Maximum Value in Slice",
+            "description": "Slice and Loop",
+            "question": "Find and output the maximum value from integer slice []int{15, 42, 8, 27, 33}."
+        },
+        "曜日の判定": {
+            "title": "Determine Day of Week",
+            "description": "Switch Statement",
+            "question": "There is a variable day := 1. Use a switch statement to output the corresponding day name. 1=Monday, 2=Tuesday, ..., 7=Sunday. If it doesn't match, output \"Invalid day\"."
+        },
+        "複数の値を返す関数": {
+            "title": "Function Returning Multiple Values",
+            "description": "Multiple Return Values",
+            "question": "Create a function divide(a int, b int) (int, int) that returns the quotient and remainder. Output the result of 10÷3."
+        },
+        "ポインタで値を変更": {
+            "title": "Change Value with Pointer",
+            "description": "Pointer",
+            "question": "Create a function double(n *int) that doubles the passed value. Pass 5 from main and output the changed value."
+        },
+        "マップに追加と取得": {
+            "title": "Add and Get from Map",
+            "description": "Map",
+            "question": "Create a map[string]int, add \"age\" -> 25, and output the value of \"age\"."
+        },
+        "構造体の定義と使用": {
+            "title": "Define and Use Struct",
+            "description": "Struct",
+            "question": "Define a Person struct with Name(string) and Age(int), create an instance with \"John\", 25, and output the name."
+        },
+        "メソッドの定義": {
+            "title": "Define Method",
+            "description": "Method",
+            "question": "Add a GetName() string method to the Person struct that returns the name."
+        },
+        "文字列の長さを取得": {
+            "title": "Get String Length",
+            "description": "String",
+            "question": "Get and output the length of string \"Hello Go\"."
+        },
+        "文字列を分割": {
+            "title": "Split String",
+            "description": "String",
+            "question": "Split string \"apple,banana,orange\" by comma and output each element on a separate line."
+        },
+        "1から10の偶数を出力": {
+            "title": "Output Even Numbers from 1 to 10",
+            "description": "Loop and Conditional Branching",
+            "question": "Output only even numbers from 1 to 10, separated by commas."
+        },
+        "インターフェースの実装": {
+            "title": "Implement Interface",
+            "description": "Interface",
+            "question": "Define a speak() string method in Speaker interface, implement it in Dog struct, and return \"Woof!\"."
+        },
+        "deferの使用": {
+            "title": "Using defer",
+            "description": "defer",
+            "question": "Use defer to output \"End\" after \"Start\"."
+        },
+        "エラーハンドリング": {
+            "title": "Error Handling",
+            "description": "Error",
+            "question": "Create divide(a, b int) (int, error) that returns an error if b=0. Call 10÷0 and output the error message."
+        },
+        "goroutineの使用": {
+            "title": "Using goroutine",
+            "description": "goroutine",
+            "question": "Create a function print5times(msg string) that outputs a message 5 times. Execute it concurrently using the go keyword. Output \"Go\"."
+        },
+        "チャネルでデータ送受信": {
+            "title": "Send and Receive Data with Channel",
+            "description": "Channel",
+            "question": "Create a chan int, send value 42, receive it, and output it."
+        },
+        "rangeでスライスを走査": {
+            "title": "Iterate Slice with range",
+            "description": "range",
+            "question": "Iterate slice []int{1, 2, 3, 4, 5} with range and output them separated by commas."
+        },
+        "可変長引数": {
+            "title": "Variable Arguments",
+            "description": "Variable Arguments",
+            "question": "Create sum(nums ...int) int that returns the sum of all arguments. Pass 1, 2, 3, 4, 5 and output the result."
+        },
+        "無名関数": {
+            "title": "Anonymous Function",
+            "description": "Anonymous Function",
+            "question": "Create a function that multiplies two numbers using an anonymous function, and output the result of multiplying 5 and 6."
+        },
+        "クロージャ": {
+            "title": "Closure",
+            "description": "Closure",
+            "question": "Create counter() func() int that returns a function that increments the count each time it's called. Call it 3 times and output the final value."
+        },
+        "型アサーション": {
+            "title": "Type Assertion",
+            "description": "Type Assertion",
+            "question": "Assign integer 42 to a variable of interface{} type, extract it as int type using type assertion, and output it."
+        },
+        "型スイッチ": {
+            "title": "Type Switch",
+            "description": "Type Switch",
+            "question": "Create a function that takes an interface{} argument and returns \"Integer\" if int type, \"String\" if string type. Pass 42 and output the result."
+        },
+        "appendでスライスに追加": {
+            "title": "Add to Slice with append",
+            "description": "Slice",
+            "question": "Add 4 and 5 to slice []int{1, 2, 3} and output them separated by commas."
+        },
+        "Continue文で3の倍数をスキップ": {
+            "title": "Skip Multiples of 3 with Continue Statement",
+            "description": "Loop Control - Continue",
+            "question": "Output numbers from 1 to 10 except multiples of 3, separated by commas. Use the continue statement."
+        },
+        "Break文で5以上でループを終了": {
+            "title": "Exit Loop at 5 or Above with Break Statement",
+            "description": "Loop Control - Break",
+            "question": "Loop from 1 to 10, and exit the loop when reaching 5. Output numbers 1 to 4 separated by commas."
+        },
+        "配列の使用": {
+            "title": "Using Array",
+            "description": "Array",
+            "question": "Declare a fixed-length array [5]int{1, 2, 3, 4, 5} and output the elements separated by commas."
+        },
+        "文字列を置換": {
+            "title": "Replace String",
+            "description": "String",
+            "question": "Replace \"Go\" with \"World\" in string \"Hello Go\" and output it."
+        },
+        "文字列を大文字に変換": {
+            "title": "Convert String to Uppercase",
+            "description": "String",
+            "question": "Convert string \"hello world\" to uppercase and output it."
+        },
+        "文字列に部分文字列が含まれるか確認": {
+            "title": "Check if String Contains Substring",
+            "description": "String",
+            "question": "Check if string \"Hello Go\" contains \"Go\". If found, output \"Found\"; if not, output \"Not found\"."
+        },
+        "文字列フォーマット": {
+            "title": "String Formatting",
+            "description": "Format",
+            "question": "Use fmt.Sprintf() to create and output the string \"Name: John, Age: 25\"."
+        },
+        "再帰で階乗を計算": {
+            "title": "Calculate Factorial with Recursion",
+            "description": "Recursion",
+            "question": "Create a recursive function factorial(n int) int and calculate and output the factorial of 5 (120)."
+        },
+        "init関数": {
+            "title": "init Function",
+            "description": "init",
+            "question": "Output \"Init\" in init function and \"Main\" in main."
+        },
+        "空のインターフェース": {
+            "title": "Empty Interface",
+            "description": "interface{}",
+            "question": "Assign string \"Hello\" to a variable of interface{} type and output it."
+        }
+    }
+}

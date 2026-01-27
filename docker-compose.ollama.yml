@@ -1,5 +1,5 @@
 # Ollama 専用サーバー用 (t3.large 8GB RAM 想定)
-# 用途: App と別 EC2（例: 54.204.204.160）で Ollama のみ稼働。
+# 用途: App と別 EC2（例: 52.203.35.157）で Ollama のみ稼働。
 #       .env.prod の OLLAMA_BASE_URL=http://<このサーバーのIP>:11434/v1 で App から参照。
 # 同一 EC2 に載せる場合は docker-compose.prod の ollama サービスを使用。
 #

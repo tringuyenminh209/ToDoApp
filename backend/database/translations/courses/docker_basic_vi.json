@@ -27,7 +27,8 @@
             "deliverables": [
                 "Sử dụng Volumes cho lưu trữ dữ liệu bền vững",
                 "Tạo và quản lý Networks",
-                "Sử dụng Docker Compose cho ứng dụng multi-container"
+                "Sử dụng Docker Compose cho ứng dụng multi-container",
+                "Quản lý biến môi trường và Secrets"
             ]
         },
         "Docker上級": {
@@ -44,9 +45,10 @@
             "title": "Docker Thực tế",
             "description": "Orchestration, Monitoring, Kiến trúc Microservices",
             "deliverables": [
-                "Thiết lập orchestration",
-                "Triển khai monitoring",
-                "Xây dựng kiến trúc microservices"
+                "Thiết lập orchestration với Docker Swarm",
+                "Triển khai monitoring với Prometheus + Grafana",
+                "Xây dựng kiến trúc Microservices + API Gateway",
+                "Thiết lập hệ thống logging"
             ]
         },
         "Capstone Project": {
@@ -63,39 +65,114 @@
     "tasks": {
         "第1週：環境構築とDocker入門": {
             "title": "Tuần 1: Thiết lập Môi trường và Giới thiệu Docker",
-            "description": "Thiết lập WSL2 + Docker Desktop, khái niệm Docker cơ bản, kiến trúc"
+            "description": "Thiết lập WSL2 + Docker Desktop, khái niệm Docker cơ bản, kiến trúc",
+            "subtasks": {
+                "WSL2を有効化": "Kích hoạt WSL2",
+                "Docker Desktopをインストール": "Cài đặt Docker Desktop",
+                "BuildKitを有効化": "Kích hoạt BuildKit",
+                "Hello Worldコンテナを実行": "Chạy container Hello World",
+                "Nginx Webサーバーを起動": "Khởi động máy chủ web Nginx"
+            },
+            "knowledge_items": {
+                "Dockerとは？": {
+                    "title": "Docker là gì?",
+                    "content": "# Docker là gì?\n\n**Docker** là nền tảng để containerize và chạy ứng dụng.\n\n## Đặc điểm Docker\n\n1. **Nhất quán Môi trường**: Hoạt động giống nhau trong môi trường Dev→Prod\n2. **Nhẹ**: Khởi động nhanh hơn VM, hiệu quả tài nguyên\n3. **Di động**: Hoạt động giống nhau ở mọi nơi\n4. **Khả năng Mở rộng**: Dễ dàng scale out\n5. **Tách biệt**: Chạy ứng dụng độc lập\n\n## Container vs VM\n\n| Đặc điểm | Container | VM |\n|----------|-----------|----|\n| Thời gian Khởi động | Giây | Phút |\n| Kích thước | MB | GB |\n| OS | Chia sẻ host OS | OS độc lập |\n| Overhead | Thấp | Cao |\n\n## Mục đích Sử dụng Docker\n\n- Kiến trúc Microservices\n- Pipeline CI/CD\n- Môi trường phát triển thống nhất\n- Ứng dụng Cloud-native"
+                },
+                "WSL2 + Docker Desktop環境構築": {
+                    "title": "Thiết lập Môi trường WSL2 + Docker Desktop",
+                    "content": "# Thiết lập Môi trường WSL2 + Docker Desktop\n\n## 1. Kích hoạt WSL2\n\nChạy trong PowerShell (quyền Administrator):\n```powershell\nwsl --install\n```\n\n## 2. Cài đặt Docker Desktop\n\n- Tải xuống từ trang web chính thức Docker\n- Settings → General → Chọn \"Use WSL 2 based engine\"\n\n## 3. Kích hoạt BuildKit\n\nThêm vào Settings → Docker Engine:\n```json\n{\n  \"features\": {\n    \"buildkit\": true\n  }\n}\n```\n\nHoặc đặt qua biến môi trường:\n```bash\nexport DOCKER_BUILDKIT=1\n```\n\n## 4. Đặt Dự án\n\nĐặt trong filesystem WSL (I/O nhanh):\n```bash\n/home/<username>/projects/...\n```\n\nTránh filesystem Windows (chậm):\n```bash\n/mnt/c/Users/...\n```\n\n## 5. Tạo Tệp .dockerignore\n\n```\nnode_modules\n.git\n.env\nDockerfile*\ndocker-compose*.yml\nlogs\ndist\ncoverage\n**/__pycache__\n**/.pytest_cache\n```"
+                },
+                "Hello World実行": {
+                    "title": "Thực thi Hello World",
+                    "content": "# Thực thi Container Hello World\ndocker run hello-world\n\n# Liệt kê images\ndocker images\n\n# Liệt kê container đang chạy\ndocker ps\n\n# Liệt kê tất cả container (bao gồm đã dừng)\ndocker ps -a\n\n# Xóa container\ndocker rm <container_id>\n\n# Xóa image\ndocker rmi hello-world"
+                },
+                "Nginx Webサーバーの起動": {
+                    "title": "Khởi động Máy chủ Web Nginx",
+                    "content": "# Khởi động container Nginx ở nền\ndocker run -d -p 8080:80 --name my-nginx nginx\n\n# Truy cập http://localhost:8080 trong trình duyệt\n\n# Kiểm tra logs\ndocker logs my-nginx\n\n# Hiển thị logs theo thời gian thực\ndocker logs -f my-nginx\n\n# Dừng container\ndocker stop my-nginx\n\n# Khởi động lại container\ndocker restart my-nginx\n\n# Xóa container (sau khi dừng)\ndocker rm my-nginx"
+                },
+                "演習：初めてのDockerコンテナ": {
+                    "title": "Bài tập: Container Docker Đầu tiên",
+                    "content": "# Bài tập: Container Docker Đầu tiên\n\n## Mục tiêu\nKhởi động nhiều container và thành thạo thao tác cơ bản\n\n## Các bước\n\n### 1. Shell Tương tác với Container Ubuntu\n```bash\ndocker run -it ubuntu bash\n\n# Trong container\napt-get update\napt-get install -y curl\ncurl https://example.com\nexit\n```\n\n### 2. Chạy Script với Container Python\n```bash\necho 'print(\"Hello Docker\")' > hello.py\ndocker run -v $(pwd):/app python:3.11 python /app/hello.py\n```\n\n### 3. Khởi động Container MySQL\n```bash\ndocker run -d \\\n  --name mysql \\\n  -e MYSQL_ROOT_PASSWORD=password \\\n  -e MYSQL_DATABASE=testdb \\\n  -p 3306:3306 \\\n  mysql:8.0\n\n# Kiểm tra kết nối\ndocker exec -it mysql mysql -u root -ppassword\n```\n\n### 4. Dọn dẹp Container\n```bash\n# Dừng tất cả container\ndocker stop $(docker ps -aq)\n\n# Xóa tất cả container\ndocker rm $(docker ps -aq)\n\n# Xóa images không sử dụng\ndocker image prune -a\n```\n\n## Điểm Kiểm tra\n- [ ] Đã thực thi lệnh trong container\n- [ ] Chia sẻ tệp qua volume mount\n- [ ] Giao tiếp mạng giữa container\n- [ ] Hiểu phương pháp dọn dẹp"
+                },
+                "トラブルシューティング：よくある問題": {
+                    "title": "Khắc phục Sự cố: Vấn đề Thường gặp",
+                    "content": "# Khắc phục Sự cố: Vấn đề Thường gặp\n\n## Vấn đề 1: Cổng Đã được Sử dụng\n\n**Lỗi:**\n```\nError: bind: address already in use\n```\n\n**Giải pháp:**\n```bash\n# Kiểm tra cổng đang sử dụng (Windows)\nnetstat -ano | findstr :8080\n\n# Kiểm tra cổng đang sử dụng (Linux/Mac)\nlsof -i :8080\n\n# Sử dụng cổng khác\ndocker run -p 8081:80 nginx\n```\n\n## Vấn đề 2: Pull Image Chậm\n\n**Giải pháp:**\n```json\n// Docker Desktop > Settings > Docker Engine\n{\n  \"registry-mirrors\": [\n    \"https://mirror.gcr.io\"\n  ]\n}\n```\n\n## Vấn đề 3: Dung lượng Đĩa WSL2 Không đủ\n\n**Kiểm tra:**\n```bash\ndocker system df\n```\n\n**Giải pháp:**\n```bash\n# Xóa tài nguyên không sử dụng\ndocker system prune -a --volumes\n\n# Nén đĩa WSL2 (PowerShell)\nwsl --shutdown\noptimize-vhd -Path $env:LOCALAPPDATA\\Packages\\CanonicalGroupLimited*\\LocalState\\ext4.vhdx -Mode Full\n```\n\n## Vấn đề 4: Container Không Khởi động\n\n**Chẩn đoán:**\n```bash\n# Kiểm tra logs\ndocker logs <container_name>\n\n# Kiểm tra chi tiết\ndocker inspect <container_name>\n\n# Kiểm tra sự kiện\ndocker events --since 30m\n```\n\n## Vấn đề 5: Permission Denied\n\n**Nguyên nhân:** Truy cập tệp với người dùng non-root\n\n**Giải pháp:**\n```dockerfile\n# Đặt quyền trong Dockerfile\nRUN chown -R app:app /app\nUSER app\n```"
+                }
+            }
         },
         "第2週：Dockerfile作成と基本コマンド": {
             "title": "Tuần 2: Tạo Dockerfile và Lệnh Cơ bản",
-            "description": "Tạo Dockerfile, build images, lệnh Docker cơ bản"
+            "description": "Tạo Dockerfile, build images, lệnh Docker cơ bản",
+            "subtasks": {
+                "Node.js Dockerfileを作成": "Tạo Dockerfile Node.js",
+                "イメージをビルド": "Build image",
+                "Non-rootユーザーで実行": "Chạy với người dùng non-root",
+                "基本コマンドを練習": "Luyện tập lệnh cơ bản"
+            }
         },
         "第3週：Volumes & Networks": {
             "title": "Tuần 3: Volumes & Networks",
-            "description": "Lưu trữ dữ liệu bền vững với volumes, mạng container"
+            "description": "Lưu trữ dữ liệu bền vững với volumes, mạng container",
+            "subtasks": {
+                "Named Volumesを使う": "Sử dụng Named Volumes",
+                "Bind Mountsを使う": "Sử dụng Bind Mounts",
+                "Custom Networkを作成": "Tạo Custom Network"
+            }
         },
         "第4週：Docker Compose": {
             "title": "Tuần 4: Docker Compose",
-            "description": "Quản lý ứng dụng multi-container với Docker Compose"
+            "description": "Quản lý ứng dụng multi-container với Docker Compose",
+            "subtasks": {
+                "compose.ymlを作成": "Tạo compose.yml",
+                "2-tier構成を構築": "Xây dựng kiến trúc 2-tier",
+                "Networksを分離": "Tách Networks"
+            }
         },
         "第5週：Multi-stage Build & Healthcheck": {
             "title": "Tuần 5: Multi-stage Build & Healthcheck",
-            "description": "Tối ưu images với multi-stage builds, triển khai healthchecks"
+            "description": "Tối ưu images với multi-stage builds, triển khai healthchecks",
+            "subtasks": {
+                "Multi-stage Buildを作成": "Tạo Multi-stage Build",
+                "Healthcheckを追加": "Thêm Healthcheck",
+                "イメージサイズを比較": "So sánh kích thước image"
+            }
         },
         "第6週：Private Registry & セキュリティ": {
             "title": "Tuần 6: Private Registry & Bảo mật",
-            "description": "Thiết lập private registry, security scanning, best practices"
+            "description": "Thiết lập private registry, security scanning, best practices",
+            "subtasks": {
+                "Private Registryを構築": "Xây dựng Private Registry",
+                "Trivyでスキャン": "Quét với Trivy",
+                "Non-rootユーザーで実行": "Chạy với người dùng non-root"
+            }
         },
         "第7週：Orchestration & Monitoring": {
             "title": "Tuần 7: Orchestration & Monitoring",
-            "description": "Container orchestration, thiết lập monitoring stack"
+            "description": "Container orchestration, thiết lập monitoring stack",
+            "subtasks": {
+                "Docker Swarmを初期化": "Khởi tạo Docker Swarm",
+                "Monitoring stackを構築": "Xây dựng Monitoring stack"
+            }
         },
         "第8週：Microservices構成": {
             "title": "Tuần 8: Kiến trúc Microservices",
-            "description": "Xây dựng kiến trúc microservices với Docker"
+            "description": "Xây dựng kiến trúc microservices với Docker",
+            "subtasks": {
+                "API Gatewayを構築": "Xây dựng API Gateway",
+                "Microservicesを作成": "Tạo Microservices"
+            }
         },
         "第9-12週：E-commerce Capstone": {
             "title": "Tuần 9-12: Dự án Capstone E-commerce",
-            "description": "Kiến trúc Full-stack + CI/CD + Monitoring + Security"
+            "description": "Kiến trúc Full-stack + CI/CD + Monitoring + Security",
+            "subtasks": {
+                "Frontend（React + Nginx）": "Frontend (React + Nginx)",
+                "Backend（Node/Express）": "Backend (Node/Express)",
+                "DB/Cache（Postgres + Redis）": "DB/Cache (Postgres + Redis)",
+                "CI/CD構築": "Xây dựng CI/CD",
+                "Monitoring & Logging": "Monitoring & Logging",
+                "Security強化": "Tăng cường Bảo mật"
+            }
         }
     }
 }

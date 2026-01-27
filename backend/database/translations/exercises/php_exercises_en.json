@@ -1,0 +1,200 @@
+{
+    "_comment": "English translations for PHP Exercises (CheatCodePhpExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Hello World Output",
+            "description": "PHP Basics",
+            "question": "Write a PHP program that outputs the string \"Hello, World!\"."
+        },
+        "2つの数値の合計": {
+            "title": "Sum of Two Numbers",
+            "description": "Variables and Arithmetic Operations",
+            "question": "Assign two numbers (10 and 20) to variables and calculate and output their sum."
+        },
+        "文字列を連結して挨拶": {
+            "title": "Concatenate Strings for Greeting",
+            "description": "String Concatenation",
+            "question": "Define variable $name = \"Alice\" and output \"Hello, Alice!\". Use the string concatenation operator (.)."
+        },
+        "数値が正か負かゼロか判定": {
+            "title": "Determine if Number is Positive, Negative, or Zero",
+            "description": "Conditional Branching",
+            "question": "There is a variable $num = -5. If this number is positive, output \"Positive\"; if negative, output \"Negative\"; if 0, output \"Zero\"."
+        },
+        "1から5までの数値を出力": {
+            "title": "Output Numbers from 1 to 5",
+            "description": "For Loop",
+            "question": "Use a for loop to output numbers from 1 to 5, one per line."
+        },
+        "Whileループで5回カウント": {
+            "title": "Count 5 Times with While Loop",
+            "description": "While Loop",
+            "question": "Use a while loop to count from 0 to 4 and output one per line."
+        },
+        "配列の最初と最後の要素": {
+            "title": "First and Last Elements of Array",
+            "description": "Array Operations",
+            "question": "Define array $fruits = [\"Apple\", \"Banana\", \"Orange\"] and output the first and last elements, one per line."
+        },
+        "配列の全要素を出力": {
+            "title": "Output All Array Elements",
+            "description": "Foreach Statement",
+            "question": "Output all elements of array $colors = [\"Red\", \"Green\", \"Blue\"] one per line."
+        },
+        "挨拶関数を作成": {
+            "title": "Create Greeting Function",
+            "description": "Function Basics",
+            "question": "Define a greet function that takes a name as an argument and returns \"Hello, [name]!\". Call it with \"World\" as an argument and output the result."
+        },
+        "連想配列で値を取得": {
+            "title": "Get Value from Associative Array",
+            "description": "Using Associative Arrays",
+            "question": "Use an associative array to manage animal sounds. Create $sounds = [\"dog\" => \"bark\", \"cat\" => \"meow\"] and output the sound of \"dog\"."
+        },
+        "文字列を大文字に変換": {
+            "title": "Convert String to Uppercase",
+            "description": "String Functions",
+            "question": "Convert variable $text = \"hello\" to uppercase and output it."
+        },
+        "文字列の長さを取得": {
+            "title": "Get String Length",
+            "description": "strlen() Function",
+            "question": "Output the length of the string in variable $text = \"Programming\"."
+        },
+        "配列の要素数を取得": {
+            "title": "Get Array Element Count",
+            "description": "count() Function",
+            "question": "Output the number of elements in array $numbers = [1, 2, 3, 4, 5]."
+        },
+        "配列の要素の合計": {
+            "title": "Sum of Array Elements",
+            "description": "array_sum() Function",
+            "question": "Output the sum of all elements in array $numbers = [1, 2, 3, 4, 5]."
+        },
+        "配列の最大値と最小値": {
+            "title": "Maximum and Minimum Values of Array",
+            "description": "max() and min() Functions",
+            "question": "Output the maximum and minimum values of array $numbers = [3, 1, 4, 1, 5, 9, 2, 6], one per line."
+        },
+        "偶数のみを抽出": {
+            "title": "Extract Only Even Numbers",
+            "description": "array_filter() Function",
+            "question": "Extract only even numbers from array $numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], re-index with array_values(), and output."
+        },
+        "配列を文字列に結合": {
+            "title": "Join Array into String",
+            "description": "implode() Function",
+            "question": "Join array $words = [\"Hello\", \"World\", \"PHP\"] with spaces and output as a single string."
+        },
+        "文字列を配列に分割": {
+            "title": "Split String into Array",
+            "description": "explode() Function",
+            "question": "Split string \"apple,banana,orange\" by comma into an array and output with print_r()."
+        },
+        "文字列の一部を置換": {
+            "title": "Replace Part of String",
+            "description": "str_replace() Function",
+            "question": "Replace \"World\" with \"PHP\" in variable $text = \"Hello World\" and output it."
+        },
+        "曜日の判定": {
+            "title": "Determine Day of Week",
+            "description": "Switch Statement",
+            "question": "There is a variable $day = 1. Use a switch statement to output the corresponding day name. 1=Monday, 2=Tuesday, ..., 7=Sunday. If it doesn't match, output \"Invalid day\"."
+        },
+        "配列の各要素を2倍にする": {
+            "title": "Double Each Array Element",
+            "description": "Array Functions - array_map",
+            "question": "Double each element of array [1, 2, 3, 4, 5] and output. Use array_map function. Output format: \"2,4,6,8,10\""
+        },
+        "配列内の要素を検索": {
+            "title": "Search Element in Array",
+            "description": "Array Functions - in_array",
+            "question": "Check if \"banana\" is in array [\"apple\", \"banana\", \"orange\"]. If found, output \"Found\"; if not, output \"Not found\"."
+        },
+        "配列の合計を計算": {
+            "title": "Calculate Array Sum",
+            "description": "Array Functions - array_reduce",
+            "question": "Calculate and output the sum of array [1, 2, 3, 4, 5] using array_reduce function."
+        },
+        "現在の日付をフォーマット": {
+            "title": "Format Current Date",
+            "description": "Date and Time",
+            "question": "Output the current date in \"2025-01-15\" format (Y-m-d). Use the date function."
+        },
+        "配列をJSONに変換": {
+            "title": "Convert Array to JSON",
+            "description": "JSON Processing",
+            "question": "Convert associative array [\"name\" => \"John\", \"age\" => 30] to a JSON string and output it."
+        },
+        "JSONから値を取得": {
+            "title": "Get Value from JSON",
+            "description": "JSON Processing",
+            "question": "Decode JSON string \"{\\\"name\\\":\\\"Alice\\\",\\\"age\\\":25}\" and output the value of name."
+        },
+        "シンプルなクラスを作成": {
+            "title": "Create Simple Class",
+            "description": "Object-Oriented - Class",
+            "question": "Create a Person class with a name property and getName() method. Create an instance with name \"John\" and output the name."
+        },
+        "クラスの継承": {
+            "title": "Class Inheritance",
+            "description": "Object-Oriented - Inheritance",
+            "question": "Create an Animal class with a speak method. Create a Dog class that extends Animal and overrides the speak method to output \"Woof!\"."
+        },
+        "静的メソッドの使用": {
+            "title": "Using Static Methods",
+            "description": "Object-Oriented - Static",
+            "question": "Create a static add($a, $b) method in MathUtils class and output the result of adding 5 and 10."
+        },
+        "定数の定義と使用": {
+            "title": "Define and Use Constants",
+            "description": "Constants",
+            "question": "Define a constant named PI with value 3.14159 and output its value."
+        },
+        "型キャスト": {
+            "title": "Type Casting",
+            "description": "Data Type Conversion",
+            "question": "Convert string \"123\" to an integer, add 10 to it, and output the result."
+        },
+        "三項演算子": {
+            "title": "Ternary Operator",
+            "description": "Ternary Operator",
+            "question": "There is a variable $age = 18. Use the ternary operator to output \"Adult\" if 18 or older, or \"Minor\" if younger."
+        },
+        "Null合体演算子": {
+            "title": "Null Coalescing Operator",
+            "description": "Null Coalescing Operator",
+            "question": "There is a variable $name = null. Use the null coalescing operator (??) to output \"Guest\" if $name is null, otherwise output the value of $name."
+        },
+        "スプレッド演算子": {
+            "title": "Spread Operator",
+            "description": "Spread Operator",
+            "question": "There are arrays $arr1 = [1, 2] and $arr2 = [3, 4]. Use the spread operator (...) to combine them and output with comma separation."
+        },
+        "無名関数（クロージャ）": {
+            "title": "Anonymous Function (Closure)",
+            "description": "Anonymous Function",
+            "question": "Create a function that multiplies two numbers using an anonymous function, and output the result of multiplying 5 and 6."
+        },
+        "アロー関数": {
+            "title": "Arrow Function",
+            "description": "Arrow Function",
+            "question": "Create a function that squares a number using an arrow function (fn), and output the result of squaring 7."
+        },
+        "配列の要素数を数える": {
+            "title": "Count Array Elements",
+            "description": "Array Functions - count",
+            "question": "Count and output the number of elements in array [\"red\", \"green\", \"blue\", \"yellow\"]."
+        },
+        "複数の文字列を置換": {
+            "title": "Replace Multiple Strings",
+            "description": "String Functions - str_replace",
+            "question": "Replace \"apples\" with \"oranges\" in string \"I like apples and apples are good\" and output it."
+        },
+        "変数が定義されているか確認": {
+            "title": "Check if Variable is Defined",
+            "description": "Variable Check - isset",
+            "question": "Check if variable $value = \"Hello\" is defined. If defined, output \"Defined\"; if undefined, output \"Undefined\"."
+        }
+    }
+}

@@ -1,0 +1,105 @@
+{
+    "_comment": "Vietnamese translations for Python Exercises (CheatCodePythonExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Xuất Hello World",
+            "description": "Cơ bản Python",
+            "question": "Viết chương trình Python xuất chuỗi \"Hello, World!\"."
+        },
+        "2つの数値の合計": {
+            "title": "Tổng Hai Số",
+            "description": "Biến và Phép toán Số học",
+            "question": "Gán hai số (10 và 20) vào biến và tính toán, xuất tổng của chúng."
+        },
+        "名前を入力して挨拶": {
+            "title": "Nhập Tên và Chào hỏi",
+            "description": "Nhận Đầu vào",
+            "question": "Sử dụng input() để nhận tên làm đầu vào và xuất \"Hello, [tên]!\"."
+        },
+        "数値が正か負かゼロか判定": {
+            "title": "Xác định Số là Dương, Âm hay Không",
+            "description": "Rẽ nhánh Điều kiện",
+            "question": "Nhận số nguyên làm đầu vào. Nếu dương, xuất \"Positive\"; nếu âm, xuất \"Negative\"; nếu 0, xuất \"Zero\"."
+        },
+        "1から5までの数値を出力": {
+            "title": "Xuất Số từ 1 đến 5",
+            "description": "Vòng lặp For",
+            "question": "Sử dụng vòng lặp for để xuất số từ 1 đến 5, mỗi số một dòng."
+        },
+        "Whileループで5回カウント": {
+            "title": "Đếm 5 Lần với Vòng lặp While",
+            "description": "Vòng lặp While",
+            "question": "Sử dụng vòng lặp while để đếm từ 0 đến 4 và xuất mỗi số một dòng."
+        },
+        "リストの最初と最後の要素": {
+            "title": "Phần tử Đầu và Cuối của Danh sách",
+            "description": "Thao tác Danh sách",
+            "question": "Định nghĩa danh sách fruits = [\"Apple\", \"Banana\", \"Orange\"] và xuất phần tử đầu và cuối, mỗi phần tử một dòng."
+        },
+        "リストの全要素を出力": {
+            "title": "Xuất Tất cả Phần tử Danh sách",
+            "description": "Lặp lại Danh sách",
+            "question": "Xuất tất cả phần tử của danh sách colors = [\"Red\", \"Green\", \"Blue\"] mỗi phần tử một dòng."
+        },
+        "挨拶関数を作成": {
+            "title": "Tạo Hàm Chào hỏi",
+            "description": "Cơ bản về Hàm",
+            "question": "Định nghĩa hàm greet nhận tên làm đối số và trả về \"Hello, [tên]!\". Gọi hàm với \"World\" làm đối số và xuất kết quả."
+        },
+        "1から5の2乗をリストで生成": {
+            "title": "Tạo Bình phương từ 1 đến 5 trong Danh sách",
+            "description": "List Comprehension",
+            "question": "Sử dụng list comprehension để tạo danh sách bình phương của số từ 1 đến 5 và xuất."
+        },
+        "辞書で値を取得": {
+            "title": "Lấy Giá trị từ Từ điển",
+            "description": "Sử dụng Từ điển",
+            "question": "Sử dụng từ điển để quản lý tiếng kêu động vật. Tạo sounds = {\"dog\": \"bark\", \"cat\": \"meow\"} và xuất tiếng kêu của tên động vật được truyền làm đầu vào."
+        },
+        "文字列を大文字に変換": {
+            "title": "Chuyển Chuỗi sang Chữ hoa",
+            "description": "Phương thức Chuỗi",
+            "question": "Chuyển chuỗi được truyền làm đầu vào sang tất cả chữ hoa và xuất."
+        },
+        "文字列の一部を抽出": {
+            "title": "Trích xuất Một phần Chuỗi",
+            "description": "Cắt Chuỗi",
+            "question": "Trích xuất và xuất 4 ký tự đầu từ biến text = \"Programming\"."
+        },
+        "文字列の長さを取得": {
+            "title": "Lấy Độ dài Chuỗi",
+            "description": "Hàm len()",
+            "question": "Xuất độ dài của chuỗi được truyền làm đầu vào."
+        },
+        "リストの最大値と最小値": {
+            "title": "Giá trị Lớn nhất và Nhỏ nhất của Danh sách",
+            "description": "Hàm max() và min()",
+            "question": "Xuất giá trị lớn nhất và nhỏ nhất của danh sách numbers = [3, 1, 4, 1, 5, 9, 2, 6], mỗi giá trị một dòng."
+        },
+        "リストの要素の合計": {
+            "title": "Tổng Phần tử Danh sách",
+            "description": "Hàm sum()",
+            "question": "Xuất tổng tất cả phần tử trong danh sách numbers = [1, 2, 3, 4, 5]."
+        },
+        "偶数のみを抽出": {
+            "title": "Trích xuất Chỉ Số Chẵn",
+            "description": "List Comprehension với if",
+            "question": "Trích xuất chỉ số chẵn từ danh sách numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] để tạo danh sách mới và xuất."
+        },
+        "リストを文字列に結合": {
+            "title": "Nối Danh sách thành Chuỗi",
+            "description": "Phương thức join()",
+            "question": "Nối danh sách words = [\"Hello\", \"World\", \"Python\"] bằng khoảng trắng và xuất dưới dạng một chuỗi."
+        },
+        "文字列をリストに分割": {
+            "title": "Chia Chuỗi thành Danh sách",
+            "description": "Phương thức split()",
+            "question": "Chia chuỗi \"apple,banana,orange\" bằng dấu phẩy thành danh sách và xuất."
+        },
+        "整数変換のエラー処理": {
+            "title": "Xử lý Lỗi Chuyển đổi Số nguyên",
+            "description": "try-except",
+            "question": "Nhận đầu vào, chuyển đổi sang số nguyên, và xuất. Nếu chuyển đổi thất bại, xuất \"Invalid input\"."
+        }
+    }
+}

@@ -1,0 +1,205 @@
+{
+    "_comment": "Vietnamese translations for MySQL Exercises (CheatCodeMysqlExerciseSeeder)",
+    "exercises": {
+        "全てのカラムを選択": {
+            "title": "Chọn Tất cả Cột",
+            "description": "SELECT - Cơ bản",
+            "question": "Viết truy vấn để lấy tất cả các cột từ bảng users."
+        },
+        "特定のカラムを選択": {
+            "title": "Chọn Cột Cụ thể",
+            "description": "SELECT - Chỉ định Cột",
+            "question": "Viết truy vấn để chỉ lấy các cột name và email từ bảng users."
+        },
+        "WHERE句で条件指定": {
+            "title": "Chỉ định Điều kiện với Mệnh đề WHERE",
+            "description": "WHERE - Điều kiện",
+            "question": "Viết truy vấn để lấy người dùng từ bảng users có age lớn hơn 20."
+        },
+        "複数条件（AND）": {
+            "title": "Nhiều Điều kiện (AND)",
+            "description": "WHERE - AND",
+            "question": "Viết truy vấn để lấy người dùng từ bảng users có age >= 20 VÀ city = 'Tokyo'."
+        },
+        "複数条件（OR）": {
+            "title": "Nhiều Điều kiện (OR)",
+            "description": "WHERE - OR",
+            "question": "Viết truy vấn để lấy người dùng từ bảng users có city = 'Tokyo' HOẶC 'Osaka'."
+        },
+        "昇順で並べ替え": {
+            "title": "Sắp xếp Theo thứ tự Tăng dần",
+            "description": "ORDER BY - ASC",
+            "question": "Viết truy vấn để sắp xếp dữ liệu từ bảng users theo thứ tự tăng dần theo cột age."
+        },
+        "降順で並べ替え": {
+            "title": "Sắp xếp Theo thứ tự Giảm dần",
+            "description": "ORDER BY - DESC",
+            "question": "Viết truy vấn để sắp xếp dữ liệu từ bảng users theo thứ tự giảm dần theo cột created_at."
+        },
+        "取得件数を制限": {
+            "title": "Giới hạn Số lượng Kết quả",
+            "description": "LIMIT",
+            "question": "Viết truy vấn để chỉ lấy 10 bản ghi đầu tiên từ bảng users."
+        },
+        "レコード数をカウント": {
+            "title": "Đếm Số lượng Bản ghi",
+            "description": "Hàm Tổng hợp - COUNT",
+            "question": "Viết truy vấn để đếm số lượng bản ghi trong bảng users."
+        },
+        "合計を計算": {
+            "title": "Tính Tổng",
+            "description": "Hàm Tổng hợp - SUM",
+            "question": "Viết truy vấn để tính tổng cột amount trong bảng orders."
+        },
+        "平均を計算": {
+            "title": "Tính Trung bình",
+            "description": "Hàm Tổng hợp - AVG",
+            "question": "Viết truy vấn để tính trung bình cột age trong bảng users."
+        },
+        "最大値を取得": {
+            "title": "Lấy Giá trị Lớn nhất",
+            "description": "Hàm Tổng hợp - MAX",
+            "question": "Viết truy vấn để lấy giá trị lớn nhất của cột price trong bảng products."
+        },
+        "最小値を取得": {
+            "title": "Lấy Giá trị Nhỏ nhất",
+            "description": "Hàm Tổng hợp - MIN",
+            "question": "Viết truy vấn để lấy giá trị nhỏ nhất của cột price trong bảng products."
+        },
+        "グループ化": {
+            "title": "Nhóm",
+            "description": "GROUP BY",
+            "question": "Viết truy vấn để nhóm bảng orders theo user_id và đếm số lượng đơn hàng cho mỗi người dùng."
+        },
+        "グループ化後の条件": {
+            "title": "Điều kiện Sau khi Nhóm",
+            "description": "HAVING",
+            "question": "Viết truy vấn để nhóm bảng orders theo user_id và chỉ lấy người dùng có 5 đơn hàng trở lên."
+        },
+        "重複を除外": {
+            "title": "Loại bỏ Trùng lặp",
+            "description": "DISTINCT",
+            "question": "Viết truy vấn để lấy user_id từ bảng orders loại bỏ trùng lặp."
+        },
+        "パターンマッチング": {
+            "title": "Khớp Mẫu",
+            "description": "LIKE",
+            "question": "Viết truy vấn để lấy người dùng từ bảng users có name bắt đầu bằng '田中'."
+        },
+        "IN演算子": {
+            "title": "Toán tử IN",
+            "description": "IN",
+            "question": "Viết truy vấn để lấy người dùng từ bảng users có city là một trong 'Tokyo', 'Osaka', hoặc 'Kyoto'."
+        },
+        "範囲指定": {
+            "title": "Chỉ định Phạm vi",
+            "description": "BETWEEN",
+            "question": "Viết truy vấn để lấy người dùng từ bảng users có age nằm trong khoảng 20 đến 30."
+        },
+        "NULL判定": {
+            "title": "Kiểm tra NULL",
+            "description": "IS NULL",
+            "question": "Viết truy vấn để lấy người dùng từ bảng users có email là NULL."
+        },
+        "NOT NULL判定": {
+            "title": "Kiểm tra NOT NULL",
+            "description": "IS NOT NULL",
+            "question": "Viết truy vấn để lấy người dùng từ bảng users có email KHÔNG phải NULL."
+        },
+        "内部結合": {
+            "title": "Kết nối Trong",
+            "description": "JOIN - INNER",
+            "question": "Viết truy vấn để thực hiện kết nối trong giữa bảng users và orders trên user_id."
+        },
+        "左外部結合": {
+            "title": "Kết nối Ngoài Trái",
+            "description": "JOIN - LEFT",
+            "question": "Viết truy vấn để thực hiện kết nối ngoài trái giữa bảng users và orders trên user_id."
+        },
+        "右外部結合": {
+            "title": "Kết nối Ngoài Phải",
+            "description": "JOIN - RIGHT",
+            "question": "Viết truy vấn để thực hiện kết nối ngoài phải giữa bảng users và orders trên user_id."
+        },
+        "データの挿入": {
+            "title": "Chèn Dữ liệu",
+            "description": "INSERT",
+            "question": "Viết truy vấn để chèn dữ liệu với name='Taro' và age=25 vào bảng users."
+        },
+        "複数行の挿入": {
+            "title": "Chèn Nhiều Hàng",
+            "description": "INSERT - Nhiều Hàng",
+            "question": "Viết truy vấn để chèn hai người dùng (name='Hanako', age=30 và name='Jiro', age=22) vào bảng users cùng lúc."
+        },
+        "データの更新": {
+            "title": "Cập nhật Dữ liệu",
+            "description": "UPDATE",
+            "question": "Viết truy vấn để cập nhật age của người dùng có id=1 thành 30 trong bảng users."
+        },
+        "複数カラムの更新": {
+            "title": "Cập nhật Nhiều Cột",
+            "description": "UPDATE - Nhiều Cột",
+            "question": "Viết truy vấn để cập nhật name thành 'Yuki' và age thành 28 cho người dùng có id=2 trong bảng users."
+        },
+        "データの削除": {
+            "title": "Xóa Dữ liệu",
+            "description": "DELETE",
+            "question": "Viết truy vấn để xóa người dùng có id=5 khỏi bảng users."
+        },
+        "テーブルの作成": {
+            "title": "Tạo Bảng",
+            "description": "CREATE TABLE",
+            "question": "Viết truy vấn để tạo bảng users với các cột: id (INT, khóa chính, tự động tăng), name (VARCHAR(100)), và age (INT)."
+        },
+        "カラムの追加": {
+            "title": "Thêm Cột",
+            "description": "ALTER TABLE - ADD",
+            "question": "Viết truy vấn để thêm cột email (VARCHAR(255)) vào bảng users."
+        },
+        "カラムの削除": {
+            "title": "Xóa Cột",
+            "description": "ALTER TABLE - DROP",
+            "question": "Viết truy vấn để xóa cột age khỏi bảng users."
+        },
+        "サブクエリ": {
+            "title": "Truy vấn Con",
+            "description": "Truy vấn Con",
+            "question": "Viết truy vấn sử dụng IN và truy vấn con để chỉ lấy người dùng từ bảng users có đơn hàng trong bảng orders."
+        },
+        "クエリの結合": {
+            "title": "Kết hợp Truy vấn",
+            "description": "UNION",
+            "question": "Viết truy vấn để kết hợp hai câu lệnh SELECT (SELECT name FROM users WHERE age > 30 và SELECT name FROM users WHERE city = 'Tokyo') bằng UNION."
+        },
+        "別名（エイリアス）": {
+            "title": "Bí danh",
+            "description": "AS",
+            "question": "Viết truy vấn để lấy cột name từ bảng users với bí danh 'user_name'."
+        },
+        "文字列の結合": {
+            "title": "Nối Chuỗi",
+            "description": "Hàm Chuỗi - CONCAT",
+            "question": "Viết truy vấn để nối first_name và last_name từ bảng users bằng khoảng trắng và lấy làm full_name."
+        },
+        "大文字小文字変換": {
+            "title": "Chuyển đổi Chữ hoa Chữ thường",
+            "description": "Hàm Chuỗi - UPPER",
+            "question": "Viết truy vấn để lấy cột email từ bảng users được chuyển đổi sang chữ hoa."
+        },
+        "現在日時の取得": {
+            "title": "Lấy Ngày giờ Hiện tại",
+            "description": "Hàm Ngày - NOW",
+            "question": "Viết truy vấn để lấy ngày giờ hiện tại."
+        },
+        "条件分岐": {
+            "title": "Rẽ nhánh Điều kiện",
+            "description": "CASE",
+            "question": "Viết truy vấn để hiển thị '未成年' (vị thành niên) nếu age < 20, hoặc '成人' (người lớn) nếu >= 20, từ bảng users."
+        },
+        "インデックスの作成": {
+            "title": "Tạo Chỉ mục",
+            "description": "INDEX",
+            "question": "Viết truy vấn để tạo chỉ mục tên idx_email trên cột email của bảng users."
+        }
+    }
+}

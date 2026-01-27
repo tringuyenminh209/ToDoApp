@@ -1,0 +1,105 @@
+{
+    "_comment": "Vietnamese translations for Bash Exercises (CheatCodeBashExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Xuất Hello World",
+            "description": "Cơ bản Bash Script",
+            "question": "Viết script Bash xuất chuỗi \"Hello, World!\"."
+        },
+        "変数を使った挨拶": {
+            "title": "Chào hỏi bằng Biến",
+            "description": "Khai báo và Sử dụng Biến",
+            "question": "Gán \"Alice\" vào biến NAME và xuất \"Hello, Alice!\"."
+        },
+        "コマンドライン引数を使う": {
+            "title": "Sử dụng Đối số Dòng lệnh",
+            "description": "Xử lý Đối số Script",
+            "question": "Sử dụng tên được truyền làm đối số dòng lệnh để xuất \"Hello, [tên]!\". Sử dụng đối số đầu tiên ($1)."
+        },
+        "2つの数値の合計": {
+            "title": "Tổng Hai Số",
+            "description": "Mở rộng Số học",
+            "question": "Gán hai số (10 và 20) vào biến và tính toán, xuất tổng của chúng."
+        },
+        "文字列が空かチェック": {
+            "title": "Kiểm tra Chuỗi có Rỗng",
+            "description": "Rẽ nhánh Điều kiện Cơ bản",
+            "question": "Nếu biến STR rỗng, xuất \"Empty\"; nếu không rỗng, xuất \"Not empty\"."
+        },
+        "数値の大小比較": {
+            "title": "So sánh Kích thước Số",
+            "description": "Toán tử So sánh Số nguyên",
+            "question": "Nhận hai đối số (số nguyên) và nếu đối số đầu tiên lớn hơn đối số thứ hai, xuất \"Greater\"; nếu bằng, xuất \"Equal\"; nếu nhỏ hơn, xuất \"Less\"."
+        },
+        "1から5までの数値を出力": {
+            "title": "Xuất Số từ 1 đến 5",
+            "description": "Vòng lặp For Cơ bản",
+            "question": "Sử dụng vòng lặp for để xuất số từ 1 đến 5, mỗi số một dòng."
+        },
+        "Whileループで5回カウント": {
+            "title": "Đếm 5 Lần với Vòng lặp While",
+            "description": "Sử dụng Vòng lặp While",
+            "question": "Sử dụng vòng lặp while để đếm từ 0 đến 4 và xuất mỗi số một dòng."
+        },
+        "配列の最初と最後の要素": {
+            "title": "Phần tử Đầu và Cuối của Mảng",
+            "description": "Thao tác Mảng Cơ bản",
+            "question": "Định nghĩa mảng Fruits=(\"Apple\" \"Banana\" \"Orange\") và xuất phần tử đầu và cuối, mỗi phần tử một dòng."
+        },
+        "配列の全要素を出力": {
+            "title": "Xuất Tất cả Phần tử Mảng",
+            "description": "Lặp lại Mảng",
+            "question": "Xuất tất cả phần tử của mảng Colors=(\"Red\" \"Green\" \"Blue\") mỗi phần tử một dòng."
+        },
+        "挨拶関数を作成": {
+            "title": "Tạo Hàm Chào hỏi",
+            "description": "Cơ bản về Hàm",
+            "question": "Định nghĩa hàm greet nhận tên làm đối số và xuất \"Hello, [tên]!\". Gọi hàm với \"World\" làm đối số."
+        },
+        "文字列の一部を置換": {
+            "title": "Thay thế Một phần Chuỗi",
+            "description": "Mở rộng Tham số",
+            "question": "Có biến STR=\"Hello World\". Thay thế \"World\" bằng \"Bash\" và xuất."
+        },
+        "文字列の一部を抽出": {
+            "title": "Trích xuất Một phần Chuỗi",
+            "description": "Chuỗi con",
+            "question": "Trích xuất và xuất 4 ký tự đầu từ biến TEXT=\"Programming\"."
+        },
+        "ファイルの存在確認": {
+            "title": "Kiểm tra Sự tồn tại Tệp",
+            "description": "Kiểm tra Điều kiện Tệp",
+            "question": "Nếu tên tệp được truyền làm đối số tồn tại, xuất \"File exists\"; nếu không tồn tại, xuất \"File not found\"."
+        },
+        "曜日の判定": {
+            "title": "Xác định Thứ trong Tuần",
+            "description": "Rẽ nhánh bằng Câu lệnh Case",
+            "question": "Nhận thứ trong tuần (1-7) làm đối số và sử dụng câu lệnh case để xuất tên thứ tương ứng. 1=Monday, 2=Tuesday, ..., 7=Sunday. Nếu không khớp, xuất \"Invalid day\"."
+        },
+        "連想配列で値を取得": {
+            "title": "Lấy Giá trị từ Mảng Liên kết",
+            "description": "Sử dụng Mảng Liên kết",
+            "question": "Sử dụng mảng liên kết để quản lý tiếng kêu động vật. Khai báo bằng declare -A sounds, đặt sounds[dog]=\"bark\" và sounds[cat]=\"meow\", và xuất tiếng kêu của tên động vật được truyền làm đối số."
+        },
+        "すべての引数の合計": {
+            "title": "Tổng Tất cả Đối số",
+            "description": "Lặp lại Đối số",
+            "question": "Tính và xuất tổng tất cả giá trị số được truyền làm đối số dòng lệnh. Bạn có thể truy cập tất cả đối số bằng $@."
+        },
+        "文字列の文字数をカウント": {
+            "title": "Đếm Ký tự Chuỗi",
+            "description": "Lấy Độ dài Chuỗi",
+            "question": "Xuất độ dài (số lượng ký tự) của chuỗi được truyền làm đối số."
+        },
+        "デフォルト値の設定": {
+            "title": "Đặt Giá trị Mặc định",
+            "description": "Giá trị Mặc định với Mở rộng Tham số",
+            "question": "Nếu không có đối số được truyền, sử dụng \"Guest\"; nếu có đối số được truyền, sử dụng giá trị đó để xuất \"Hello, [tên]!\". Sử dụng ${1:-giá trị mặc định}."
+        },
+        "文字列を大文字に変換": {
+            "title": "Chuyển Chuỗi sang Chữ hoa",
+            "description": "Chuyển đổi Chữ hoa",
+            "question": "Chuyển chuỗi được truyền làm đối số sang tất cả chữ hoa và xuất."
+        }
+    }
+}

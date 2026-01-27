@@ -44,5 +44,23 @@ class TaskTemplate extends Model
     {
         return $this->belongsTo(LearningMilestoneTemplate::class, 'milestone_template_id');
     }
+
+    /**
+     * Get knowledge_items with translations applied
+     * knowledge_items配列内の各アイテムのtitleとcontentを翻訳
+     */
+    public function getKnowledgeItemsAttribute($value)
+    {
+        $items = json_decode($value, true) ?? [];
+        if (empty($items)) {
+            return [];
+        }
+
+        $locale = app()->getLocale();
+        
+        // knowledge_itemsの翻訳は別途管理する必要がある
+        // 現在は元の値を返す（翻訳はコントローラーで処理）
+        return $items;
+    }
 }
 

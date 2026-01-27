@@ -48,13 +48,13 @@ class ExerciseController extends Controller
         $sortOrder = $request->input('sort_order', 'asc');
         $query->orderBy($sortBy, $sortOrder);
 
-        $exercises = $query->get()->map(function ($exercise) {
+        $exercises = $query->withTranslations()->get()->map(function ($exercise) {
             return [
                 'id' => $exercise->id,
                 'languageId' => $exercise->language_id,
-                'title' => $exercise->title,
+                'title' => $exercise->getTranslation('title') ?? $exercise->title,
                 'slug' => $exercise->slug,
-                'description' => $exercise->description,
+                'description' => $exercise->getTranslation('description') ?? $exercise->description,
                 'difficulty' => $exercise->difficulty,
                 'points' => $exercise->points,
                 'tags' => $exercise->tags,
@@ -101,6 +101,7 @@ class ExerciseController extends Controller
                     ->orWhere('slug', $exerciseId);
             })
             ->where('is_published', true)
+            ->withTranslations()
             ->with(['testCases' => function ($query) {
                 $query->orderBy('sort_order');
             }])
@@ -122,10 +123,10 @@ class ExerciseController extends Controller
         $exerciseData = [
             'id' => $exercise->id,
             'languageId' => $exercise->language_id,
-            'title' => $exercise->title,
+            'title' => $exercise->getTranslation('title') ?? $exercise->title,
             'slug' => $exercise->slug,
-            'description' => $exercise->description,
-            'question' => $exercise->question,
+            'description' => $exercise->getTranslation('description') ?? $exercise->description,
+            'question' => $exercise->getTranslation('question') ?? $exercise->question,
             'starterCode' => $exercise->starter_code,
             'hints' => $exercise->hints,
             'difficulty' => $exercise->difficulty,

@@ -1,0 +1,205 @@
+{
+    "_comment": "Vietnamese translations for Java Exercises (CheatCodeJavaExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Xuất Hello World",
+            "description": "Cơ bản Java",
+            "question": "Viết chương trình Java xuất chuỗi \"Hello, World!\"."
+        },
+        "2つの数値の合計": {
+            "title": "Tổng Hai Số",
+            "description": "Biến và Phép toán Số học",
+            "question": "Gán hai số nguyên (10 và 20) vào biến và tính toán, xuất tổng của chúng."
+        },
+        "文字列を連結して挨拶": {
+            "title": "Nối Chuỗi để Chào hỏi",
+            "description": "Nối Chuỗi",
+            "question": "Định nghĩa biến name = \"Alice\" và xuất \"Hello, Alice!\"."
+        },
+        "数値が正か負かゼロか判定": {
+            "title": "Xác định Số là Dương, Âm hay Không",
+            "description": "Rẽ nhánh Điều kiện",
+            "question": "Có biến num = -5. Nếu số này dương, xuất \"Positive\"; nếu âm, xuất \"Negative\"; nếu 0, xuất \"Zero\"."
+        },
+        "1から5まで出力": {
+            "title": "Xuất Số từ 1 đến 5",
+            "description": "Vòng lặp - for",
+            "question": "Sử dụng vòng lặp for để xuất số từ 1 đến 5, mỗi số một dòng."
+        },
+        "whileループで合計計算": {
+            "title": "Tính Tổng với Vòng lặp While",
+            "description": "Vòng lặp - while",
+            "question": "Định nghĩa biến sum = 0 và i = 1, và sử dụng vòng lặp while để cộng i vào sum khi i nhỏ hơn hoặc bằng 5, sau đó xuất giá trị tổng cuối cùng."
+        },
+        "配列の要素を出力": {
+            "title": "Xuất Phần tử Mảng",
+            "description": "Mảng",
+            "question": "Khai báo mảng số nguyên {10, 20, 30, 40, 50} và xuất mỗi phần tử cách nhau bởi dấu phẩy trên một dòng."
+        },
+        "メソッドで2つの数を足す": {
+            "title": "Cộng Hai Số bằng Phương thức",
+            "description": "Phương thức",
+            "question": "Tạo phương thức add(int a, int b) trả về tổng hai số nguyên. Gọi từ phương thức main với 5 và 10 và xuất kết quả."
+        },
+        "配列の最大値を求める": {
+            "title": "Tìm Giá trị Lớn nhất trong Mảng",
+            "description": "Mảng và Vòng lặp",
+            "question": "Tìm và xuất giá trị lớn nhất từ mảng số nguyên {15, 42, 8, 27, 33}."
+        },
+        "曜日の判定": {
+            "title": "Xác định Thứ trong Tuần",
+            "description": "Câu lệnh Switch",
+            "question": "Có biến day = 1. Sử dụng câu lệnh switch để xuất tên thứ tương ứng. 1=Monday, 2=Tuesday, ..., 7=Sunday. Nếu không khớp, xuất \"Invalid day\"."
+        },
+        "文字列の長さを取得": {
+            "title": "Lấy Độ dài Chuỗi",
+            "description": "Phương thức Chuỗi",
+            "question": "Lấy và xuất độ dài của chuỗi \"Hello Java\"."
+        },
+        "文字列を大文字に変換": {
+            "title": "Chuyển Chuỗi sang Chữ hoa",
+            "description": "Phương thức Chuỗi",
+            "question": "Chuyển chuỗi \"hello world\" sang chữ hoa và xuất."
+        },
+        "文字列を置換": {
+            "title": "Thay thế Chuỗi",
+            "description": "Phương thức Chuỗi",
+            "question": "Thay thế \"Java\" bằng \"World\" trong chuỗi \"Hello Java\" và xuất."
+        },
+        "文字列を分割": {
+            "title": "Chia Chuỗi",
+            "description": "Phương thức Chuỗi",
+            "question": "Chia chuỗi \"apple,banana,orange\" bằng dấu phẩy và xuất mỗi phần tử trên một dòng riêng."
+        },
+        "1から10の偶数を出力": {
+            "title": "Xuất Số Chẵn từ 1 đến 10",
+            "description": "Vòng lặp và Rẽ nhánh Điều kiện",
+            "question": "Xuất chỉ số chẵn từ 1 đến 10, cách nhau bởi dấu phẩy."
+        },
+        "シンプルなクラスを作成": {
+            "title": "Tạo Class Đơn giản",
+            "description": "Hướng đối tượng - Class",
+            "question": "Tạo class Person với trường name và phương thức getName(). Tạo instance với tên \"John\" và xuất tên."
+        },
+        "クラスの継承": {
+            "title": "Kế thừa Class",
+            "description": "Hướng đối tượng - Kế thừa",
+            "question": "Tạo class Animal với phương thức speak. Tạo class Dog kế thừa Animal và ghi đè phương thức speak để trả về \"Woof!\"."
+        },
+        "インターフェースの実装": {
+            "title": "Triển khai Interface",
+            "description": "Hướng đối tượng - Interface",
+            "question": "Định nghĩa phương thức calculateArea() trong interface Shape, triển khai trong class Circle, và trả về diện tích (78.5) của hình tròn có bán kính 5."
+        },
+        "静的メソッドの使用": {
+            "title": "Sử dụng Phương thức Tĩnh",
+            "description": "Hướng đối tượng - Static",
+            "question": "Tạo phương thức tĩnh add(int a, int b) trong class MathUtils và xuất kết quả cộng 5 và 10."
+        },
+        "定数の定義と使用": {
+            "title": "Định nghĩa và Sử dụng Hằng số",
+            "description": "Hằng số",
+            "question": "Định nghĩa biến final tên PI với giá trị 3.14159 và xuất giá trị của nó."
+        },
+        "ArrayListに要素を追加": {
+            "title": "Thêm Phần tử vào ArrayList",
+            "description": "Collection - ArrayList",
+            "question": "Tạo ArrayList kiểu String, thêm \"apple\", \"banana\", \"orange\", và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "ArrayListのサイズを取得": {
+            "title": "Lấy Kích thước ArrayList",
+            "description": "Collection - ArrayList",
+            "question": "Thêm \"red\", \"green\", \"blue\" vào ArrayList và xuất kích thước (số lượng phần tử) của nó."
+        },
+        "HashMapに追加と取得": {
+            "title": "Thêm và Lấy từ HashMap",
+            "description": "Collection - HashMap",
+            "question": "Tạo HashMap<String, Integer>, thêm \"age\" -> 25, và xuất giá trị của \"age\"."
+        },
+        "三項演算子": {
+            "title": "Toán tử Ba ngôi",
+            "description": "Toán tử Ba ngôi",
+            "question": "Có biến age = 18. Sử dụng toán tử ba ngôi để xuất \"Adult\" nếu 18 tuổi trở lên, hoặc \"Minor\" nếu nhỏ hơn."
+        },
+        "例外処理": {
+            "title": "Xử lý Ngoại lệ",
+            "description": "Xử lý Ngoại lệ - Try-Catch",
+            "question": "Cố gắng chuyển chuỗi \"abc\" sang số nguyên bằng Integer.parseInt() sẽ ném ngoại lệ. Bắt ngoại lệ bằng try-catch và xuất \"Error\"."
+        },
+        "For-Eachループ": {
+            "title": "Vòng lặp For-Each",
+            "description": "Vòng lặp - For-Each",
+            "question": "Xuất mỗi phần tử của mảng số nguyên {1, 2, 3, 4, 5} cách nhau bởi dấu phẩy. Sử dụng vòng lặp for-each."
+        },
+        "StringBuilderで文字列連結": {
+            "title": "Nối Chuỗi bằng StringBuilder",
+            "description": "StringBuilder",
+            "question": "Sử dụng StringBuilder để nối \"Hello\", \" \", \"World\" và xuất."
+        },
+        "2つの数の最大値": {
+            "title": "Giá trị Lớn nhất của Hai Số",
+            "description": "Class Math",
+            "question": "Sử dụng Math.max() để xuất giá trị lớn nhất của 15 và 25."
+        },
+        "累乗の計算": {
+            "title": "Tính Lũy thừa",
+            "description": "Class Math",
+            "question": "Sử dụng Math.pow() để tính 2 mũ 3 và xuất dưới dạng số nguyên."
+        },
+        "文字列の一部を抽出": {
+            "title": "Trích xuất Một phần Chuỗi",
+            "description": "Phương thức Chuỗi",
+            "question": "Trích xuất và xuất ký tự từ chỉ mục 0 đến 5 từ chuỗi \"Hello World\"."
+        },
+        "文字列に特定の文字が含まれるか確認": {
+            "title": "Kiểm tra Chuỗi có Chứa Văn bản Cụ thể",
+            "description": "Phương thức Chuỗi",
+            "question": "Kiểm tra xem chuỗi \"Hello Java\" có chứa \"Java\" không. Nếu tìm thấy, xuất \"Found\"; nếu không, xuất \"Not found\"."
+        },
+        "配列のコピー": {
+            "title": "Sao chép Mảng",
+            "description": "Mảng",
+            "question": "Sao chép mảng số nguyên {1, 2, 3} và xuất phần tử của mảng đã sao chép cách nhau bởi dấu phẩy. Sử dụng Arrays.copyOf()."
+        },
+        "配列を昇順にソート": {
+            "title": "Sắp xếp Mảng theo Thứ tự Tăng dần",
+            "description": "Mảng",
+            "question": "Sắp xếp mảng số nguyên {5, 2, 8, 1, 9} theo thứ tự tăng dần bằng Arrays.sort() và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "ラムダ式でフィルタリング": {
+            "title": "Lọc bằng Biểu thức Lambda",
+            "description": "Biểu thức Lambda",
+            "question": "Lọc chỉ số chẵn từ ArrayList và xuất chúng cách nhau bởi dấu phẩy. Sử dụng removeIf() và biểu thức lambda."
+        },
+        "列挙型の使用": {
+            "title": "Sử dụng Enum",
+            "description": "Kiểu Liệt kê - Enum",
+            "question": "Định nghĩa enum Day (MONDAY, TUESDAY, WEDNESDAY) và xuất MONDAY."
+        },
+        "文字列を整数に変換": {
+            "title": "Chuyển Chuỗi sang Số nguyên",
+            "description": "Chuyển đổi Kiểu",
+            "question": "Chuyển chuỗi \"123\" sang số nguyên bằng Integer.parseInt(), cộng 10 vào nó, và xuất kết quả."
+        },
+        "文字列フォーマット": {
+            "title": "Định dạng Chuỗi",
+            "description": "Định dạng Chuỗi",
+            "question": "Sử dụng String.format() để tạo và xuất chuỗi \"Name: John, Age: 25\"."
+        },
+        "2次元配列の合計": {
+            "title": "Tổng Mảng 2 Chiều",
+            "description": "Mảng Đa chiều",
+            "question": "Tính và xuất tổng tất cả phần tử trong mảng 2 chiều {{1, 2}, {3, 4}, {5, 6}}."
+        },
+        "Continue文で3の倍数をスキップ": {
+            "title": "Bỏ qua Bội số của 3 bằng Câu lệnh Continue",
+            "description": "Điều khiển Vòng lặp - Continue",
+            "question": "Xuất số từ 1 đến 10 ngoại trừ bội số của 3, cách nhau bởi dấu phẩy. Sử dụng câu lệnh continue."
+        },
+        "Break文で5以上でループを終了": {
+            "title": "Kết thúc Vòng lặp ở 5 trở lên bằng Câu lệnh Break",
+            "description": "Điều khiển Vòng lặp - Break",
+            "question": "Lặp từ 1 đến 10, và kết thúc vòng lặp khi đạt 5. Xuất số từ 1 đến 4 cách nhau bởi dấu phẩy."
+        }
+    }
+}

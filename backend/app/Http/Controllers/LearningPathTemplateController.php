@@ -94,14 +94,37 @@ class LearningPathTemplateController extends Controller
 
             // Transform template with translations
             $templateData = $template->toArrayWithTranslations();
+            $templateTitle = $template->title; // Get original title for course key mapping
             
             // Transform milestones and tasks using the loaded relationships
             if ($template->milestones && $template->milestones->isNotEmpty()) {
-                $templateData['milestones'] = $template->milestones->map(function ($milestoneModel) {
+                $templateData['milestones'] = $template->milestones->map(function ($milestoneModel) use ($templateTitle) {
                     $milestone = $milestoneModel->toArrayWithTranslations();
                     if ($milestoneModel->tasks && $milestoneModel->tasks->isNotEmpty()) {
-                        $milestone['tasks'] = $milestoneModel->tasks->map(function ($taskModel) {
-                            return $taskModel->toArrayWithTranslations();
+                        $milestone['tasks'] = $milestoneModel->tasks->map(function ($taskModel) use ($templateTitle) {
+                            $task = $taskModel->toArrayWithTranslations();
+                            
+                            // Apply translations to subtasks
+                            if (!empty($task['subtasks']) && is_array($task['subtasks'])) {
+                                $task['subtasks'] = $this->translateSubtasks(
+                                    $task['subtasks'],
+                                    $taskModel->title, // Task title để tìm trong translation file
+                                    $templateTitle, // Template title để xác định course
+                                    app()->getLocale()
+                                );
+                            }
+                            
+                            // Apply translations to knowledge_items
+                            if (!empty($task['knowledge_items']) && is_array($task['knowledge_items'])) {
+                                $task['knowledge_items'] = $this->translateKnowledgeItems(
+                                    $task['knowledge_items'],
+                                    $taskModel->title, // Task title để tìm trong translation file
+                                    $templateTitle, // Template title để xác định course
+                                    app()->getLocale()
+                                );
+                            }
+                            
+                            return $task;
                         })->values()->toArray();
                     } else {
                         $milestone['tasks'] = [];
@@ -121,6 +144,178 @@ class LearningPathTemplateController extends Controller
                 'message' => 'テンプレート詳細の取得に失敗しました'
             ], 500);
         }
+    }
+
+    /**
+     * Translate knowledge_items array based on locale
+     * knowledge_items配列内の各アイテムのtitleとcontentを翻訳
+     */
+    private function translateKnowledgeItems(array $knowledgeItems, string $taskTitle, string $templateTitle, string $locale): array
+    {
+        if (empty($knowledgeItems) || !in_array($locale, ['en', 'vi'])) {
+            return $knowledgeItems;
+        }
+
+        // Map template titles to course keys
+        $courseKeyMap = [
+            'Docker実践マスターコース' => 'docker_basic',
+            'PHP基礎演習' => 'php_basic',
+            'Java基礎演習' => 'java_basic',
+            'SQL/データベース基礎コース' => 'sql_basic',
+            'HTML基礎演習' => 'html_basic',
+            'JavaScript基礎演習' => 'javascript_basic',
+            'TypeScript完全コース' => 'typescript_basic',
+            'React.js完全コース' => 'react_basic',
+            'Python基礎コース' => 'python_basic',
+            'Laravel基礎演習' => 'laravel_basic',
+            'Javaプログラミング設計演習' => 'java_design',
+            'Go言語基礎コース' => 'go_basic',
+            'Git/GitHub完全コース' => 'git_basic',
+        ];
+
+        $courseKey = $courseKeyMap[$templateTitle] ?? null;
+        if (!$courseKey) {
+            return $knowledgeItems;
+        }
+
+        // Load translation file
+        $translationPath = database_path("translations/courses");
+        $translationFile = "{$translationPath}/{$courseKey}_{$locale}.json";
+        
+        if (!file_exists($translationFile)) {
+            return $knowledgeItems;
+        }
+
+        $translations = json_decode(file_get_contents($translationFile), true);
+        if (!$translations) {
+            return $knowledgeItems;
+        }
+
+        // Get knowledge_items translations for this specific task
+        $tasksTranslations = $translations['tasks'] ?? [];
+        $taskTranslations = null;
+        
+        // Find task translations by matching task title (Japanese or translated)
+        foreach ($tasksTranslations as $jaTaskTitle => $taskTrans) {
+            if ($jaTaskTitle === $taskTitle || ($taskTrans['title'] ?? null) === $taskTitle) {
+                $taskTranslations = $taskTrans;
+                break;
+            }
+        }
+
+        if (!$taskTranslations || !isset($taskTranslations['knowledge_items'])) {
+            return $knowledgeItems;
+        }
+
+        $knowledgeItemsTranslations = $taskTranslations['knowledge_items'];
+        $translatedItems = [];
+        
+        foreach ($knowledgeItems as $item) {
+            $jaTitle = $item['title'] ?? null;
+            if (!$jaTitle) {
+                $translatedItems[] = $item;
+                continue;
+            }
+
+            // Find translation for this knowledge item
+            $translatedItem = $item;
+            if (isset($knowledgeItemsTranslations[$jaTitle])) {
+                $itemTranslation = $knowledgeItemsTranslations[$jaTitle];
+                if (isset($itemTranslation['title'])) {
+                    $translatedItem['title'] = $itemTranslation['title'];
+                }
+                if (isset($itemTranslation['content'])) {
+                    $translatedItem['content'] = $itemTranslation['content'];
+                }
+            }
+            
+            $translatedItems[] = $translatedItem;
+        }
+
+        return $translatedItems;
+    }
+
+    /**
+     * Translate subtasks array based on locale
+     * subtasks配列内の各アイテムのtitleを翻訳
+     */
+    private function translateSubtasks(array $subtasks, string $taskTitle, string $templateTitle, string $locale): array
+    {
+        if (empty($subtasks) || !in_array($locale, ['en', 'vi'])) {
+            return $subtasks;
+        }
+
+        // Map template titles to course keys
+        $courseKeyMap = [
+            'Docker実践マスターコース' => 'docker_basic',
+            'PHP基礎演習' => 'php_basic',
+            'Java基礎演習' => 'java_basic',
+            'SQL/データベース基礎コース' => 'sql_basic',
+            'HTML基礎演習' => 'html_basic',
+            'JavaScript基礎演習' => 'javascript_basic',
+            'TypeScript完全コース' => 'typescript_basic',
+            'React.js完全コース' => 'react_basic',
+            'Python基礎コース' => 'python_basic',
+            'Laravel基礎演習' => 'laravel_basic',
+            'Javaプログラミング設計演習' => 'java_design',
+            'Go言語基礎コース' => 'go_basic',
+            'Git/GitHub完全コース' => 'git_basic',
+        ];
+
+        $courseKey = $courseKeyMap[$templateTitle] ?? null;
+        if (!$courseKey) {
+            return $subtasks;
+        }
+
+        // Load translation file
+        $translationPath = database_path("translations/courses");
+        $translationFile = "{$translationPath}/{$courseKey}_{$locale}.json";
+        
+        if (!file_exists($translationFile)) {
+            return $subtasks;
+        }
+
+        $translations = json_decode(file_get_contents($translationFile), true);
+        if (!$translations) {
+            return $subtasks;
+        }
+
+        // Get subtasks translations for this specific task
+        $tasksTranslations = $translations['tasks'] ?? [];
+        $taskTranslations = null;
+        
+        // Find task translations by matching task title (Japanese or translated)
+        foreach ($tasksTranslations as $jaTaskTitle => $taskTrans) {
+            if ($jaTaskTitle === $taskTitle || ($taskTrans['title'] ?? null) === $taskTitle) {
+                $taskTranslations = $taskTrans;
+                break;
+            }
+        }
+
+        if (!$taskTranslations || !isset($taskTranslations['subtasks'])) {
+            return $subtasks;
+        }
+
+        $subtasksTranslations = $taskTranslations['subtasks'];
+        $translatedSubtasks = [];
+        
+        foreach ($subtasks as $subtask) {
+            $jaTitle = $subtask['title'] ?? null;
+            if (!$jaTitle) {
+                $translatedSubtasks[] = $subtask;
+                continue;
+            }
+
+            // Find translation for this subtask
+            $translatedSubtask = $subtask;
+            if (isset($subtasksTranslations[$jaTitle])) {
+                $translatedSubtask['title'] = $subtasksTranslations[$jaTitle];
+            }
+            
+            $translatedSubtasks[] = $translatedSubtask;
+        }
+
+        return $translatedSubtasks;
     }
 
     /**

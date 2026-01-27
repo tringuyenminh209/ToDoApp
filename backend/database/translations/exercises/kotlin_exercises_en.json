@@ -1,0 +1,205 @@
+{
+    "_comment": "English translations for Kotlin Exercises (CheatCodeKotlinExerciseSeeder)",
+    "exercises": {
+        "Hello Worldを出力": {
+            "title": "Output Hello World",
+            "description": "main Function",
+            "question": "Output the string \"Hello, World!\"."
+        },
+        "変数の宣言と出力": {
+            "title": "Declare and Output Variable",
+            "description": "Variables - val",
+            "question": "Assign \"Taro\" to variable name using val and output its value."
+        },
+        "変更可能な変数": {
+            "title": "Mutable Variable",
+            "description": "Variables - var",
+            "question": "Initialize variable count with 10 using var, change it to 20, and then output it."
+        },
+        "文字列テンプレート": {
+            "title": "String Template",
+            "description": "String - Template",
+            "question": "When variable name is \"Hanako\", output \"Hello, Hanako!\" using a string template."
+        },
+        "if式で比較": {
+            "title": "Compare with if Expression",
+            "description": "Conditional Branching - if",
+            "question": "If variable num is greater than 10, output \"Large\"; otherwise output \"Small\". Test with num = 15."
+        },
+        "when式で分岐": {
+            "title": "Branch with when Expression",
+            "description": "Conditional Branching - when",
+            "question": "When variable day is 1, output \"Monday\"; when 2, output \"Tuesday\"; otherwise output \"Other\". Test with day = 1."
+        },
+        "範囲で繰り返し": {
+            "title": "Iterate with Range",
+            "description": "Loop - for",
+            "question": "Use a for statement to output numbers from 1 to 5, each on a new line."
+        },
+        "リストの作成": {
+            "title": "Create List",
+            "description": "Collection - List",
+            "question": "Create listOf(10, 20, 30, 40, 50) and output its number of elements."
+        },
+        "リストの要素にアクセス": {
+            "title": "Access List Element",
+            "description": "Collection - Access",
+            "question": "Output the second element (banana) from list listOf(\"apple\", \"banana\", \"cherry\")."
+        },
+        "ミュータブルリストに追加": {
+            "title": "Add to MutableList",
+            "description": "Collection - MutableList",
+            "question": "Add element 4 to mutableListOf(1, 2, 3) and output the entire list separated by commas."
+        },
+        "リストの各要素を変換": {
+            "title": "Transform Each List Element",
+            "description": "Collection - map",
+            "question": "Create a new list by doubling each element of list listOf(1, 2, 3, 4, 5) and output them separated by commas."
+        },
+        "偶数のみを抽出": {
+            "title": "Extract Only Even Numbers",
+            "description": "Collection - filter",
+            "question": "Extract only even numbers from list listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) and output them separated by commas."
+        },
+        "リストの合計": {
+            "title": "List Sum",
+            "description": "Collection - sum",
+            "question": "Calculate and output the sum of list listOf(1, 2, 3, 4, 5)."
+        },
+        "関数の定義": {
+            "title": "Define Function",
+            "description": "Function - Basics",
+            "question": "Define a function double that doubles its argument and returns it. Output the result of double(7)."
+        },
+        "単一式関数": {
+            "title": "Single Expression Function",
+            "description": "Function - Single Expression",
+            "question": "Define add(a, b) using a single expression function and output the result of add(3, 5)."
+        },
+        "デフォルト引数": {
+            "title": "Default Parameter",
+            "description": "Function - Default Parameter",
+            "question": "Define function greet(name: String = \"Guest\") and call it without arguments to output \"Hello, Guest\"."
+        },
+        "Null許容型": {
+            "title": "Nullable Type",
+            "description": "Null Safety - Nullable",
+            "question": "Assign null to variable name of nullable type String? and output \"Unknown\" as the default value using the Elvis operator."
+        },
+        "セーフコール": {
+            "title": "Safe Call",
+            "description": "Null Safety - Safe Call",
+            "question": "Assign \"Hello\" to nullable type variable text: String? and output its length using a safe call."
+        },
+        "データクラス": {
+            "title": "Data Class",
+            "description": "Class - data class",
+            "question": "Define data class Person(val name: String, val age: Int) and output the name of Person(\"Taro\", 25)."
+        },
+        "Pairの使用": {
+            "title": "Using Pair",
+            "description": "Collection - Pair",
+            "question": "Create Pair(\"Tokyo\", 13) and output first and second separated by commas."
+        },
+        "拡張関数": {
+            "title": "Extension Function",
+            "description": "Function - Extension Function",
+            "question": "Define extension function fun String.addExclamation() for String type, apply it to \"Hello\", and output \"Hello!\"."
+        },
+        "ラムダ式": {
+            "title": "Lambda Expression",
+            "description": "Function - Lambda",
+            "question": "Define val multiply = { a: Int, b: Int -> a * b } using a lambda expression and output multiply(3, 4)."
+        },
+        "マップの作成": {
+            "title": "Create Map",
+            "description": "Collection - Map",
+            "question": "Create mapOf(\"a\" to 1, \"b\" to 2, \"c\" to 3) and output the value of key \"b\"."
+        },
+        "セットで重複削除": {
+            "title": "Remove Duplicates with Set",
+            "description": "Collection - Set",
+            "question": "Convert listOf(1, 2, 2, 3, 3, 3, 4) to a Set to remove duplicates and output them separated by commas."
+        },
+        "文字列を分割": {
+            "title": "Split String",
+            "description": "String - split",
+            "question": "Split string \"apple,banana,cherry\" by comma and output the size of the list."
+        },
+        "文字列を置換": {
+            "title": "Replace String",
+            "description": "String - replace",
+            "question": "Replace \"World\" with \"Kotlin\" in string \"Hello World\" and output it."
+        },
+        "文字列が含まれるか確認": {
+            "title": "Check if String Contains Text",
+            "description": "String - contains",
+            "question": "If string \"Kotlin is fun\" contains \"fun\", output \"Yes\"; otherwise output \"No\"."
+        },
+        "範囲のチェック": {
+            "title": "Range Check",
+            "description": "Operator - in",
+            "question": "Check if variable age = 25 is within the range 18 to 30. If in range, output \"In Range\"; if out of range, output \"Out of Range\"."
+        },
+        "条件を満たす要素があるか": {
+            "title": "Check if Element Meets Condition",
+            "description": "Collection - any",
+            "question": "If list listOf(1, 3, 5, 7, 9) contains an even number, output \"Yes\"; otherwise output \"No\"."
+        },
+        "全要素が条件を満たすか": {
+            "title": "Check if All Elements Meet Condition",
+            "description": "Collection - all",
+            "question": "If all elements of list listOf(2, 4, 6, 8, 10) are even, output \"Yes\"; otherwise output \"No\"."
+        },
+        "let関数": {
+            "title": "let Function",
+            "description": "Scope Function - let",
+            "question": "Use the let function on nullable type variable name: String? = \"Taro\" to output its length."
+        },
+        "apply関数": {
+            "title": "apply Function",
+            "description": "Scope Function - apply",
+            "question": "Use apply on mutableListOf<Int>() to add 1, 2, 3 and output the list separated by commas."
+        },
+        "分解宣言": {
+            "title": "Destructuring Declaration",
+            "description": "Destructuring Declaration",
+            "question": "Assign Pair(10, 20) to (a, b) using destructuring declaration and output a."
+        },
+        "リストを結合": {
+            "title": "Combine Lists",
+            "description": "Collection - zip",
+            "question": "Combine list listOf(\"a\", \"b\", \"c\") and listOf(1, 2, 3) using zip and output the first of the first Pair."
+        },
+        "最初のN個を取得": {
+            "title": "Get First N Elements",
+            "description": "Collection - take",
+            "question": "Get the first 3 elements from list listOf(1, 2, 3, 4, 5) and output them separated by commas."
+        },
+        "最初のN個をスキップ": {
+            "title": "Skip First N Elements",
+            "description": "Collection - drop",
+            "question": "Skip the first 2 elements from list listOf(1, 2, 3, 4, 5) and output the rest separated by commas."
+        },
+        "ネストしたリストを平坦化": {
+            "title": "Flatten Nested List",
+            "description": "Collection - flatten",
+            "question": "Flatten listOf(listOf(1, 2), listOf(3, 4), listOf(5)) and output them separated by commas."
+        },
+        "グループ化": {
+            "title": "Grouping",
+            "description": "Collection - groupBy",
+            "question": "Group list listOf(1, 2, 3, 4, 5, 6) by even and odd numbers and output the size of the even group."
+        },
+        "メソッドチェーン": {
+            "title": "Method Chaining",
+            "description": "Collection - Chaining",
+            "question": "Extract only even numbers from list listOf(1, 2, 3, 4, 5, 6), double each, and output them separated by commas."
+        },
+        "高階関数": {
+            "title": "Higher-Order Function",
+            "description": "Function - Higher-Order Function",
+            "question": "Define a function execute(operation: () -> Unit) that takes a function as an argument and output \"Executed\" using a lambda expression."
+        }
+    }
+}

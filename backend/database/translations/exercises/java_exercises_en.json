@@ -1,0 +1,205 @@
+{
+    "_comment": "English translations for Java Exercises (CheatCodeJavaExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Hello World Output",
+            "description": "Java Basics",
+            "question": "Write a Java program that outputs the string \"Hello, World!\"."
+        },
+        "2つの数値の合計": {
+            "title": "Sum of Two Numbers",
+            "description": "Variables and Arithmetic Operations",
+            "question": "Assign two integers (10 and 20) to variables and calculate and output their sum."
+        },
+        "文字列を連結して挨拶": {
+            "title": "Concatenate Strings for Greeting",
+            "description": "String Concatenation",
+            "question": "Define variable name = \"Alice\" and output \"Hello, Alice!\"."
+        },
+        "数値が正か負かゼロか判定": {
+            "title": "Determine if Number is Positive, Negative, or Zero",
+            "description": "Conditional Branching",
+            "question": "There is a variable num = -5. If this number is positive, output \"Positive\"; if negative, output \"Negative\"; if 0, output \"Zero\"."
+        },
+        "1から5まで出力": {
+            "title": "Output Numbers from 1 to 5",
+            "description": "Loop - for",
+            "question": "Use a for loop to output numbers from 1 to 5, one per line."
+        },
+        "whileループで合計計算": {
+            "title": "Calculate Sum with While Loop",
+            "description": "Loop - while",
+            "question": "Define variables sum = 0 and i = 1, and use a while loop to add i to sum while i is 5 or less, then output the final sum value."
+        },
+        "配列の要素を出力": {
+            "title": "Output Array Elements",
+            "description": "Array",
+            "question": "Declare an integer array {10, 20, 30, 40, 50} and output each element separated by commas on one line."
+        },
+        "メソッドで2つの数を足す": {
+            "title": "Add Two Numbers with Method",
+            "description": "Method",
+            "question": "Create a method add(int a, int b) that returns the sum of two integers. Call it from the main method with 5 and 10 and output the result."
+        },
+        "配列の最大値を求める": {
+            "title": "Find Maximum Value in Array",
+            "description": "Array and Loop",
+            "question": "Find and output the maximum value from integer array {15, 42, 8, 27, 33}."
+        },
+        "曜日の判定": {
+            "title": "Determine Day of Week",
+            "description": "Switch Statement",
+            "question": "There is a variable day = 1. Use a switch statement to output the corresponding day name. 1=Monday, 2=Tuesday, ..., 7=Sunday. If it doesn't match, output \"Invalid day\"."
+        },
+        "文字列の長さを取得": {
+            "title": "Get String Length",
+            "description": "String Methods",
+            "question": "Get and output the length of string \"Hello Java\"."
+        },
+        "文字列を大文字に変換": {
+            "title": "Convert String to Uppercase",
+            "description": "String Methods",
+            "question": "Convert string \"hello world\" to uppercase and output it."
+        },
+        "文字列を置換": {
+            "title": "Replace String",
+            "description": "String Methods",
+            "question": "Replace \"Java\" with \"World\" in string \"Hello Java\" and output it."
+        },
+        "文字列を分割": {
+            "title": "Split String",
+            "description": "String Methods",
+            "question": "Split string \"apple,banana,orange\" by comma and output each element on a separate line."
+        },
+        "1から10の偶数を出力": {
+            "title": "Output Even Numbers from 1 to 10",
+            "description": "Loop and Conditional Branching",
+            "question": "Output only even numbers from 1 to 10, separated by commas."
+        },
+        "シンプルなクラスを作成": {
+            "title": "Create Simple Class",
+            "description": "Object-Oriented - Class",
+            "question": "Create a Person class with a name field and getName() method. Create an instance with name \"John\" and output the name."
+        },
+        "クラスの継承": {
+            "title": "Class Inheritance",
+            "description": "Object-Oriented - Inheritance",
+            "question": "Create an Animal class with a speak method. Create a Dog class that extends Animal and overrides the speak method to return \"Woof!\"."
+        },
+        "インターフェースの実装": {
+            "title": "Implement Interface",
+            "description": "Object-Oriented - Interface",
+            "question": "Define a calculateArea() method in Shape interface, implement it in Circle class, and return the area (78.5) of a circle with radius 5."
+        },
+        "静的メソッドの使用": {
+            "title": "Using Static Methods",
+            "description": "Object-Oriented - Static",
+            "question": "Create a static add(int a, int b) method in MathUtils class and output the result of adding 5 and 10."
+        },
+        "定数の定義と使用": {
+            "title": "Define and Use Constants",
+            "description": "Constants",
+            "question": "Define a final variable named PI with value 3.14159 and output its value."
+        },
+        "ArrayListに要素を追加": {
+            "title": "Add Elements to ArrayList",
+            "description": "Collection - ArrayList",
+            "question": "Create a String ArrayList, add \"apple\", \"banana\", \"orange\", and output them separated by commas."
+        },
+        "ArrayListのサイズを取得": {
+            "title": "Get ArrayList Size",
+            "description": "Collection - ArrayList",
+            "question": "Add \"red\", \"green\", \"blue\" to an ArrayList and output its size (number of elements)."
+        },
+        "HashMapに追加と取得": {
+            "title": "Add and Get from HashMap",
+            "description": "Collection - HashMap",
+            "question": "Create a HashMap<String, Integer>, add \"age\" -> 25, and output the value of \"age\"."
+        },
+        "三項演算子": {
+            "title": "Ternary Operator",
+            "description": "Ternary Operator",
+            "question": "There is a variable age = 18. Use the ternary operator to output \"Adult\" if 18 or older, or \"Minor\" if younger."
+        },
+        "例外処理": {
+            "title": "Exception Handling",
+            "description": "Exception Handling - Try-Catch",
+            "question": "Attempting to convert string \"abc\" to an integer using Integer.parseInt() will throw an exception. Catch the exception with try-catch and output \"Error\"."
+        },
+        "For-Eachループ": {
+            "title": "For-Each Loop",
+            "description": "Loop - For-Each",
+            "question": "Output each element of integer array {1, 2, 3, 4, 5} separated by commas. Use a for-each loop."
+        },
+        "StringBuilderで文字列連結": {
+            "title": "Concatenate Strings with StringBuilder",
+            "description": "StringBuilder",
+            "question": "Use StringBuilder to concatenate \"Hello\", \" \", \"World\" and output it."
+        },
+        "2つの数の最大値": {
+            "title": "Maximum of Two Numbers",
+            "description": "Math Class",
+            "question": "Use Math.max() to output the maximum value of 15 and 25."
+        },
+        "累乗の計算": {
+            "title": "Calculate Power",
+            "description": "Math Class",
+            "question": "Use Math.pow() to calculate 2 to the power of 3 and output it as an integer."
+        },
+        "文字列の一部を抽出": {
+            "title": "Extract Part of String",
+            "description": "String Methods",
+            "question": "Extract and output characters from index 0 to 5 from string \"Hello World\"."
+        },
+        "文字列に特定の文字が含まれるか確認": {
+            "title": "Check if String Contains Specific Text",
+            "description": "String Methods",
+            "question": "Check if string \"Hello Java\" contains \"Java\". If found, output \"Found\"; if not, output \"Not found\"."
+        },
+        "配列のコピー": {
+            "title": "Copy Array",
+            "description": "Array",
+            "question": "Copy integer array {1, 2, 3} and output the elements of the copied array separated by commas. Use Arrays.copyOf()."
+        },
+        "配列を昇順にソート": {
+            "title": "Sort Array in Ascending Order",
+            "description": "Array",
+            "question": "Sort integer array {5, 2, 8, 1, 9} in ascending order using Arrays.sort() and output them separated by commas."
+        },
+        "ラムダ式でフィルタリング": {
+            "title": "Filter with Lambda Expression",
+            "description": "Lambda Expression",
+            "question": "Filter only even numbers from an ArrayList and output them separated by commas. Use removeIf() and lambda expression."
+        },
+        "列挙型の使用": {
+            "title": "Using Enum",
+            "description": "Enumeration Type - Enum",
+            "question": "Define a Day enum (MONDAY, TUESDAY, WEDNESDAY) and output MONDAY."
+        },
+        "文字列を整数に変換": {
+            "title": "Convert String to Integer",
+            "description": "Type Conversion",
+            "question": "Convert string \"123\" to an integer using Integer.parseInt(), add 10 to it, and output the result."
+        },
+        "文字列フォーマット": {
+            "title": "String Formatting",
+            "description": "String Formatting",
+            "question": "Use String.format() to create and output the string \"Name: John, Age: 25\"."
+        },
+        "2次元配列の合計": {
+            "title": "Sum of 2D Array",
+            "description": "Multidimensional Array",
+            "question": "Calculate and output the sum of all elements in 2D array {{1, 2}, {3, 4}, {5, 6}}."
+        },
+        "Continue文で3の倍数をスキップ": {
+            "title": "Skip Multiples of 3 with Continue Statement",
+            "description": "Loop Control - Continue",
+            "question": "Output numbers from 1 to 10 except multiples of 3, separated by commas. Use the continue statement."
+        },
+        "Break文で5以上でループを終了": {
+            "title": "Exit Loop at 5 or Above with Break Statement",
+            "description": "Loop Control - Break",
+            "question": "Loop from 1 to 10, and exit the loop when reaching 5. Output numbers 1 to 4 separated by commas."
+        }
+    }
+}

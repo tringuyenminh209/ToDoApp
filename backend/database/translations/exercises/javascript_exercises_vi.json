@@ -1,0 +1,205 @@
+{
+    "_comment": "Vietnamese translations for JavaScript Exercises (CheatCodeJavaScriptExerciseSeeder)",
+    "exercises": {
+        "Hello Worldを出力": {
+            "title": "Xuất Hello World",
+            "description": "Xuất Console",
+            "question": "Xuất chuỗi \"Hello, World!\" ra console."
+        },
+        "変数の宣言と出力": {
+            "title": "Khai báo và Xuất Biến",
+            "description": "Biến - let/const",
+            "question": "Gán \"Taro\" vào biến name và xuất giá trị của nó ra console."
+        },
+        "テンプレート文字列で出力": {
+            "title": "Xuất bằng Chuỗi Mẫu",
+            "description": "Template Literals",
+            "question": "Khi biến name là \"Hanako\", xuất \"Hello, Hanako!\" sử dụng template literals."
+        },
+        "数値の比較": {
+            "title": "So sánh Số",
+            "description": "Rẽ nhánh Điều kiện - Câu lệnh if",
+            "question": "Nếu biến num lớn hơn 10, xuất \"Large\"; nếu không, xuất \"Small\". Kiểm tra với num = 15."
+        },
+        "1から5まで出力": {
+            "title": "Xuất Số từ 1 đến 5",
+            "description": "Vòng lặp - Câu lệnh for",
+            "question": "Sử dụng câu lệnh for để xuất số từ 1 đến 5, mỗi số một dòng."
+        },
+        "配列の作成と出力": {
+            "title": "Tạo và Xuất Mảng",
+            "description": "Mảng - Cơ bản",
+            "question": "Tạo mảng [10, 20, 30, 40, 50] và xuất độ dài (số lượng phần tử) của nó."
+        },
+        "配列の要素にアクセス": {
+            "title": "Truy cập Phần tử Mảng",
+            "description": "Mảng - Truy cập",
+            "question": "Xuất phần tử thứ hai (banana) từ mảng [\"apple\", \"banana\", \"cherry\"]."
+        },
+        "配列に要素を追加": {
+            "title": "Thêm Phần tử vào Mảng",
+            "description": "Mảng - push",
+            "question": "Thêm phần tử 4 vào mảng [1, 2, 3] và xuất toàn bộ mảng. Định dạng xuất: 1,2,3,4"
+        },
+        "配列の各要素を2倍にする": {
+            "title": "Nhân đôi Mỗi Phần tử Mảng",
+            "description": "Mảng - map",
+            "question": "Tạo mảng mới bằng cách nhân đôi mỗi phần tử của mảng [1, 2, 3, 4, 5] và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "偶数のみを抽出": {
+            "title": "Trích xuất Chỉ Số Chẵn",
+            "description": "Mảng - filter",
+            "question": "Trích xuất chỉ số chẵn từ mảng [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "配列の合計を計算": {
+            "title": "Tính Tổng Mảng",
+            "description": "Mảng - reduce",
+            "question": "Tính và xuất tổng tất cả phần tử trong mảng [1, 2, 3, 4, 5]."
+        },
+        "関数の定義と呼び出し": {
+            "title": "Định nghĩa và Gọi Hàm",
+            "description": "Hàm - Cơ bản",
+            "question": "Định nghĩa hàm double nhân đôi đối số và trả về nó. Xuất kết quả của double(7)."
+        },
+        "アロー関数で2つの数を足す": {
+            "title": "Cộng Hai Số bằng Hàm Mũi tên",
+            "description": "Hàm - Hàm Mũi tên",
+            "question": "Định nghĩa add(a, b) sử dụng hàm mũi tên và xuất kết quả của add(3, 5)."
+        },
+        "オブジェクトの作成": {
+            "title": "Tạo Đối tượng",
+            "description": "Đối tượng - Cơ bản",
+            "question": "Tạo đối tượng với name: \"Taro\", age: 25 và xuất thuộc tính name."
+        },
+        "オブジェクトにメソッドを追加": {
+            "title": "Thêm Phương thức vào Đối tượng",
+            "description": "Đối tượng - Phương thức",
+            "question": "Tạo đối tượng với phương thức greet() và gọi greet() để xuất \"Hello!\"."
+        },
+        "配列の分割代入": {
+            "title": "Phân rã Mảng",
+            "description": "Phân rã - Mảng",
+            "question": "Phân rã hai phần tử đầu từ mảng [10, 20, 30] thành first và second, và xuất first."
+        },
+        "オブジェクトの分割代入": {
+            "title": "Phân rã Đối tượng",
+            "description": "Phân rã - Đối tượng",
+            "question": "Trích xuất name từ đối tượng { name: \"Hanako\", age: 30 } sử dụng phân rã và xuất."
+        },
+        "スプレッド演算子で配列を結合": {
+            "title": "Kết hợp Mảng bằng Toán tử Trải rộng",
+            "description": "Toán tử Trải rộng - Mảng",
+            "question": "Kết hợp mảng [1, 2, 3] và [4, 5, 6] sử dụng toán tử trải rộng và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "スプレッド演算子でオブジェクトを結合": {
+            "title": "Kết hợp Đối tượng bằng Toán tử Trải rộng",
+            "description": "Toán tử Trải rộng - Đối tượng",
+            "question": "Kết hợp đối tượng { a: 1, b: 2 } và { c: 3, d: 4 } sử dụng toán tử trải rộng và xuất thuộc tính b của kết quả."
+        },
+        "文字列を分割": {
+            "title": "Chia Chuỗi",
+            "description": "Chuỗi - split",
+            "question": "Chia chuỗi \"apple,banana,cherry\" bằng dấu phẩy và xuất độ dài của mảng."
+        },
+        "文字列を大文字に変換": {
+            "title": "Chuyển Chuỗi sang Chữ hoa",
+            "description": "Chuỗi - toUpperCase",
+            "question": "Chuyển chuỗi \"hello\" sang chữ hoa và xuất."
+        },
+        "文字列を置換": {
+            "title": "Thay thế Chuỗi",
+            "description": "Chuỗi - replace",
+            "question": "Thay thế \"World\" bằng \"JavaScript\" trong chuỗi \"Hello World\" và xuất."
+        },
+        "文字列が含まれるか確認": {
+            "title": "Kiểm tra Chuỗi có Chứa Văn bản",
+            "description": "Chuỗi - includes",
+            "question": "Nếu chuỗi \"JavaScript is fun\" chứa \"Script\", xuất \"Yes\"; nếu không, xuất \"No\"."
+        },
+        "最大値を求める": {
+            "title": "Tìm Giá trị Lớn nhất",
+            "description": "Math - max",
+            "question": "Tìm và xuất giá trị lớn nhất từ mảng [3, 7, 2, 9, 5]."
+        },
+        "小数を四捨五入": {
+            "title": "Làm tròn Số thập phân",
+            "description": "Math - round",
+            "question": "Làm tròn số 3.7 và xuất."
+        },
+        "JSON文字列をパース": {
+            "title": "Phân tích Chuỗi JSON",
+            "description": "JSON - parse",
+            "question": "Phân tích chuỗi JSON '{\"name\":\"Taro\",\"age\":25}' và xuất thuộc tính name."
+        },
+        "オブジェクトをJSON文字列に変換": {
+            "title": "Chuyển Đối tượng sang Chuỗi JSON",
+            "description": "JSON - stringify",
+            "question": "Chuyển đối tượng { name: \"Hanako\", age: 30 } sang chuỗi JSON và xuất."
+        },
+        "エラーハンドリング": {
+            "title": "Xử lý Lỗi",
+            "description": "Xử lý Lỗi - try/catch",
+            "question": "Sử dụng try/catch để bắt lỗi từ JSON.parse(\"invalid\") và xuất \"Error\"."
+        },
+        "三項演算子を使う": {
+            "title": "Sử dụng Toán tử Ba ngôi",
+            "description": "Toán tử Ba ngôi",
+            "question": "Khi biến age = 18, nếu 20 tuổi trở lên, xuất \"Adult\"; nếu nhỏ hơn, xuất \"Minor\" sử dụng toán tử ba ngôi."
+        },
+        "forEachで各要素を出力": {
+            "title": "Xuất Mỗi Phần tử bằng forEach",
+            "description": "Mảng - forEach",
+            "question": "Xuất mỗi phần tử của mảng [\"a\", \"b\", \"c\"] trên một dòng mới sử dụng forEach."
+        },
+        "配列から要素を検索": {
+            "title": "Tìm Phần tử trong Mảng",
+            "description": "Mảng - find",
+            "question": "Tìm và xuất phần tử đầu tiên lớn hơn 10 từ mảng [5, 12, 8, 130, 44]."
+        },
+        "配列に条件を満たす要素があるか": {
+            "title": "Kiểm tra Mảng có Phần tử Thỏa Điều kiện",
+            "description": "Mảng - some",
+            "question": "Nếu mảng [1, 3, 5, 7, 9] chứa số chẵn, xuất \"Yes\"; nếu không, xuất \"No\"."
+        },
+        "配列の全要素が条件を満たすか": {
+            "title": "Kiểm tra Tất cả Phần tử Mảng Thỏa Điều kiện",
+            "description": "Mảng - every",
+            "question": "Nếu tất cả phần tử của mảng [2, 4, 6, 8, 10] là số chẵn, xuất \"Yes\"; nếu không, xuất \"No\"."
+        },
+        "Setで重複を削除": {
+            "title": "Xóa Trùng lặp bằng Set",
+            "description": "Set - Xóa Trùng lặp",
+            "question": "Xóa trùng lặp từ mảng [1, 2, 2, 3, 3, 3, 4, 4, 4, 4] sử dụng Set và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "デフォルト引数": {
+            "title": "Tham số Mặc định",
+            "description": "Hàm - Tham số Mặc định",
+            "question": "Định nghĩa hàm greet(name = \"Guest\") và gọi nó không có đối số để xuất \"Hello, Guest\"."
+        },
+        "可変長引数": {
+            "title": "Đối số Biến đổi",
+            "description": "Hàm - Tham số Còn lại",
+            "question": "Định nghĩa hàm sum(...numbers) và xuất tổng của sum(1, 2, 3, 4, 5)."
+        },
+        "オブジェクトのキー一覧": {
+            "title": "Danh sách Khóa Đối tượng",
+            "description": "Đối tượng - keys",
+            "question": "Lấy các khóa của đối tượng { a: 1, b: 2, c: 3 } dưới dạng mảng và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "オブジェクトの値一覧": {
+            "title": "Danh sách Giá trị Đối tượng",
+            "description": "Object - values",
+            "question": "Lấy các giá trị của đối tượng { a: 1, b: 2, c: 3 } dưới dạng mảng và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "メソッドチェーン": {
+            "title": "Chuỗi Phương thức",
+            "description": "Mảng - Chuỗi Phương thức",
+            "question": "Trích xuất chỉ số chẵn từ mảng [1, 2, 3, 4, 5, 6], nhân đôi mỗi số, và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "コールバック関数": {
+            "title": "Hàm Callback",
+            "description": "Hàm - Callback",
+            "question": "Định nghĩa hàm execute(callback) và thực thi callback để xuất \"Callback executed\"."
+        }
+    }
+}

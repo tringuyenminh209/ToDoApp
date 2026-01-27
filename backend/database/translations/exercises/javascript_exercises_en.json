@@ -1,0 +1,205 @@
+{
+    "_comment": "English translations for JavaScript Exercises (CheatCodeJavaScriptExerciseSeeder)",
+    "exercises": {
+        "Hello Worldを出力": {
+            "title": "Output Hello World",
+            "description": "Console Output",
+            "question": "Output the string \"Hello, World!\" to the console."
+        },
+        "変数の宣言と出力": {
+            "title": "Declare and Output Variable",
+            "description": "Variables - let/const",
+            "question": "Assign \"Taro\" to variable name and output its value to the console."
+        },
+        "テンプレート文字列で出力": {
+            "title": "Output with Template String",
+            "description": "Template Literals",
+            "question": "When variable name is \"Hanako\", output \"Hello, Hanako!\" using template literals."
+        },
+        "数値の比較": {
+            "title": "Compare Numbers",
+            "description": "Conditional Branching - if Statement",
+            "question": "If variable num is greater than 10, output \"Large\"; otherwise output \"Small\". Test with num = 15."
+        },
+        "1から5まで出力": {
+            "title": "Output Numbers from 1 to 5",
+            "description": "Loop - for Statement",
+            "question": "Use a for statement to output numbers from 1 to 5, each on a new line."
+        },
+        "配列の作成と出力": {
+            "title": "Create and Output Array",
+            "description": "Array - Basics",
+            "question": "Create array [10, 20, 30, 40, 50] and output its length (number of elements)."
+        },
+        "配列の要素にアクセス": {
+            "title": "Access Array Element",
+            "description": "Array - Access",
+            "question": "Output the second element (banana) from array [\"apple\", \"banana\", \"cherry\"]."
+        },
+        "配列に要素を追加": {
+            "title": "Add Element to Array",
+            "description": "Array - push",
+            "question": "Add element 4 to array [1, 2, 3] and output the entire array. Output format: 1,2,3,4"
+        },
+        "配列の各要素を2倍にする": {
+            "title": "Double Each Array Element",
+            "description": "Array - map",
+            "question": "Create a new array by doubling each element of array [1, 2, 3, 4, 5] and output them separated by commas."
+        },
+        "偶数のみを抽出": {
+            "title": "Extract Only Even Numbers",
+            "description": "Array - filter",
+            "question": "Extract only even numbers from array [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] and output them separated by commas."
+        },
+        "配列の合計を計算": {
+            "title": "Calculate Array Sum",
+            "description": "Array - reduce",
+            "question": "Calculate and output the sum of all elements in array [1, 2, 3, 4, 5]."
+        },
+        "関数の定義と呼び出し": {
+            "title": "Define and Call Function",
+            "description": "Function - Basics",
+            "question": "Define a function double that doubles its argument and returns it. Output the result of double(7)."
+        },
+        "アロー関数で2つの数を足す": {
+            "title": "Add Two Numbers with Arrow Function",
+            "description": "Function - Arrow Function",
+            "question": "Define add(a, b) using an arrow function and output the result of add(3, 5)."
+        },
+        "オブジェクトの作成": {
+            "title": "Create Object",
+            "description": "Object - Basics",
+            "question": "Create an object with name: \"Taro\", age: 25 and output the name property."
+        },
+        "オブジェクトにメソッドを追加": {
+            "title": "Add Method to Object",
+            "description": "Object - Method",
+            "question": "Create an object with a greet() method and call greet() to output \"Hello!\"."
+        },
+        "配列の分割代入": {
+            "title": "Array Destructuring",
+            "description": "Destructuring - Array",
+            "question": "Destructure the first two elements from array [10, 20, 30] into first and second, and output first."
+        },
+        "オブジェクトの分割代入": {
+            "title": "Object Destructuring",
+            "description": "Destructuring - Object",
+            "question": "Extract name from object { name: \"Hanako\", age: 30 } using destructuring and output it."
+        },
+        "スプレッド演算子で配列を結合": {
+            "title": "Combine Arrays with Spread Operator",
+            "description": "Spread Operator - Array",
+            "question": "Combine arrays [1, 2, 3] and [4, 5, 6] using the spread operator and output them separated by commas."
+        },
+        "スプレッド演算子でオブジェクトを結合": {
+            "title": "Combine Objects with Spread Operator",
+            "description": "Spread Operator - Object",
+            "question": "Combine objects { a: 1, b: 2 } and { c: 3, d: 4 } using the spread operator and output the b property of the result."
+        },
+        "文字列を分割": {
+            "title": "Split String",
+            "description": "String - split",
+            "question": "Split string \"apple,banana,cherry\" by comma and output the length of the array."
+        },
+        "文字列を大文字に変換": {
+            "title": "Convert String to Uppercase",
+            "description": "String - toUpperCase",
+            "question": "Convert string \"hello\" to uppercase and output it."
+        },
+        "文字列を置換": {
+            "title": "Replace String",
+            "description": "String - replace",
+            "question": "Replace \"World\" with \"JavaScript\" in string \"Hello World\" and output it."
+        },
+        "文字列が含まれるか確認": {
+            "title": "Check if String Contains Text",
+            "description": "String - includes",
+            "question": "If string \"JavaScript is fun\" contains \"Script\", output \"Yes\"; otherwise output \"No\"."
+        },
+        "最大値を求める": {
+            "title": "Find Maximum Value",
+            "description": "Math - max",
+            "question": "Find and output the maximum value from array [3, 7, 2, 9, 5]."
+        },
+        "小数を四捨五入": {
+            "title": "Round Decimal Number",
+            "description": "Math - round",
+            "question": "Round number 3.7 and output it."
+        },
+        "JSON文字列をパース": {
+            "title": "Parse JSON String",
+            "description": "JSON - parse",
+            "question": "Parse JSON string '{\"name\":\"Taro\",\"age\":25}' and output the name property."
+        },
+        "オブジェクトをJSON文字列に変換": {
+            "title": "Convert Object to JSON String",
+            "description": "JSON - stringify",
+            "question": "Convert object { name: \"Hanako\", age: 30 } to a JSON string and output it."
+        },
+        "エラーハンドリング": {
+            "title": "Error Handling",
+            "description": "Error Handling - try/catch",
+            "question": "Use try/catch to catch the error from JSON.parse(\"invalid\") and output \"Error\"."
+        },
+        "三項演算子を使う": {
+            "title": "Use Ternary Operator",
+            "description": "Ternary Operator",
+            "question": "When variable age = 18, if 20 or older, output \"Adult\"; if less, output \"Minor\" using the ternary operator."
+        },
+        "forEachで各要素を出力": {
+            "title": "Output Each Element with forEach",
+            "description": "Array - forEach",
+            "question": "Output each element of array [\"a\", \"b\", \"c\"] on a new line using forEach."
+        },
+        "配列から要素を検索": {
+            "title": "Find Element in Array",
+            "description": "Array - find",
+            "question": "Find and output the first element greater than 10 from array [5, 12, 8, 130, 44]."
+        },
+        "配列に条件を満たす要素があるか": {
+            "title": "Check if Array Has Element Meeting Condition",
+            "description": "Array - some",
+            "question": "If array [1, 3, 5, 7, 9] contains an even number, output \"Yes\"; otherwise output \"No\"."
+        },
+        "配列の全要素が条件を満たすか": {
+            "title": "Check if All Array Elements Meet Condition",
+            "description": "Array - every",
+            "question": "If all elements of array [2, 4, 6, 8, 10] are even, output \"Yes\"; otherwise output \"No\"."
+        },
+        "Setで重複を削除": {
+            "title": "Remove Duplicates with Set",
+            "description": "Set - Remove Duplicates",
+            "question": "Remove duplicates from array [1, 2, 2, 3, 3, 3, 4, 4, 4, 4] using Set and output them separated by commas."
+        },
+        "デフォルト引数": {
+            "title": "Default Parameter",
+            "description": "Function - Default Parameter",
+            "question": "Define function greet(name = \"Guest\") and call it without arguments to output \"Hello, Guest\"."
+        },
+        "可変長引数": {
+            "title": "Variable Arguments",
+            "description": "Function - Rest Parameter",
+            "question": "Define function sum(...numbers) and output the sum of sum(1, 2, 3, 4, 5)."
+        },
+        "オブジェクトのキー一覧": {
+            "title": "List Object Keys",
+            "description": "Object - keys",
+            "question": "Get the keys of object { a: 1, b: 2, c: 3 } as an array and output them separated by commas."
+        },
+        "オブジェクトの値一覧": {
+            "title": "List Object Values",
+            "description": "Object - values",
+            "question": "Get the values of object { a: 1, b: 2, c: 3 } as an array and output them separated by commas."
+        },
+        "メソッドチェーン": {
+            "title": "Method Chaining",
+            "description": "Array - Method Chaining",
+            "question": "Extract only even numbers from array [1, 2, 3, 4, 5, 6], double each, and output them separated by commas."
+        },
+        "コールバック関数": {
+            "title": "Callback Function",
+            "description": "Function - Callback",
+            "question": "Define function execute(callback) and execute callback to output \"Callback executed\"."
+        }
+    }
+}

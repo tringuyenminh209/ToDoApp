@@ -1,0 +1,205 @@
+{
+    "_comment": "Vietnamese translations for Go Exercises (CheatCodeGoExerciseSeeder)",
+    "exercises": {
+        "Hello World出力": {
+            "title": "Xuất Hello World",
+            "description": "Cơ bản Go",
+            "question": "Viết chương trình Go xuất chuỗi \"Hello, World!\"."
+        },
+        "2つの数値の合計": {
+            "title": "Tổng Hai Số",
+            "description": "Biến và Phép toán Số học",
+            "question": "Gán hai số nguyên (10 và 20) vào biến và tính toán, xuất tổng của chúng."
+        },
+        "文字列を連結して挨拶": {
+            "title": "Nối Chuỗi để Chào hỏi",
+            "description": "Nối Chuỗi",
+            "question": "Định nghĩa biến name := \"Alice\" và xuất \"Hello, Alice!\"."
+        },
+        "数値が正か負かゼロか判定": {
+            "title": "Xác định Số là Dương, Âm hay Không",
+            "description": "Rẽ nhánh Điều kiện",
+            "question": "Có biến num := -5. Nếu số này dương, xuất \"Positive\"; nếu âm, xuất \"Negative\"; nếu 0, xuất \"Zero\"."
+        },
+        "1から5まで出力": {
+            "title": "Xuất Số từ 1 đến 5",
+            "description": "Vòng lặp - for",
+            "question": "Sử dụng vòng lặp for để xuất số từ 1 đến 5, mỗi số một dòng."
+        },
+        "forループで合計計算": {
+            "title": "Tính Tổng với Vòng lặp For",
+            "description": "Vòng lặp - for (kiểu while)",
+            "question": "Định nghĩa biến sum := 0 và i := 1, và sử dụng vòng lặp for để cộng i vào sum khi i nhỏ hơn hoặc bằng 5, sau đó xuất giá trị tổng cuối cùng."
+        },
+        "スライスの要素を出力": {
+            "title": "Xuất Phần tử Slice",
+            "description": "Slice",
+            "question": "Khai báo slice số nguyên []int{10, 20, 30, 40, 50} và xuất mỗi phần tử cách nhau bởi dấu phẩy trên một dòng."
+        },
+        "関数で2つの数を足す": {
+            "title": "Cộng Hai Số bằng Hàm",
+            "description": "Hàm",
+            "question": "Tạo hàm add(a int, b int) int trả về tổng hai số nguyên. Gọi từ main với 5 và 10 và xuất kết quả."
+        },
+        "スライスの最大値を求める": {
+            "title": "Tìm Giá trị Lớn nhất trong Slice",
+            "description": "Slice và Vòng lặp",
+            "question": "Tìm và xuất giá trị lớn nhất từ slice số nguyên []int{15, 42, 8, 27, 33}."
+        },
+        "曜日の判定": {
+            "title": "Xác định Thứ trong Tuần",
+            "description": "Câu lệnh Switch",
+            "question": "Có biến day := 1. Sử dụng câu lệnh switch để xuất tên thứ tương ứng. 1=Monday, 2=Tuesday, ..., 7=Sunday. Nếu không khớp, xuất \"Invalid day\"."
+        },
+        "複数の値を返す関数": {
+            "title": "Hàm Trả về Nhiều Giá trị",
+            "description": "Nhiều Giá trị Trả về",
+            "question": "Tạo hàm divide(a int, b int) (int, int) trả về thương và số dư. Xuất kết quả của 10÷3."
+        },
+        "ポインタで値を変更": {
+            "title": "Thay đổi Giá trị bằng Con trỏ",
+            "description": "Con trỏ",
+            "question": "Tạo hàm double(n *int) nhân đôi giá trị được truyền. Truyền 5 từ main và xuất giá trị đã thay đổi."
+        },
+        "マップに追加と取得": {
+            "title": "Thêm và Lấy từ Map",
+            "description": "Map",
+            "question": "Tạo map[string]int, thêm \"age\" -> 25, và xuất giá trị của \"age\"."
+        },
+        "構造体の定義と使用": {
+            "title": "Định nghĩa và Sử dụng Struct",
+            "description": "Struct",
+            "question": "Định nghĩa struct Person với Name(string) và Age(int), tạo instance với \"John\", 25, và xuất tên."
+        },
+        "メソッドの定義": {
+            "title": "Định nghĩa Phương thức",
+            "description": "Phương thức",
+            "question": "Thêm phương thức GetName() string vào struct Person trả về tên."
+        },
+        "文字列の長さを取得": {
+            "title": "Lấy Độ dài Chuỗi",
+            "description": "Chuỗi",
+            "question": "Lấy và xuất độ dài của chuỗi \"Hello Go\"."
+        },
+        "文字列を分割": {
+            "title": "Chia Chuỗi",
+            "description": "Chuỗi",
+            "question": "Chia chuỗi \"apple,banana,orange\" bằng dấu phẩy và xuất mỗi phần tử trên một dòng riêng."
+        },
+        "1から10の偶数を出力": {
+            "title": "Xuất Số Chẵn từ 1 đến 10",
+            "description": "Vòng lặp và Rẽ nhánh Điều kiện",
+            "question": "Xuất chỉ số chẵn từ 1 đến 10, cách nhau bởi dấu phẩy."
+        },
+        "インターフェースの実装": {
+            "title": "Triển khai Interface",
+            "description": "Interface",
+            "question": "Định nghĩa phương thức speak() string trong interface Speaker, triển khai trong struct Dog, và trả về \"Woof!\"."
+        },
+        "deferの使用": {
+            "title": "Sử dụng defer",
+            "description": "defer",
+            "question": "Sử dụng defer để xuất \"End\" sau \"Start\"."
+        },
+        "エラーハンドリング": {
+            "title": "Xử lý Lỗi",
+            "description": "Lỗi",
+            "question": "Tạo divide(a, b int) (int, error) trả về lỗi nếu b=0. Gọi 10÷0 và xuất thông báo lỗi."
+        },
+        "goroutineの使用": {
+            "title": "Sử dụng goroutine",
+            "description": "goroutine",
+            "question": "Tạo hàm print5times(msg string) xuất thông điệp 5 lần. Thực thi đồng thời bằng từ khóa go. Xuất \"Go\"."
+        },
+        "チャネルでデータ送受信": {
+            "title": "Gửi và Nhận Dữ liệu bằng Channel",
+            "description": "Channel",
+            "question": "Tạo chan int, gửi giá trị 42, nhận nó, và xuất."
+        },
+        "rangeでスライスを走査": {
+            "title": "Lặp Slice bằng range",
+            "description": "range",
+            "question": "Lặp slice []int{1, 2, 3, 4, 5} bằng range và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "可変長引数": {
+            "title": "Đối số Biến đổi",
+            "description": "Đối số Biến đổi",
+            "question": "Tạo sum(nums ...int) int trả về tổng tất cả đối số. Truyền 1, 2, 3, 4, 5 và xuất kết quả."
+        },
+        "無名関数": {
+            "title": "Hàm Vô danh",
+            "description": "Hàm Vô danh",
+            "question": "Tạo hàm nhân hai số bằng hàm vô danh, và xuất kết quả nhân 5 và 6."
+        },
+        "クロージャ": {
+            "title": "Closure",
+            "description": "Closure",
+            "question": "Tạo counter() func() int trả về hàm tăng đếm mỗi lần được gọi. Gọi 3 lần và xuất giá trị cuối cùng."
+        },
+        "型アサーション": {
+            "title": "Ép kiểu",
+            "description": "Ép kiểu",
+            "question": "Gán số nguyên 42 vào biến kiểu interface{}, trích xuất nó dưới dạng kiểu int bằng ép kiểu, và xuất."
+        },
+        "型スイッチ": {
+            "title": "Chuyển đổi Kiểu",
+            "description": "Chuyển đổi Kiểu",
+            "question": "Tạo hàm nhận đối số interface{} và trả về \"Integer\" nếu kiểu int, \"String\" nếu kiểu string. Truyền 42 và xuất kết quả."
+        },
+        "appendでスライスに追加": {
+            "title": "Thêm vào Slice bằng append",
+            "description": "Slice",
+            "question": "Thêm 4 và 5 vào slice []int{1, 2, 3} và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "Continue文で3の倍数をスキップ": {
+            "title": "Bỏ qua Bội số của 3 bằng Câu lệnh Continue",
+            "description": "Điều khiển Vòng lặp - Continue",
+            "question": "Xuất số từ 1 đến 10 ngoại trừ bội số của 3, cách nhau bởi dấu phẩy. Sử dụng câu lệnh continue."
+        },
+        "Break文で5以上でループを終了": {
+            "title": "Kết thúc Vòng lặp ở 5 trở lên bằng Câu lệnh Break",
+            "description": "Điều khiển Vòng lặp - Break",
+            "question": "Lặp từ 1 đến 10, và kết thúc vòng lặp khi đạt 5. Xuất số từ 1 đến 4 cách nhau bởi dấu phẩy."
+        },
+        "配列の使用": {
+            "title": "Sử dụng Mảng",
+            "description": "Mảng",
+            "question": "Khai báo mảng độ dài cố định [5]int{1, 2, 3, 4, 5} và xuất phần tử cách nhau bởi dấu phẩy."
+        },
+        "文字列を置換": {
+            "title": "Thay thế Chuỗi",
+            "description": "Chuỗi",
+            "question": "Thay thế \"Go\" bằng \"World\" trong chuỗi \"Hello Go\" và xuất."
+        },
+        "文字列を大文字に変換": {
+            "title": "Chuyển Chuỗi sang Chữ hoa",
+            "description": "Chuỗi",
+            "question": "Chuyển chuỗi \"hello world\" sang chữ hoa và xuất."
+        },
+        "文字列に部分文字列が含まれるか確認": {
+            "title": "Kiểm tra Chuỗi có Chứa Chuỗi con",
+            "description": "Chuỗi",
+            "question": "Kiểm tra xem chuỗi \"Hello Go\" có chứa \"Go\" không. Nếu tìm thấy, xuất \"Found\"; nếu không, xuất \"Not found\"."
+        },
+        "文字列フォーマット": {
+            "title": "Định dạng Chuỗi",
+            "description": "Định dạng",
+            "question": "Sử dụng fmt.Sprintf() để tạo và xuất chuỗi \"Name: John, Age: 25\"."
+        },
+        "再帰で階乗を計算": {
+            "title": "Tính Giai thừa bằng Đệ quy",
+            "description": "Đệ quy",
+            "question": "Tạo hàm đệ quy factorial(n int) int và tính, xuất giai thừa của 5 (120)."
+        },
+        "init関数": {
+            "title": "Hàm init",
+            "description": "init",
+            "question": "Xuất \"Init\" trong hàm init và \"Main\" trong main."
+        },
+        "空のインターフェース": {
+            "title": "Interface Rỗng",
+            "description": "interface{}",
+            "question": "Gán chuỗi \"Hello\" vào biến kiểu interface{} và xuất."
+        }
+    }
+}

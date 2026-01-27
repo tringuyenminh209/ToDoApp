@@ -1,0 +1,205 @@
+{
+    "_comment": "Vietnamese translations for Kotlin Exercises (CheatCodeKotlinExerciseSeeder)",
+    "exercises": {
+        "Hello Worldを出力": {
+            "title": "Xuất Hello World",
+            "description": "Hàm main",
+            "question": "Xuất chuỗi \"Hello, World!\"."
+        },
+        "変数の宣言と出力": {
+            "title": "Khai báo và Xuất Biến",
+            "description": "Biến - val",
+            "question": "Gán \"Taro\" vào biến name bằng val và xuất giá trị của nó."
+        },
+        "変更可能な変数": {
+            "title": "Biến Có thể Thay đổi",
+            "description": "Biến - var",
+            "question": "Khởi tạo biến count với 10 bằng var, thay đổi thành 20, sau đó xuất."
+        },
+        "文字列テンプレート": {
+            "title": "Template Chuỗi",
+            "description": "Chuỗi - Template",
+            "question": "Khi biến name là \"Hanako\", xuất \"Hello, Hanako!\" sử dụng template chuỗi."
+        },
+        "if式で比較": {
+            "title": "So sánh bằng Biểu thức if",
+            "description": "Rẽ nhánh Điều kiện - if",
+            "question": "Nếu biến num lớn hơn 10, xuất \"Large\"; nếu không, xuất \"Small\". Kiểm tra với num = 15."
+        },
+        "when式で分岐": {
+            "title": "Rẽ nhánh bằng Biểu thức when",
+            "description": "Rẽ nhánh Điều kiện - when",
+            "question": "Khi biến day là 1, xuất \"Monday\"; khi 2, xuất \"Tuesday\"; nếu không, xuất \"Other\". Kiểm tra với day = 1."
+        },
+        "範囲で繰り返し": {
+            "title": "Lặp lại bằng Phạm vi",
+            "description": "Vòng lặp - for",
+            "question": "Sử dụng câu lệnh for để xuất số từ 1 đến 5, mỗi số một dòng."
+        },
+        "リストの作成": {
+            "title": "Tạo Danh sách",
+            "description": "Collection - List",
+            "question": "Tạo listOf(10, 20, 30, 40, 50) và xuất số lượng phần tử của nó."
+        },
+        "リストの要素にアクセス": {
+            "title": "Truy cập Phần tử Danh sách",
+            "description": "Collection - Truy cập",
+            "question": "Xuất phần tử thứ hai (banana) từ danh sách listOf(\"apple\", \"banana\", \"cherry\")."
+        },
+        "ミュータブルリストに追加": {
+            "title": "Thêm vào MutableList",
+            "description": "Collection - MutableList",
+            "question": "Thêm phần tử 4 vào mutableListOf(1, 2, 3) và xuất toàn bộ danh sách cách nhau bởi dấu phẩy."
+        },
+        "リストの各要素を変換": {
+            "title": "Chuyển đổi Mỗi Phần tử Danh sách",
+            "description": "Collection - map",
+            "question": "Tạo danh sách mới bằng cách nhân đôi mỗi phần tử của danh sách listOf(1, 2, 3, 4, 5) và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "偶数のみを抽出": {
+            "title": "Trích xuất Chỉ Số Chẵn",
+            "description": "Collection - filter",
+            "question": "Trích xuất chỉ số chẵn từ danh sách listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "リストの合計": {
+            "title": "Tổng Danh sách",
+            "description": "Collection - sum",
+            "question": "Tính và xuất tổng của danh sách listOf(1, 2, 3, 4, 5)."
+        },
+        "関数の定義": {
+            "title": "Định nghĩa Hàm",
+            "description": "Hàm - Cơ bản",
+            "question": "Định nghĩa hàm double nhân đôi đối số và trả về nó. Xuất kết quả của double(7)."
+        },
+        "単一式関数": {
+            "title": "Hàm Biểu thức Đơn",
+            "description": "Hàm - Biểu thức Đơn",
+            "question": "Định nghĩa add(a, b) sử dụng hàm biểu thức đơn và xuất kết quả của add(3, 5)."
+        },
+        "デフォルト引数": {
+            "title": "Tham số Mặc định",
+            "description": "Hàm - Tham số Mặc định",
+            "question": "Định nghĩa hàm greet(name: String = \"Guest\") và gọi nó không có đối số để xuất \"Hello, Guest\"."
+        },
+        "Null許容型": {
+            "title": "Kiểu Nullable",
+            "description": "Null Safety - Nullable",
+            "question": "Gán null vào biến name kiểu nullable String? và xuất \"Unknown\" làm giá trị mặc định bằng toán tử Elvis."
+        },
+        "セーフコール": {
+            "title": "Safe Call",
+            "description": "Null Safety - Safe Call",
+            "question": "Gán \"Hello\" vào biến kiểu nullable text: String? và xuất độ dài của nó bằng safe call."
+        },
+        "データクラス": {
+            "title": "Data Class",
+            "description": "Class - data class",
+            "question": "Định nghĩa data class Person(val name: String, val age: Int) và xuất tên của Person(\"Taro\", 25)."
+        },
+        "Pairの使用": {
+            "title": "Sử dụng Pair",
+            "description": "Collection - Pair",
+            "question": "Tạo Pair(\"Tokyo\", 13) và xuất first và second cách nhau bởi dấu phẩy."
+        },
+        "拡張関数": {
+            "title": "Hàm Mở rộng",
+            "description": "Hàm - Hàm Mở rộng",
+            "question": "Định nghĩa hàm mở rộng fun String.addExclamation() cho kiểu String, áp dụng cho \"Hello\", và xuất \"Hello!\"."
+        },
+        "ラムダ式": {
+            "title": "Biểu thức Lambda",
+            "description": "Hàm - Lambda",
+            "question": "Định nghĩa val multiply = { a: Int, b: Int -> a * b } bằng biểu thức lambda và xuất multiply(3, 4)."
+        },
+        "マップの作成": {
+            "title": "Tạo Map",
+            "description": "Collection - Map",
+            "question": "Tạo mapOf(\"a\" to 1, \"b\" to 2, \"c\" to 3) và xuất giá trị của khóa \"b\"."
+        },
+        "セットで重複削除": {
+            "title": "Xóa Trùng lặp bằng Set",
+            "description": "Collection - Set",
+            "question": "Chuyển listOf(1, 2, 2, 3, 3, 3, 4) sang Set để xóa trùng lặp và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "文字列を分割": {
+            "title": "Chia Chuỗi",
+            "description": "Chuỗi - split",
+            "question": "Chia chuỗi \"apple,banana,cherry\" bằng dấu phẩy và xuất kích thước của danh sách."
+        },
+        "文字列を置換": {
+            "title": "Thay thế Chuỗi",
+            "description": "Chuỗi - replace",
+            "question": "Thay thế \"World\" bằng \"Kotlin\" trong chuỗi \"Hello World\" và xuất."
+        },
+        "文字列が含まれるか確認": {
+            "title": "Kiểm tra Chuỗi có Chứa Văn bản",
+            "description": "Chuỗi - contains",
+            "question": "Nếu chuỗi \"Kotlin is fun\" chứa \"fun\", xuất \"Yes\"; nếu không, xuất \"No\"."
+        },
+        "範囲のチェック": {
+            "title": "Kiểm tra Phạm vi",
+            "description": "Toán tử - in",
+            "question": "Kiểm tra xem biến age = 25 có trong phạm vi 18 đến 30 không. Nếu trong phạm vi, xuất \"In Range\"; nếu ngoài phạm vi, xuất \"Out of Range\"."
+        },
+        "条件を満たす要素があるか": {
+            "title": "Kiểm tra Phần tử Thỏa Điều kiện",
+            "description": "Collection - any",
+            "question": "Nếu danh sách listOf(1, 3, 5, 7, 9) chứa số chẵn, xuất \"Yes\"; nếu không, xuất \"No\"."
+        },
+        "全要素が条件を満たすか": {
+            "title": "Kiểm tra Tất cả Phần tử Thỏa Điều kiện",
+            "description": "Collection - all",
+            "question": "Nếu tất cả phần tử của danh sách listOf(2, 4, 6, 8, 10) là số chẵn, xuất \"Yes\"; nếu không, xuất \"No\"."
+        },
+        "let関数": {
+            "title": "Hàm let",
+            "description": "Scope Function - let",
+            "question": "Sử dụng hàm let trên biến kiểu nullable name: String? = \"Taro\" để xuất độ dài của nó."
+        },
+        "apply関数": {
+            "title": "Hàm apply",
+            "description": "Scope Function - apply",
+            "question": "Sử dụng apply trên mutableListOf<Int>() để thêm 1, 2, 3 và xuất danh sách cách nhau bởi dấu phẩy."
+        },
+        "分解宣言": {
+            "title": "Khai báo Phân rã",
+            "description": "Khai báo Phân rã",
+            "question": "Gán Pair(10, 20) vào (a, b) bằng khai báo phân rã và xuất a."
+        },
+        "リストを結合": {
+            "title": "Kết hợp Danh sách",
+            "description": "Collection - zip",
+            "question": "Kết hợp danh sách listOf(\"a\", \"b\", \"c\") và listOf(1, 2, 3) bằng zip và xuất first của Pair đầu tiên."
+        },
+        "最初のN個を取得": {
+            "title": "Lấy N Phần tử Đầu tiên",
+            "description": "Collection - take",
+            "question": "Lấy 3 phần tử đầu tiên từ danh sách listOf(1, 2, 3, 4, 5) và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "最初のN個をスキップ": {
+            "title": "Bỏ qua N Phần tử Đầu tiên",
+            "description": "Collection - drop",
+            "question": "Bỏ qua 2 phần tử đầu tiên từ danh sách listOf(1, 2, 3, 4, 5) và xuất phần còn lại cách nhau bởi dấu phẩy."
+        },
+        "ネストしたリストを平坦化": {
+            "title": "Làm phẳng Danh sách Lồng nhau",
+            "description": "Collection - flatten",
+            "question": "Làm phẳng listOf(listOf(1, 2), listOf(3, 4), listOf(5)) và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "グループ化": {
+            "title": "Nhóm hóa",
+            "description": "Collection - groupBy",
+            "question": "Nhóm danh sách listOf(1, 2, 3, 4, 5, 6) theo số chẵn và lẻ và xuất kích thước của nhóm chẵn."
+        },
+        "メソッドチェーン": {
+            "title": "Chuỗi Phương thức",
+            "description": "Collection - Chaining",
+            "question": "Trích xuất chỉ số chẵn từ danh sách listOf(1, 2, 3, 4, 5, 6), nhân đôi mỗi số, và xuất chúng cách nhau bởi dấu phẩy."
+        },
+        "高階関数": {
+            "title": "Hàm Bậc cao",
+            "description": "Hàm - Hàm Bậc cao",
+            "question": "Định nghĩa hàm execute(operation: () -> Unit) nhận hàm làm đối số và xuất \"Executed\" bằng biểu thức lambda."
+        }
+    }
+}
