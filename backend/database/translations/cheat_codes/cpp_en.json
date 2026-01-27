@@ -43,237 +43,292 @@
         "getting-started": {
             "hello.cpp": {
                 "title": "hello.cpp",
-                "description": "Basic Hello World program"
+                "description": "Basic Hello World program",
+                "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello Kizamu\\n\";\n    return 0;\n}"
             },
             "コンパイルと実行": {
                 "title": "Compile and Run",
-                "description": "Compiling and running C++ programs"
+                "description": "Compiling and running C++ programs",
+                "code": "$ g++ hello.cpp -o hello\n$ ./hello\nHello Kizamu"
             },
             "変数": {
                 "title": "Variables",
-                "description": "Variable declaration and types"
+                "description": "Variable declaration and types",
+                "code": "int number = 5;       // Integer\nfloat f = 0.95;       // Floating number\ndouble PI = 3.14159;  // Floating number\nchar yes = 'Y';       // Character\nstd::string s = \"ME\"; // String (text)\nbool isRight = true;  // Boolean\n\n// Constants\nconst float RATE = 0.8;"
             },
             "一様初期化": {
                 "title": "Uniform Initialization",
-                "description": "Uniform initialization syntax"
+                "description": "Uniform initialization syntax",
+                "code": "int age {25};         // Since C++11\nstd::cout << age;     // Print 25"
             },
             "基本データ型": {
                 "title": "Primitive Data Types",
-                "description": "Primitive data types table"
+                "description": "Primitive data types table",
+                "code": "| Data Type | Size         | Range            |\n| --------- | ------------ | ---------------- |\n| int       | 4 bytes      | -231 to 231-1  |\n| float     | 4 bytes      | N/A            |\n| double    | 8 bytes      | N/A            |\n| char      | 1 byte       | -128 to 127     |\n| bool      | 1 byte       | true / false    |\n| void      | N/A          | N/A            |\n| wchar_t   | 2 or 4 bytes | 1 wide character |"
             },
             "ユーザー入力": {
                 "title": "User Input",
-                "description": "Reading user input"
+                "description": "Reading user input",
+                "code": "int num;\n\nstd::cout << \"Type a number: \";\nstd::cin >> num;\n\nstd::cout << \"You entered \" << num;"
             },
             "交換": {
                 "title": "Swap",
-                "description": "Variable swapping"
+                "description": "Variable swapping",
+                "code": "int a = 5, b = 10;\nstd::swap(a, b);\n\n// Outputs: a=10, b=5\nstd::cout << \"a=\" << a << \", b=\" << b;"
             },
             "コメント": {
                 "title": "Comments",
-                "description": "Comment syntax"
+                "description": "Comment syntax",
+                "code": "// A single one line comment in C++\n\n/* This is a multiple line comment\n   in C++ */"
             },
             "If文": {
                 "title": "If Statement",
-                "description": "Basic if statement"
+                "description": "Basic if statement",
+                "code": "if (a == 10) {\n    // do something\n}"
             },
             "ループ": {
                 "title": "Loops",
-                "description": "For loop"
+                "description": "For loop",
+                "code": "for (int i = 0; i < 10; i++) {\n    std::cout << i << \"\\n\";\n}"
             },
             "関数": {
                 "title": "Functions",
-                "description": "Function declaration and definition"
+                "description": "Function declaration and definition",
+                "code": "#include <iostream>\n \nvoid hello(); // Declaring\n \nint main() {  // main function\n    hello();    // Calling\n}\n \nvoid hello() { // Defining\n    std::cout << \"Hello Kizamu!\\n\";\n}"
             },
             "参照": {
                 "title": "References",
-                "description": "Reference - variable alias"
+                "description": "Reference - variable alias",
+                "code": "int i = 1;\nint& ri = i; // ri is a reference to i\n\nri = 2; // i is now changed to 2\nstd::cout << \"i=\" << i;\n\ni = 3;   // i is now changed to 3\nstd::cout << \"ri=\" << ri;"
             },
             "名前空間": {
                 "title": "Namespaces",
-                "description": "Namespace usage"
+                "description": "Namespace usage",
+                "code": "#include <iostream>\nnamespace ns1 {int val(){return 5;}}\nint main()\n{\n    std::cout << ns1::val();\n}"
             },
             "using namespace": {
                 "title": "using namespace",
-                "description": "using namespace directive"
+                "description": "using namespace directive",
+                "code": "#include <iostream>\nnamespace ns1 {int val(){return 5;}}\nusing namespace ns1;\nusing namespace std;\nint main()\n{\n    cout << val(); \n}"
             }
         },
         "cpp-arrays": {
             "宣言": {
                 "title": "Declaration",
-                "description": "Array declaration and initialization"
+                "description": "Array declaration and initialization",
+                "code": "std::array<int, 3> marks; // Definition\nmarks[0] = 92;\nmarks[1] = 97;\nmarks[2] = 98;\n\n// Define and initialize\nstd::array<int, 3> = {92, 97, 98};\n\n// With empty members\nstd::array<int, 3> marks = {92, 97};\nstd::cout << marks[2]; // Outputs: 0"
             },
             "操作": {
                 "title": "Manipulation",
-                "description": "Array manipulation"
+                "description": "Array manipulation",
+                "code": "std::array<int, 6> marks = {92, 97, 98, 99, 98, 94};\n\n// Print first element\nstd::cout << marks[0];\n\n// Change 2th element to 99\nmarks[1] = 99;\n\n// Take input from the user\nstd::cin >> marks[2];"
             },
             "表示": {
                 "title": "Display",
-                "description": "Displaying array elements"
+                "description": "Displaying array elements",
+                "code": "char ref[5] = {'R', 'e', 'f'};\n\n// Range based for loop\nfor (const int &n : ref) {\n    std::cout << std::string(1, n);\n}\n\n// Traditional for loop\nfor (int i = 0; i < sizeof(ref); ++i) {\n    std::cout << ref[i];\n}"
             },
             "多次元配列": {
                 "title": "Multidimensional Arrays",
-                "description": "Multidimensional arrays"
+                "description": "Multidimensional arrays",
+                "code": "int x[2][6] = {\n    {1,2,3,4,5,6}, {6,5,4,3,2,1}\n};\nfor (int i = 0; i < 2; ++i) {\n    for (int j = 0; j < 6; ++j) {\n        std::cout << x[i][j] << \" \";\n    }\n}\n// Outputs: 1 2 3 4 5 6 6 5 4 3 2 1"
             }
         },
         "cpp-conditionals": {
             "If節": {
                 "title": "If Clause",
-                "description": "Basic if statement"
+                "description": "Basic if statement",
+                "code": "if (a == 10) {\n    // do something\n}"
             },
             "If-Else": {
                 "title": "If-Else",
-                "description": "If-else statement"
+                "description": "If-else statement",
+                "code": "int number = 16;\n\nif (number % 2 == 0)\n{\n    std::cout << \"even\";\n}\nelse\n{\n    std::cout << \"odd\";\n}\n\n// Outputs: even"
             },
             "Else if文": {
                 "title": "Else if Statement",
-                "description": "Else-if chain"
+                "description": "Else-if chain",
+                "code": "int score = 99;\nif (score == 100) {\n    std::cout << \"Superb\";\n}\nelse if (score >= 90) {\n    std::cout << \"Excellent\";\n}\nelse if (score >= 80) {\n    std::cout << \"Very Good\";\n}\nelse if (score >= 70) {\n    std::cout << \"Good\";\n}\nelse if (score >= 60)\n    std::cout << \"OK\";\nelse\n    std::cout << \"What?\";"
             },
             "関係演算子": {
                 "title": "Relational Operators",
-                "description": "Relational operators table"
+                "description": "Relational operators table",
+                "code": "| a == b | a is equal to b              |\n| a != b | a is NOT equal to b          |\n| a < b  | a is less than b             |\n| a > b  | a is greater b               |\n| a <= b | a is less than or equal to b |\n| a >= b | a is greater or equal to b   |"
             },
             "代入演算子": {
                 "title": "Assignment Operators",
-                "description": "Assignment operators table"
+                "description": "Assignment operators table",
+                "code": "| Example | Equivalent to    |\n| ------- | ---------------- |\n| a += b  | Aka a = a + b  |\n| a -= b  | Aka a = a - b  |\n| a *= b  | Aka a = a * b  |\n| a /= b  | Aka a = a / b  |\n| a %= b  | Aka a = a % b  |"
             },
             "論理演算子": {
                 "title": "Logical Operators",
-                "description": "Logical operators table"
+                "description": "Logical operators table",
+                "code": "| Example       | Meaning               |\n| ------------- | --------------------- |\n| exp1 && exp2  | Both are true (AND) |\n| exp1 || exp2 | Either is true (OR) |\n| !exp          | exp is false (NOT)  |"
             },
             "ビット演算子": {
                 "title": "Bitwise Operators",
-                "description": "Bitwise operators table"
+                "description": "Bitwise operators table",
+                "code": "| Operator | Description             |\n| -------- | ----------------------- |\n| a & b    | Binary AND              |\n| a | b    | Binary OR               |\n| a ^ b    | Binary XOR              |\n| ~ a      | Binary One's Complement |\n| a << b   | Binary Shift Left       |\n| a >> b   | Binary Shift Right      |"
             },
             "三項演算子": {
                 "title": "Ternary Operator",
-                "description": "Ternary conditional operator"
+                "description": "Ternary conditional operator",
+                "code": "int x = 3, y = 5, max;\nmax = (x > y) ? x : y;\n\n// Outputs: 5\nstd::cout << max << std::endl;"
             }
         },
         "cpp-loops": {
             "Forループ": {
                 "title": "For Loop",
-                "description": "Basic for loop"
+                "description": "Basic for loop",
+                "code": "for (int i = 0; i < 10; i++) {\n    std::cout << i << \"\\n\";\n}"
             },
             "Whileループ": {
                 "title": "While Loop",
-                "description": "While loop"
+                "description": "While loop",
+                "code": "int i = 0;\nwhile (i < 5) {\n    std::cout << i << \" \";\n    i++;\n}"
             },
             "Do-Whileループ": {
                 "title": "Do-While Loop",
-                "description": "Do-while loop"
+                "description": "Do-while loop",
+                "code": "int i = 0;\ndo {\n    std::cout << i << \" \";\n    i++;\n} while (i < 5);"
             },
             "範囲ベースForループ": {
                 "title": "Range-based For Loop",
-                "description": "Range-based for loop (C++11)"
+                "description": "Range-based for loop (C++11)",
+                "code": "std::array<int, 5> arr = {1, 2, 3, 4, 5};\nfor (int x : arr) {\n    std::cout << x << \" \";\n}"
             },
             "BreakとContinue": {
                 "title": "Break and Continue",
-                "description": "Break and continue statements"
+                "description": "Break and continue statements",
+                "code": "for (int i = 0; i < 10; i++) {\n    if (i == 5) break;\n    if (i % 2 == 0) continue;\n    std::cout << i << \" \";\n}"
             }
         },
         "cpp-functions": {
             "関数の宣言": {
                 "title": "Function Declaration",
-                "description": "Function declaration and definition"
+                "description": "Function declaration and definition",
+                "code": "#include <iostream>\n \nvoid hello(); // Declaring\n \nint main() {  // main function\n    hello();    // Calling\n}\n \nvoid hello() { // Defining\n    std::cout << \"Hello Kizamu!\\n\";\n}"
             },
             "関数のパラメータ": {
                 "title": "Function Parameters",
-                "description": "Function with parameters"
+                "description": "Function with parameters",
+                "code": "int add(int a, int b) {\n    return a + b;\n}\n\nint result = add(5, 3);\nstd::cout << result; // Outputs: 8"
             },
             "デフォルトパラメータ": {
                 "title": "Default Parameters",
-                "description": "Default function parameters"
+                "description": "Default function parameters",
+                "code": "int multiply(int a, int b = 2) {\n    return a * b;\n}\n\nmultiply(5);    // Returns 10\nmultiply(5, 3); // Returns 15"
             },
             "関数のオーバーロード": {
                 "title": "Function Overloading",
-                "description": "Function overloading"
+                "description": "Function overloading",
+                "code": "int add(int a, int b) {\n    return a + b;\n}\n\ndouble add(double a, double b) {\n    return a + b;\n}"
             },
             "参照渡し": {
                 "title": "Pass by Reference",
-                "description": "Passing parameters by reference"
+                "description": "Passing parameters by reference",
+                "code": "void swap(int& a, int& b) {\n    int temp = a;\n    a = b;\n    b = temp;\n}\n\nint x = 5, y = 10;\nswap(x, y);\n// x = 10, y = 5"
             },
             "ポインタ渡し": {
                 "title": "Pass by Pointer",
-                "description": "Passing parameters by pointer"
+                "description": "Passing parameters by pointer",
+                "code": "void increment(int* ptr) {\n    (*ptr)++;\n}\n\nint num = 5;\nincrement(&num);\n// num is now 6"
             }
         },
         "cpp-classes": {
             "クラスの定義": {
                 "title": "Class Definition",
-                "description": "Basic class definition"
+                "description": "Basic class definition",
+                "code": "class MyClass {\n  public:             // Access specifier\n    int myNum;        // Attribute (int variable)\n    string myString;  // Attribute (string variable)\n};"
             },
             "オブジェクトの作成": {
                 "title": "Creating Objects",
-                "description": "Object creation and usage"
+                "description": "Object creation and usage",
+                "code": "MyClass myObj;  // Create an object of MyClass\n\nmyObj.myNum = 15;          // Set the value of myNum to 15\nmyObj.myString = \"Hello\";  // Set the value of myString to \"Hello\"\n\ncout << myObj.myNum << endl;         // Output 15\ncout << myObj.myString << endl;      // Output \"Hello\""
             },
             "コンストラクタ": {
                 "title": "Constructor",
-                "description": "Class constructor"
+                "description": "Class constructor",
+                "code": "class MyClass {\n  public:\n    int myNum;\n    string myString;\n    MyClass() {  // Constructor\n      myNum = 0;\n      myString = \"\";\n    }\n};\n\nMyClass myObj;  // Create an object of MyClass\n\ncout << myObj.myNum << endl;         // Output 0\ncout << myObj.myString << endl;      // Output \"\""
             },
             "デストラクタ": {
                 "title": "Destructor",
-                "description": "Class destructor"
+                "description": "Class destructor",
+                "code": "class MyClass {\n  public:\n    int myNum;\n    string myString;\n    MyClass() {  // Constructor\n      myNum = 0;\n      myString = \"\";\n    }\n    ~MyClass() {  // Destructor\n      cout << \"Object destroyed.\" << endl;\n    }\n};\n\nMyClass myObj;  // Create an object of MyClass\n\n// Code here...\n\n// Object is destroyed automatically when the program exits the scope"
             },
             "クラスのメソッド": {
                 "title": "Class Methods",
-                "description": "Class methods"
+                "description": "Class methods",
+                "code": "class MyClass {\n  public:\n    int myNum;\n    string myString;\n    void myMethod() {  // Method/function defined inside the class\n      cout << \"Hello World!\" << endl;\n    }\n};\n\nMyClass myObj;  // Create an object of MyClass\nmyObj.myMethod();  // Call the method"
             },
             "アクセス修飾子": {
                 "title": "Access Modifiers",
-                "description": "Access modifiers"
+                "description": "Access modifiers",
+                "code": "class MyClass {\n  public:     // Public access specifier\n    int x;    // Public attribute\n  private:    // Private access specifier\n    int y;    // Private attribute\n  protected:  // Protected access specifier\n    int z;    // Protected attribute\n};\n\nMyClass myObj;\nmyObj.x = 25;  // Allowed (public)\nmyObj.y = 50;  // Not allowed (private)\nmyObj.z = 75;  // Not allowed (protected)"
             },
             "ゲッターとセッター": {
                 "title": "Getters and Setters",
-                "description": "Getter and setter methods"
+                "description": "Getter and setter methods",
+                "code": "class MyClass {\n  private:\n    int myNum;\n  public:\n    void setMyNum(int num) {  // Setter\n      myNum = num;\n    }\n    int getMyNum() {  // Getter\n      return myNum;\n    }\n};\n\nMyClass myObj;\nmyObj.setMyNum(15);  // Set the value of myNum to 15\ncout << myObj.getMyNum() << endl;  // Output 15"
             },
             "継承": {
                 "title": "Inheritance",
-                "description": "Class inheritance"
+                "description": "Class inheritance",
+                "code": "class Vehicle {\n  public:\n    string brand = \"Ford\";\n    void honk() {\n      cout << \"Tuut, tuut!\" << endl;\n    }\n};\n\nclass Car : public Vehicle {\n  public:\n    string model = \"Mustang\";\n};\n\nCar myCar;\nmyCar.honk();  // Output \"Tuut, tuut!\"\ncout << myCar.brand + \" \" + myCar.model << endl;  // Output \"Ford Mustang\""
             }
         },
         "cpp-preprocessor": {
             "インクルード": {
                 "title": "Include",
-                "description": "Include directive"
+                "description": "Include directive",
+                "code": "#include \"iostream\"\n#include <iostream>"
             },
             "定義": {
                 "title": "Define",
-                "description": "Macro definition and undefinition"
+                "description": "Macro definition and undefinition",
+                "code": "#define FOO\n#define FOO \"hello\"\n\n#undef FOO"
             },
             "If": {
                 "title": "If",
-                "description": "Conditional compilation"
+                "description": "Conditional compilation",
+                "code": "#ifdef DEBUG\n  console.log('hi');\n#elif defined VERBOSE\n  ...\n#else\n  ...\n#endif"
             },
             "エラー": {
                 "title": "Error",
-                "description": "Error and warning directives"
+                "description": "Error and warning directives",
+                "code": "#if VERSION == 2.0\n  #error Unsupported\n  #warning Not really supported\n#endif"
             },
             "マクロ": {
                 "title": "Macro",
-                "description": "Function-like macros"
+                "description": "Function-like macros",
+                "code": "#define DEG(x) ((x) * 57.29)"
             },
             "トークン連結": {
                 "title": "Token Concatenation",
-                "description": "Token concatenation"
+                "description": "Token concatenation",
+                "code": "#define DST(name) name##_s name##_t\nDST(object);   #=> object_s object_t;"
             },
             "文字列化": {
                 "title": "Stringification",
-                "description": "Stringification macro"
+                "description": "Stringification macro",
+                "code": "#define STR(name) #name\nchar * a = STR(object);   #=> char * a = \"object\";"
             },
             "__FILE__と__LINE__": {
                 "title": "__FILE__ and __LINE__",
-                "description": "File and line macros"
+                "description": "File and line macros",
+                "code": "#define LOG(msg) console.log(__FILE__, __LINE__, msg)\n#=> console.log(\"file.txt\", 3, \"hey\")"
             }
         },
         "miscellaneous": {
             "エスケープシーケンス": {
                 "title": "Escape Sequences",
-                "description": "Escape sequences table"
+                "description": "Escape sequences table",
+                "code": "| Escape Sequences | Characters            |\n| ---------------- | --------------------- |\n| \\b              | Backspace             |\n| \\f              | Form feed             |\n| \\n              | Newline               |\n| \\r              | Return                |\n| \\t              | Horizontal tab        |\n| \\v              | Vertical tab          |\n| \\\\              | Backslash             |\n| \\'              | Single quotation mark |\n| \\\"              | Double quotation mark |\n| \\?              | Question mark         |\n| \\0              | Null Character        |"
             },
             "キーワード": {
                 "title": "Keywords",
-                "description": "C++ keywords list"
+                "description": "C++ keywords list",
+                "code": "alignas, alignof, and, and_eq, asm, auto, bitand, bitor, bool, break, case, catch, char, char8_t, char16_t, char32_t, class, compl, concept, const, consteval, constexpr, constinit, const_cast, continue, co_await, co_return, co_yield, decltype, default, delete, do, double, dynamic_cast, else, enum, explicit, export, extern, false, float, for, friend, goto, if, inline, int, long, mutable, namespace, new, noexcept, not, not_eq, nullptr, operator, or, or_eq, private, protected, public, reflexpr, register, reinterpret_cast, requires, return, short, signed, sizeof, static, static_assert, static_cast, struct, switch, synchronized, template, this, thread_local, throw, true, try, typedef, typeid, typename, union, unsigned, using, virtual, void, volatile, wchar_t, while, xor, xor_eq, final, override"
             }
         }
     }

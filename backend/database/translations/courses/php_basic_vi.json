@@ -8,6 +8,10 @@
         "PHP基礎演習": {
             "title": "Khóa học PHP Cơ bản",
             "description": "Khóa học lập trình PHP cơ bản dành cho người mới bắt đầu. Học từng bước từ cơ bản phát triển web server đến kết nối cơ sở dữ liệu và phát triển API."
+        },
+        "PHP基礎": {
+            "title": "Khóa học PHP Cơ bản",
+            "description": "Khóa học lập trình PHP cơ bản dành cho người mới bắt đầu. Học từng bước từ cơ bản phát triển web server đến kết nối cơ sở dữ liệu và phát triển API."
         }
     },
     "milestones": {

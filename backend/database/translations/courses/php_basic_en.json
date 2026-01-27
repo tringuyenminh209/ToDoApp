@@ -8,6 +8,10 @@
         "PHP基礎演習": {
             "title": "PHP Basic Course",
             "description": "Beginner-friendly PHP programming fundamentals course. Learn step by step from web server development basics to database connections and API development."
+        },
+        "PHP基礎": {
+            "title": "PHP Basic Course",
+            "description": "Beginner-friendly PHP programming fundamentals course. Learn step by step from web server development basics to database connections and API development."
         }
     },
     "milestones": {

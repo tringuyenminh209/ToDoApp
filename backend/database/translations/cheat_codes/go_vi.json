@@ -51,205 +51,251 @@
         "getting-started": {
             "hello.go": {
                 "title": "hello.go",
-                "description": "Chương trình Hello World cơ bản"
+                "description": "Chương trình Hello World cơ bản",
+                "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, world!\")\n}"
             },
             "直接実行": {
                 "title": "Chạy trực tiếp",
-                "description": "Chạy chương trình Go"
+                "description": "Chạy chương trình Go",
+                "code": "$ go run hello.go\nHello, world!"
             },
             "変数": {
                 "title": "Biến",
-                "description": "Khai báo biến"
+                "description": "Khai báo biến",
+                "code": "var s1 string\ns1 = \"Learn Go!\"\n\n// declare multiple variables at once\nvar b, c int = 1, 2\nvar d = true"
             },
             "短縮宣言": {
                 "title": "Khai báo ngắn",
-                "description": "Khai báo biến ngắn gọn"
+                "description": "Khai báo biến ngắn gọn",
+                "code": "s1 := \"Learn Go!\"        // string\nb, c := 1, 2             // int\nd := true                // bool"
             },
             "関数": {
                 "title": "Hàm",
-                "description": "Định nghĩa hàm"
+                "description": "Định nghĩa hàm",
+                "code": "package main\n\nimport \"fmt\"\n\n// The entry point of the programs\nfunc main() {\n    fmt.Println(\"Hello world!\")\n    say(\"Hello Go!\")\n}\n\nfunc say(message string) {\n    fmt.Println(\"You said: \", message)\n}"
             },
             "コメント": {
                 "title": "Chú thích",
-                "description": "Cú pháp chú thích"
+                "description": "Cú pháp chú thích",
+                "code": "// Single line comment\n\n/* Multi-\n line comment */"
             },
             "If文": {
                 "title": "Câu lệnh If",
-                "description": "Cú pháp câu lệnh if"
+                "description": "Cú pháp câu lệnh if",
+                "code": "if true {\n    fmt.Println(\"Yes!\")\n}"
             }
         },
         "go-basic-types": {
             "文字列": {
                 "title": "Chuỗi",
-                "description": "Thao tác và nối chuỗi"
+                "description": "Thao tác và nối chuỗi",
+                "code": "s1 := \"Hello\" + \"World\"\n\ns2 := `A \"raw\" string literal\ncan include line breaks.`\n\n// Outputs: 10\nfmt.Println(len(s1))\n\n// Outputs: Hello\nfmt.Println(string(s1[0:5]))"
             },
             "数値": {
                 "title": "Số",
-                "description": "Các kiểu số"
+                "description": "Các kiểu số",
+                "code": "num := 3         // int\nnum := 3.        // float64\nnum := 3 + 4i    // complex128\nnum := byte('a') // byte (alias: uint8)\n\nvar u uint = 7        // uint (unsigned)\nvar p float32 = 22.7  // 32-bit float"
             },
             "演算子": {
                 "title": "Toán tử",
-                "description": "Toán tử số học"
+                "description": "Toán tử số học",
+                "code": "x := 5\nx++\nfmt.Println(\"x + 4 =\", x + 4)\nfmt.Println(\"x * 4 =\", x * 4)"
             },
             "ブール値": {
                 "title": "Boolean",
-                "description": "Kiểu boolean"
+                "description": "Kiểu boolean",
+                "code": "isTrue   := true\nisFalse  := false"
             },
             "ブール演算子": {
                 "title": "Toán tử Boolean",
-                "description": "Toán tử boolean"
+                "description": "Toán tử boolean",
+                "code": "fmt.Println(true && true)   // true\nfmt.Println(true && false)  // false\nfmt.Println(true || true)   // true\nfmt.Println(true || false)  // true\nfmt.Println(!true)          // false"
             },
             "配列": {
                 "title": "Mảng",
-                "description": "Khai báo mảng và slicing"
+                "description": "Khai báo mảng và slicing",
+                "code": "primes := [...]int{2, 3, 5, 7, 11, 13}\nfmt.Println(len(primes)) // => 6\n\n// Outputs: [2 3 5 7 11 13]\nfmt.Println(primes)\n\n// Same as [:3], Outputs: [2 3 5]\nfmt.Println(primes[0:3])"
             },
             "配列の宣言": {
                 "title": "Khai báo mảng",
-                "description": "Mảng với kích thước cố định"
+                "description": "Mảng với kích thước cố định",
+                "code": "var a [2]string\na[0] = \"Hello\"\na[1] = \"World\"\n\nfmt.Println(a[0], a[1]) //=> Hello World\nfmt.Println(a)   // => [Hello World]"
             },
             "2次元配列": {
                 "title": "Mảng 2D",
-                "description": "Mảng đa chiều"
+                "description": "Mảng đa chiều",
+                "code": "var twoDimension [2][3]int\nfor i := 0; i < 2; i++ {\n    for j := 0; j < 3; j++ {\n        twoDimension[i][j] = i + j\n    }\n}\n// => 2d:  [[0 1 2] [1 2 3]]\nfmt.Println(\"2d: \", twoDimension)"
             },
             "ポインタ": {
                 "title": "Con trỏ",
-                "description": "Cơ bản về con trỏ"
+                "description": "Cơ bản về con trỏ",
+                "code": "func main () {\n  b := *getPointer()\n  fmt.Println(\"Value is\", b)\n}\n\nfunc getPointer () (myPointer *int) {\n  a := 234\n  return &a\n}"
             },
             "newによるポインタ": {
                 "title": "Con trỏ với new",
-                "description": "Tạo con trỏ với new"
+                "description": "Tạo con trỏ với new",
+                "code": "a := new(int)\n*a = 234"
             },
             "スライス": {
                 "title": "Slice",
-                "description": "Thao tác slice"
+                "description": "Thao tác slice",
+                "code": "s := make([]string, 3)\ns[0] = \"a\"\ns[1] = \"b\"\ns = append(s, \"d\")\ns = append(s, \"e\", \"f\")\n\nfmt.Println(s)\nfmt.Println(s[1])\nfmt.Println(len(s))\nfmt.Println(s[1:3])"
             },
             "スライスリテラル": {
                 "title": "Slice literal",
-                "description": "Cú pháp slice literal"
+                "description": "Cú pháp slice literal",
+                "code": "slice := []int{2, 3, 4}"
             },
             "定数": {
                 "title": "Hằng số",
-                "description": "Khai báo hằng số"
+                "description": "Khai báo hằng số",
+                "code": "const s string = \"constant\"\nconst Phi = 1.618\nconst n = 500000000\nconst d = 3e20 / n\nfmt.Println(d)"
             },
             "型変換": {
                 "title": "Ép kiểu",
-                "description": "Ép kiểu"
+                "description": "Ép kiểu",
+                "code": "i := 90\nf := float64(i)\nu := uint(i)\n\n// Will be equal to the character Z\ns := string(i)"
             },
             "Intから文字列へ": {
                 "title": "Int sang String",
-                "description": "Chuyển đổi int sang string"
+                "description": "Chuyển đổi int sang string",
+                "code": "i := 90\n\n// need import \"strconv\"\ns := strconv.Itoa(i)\nfmt.Println(s) // Outputs: 90"
             }
         },
         "go-strings": {
             "文字列関数": {
                 "title": "Hàm chuỗi",
-                "description": "Các hàm chuỗi"
+                "description": "Các hàm chuỗi",
+                "code": "package main\n\nimport (\n\t\"fmt\"\n\ts \"strings\"\n)\n\nfunc main() {\n    /* Need to import strings as s */\n\tfmt.Println(s.Contains(\"test\", \"e\"))\n\n    /* Build in */\n    fmt.Println(len(\"hello\"))  // => 5\n    // Outputs: 101\n\tfmt.Println(\"hello\"[1])\n    // Outputs: e\n\tfmt.Println(string(\"hello\"[1]))\n}"
             },
             "fmt.Printf": {
                 "title": "fmt.Printf",
-                "description": "Xuất có định dạng với fmt.Printf"
+                "description": "Xuất có định dạng với fmt.Printf",
+                "code": "package main\n\nimport (\n\t\"fmt\"\n\t\"os\"\n)\n\ntype point struct {\n\tx, y int\n}\n\nfunc main() {\n\tp := point{1, 2}\n\tfmt.Printf(\"%v\\n\", p)                        // => {1 2}\n\tfmt.Printf(\"%+v\\n\", p)                       // => {x:1 y:2}\n\tfmt.Printf(\"%#v\\n\", p)                       // => main.point{x:1, y:2}\n\tfmt.Printf(\"%T\\n\", p)                        // => main.point\n\tfmt.Printf(\"%t\\n\", true)                     // => TRUE\n\tfmt.Printf(\"%d\\n\", 123)                      // => 123\n\tfmt.Printf(\"%b\\n\", 14)                       // => 1110\n\tfmt.Printf(\"%c\\n\", 33)                       // => !\n\tfmt.Printf(\"%x\\n\", 456)                      // => 1c8\n\tfmt.Printf(\"%f\\n\", 78.9)                     // => 78.9\n\tfmt.Printf(\"%e\\n\", 123400000.0)              // => 1.23E+08\n\tfmt.Printf(\"%E\\n\", 123400000.0)              // => 1.23E+08\n\tfmt.Printf(\"%s\\n\", \"\\\"string\\\"\")             // => \"string\"\n\tfmt.Printf(\"%q\\n\", \"\\\"string\\\"\")             // => \"\\\"string\\\"\"\n\tfmt.Printf(\"%x\\n\", \"hex this\")               // => 6.86578E+15\n\tfmt.Printf(\"%p\\n\", &p)                       // => 0xc00002c040\n\tfmt.Printf(\"|%6d|%6d|\\n\", 12, 345)           // => |    12|   345|\n\tfmt.Printf(\"|%6.2f|%6.2f|\\n\", 1.2, 3.45)     // => |  1.20|  3.45|\n\tfmt.Printf(\"|%-6.2f|%-6.2f|\\n\", 1.2, 3.45)   // => |1.20  |3.45  |\n\tfmt.Printf(\"|%6s|%6s|\\n\", \"foo\", \"b\")        // => |   foo|     b|\n\tfmt.Printf(\"|%-6s|%-6s|\\n\", \"foo\", \"b\")      // => |foo   |b     |\n\n\ts := fmt.Sprintf(\"a %s\", \"string\")\n\tfmt.Println(s)\n\n\tfmt.Fprintf(os.Stderr, \"an %s\\n\", \"error\")\n}"
             }
         },
         "go-functions": {
             "複数の戻り値": {
                 "title": "Nhiều giá trị trả về",
-                "description": "Hàm với nhiều giá trị trả về"
+                "description": "Hàm với nhiều giá trị trả về",
+                "code": "func swap(x, y string) (string, string) {\n    return y, x\n}\n\na, b := swap(\"hello\", \"world\")\nfmt.Println(a, b)"
             },
             "名前付き戻り値": {
                 "title": "Giá trị trả về có tên",
-                "description": "Giá trị trả về được đặt tên"
+                "description": "Giá trị trả về được đặt tên",
+                "code": "func split(sum int) (x, y int) {\n    x = sum * 4 / 9\n    y = sum - x\n    return\n}"
             },
             "可変長引数関数": {
                 "title": "Hàm tham số động",
-                "description": "Hàm với số lượng tham số động"
+                "description": "Hàm với số lượng tham số động",
+                "code": "func sum(nums ...int) int {\n    total := 0\n    for _, num := range nums {\n        total += num\n    }\n    return total\n}\n\nfmt.Println(sum(1, 2, 3))"
             },
             "関数を値として": {
                 "title": "Hàm như giá trị",
-                "description": "Hàm là giá trị first-class"
+                "description": "Hàm là giá trị first-class",
+                "code": "func main() {\n    // assign a function to a name\n    add := func(a, b int) int {\n        return a + b\n    }\n    // use the name to call the function\n    fmt.Println(add(3, 4)) // => 7\n}"
             },
             "クロージャ": {
                 "title": "Closure",
-                "description": "Ví dụ closure"
+                "description": "Ví dụ closure",
+                "code": "func scope() func() int{\n    outer_var := 2\n    foo := func() int {return outer_var}\n    return foo\n}\n\n// Outputs: 2\nfmt.Println(scope()())"
             }
         },
         "go-packages": {
             "インポート": {
                 "title": "Import",
-                "description": "Import cơ bản"
+                "description": "Import cơ bản",
+                "code": "import \"fmt\"\nimport \"math/rand\""
             },
             "インポートブロック": {
                 "title": "Khối Import",
-                "description": "Cú pháp khối import"
+                "description": "Cú pháp khối import",
+                "code": "import (\n  \"fmt\"        // gives fmt.Println\n  \"math/rand\"  // gives rand.Intn\n)"
             },
             "エイリアス": {
                 "title": "Bí danh",
-                "description": "Bí danh import"
+                "description": "Bí danh import",
+                "code": "import r \"math/rand\"\n\nr.Intn()"
             },
             "名前のエクスポート": {
                 "title": "Tên được Export",
-                "description": "Các tên được export"
+                "description": "Các tên được export",
+                "code": "// Begin with a capital letter\nfunc Hello () {\n  ···\n}"
             }
         },
         "go-concurrency": {
             "Goroutine": {
                 "title": "Goroutine",
-                "description": "Cơ bản goroutine"
+                "description": "Cơ bản goroutine",
+                "code": "package main\n\nimport (\n\t\"fmt\"\n\t\"time\"\n)\n\nfunc f(from string) {\n\tfor i := 0; i < 3; i++ {\n\t\tfmt.Println(from, \":\", i)\n\t}\n}\n\nfunc main() {\n\tf(\"direct\")\n\tgo f(\"goroutine\")\n\n\tgo func(msg string) {\n\t\tfmt.Println(msg)\n\t}(\"going\")\n\n\ttime.Sleep(time.Second)\n\tfmt.Println(\"done\")\n}"
             },
             "WaitGroup": {
                 "title": "WaitGroup",
-                "description": "WaitGroup để đồng bộ"
+                "description": "WaitGroup để đồng bộ",
+                "code": "package main\n\nimport (\n\t\"fmt\"\n\t\"sync\"\n\t\"time\"\n)\n\nfunc w(id int, wg *sync.WaitGroup) {\n\tdefer wg.Done()\n\tfmt.Printf(\"%d starting\\n\", id)\n\n\ttime.Sleep(time.Second)\n\tfmt.Printf(\"%d done\\n\", id)\n}\n\nfunc main() {\n\tvar wg sync.WaitGroup\n\tfor i := 1; i <= 5; i++ {\n\t\twg.Add(1)\n\t\tgo w(i, &wg)\n\t}\n\twg.Wait()\n}"
             },
             "チャネルのクローズ": {
                 "title": "Đóng Channel",
-                "description": "Đóng và lặp channel"
+                "description": "Đóng và lặp channel",
+                "code": "ch <- 1\nch <- 2\nch <- 3\nclose(ch) // Closes a channel\n\n// Iterate the channel until closed\nfor i := range ch {\n  ···\n}\n\n// Closed if `ok == false`\nv, ok := <- ch"
             },
             "バッファ付きチャネル": {
                 "title": "Channel có Buffer",
-                "description": "Channel có buffer"
+                "description": "Channel có buffer",
+                "code": "ch := make(chan int, 2)\nch <- 1\nch <- 2\nch <- 3\n// fatal error:\n// all goroutines are asleep - deadlock"
             }
         },
         "go-error-control": {
             "関数の遅延実行": {
                 "title": "Hàm trì hoãn",
-                "description": "Câu lệnh defer"
+                "description": "Câu lệnh defer",
+                "code": "func main() {\n  defer func() {\n    fmt.Println(\"Done\")\n  }()\n  fmt.Println(\"Working...\")\n}"
             },
             "Defer": {
                 "title": "Defer",
-                "description": "Defer đơn giản"
+                "description": "Defer đơn giản",
+                "code": "func main() {\n  defer fmt.Println(\"Done\")\n  fmt.Println(\"Working...\")\n}"
             }
         },
         "go-methods": {
             "レシーバ": {
                 "title": "Receiver",
-                "description": "Phương thức với value receiver"
+                "description": "Phương thức với value receiver",
+                "code": "type Vertex struct {\n  X, Y float64\n}\n\nfunc (v Vertex) Abs() float64 {\n  return math.Sqrt(v.X * v.X + v.Y * v.Y)\n}\n\nv := Vertex{1, 2}\nv.Abs()"
             },
             "変更": {
                 "title": "Thay đổi",
-                "description": "Phương thức với pointer receiver"
+                "description": "Phương thức với pointer receiver",
+                "code": "func (v *Vertex) Scale(f float64) {\n  v.X = v.X * f\n  v.Y = v.Y * f\n}\n\nv := Vertex{6, 12}\nv.Scale(0.5)\n// `v` is updated"
             }
         },
         "go-interfaces": {
             "基本的なインターフェース": {
                 "title": "Interface cơ bản",
-                "description": "Định nghĩa interface"
+                "description": "Định nghĩa interface",
+                "code": "type Shape interface {\n  Area() float64\n  Perimeter() float64\n}"
             },
             "構造体": {
                 "title": "Struct",
-                "description": "Định nghĩa struct"
+                "description": "Định nghĩa struct",
+                "code": "type Rectangle struct {\n  Length, Width float64\n}"
             },
             "メソッド": {
                 "title": "Phương thức",
-                "description": "Triển khai phương thức interface"
+                "description": "Triển khai phương thức interface",
+                "code": "func (r Rectangle) Area() float64 {\n  return r.Length * r.Width\n}\n\nfunc (r Rectangle) Perimeter() float64 {\n  return 2 * (r.Length + r.Width)\n}"
             },
             "インターフェースの例": {
                 "title": "Ví dụ Interface",
-                "description": "Sử dụng interface"
+                "description": "Sử dụng interface",
+                "code": "func main() {\n  var r Shape = Rectangle{Length: 3, Width: 4}\n  fmt.Printf(\"Type of r: %T, Area: %v, Perimeter: %v.\", r, r.Area(), r.Perimeter())\n}"
             }
         },
         "miscellaneous": {
             "キーワード": {
                 "title": "Từ khóa",
-                "description": "Từ khóa Go"
+                "description": "Từ khóa Go",
+                "code": "break default func interface select\ncase defer go map struct\nchan else goto package switch\nconst fallthrough if range type\ncontinue for import return var"
             }
         }
     }

@@ -1,5 +1,5 @@
 {
-    "_comment": "English translations for PHP Cheat Code",
+    "_comment": "English translations for PHP Cheat Code (sections: title/description, examples: title/description/code)",
     "language": {
         "php": {
             "description": "PHP is a popular general-purpose scripting language that is especially suited for web development."
@@ -37,153 +37,187 @@
     },
     "examples": {
         "getting-started": {
-            "hellophp": {
+            "hello.php": {
                 "title": "hello.php",
-                "description": "Start with PHP opening tag"
+                "description": "Start with PHP opening tag",
+                "code": "<?php // begin with a PHP open tag.\n\necho \"Hello World\\n\";\nprint(\"Hello Kizamu.com\");\n\n?>"
             },
             "変数": {
                 "title": "Variables",
-                "description": "Variable declaration and types"
+                "description": "Variable declaration and types",
+                "code": "$boolean1 = true;\n$boolean2 = True;\n\n$int = 12;\n$float = 3.1415926;\nunset($float);  // Delete variable\n\n$str1 = \"How are you?\";\n$str2 = 'Fine, thanks';"
             },
             "文字列": {
                 "title": "Strings",
-                "description": "String operations and concatenation"
+                "description": "String operations and concatenation",
+                "code": "$url = \"Kizamu.com\";\necho \"I'm learning PHP at $url\";\n\n// Concatenate strings\necho \"I'm learning PHP at \" . $url;\n\n$hello = \"Hello, \";\n$hello .= \"World!\";\necho $hello;"
             },
             "配列": {
                 "title": "Arrays",
-                "description": "Array operations"
+                "description": "Array operations",
+                "code": "$num = [1, 3, 5, 7, 9];\n$num[5] = 11;\nunset($num[2]);    // Delete variable\nprint_r($num);\necho count($num);"
             },
             "演算子": {
                 "title": "Operators",
-                "description": "Basic arithmetic operators"
+                "description": "Basic arithmetic operators",
+                "code": "$x = 1;\n$y = 2;\n\n$sum = $x + $y;\necho $sum;"
             },
             "インクルード": {
                 "title": "Include",
-                "description": "Include and require statements"
+                "description": "Include and require statements",
+                "code": "<?php\ninclude 'vars.php';\necho $fruit . \"\\n\";\n\n/* Same as include,\ncause an error if cannot be included*/\nrequire 'vars.php';\n\n// Also works\ninclude('vars.php');\nrequire('vars.php');"
             },
             "関数": {
                 "title": "Functions",
-                "description": "Function definition with default parameters"
+                "description": "Function definition with default parameters",
+                "code": "function add($num1, $num2 = 1) {\n    return $num1 + $num2;\n}\necho add(10);\necho add(10, 5);"
             },
             "コメント": {
                 "title": "Comments",
-                "description": "PHP comment syntax"
+                "description": "PHP comment syntax",
+                "code": "# This is a one line shell-style comment\n\n// This is a one line c++ style comment\n\n/* This is a multi line comment\n   yet another line of comment */"
             },
             "定数": {
                 "title": "Constants",
-                "description": "Constant declaration"
+                "description": "Constant declaration",
+                "code": "const MY_CONST = \"hello\";\n\necho MY_CONST;\n\necho 'MY_CONST is: ' . MY_CONST;"
             },
             "クラス": {
                 "title": "Classes",
-                "description": "Basic class definition and instantiation"
+                "description": "Basic class definition and instantiation",
+                "code": "class Student {\n    public function __construct($name) {\n        $this->name = $name;\n    }\n}\n$alex = new Student(\"Alex\");"
             }
         },
         "php-types": {
             "ブール型": {
                 "title": "Boolean",
-                "description": "Boolean type and casting"
+                "description": "Boolean type and casting",
+                "code": "$boolean1 = true;\n$boolean2 = TRUE;\n$boolean3 = false;\n$boolean4 = FALSE;\n\n$boolean5 = (boolean) 1;\n$boolean6 = (boolean) 0;"
             },
             "整数型": {
                 "title": "Integer",
-                "description": "Integer type and formats"
+                "description": "Integer type and formats",
+                "code": "$int1 = 28;\n$int2 = -32;\n$int3 = 012;   // octal => 10\n$int4 = 0x0F;  // hex => 15\n$int5 = 0b101; // binary => 5\n\n$int6 = 2_000_100_000;  // PHP 7.4.0"
             },
             "浮動小数点型": {
                 "title": "Float",
-                "description": "Float/double type and numeric strings"
+                "description": "Float/double type and numeric strings",
+                "code": "$float1 = 1.234;\n$float2 = 1.2e7;\n$float3 = 7E-10;\n\n$float4 = 1_234.567;  // PHP 7.4.0\nvar_dump($float4);\n\n$float5 = 1 + \"10.5\";\n$float6 = 1 + \"-1.3e3\";"
             },
-            "null": {
+            "Null": {
                 "title": "Null",
-                "description": "Null coalescing operator and null check"
+                "description": "Null coalescing operator and null check",
+                "code": "$a = null;\n$b = 'Hello php!';\necho $a ?? 'a is unset';\necho $b ?? 'b is unset';\n\n$a = array();\n$a == null;\n$a === null;\nis_null($a);"
             }
         },
         "php-strings": {
             "文字列": {
                 "title": "Strings",
-                "description": "Single quotes and double quotes"
+                "description": "Single quotes and double quotes",
+                "code": "$sgl_quotes = '$String';\n\n$dbl_quotes = \"This is a $sgl_quotes.\";\n\n$escaped   = \"a \\t tab character.\";\n\n$unescaped = 'a slash and a t: \\t';"
             },
             "複数行": {
                 "title": "Multi-line",
-                "description": "Heredoc and Nowdoc syntax"
+                "description": "Heredoc and Nowdoc syntax",
+                "code": "$str = \"foo\";\n\n// Uninterpolated multi-liners\n$nowdoc = <<<'END'\nMulti line string\n$str\nEND;\n\n// Will do string interpolation\n$heredoc = <<<END\nMulti line\n$str\nEND;"
             },
             "操作": {
                 "title": "Operations",
-                "description": "Common string functions"
+                "description": "Common string functions",
+                "code": "$s = \"Hello Phper\";\necho strlen($s);\n\necho substr($s, 0, 3);\necho substr($s, 1);\necho substr($s, -4, 3);\n\necho strtoupper($s);\necho strtolower($s);\n\necho strpos($s, \"l\");\nvar_dump(strpos($s, \"L\"));"
             }
         },
         "php-arrays": {
             "定義": {
                 "title": "Definition",
-                "description": "Various ways to define arrays"
+                "description": "Various ways to define arrays",
+                "code": "$a1 = [\"hello\", \"world\", \"!\"];\n$a2 = array(\"hello\", \"world\", \"!\");\n$a3 = explode(\",\", \"apple,pear,peach\");"
             },
             "混合キー": {
                 "title": "Mixed Keys",
-                "description": "Arrays with mixed integer and string keys"
+                "description": "Arrays with mixed integer and string keys",
+                "code": "$array = array(\n    \"foo\" => \"bar\",\n    \"bar\" => \"foo\",\n    100   => -100,\n    -100  => 100,\n);\nvar_dump($array);"
             },
             "多次元配列": {
                 "title": "Multidimensional Arrays",
-                "description": "Multidimensional arrays"
+                "description": "Multidimensional arrays",
+                "code": "$multiArray = [ \n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9],\n];\n\nprint_r($multiArray[0][0]);\nprint_r($multiArray[0][1]);\nprint_r($multiArray[0][2]);"
             },
             "配列操作": {
                 "title": "Array Operations",
-                "description": "Array manipulation functions"
+                "description": "Array manipulation functions",
+                "code": "$arr = array(5 => 1, 12 => 2);\n$arr[] = 56;      // Append\n$arr[\"x\"] = 42;   // Add with key\nsort($arr);       // Sort\nunset($arr[5]);   // Remove\nunset($arr);      // Remove all"
             },
-            "foreach反復": {
+            "Foreach反復": {
                 "title": "Foreach Iteration",
-                "description": "Foreach loop iteration"
+                "description": "Foreach loop iteration",
+                "code": "$colors = array('red', 'blue', 'green');\n\nforeach ($colors as $color) {\n    echo \"Do you like $color?\\n\";\n}"
             },
             "キー・値の反復": {
                 "title": "Key-Value Iteration",
-                "description": "Iterating key-value pairs"
+                "description": "Iterating key-value pairs",
+                "code": "$arr = [\"foo\" => \"bar\", \"bar\" => \"foo\"];\n\nforeach ( $arr as $key => $value )\n{\n    echo \"$key => $value\\n\";\n}"
             }
         },
         "php-functions": {
             "戻り値": {
                 "title": "Return Values",
-                "description": "Basic function with return value"
+                "description": "Basic function with return value",
+                "code": "function square($x)\n{\n    return $x * $x;\n}\n\necho square(4);"
             },
             "戻り値の型": {
                 "title": "Return Type",
-                "description": "Return type declaration"
+                "description": "Return type declaration",
+                "code": "// Basic return type declaration\nfunction sum($a, $b): float {\n    return $a + $b;\n}\nfunction get_item(): string {\n    return \"item\";\n}\n\nclass C {}\n// Returning an object\nfunction getC(): C { \n    return new C; \n}"
             },
             "デフォルトパラメータ": {
                 "title": "Default Parameters",
-                "description": "Function with default parameters"
+                "description": "Function with default parameters",
+                "code": "function coffee($type = \"cappuccino\")\n{\n    return \"Making a cup of $type.\\n\";\n}\necho coffee();\necho coffee(null);\necho coffee(\"espresso\");"
             },
             "無名関数": {
                 "title": "Anonymous Functions",
-                "description": "Anonymous functions (Closures)"
+                "description": "Anonymous functions (Closures)",
+                "code": "$greet = function($name)\n{\n    printf(\"Hello %s\\r\\n\", $name);\n};\n\n$greet('World');\n$greet('PHP');"
             },
             "アロー関数": {
                 "title": "Arrow Functions",
-                "description": "Arrow functions (PHP 7.4+)"
+                "description": "Arrow functions (PHP 7.4+)",
+                "code": "$y = 1;\n \n$fn1 = fn($x) => $x + $y;\n\n// equivalent to using $y by value:\n$fn2 = function ($x) use ($y) {\n    return $x + $y;\n};\necho $fn1(5);\necho $fn2(5);"
             }
         },
         "php-classes": {
             "コンストラクタ": {
                 "title": "Constructor",
-                "description": "Class constructor and methods"
+                "description": "Class constructor and methods",
+                "code": "class Student {\n    public function __construct($name) {\n        $this->name = $name;\n    }\n    public function print() {\n        echo \"Name: \" . $this->name;\n    }\n}\n$alex = new Student(\"Alex\");\n$alex->print();"
             },
             "継承": {
                 "title": "Inheritance",
-                "description": "Class inheritance"
+                "description": "Class inheritance",
+                "code": "class ExtendClass extends SimpleClass\n{\n    // Redefine the parent method\n    function displayVar()\n    {\n        echo \"Extending class\\n\";\n        parent::displayVar();\n    }\n}\n\n$extended = new ExtendClass();\n$extended->displayVar();"
             },
             "クラス変数": {
                 "title": "Class Variables",
-                "description": "Class constants and static variables"
+                "description": "Class constants and static variables",
+                "code": "class MyClass\n{\n    const MY_CONST       = 'value';\n    static $staticVar    = 'static';\n\n    // Visibility\n    public static $var1  = 'pubs';\n    private static $var2 = 'pris';\n    protected static $var3 = 'pros';\n}\n\n// Access statically\necho MyClass::MY_CONST;\necho MyClass::$staticVar;"
             },
             "インターフェース": {
                 "title": "Interfaces",
-                "description": "Interfaces and multiple implementations"
+                "description": "Interfaces and multiple implementations",
+                "code": "interface Foo \n{\n    public function doSomething();\n}\ninterface Bar\n{\n    public function doSomethingElse();\n}\nclass Cls implements Foo, Bar \n{\n    public function doSomething() {}\n    public function doSomethingElse() {}\n}"
             }
         },
         "miscellaneous": {
             "エラーハンドリング": {
                 "title": "Error Handling",
-                "description": "Try-catch-finally block"
+                "description": "Try-catch-finally block",
+                "code": "try {\n    // Do something\n} catch (Exception $e) {\n    // Handle exception\n} finally {\n    echo \"Always print!\";\n}"
             },
             "正規表現": {
                 "title": "Regular Expressions",
-                "description": "Regular expressions with preg_match"
+                "description": "Regular expressions with preg_match",
+                "code": "$str = \"Visit Kizamu.com\";\necho preg_match(\"/do/i\", $str);"
             }
         }
     }

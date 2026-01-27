@@ -39,171 +39,210 @@
         "getting-started": {
             "Hello.java": {
                 "title": "Hello.java",
-                "description": "Basic Java program structure with main method and console output"
+                "description": "Basic Java program structure with main method and console output",
+                "code": "public class Hello {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, world!\");\n  }\n}"
             },
             "変数": {
                 "title": "Variables",
-                "description": "Declaring and initializing primitive types and String"
+                "description": "Declaring and initializing primitive types and String",
+                "code": "int num = 5;\nfloat floatNum = 5.99f;\nchar letter = 'D';\nboolean bool = true;\nString site = \"Kizamu.com\";"
             },
             "プリミティブデータ型": {
                 "title": "Primitive Data Types",
-                "description": "Reference table of primitive types with size, default values, and range"
+                "description": "Reference table of primitive types with size, default values, and range",
+                "code": "// Data Type | Size    | Default | Range\n// byte      | 1 byte  | 0       | -128 to 127\n// short     | 2 bytes | 0       | -32,768 to 32,767\n// int       | 4 bytes | 0       | -2^31 to 2^31-1\n// long      | 8 bytes | 0L      | -2^63 to 2^63-1\n// float     | 4 bytes | 0.0f    | N/A\n// double    | 8 bytes | 0.0d    | N/A\n// char      | 2 bytes | '\\u0000'| 0 to 65,535\n// boolean   | N/A     | false   | true / false"
             },
             "ループ": {
                 "title": "Loops",
-                "description": "Enhanced for loop iterating through character array"
+                "description": "Enhanced for loop iterating through character array",
+                "code": "String word = \"Kizamu\";\nfor (char c: word.toCharArray()) {\n  System.out.print(c + \"-\");\n}"
             },
             "配列": {
                 "title": "Arrays",
-                "description": "Array declaration and initialization methods"
+                "description": "Array declaration and initialization methods",
+                "code": "char[] chars = new char[10];\nString[] letters = {\"A\", \"B\", \"C\"};\nint[] mylist = {100, 200};"
             },
             "型キャスト": {
                 "title": "Type Casting",
-                "description": "Widening/narrowing conversion and String parsing"
+                "description": "Widening/narrowing conversion and String parsing",
+                "code": "int i = 10;\nlong l = i;               // Widening casting\n\ndouble d = 10.02;\nlong l = (long)d;         // Narrowing casting\n\nString.valueOf(10);       // int to String\nInteger.parseInt(\"10\");   // String to int"
             },
             "条件分岐": {
                 "title": "Conditionals",
-                "description": "If-else-if statement structure"
+                "description": "If-else-if statement structure",
+                "code": "int j = 10;\nif (j == 10) {\n  System.out.println(\"I get printed\");\n} else if (j > 10) {\n  System.out.println(\"I don't\");\n} else {\n  System.out.println(\"I also don't\");\n}"
             },
             "ユーザー入力": {
                 "title": "User Input",
-                "description": "Reading user input with Scanner"
+                "description": "Reading user input with Scanner",
+                "code": "import java.util.Scanner;\n\nScanner in = new Scanner(System.in);\nString str = in.nextLine();\nint num = in.nextInt();"
             }
         },
         "java-strings": {
             "連結": {
                 "title": "Concatenation",
-                "description": "String and number concatenation examples"
+                "description": "String and number concatenation examples",
+                "code": "String s = 3 + \"str\" + 3;     // 3str3\nString s = \"3\" + 3 + \"str\";   // 33str"
             },
             "StringBuilder": {
                 "title": "StringBuilder",
-                "description": "StringBuilder append, delete, insert operations"
+                "description": "StringBuilder append, delete, insert operations",
+                "code": "StringBuilder sb = new StringBuilder(10);\nsb.append(\"Dole\");\nsb.append(\"!\");\n\nSystem.out.println(sb);\n\nsb.insert(4, \"af\");   // Kizamu!\nsb.delete(4, 6);       // Dole!"
             },
             "比較": {
                 "title": "Comparison",
-                "description": "Reference vs value comparison, case-insensitive matching"
+                "description": "Reference vs value comparison, case-insensitive matching",
+                "code": "String s1 = new String(\"Kizamu\");\nString s2 = new String(\"Kizamu\");\n\ns1 == s2;                 // false (different references)\ns1.equals(s2);            // true (same content)\n\"AB\".equalsIgnoreCase(\"ab\");  // true"
             },
             "操作": {
                 "title": "Manipulation",
-                "description": "String transformation methods"
+                "description": "String transformation methods",
+                "code": "String str = \"Abcd\";\n\nstr.toUpperCase();     // ABCD\nstr.toLowerCase();     // abcd\nstr.concat(\"#\");       // Abcd#\nstr.replace(\"b\", \"-\"); // A-cd\n\"  abc \".trim();      // abc"
             },
             "情報取得": {
                 "title": "Information Retrieval",
-                "description": "Character and substring extraction with search functionality"
+                "description": "Character and substring extraction with search functionality",
+                "code": "String str = \"Abcd\";\n\nstr.charAt(2);        // c\nstr.indexOf(\"a\");     // -1 (not found)\nstr.indexOf(\"A\");     // 0\nstr.length();         // 4\nstr.substring(2);     // cd\nstr.substring(2, 3);  // c\nstr.contains(\"c\");    // true\nstr.endsWith(\"d\");    // true\nstr.startsWith(\"A\"); // true\nstr.isEmpty();        // false"
             }
         },
         "java-arrays": {
             "宣言": {
                 "title": "Declaration",
-                "description": "Various array declaration syntax"
+                "description": "Various array declaration syntax",
+                "code": "int[] a1;\nint[] a2 = {1, 2, 3};\nint[] a3 = new int[]{1, 2, 3};\nint[] a4 = new int[3];"
             },
             "変更": {
                 "title": "Modification",
-                "description": "Element assignment and length property"
+                "description": "Element assignment and length property",
+                "code": "int[] a = {1, 2, 3};\nSystem.out.println(a[0]);  // 1\n\na[0] = 9;\nSystem.out.println(a[0]);  // 9\nSystem.out.println(a.length);  // 3"
             },
             "ループ（読み取りと変更）": {
                 "title": "Loop (Read & Modify)",
-                "description": "Indexed iteration for modifying elements"
+                "description": "Indexed iteration for modifying elements",
+                "code": "int[] arr = {1, 2, 3};\nfor (int i=0; i < arr.length; i++) {\n    arr[i] = arr[i] * 2;\n    System.out.print(arr[i] + \" \");\n}"
             },
             "ループ（読み取り専用）": {
                 "title": "Loop (Read-only)",
-                "description": "Enhanced for loop for read-only iteration"
+                "description": "Enhanced for loop for read-only iteration",
+                "code": "int[] arr = {1, 2, 3};\nfor (int element: arr) {\n    System.out.print(element + \" \");\n}"
             },
             "多次元配列": {
                 "title": "Multidimensional Arrays",
-                "description": "2D array access and String representation conversion"
+                "description": "2D array access and String representation conversion",
+                "code": "int[][] matrix = { {1, 2, 3}, {4, 5} };\n\nint x = matrix[1][0];  // 4\n\n// [[1, 2, 3], [4, 5]]\nArrays.deepToString(matrix);"
             },
             "ソート": {
                 "title": "Sorting",
-                "description": "Sorting array and displaying contents"
+                "description": "Sorting array and displaying contents",
+                "code": "char[] chars = {'b', 'a', 'c'};\nArrays.sort(chars);\n\n// [a, b, c]\nArrays.toString(chars);"
             }
         },
         "java-conditionals": {
             "If文": {
                 "title": "If Statement",
-                "description": "Basic if statement"
+                "description": "Basic if statement",
+                "code": "int j = 10;\nif (j == 10) {\n  System.out.println(\"I get printed\");\n}"
             },
             "If-Else文": {
                 "title": "If-Else Statement",
-                "description": "If-else branching"
+                "description": "If-else branching",
+                "code": "if (j == 10) {\n  System.out.println(\"I get printed\");\n} else {\n  System.out.println(\"I don't\");\n}"
             },
             "Switch文": {
                 "title": "Switch Statement",
-                "description": "Multi-way branching based on discrete values"
+                "description": "Multi-way branching based on discrete values",
+                "code": "int month = 3;\nString str;\n\nswitch (month) {\n  case 1:\n    str = \"January\";\n    break;\n  case 2:\n    str = \"February\";\n    break;\n  case 3:\n    str = \"March\";\n    break;\n  default:\n    str = \"Some other month\";\n    break;\n}"
             },
             "三項演算子": {
                 "title": "Ternary Operator",
-                "description": "Compact conditional expression for simple selection"
+                "description": "Compact conditional expression for simple selection",
+                "code": "int a = 10, b = 20;\nint max = (a > b) ? a : b;\n\nSystem.out.println(max);  // 20"
             }
         },
         "java-loops": {
             "Forループ": {
                 "title": "For Loop",
-                "description": "Standard indexed iteration"
+                "description": "Standard indexed iteration",
+                "code": "for (int i = 0; i < 10; i++) {\n  System.out.print(i);\n}\n// 0123456789"
             },
             "拡張Forループ": {
                 "title": "Enhanced For Loop",
-                "description": "Simplified iteration for collections and arrays"
+                "description": "Simplified iteration for collections and arrays",
+                "code": "int[] numbers = {1, 2, 3};\nfor (int number: numbers) {\n  System.out.println(number);\n}"
             },
             "Whileループ": {
                 "title": "While Loop",
-                "description": "Conditional repetition with pre-test"
+                "description": "Conditional repetition with pre-test",
+                "code": "int count = 0;\nwhile (count < 5) {\n  System.out.print(count);\n  count++;\n}\n// 01234"
             },
             "Do-Whileループ": {
                 "title": "Do-While Loop",
-                "description": "Post-test loop guaranteeing at least one execution"
+                "description": "Post-test loop guaranteeing at least one execution",
+                "code": "int count = 0;\ndo {\n  System.out.print(count);\n  count++;\n} while (count < 5);\n// 01234"
             },
             "Continue文": {
                 "title": "Continue Statement",
-                "description": "Skip current iteration and continue to next"
+                "description": "Skip current iteration and continue to next",
+                "code": "for (int i = 0; i < 5; i++) {\n  if (i == 3) {\n    continue;  // Skip rest when i is 3\n  }\n  System.out.print(i);\n}\n// 0124"
             },
             "Break文": {
                 "title": "Break Statement",
-                "description": "Exit loop completely when condition is met"
+                "description": "Exit loop completely when condition is met",
+                "code": "for (int i = 0; i < 5; i++) {\n  System.out.print(i);\n  if (i == 3) {\n    break;  // Exit loop when i is 3\n  }\n}\n// 0123"
             }
         },
         "java-collections": {
             "ArrayList": {
                 "title": "ArrayList",
-                "description": "Dynamic array operations and iteration"
+                "description": "Dynamic array operations and iteration",
+                "code": "import java.util.ArrayList;\nimport java.util.List;\n\nList<Integer> nums = new ArrayList<>();\n\nnums.add(2);\nnums.add(5);\nnums.add(8);\n\nSystem.out.println(nums.get(0));  // 2\nnums.remove(0);                   // Remove first element\nSystem.out.println(nums.get(0));  // 5"
             },
             "ArrayList反復処理": {
                 "title": "ArrayList Iteration",
-                "description": "ArrayList iteration with enhanced for loop"
+                "description": "ArrayList iteration with enhanced for loop",
+                "code": "import java.util.ArrayList;\n\nArrayList<String> cars = new ArrayList<>();\ncars.add(\"Volvo\");\ncars.add(\"BMW\");\n\nfor (String car : cars) {\n  System.out.println(car);\n}"
             },
             "HashMap": {
                 "title": "HashMap",
-                "description": "Key-value storage with get and put operations"
+                "description": "Key-value storage with get and put operations",
+                "code": "import java.util.HashMap;\nimport java.util.Map;\n\nMap<Integer, String> m = new HashMap<>();\n\nm.put(5, \"Five\");\nm.put(8, \"Eight\");\nm.put(6, \"Six\");\n\nSystem.out.println(m.get(6));   // Six\nSystem.out.println(m.get(3));   // null"
             },
             "HashMap反復処理": {
                 "title": "HashMap Iteration",
-                "description": "HashMap iteration with lambda expression"
+                "description": "HashMap iteration with lambda expression",
+                "code": "Map<Integer, String> m = new HashMap<>();\nm.put(1, \"One\");\nm.put(2, \"Two\");\n\nm.forEach((key, value) -> {\n  String msg = key + \" = \" + value;\n  System.out.println(msg);\n});"
             },
             "HashSet": {
                 "title": "HashSet",
-                "description": "Unique element collection with membership test"
+                "description": "Unique element collection with membership test",
+                "code": "import java.util.HashSet;\nimport java.util.Set;\n\nSet<String> set = new HashSet<>();\n\nset.add(\"dog\");\nset.add(\"cat\");\nset.add(\"dog\");  // duplicate, won't be added\n\nset.contains(\"cat\");  // true\nset.remove(\"cat\");\nset.contains(\"cat\");  // false"
             },
             "ArrayDeque": {
                 "title": "ArrayDeque",
-                "description": "Double-ended queue operations (Stack/Queue)"
+                "description": "Double-ended queue operations (Stack/Queue)",
+                "code": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nDeque<String> a = new ArrayDeque<>();\n\na.add(\"Dog\");\na.addFirst(\"Cat\");\na.addLast(\"Horse\");\n\nSystem.out.println(a.peek());     // Cat\nSystem.out.println(a.poll());     // Cat\nSystem.out.println(a.peek());     // Dog"
             }
         },
         "miscellaneous": {
             "Try-Catch-Finally": {
                 "title": "Try-Catch-Finally",
-                "description": "Exception handling with guaranteed cleanup"
+                "description": "Exception handling with guaranteed cleanup",
+                "code": "try {\n  int[] a = new int[5];\n  a[10] = 50;  // ArrayIndexOutOfBoundsException\n} catch (Exception e) {\n  System.out.println(\"Error: \" + e.getMessage());\n  e.printStackTrace();\n} finally {\n  System.out.println(\"Always printed!\");\n}"
             },
             "正規表現": {
                 "title": "Regular Expressions",
-                "description": "Regex for whitespace removal and String splitting"
+                "description": "Regex for whitespace removal and String splitting",
+                "code": "String text = \"I am learning Java\";\n\n// Remove whitespace\ntext.replaceAll(\"\\\\s+\", \"\");  // IamlearningJava\n\n// Split by space\ntext.split(\"\\\\s\");  // [\"I\", \"am\", \"learning\", \"Java\"]"
             },
             "Mathメソッド": {
                 "title": "Math Methods",
-                "description": "Common math operations"
+                "description": "Common math operations",
+                "code": "Math.max(5, 10);        // 10\nMath.min(5, 10);        // 5\nMath.abs(-4.7);         // 4.7\nMath.sqrt(64);          // 8.0\nMath.pow(2, 3);         // 8.0\nMath.round(4.6);        // 5\nMath.ceil(4.3);         // 5.0\nMath.floor(4.7);        // 4.0"
             },
             "ラムダ式": {
                 "title": "Lambda Expressions",
-                "description": "Lambda expression with forEach (Java 8+)"
+                "description": "Lambda expression with forEach (Java 8+)",
+                "code": "import java.util.ArrayList;\n\nArrayList<Integer> numbers = new ArrayList<>();\nnumbers.add(5);\nnumbers.add(9);\nnumbers.add(8);\n\nnumbers.forEach((n) -> {\n  System.out.println(n);\n});"
             }
         }
     }

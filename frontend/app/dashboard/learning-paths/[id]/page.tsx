@@ -87,6 +87,22 @@ export default function LearningPathDetailPage() {
     loadLearningPath();
   }, [loadLearningPath]);
 
+  // 言語切替時に再取得し、Milestone/Task の翻訳を反映
+  useEffect(() => {
+    const handleLocaleChange = () => {
+      const savedLang = localStorage.getItem('selectedLanguage') as Language;
+      if (savedLang && (savedLang === 'vi' || savedLang === 'en' || savedLang === 'ja')) {
+        setCurrentLang(savedLang);
+      }
+      loadLearningPath();
+    };
+
+    window.addEventListener('localeChanged', handleLocaleChange);
+    return () => {
+      window.removeEventListener('localeChanged', handleLocaleChange);
+    };
+  }, [loadLearningPath]);
+
   const toggleMilestone = (milestoneId: number) => {
     setExpandedMilestones((prev) => {
       const newSet = new Set(prev);

@@ -8,6 +8,10 @@
         "Java基礎演習": {
             "title": "Bài tập cơ bản Java",
             "description": "Khóa học cơ bản lập trình Java cho người mới bắt đầu. Học từng bước từ cú pháp cơ bản Java đến thuật toán qua 30 bài tập thực hành."
+        },
+        "Java基礎": {
+            "title": "Bài tập cơ bản Java",
+            "description": "Khóa học cơ bản lập trình Java cho người mới bắt đầu. Học từng bước từ cú pháp cơ bản Java đến thuật toán qua 30 bài tập thực hành."
         }
     },
     "milestones": {

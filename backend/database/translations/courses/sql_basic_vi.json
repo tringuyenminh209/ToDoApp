@@ -8,6 +8,10 @@
         "SQL/データベース基礎コース": {
             "title": "Khóa học SQL/Cơ sở Dữ liệu Cơ bản",
             "description": "Khóa học SQL/cơ sở dữ liệu hoàn chỉnh dành cho người mới bắt đầu. Học thực hành từ cơ bản cơ sở dữ liệu đến thao tác SQL, thiết kế cơ sở dữ liệu và tối ưu hóa trong 12 tuần."
+        },
+        "SQL基礎": {
+            "title": "Khóa học SQL/Cơ sở Dữ liệu Cơ bản",
+            "description": "Khóa học SQL/cơ sở dữ liệu hoàn chỉnh dành cho người mới bắt đầu. Học thực hành từ cơ bản cơ sở dữ liệu đến thao tác SQL, thiết kế cơ sở dữ liệu và tối ưu hóa trong 12 tuần."
         }
     },
     "milestones": {

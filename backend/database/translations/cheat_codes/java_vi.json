@@ -39,171 +39,210 @@
         "getting-started": {
             "Hello.java": {
                 "title": "Hello.java",
-                "description": "Cấu trúc chương trình Java cơ bản với phương thức main và xuất console"
+                "description": "Cấu trúc chương trình Java cơ bản với phương thức main và xuất console",
+                "code": "public class Hello {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, world!\");\n  }\n}"
             },
             "変数": {
                 "title": "Biến",
-                "description": "Khai báo và khởi tạo kiểu nguyên thủy và String"
+                "description": "Khai báo và khởi tạo kiểu nguyên thủy và String",
+                "code": "int num = 5;\nfloat floatNum = 5.99f;\nchar letter = 'D';\nboolean bool = true;\nString site = \"Kizamu.com\";"
             },
             "プリミティブデータ型": {
                 "title": "Kiểu dữ liệu nguyên thủy",
-                "description": "Bảng tham chiếu các kiểu nguyên thủy với kích thước, giá trị mặc định và phạm vi"
+                "description": "Bảng tham chiếu các kiểu nguyên thủy với kích thước, giá trị mặc định và phạm vi",
+                "code": "// Data Type | Size    | Default | Range\n// byte      | 1 byte  | 0       | -128 to 127\n// short     | 2 bytes | 0       | -32,768 to 32,767\n// int       | 4 bytes | 0       | -2^31 to 2^31-1\n// long      | 8 bytes | 0L      | -2^63 to 2^63-1\n// float     | 4 bytes | 0.0f    | N/A\n// double    | 8 bytes | 0.0d    | N/A\n// char      | 2 bytes | '\\u0000'| 0 to 65,535\n// boolean   | N/A     | false   | true / false"
             },
             "ループ": {
                 "title": "Vòng lặp",
-                "description": "Vòng lặp for nâng cao lặp qua mảng ký tự"
+                "description": "Vòng lặp for nâng cao lặp qua mảng ký tự",
+                "code": "String word = \"Kizamu\";\nfor (char c: word.toCharArray()) {\n  System.out.print(c + \"-\");\n}"
             },
             "配列": {
                 "title": "Mảng",
-                "description": "Cách khai báo và khởi tạo mảng"
+                "description": "Cách khai báo và khởi tạo mảng",
+                "code": "char[] chars = new char[10];\nString[] letters = {\"A\", \"B\", \"C\"};\nint[] mylist = {100, 200};"
             },
             "型キャスト": {
                 "title": "Ép kiểu",
-                "description": "Chuyển đổi mở rộng/thu hẹp và parse String"
+                "description": "Chuyển đổi mở rộng/thu hẹp và parse String",
+                "code": "int i = 10;\nlong l = i;               // Widening casting\n\ndouble d = 10.02;\nlong l = (long)d;         // Narrowing casting\n\nString.valueOf(10);       // int to String\nInteger.parseInt(\"10\");   // String to int"
             },
             "条件分岐": {
                 "title": "Điều kiện",
-                "description": "Cấu trúc câu lệnh if-else-if"
+                "description": "Cấu trúc câu lệnh if-else-if",
+                "code": "int j = 10;\nif (j == 10) {\n  System.out.println(\"I get printed\");\n} else if (j > 10) {\n  System.out.println(\"I don't\");\n} else {\n  System.out.println(\"I also don't\");\n}"
             },
             "ユーザー入力": {
                 "title": "Nhập liệu",
-                "description": "Đọc input từ người dùng với Scanner"
+                "description": "Đọc input từ người dùng với Scanner",
+                "code": "import java.util.Scanner;\n\nScanner in = new Scanner(System.in);\nString str = in.nextLine();\nint num = in.nextInt();"
             }
         },
         "java-strings": {
             "連結": {
                 "title": "Nối chuỗi",
-                "description": "Ví dụ nối chuỗi và số"
+                "description": "Ví dụ nối chuỗi và số",
+                "code": "String s = 3 + \"str\" + 3;     // 3str3\nString s = \"3\" + 3 + \"str\";   // 33str"
             },
             "StringBuilder": {
                 "title": "StringBuilder",
-                "description": "Các thao tác append, delete, insert của StringBuilder"
+                "description": "Các thao tác append, delete, insert của StringBuilder",
+                "code": "StringBuilder sb = new StringBuilder(10);\nsb.append(\"Dole\");\nsb.append(\"!\");\n\nSystem.out.println(sb);\n\nsb.insert(4, \"af\");   // Kizamu!\nsb.delete(4, 6);       // Dole!"
             },
             "比較": {
                 "title": "So sánh",
-                "description": "So sánh tham chiếu vs giá trị, so khớp không phân biệt hoa thường"
+                "description": "So sánh tham chiếu vs giá trị, so khớp không phân biệt hoa thường",
+                "code": "String s1 = new String(\"Kizamu\");\nString s2 = new String(\"Kizamu\");\n\ns1 == s2;                 // false (different references)\ns1.equals(s2);            // true (same content)\n\"AB\".equalsIgnoreCase(\"ab\");  // true"
             },
             "操作": {
                 "title": "Xử lý",
-                "description": "Các phương thức biến đổi chuỗi"
+                "description": "Các phương thức biến đổi chuỗi",
+                "code": "String str = \"Abcd\";\n\nstr.toUpperCase();     // ABCD\nstr.toLowerCase();     // abcd\nstr.concat(\"#\");       // Abcd#\nstr.replace(\"b\", \"-\"); // A-cd\n\"  abc \".trim();      // abc"
             },
             "情報取得": {
                 "title": "Lấy thông tin",
-                "description": "Trích xuất ký tự và chuỗi con với chức năng tìm kiếm"
+                "description": "Trích xuất ký tự và chuỗi con với chức năng tìm kiếm",
+                "code": "String str = \"Abcd\";\n\nstr.charAt(2);        // c\nstr.indexOf(\"a\");     // -1 (not found)\nstr.indexOf(\"A\");     // 0\nstr.length();         // 4\nstr.substring(2);     // cd\nstr.substring(2, 3);  // c\nstr.contains(\"c\");    // true\nstr.endsWith(\"d\");    // true\nstr.startsWith(\"A\"); // true\nstr.isEmpty();        // false"
             }
         },
         "java-arrays": {
             "宣言": {
                 "title": "Khai báo",
-                "description": "Các cú pháp khai báo mảng"
+                "description": "Các cú pháp khai báo mảng",
+                "code": "int[] a1;\nint[] a2 = {1, 2, 3};\nint[] a3 = new int[]{1, 2, 3};\nint[] a4 = new int[3];"
             },
             "変更": {
                 "title": "Thay đổi",
-                "description": "Gán phần tử và thuộc tính length"
+                "description": "Gán phần tử và thuộc tính length",
+                "code": "int[] a = {1, 2, 3};\nSystem.out.println(a[0]);  // 1\n\na[0] = 9;\nSystem.out.println(a[0]);  // 9\nSystem.out.println(a.length);  // 3"
             },
             "ループ（読み取りと変更）": {
                 "title": "Vòng lặp (Đọc & Sửa)",
-                "description": "Lặp với chỉ số để sửa đổi phần tử"
+                "description": "Lặp với chỉ số để sửa đổi phần tử",
+                "code": "int[] arr = {1, 2, 3};\nfor (int i=0; i < arr.length; i++) {\n    arr[i] = arr[i] * 2;\n    System.out.print(arr[i] + \" \");\n}"
             },
             "ループ（読み取り専用）": {
                 "title": "Vòng lặp (Chỉ đọc)",
-                "description": "Vòng lặp for nâng cao để lặp chỉ đọc"
+                "description": "Vòng lặp for nâng cao để lặp chỉ đọc",
+                "code": "int[] arr = {1, 2, 3};\nfor (int element: arr) {\n    System.out.print(element + \" \");\n}"
             },
             "多次元配列": {
                 "title": "Mảng đa chiều",
-                "description": "Truy cập mảng 2D và chuyển đổi sang String"
+                "description": "Truy cập mảng 2D và chuyển đổi sang String",
+                "code": "int[][] matrix = { {1, 2, 3}, {4, 5} };\n\nint x = matrix[1][0];  // 4\n\n// [[1, 2, 3], [4, 5]]\nArrays.deepToString(matrix);"
             },
             "ソート": {
                 "title": "Sắp xếp",
-                "description": "Sắp xếp mảng và hiển thị nội dung"
+                "description": "Sắp xếp mảng và hiển thị nội dung",
+                "code": "char[] chars = {'b', 'a', 'c'};\nArrays.sort(chars);\n\n// [a, b, c]\nArrays.toString(chars);"
             }
         },
         "java-conditionals": {
             "If文": {
                 "title": "Câu lệnh If",
-                "description": "Câu lệnh if cơ bản"
+                "description": "Câu lệnh if cơ bản",
+                "code": "int j = 10;\nif (j == 10) {\n  System.out.println(\"I get printed\");\n}"
             },
             "If-Else文": {
                 "title": "Câu lệnh If-Else",
-                "description": "Phân nhánh if-else"
+                "description": "Phân nhánh if-else",
+                "code": "if (j == 10) {\n  System.out.println(\"I get printed\");\n} else {\n  System.out.println(\"I don't\");\n}"
             },
             "Switch文": {
                 "title": "Câu lệnh Switch",
-                "description": "Phân nhánh đa hướng dựa trên giá trị rời rạc"
+                "description": "Phân nhánh đa hướng dựa trên giá trị rời rạc",
+                "code": "int month = 3;\nString str;\n\nswitch (month) {\n  case 1:\n    str = \"January\";\n    break;\n  case 2:\n    str = \"February\";\n    break;\n  case 3:\n    str = \"March\";\n    break;\n  default:\n    str = \"Some other month\";\n    break;\n}"
             },
             "三項演算子": {
                 "title": "Toán tử 3 ngôi",
-                "description": "Biểu thức điều kiện gọn cho lựa chọn đơn giản"
+                "description": "Biểu thức điều kiện gọn cho lựa chọn đơn giản",
+                "code": "int a = 10, b = 20;\nint max = (a > b) ? a : b;\n\nSystem.out.println(max);  // 20"
             }
         },
         "java-loops": {
             "Forループ": {
                 "title": "Vòng lặp For",
-                "description": "Lặp có chỉ số tiêu chuẩn"
+                "description": "Lặp có chỉ số tiêu chuẩn",
+                "code": "for (int i = 0; i < 10; i++) {\n  System.out.print(i);\n}\n// 0123456789"
             },
             "拡張Forループ": {
                 "title": "Vòng lặp For nâng cao",
-                "description": "Lặp đơn giản hóa cho collections và mảng"
+                "description": "Lặp đơn giản hóa cho collections và mảng",
+                "code": "int[] numbers = {1, 2, 3};\nfor (int number: numbers) {\n  System.out.println(number);\n}"
             },
             "Whileループ": {
                 "title": "Vòng lặp While",
-                "description": "Lặp có điều kiện với kiểm tra trước"
+                "description": "Lặp có điều kiện với kiểm tra trước",
+                "code": "int count = 0;\nwhile (count < 5) {\n  System.out.print(count);\n  count++;\n}\n// 01234"
             },
             "Do-Whileループ": {
                 "title": "Vòng lặp Do-While",
-                "description": "Vòng lặp kiểm tra sau đảm bảo thực thi ít nhất một lần"
+                "description": "Vòng lặp kiểm tra sau đảm bảo thực thi ít nhất một lần",
+                "code": "int count = 0;\ndo {\n  System.out.print(count);\n  count++;\n} while (count < 5);\n// 01234"
             },
             "Continue文": {
                 "title": "Câu lệnh Continue",
-                "description": "Bỏ qua lần lặp hiện tại và tiếp tục lần tiếp theo"
+                "description": "Bỏ qua lần lặp hiện tại và tiếp tục lần tiếp theo",
+                "code": "for (int i = 0; i < 5; i++) {\n  if (i == 3) {\n    continue;  // Skip rest when i is 3\n  }\n  System.out.print(i);\n}\n// 0124"
             },
             "Break文": {
                 "title": "Câu lệnh Break",
-                "description": "Thoát vòng lặp hoàn toàn khi điều kiện thỏa mãn"
+                "description": "Thoát vòng lặp hoàn toàn khi điều kiện thỏa mãn",
+                "code": "for (int i = 0; i < 5; i++) {\n  System.out.print(i);\n  if (i == 3) {\n    break;  // Exit loop when i is 3\n  }\n}\n// 0123"
             }
         },
         "java-collections": {
             "ArrayList": {
                 "title": "ArrayList",
-                "description": "Thao tác và lặp mảng động"
+                "description": "Thao tác và lặp mảng động",
+                "code": "import java.util.ArrayList;\nimport java.util.List;\n\nList<Integer> nums = new ArrayList<>();\n\nnums.add(2);\nnums.add(5);\nnums.add(8);\n\nSystem.out.println(nums.get(0));  // 2\nnums.remove(0);                   // Remove first element\nSystem.out.println(nums.get(0));  // 5"
             },
             "ArrayList反復処理": {
                 "title": "Lặp ArrayList",
-                "description": "Lặp ArrayList với vòng lặp for nâng cao"
+                "description": "Lặp ArrayList với vòng lặp for nâng cao",
+                "code": "import java.util.ArrayList;\n\nArrayList<String> cars = new ArrayList<>();\ncars.add(\"Volvo\");\ncars.add(\"BMW\");\n\nfor (String car : cars) {\n  System.out.println(car);\n}"
             },
             "HashMap": {
                 "title": "HashMap",
-                "description": "Lưu trữ key-value với thao tác get và put"
+                "description": "Lưu trữ key-value với thao tác get và put",
+                "code": "import java.util.HashMap;\nimport java.util.Map;\n\nMap<Integer, String> m = new HashMap<>();\n\nm.put(5, \"Five\");\nm.put(8, \"Eight\");\nm.put(6, \"Six\");\n\nSystem.out.println(m.get(6));   // Six\nSystem.out.println(m.get(3));   // null"
             },
             "HashMap反復処理": {
                 "title": "Lặp HashMap",
-                "description": "Lặp HashMap với biểu thức lambda"
+                "description": "Lặp HashMap với biểu thức lambda",
+                "code": "Map<Integer, String> m = new HashMap<>();\nm.put(1, \"One\");\nm.put(2, \"Two\");\n\nm.forEach((key, value) -> {\n  String msg = key + \" = \" + value;\n  System.out.println(msg);\n});"
             },
             "HashSet": {
                 "title": "HashSet",
-                "description": "Collection phần tử duy nhất với kiểm tra thành viên"
+                "description": "Collection phần tử duy nhất với kiểm tra thành viên",
+                "code": "import java.util.HashSet;\nimport java.util.Set;\n\nSet<String> set = new HashSet<>();\n\nset.add(\"dog\");\nset.add(\"cat\");\nset.add(\"dog\");  // duplicate, won't be added\n\nset.contains(\"cat\");  // true\nset.remove(\"cat\");\nset.contains(\"cat\");  // false"
             },
             "ArrayDeque": {
                 "title": "ArrayDeque",
-                "description": "Thao tác hàng đợi hai đầu (Stack/Queue)"
+                "description": "Thao tác hàng đợi hai đầu (Stack/Queue)",
+                "code": "import java.util.ArrayDeque;\nimport java.util.Deque;\n\nDeque<String> a = new ArrayDeque<>();\n\na.add(\"Dog\");\na.addFirst(\"Cat\");\na.addLast(\"Horse\");\n\nSystem.out.println(a.peek());     // Cat\nSystem.out.println(a.poll());     // Cat\nSystem.out.println(a.peek());     // Dog"
             }
         },
         "miscellaneous": {
             "Try-Catch-Finally": {
                 "title": "Try-Catch-Finally",
-                "description": "Xử lý ngoại lệ với dọn dẹp đảm bảo"
+                "description": "Xử lý ngoại lệ với dọn dẹp đảm bảo",
+                "code": "try {\n  int[] a = new int[5];\n  a[10] = 50;  // ArrayIndexOutOfBoundsException\n} catch (Exception e) {\n  System.out.println(\"Error: \" + e.getMessage());\n  e.printStackTrace();\n} finally {\n  System.out.println(\"Always printed!\");\n}"
             },
             "正規表現": {
                 "title": "Biểu thức chính quy",
-                "description": "Regex để xóa khoảng trắng và tách String"
+                "description": "Regex để xóa khoảng trắng và tách String",
+                "code": "String text = \"I am learning Java\";\n\n// Remove whitespace\ntext.replaceAll(\"\\\\s+\", \"\");  // IamlearningJava\n\n// Split by space\ntext.split(\"\\\\s\");  // [\"I\", \"am\", \"learning\", \"Java\"]"
             },
             "Mathメソッド": {
                 "title": "Phương thức Math",
-                "description": "Các phép toán thông dụng"
+                "description": "Các phép toán thông dụng",
+                "code": "Math.max(5, 10);        // 10\nMath.min(5, 10);        // 5\nMath.abs(-4.7);         // 4.7\nMath.sqrt(64);          // 8.0\nMath.pow(2, 3);         // 8.0\nMath.round(4.6);        // 5\nMath.ceil(4.3);         // 5.0\nMath.floor(4.7);        // 4.0"
             },
             "ラムダ式": {
                 "title": "Biểu thức Lambda",
-                "description": "Biểu thức lambda với forEach (Java 8+)"
+                "description": "Biểu thức lambda với forEach (Java 8+)",
+                "code": "import java.util.ArrayList;\n\nArrayList<Integer> numbers = new ArrayList<>();\nnumbers.add(5);\nnumbers.add(9);\nnumbers.add(8);\n\nnumbers.forEach((n) -> {\n  System.out.println(n);\n});"
             }
         }
     }

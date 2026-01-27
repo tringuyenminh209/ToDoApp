@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LearningPath;
 use App\Models\LearningPathTemplate;
 use App\Services\CategoryService;
+use App\Services\CourseTranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -49,9 +50,23 @@ class LearningPathController extends Controller
             $paths = $query->get();
             $this->hydratePathsIconColor($paths);
 
+            // Apply course translation for title/description when locale is vi or en
+            $locale = app()->getLocale();
+            $data = $paths->map(function ($path) use ($locale) {
+                $arr = $path->toArray();
+                if (in_array($locale, ['vi', 'en'])) {
+                    $trans = CourseTranslationService::getTemplateTranslation($path->title, $locale);
+                    if ($trans) {
+                        $arr['title'] = $trans['title'];
+                        $arr['description'] = $trans['description'];
+                    }
+                }
+                return $arr;
+            });
+
             return response()->json([
                 'success' => true,
-                'data' => $paths
+                'data' => $data
             ]);
         } catch (\Exception $e) {
             Log::error('Error fetching learning paths: ' . $e->getMessage());
@@ -82,9 +97,21 @@ class LearningPathController extends Controller
                 ->findOrFail($id);
             $this->hydratePathsIconColor(collect([$path]));
 
+            $pathData = $path->toArray();
+            $locale = app()->getLocale();
+            if (in_array($locale, ['vi', 'en'])) {
+                $trans = CourseTranslationService::getTemplateTranslation($path->title, $locale);
+                if ($trans) {
+                    $pathData['title'] = $trans['title'];
+                    $pathData['description'] = $trans['description'];
+                }
+                // Milestone / task / subtask の title・description をコース翻訳で上書き
+                $pathData = CourseTranslationService::applyPathDetailTranslations($pathData, $path->title, $locale);
+            }
+
             return response()->json([
                 'success' => true,
-                'data' => $path
+                'data' => $pathData
             ]);
         } catch (\Exception $e) {
             Log::error('Error fetching learning path: ' . $e->getMessage());

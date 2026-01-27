@@ -35,225 +35,278 @@
         "kotlin-introduction": {
             "main()": {
                 "title": "main()",
-                "description": "Hàm main() là điểm bắt đầu của mọi chương trình Kotlin"
+                "description": "Hàm main() là điểm bắt đầu của mọi chương trình Kotlin",
+                "code": "fun main() {\n  println(\"Greetings, Kizamu!\")\n  // Code goes here\n}"
             },
             "Print文": {
                 "title": "Câu lệnh Print",
-                "description": "Câu lệnh print và println"
+                "description": "Câu lệnh print và println",
+                "code": "println(\"Greetings, earthling!\")\nprint(\"Take me to \")\nprint(\"your leader.\")\n\n/*\nPrint:\nGreetings, earthling!\nTake me to your leader.\n*/"
             },
             "コメント": {
                 "title": "Chú thích",
-                "description": "Cú pháp chú thích"
+                "description": "Cú pháp chú thích",
+                "code": "// this is a single line comment\n\n/*\nthis\nnote\nfor\nmany\n*/"
             },
             "実行順序": {
                 "title": "Thứ tự thực thi",
-                "description": "Thứ tự thực thi code"
+                "description": "Thứ tự thực thi code",
+                "code": "fun main() {\n  println(\"I will be printed first.\")\n  println(\"I will be printed second.\")\n  println(\"I will be printed third.\")\n}"
             }
         },
         "kotlin-data-types-variables": {
             "可変変数": {
                 "title": "Biến có thể thay đổi",
-                "description": "Biến có thể thay đổi với var"
+                "description": "Biến có thể thay đổi với var",
+                "code": "var age = 25\nage = 26"
             },
             "不変変数": {
                 "title": "Biến bất biến",
-                "description": "Biến bất biến với val"
+                "description": "Biến bất biến với val",
+                "code": "val goldenRatio = 1.618"
             },
             "型推論": {
                 "title": "Suy luận kiểu",
-                "description": "Suy luận kiểu trong Kotlin"
+                "description": "Suy luận kiểu trong Kotlin",
+                "code": "// The following variables are assigned a literal value inside double quotes\n// so the inferred type is String\n\nvar color = \"Purple\""
             },
             "文字列連結": {
                 "title": "Nối chuỗi",
-                "description": "Nối chuỗi"
+                "description": "Nối chuỗi",
+                "code": "var streetAddress = \"123 Main St.\"\nvar cityState = \"Brooklyn, NY\"\n\nprintln(streetAddress + \" \" + cityState)\n// Print: 123 Main St. Brooklyn, NY"
             },
             "文字列テンプレート": {
                 "title": "Template chuỗi",
-                "description": "Template chuỗi với $"
+                "description": "Template chuỗi với $",
+                "code": "var address = \"123 Main St.\"\nprintln(\"The address is $address\")\n// prints: The address is 123 Main St."
             },
             "組み込みプロパティと関数": {
                 "title": "Thuộc tính và Hàm tích hợp",
-                "description": "Thuộc tính và hàm chuỗi"
+                "description": "Thuộc tính và hàm chuỗi",
+                "code": "var monument = \"the Statue of Liberty\"\n\nprintln(monument.capitalize())\n// print: The Statue of Liberty\nprintln(monument.length)\n// print: 21"
             },
             "文字エスケープ": {
                 "title": "Escape ký tự",
-                "description": "Các ký tự escape"
+                "description": "Các ký tự escape",
+                "code": "print(\"\\\"Excellent!\\\" I cried. \\\"Elementary,\\\" said he.\")\n\n// Print: \"Excellent!\" I cried. \"Elementary,\" said he."
             },
             "算術演算子": {
                 "title": "Toán tử số học",
-                "description": "Toán tử số học"
+                "description": "Toán tử số học",
+                "code": "5 + 7  // 12\n9 - 2   // 7\n8 * 4   // 32\n25 / 5  // 5\n31 % 2 // 1"
             },
             "演算順序": {
                 "title": "Thứ tự phép toán",
-                "description": "Độ ưu tiên toán tử"
+                "description": "Độ ưu tiên toán tử",
+                "code": "5 + 8 * 2 / 4 - 3 // 6\n3 + (4 + 4) / 2 // 7\n4 * 2 + 1 * 7    // 15\n3 + 18 / 2 * 1   // 12\n6 - 3 % 2 + 2   // 7"
             },
             "拡張代入演算子": {
                 "title": "Toán tử gán mở rộng",
-                "description": "Toán tử gán mở rộng"
+                "description": "Toán tử gán mở rộng",
+                "code": "var batteryPercentage = 80\n\n// long syntax\nbatteryPercentage = batteryPercentage + 10\n\n// short syntax with augmented assignment operator\nbatteryPercentage += 10"
             },
             "インクリメントとデクリメント演算子": {
                 "title": "Toán tử tăng và giảm",
-                "description": "Toán tử tăng và giảm"
+                "description": "Toán tử tăng và giảm",
+                "code": "var year = 2019\nyear++   // 2020\nyear--   // 2019"
             },
             "Mathライブラリ": {
                 "title": "Thư viện Math",
-                "description": "Các hàm thư viện Math"
+                "description": "Các hàm thư viện Math",
+                "code": "Math.pow(2.0, 3.0) // 8.0\nMath.min(6, 9)     // 6\nMath.max(10, 12)   // 12\nMath.round(13.7)  // 14"
             }
         },
         "kotlin-conditionals": {
             "If式": {
                 "title": "Biểu thức If",
-                "description": "Biểu thức if cơ bản"
+                "description": "Biểu thức if cơ bản",
+                "code": "var morning = true\n\nif (morning) {\n  println(\"Rise and shine!\")\n}\n// Print: Rise and shine!"
             },
             "Else式": {
                 "title": "Biểu thức Else",
-                "description": "Biểu thức if-else"
+                "description": "Biểu thức if-else",
+                "code": "var rained = false\n\nif (rained) {\n  println(\"No need to water the plants today.\")\n} else {\n  println(\"The plant needs to be watered!\")\n}\n// print: The plant needs watering!"
             },
             "Else-If式": {
                 "title": "Biểu thức Else-If",
-                "description": "Chuỗi else-if"
+                "description": "Chuỗi else-if",
+                "code": "var age = 65\n\nif (age < 18) {\n  println(\"You are considered a minor\")\n} else if (age < 60) {\n  println(\"You are considered an adult\")\n} else {\n  println(\"You are considered senior\")\n}\n\n// print: you are considered senior"
             },
             "比較演算子": {
                 "title": "Toán tử so sánh",
-                "description": "Toán tử so sánh"
+                "description": "Toán tử so sánh",
+                "code": "var myAge = 19\nvar sisterAge = 11\nvar cousinAge = 11\n\nmyAge > sisterAge  // true\nmyAge < cousinAge  // false\nmyAge >= cousinAge // true\nmyAge <= sisterAge // false"
             },
             "論理演算子": {
                 "title": "Toán tử logic",
-                "description": "Toán tử logic"
+                "description": "Toán tử logic",
+                "code": "var humid = true\nvar raining = true\nvar jacket = false\n\nprintln(!humid)\n// print: false\nprintln(jacket && raining)\n// print: false\nprintln(humid || raining)\n// print: true"
             },
             "AND演算子: &&": {
                 "title": "Toán tử AND: &&",
-                "description": "Toán tử logic AND"
+                "description": "Toán tử logic AND",
+                "code": "var humid = true\nvar raining = true\nvar shorts = false\nvar sunny = false\n\n// true AND true\nprintln(humid && raining) // true\n// true AND false\nprintln(humid && shorts)  // false\n// false AND true\nprintln(sunny && raining) // false\n// false AND false\nprintln(shorts && sunny)  // false"
             },
             "OR演算子: ||": {
                 "title": "Toán tử OR: ||",
-                "description": "Toán tử logic OR"
+                "description": "Toán tử logic OR",
+                "code": "var late = true\nvar skipBreakfast = true\nvar underslept = false\nvar checkEmails = false\n\n// true OR true\nprintln(skipBreakfast || late) // true\n// true OR false\nprintln(late || checkEmails)   // true\n// false OR true\nprintln(underslept || late)    // true\n// false OR false\nprintln(checkEmails || underslept) // false"
             },
             "NOT演算子": {
                 "title": "Toán tử NOT",
-                "description": "Toán tử logic NOT"
+                "description": "Toán tử logic NOT",
+                "code": "var hungry = true\nvar full = false\n\nprintln(!hungry) // false\nprintln(!full)   // true"
             },
             "評価順序": {
                 "title": "Thứ tự đánh giá",
-                "description": "Thứ tự đánh giá toán tử"
+                "description": "Thứ tự đánh giá toán tử",
+                "code": "!true && (false || true) // false\n/*\n(false || true) is evaluated first to return true.\nThen, evaluate !true && true and return the final result false\n*/\n\n!false && true || false // true\n/*\n!false is evaluated first to return true.\nThen true && true is evaluated, returning true.\nthen, true || evaluates to false and eventually returns true\n*/"
             },
             "ネストされた条件": {
                 "title": "Điều kiện lồng nhau",
-                "description": "Câu lệnh if lồng nhau"
+                "description": "Câu lệnh if lồng nhau",
+                "code": "var studied = true\nvar wellRested = true\n\nif (wellRested) {\n  println(\"Good luck today!\")\n  if (studied) {\n    println(\"You should prepare for the exam!\")\n  } else {\n    println(\"Spend a few hours studying before the exam!\")\n  }\n}\n\n// Print: Good luck today!\n// print: You should be ready for the exam!"
             },
             "When式": {
                 "title": "Biểu thức When",
-                "description": "Biểu thức when (giống switch)"
+                "description": "Biểu thức when (giống switch)",
+                "code": "var grade = \"A\"\n\nwhen (grade) {\n  \"A\" -> println(\"Great job!\")\n  \"B\" -> println(\"Great job!\")\n  \"C\" -> println(\"You passed!\")\n  else -> println(\"Close! Be sure to prepare more next time!\")\n}\n// print: Great job!"
             },
             "範囲演算子": {
                 "title": "Toán tử phạm vi",
-                "description": "Toán tử phạm vi (in)"
+                "description": "Toán tử phạm vi (in)",
+                "code": "var height = 46 // inches\n\nif (height in 1..53) {\n  println(\"Sorry, you must be at least 54 inches to ride the coaster\")\n}\n// Prints: Sorry, you must be at least 54 inches to ride the roller coaster"
             },
             "等価演算子": {
                 "title": "Toán tử bằng",
-                "description": "Toán tử bằng"
+                "description": "Toán tử bằng",
+                "code": "var myAge = 22\nvar sisterAge = 21\n\nmyAge == sisterAge // false\nmyAge != sisterAge // true"
             }
         },
         "kotlin-collections": {
             "不変リスト": {
                 "title": "List bất biến",
-                "description": "Tạo list bất biến"
+                "description": "Tạo list bất biến",
+                "code": "var programmingLanguages = listOf(\"C#\", \"Java\", \"Kotlin\", \"Ruby\")"
             },
             "可変リスト": {
                 "title": "List có thể thay đổi",
-                "description": "Tạo list có thể thay đổi"
+                "description": "Tạo list có thể thay đổi",
+                "code": "var fruits = mutableListOf(\"Orange\", \"Apple\", \"Banana\", \"Mango\")"
             },
             "リストへのアクセス": {
                 "title": "Truy cập List",
-                "description": "Truy cập phần tử list"
+                "description": "Truy cập phần tử list",
+                "code": "var cars = listOf(\"BMW\", \"Ferrari\", \"Volvo\", \"Tesla\")\n\nprintln(cars[2]) // Prints: Volvo"
             },
             "Size属性": {
                 "title": "Thuộc tính Size",
-                "description": "Lấy kích thước list"
+                "description": "Lấy kích thước list",
+                "code": "var worldContinents = listOf(\"Asia\", \"Africa\", \"North America\", \"South America\", \"Antarctica\", \"Europe\", \"Australia\")\n\nprintln(worldContinents.size) // Prints: 7"
             },
             "リスト操作": {
                 "title": "Thao tác List",
-                "description": "Thao tác list"
+                "description": "Thao tác list",
+                "code": "var seas = listOf(\"Black Sea\", \"Caribbean Sea\", \"North Sea\")\nprintln(seas.contains(\"North Sea\")) // Prints: true\n\n// The contains() function performs a read operation on any list and determines if the element exists\nseas.add(\"Baltic Sea\") // Error: cannot write to immutable list\n// The add() function can only be called on mutable lists, so the code above throws an error"
             },
             "不変セット": {
                 "title": "Set bất biến",
-                "description": "Tạo set bất biến"
+                "description": "Tạo set bất biến",
+                "code": "var primaryColors = setOf(\"Red\", \"Blue\", \"Yellow\")"
             },
             "可変セット": {
                 "title": "Set có thể thay đổi",
-                "description": "Tạo set có thể thay đổi"
+                "description": "Tạo set có thể thay đổi",
+                "code": "var womenInTech = mutableSetOf(\"Ada Lovelace\", \"Grace Hopper\", \"Radia Perlman\", \"Sister Mary Kenneth Keller\")"
             },
             "コレクション要素へのアクセス": {
                 "title": "Truy cập phần tử Collection",
-                "description": "Truy cập phần tử set"
+                "description": "Truy cập phần tử set",
+                "code": "var companies = setOf(\"Facebook\", \"Apple\", \"Netflix\", \"Google\")\n\nprintln(companies.elementAt(3))\n// Prints: Google\nprintln(companies.elementAt(4))\n// Returns and Error\nprintln(companies.elementAtOrNull(4))\n// Prints: null"
             },
             "不変マップ": {
                 "title": "Map bất biến",
-                "description": "Tạo map bất biến"
+                "description": "Tạo map bất biến",
+                "code": "var averageTemp = mapOf(\"winter\" to 35,  \"spring\" to 60,  \"summer\" to 85, \"fall\" to 55)"
             },
             "可変マップ": {
                 "title": "Map có thể thay đổi",
-                "description": "Tạo map có thể thay đổi"
+                "description": "Tạo map có thể thay đổi",
+                "code": "var europeanDomains = mutableMapOf(\"Germany\" to \"de\", \"Slovakia\" to \"sk\", \"Hungary\" to \"hu\", \"Norway\" to \"no\")"
             },
             "マップのキーと値の取得": {
                 "title": "Lấy Key và Value của Map",
-                "description": "Truy cập key và value của map"
+                "description": "Truy cập key và value của map",
+                "code": "var oscarWinners = mutableMapOf(\"Parasite\" to \"Bong Joon-ho\", \"Green Book\" to \"Jim Burke\", \"The Shape Of Water\" to \"Guillermo del Toro\")\n\nprintln(oscarWinners.keys)\n// Prints: [Parasite, Green Book, The Shape Of Water]\n\nprintln(oscarWinners.values)\n// Prints: [Bong Joon-ho, Jim Burke, Guillermo del Toro]\nprintln(oscarWinners[\"Parasite\"])\n// Prints: Bong Joon-ho"
             },
             "マップエントリの追加と削除": {
                 "title": "Thêm và Xóa entry Map",
-                "description": "Thêm và xóa entry map"
+                "description": "Thêm và xóa entry map",
+                "code": "var worldCapitals = mutableMapOf(\"United States\" to \"Washington D.C.\", \"Germany\" to \"Berlin\", \"Mexico\" to \"Mexico City\", \"France\" to \"Paris\")\n\nworldCapitals.put(\"Brazil\", \"Brasilia\")\nprintln(worldCapitals)\n// Prints: {United States=Washington D.C., Germany=Berlin, Mexico=Mexico City, France=Paris, Brazil=Brasilia}\n\nworldCapitals.remove(\"Germany\")\nprintln(worldCapitals)\n// Prints: {United States=Washington D.C., Mexico=Mexico City, France=Paris, Brazil=Brasilia}"
             }
         },
         "kotlin-functions": {
             "関数": {
                 "title": "Hàm",
-                "description": "Định nghĩa hàm cơ bản"
+                "description": "Định nghĩa hàm cơ bản",
+                "code": "fun greet() {\n  println(\"Hey there!\")\n}\n\nfun main() {\n  //Function call\n  greet() //Prints: Hey there!\n}"
             },
             "関数パラメータ": {
                 "title": "Tham số hàm",
-                "description": "Hàm với tham số"
+                "description": "Hàm với tham số",
+                "code": "fun birthday(name: String, age: Int) {\n   println(\"Happy birthday $name! You turn $age today!\")\n}\n\nfun main() {\n  birthday(\"Oscar\", 26) \n  //Prints: Happy birthday Oscar! You turn 26 today!\n  birthday(\"Amarah\", 30) \n  //Prints: Happy birthday Amarah! You turn 30 today!\n}"
             },
             "デフォルトパラメータ": {
                 "title": "Tham số mặc định",
-                "description": "Tham số hàm mặc định"
+                "description": "Tham số hàm mặc định",
+                "code": "fun favoriteLanguage(name: String, language: String = \"Kotlin\") {\n  println(\"Hello, $name. Your favorite programming language is $language\")  \n}\n\nfun main() {\n  favoriteLanguage(\"Manon\") \n  //Prints: Hello, Manon. Your favorite programming language is Kotlin\n  \n  favoriteLanguage(\"Lee\", \"Java\") \n  //Prints: Hello, Lee. Your favorite programming language is Java\n}"
             },
             "名前付きパラメータ": {
                 "title": "Tham số có tên",
-                "description": "Tham số hàm được đặt tên"
+                "description": "Tham số hàm được đặt tên",
+                "code": "fun findMyAge(currentYear: Int, birthYear: Int) {\n   var myAge = currentYear - birthYear\n   println(\"I am $myAge years old.\")\n}\n\nfun main() {\n  findMyAge(currentYear = 2020, birthYear = 1995)\n  //Prints: I am 25 years old.\n  findMyAge(birthYear = 1920, currentYear = 2020)\n  //Prints: I am 100 years old.\n}"
             },
             "Return文": {
                 "title": "Câu lệnh Return",
-                "description": "Hàm với kiểu trả về"
+                "description": "Hàm với kiểu trả về",
+                "code": "//Return type is declared outside the parentheses\nfun getArea(length: Int, width: Int): Int {\n  var area = length * width\n\n  //return statement\n  return area\n}\n\nfun main() {\n  var myArea = getArea(10, 8)\n  println(\"The area is $myArea.\")\n  //Prints: The area is 80.\n}"
             },
             "単一式関数": {
                 "title": "Hàm biểu thức đơn",
-                "description": "Hàm biểu thức đơn"
+                "description": "Hàm biểu thức đơn",
+                "code": "fun fullName(firstName: String, lastName: String) = \"$firstName $lastName\"\n\nfun main() {\n  println(fullName(\"Ariana\", \"Ortega\"))\n  //Prints: Ariana Ortega\n  println(fullName(\"Kai\", \"Gittens\"))\n  //Prints: Kai Gittens\n}"
             },
             "関数リテラル": {
                 "title": "Function literal",
-                "description": "Hàm ẩn danh và biểu thức lambda"
+                "description": "Hàm ẩn danh và biểu thức lambda",
+                "code": "fun main() {\n  //Anonymous Function:\n  var getProduct = fun(num1: Int, num2: Int): Int {\n    return num1 * num2\n  }\n  println(getProduct(8, 3))\n  //Prints: 24\n  //Lambda Expression\n  var getDifference = { num1: Int, num2: Int -> num1 - num2 }\n  println(getDifference(10, 3))\n  //Prints: 7\n}"
             }
         },
         "kotlin-classes": {
             "クラスの例": {
                 "title": "Ví dụ Class",
-                "description": "Định nghĩa class cơ bản"
+                "description": "Định nghĩa class cơ bản",
+                "code": "//class with properties containing default values\nclass Student {\n  var name = \"Lucia\"\n  var semester = \"Fall\"\n  var gpa = 3.95\n}\n\n//shorthand syntax without class body\nclass Student"
             },
             "クラスインスタンス": {
                 "title": "Instance Class",
-                "description": "Tạo instance của class"
+                "description": "Tạo instance của class",
+                "code": "// Class\nclass Student {\n  var name = \"Lucia\"\n  var semester = \"Fall\"\n  var gpa = 3.95\n}\n\nfun main() {\n  var student = Student()   \n  // Instance\n  println(student.name)     \n  // Prints: Lucia\n  println(student.semester) \n  // Prints: Fall\n  println(student.gpa)      \n  // Prints: 3.95  \n}"
             },
             "プライマリコンストラクタ": {
                 "title": "Primary Constructor",
-                "description": "Primary constructor"
+                "description": "Primary constructor",
+                "code": "class Student(val name: String, val gpa: Double, val semester: String, val estimatedGraduationYear: Int) \n\nfun main() {\n  var student = Student(\"Lucia\", 3.95, \"Fall\", 2022) \n  println(student.name)     \n  //Prints: Lucia\n  println(student.gpa)\n  //Prints: 3.95\n  println(student.semester) \n  //Prints: Fall\n  println(student.estimatedGraduationYear) \n  //Prints: 2022\n}"
             },
             "初期化ブロック": {
                 "title": "Khối Init",
-                "description": "Khối init"
+                "description": "Khối init",
+                "code": "class Student(val name: String, val gpa: Double, val semester: String, val estimatedGraduationYear: Int) {\n  init {\n    println(\"$name has ${estimatedGraduationYear - 2020} years left in college.\")\n  }\n}\n\nfun main() {\n  var student = Student(\"Lucia\", 3.95, \"Fall\", 2022)\n  //Prints: Lucia has 2 years left in college. \n}"
             },
             "メンバー関数": {
                 "title": "Hàm thành viên",
-                "description": "Hàm thành viên của class"
+                "description": "Hàm thành viên của class",
+                "code": "class Student(val name: String, val gpa: Double, val semester: String, val estimatedGraduationYear: Int) {\n\n  init {\n    println(\"$name has ${estimatedGraduationYear - 2020} years left in college.\")\n  }\n\n  //member function\n  fun calculateLetterGrade(): String {\n    return when {\n      gpa >= 3.0 -> \"A\"\n      gpa >= 2.7 -> \"B\"\n      gpa >= 1.7 -> \"C\"\n      gpa >= 1.0 -> \"D\"\n      else -> \"E\"\n    }\n  }\n}\n\n//When the instance is created and the function is called, the when expression will be executed and return the letter grade\nfun main() {\n  var student = Student(\"Lucia\", 3.95, \"Fall\", 2022)\n  //Prints: Lucia has 2 years left in college.\n  println(\"${student.name}'s letter grade is ${student.calculateLetterGrade()}.\")\n  //Prints: Lucia's letter grade is A.\n}"
             }
         }
     }

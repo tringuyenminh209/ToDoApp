@@ -8,6 +8,10 @@
         "Python基礎コース": {
             "title": "Python Basic Course",
             "description": "Beginner-friendly Python programming fundamentals course. Learn step by step from Python basic syntax to object-oriented programming and data analysis through 15 weeks of practical exercises."
+        },
+        "Python基礎": {
+            "title": "Python Basic Course",
+            "description": "Beginner-friendly Python programming fundamentals course. Learn step by step from Python basic syntax to object-oriented programming and data analysis through 15 weeks of practical exercises."
         }
     },
     "milestones": {

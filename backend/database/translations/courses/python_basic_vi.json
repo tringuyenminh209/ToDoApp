@@ -8,6 +8,10 @@
         "Python基礎コース": {
             "title": "Khóa học Python Cơ bản",
             "description": "Khóa học lập trình Python cơ bản dành cho người mới bắt đầu. Học từng bước từ cú pháp Python cơ bản đến lập trình hướng đối tượng và phân tích dữ liệu thông qua 15 tuần bài tập thực hành."
+        },
+        "Python基礎": {
+            "title": "Khóa học Python Cơ bản",
+            "description": "Khóa học lập trình Python cơ bản dành cho người mới bắt đầu. Học từng bước từ cú pháp Python cơ bản đến lập trình hướng đối tượng và phân tích dữ liệu thông qua 15 tuần bài tập thực hành."
         }
     },
     "milestones": {

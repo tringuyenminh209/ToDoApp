@@ -8,6 +8,10 @@
         "TypeScript完全コース": {
             "title": "TypeScript Complete Course",
             "description": "TypeScript course for JavaScript developers. Learn from type system fundamentals to advanced type manipulation and practical framework integration over 10 weeks."
+        },
+        "TypeScript基礎": {
+            "title": "TypeScript Complete Course",
+            "description": "TypeScript course for JavaScript developers. Learn from type system fundamentals to advanced type manipulation and practical framework integration over 10 weeks."
         }
     },
     "milestones": {

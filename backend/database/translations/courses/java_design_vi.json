@@ -8,6 +8,10 @@
         "Javaプログラミング設計演習": {
             "title": "Khóa học Thiết kế Lập trình Java",
             "description": "Khóa học thực hành học lập trình hướng đối tượng và design patterns. Học từng bước từ thiết kế class đến GoF design patterns thông qua 30 bài tập."
+        },
+        "Java設計": {
+            "title": "Khóa học Thiết kế Lập trình Java",
+            "description": "Khóa học thực hành học lập trình hướng đối tượng và design patterns. Học từng bước từ thiết kế class đến GoF design patterns thông qua 30 bài tập."
         }
     },
     "milestones": {

@@ -51,217 +51,266 @@
         "getting-started": {
             "Hello World": {
                 "title": "Hello World",
-                "description": "Ví dụ Bash script cơ bản"
+                "description": "Ví dụ Bash script cơ bản",
+                "code": "#!/bin/bash\n\nVAR=\"world\"\necho \"Hello $VAR!\" # => Hello world!"
             },
             "スクリプトの実行": {
                 "title": "Chạy Script",
-                "description": "Cách chạy Bash script"
+                "description": "Cách chạy Bash script",
+                "code": "$ bash hello.sh"
             },
             "変数": {
                 "title": "Biến",
-                "description": "Khai báo và sử dụng biến"
+                "description": "Khai báo và sử dụng biến",
+                "code": "NAME=\"John\"\n\necho ${NAME}    # => John (Variables)\necho $NAME      # => John (Variables)\necho \"$NAME\"    # => John (Variables)\necho '$NAME'    # => $NAME (Exact string)\necho \"${NAME}!\" # => John! (Variables)\n\nNAME = \"John\"   # => Error (about space)"
             },
             "コメント": {
                 "title": "Chú thích",
-                "description": "Chú thích dòng và nhiều dòng"
+                "description": "Chú thích dòng và nhiều dòng",
+                "code": "# This is an inline Bash comment.\n\n: '\nThis is a\nvery neat comment\nin bash\n'"
             },
             "引数": {
                 "title": "Tham số",
-                "description": "Biến đặc biệt cho tham số script"
+                "description": "Biến đặc biệt cho tham số script",
+                "code": "# $1 … $9    - Parameter 1 ... 9\n# $0         - Name of the script itself\n# $1         - First argument\n# ${10}      - Positional parameter 10\n# $#         - Number of arguments\n# $*        - All arguments\n# $@         - All arguments, starting from first\n# $-         - Current options\n# $_         - Last argument of the previous command"
             },
             "関数": {
                 "title": "Hàm",
-                "description": "Định nghĩa và gọi hàm"
+                "description": "Định nghĩa và gọi hàm",
+                "code": "get_name() {\n    echo \"John\"\n}\n\necho \"You are $(get_name)\""
             },
             "条件分岐": {
                 "title": "Điều kiện",
-                "description": "Cú pháp if-elif-else cơ bản"
+                "description": "Cú pháp if-elif-else cơ bản",
+                "code": "if [[ -z \"$string\" ]]; then\n    echo \"String is empty\"\nelif [[ -n \"$string\" ]]; then\n    echo \"String is not empty\"\nfi"
             },
             "ブレース展開": {
                 "title": "Mở rộng ngoặc",
-                "description": "Ví dụ mở rộng ngoặc"
+                "description": "Ví dụ mở rộng ngoặc",
+                "code": "echo {A,B}.js\n# => A.js B.js\n\necho {1..5}\n# => 1 2 3 4 5"
             },
             "コマンド置換": {
                 "title": "Thay thế lệnh",
-                "description": "Hai cách thay thế lệnh"
+                "description": "Hai cách thay thế lệnh",
+                "code": "# => I'm in /path/of/current\necho \"I'm in $(PWD)\"\n\n# Same as:\necho \"I'm in `pwd`\""
             }
         },
         "parameter-expansions": {
             "接頭辞・接尾辞の削除": {
                 "title": "Xóa tiền tố/hậu tố",
-                "description": "Xử lý chuỗi với mở rộng tham số"
+                "description": "Xử lý chuỗi với mở rộng tham số",
+                "code": "STR=\"/path/to/foo.cpp\"\necho ${STR%.cpp}    # /path/to/foo\necho ${STR%.cpp}.o  # /path/to/foo.o\necho ${STR%/*}      # /path/to\n\necho ${STR##*.}     # cpp (extension)\necho ${STR##*/}     # foo.cpp (basepath)\n\necho ${STR#*/}      # path/to/foo.cpp\necho ${STR##*/}     # foo.cpp"
             },
             "文字列置換": {
                 "title": "Thay thế chuỗi",
-                "description": "Thay thế chuỗi"
+                "description": "Thay thế chuỗi",
+                "code": "STR=\"/path/to/foo.cpp\"\necho ${STR/foo/bar} # /path/to/bar.cpp"
             },
             "部分文字列": {
                 "title": "Chuỗi con",
-                "description": "Trích xuất chuỗi con"
+                "description": "Trích xuất chuỗi con",
+                "code": "name=\"John\"\necho ${name}           # => John\necho ${name:0:2}       # => Jo\necho ${name::2}        # => Jo\necho ${name::-1}       # => Joh\necho ${name:(-1)}      # => n\necho ${name:(-2)}      # => hn\necho ${name:(-2):2}    # => hn"
             },
             "文字列の長さ": {
                 "title": "Độ dài chuỗi",
-                "description": "Lấy độ dài chuỗi"
+                "description": "Lấy độ dài chuỗi",
+                "code": "FOO=\"Hello\"\necho ${#FOO}    # => 5"
             },
             "デフォルト値": {
                 "title": "Giá trị mặc định",
-                "description": "Giá trị mặc định khi biến chưa đặt"
+                "description": "Giá trị mặc định khi biến chưa đặt",
+                "code": "echo ${food:-Cake}  #=> $food or \"Cake\""
             },
             "大文字・小文字変換": {
                 "title": "Chuyển đổi chữ hoa/thường",
-                "description": "Chuyển đổi chữ hoa/thường của chuỗi"
+                "description": "Chuyển đổi chữ hoa/thường của chuỗi",
+                "code": "STR=\"HELLO WORLD!\"\necho ${STR,}   # => hELLO WORLD!\necho ${STR,,}  # => hello world!\n\nSTR=\"hello world!\"\necho ${STR^}   # => Hello world!\necho ${STR^^} # => HELLO WORLD!"
             }
         },
         "arrays": {
             "配列の定義": {
                 "title": "Định nghĩa mảng",
-                "description": "Các cách định nghĩa mảng"
+                "description": "Các cách định nghĩa mảng",
+                "code": "Fruits=('Apple' 'Banana' 'Orange')\n\nFruits[0]=\"Apple\"\nFruits[1]=\"Banana\"\nFruits[2]=\"Orange\"\n\nARRAY1=(foo{1..2}) # => foo1 foo2\nARRAY2=({A..D})    # => A B C D"
             },
             "配列のインデックス": {
                 "title": "Chỉ mục mảng",
-                "description": "Truy cập phần tử mảng"
+                "description": "Truy cập phần tử mảng",
+                "code": "Fruits=('Apple' 'Banana' 'Orange')\n\necho ${Fruits[0]}     # First element\necho ${Fruits[-1]}    # Last element\necho ${Fruits[@]}     # All elements\necho ${#Fruits[@]}    # Number of all\necho ${#Fruits}       # Length of 1st\necho ${Fruits[@]:3:2} # Range"
             },
             "配列の反復処理": {
                 "title": "Lặp mảng",
-                "description": "Lặp qua tất cả phần tử mảng"
+                "description": "Lặp qua tất cả phần tử mảng",
+                "code": "Fruits=('Apple' 'Banana' 'Orange')\n\nfor e in \"${Fruits[@]}\"; do\n    echo $e\ndone"
             },
             "インデックス付き反復処理": {
                 "title": "Lặp có chỉ mục",
-                "description": "Lấy chỉ mục và giá trị đồng thời"
+                "description": "Lấy chỉ mục và giá trị đồng thời",
+                "code": "for i in \"${!Fruits[@]}\"; do\n  printf \"%s\\t%s\\n\" \"$i\" \"${Fruits[$i]}\"\ndone"
             },
             "配列操作": {
                 "title": "Thao tác mảng",
-                "description": "Thêm và xóa phần tử mảng"
+                "description": "Thêm và xóa phần tử mảng",
+                "code": "Fruits=(\"${Fruits[@]}\" \"Watermelon\")     # Push\nFruits+=('Watermelon')                   # Also Push\nFruits=( ${Fruits[@]/Ap*/} )             # Remove by regex match\nunset Fruits[2]                          # Remove one item\nFruits=(\"${Fruits[@]}\")                  # Duplicate"
             }
         },
         "dictionaries": {
             "連想配列の定義": {
                 "title": "Định nghĩa mảng liên kết",
-                "description": "Khai báo và khởi tạo mảng liên kết"
+                "description": "Khai báo và khởi tạo mảng liên kết",
+                "code": "declare -A sounds\n\nsounds[dog]=\"bark\"\nsounds[cow]=\"moo\"\nsounds[bird]=\"tweet\"\nsounds[wolf]=\"howl\""
             },
             "連想配列の操作": {
                 "title": "Thao tác mảng liên kết",
-                "description": "Lấy giá trị và khóa từ mảng liên kết"
+                "description": "Lấy giá trị và khóa từ mảng liên kết",
+                "code": "echo ${sounds[dog]} # Dog's sound\necho ${sounds[@]}   # All values\necho ${!sounds[@]}  # All keys\necho ${#sounds[@]}  # Number of elements\nunset sounds[dog]   # Delete dog"
             },
             "連想配列の反復処理": {
                 "title": "Lặp mảng liên kết",
-                "description": "Lặp qua giá trị và khóa"
+                "description": "Lặp qua giá trị và khóa",
+                "code": "for val in \"${sounds[@]}\"; do\n    echo $val\ndone\n\nfor key in \"${!sounds[@]}\"; do\n    echo $key\ndone"
             }
         },
         "conditionals": {
             "整数の比較": {
                 "title": "So sánh số nguyên",
-                "description": "Toán tử so sánh số nguyên"
+                "description": "Toán tử so sánh số nguyên",
+                "code": "[[ $a -eq $b ]]  # Equal\n[[ $a -ne $b ]]  # Not equal\n[[ $a -lt $b ]]  # Less than\n[[ $a -le $b ]]  # Less or equal\n[[ $a -gt $b ]]  # Greater than\n[[ $a -ge $b ]]  # Greater or equal"
             },
             "文字列の比較": {
                 "title": "So sánh chuỗi",
-                "description": "Toán tử so sánh chuỗi"
+                "description": "Toán tử so sánh chuỗi",
+                "code": "[[ $a == $b ]]   # Equal\n[[ $a != $b ]]   # Not equal\n[[ -z $a ]]       # Is empty\n[[ -n $a ]]       # Is not empty\n[[ $a < $b ]]     # Less than (lexicographically)\n[[ $a > $b ]]     # Greater than (lexicographically)"
             },
             "ファイル条件": {
                 "title": "Điều kiện tệp",
-                "description": "Kiểm tra điều kiện tệp/thư mục"
+                "description": "Kiểm tra điều kiện tệp/thư mục",
+                "code": "[[ -e $file ]]    # Exists\n[[ -r $file ]]    # Readable\n[[ -h $file ]]    # Symlink\n[[ -d $file ]]    # Directory\n[[ -w $file ]]    # Writable\n[[ -s $file ]]    # Size is > 0 bytes\n[[ -f $file ]]    # File\n[[ -x $file ]]    # Executable"
             },
             "論理演算子": {
                 "title": "Toán tử logic",
-                "description": "Toán tử logic"
+                "description": "Toán tử logic",
+                "code": "[[ $a && $b ]]   # Logical AND\n[[ $a || $b ]]   # Logical OR\n[[ ! $a ]]        # Logical NOT"
             }
         },
         "loops": {
             "Forループ": {
                 "title": "Vòng lặp For",
-                "description": "Vòng lặp for với mẫu tệp"
+                "description": "Vòng lặp for với mẫu tệp",
+                "code": "for i in /etc/rc.*; do\n  echo $i\ndone"
             },
             "Cスタイルforループ": {
                 "title": "Vòng lặp For kiểu C",
-                "description": "Vòng lặp for kiểu C"
+                "description": "Vòng lặp for kiểu C",
+                "code": "for ((i = 0 ; i < 100 ; i++)); do\n  echo $i\ndone"
             },
             "範囲forループ": {
                 "title": "Vòng lặp For phạm vi",
-                "description": "Vòng lặp for với phạm vi số"
+                "description": "Vòng lặp for với phạm vi số",
+                "code": "for i in {1..5}; do\n    echo \"Welcome $i times\"\ndone"
             },
             "Whileループ": {
                 "title": "Vòng lặp While",
-                "description": "Vòng lặp while cơ bản"
+                "description": "Vòng lặp while cơ bản",
+                "code": "count=0\nwhile [ $count -lt 5 ]; do\n    echo \"Count: $count\"\n    ((count++))\ndone"
             },
             "Untilループ": {
                 "title": "Vòng lặp Until",
-                "description": "Vòng lặp until (chạy khi điều kiện sai)"
+                "description": "Vòng lặp until (chạy khi điều kiện sai)",
+                "code": "count=0\nuntil [ $count -gt 5 ]; do\n    echo \"Count: $count\"\n    ((count++))\ndone"
             },
             "BreakとContinue": {
                 "title": "Break và Continue",
-                "description": "Câu lệnh break để thoát vòng lặp"
+                "description": "Câu lệnh break để thoát vòng lặp",
+                "code": "for i in {1..10}; do\n    if [[ $i -eq 5 ]]; then\n        break\n    fi\n    echo $i\ndone"
             }
         },
         "functions": {
             "関数の定義": {
                 "title": "Định nghĩa hàm",
-                "description": "Định nghĩa hàm cơ bản"
+                "description": "Định nghĩa hàm cơ bản",
+                "code": "get_name() {\n    echo \"John\"\n}\n\necho \"You are $(get_name)\""
             },
             "関数の引数": {
                 "title": "Tham số hàm",
-                "description": "Truyền tham số cho hàm"
+                "description": "Truyền tham số cho hàm",
+                "code": "greet() {\n    echo \"Hello, $1\"\n}\n\ngreet \"World\"  # => Hello, World"
             },
             "戻り値": {
                 "title": "Giá trị trả về",
-                "description": "Giá trị trả về của hàm (mã thoát)"
+                "description": "Giá trị trả về của hàm (mã thoát)",
+                "code": "myfunc() {\n    return 1\n}\n\nif myfunc; then\n    echo \"success\"\nelse\n    echo \"failure\"\nfi"
             }
         },
         "options-settings": {
             "Bashオプション": {
                 "title": "Tùy chọn Bash",
-                "description": "Cài đặt tùy chọn Bash quan trọng"
+                "description": "Cài đặt tùy chọn Bash quan trọng",
+                "code": "# Avoid overlay files\nset -o noclobber\n\n# Used to exit upon error\nset -o errexit\n\n# Unveils hidden failures\nset -o pipefail\n\n# Exposes unset variables\nset -o nounset"
             },
             "グロブオプション": {
                 "title": "Tùy chọn Glob",
-                "description": "Tùy chọn glob (wildcard)"
+                "description": "Tùy chọn glob (wildcard)",
+                "code": "# Non-matching globs are removed\nshopt -s nullglob\n\n# Non-matching globs throw errors\nshopt -s failglob\n\n# Case insensitive globs\nshopt -s nocaseglob\n\n# Wildcards match dotfiles\nshopt -s dotglob\n\n# Allow ** for recursive matches\nshopt -s globstar"
             }
         },
         "history": {
             "履歴コマンド": {
                 "title": "Lệnh lịch sử",
-                "description": "Thao tác lịch sử cơ bản"
+                "description": "Thao tác lịch sử cơ bản",
+                "code": "history              # Show history\nsudo !!             # Run the previous command with sudo\nshopt -s histverify # Don't execute expanded result immediately"
             },
             "履歴展開": {
                 "title": "Mở rộng lịch sử",
-                "description": "Ví dụ mở rộng lịch sử"
+                "description": "Ví dụ mở rộng lịch sử",
+                "code": "!!                 # Execute last command again\n!!:s/<FROM>/<TO>/  # Replace first occurrence\n!!:gs/<FROM>/<TO>/ # Replace all occurrences\n!$                 # Last parameter of most recent command\n!-n                # Expand nth most recent command"
             }
         },
         "miscellaneous": {
             "数値計算": {
                 "title": "Tính toán số",
-                "description": "Mở rộng số học để tính toán"
+                "description": "Mở rộng số học để tính toán",
+                "code": "$((a + 200))      # Add 200 to $a\n\n$(($RANDOM%200))  # Random number 0..199"
             },
             "サブシェル": {
                 "title": "Subshell",
-                "description": "Sử dụng subshell (không ảnh hưởng shell hiện tại)"
+                "description": "Sử dụng subshell (không ảnh hưởng shell hiện tại)",
+                "code": "(cd somedir; echo \"I'm now in $PWD\")\npwd # still in first directory"
             },
             "リダイレクション": {
                 "title": "Chuyển hướng",
-                "description": "Chuyển hướng đầu vào/đầu ra"
+                "description": "Chuyển hướng đầu vào/đầu ra",
+                "code": "python hello.py > output.txt   # stdout to (file)\npython hello.py >> output.txt  # stdout to (file), append\npython hello.py 2> error.log   # stderr to (file)\npython hello.py 2>&1           # stderr to stdout\npython hello.py 2>/dev/null    # stderr to (null)\npython hello.py &>/dev/null    # stdout and stderr to (null)\n\npython hello.py < foo.txt      # feed foo.txt to stdin"
             },
             "Case/Switch": {
                 "title": "Case/Switch",
-                "description": "Phân nhánh với câu lệnh case"
+                "description": "Phân nhánh với câu lệnh case",
+                "code": "case \"$1\" in\n    start | up)\n    vagrant up\n    ;;\n\n    *)\n    echo \"Usage: $0 {start|stop|ssh}\"\n    ;;\nesac"
             },
             "エラートラップ": {
                 "title": "Bẫy lỗi",
-                "description": "Cài đặt bẫy khi xảy ra lỗi"
+                "description": "Cài đặt bẫy khi xảy ra lỗi",
+                "code": "trap 'echo Error at about $LINENO' ERR"
             },
             "printf": {
                 "title": "printf",
-                "description": "Xuất có định dạng với printf"
+                "description": "Xuất có định dạng với printf",
+                "code": "printf \"Hello %s, I'm %s\" Sven Olga\n#=> \"Hello Sven, I'm Olga\"\n\nprintf \"1 + 1 = %d\" 2\n#=> \"1 + 1 = 2\"\n\nprintf \"Print a float: %f\" 2\n#=> \"Print a float: 2.000000\""
             },
             "オプション解析": {
                 "title": "Phân tích tùy chọn",
-                "description": "Phân tích tùy chọn dòng lệnh"
+                "description": "Phân tích tùy chọn dòng lệnh",
+                "code": "while [[ \"$1\" =~ ^- && ! \"$1\" == \"--\" ]]; do case $1 in\n    -V | --version )\n    echo $version\n    exit\n    ;;\n    -s | --string )\n    shift; string=$1\n    ;;\n    -f | --flag )\n    flag=1\n    ;;\nesac; shift; done"
             },
             "条件実行": {
                 "title": "Thực thi có điều kiện",
-                "description": "Thực thi lệnh có điều kiện"
+                "description": "Thực thi lệnh có điều kiện",
+                "code": "git commit && git push\ngit commit || echo \"Commit failed\""
             },
             "厳密モード": {
                 "title": "Chế độ nghiêm ngặt",
-                "description": "Cài đặt chế độ nghiêm ngặt Bash"
+                "description": "Cài đặt chế độ nghiêm ngặt Bash",
+                "code": "set -euo pipefail\nIFS=$'\\n\\t'"
             }
         }
     }

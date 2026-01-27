@@ -35,225 +35,278 @@
         "kotlin-introduction": {
             "main()": {
                 "title": "main()",
-                "description": "main() function is the entry point of all Kotlin programs"
+                "description": "main() function is the entry point of all Kotlin programs",
+                "code": "fun main() {\n  println(\"Greetings, Kizamu!\")\n  // Code goes here\n}"
             },
             "Print文": {
                 "title": "Print Statements",
-                "description": "Print and println statements"
+                "description": "Print and println statements",
+                "code": "println(\"Greetings, earthling!\")\nprint(\"Take me to \")\nprint(\"your leader.\")\n\n/*\nPrint:\nGreetings, earthling!\nTake me to your leader.\n*/"
             },
             "コメント": {
                 "title": "Comments",
-                "description": "Comment syntax"
+                "description": "Comment syntax",
+                "code": "// this is a single line comment\n\n/*\nthis\nnote\nfor\nmany\n*/"
             },
             "実行順序": {
                 "title": "Execution Order",
-                "description": "Code execution order"
+                "description": "Code execution order",
+                "code": "fun main() {\n  println(\"I will be printed first.\")\n  println(\"I will be printed second.\")\n  println(\"I will be printed third.\")\n}"
             }
         },
         "kotlin-data-types-variables": {
             "可変変数": {
                 "title": "Mutable Variables",
-                "description": "Mutable variables with var"
+                "description": "Mutable variables with var",
+                "code": "var age = 25\nage = 26"
             },
             "不変変数": {
                 "title": "Immutable Variables",
-                "description": "Immutable variables with val"
+                "description": "Immutable variables with val",
+                "code": "val goldenRatio = 1.618"
             },
             "型推論": {
                 "title": "Type Inference",
-                "description": "Type inference in Kotlin"
+                "description": "Type inference in Kotlin",
+                "code": "// The following variables are assigned a literal value inside double quotes\n// so the inferred type is String\n\nvar color = \"Purple\""
             },
             "文字列連結": {
                 "title": "String Concatenation",
-                "description": "String concatenation"
+                "description": "String concatenation",
+                "code": "var streetAddress = \"123 Main St.\"\nvar cityState = \"Brooklyn, NY\"\n\nprintln(streetAddress + \" \" + cityState)\n// Print: 123 Main St. Brooklyn, NY"
             },
             "文字列テンプレート": {
                 "title": "String Templates",
-                "description": "String templates with $"
+                "description": "String templates with $",
+                "code": "var address = \"123 Main St.\"\nprintln(\"The address is $address\")\n// prints: The address is 123 Main St."
             },
             "組み込みプロパティと関数": {
                 "title": "Built-in Properties and Functions",
-                "description": "String properties and functions"
+                "description": "String properties and functions",
+                "code": "var monument = \"the Statue of Liberty\"\n\nprintln(monument.capitalize())\n// print: The Statue of Liberty\nprintln(monument.length)\n// print: 21"
             },
             "文字エスケープ": {
                 "title": "Character Escaping",
-                "description": "Character escape sequences"
+                "description": "Character escape sequences",
+                "code": "print(\"\\\"Excellent!\\\" I cried. \\\"Elementary,\\\" said he.\")\n\n// Print: \"Excellent!\" I cried. \"Elementary,\" said he."
             },
             "算術演算子": {
                 "title": "Arithmetic Operators",
-                "description": "Arithmetic operators"
+                "description": "Arithmetic operators",
+                "code": "5 + 7  // 12\n9 - 2   // 7\n8 * 4   // 32\n25 / 5  // 5\n31 % 2 // 1"
             },
             "演算順序": {
                 "title": "Order of Operations",
-                "description": "Operator precedence"
+                "description": "Operator precedence",
+                "code": "5 + 8 * 2 / 4 - 3 // 6\n3 + (4 + 4) / 2 // 7\n4 * 2 + 1 * 7    // 15\n3 + 18 / 2 * 1   // 12\n6 - 3 % 2 + 2   // 7"
             },
             "拡張代入演算子": {
                 "title": "Augmented Assignment Operators",
-                "description": "Augmented assignment operators"
+                "description": "Augmented assignment operators",
+                "code": "var batteryPercentage = 80\n\n// long syntax\nbatteryPercentage = batteryPercentage + 10\n\n// short syntax with augmented assignment operator\nbatteryPercentage += 10"
             },
             "インクリメントとデクリメント演算子": {
                 "title": "Increment and Decrement Operators",
-                "description": "Increment and decrement operators"
+                "description": "Increment and decrement operators",
+                "code": "var year = 2019\nyear++   // 2020\nyear--   // 2019"
             },
             "Mathライブラリ": {
                 "title": "Math Library",
-                "description": "Math library functions"
+                "description": "Math library functions",
+                "code": "Math.pow(2.0, 3.0) // 8.0\nMath.min(6, 9)     // 6\nMath.max(10, 12)   // 12\nMath.round(13.7)  // 14"
             }
         },
         "kotlin-conditionals": {
             "If式": {
                 "title": "If Expression",
-                "description": "Basic if expression"
+                "description": "Basic if expression",
+                "code": "var morning = true\n\nif (morning) {\n  println(\"Rise and shine!\")\n}\n// Print: Rise and shine!"
             },
             "Else式": {
                 "title": "Else Expression",
-                "description": "If-else expression"
+                "description": "If-else expression",
+                "code": "var rained = false\n\nif (rained) {\n  println(\"No need to water the plants today.\")\n} else {\n  println(\"The plant needs to be watered!\")\n}\n// print: The plant needs watering!"
             },
             "Else-If式": {
                 "title": "Else-If Expression",
-                "description": "Else-if chain"
+                "description": "Else-if chain",
+                "code": "var age = 65\n\nif (age < 18) {\n  println(\"You are considered a minor\")\n} else if (age < 60) {\n  println(\"You are considered an adult\")\n} else {\n  println(\"You are considered senior\")\n}\n\n// print: you are considered senior"
             },
             "比較演算子": {
                 "title": "Comparison Operators",
-                "description": "Comparison operators"
+                "description": "Comparison operators",
+                "code": "var myAge = 19\nvar sisterAge = 11\nvar cousinAge = 11\n\nmyAge > sisterAge  // true\nmyAge < cousinAge  // false\nmyAge >= cousinAge // true\nmyAge <= sisterAge // false"
             },
             "論理演算子": {
                 "title": "Logical Operators",
-                "description": "Logical operators"
+                "description": "Logical operators",
+                "code": "var humid = true\nvar raining = true\nvar jacket = false\n\nprintln(!humid)\n// print: false\nprintln(jacket && raining)\n// print: false\nprintln(humid || raining)\n// print: true"
             },
             "AND演算子: &&": {
                 "title": "AND Operator: &&",
-                "description": "Logical AND operator"
+                "description": "Logical AND operator",
+                "code": "var humid = true\nvar raining = true\nvar shorts = false\nvar sunny = false\n\n// true AND true\nprintln(humid && raining) // true\n// true AND false\nprintln(humid && shorts)  // false\n// false AND true\nprintln(sunny && raining) // false\n// false AND false\nprintln(shorts && sunny)  // false"
             },
             "OR演算子: ||": {
                 "title": "OR Operator: ||",
-                "description": "Logical OR operator"
+                "description": "Logical OR operator",
+                "code": "var late = true\nvar skipBreakfast = true\nvar underslept = false\nvar checkEmails = false\n\n// true OR true\nprintln(skipBreakfast || late) // true\n// true OR false\nprintln(late || checkEmails)   // true\n// false OR true\nprintln(underslept || late)    // true\n// false OR false\nprintln(checkEmails || underslept) // false"
             },
             "NOT演算子": {
                 "title": "NOT Operator",
-                "description": "Logical NOT operator"
+                "description": "Logical NOT operator",
+                "code": "var hungry = true\nvar full = false\n\nprintln(!hungry) // false\nprintln(!full)   // true"
             },
             "評価順序": {
                 "title": "Evaluation Order",
-                "description": "Operator evaluation order"
+                "description": "Operator evaluation order",
+                "code": "!true && (false || true) // false\n/*\n(false || true) is evaluated first to return true.\nThen, evaluate !true && true and return the final result false\n*/\n\n!false && true || false // true\n/*\n!false is evaluated first to return true.\nThen true && true is evaluated, returning true.\nthen, true || evaluates to false and eventually returns true\n*/"
             },
             "ネストされた条件": {
                 "title": "Nested Conditionals",
-                "description": "Nested if statements"
+                "description": "Nested if statements",
+                "code": "var studied = true\nvar wellRested = true\n\nif (wellRested) {\n  println(\"Good luck today!\")\n  if (studied) {\n    println(\"You should prepare for the exam!\")\n  } else {\n    println(\"Spend a few hours studying before the exam!\")\n  }\n}\n\n// Print: Good luck today!\n// print: You should be ready for the exam!"
             },
             "When式": {
                 "title": "When Expression",
-                "description": "When expression (switch-like)"
+                "description": "When expression (switch-like)",
+                "code": "var grade = \"A\"\n\nwhen (grade) {\n  \"A\" -> println(\"Great job!\")\n  \"B\" -> println(\"Great job!\")\n  \"C\" -> println(\"You passed!\")\n  else -> println(\"Close! Be sure to prepare more next time!\")\n}\n// print: Great job!"
             },
             "範囲演算子": {
                 "title": "Range Operator",
-                "description": "Range operator (in)"
+                "description": "Range operator (in)",
+                "code": "var height = 46 // inches\n\nif (height in 1..53) {\n  println(\"Sorry, you must be at least 54 inches to ride the coaster\")\n}\n// Prints: Sorry, you must be at least 54 inches to ride the roller coaster"
             },
             "等価演算子": {
                 "title": "Equality Operators",
-                "description": "Equality operators"
+                "description": "Equality operators",
+                "code": "var myAge = 22\nvar sisterAge = 21\n\nmyAge == sisterAge // false\nmyAge != sisterAge // true"
             }
         },
         "kotlin-collections": {
             "不変リスト": {
                 "title": "Immutable List",
-                "description": "Creating immutable lists"
+                "description": "Creating immutable lists",
+                "code": "var programmingLanguages = listOf(\"C#\", \"Java\", \"Kotlin\", \"Ruby\")"
             },
             "可変リスト": {
                 "title": "Mutable List",
-                "description": "Creating mutable lists"
+                "description": "Creating mutable lists",
+                "code": "var fruits = mutableListOf(\"Orange\", \"Apple\", \"Banana\", \"Mango\")"
             },
             "リストへのアクセス": {
                 "title": "Accessing Lists",
-                "description": "Accessing list elements"
+                "description": "Accessing list elements",
+                "code": "var cars = listOf(\"BMW\", \"Ferrari\", \"Volvo\", \"Tesla\")\n\nprintln(cars[2]) // Prints: Volvo"
             },
             "Size属性": {
                 "title": "Size Property",
-                "description": "Getting list size"
+                "description": "Getting list size",
+                "code": "var worldContinents = listOf(\"Asia\", \"Africa\", \"North America\", \"South America\", \"Antarctica\", \"Europe\", \"Australia\")\n\nprintln(worldContinents.size) // Prints: 7"
             },
             "リスト操作": {
                 "title": "List Operations",
-                "description": "List operations"
+                "description": "List operations",
+                "code": "var seas = listOf(\"Black Sea\", \"Caribbean Sea\", \"North Sea\")\nprintln(seas.contains(\"North Sea\")) // Prints: true\n\n// The contains() function performs a read operation on any list and determines if the element exists\nseas.add(\"Baltic Sea\") // Error: cannot write to immutable list\n// The add() function can only be called on mutable lists, so the code above throws an error"
             },
             "不変セット": {
                 "title": "Immutable Set",
-                "description": "Creating immutable sets"
+                "description": "Creating immutable sets",
+                "code": "var primaryColors = setOf(\"Red\", \"Blue\", \"Yellow\")"
             },
             "可変セット": {
                 "title": "Mutable Set",
-                "description": "Creating mutable sets"
+                "description": "Creating mutable sets",
+                "code": "var womenInTech = mutableSetOf(\"Ada Lovelace\", \"Grace Hopper\", \"Radia Perlman\", \"Sister Mary Kenneth Keller\")"
             },
             "コレクション要素へのアクセス": {
                 "title": "Accessing Collection Elements",
-                "description": "Accessing set elements"
+                "description": "Accessing set elements",
+                "code": "var companies = setOf(\"Facebook\", \"Apple\", \"Netflix\", \"Google\")\n\nprintln(companies.elementAt(3))\n// Prints: Google\nprintln(companies.elementAt(4))\n// Returns and Error\nprintln(companies.elementAtOrNull(4))\n// Prints: null"
             },
             "不変マップ": {
                 "title": "Immutable Map",
-                "description": "Creating immutable maps"
+                "description": "Creating immutable maps",
+                "code": "var averageTemp = mapOf(\"winter\" to 35,  \"spring\" to 60,  \"summer\" to 85, \"fall\" to 55)"
             },
             "可変マップ": {
                 "title": "Mutable Map",
-                "description": "Creating mutable maps"
+                "description": "Creating mutable maps",
+                "code": "var europeanDomains = mutableMapOf(\"Germany\" to \"de\", \"Slovakia\" to \"sk\", \"Hungary\" to \"hu\", \"Norway\" to \"no\")"
             },
             "マップのキーと値の取得": {
                 "title": "Getting Map Keys and Values",
-                "description": "Accessing map keys and values"
+                "description": "Accessing map keys and values",
+                "code": "var oscarWinners = mutableMapOf(\"Parasite\" to \"Bong Joon-ho\", \"Green Book\" to \"Jim Burke\", \"The Shape Of Water\" to \"Guillermo del Toro\")\n\nprintln(oscarWinners.keys)\n// Prints: [Parasite, Green Book, The Shape Of Water]\n\nprintln(oscarWinners.values)\n// Prints: [Bong Joon-ho, Jim Burke, Guillermo del Toro]\nprintln(oscarWinners[\"Parasite\"])\n// Prints: Bong Joon-ho"
             },
             "マップエントリの追加と削除": {
                 "title": "Adding and Removing Map Entries",
-                "description": "Adding and removing map entries"
+                "description": "Adding and removing map entries",
+                "code": "var worldCapitals = mutableMapOf(\"United States\" to \"Washington D.C.\", \"Germany\" to \"Berlin\", \"Mexico\" to \"Mexico City\", \"France\" to \"Paris\")\n\nworldCapitals.put(\"Brazil\", \"Brasilia\")\nprintln(worldCapitals)\n// Prints: {United States=Washington D.C., Germany=Berlin, Mexico=Mexico City, France=Paris, Brazil=Brasilia}\n\nworldCapitals.remove(\"Germany\")\nprintln(worldCapitals)\n// Prints: {United States=Washington D.C., Mexico=Mexico City, France=Paris, Brazil=Brasilia}"
             }
         },
         "kotlin-functions": {
             "関数": {
                 "title": "Functions",
-                "description": "Basic function definition"
+                "description": "Basic function definition",
+                "code": "fun greet() {\n  println(\"Hey there!\")\n}\n\nfun main() {\n  //Function call\n  greet() //Prints: Hey there!\n}"
             },
             "関数パラメータ": {
                 "title": "Function Parameters",
-                "description": "Functions with parameters"
+                "description": "Functions with parameters",
+                "code": "fun birthday(name: String, age: Int) {\n   println(\"Happy birthday $name! You turn $age today!\")\n}\n\nfun main() {\n  birthday(\"Oscar\", 26) \n  //Prints: Happy birthday Oscar! You turn 26 today!\n  birthday(\"Amarah\", 30) \n  //Prints: Happy birthday Amarah! You turn 30 today!\n}"
             },
             "デフォルトパラメータ": {
                 "title": "Default Parameters",
-                "description": "Default function parameters"
+                "description": "Default function parameters",
+                "code": "fun favoriteLanguage(name: String, language: String = \"Kotlin\") {\n  println(\"Hello, $name. Your favorite programming language is $language\")  \n}\n\nfun main() {\n  favoriteLanguage(\"Manon\") \n  //Prints: Hello, Manon. Your favorite programming language is Kotlin\n  \n  favoriteLanguage(\"Lee\", \"Java\") \n  //Prints: Hello, Lee. Your favorite programming language is Java\n}"
             },
             "名前付きパラメータ": {
                 "title": "Named Parameters",
-                "description": "Named function parameters"
+                "description": "Named function parameters",
+                "code": "fun findMyAge(currentYear: Int, birthYear: Int) {\n   var myAge = currentYear - birthYear\n   println(\"I am $myAge years old.\")\n}\n\nfun main() {\n  findMyAge(currentYear = 2020, birthYear = 1995)\n  //Prints: I am 25 years old.\n  findMyAge(birthYear = 1920, currentYear = 2020)\n  //Prints: I am 100 years old.\n}"
             },
             "Return文": {
                 "title": "Return Statement",
-                "description": "Functions with return types"
+                "description": "Functions with return types",
+                "code": "//Return type is declared outside the parentheses\nfun getArea(length: Int, width: Int): Int {\n  var area = length * width\n\n  //return statement\n  return area\n}\n\nfun main() {\n  var myArea = getArea(10, 8)\n  println(\"The area is $myArea.\")\n  //Prints: The area is 80.\n}"
             },
             "単一式関数": {
                 "title": "Single Expression Functions",
-                "description": "Single expression functions"
+                "description": "Single expression functions",
+                "code": "fun fullName(firstName: String, lastName: String) = \"$firstName $lastName\"\n\nfun main() {\n  println(fullName(\"Ariana\", \"Ortega\"))\n  //Prints: Ariana Ortega\n  println(fullName(\"Kai\", \"Gittens\"))\n  //Prints: Kai Gittens\n}"
             },
             "関数リテラル": {
                 "title": "Function Literals",
-                "description": "Anonymous functions and lambda expressions"
+                "description": "Anonymous functions and lambda expressions",
+                "code": "fun main() {\n  //Anonymous Function:\n  var getProduct = fun(num1: Int, num2: Int): Int {\n    return num1 * num2\n  }\n  println(getProduct(8, 3))\n  //Prints: 24\n  //Lambda Expression\n  var getDifference = { num1: Int, num2: Int -> num1 - num2 }\n  println(getDifference(10, 3))\n  //Prints: 7\n}"
             }
         },
         "kotlin-classes": {
             "クラスの例": {
                 "title": "Class Example",
-                "description": "Basic class definition"
+                "description": "Basic class definition",
+                "code": "//class with properties containing default values\nclass Student {\n  var name = \"Lucia\"\n  var semester = \"Fall\"\n  var gpa = 3.95\n}\n\n//shorthand syntax without class body\nclass Student"
             },
             "クラスインスタンス": {
                 "title": "Class Instance",
-                "description": "Creating class instances"
+                "description": "Creating class instances",
+                "code": "// Class\nclass Student {\n  var name = \"Lucia\"\n  var semester = \"Fall\"\n  var gpa = 3.95\n}\n\nfun main() {\n  var student = Student()   \n  // Instance\n  println(student.name)     \n  // Prints: Lucia\n  println(student.semester) \n  // Prints: Fall\n  println(student.gpa)      \n  // Prints: 3.95  \n}"
             },
             "プライマリコンストラクタ": {
                 "title": "Primary Constructor",
-                "description": "Primary constructor"
+                "description": "Primary constructor",
+                "code": "class Student(val name: String, val gpa: Double, val semester: String, val estimatedGraduationYear: Int) \n\nfun main() {\n  var student = Student(\"Lucia\", 3.95, \"Fall\", 2022) \n  println(student.name)     \n  //Prints: Lucia\n  println(student.gpa)\n  //Prints: 3.95\n  println(student.semester) \n  //Prints: Fall\n  println(student.estimatedGraduationYear) \n  //Prints: 2022\n}"
             },
             "初期化ブロック": {
                 "title": "Init Block",
-                "description": "Init block"
+                "description": "Init block",
+                "code": "class Student(val name: String, val gpa: Double, val semester: String, val estimatedGraduationYear: Int) {\n  init {\n    println(\"$name has ${estimatedGraduationYear - 2020} years left in college.\")\n  }\n}\n\nfun main() {\n  var student = Student(\"Lucia\", 3.95, \"Fall\", 2022)\n  //Prints: Lucia has 2 years left in college. \n}"
             },
             "メンバー関数": {
                 "title": "Member Functions",
-                "description": "Class member functions"
+                "description": "Class member functions",
+                "code": "class Student(val name: String, val gpa: Double, val semester: String, val estimatedGraduationYear: Int) {\n\n  init {\n    println(\"$name has ${estimatedGraduationYear - 2020} years left in college.\")\n  }\n\n  //member function\n  fun calculateLetterGrade(): String {\n    return when {\n      gpa >= 3.0 -> \"A\"\n      gpa >= 2.7 -> \"B\"\n      gpa >= 1.7 -> \"C\"\n      gpa >= 1.0 -> \"D\"\n      else -> \"E\"\n    }\n  }\n}\n\n//When the instance is created and the function is called, the when expression will be executed and return the letter grade\nfun main() {\n  var student = Student(\"Lucia\", 3.95, \"Fall\", 2022)\n  //Prints: Lucia has 2 years left in college.\n  println(\"${student.name}'s letter grade is ${student.calculateLetterGrade()}.\")\n  //Prints: Lucia's letter grade is A.\n}"
             }
         }
     }

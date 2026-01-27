@@ -1,6 +1,14 @@
 {
-    "_comment": "English translations for Knowledge Categories",
+    "_comment": "English translations for Knowledge Categories. Keys = category name (ja) in DB. Used by KnowledgeTranslationSeeder and fallback display.",
     "categories": {
+        "プログラミング演習": {
+            "name": "Programming Exercises",
+            "description": "Folder for programming exercises"
+        },
+        "未分類": {
+            "name": "Uncategorized",
+            "description": "Items without category"
+        },
         "プログラミング言語": {
             "name": "Programming Languages",
             "description": "Programming language notes, syntax, and best practices"

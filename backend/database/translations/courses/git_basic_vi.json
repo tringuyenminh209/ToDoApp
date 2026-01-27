@@ -8,6 +8,10 @@
         "Git/GitHub完全コース": {
             "title": "Khóa học Git/GitHub Hoàn chỉnh",
             "description": "Khóa học Git/GitHub dành cho người mới bắt đầu đến trung cấp. Học thực tế từ cơ bản quản lý phiên bản đến phát triển nhóm, CI/CD và GitHub Actions trong 10 tuần."
+        },
+        "Git基礎": {
+            "title": "Khóa học Git/GitHub Hoàn chỉnh",
+            "description": "Khóa học Git/GitHub dành cho người mới bắt đầu đến trung cấp. Học thực tế từ cơ bản quản lý phiên bản đến phát triển nhóm, CI/CD và GitHub Actions trong 10 tuần."
         }
     },
     "milestones": {

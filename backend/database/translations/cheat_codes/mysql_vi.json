@@ -47,247 +47,304 @@
         "getting-started": {
             "MySQLへの接続": {
                 "title": "Kết nối MySQL",
-                "description": "Cách kết nối MySQL"
+                "description": "Cách kết nối MySQL",
+                "code": "mysql -u <user> -p\n\nmysql [db_name]\n\nmysql -h <host> -P <port> -u <user> -p [db_name]\n\nmysql -h <host> -u <user> -p [db_name]"
             },
             "データベース操作": {
                 "title": "Thao tác Database",
-                "description": "Tạo, liệt kê, chuyển đổi và xóa database"
+                "description": "Tạo, liệt kê, chuyển đổi và xóa database",
+                "code": "CREATE DATABASE db ;  # Create database\nSHOW DATABASES;        # List databases\nUSE db;                # Switch to db\nCONNECT db ;           # Switch to db\nDROP DATABASE db;      # Delete db"
             },
             "テーブル操作": {
                 "title": "Thao tác Table",
-                "description": "Liệt kê, xem cấu trúc và xóa bảng"
+                "description": "Liệt kê, xem cấu trúc và xóa bảng",
+                "code": "SHOW TABLES;           # List tables for current db\nSHOW FIELDS FROM t;   # List fields for a table\nDESC t;                # Show table structure\nSHOW CREATE TABLE t;   # Show create table sql\nTRUNCATE TABLE t;      # Remove all data in a table\nDROP TABLE t;          # Delete table"
             },
             "プロセス操作": {
                 "title": "Thao tác Process",
-                "description": "Xem và kết thúc các process đang chạy"
+                "description": "Xem và kết thúc các process đang chạy",
+                "code": "show processlist;  # List processes\nkill pid;          # kill process"
             },
             "バックアップの作成": {
                 "title": "Tạo Backup",
-                "description": "Backup và restore database"
+                "description": "Backup và restore database",
+                "code": "# Create a backup\nmysqldump -u user -p db_name > db.sql\n\n# Export db without schema\nmysqldump -u user -p db_name --no-data=true --add-drop-table=false > db.sql\n\n# Restore a backup\nmysql -u user -p db_name < db.sql"
             }
         },
         "managing-tables": {
             "テーブルの作成": {
                 "title": "Tạo bảng",
-                "description": "Tạo bảng với 3 cột"
+                "description": "Tạo bảng với 3 cột",
+                "code": "CREATE TABLE t (\n     id    INT,\n     name  VARCHAR DEFAULT NOT NULL,\n     price INT DEFAULT 0\n     PRIMARY KEY(id)\n);"
             },
             "テーブルの削除": {
                 "title": "Xóa bảng",
-                "description": "Xóa bảng khỏi database"
+                "description": "Xóa bảng khỏi database",
+                "code": "DROP TABLE t ;"
             },
             "カラムの追加": {
                 "title": "Thêm cột",
-                "description": "Thêm cột mới vào bảng"
+                "description": "Thêm cột mới vào bảng",
+                "code": "ALTER TABLE t ADD column;"
             },
             "カラムの削除": {
                 "title": "Xóa cột",
-                "description": "Xóa cột khỏi bảng"
+                "description": "Xóa cột khỏi bảng",
+                "code": "ALTER TABLE t DROP COLUMN c ;"
             },
             "制約の追加": {
                 "title": "Thêm ràng buộc",
-                "description": "Thêm ràng buộc vào bảng"
+                "description": "Thêm ràng buộc vào bảng",
+                "code": "ALTER TABLE t ADD constraint;"
             },
             "制約の削除": {
                 "title": "Xóa ràng buộc",
-                "description": "Xóa ràng buộc khỏi bảng"
+                "description": "Xóa ràng buộc khỏi bảng",
+                "code": "ALTER TABLE t DROP constraint;"
             },
             "テーブル名の変更": {
                 "title": "Đổi tên bảng",
-                "description": "Đổi tên bảng từ t1 sang t2"
+                "description": "Đổi tên bảng từ t1 sang t2",
+                "code": "ALTER TABLE t1 RENAME TO t2;"
             },
             "カラム名の変更": {
                 "title": "Đổi tên cột",
-                "description": "Đổi tên cột từ c1 sang c2"
+                "description": "Đổi tên cột từ c1 sang c2",
+                "code": "ALTER TABLE t1 RENAME c1 TO c2 ;"
             },
             "テーブルデータの全削除": {
                 "title": "Xóa toàn bộ dữ liệu bảng",
-                "description": "Xóa tất cả dữ liệu trong bảng"
+                "description": "Xóa tất cả dữ liệu trong bảng",
+                "code": "TRUNCATE TABLE t;"
             }
         },
         "querying-data": {
             "基本的なSELECT": {
                 "title": "SELECT cơ bản",
-                "description": "Lấy dữ liệu từ cột c1, c2"
+                "description": "Lấy dữ liệu từ cột c1, c2",
+                "code": "SELECT c1, c2 FROM t"
             },
             "すべてのカラムを取得": {
                 "title": "Lấy tất cả cột",
-                "description": "Lấy tất cả hàng và cột"
+                "description": "Lấy tất cả hàng và cột",
+                "code": "SELECT * FROM t"
             },
             "WHERE句でフィルタリング": {
                 "title": "Lọc với WHERE",
-                "description": "Lọc các hàng khớp điều kiện"
+                "description": "Lọc các hàng khớp điều kiện",
+                "code": "SELECT c1, c2 FROM t\nWHERE condition"
             },
             "DISTINCTで重複を除外": {
                 "title": "Loại trừ trùng lặp với DISTINCT",
-                "description": "Lấy các hàng không trùng lặp"
+                "description": "Lấy các hàng không trùng lặp",
+                "code": "SELECT DISTINCT c1 FROM t\nWHERE condition"
             },
             "ORDER BYでソート": {
                 "title": "Sắp xếp với ORDER BY",
-                "description": "Sắp xếp kết quả tăng dần hoặc giảm dần"
+                "description": "Sắp xếp kết quả tăng dần hoặc giảm dần",
+                "code": "SELECT c1, c2 FROM t\nORDER BY c1 ASC [DESC]"
             },
             "LIMITとOFFSET": {
                 "title": "LIMIT và OFFSET",
-                "description": "Bỏ qua offset hàng và trả về n hàng tiếp theo"
+                "description": "Bỏ qua offset hàng và trả về n hàng tiếp theo",
+                "code": "SELECT c1, c2 FROM t\nORDER BY c1 \nLIMIT n OFFSET offset"
             },
             "GROUP BYでグループ化": {
                 "title": "Nhóm với GROUP BY",
-                "description": "Nhóm các hàng bằng hàm tổng hợp"
+                "description": "Nhóm các hàng bằng hàm tổng hợp",
+                "code": "SELECT c1, aggregate(c2)\nFROM t\nGROUP BY c1"
             },
             "HAVING句でグループをフィルタ": {
                 "title": "Lọc nhóm với HAVING",
-                "description": "Lọc nhóm bằng mệnh đề HAVING"
+                "description": "Lọc nhóm bằng mệnh đề HAVING",
+                "code": "SELECT c1, aggregate(c2)\nFROM t\nGROUP BY c1\nHAVING condition"
             }
         },
         "joins": {
             "INNER JOIN": {
                 "title": "INNER JOIN",
-                "description": "Inner join của t1 và t2"
+                "description": "Inner join của t1 và t2",
+                "code": "SELECT c1, c2 \nFROM t1\nINNER JOIN t2 ON condition"
             },
             "LEFT JOIN": {
                 "title": "LEFT JOIN",
-                "description": "Left outer join của t1 và t2"
+                "description": "Left outer join của t1 và t2",
+                "code": "SELECT c1, c2 \nFROM t1\nLEFT JOIN t2 ON condition"
             },
             "RIGHT JOIN": {
                 "title": "RIGHT JOIN",
-                "description": "Right outer join của t1 và t2"
+                "description": "Right outer join của t1 và t2",
+                "code": "SELECT c1, c2 \nFROM t1\nRIGHT JOIN t2 ON condition"
             },
             "FULL OUTER JOIN": {
                 "title": "FULL OUTER JOIN",
-                "description": "Thực hiện full outer join"
+                "description": "Thực hiện full outer join",
+                "code": "SELECT c1, c2 \nFROM t1\nFULL OUTER JOIN t2 ON condition"
             },
             "CROSS JOIN": {
                 "title": "CROSS JOIN",
-                "description": "Tạo tích Descartes của các hàng bảng"
+                "description": "Tạo tích Descartes của các hàng bảng",
+                "code": "SELECT c1, c2 \nFROM t1\nCROSS JOIN t2"
             },
             "自己結合": {
                 "title": "Self Join",
-                "description": "Kết hợp t1 với chính nó bằng INNER JOIN"
+                "description": "Kết hợp t1 với chính nó bằng INNER JOIN",
+                "code": "SELECT c1, c2\nFROM t1 A\nINNER JOIN t1 B ON condition"
             },
             "UNION": {
                 "title": "UNION",
-                "description": "Kết hợp các hàng từ hai truy vấn"
+                "description": "Kết hợp các hàng từ hai truy vấn",
+                "code": "SELECT c1, c2 FROM t1\nUNION [ALL]\nSELECT c1, c2 FROM t2"
             },
             "LIKEパターンマッチング": {
                 "title": "So khớp mẫu LIKE",
-                "description": "Truy vấn hàng bằng so khớp mẫu %, _"
+                "description": "Truy vấn hàng bằng so khớp mẫu %, _",
+                "code": "SELECT c1, c2 FROM t1\nWHERE c1 [NOT] LIKE pattern"
             },
             "IN句": {
                 "title": "Mệnh đề IN",
-                "description": "Truy vấn các hàng trong danh sách"
+                "description": "Truy vấn các hàng trong danh sách",
+                "code": "SELECT c1, c2 FROM t\nWHERE c1 [NOT] IN value_list"
             },
             "BETWEEN句": {
                 "title": "Mệnh đề BETWEEN",
-                "description": "Truy vấn các hàng giữa hai giá trị"
+                "description": "Truy vấn các hàng giữa hai giá trị",
+                "code": "SELECT c1, c2 FROM t\nWHERE  c1 BETWEEN low AND high"
             },
             "NULLチェック": {
                 "title": "Kiểm tra NULL",
-                "description": "Kiểm tra xem giá trị có NULL trong bảng không"
+                "description": "Kiểm tra xem giá trị có NULL trong bảng không",
+                "code": "SELECT c1, c2 FROM t\nWHERE  c1 IS [NOT] NULL"
             }
         },
         "constraints": {
             "主キー": {
                 "title": "Primary Key",
-                "description": "Đặt c1 và c2 làm primary key"
+                "description": "Đặt c1 và c2 làm primary key",
+                "code": "CREATE TABLE t(\n    c1 INT, c2 INT, c3 VARCHAR,\n    PRIMARY KEY (c1,c2)\n);"
             },
             "外部キー": {
                 "title": "Foreign Key",
-                "description": "Đặt cột c2 làm foreign key"
+                "description": "Đặt cột c2 làm foreign key",
+                "code": "CREATE TABLE t1(\n    c1 INT PRIMARY KEY,  \n    c2 INT,\n    FOREIGN KEY (c2) REFERENCES t2(c2)\n);"
             },
             "UNIQUE制約": {
                 "title": "Ràng buộc UNIQUE",
-                "description": "Làm cho giá trị c1 và c2 là duy nhất"
+                "description": "Làm cho giá trị c1 và c2 là duy nhất",
+                "code": "CREATE TABLE t(\n    c1 INT, c1 INT,\n    UNIQUE(c2,c3)\n);"
             },
             "CHECK制約": {
                 "title": "Ràng buộc CHECK",
-                "description": "Đảm bảo c1 > 0 và c1 >= c2"
+                "description": "Đảm bảo c1 > 0 và c1 >= c2",
+                "code": "CREATE TABLE t(\n  c1 INT, c2 INT,\n  CHECK(c1> 0 AND c1 >= c2)\n);"
             },
             "NOT NULL制約": {
                 "title": "Ràng buộc NOT NULL",
-                "description": "Đặt giá trị cột c2 là NOT NULL"
+                "description": "Đặt giá trị cột c2 là NOT NULL",
+                "code": "CREATE TABLE t(\n     c1 INT PRIMARY KEY,\n     c2 VARCHAR NOT NULL\n);"
             }
         },
         "modifying-data": {
             "1行の挿入": {
                 "title": "Chèn một hàng",
-                "description": "Chèn một hàng vào bảng"
+                "description": "Chèn một hàng vào bảng",
+                "code": "INSERT INTO t(column_list)\nVALUES(value_list);"
             },
             "複数行の挿入": {
                 "title": "Chèn nhiều hàng",
-                "description": "Chèn nhiều hàng vào bảng"
+                "description": "Chèn nhiều hàng vào bảng",
+                "code": "INSERT INTO t(column_list)\nVALUES (value_list), \n       (value_list), …;"
             },
             "SELECTからINSERT": {
                 "title": "INSERT từ SELECT",
-                "description": "Chèn các hàng từ t2 vào t1"
+                "description": "Chèn các hàng từ t2 vào t1",
+                "code": "INSERT INTO t1(column_list)\nSELECT column_list\nFROM t2;"
             },
             "すべての行を更新": {
                 "title": "Cập nhật tất cả hàng",
-                "description": "Cập nhật cột c1 với giá trị mới cho tất cả hàng"
+                "description": "Cập nhật cột c1 với giá trị mới cho tất cả hàng",
+                "code": "UPDATE t\nSET c1 = new_value;"
             },
             "条件付きUPDATE": {
                 "title": "UPDATE có điều kiện",
-                "description": "Cập nhật cột c1, c2 khớp điều kiện"
+                "description": "Cập nhật cột c1, c2 khớp điều kiện",
+                "code": "UPDATE t\nSET c1 = new_value, \n        c2 = new_value\nWHERE condition;"
             },
             "すべてのデータを削除": {
                 "title": "Xóa tất cả dữ liệu",
-                "description": "Xóa tất cả dữ liệu trong bảng"
+                "description": "Xóa tất cả dữ liệu trong bảng",
+                "code": "DELETE FROM t;"
             },
             "条件付きDELETE": {
                 "title": "DELETE có điều kiện",
-                "description": "Xóa tập hợp con các hàng trong bảng"
+                "description": "Xóa tập hợp con các hàng trong bảng",
+                "code": "DELETE FROM t\nWHERE condition;"
             }
         },
         "views": {
             "ビューの作成": {
                 "title": "Tạo View",
-                "description": "Tạo view mới với c1 và c2"
+                "description": "Tạo view mới với c1 và c2",
+                "code": "CREATE VIEW v(c1,c2) \nAS\nSELECT c1, c2\nFROM t;"
             },
             "CHECK OPTION付きビュー": {
                 "title": "View với CHECK OPTION",
-                "description": "Tạo view mới với check option"
+                "description": "Tạo view mới với check option",
+                "code": "CREATE VIEW v(c1,c2) \nAS\nSELECT c1, c2\nFROM t;\nWITH [CASCADED | LOCAL] CHECK OPTION;"
             }
         },
         "data-types": {
             "文字列型": {
                 "title": "Kiểu chuỗi",
-                "description": "Kiểu dữ liệu chuỗi MySQL"
+                "description": "Kiểu dữ liệu chuỗi MySQL",
+                "code": "# CHAR       - String (0 - 255)\n# VARCHAR    - String (0 - 255)\n# TINYTEXT   - String (0 - 255)\n# TEXT       - String (0 - 65535)\n# BLOB       - String (0 - 65535)\n# MEDIUMTEXT - String (0 - 16777215)\n# MEDIUMBLOB - String (0 - 16777215)\n# LONGTEXT   - String (0 - 4294967295)\n# LONGBLOB   - String (0 - 4294967295)\n# ENUM       - One of preset options\n# SET        - Selection of preset options"
             },
             "日付・時刻型": {
                 "title": "Kiểu ngày/giờ",
-                "description": "Kiểu dữ liệu ngày/giờ MySQL"
+                "description": "Kiểu dữ liệu ngày/giờ MySQL",
+                "code": "# DATE      - yyyy-MM-dd\n# TIME      - hh:mm:ss\n# DATETIME  - yyyy-MM-dd hh:mm:ss\n# TIMESTAMP - yyyy-MM-dd hh:mm:ss\n# YEAR      - yyyy"
             },
             "数値型": {
                 "title": "Kiểu số",
-                "description": "Kiểu dữ liệu số MySQL"
+                "description": "Kiểu dữ liệu số MySQL",
+                "code": "# TINYINT x   - Integer (-128 to 127)\n# SMALLINT x  - Integer (-32768 to 32767)\n# MEDIUMINT x - Integer (-8388608 to 8388607)\n# INT x       - Integer (-2147483648 to 2147483647)\n# BIGINT x    - Integer (-9223372036854775808 to 9223372036854775807)\n# FLOAT       - Decimal (precise to 23 digits)\n# DOUBLE      - Decimal (24 to 53 digits)\n# DECIMAL     - \"DOUBLE\" stored as string"
             }
         },
         "functions": {
             "文字列関数": {
                 "title": "Hàm chuỗi",
-                "description": "Các hàm chuỗi chính"
+                "description": "Các hàm chuỗi chính",
+                "code": "# CONCAT(), SUBSTRING(), LENGTH(), UPPER(), LOWER()\n# REPLACE(), TRIM(), LEFT(), RIGHT(), MID()\n# CHAR_LENGTH(), LOCATE(), INSTR(), REVERSE()\n# LPAD(), RPAD(), LTRIM(), RTRIM()"
             },
             "日付・時刻関数": {
                 "title": "Hàm ngày/giờ",
-                "description": "Các hàm ngày/giờ chính"
+                "description": "Các hàm ngày/giờ chính",
+                "code": "# NOW(), CURDATE(), CURTIME(), DATE(), TIME()\n# DATE_FORMAT(), DATE_ADD(), DATE_SUB()\n# DATEDIFF(), TIMEDIFF(), YEAR(), MONTH(), DAY()\n# HOUR(), MINUTE(), SECOND(), WEEK(), QUARTER()"
             },
             "数値関数": {
                 "title": "Hàm số",
-                "description": "Các hàm số chính"
+                "description": "Các hàm số chính",
+                "code": "# ABS(), CEIL(), FLOOR(), ROUND(), TRUNCATE()\n# MOD(), POW(), SQRT(), RAND()\n# SIN(), COS(), TAN(), LOG(), EXP()"
             },
             "集約関数": {
                 "title": "Hàm tổng hợp",
-                "description": "Các hàm tổng hợp chính"
+                "description": "Các hàm tổng hợp chính",
+                "code": "# AVG(), COUNT(), SUM(), MAX(), MIN()\n# COUNT(DISTINCT), GROUP_CONCAT()\n# STD(), STDDEV(), VARIANCE()"
             },
             "JSON関数": {
                 "title": "Hàm JSON",
-                "description": "Các hàm JSON chính"
+                "description": "Các hàm JSON chính",
+                "code": "# JSON_ARRAY(), JSON_OBJECT(), JSON_EXTRACT()\n# JSON_SET(), JSON_INSERT(), JSON_REPLACE()\n# JSON_REMOVE(), JSON_CONTAINS(), JSON_KEYS()\n# JSON_LENGTH(), JSON_TYPE(), JSON_VALID()"
             },
             "型変換関数": {
                 "title": "Hàm chuyển đổi kiểu",
-                "description": "Hàm chuyển đổi kiểu"
+                "description": "Hàm chuyển đổi kiểu",
+                "code": "# CAST(), CONVERT(), BINARY"
             },
             "制御フロー関数": {
                 "title": "Hàm luồng điều khiển",
-                "description": "Hàm luồng điều khiển"
+                "description": "Hàm luồng điều khiển",
+                "code": "# CASE, IF(), IFNULL(), NULLIF()"
             }
         }
     }

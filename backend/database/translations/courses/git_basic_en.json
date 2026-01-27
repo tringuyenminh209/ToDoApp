@@ -8,6 +8,10 @@
         "Git/GitHub完全コース": {
             "title": "Git/GitHub Complete Course",
             "description": "Git/GitHub course for beginners to intermediate users. Learn practically from version control fundamentals to team development, CI/CD, and GitHub Actions over 10 weeks."
+        },
+        "Git基礎": {
+            "title": "Git/GitHub Complete Course",
+            "description": "Git/GitHub course for beginners to intermediate users. Learn practically from version control fundamentals to team development, CI/CD, and GitHub Actions over 10 weeks."
         }
     },
     "milestones": {

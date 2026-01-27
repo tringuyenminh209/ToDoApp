@@ -8,6 +8,10 @@
         "Go言語基礎コース": {
             "title": "Khóa học Go Cơ bản",
             "description": "Khóa học lập trình Go cơ bản dành cho người mới bắt đầu. Học từng bước từ cú pháp Go cơ bản đến goroutines thông qua 15 tuần bài tập thực hành."
+        },
+        "Go基礎": {
+            "title": "Khóa học Go Cơ bản",
+            "description": "Khóa học lập trình Go cơ bản dành cho người mới bắt đầu. Học từng bước từ cú pháp Go cơ bản đến goroutines thông qua 15 tuần bài tập thực hành."
         }
     },
     "milestones": {

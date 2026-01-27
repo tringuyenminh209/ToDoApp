@@ -8,6 +8,10 @@
         "HTML基礎演習": {
             "title": "HTML Basic Course",
             "description": "Beginner-friendly HTML fundamentals course. Learn step by step from HTML basic structure to semantic HTML, forms, and multimedia through 15 weeks of practical exercises."
+        },
+        "HTML基礎": {
+            "title": "HTML Basic Course",
+            "description": "Beginner-friendly HTML fundamentals course. Learn step by step from HTML basic structure to semantic HTML, forms, and multimedia through 15 weeks of practical exercises."
         }
     },
     "milestones": {

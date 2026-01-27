@@ -8,6 +8,10 @@
         "JavaScript基礎演習": {
             "title": "Khóa học JavaScript Cơ bản",
             "description": "Khóa học lập trình JavaScript cơ bản dành cho người mới bắt đầu. Học từng bước từ cơ bản JavaScript đến thao tác DOM, xử lý bất đồng bộ và tích hợp API bên ngoài thông qua 15 tuần bài tập thực hành."
+        },
+        "JavaScript基礎": {
+            "title": "Khóa học JavaScript Cơ bản",
+            "description": "Khóa học lập trình JavaScript cơ bản dành cho người mới bắt đầu. Học từng bước từ cơ bản JavaScript đến thao tác DOM, xử lý bất đồng bộ và tích hợp API bên ngoài thông qua 15 tuần bài tập thực hành."
         }
     },
     "milestones": {

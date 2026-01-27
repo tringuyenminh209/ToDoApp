@@ -1,5 +1,5 @@
 {
-    "_comment": "Vietnamese translations for PHP Cheat Code",
+    "_comment": "Vietnamese translations for PHP Cheat Code (sections: title/description, examples: title/description/code)",
     "language": {
         "php": {
             "description": "PHP là ngôn ngữ lập trình kịch bản để sử dụng chung phổ biến, đặc biệt phù hợp cho phát triển web."
@@ -37,153 +37,187 @@
     },
     "examples": {
         "getting-started": {
-            "hellophp": {
+            "hello.php": {
                 "title": "hello.php",
-                "description": "Bắt đầu với thẻ mở PHP"
+                "description": "Bắt đầu với thẻ mở PHP",
+                "code": "<?php // begin with a PHP open tag.\n\necho \"Hello World\\n\";\nprint(\"Hello Kizamu.com\");\n\n?>"
             },
             "変数": {
                 "title": "Biến",
-                "description": "Khai báo biến và kiểu dữ liệu"
+                "description": "Khai báo biến và kiểu dữ liệu",
+                "code": "$boolean1 = true;\n$boolean2 = True;\n\n$int = 12;\n$float = 3.1415926;\nunset($float);  // Delete variable\n\n$str1 = \"How are you?\";\n$str2 = 'Fine, thanks';"
             },
             "文字列": {
                 "title": "Chuỗi",
-                "description": "Thao tác và nối chuỗi"
+                "description": "Thao tác và nối chuỗi",
+                "code": "$url = \"Kizamu.com\";\necho \"I'm learning PHP at $url\";\n\n// Concatenate strings\necho \"I'm learning PHP at \" . $url;\n\n$hello = \"Hello, \";\n$hello .= \"World!\";\necho $hello;"
             },
             "配列": {
                 "title": "Mảng",
-                "description": "Thao tác mảng"
+                "description": "Thao tác mảng",
+                "code": "$num = [1, 3, 5, 7, 9];\n$num[5] = 11;\nunset($num[2]);    // Delete variable\nprint_r($num);\necho count($num);"
             },
             "演算子": {
                 "title": "Toán tử",
-                "description": "Các toán tử số học cơ bản"
+                "description": "Các toán tử số học cơ bản",
+                "code": "$x = 1;\n$y = 2;\n\n$sum = $x + $y;\necho $sum;"
             },
             "インクルード": {
                 "title": "Include",
-                "description": "Câu lệnh include và require"
+                "description": "Câu lệnh include và require",
+                "code": "<?php\ninclude 'vars.php';\necho $fruit . \"\\n\";\n\n/* Same as include,\ncause an error if cannot be included*/\nrequire 'vars.php';\n\n// Also works\ninclude('vars.php');\nrequire('vars.php');"
             },
             "関数": {
                 "title": "Hàm",
-                "description": "Định nghĩa hàm với tham số mặc định"
+                "description": "Định nghĩa hàm với tham số mặc định",
+                "code": "function add($num1, $num2 = 1) {\n    return $num1 + $num2;\n}\necho add(10);\necho add(10, 5);"
             },
             "コメント": {
                 "title": "Chú thích",
-                "description": "Cú pháp chú thích PHP"
+                "description": "Cú pháp chú thích PHP",
+                "code": "# This is a one line shell-style comment\n\n// This is a one line c++ style comment\n\n/* This is a multi line comment\n   yet another line of comment */"
             },
             "定数": {
                 "title": "Hằng số",
-                "description": "Khai báo hằng số"
+                "description": "Khai báo hằng số",
+                "code": "const MY_CONST = \"hello\";\n\necho MY_CONST;\n\necho 'MY_CONST is: ' . MY_CONST;"
             },
             "クラス": {
                 "title": "Lớp",
-                "description": "Định nghĩa lớp cơ bản và khởi tạo"
+                "description": "Định nghĩa lớp cơ bản và khởi tạo",
+                "code": "class Student {\n    public function __construct($name) {\n        $this->name = $name;\n    }\n}\n$alex = new Student(\"Alex\");"
             }
         },
         "php-types": {
             "ブール型": {
                 "title": "Boolean",
-                "description": "Kiểu boolean và ép kiểu"
+                "description": "Kiểu boolean và ép kiểu",
+                "code": "$boolean1 = true;\n$boolean2 = TRUE;\n$boolean3 = false;\n$boolean4 = FALSE;\n\n$boolean5 = (boolean) 1;\n$boolean6 = (boolean) 0;"
             },
             "整数型": {
                 "title": "Số nguyên",
-                "description": "Kiểu số nguyên và định dạng"
+                "description": "Kiểu số nguyên và định dạng",
+                "code": "$int1 = 28;\n$int2 = -32;\n$int3 = 012;   // octal => 10\n$int4 = 0x0F;  // hex => 15\n$int5 = 0b101; // binary => 5\n\n$int6 = 2_000_100_000;  // PHP 7.4.0"
             },
             "浮動小数点型": {
                 "title": "Số thực",
-                "description": "Kiểu float/double và chuỗi số"
+                "description": "Kiểu float/double và chuỗi số",
+                "code": "$float1 = 1.234;\n$float2 = 1.2e7;\n$float3 = 7E-10;\n\n$float4 = 1_234.567;  // PHP 7.4.0\nvar_dump($float4);\n\n$float5 = 1 + \"10.5\";\n$float6 = 1 + \"-1.3e3\";"
             },
-            "null": {
+            "Null": {
                 "title": "Null",
-                "description": "Toán tử null coalescing và kiểm tra null"
+                "description": "Toán tử null coalescing và kiểm tra null",
+                "code": "$a = null;\n$b = 'Hello php!';\necho $a ?? 'a is unset';\necho $b ?? 'b is unset';\n\n$a = array();\n$a == null;\n$a === null;\nis_null($a);"
             }
         },
         "php-strings": {
             "文字列": {
                 "title": "Chuỗi",
-                "description": "Nháy đơn và nháy kép"
+                "description": "Nháy đơn và nháy kép",
+                "code": "$sgl_quotes = '$String';\n\n$dbl_quotes = \"This is a $sgl_quotes.\";\n\n$escaped   = \"a \\t tab character.\";\n\n$unescaped = 'a slash and a t: \\t';"
             },
             "複数行": {
                 "title": "Nhiều dòng",
-                "description": "Cú pháp Heredoc và Nowdoc"
+                "description": "Cú pháp Heredoc và Nowdoc",
+                "code": "$str = \"foo\";\n\n// Uninterpolated multi-liners\n$nowdoc = <<<'END'\nMulti line string\n$str\nEND;\n\n// Will do string interpolation\n$heredoc = <<<END\nMulti line\n$str\nEND;"
             },
             "操作": {
                 "title": "Thao tác",
-                "description": "Các hàm chuỗi thông dụng"
+                "description": "Các hàm chuỗi thông dụng",
+                "code": "$s = \"Hello Phper\";\necho strlen($s);\n\necho substr($s, 0, 3);\necho substr($s, 1);\necho substr($s, -4, 3);\n\necho strtoupper($s);\necho strtolower($s);\n\necho strpos($s, \"l\");\nvar_dump(strpos($s, \"L\"));"
             }
         },
         "php-arrays": {
             "定義": {
                 "title": "Định nghĩa",
-                "description": "Các cách khác nhau để định nghĩa mảng"
+                "description": "Các cách khác nhau để định nghĩa mảng",
+                "code": "$a1 = [\"hello\", \"world\", \"!\"];\n$a2 = array(\"hello\", \"world\", \"!\");\n$a3 = explode(\",\", \"apple,pear,peach\");"
             },
             "混合キー": {
                 "title": "Khóa hỗn hợp",
-                "description": "Mảng với khóa số nguyên và chuỗi"
+                "description": "Mảng với khóa số nguyên và chuỗi",
+                "code": "$array = array(\n    \"foo\" => \"bar\",\n    \"bar\" => \"foo\",\n    100   => -100,\n    -100  => 100,\n);\nvar_dump($array);"
             },
             "多次元配列": {
                 "title": "Mảng đa chiều",
-                "description": "Mảng đa chiều"
+                "description": "Mảng đa chiều",
+                "code": "$multiArray = [ \n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9],\n];\n\nprint_r($multiArray[0][0]);\nprint_r($multiArray[0][1]);\nprint_r($multiArray[0][2]);"
             },
             "配列操作": {
                 "title": "Thao tác mảng",
-                "description": "Các hàm xử lý mảng"
+                "description": "Các hàm xử lý mảng",
+                "code": "$arr = array(5 => 1, 12 => 2);\n$arr[] = 56;      // Append\n$arr[\"x\"] = 42;   // Add with key\nsort($arr);       // Sort\nunset($arr[5]);   // Remove\nunset($arr);      // Remove all"
             },
-            "foreach反復": {
+            "Foreach反復": {
                 "title": "Vòng lặp Foreach",
-                "description": "Lặp với vòng lặp foreach"
+                "description": "Lặp với vòng lặp foreach",
+                "code": "$colors = array('red', 'blue', 'green');\n\nforeach ($colors as $color) {\n    echo \"Do you like $color?\\n\";\n}"
             },
             "キー・値の反復": {
                 "title": "Lặp Khóa-Giá trị",
-                "description": "Lặp qua các cặp khóa-giá trị"
+                "description": "Lặp qua các cặp khóa-giá trị",
+                "code": "$arr = [\"foo\" => \"bar\", \"bar\" => \"foo\"];\n\nforeach ( $arr as $key => $value )\n{\n    echo \"$key => $value\\n\";\n}"
             }
         },
         "php-functions": {
             "戻り値": {
                 "title": "Giá trị trả về",
-                "description": "Hàm cơ bản với giá trị trả về"
+                "description": "Hàm cơ bản với giá trị trả về",
+                "code": "function square($x)\n{\n    return $x * $x;\n}\n\necho square(4);"
             },
             "戻り値の型": {
                 "title": "Kiểu trả về",
-                "description": "Khai báo kiểu trả về"
+                "description": "Khai báo kiểu trả về",
+                "code": "// Basic return type declaration\nfunction sum($a, $b): float {\n    return $a + $b;\n}\nfunction get_item(): string {\n    return \"item\";\n}\n\nclass C {}\n// Returning an object\nfunction getC(): C { \n    return new C; \n}"
             },
             "デフォルトパラメータ": {
                 "title": "Tham số mặc định",
-                "description": "Hàm với tham số mặc định"
+                "description": "Hàm với tham số mặc định",
+                "code": "function coffee($type = \"cappuccino\")\n{\n    return \"Making a cup of $type.\\n\";\n}\necho coffee();\necho coffee(null);\necho coffee(\"espresso\");"
             },
             "無名関数": {
                 "title": "Hàm ẩn danh",
-                "description": "Hàm ẩn danh (Closures)"
+                "description": "Hàm ẩn danh (Closures)",
+                "code": "$greet = function($name)\n{\n    printf(\"Hello %s\\r\\n\", $name);\n};\n\n$greet('World');\n$greet('PHP');"
             },
             "アロー関数": {
                 "title": "Hàm mũi tên",
-                "description": "Hàm mũi tên (PHP 7.4+)"
+                "description": "Hàm mũi tên (PHP 7.4+)",
+                "code": "$y = 1;\n \n$fn1 = fn($x) => $x + $y;\n\n// equivalent to using $y by value:\n$fn2 = function ($x) use ($y) {\n    return $x + $y;\n};\necho $fn1(5);\necho $fn2(5);"
             }
         },
         "php-classes": {
             "コンストラクタ": {
                 "title": "Constructor",
-                "description": "Constructor và phương thức của lớp"
+                "description": "Constructor và phương thức của lớp",
+                "code": "class Student {\n    public function __construct($name) {\n        $this->name = $name;\n    }\n    public function print() {\n        echo \"Name: \" . $this->name;\n    }\n}\n$alex = new Student(\"Alex\");\n$alex->print();"
             },
             "継承": {
                 "title": "Kế thừa",
-                "description": "Kế thừa lớp"
+                "description": "Kế thừa lớp",
+                "code": "class ExtendClass extends SimpleClass\n{\n    // Redefine the parent method\n    function displayVar()\n    {\n        echo \"Extending class\\n\";\n        parent::displayVar();\n    }\n}\n\n$extended = new ExtendClass();\n$extended->displayVar();"
             },
             "クラス変数": {
                 "title": "Biến lớp",
-                "description": "Hằng số lớp và biến tĩnh"
+                "description": "Hằng số lớp và biến tĩnh",
+                "code": "class MyClass\n{\n    const MY_CONST       = 'value';\n    static $staticVar    = 'static';\n\n    // Visibility\n    public static $var1  = 'pubs';\n    private static $var2 = 'pris';\n    protected static $var3 = 'pros';\n}\n\n// Access statically\necho MyClass::MY_CONST;\necho MyClass::$staticVar;"
             },
             "インターフェース": {
                 "title": "Interface",
-                "description": "Interface và triển khai đa giao diện"
+                "description": "Interface và triển khai đa giao diện",
+                "code": "interface Foo \n{\n    public function doSomething();\n}\ninterface Bar\n{\n    public function doSomethingElse();\n}\nclass Cls implements Foo, Bar \n{\n    public function doSomething() {}\n    public function doSomethingElse() {}\n}"
             }
         },
         "miscellaneous": {
             "エラーハンドリング": {
                 "title": "Xử lý lỗi",
-                "description": "Khối try-catch-finally"
+                "description": "Khối try-catch-finally",
+                "code": "try {\n    // Do something\n} catch (Exception $e) {\n    // Handle exception\n} finally {\n    echo \"Always print!\";\n}"
             },
             "正規表現": {
                 "title": "Biểu thức chính quy",
-                "description": "Biểu thức chính quy với preg_match"
+                "description": "Biểu thức chính quy với preg_match",
+                "code": "$str = \"Visit Kizamu.com\";\necho preg_match(\"/do/i\", $str);"
             }
         }
     }

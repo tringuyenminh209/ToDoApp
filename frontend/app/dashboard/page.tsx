@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { translations, type Language } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
+import { useLanguage } from '@/hooks/useLanguage';
 import { useAuthStore } from '@/store/auth-store';
 import { taskService } from '@/lib/services/taskService';
 
 export default function DashboardPage() {
   const { user } = useAuthStore();
-  const [currentLang] = useState<Language>('ja');
+  const { currentLang } = useLanguage();
   const [showCreateTask, setShowCreateTask] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState('');

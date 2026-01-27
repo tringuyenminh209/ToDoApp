@@ -8,6 +8,10 @@
         "React.js完全コース": {
             "title": "React.js Complete Course",
             "description": "React.js course for JavaScript developers. Learn from components, Hooks, state management, and routing to practical app development over 12 weeks."
+        },
+        "React基礎": {
+            "title": "React.js Complete Course",
+            "description": "React.js course for JavaScript developers. Learn from components, Hooks, state management, and routing to practical app development over 12 weeks."
         }
     },
     "milestones": {

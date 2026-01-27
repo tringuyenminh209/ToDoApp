@@ -8,6 +8,10 @@
         "HTML基礎演習": {
             "title": "Khóa học HTML Cơ bản",
             "description": "Khóa học HTML cơ bản dành cho người mới bắt đầu. Học từng bước từ cấu trúc HTML cơ bản đến HTML ngữ nghĩa, form và đa phương tiện thông qua 15 tuần bài tập thực hành."
+        },
+        "HTML基礎": {
+            "title": "Khóa học HTML Cơ bản",
+            "description": "Khóa học HTML cơ bản dành cho người mới bắt đầu. Học từng bước từ cấu trúc HTML cơ bản đến HTML ngữ nghĩa, form và đa phương tiện thông qua 15 tuần bài tập thực hành."
         }
     },
     "milestones": {

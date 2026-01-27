@@ -31,115 +31,115 @@
         },
         "Binary Search Algorithm": {
             "title": "Thuật toán Tìm kiếm Nhị phân",
-            "content": null
+            "content": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1\n\n# Time: O(log n), Space: O(1)"
         },
         "Quick Sort Implementation": {
             "title": "Triển khai Quick Sort",
-            "content": null
+            "content": "def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    left = [x for x in arr if x < pivot]\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)\n\n# Time: O(n log n) average, O(n²) worst case"
         },
         "Python Decorators": {
             "title": "Python Decorators",
-            "content": null
+            "content": "def timer_decorator(func):\n    def wrapper(*args, **kwargs):\n        import time\n        start = time.time()\n        result = func(*args, **kwargs)\n        end = time.time()\n        print(f\"{func.__name__} took {end - start:.4f} seconds\")\n        return result\n    return wrapper\n\n@timer_decorator\ndef my_function():\n    # Your code here\n    pass"
         },
         "List Comprehension Examples": {
             "title": "Ví dụ List Comprehension",
-            "content": null
+            "content": "# List comprehension cơ bản\nsquares = [x**2 for x in range(10)]\n\n# Có điều kiện\nevens = [x for x in range(20) if x % 2 == 0]\n\n# Lồng nhau\nmatrix = [[i*j for j in range(3)] for i in range(3)]\n\n# Dictionary comprehension\nsquares_dict = {x: x**2 for x in range(10)}"
         },
         "Generator Functions": {
             "title": "Hàm Generator",
-            "content": null
+            "content": "def fibonacci_generator():\n    a, b = 0, 1\n    while True:\n        yield a\n        a, b = b, a + b\n\n# Cách dùng\nfib = fibonacci_generator()\nfor i in range(10):\n    print(next(fib))\n\n# Generator expression\nsquares = (x**2 for x in range(10))"
         },
         "Context Managers": {
             "title": "Context Managers",
-            "content": null
+            "content": "from contextlib import contextmanager\n\n@contextmanager\ndef file_handler(filename, mode):\n    file = open(filename, mode)\n    try:\n        yield file\n    finally:\n        file.close()\n\n# Cách dùng\nwith file_handler(\"test.txt\", \"w\") as f:\n    f.write(\"Hello, World!\")"
         },
         "Async/Await Example": {
             "title": "Ví dụ Async/Await",
-            "content": null
+            "content": "import asyncio\n\nasync def fetch_data(url):\n    # Mô phỏng API call\n    await asyncio.sleep(1)\n    return f\"Data from {url}\"\n\nasync def main():\n    urls = [\"url1\", \"url2\", \"url3\"]\n    results = await asyncio.gather(*[fetch_data(url) for url in urls])\n    return results\n\n# Chạy\nasyncio.run(main())"
         },
         "Class Example with Properties": {
             "title": "Ví dụ Lớp với Properties",
-            "content": null
+            "content": "class Person:\n    def __init__(self, first_name, last_name):\n        self._first_name = first_name\n        self._last_name = last_name\n\n    @property\n    def full_name(self):\n        return f\"{self._first_name} {self._last_name}\"\n\n    @full_name.setter\n    def full_name(self, name):\n        self._first_name, self._last_name = name.split()\n\n# Cách dùng\nperson = Person(\"John\", \"Doe\")\nprint(person.full_name)  # John Doe"
         },
         "Singleton Pattern": {
             "title": "Mẫu Singleton",
-            "content": null
+            "content": "public class Singleton {\n    private static Singleton instance;\n\n    private Singleton() {}\n\n    public static Singleton getInstance() {\n        if (instance == null) {\n            instance = new Singleton();\n        }\n        return instance;\n    }\n}"
         },
         "Factory Pattern": {
             "title": "Mẫu Factory",
-            "content": null
+            "content": "interface Shape {\n    void draw();\n}\n\nclass Circle implements Shape {\n    public void draw() {\n        System.out.println(\"Drawing Circle\");\n    }\n}\n\nclass ShapeFactory {\n    public Shape getShape(String shapeType) {\n        if (shapeType.equalsIgnoreCase(\"CIRCLE\")) {\n            return new Circle();\n        }\n        return null;\n    }\n}"
         },
         "Java Collections Example": {
             "title": "Ví dụ Java Collections",
-            "content": null
+            "content": "import java.util.*;\n\nList<String> list = new ArrayList<>();\nlist.add(\"Apple\");\n\nMap<String, Integer> map = new HashMap<>();\nmap.put(\"Apple\", 1);\n\nSet<String> set = new HashSet<>();\nset.add(\"Apple\");"
         },
         "Java Streams API": {
             "title": "Java Streams API",
-            "content": null
+            "content": "import java.util.stream.Collectors;\n\nList<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);\n\nList<Integer> squares = numbers.stream()\n    .filter(n -> n % 2 == 0)\n    .map(n -> n * n)\n    .collect(Collectors.toList());"
         },
         "Lambda Expressions": {
             "title": "Biểu thức Lambda",
-            "content": null
+            "content": "// Biểu thức Lambda\nCollections.sort(list, (s1, s2) -> s1.compareTo(s2));\n\n// Method reference\nlist.forEach(System.out::println);"
         },
         "Exception Handling": {
             "title": "Xử lý Ngoại lệ",
-            "content": null
+            "content": "try {\n    int result = 10 / 0;\n} catch (ArithmeticException e) {\n    System.out.println(\"Error: \" + e.getMessage());\n} finally {\n    System.out.println(\"Always executes\");\n}"
         },
         "Promises and Async/Await": {
             "title": "Promises và Async/Await",
-            "content": null
+            "content": "// Promise\nfunction fetchData() {\n    return fetch('https://api.example.com/data')\n        .then(response => response.json())\n        .then(data => console.log(data))\n        .catch(error => console.error(error));\n}\n\n// Async/Await\nasync function fetchDataAsync() {\n    try {\n        const response = await fetch('https://api.example.com/data');\n        const data = await response.json();\n        return data;\n    } catch (error) {\n        console.error(error);\n    }\n}"
         },
         "Closures Example": {
             "title": "Ví dụ Closures",
-            "content": null
+            "content": "function outerFunction(x) {\n    return function innerFunction(y) {\n        return x + y;\n    };\n}\n\nconst addFive = outerFunction(5);\nconsole.log(addFive(3)); // 8\n\n// Ví dụ Counter\nfunction createCounter() {\n    let count = 0;\n    return {\n        increment: () => ++count,\n        decrement: () => --count,\n        getCount: () => count\n    };\n}"
         },
         "Destructuring Assignment": {
             "title": "Gán Phân rã",
-            "content": null
+            "content": "// Phân rã mảng\nconst [a, b, c] = [1, 2, 3];\n\n// Phân rã object\nconst {name, age} = {name: \"John\", age: 30};\n\n// Với giá trị mặc định\nconst {name = \"Unknown\", age = 0} = person;\n\n// Phân rã lồng nhau\nconst {address: {city, country}} = user;\n\n// Rest operator\nconst [first, ...rest] = [1, 2, 3, 4];"
         },
         "Array Methods": {
             "title": "Phương thức Mảng",
-            "content": null
+            "content": "const numbers = [1, 2, 3, 4, 5];\n\n// map - chuyển đổi\nconst doubled = numbers.map(n => n * 2);\n\n// filter - lọc\nconst evens = numbers.filter(n => n % 2 === 0);\n\n// reduce - gộp\nconst sum = numbers.reduce((acc, n) => acc + n, 0);\n\n// find - tìm phần tử đầu khớp\nconst found = numbers.find(n => n > 3);\n\n// some - kiểm tra có phần tử khớp\nconst hasEven = numbers.some(n => n % 2 === 0);"
         },
         "Event Handling": {
             "title": "Xử lý Sự kiện",
-            "content": null
+            "content": "// Thêm listener\nbutton.addEventListener('click', function(event) {\n    console.log('Button clicked');\n});\n\n// Arrow function\nbutton.addEventListener('click', (event) => {\n    console.log('Button clicked');\n});\n\n// Event delegation\ndocument.addEventListener('click', (event) => {\n    if (event.target.matches('.button')) {\n        console.log('Button clicked');\n    }\n});"
         },
         "React Hooks Example": {
             "title": "Ví dụ React Hooks",
-            "content": null
+            "content": "import { useState, useEffect } from 'react';\n\nfunction Counter() {\n    const [count, setCount] = useState(0);\n\n    useEffect(() => {\n        document.title = `Count: ${count}`;\n    }, [count]);\n\n    return (\n        <div>\n            <p>Count: {count}</p>\n            <button onClick={() => setCount(count + 1)}>\n                Increment\n            </button>\n        </div>\n    );\n}"
         },
         "Binary Search (Python)": {
             "title": "Tìm kiếm Nhị phân (Python)",
-            "content": null
+            "content": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1"
         },
         "Binary Search (Java)": {
             "title": "Tìm kiếm Nhị phân (Java)",
-            "content": null
+            "content": "public int binarySearch(int[] arr, int target) {\n    int left = 0, right = arr.length - 1;\n    while (left <= right) {\n        int mid = left + (right - left) / 2;\n        if (arr[mid] == target) return mid;\n        if (arr[mid] < target) left = mid + 1;\n        else right = mid - 1;\n    }\n    return -1;\n}"
         },
         "Binary Search (JavaScript)": {
             "title": "Tìm kiếm Nhị phân (JavaScript)",
-            "content": null
+            "content": "function binarySearch(arr, target) {\n    let left = 0, right = arr.length - 1;\n    while (left <= right) {\n        const mid = Math.floor((left + right) / 2);\n        if (arr[mid] === target) return mid;\n        if (arr[mid] < target) left = mid + 1;\n        else right = mid - 1;\n    }\n    return -1;\n}"
         },
         "Quick Sort (Python)": {
             "title": "Quick Sort (Python)",
-            "content": null
+            "content": "def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    left = [x for x in arr if x < pivot]\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)"
         },
         "Merge Sort (Python)": {
             "title": "Merge Sort (Python)",
-            "content": null
+            "content": "def merge_sort(arr):\n    if len(arr) <= 1:\n        return arr\n\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n\n    return merge(left, right)\n\ndef merge(left, right):\n    result = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] <= right[j]:\n            result.append(left[i])\n            i += 1\n        else:\n            result.append(right[j])\n            j += 1\n    result.extend(left[i:])\n    result.extend(right[j:])\n    return result"
         },
         "DFS (Depth-First Search)": {
             "title": "DFS (Tìm kiếm Theo chiều sâu)",
-            "content": null
+            "content": "def dfs(graph, start, visited=None):\n    if visited is None:\n        visited = set()\n\n    visited.add(start)\n    print(start)\n\n    for neighbor in graph[start]:\n        if neighbor not in visited:\n            dfs(graph, neighbor, visited)\n\n# Ví dụ\ngraph = {\n    'A': ['B', 'C'],\n    'B': ['D', 'E'],\n    'C': ['F'],\n    'D': [],\n    'E': [],\n    'F': []\n}\ndfs(graph, 'A')"
         },
         "BFS (Breadth-First Search)": {
             "title": "BFS (Tìm kiếm Theo chiều rộng)",
-            "content": null
+            "content": "from collections import deque\n\ndef bfs(graph, start):\n    visited = set()\n    queue = deque([start])\n    visited.add(start)\n\n    while queue:\n        node = queue.popleft()\n        print(node)\n\n        for neighbor in graph[node]:\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)"
         },
         "Fibonacci with Memoization": {
             "title": "Fibonacci với Ghi nhớ",
-            "content": null
+            "content": "def fibonacci(n, memo={}):\n    if n in memo:\n        return memo[n]\n    if n <= 1:\n        return n\n    memo[n] = fibonacci(n-1, memo) + fibonacci(n-2, memo)\n    return memo[n]\n\n# Time: O(n), Space: O(n)"
         },
         "Java Collections Framework": {
             "title": "Java Collections Framework",

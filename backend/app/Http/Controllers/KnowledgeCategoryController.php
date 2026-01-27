@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KnowledgeCategory;
 use App\Models\KnowledgeItem;
+use App\Services\CourseTranslationService;
 use Database\Seeders\KnowledgeCategorySeeder;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -54,7 +55,7 @@ class KnowledgeCategoryController extends Controller
             $category->item_count = $itemCounts->get($category->id, 0);
         });
 
-        $data = $categories->map(fn ($category) => $category->toArrayWithTranslations());
+        $data = $categories->map(fn ($category) => $this->applyCategoryCourseTranslationFallback($category->toArrayWithTranslations()));
 
         return response()->json([
             'success' => true,
@@ -140,14 +141,15 @@ class KnowledgeCategoryController extends Controller
         // Get breadcrumb path
         $breadcrumb = $this->getBreadcrumb($category);
 
-        $response = $category->toArrayWithTranslations();
-        // Transform breadcrumb with translations
+        $response = $this->applyCategoryCourseTranslationFallback($category->toArrayWithTranslations());
+        // Breadcrumb: apply same course/category name fallback so "プログラミング演習" and template names show in locale
         $breadcrumb = array_map(function ($item) {
             $cat = KnowledgeCategory::withTranslations()->find($item['id']);
-            return [
-                'id' => $item['id'],
-                'name' => $cat ? ($cat->getTranslation('name') ?? $cat->name) : $item['name']
-            ];
+            if (!$cat) {
+                return ['id' => $item['id'], 'name' => $item['name'] ?? ''];
+            }
+            $arr = $this->applyCategoryCourseTranslationFallback($cat->toArrayWithTranslations());
+            return ['id' => $item['id'], 'name' => $arr['name'] ?? $item['name']];
         }, $breadcrumb);
         $response['breadcrumb'] = $breadcrumb;
 
@@ -619,8 +621,8 @@ class KnowledgeCategoryController extends Controller
      */
     private function buildCategoryTreeWithCounts(KnowledgeCategory $category, $allCategories, $itemCounts): array
     {
-        // Get translated data
-        $data = $category->toArrayWithTranslations();
+        // Get translated data and apply course-based fallback for template-named categories
+        $data = $this->applyCategoryCourseTranslationFallback($category->toArrayWithTranslations());
 
         // Set item count from pre-calculated counts
         $data['item_count'] = $itemCounts->get($category->id, 0);
@@ -641,6 +643,35 @@ class KnowledgeCategoryController extends Controller
         }
 
         return $data;
+    }
+
+    /**
+     * カテゴリの name/description を locale に合わせてコース翻訳またはデフォルトカテゴリ名で上書きする。
+     * children があれば再帰。テンプレート名（例: Javaプログラミング設計演習）や「プログラミング演習」を vi/en で表示するため。
+     */
+    private function applyCategoryCourseTranslationFallback(array $categoryData): array
+    {
+        $locale = app()->getLocale();
+        if (!in_array($locale, ['vi', 'en'], true)) {
+            return $categoryData;
+        }
+        $name = $categoryData['name'] ?? '';
+        $trans = CourseTranslationService::getTemplateTranslation($name, $locale)
+            ?? CourseTranslationService::getCategoryNameTranslation($name, $locale);
+        if ($trans) {
+            $categoryData['name'] = $trans['title'];
+            $categoryData['description'] = $trans['description'] ?? $categoryData['description'] ?? '';
+        }
+        if (!empty($categoryData['parent']) && is_array($categoryData['parent'])) {
+            $categoryData['parent'] = $this->applyCategoryCourseTranslationFallback($categoryData['parent']);
+        }
+        if (!empty($categoryData['children']) && is_array($categoryData['children'])) {
+            $categoryData['children'] = array_map(
+                fn (array $ch) => $this->applyCategoryCourseTranslationFallback($ch),
+                $categoryData['children']
+            );
+        }
+        return $categoryData;
     }
 
     /**

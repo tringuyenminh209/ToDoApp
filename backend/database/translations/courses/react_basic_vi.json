@@ -8,6 +8,10 @@
         "React.js完全コース": {
             "title": "Khóa học React.js Hoàn chỉnh",
             "description": "Khóa học React.js dành cho người đã có kinh nghiệm với JavaScript. Học từ components, Hooks, quản lý trạng thái, routing đến phát triển ứng dụng thực tế trong 12 tuần."
+        },
+        "React基礎": {
+            "title": "Khóa học React.js Hoàn chỉnh",
+            "description": "Khóa học React.js dành cho người đã có kinh nghiệm với JavaScript. Học từ components, Hooks, quản lý trạng thái, routing đến phát triển ứng dụng thực tế trong 12 tuần."
         }
     },
     "milestones": {

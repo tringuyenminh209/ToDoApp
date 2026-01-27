@@ -1,6 +1,14 @@
 {
-    "_comment": "Vietnamese translations for Knowledge Categories",
+    "_comment": "Vietnamese translations for Knowledge Categories. Keys = category name (ja) in DB. Used by KnowledgeTranslationSeeder and fallback display.",
     "categories": {
+        "プログラミング演習": {
+            "name": "Bài tập lập trình",
+            "description": "Thư mục bài tập lập trình"
+        },
+        "未分類": {
+            "name": "Chưa phân loại",
+            "description": "Mục kiến thức chưa được phân loại"
+        },
         "プログラミング言語": {
             "name": "Ngôn ngữ Lập trình",
             "description": "Ghi chú ngôn ngữ lập trình, cú pháp và thực hành tốt nhất"

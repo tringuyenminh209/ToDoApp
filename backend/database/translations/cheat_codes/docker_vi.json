@@ -39,115 +39,140 @@
         "getting-started": {
             "バックグラウンドでコンテナを実行": {
                 "title": "Chạy Container nền",
-                "description": "Tạo và chạy container ở chế độ detached"
+                "description": "Tạo và chạy container ở chế độ detached",
+                "code": "$ docker run -d -p 80:80 docker/getting-started\n\n# -d - Run the container in detached mode\n# -p 80:80 - Map port 80 to port 80 in the container\n# docker/getting-started - The image to use"
             },
             "フォアグラウンドでコンテナを実行": {
                 "title": "Chạy Container trực tiếp",
-                "description": "Chạy container ở chế độ tương tác"
+                "description": "Chạy container ở chế độ tương tác",
+                "code": "$ docker run -it -p 8001:8080 --name my-nginx nginx\n\n# -it - Interactive bash mode\n# -p 8001:8080 - Map port 8001 to port 8080 in the container\n# --name my-nginx - Specify a name\n# nginx - The image to use"
             },
             "一般的なコマンド": {
                 "title": "Lệnh phổ biến",
-                "description": "Các lệnh Docker phổ biến nhất"
+                "description": "Các lệnh Docker phổ biến nhất",
+                "code": "docker ps                        # List running containers\ndocker ps -a                     # List all containers\ndocker ps -s                     # List running containers (with CPU / memory)\ndocker images                    # List all images\ndocker exec -it <container> bash # Connecting to container\ndocker logs <container>          # Shows container's console log\ndocker stop <container>          # Stop a container\ndocker restart <container>       # Restart a container\ndocker rm <container>            # Remove a container\ndocker port <container>          # Shows container's port mapping\ndocker top <container>           # List processes\ndocker kill <container>          # Kill a container"
             }
         },
         "containers": {
             "開始と停止": {
                 "title": "Bắt đầu và Dừng",
-                "description": "Bắt đầu, dừng và khởi động lại container"
+                "description": "Bắt đầu, dừng và khởi động lại container",
+                "code": "docker start my-nginx   # Starting\ndocker stop my-nginx    # Stopping\ndocker restart my-nginx  # Restarting\ndocker pause my-nginx   # Pausing\ndocker unpause my-nginx # Unpausing\ndocker wait my-nginx    # Blocking a Container\ndocker kill my-nginx    # Sending a SIGKILL\ndocker attach my-nginx  # Connecting to an Existing Container"
             },
             "情報の取得": {
                 "title": "Lấy thông tin",
-                "description": "Lấy thông tin container"
+                "description": "Lấy thông tin container",
+                "code": "docker ps               # List running containers\ndocker ps -a            # List all containers\ndocker logs my-nginx    # Container Logs\ndocker inspect my-nginx # Inspecting Containers\ndocker events my-nginx  # Containers Events\ndocker port my-nginx    # Public Ports\ndocker top my-nginx     # Running Processes\ndocker stats my-nginx   # Container Resource Usage\ndocker diff my-nginx    # Lists the changes made to a container"
             },
             "コンテナの作成": {
                 "title": "Tạo Container",
-                "description": "Tùy chọn tạo container"
+                "description": "Tùy chọn tạo container",
+                "code": "docker create [options] IMAGE\n  -a, --attach               # attach stdout/err\n  -i, --interactive          # attach stdin (interactive)\n  -t, --tty                  # pseudo-tty\n      --name NAME            # name your image\n  -p, --publish 5000:5000    # port map (host:container)\n      --expose 5432          # expose a port to containers\n  -P, --publish-all          # publish all ports\n      --link container:alias # linking\n  -v, --volume `pwd`:/app    # mount (absolute paths needed)\n  -e, --env NAME=hello       # env vars"
             },
             "コンテナ作成の例": {
                 "title": "Ví dụ tạo Container",
-                "description": "Ví dụ tạo container Redis"
+                "description": "Ví dụ tạo container Redis",
+                "code": "$ docker create --name my_redis --expose 6379 redis:3.0.2"
             },
             "コンテナの操作": {
                 "title": "Thao tác Container",
-                "description": "Đổi tên, xóa và cập nhật container"
+                "description": "Đổi tên, xóa và cập nhật container",
+                "code": "# Renaming a Container\ndocker rename my-nginx my-nginx\n\n# Removing a Container\ndocker rm my-nginx\n\n# Updating a Container\ndocker update --cpu-shares 512 -m 300M my-nginx"
             }
         },
         "images": {
             "イメージの操作": {
                 "title": "Thao tác Image",
-                "description": "Liệt kê, xóa, lưu và tải image"
+                "description": "Liệt kê, xóa, lưu và tải image",
+                "code": "docker images                    # Listing images\ndocker rmi nginx                 # Removing an image\ndocker load < ubuntu.tar.gz      # Loading a tarred repository\ndocker load --input ubuntu.tar   # Loading a tarred repository\ndocker save busybox > ubuntu.tar # Save an image to a tar archive\ndocker history                   # Showing the history of an image\ndocker commit nginx              # Save a container as an image\ndocker tag nginx eon01/nginx     # Tagging an image\ndocker push eon01/nginx         # Pushing an image"
             },
             "イメージのビルド": {
                 "title": "Build Image",
-                "description": "Build image từ Dockerfile"
+                "description": "Build image từ Dockerfile",
+                "code": "$ docker build .\n$ docker build github.com/creack/docker-firefox\n$ docker build - < Dockerfile\n$ docker build - < context.tar.gz\n$ docker build -t eon/my-nginx .\n$ docker build -f myOtherDockerfile .\n$ curl example.com/remote/Dockerfile | docker build -f - ."
             }
         },
         "networking": {
             "ネットワークの操作": {
                 "title": "Thao tác Network",
-                "description": "Tạo, kết nối và ngắt kết nối network"
+                "description": "Tạo, kết nối và ngắt kết nối network",
+                "code": "# Removing a network\ndocker network rm MyOverlayNetwork\n\n# Listing networks\ndocker network ls\n\n# Getting information about a network\ndocker network inspect MyOverlayNetwork\n\n# Connecting a running container to a network\ndocker network connect MyOverlayNetwork nginx\n\n# Connecting a container to a network when it starts\ndocker run -it -d --network=MyOverlayNetwork nginx\n\n# Disconnecting a container from a network\ndocker network disconnect MyOverlayNetwork nginx"
             },
             "ネットワークの作成": {
                 "title": "Tạo Network",
-                "description": "Tạo network với cấu hình tùy chỉnh"
+                "description": "Tạo network với cấu hình tùy chỉnh",
+                "code": "# Create overlay network\ndocker network create -d overlay MyOverlayNetwork\n\n# Create bridge network\ndocker network create -d bridge MyBridgeNetwork\n\n# Create overlay network with custom configuration\ndocker network create -d overlay \\\n  --subnet=192.168.0.0/16 \\\n  --subnet=192.170.0.0/16 \\\n  --gateway=192.168.0.100 \\\n  --gateway=192.170.0.100 \\\n  --ip-range=192.168.1.0/24 \\\n  --aux-address=\"my-router=192.168.1.5\" \\\n  --aux-address=\"my-switch=192.168.1.6\" \\\n  --aux-address=\"my-printer=192.170.1.5\" \\\n  --aux-address=\"my-nas=192.170.1.6\" \\\n  MyOverlayNetwork"
             }
         },
         "cleanup": {
             "すべてをクリーンアップ": {
                 "title": "Dọn dẹp tất cả",
-                "description": "Dọn dẹp toàn hệ thống"
+                "description": "Dọn dẹp toàn hệ thống",
+                "code": "# Cleans up dangling images, containers, volumes, and networks\ndocker system prune\n\n# Additionally, remove any stopped containers and all unused images\ndocker system prune -a"
             },
             "コンテナのクリーンアップ": {
                 "title": "Dọn dẹp Container",
-                "description": "Xóa container đã dừng"
+                "description": "Xóa container đã dừng",
+                "code": "# Stop all running containers\ndocker stop $(docker ps -a -q)\n\n# Delete stopped containers\ndocker container prune"
             },
             "イメージのクリーンアップ": {
                 "title": "Dọn dẹp Image",
-                "description": "Xóa image không dùng"
+                "description": "Xóa image không dùng",
+                "code": "# Remove all dangling (not tagged and is not associated with a container) images\ndocker image prune\n\n# Remove all images which are not used by existing containers\ndocker image prune -a"
             },
             "ボリュームのクリーンアップ": {
                 "title": "Dọn dẹp Volume",
-                "description": "Xóa volume không dùng"
+                "description": "Xóa volume không dùng",
+                "code": "# Remove all volumes not used by at least one container\ndocker volume prune"
             }
         },
         "docker-hub": {
             "Docker Hubコマンド": {
                 "title": "Lệnh Docker Hub",
-                "description": "Thao tác cơ bản Docker Hub"
+                "description": "Thao tác cơ bản Docker Hub",
+                "code": "docker search search_word # Search docker hub for images\ndocker pull user/image     # Downloads an image from docker hub\ndocker login                 # Authenticate to docker hub\ndocker push user/image      # Uploads an image to docker hub"
             },
             "レジストリへのログイン": {
                 "title": "Đăng nhập Registry",
-                "description": "Xác thực Docker registry"
+                "description": "Xác thực Docker registry",
+                "code": "$ docker login\n$ docker login localhost:8080"
             },
             "レジストリからのログアウト": {
                 "title": "Đăng xuất Registry",
-                "description": "Đăng xuất Docker registry"
+                "description": "Đăng xuất Docker registry",
+                "code": "$ docker logout\n$ docker logout localhost:8080"
             },
             "イメージの検索": {
                 "title": "Tìm kiếm Image",
-                "description": "Tìm kiếm image trên Docker Hub"
+                "description": "Tìm kiếm image trên Docker Hub",
+                "code": "$ docker search nginx\n$ docker search nginx --stars=3 --no-trunc busybox"
             },
             "イメージのプル": {
                 "title": "Pull Image",
-                "description": "Tải image từ Docker Hub"
+                "description": "Tải image từ Docker Hub",
+                "code": "$ docker pull nginx\n$ docker pull eon01/nginx localhost:5000/myadmin/nginx"
             },
             "イメージのプッシュ": {
                 "title": "Push Image",
-                "description": "Tải image lên Docker Hub"
+                "description": "Tải image lên Docker Hub",
+                "code": "$ docker push eon01/nginx\n$ docker push eon01/nginx localhost:5000/myadmin/nginx"
             }
         },
         "miscellaneous": {
             "一括クリーンアップ": {
                 "title": "Dọn dẹp hàng loạt",
-                "description": "Xóa tất cả container và image cùng lúc"
+                "description": "Xóa tất cả container và image cùng lúc",
+                "code": "docker stop -f $(docker ps -a -q)  # Stopping all containers\ndocker rm -f $(docker ps -a -q)    # Removing all containers\ndocker rmi -f $(docker images -q)  # Removing all images"
             },
             "ボリュームの確認": {
                 "title": "Kiểm tra Volume",
-                "description": "Liệt kê volume"
+                "description": "Liệt kê volume",
+                "code": "$ docker volume ls"
             },
             "未使用ボリュームのクリーンアップ": {
                 "title": "Dọn dẹp Volume không dùng",
-                "description": "Xóa volume không dùng"
+                "description": "Xóa volume không dùng",
+                "code": "$ docker volume prune"
             }
         }
     }

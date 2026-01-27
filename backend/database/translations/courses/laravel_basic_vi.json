@@ -8,6 +8,10 @@
         "Laravel基礎演習": {
             "title": "Khóa học Laravel Cơ bản",
             "description": "Khóa học framework Laravel cơ bản dành cho người mới bắt đầu. Học từng bước từ routing, Blade templates, Eloquent ORM đến phát triển API."
+        },
+        "Laravel基礎": {
+            "title": "Khóa học Laravel Cơ bản",
+            "description": "Khóa học framework Laravel cơ bản dành cho người mới bắt đầu. Học từng bước từ routing, Blade templates, Eloquent ORM đến phát triển API."
         }
     },
     "milestones": {

@@ -47,267 +47,329 @@
         "getting-started": {
             "Hello World": {
                 "title": "Hello World",
-                "description": "Chương trình 'Hello World' nổi tiếng trong Python"
+                "description": "Chương trình 'Hello World' nổi tiếng trong Python",
+                "code": ">>> print(\"Hello, World!\")\nHello, World!"
             },
             "変数": {
                 "title": "Biến",
-                "description": "Python không thể khai báo biến mà không gán giá trị"
+                "description": "Python không thể khai báo biến mà không gán giá trị",
+                "code": "age = 18      # age is of type int\nname = \"John\" # name is now of type str\nprint(name)"
             },
             "データ型": {
                 "title": "Kiểu dữ liệu",
-                "description": "Các kiểu dữ liệu tích hợp của Python"
+                "description": "Các kiểu dữ liệu tích hợp của Python",
+                "code": "| str                          | Text     |\n| ---------------------------- | -------- |\n| int, float, complex          | Numeric  |\n| list, tuple, range           | Sequence |\n| dict                         | Mapping  |\n| set, frozenset               | Set      |\n| bool                         | Boolean  |\n| bytes, bytearray, memoryview | Binary   |"
             },
             "文字列スライス": {
                 "title": "Cắt chuỗi",
-                "description": "Cắt chuỗi"
+                "description": "Cắt chuỗi",
+                "code": ">>> msg = \"Hello, World!\"\n>>> print(msg[2:5])\nllo"
             },
             "リスト": {
                 "title": "Danh sách",
-                "description": "Thao tác danh sách"
+                "description": "Thao tác danh sách",
+                "code": "mylist = []\nmylist.append(1)\nmylist.append(2)\nfor item in mylist:\n    print(item) # prints out 1,2"
             },
             "If Else": {
                 "title": "If Else",
-                "description": "Câu lệnh if-else"
+                "description": "Câu lệnh if-else",
+                "code": "num = 200\nif num > 0:\n    print(\"num is greater than 0\")\nelse:\n    print(\"num is not greater than 0\")"
             },
             "ループ": {
                 "title": "Vòng lặp",
-                "description": "Vòng lặp for với break và else"
+                "description": "Vòng lặp for với break và else",
+                "code": "for item in range(6):\n    if item == 3: break\n    print(item)\nelse:\n    print(\"Finally finished!\")"
             },
             "関数": {
                 "title": "Hàm",
-                "description": "Định nghĩa và gọi hàm"
+                "description": "Định nghĩa và gọi hàm",
+                "code": ">>> def my_function():\n...     print(\"Hello from a function\")\n...\n>>> my_function()\nHello from a function"
             },
             "ファイル処理": {
                 "title": "Xử lý tệp",
-                "description": "Đọc tệp từng dòng"
+                "description": "Đọc tệp từng dòng",
+                "code": "with open(\"myfile.txt\", \"r\", encoding='utf8') as file:\n    for line in file:\n        print(line)"
             },
             "算術演算": {
                 "title": "Phép toán số học",
-                "description": "Các toán tử số học"
+                "description": "Các toán tử số học",
+                "code": "result = 10 + 30 # => 40\nresult = 40 - 10 # => 30\nresult = 50 * 5  # => 250\nresult = 16 / 4  # => 4.0 (Float Division)\nresult = 16 // 4 # => 4 (Integer Division)\nresult = 25 % 2  # => 1\nresult = 5 ** 3  # => 125"
             },
             "複合代入": {
                 "title": "Gán phức hợp",
-                "description": "Các toán tử gán phức hợp"
+                "description": "Các toán tử gán phức hợp",
+                "code": "counter = 0\ncounter += 10           # => 10\ncounter = 0\ncounter = counter + 10  # => 10\n\nmessage = \"Part 1.\"\n\n# => Part 1.Part 2.\nmessage += \"Part 2.\""
             },
             "f-文字列（Python 3.6+）": {
                 "title": "f-Strings (Python 3.6+)",
-                "description": "Chuỗi format"
+                "description": "Chuỗi format",
+                "code": ">>> website = 'Kizamu.com'\n>>> f\"Hello, {website}\"\n\"Hello, Kizamu.com\"\n\n>>> num = 10\n>>> f'{num} + 10 = {num + 10}'\n'10 + 10 = 20'"
             }
         },
         "python-built-in-data-types": {
             "文字列": {
                 "title": "Chuỗi",
-                "description": "Khai báo chuỗi"
+                "description": "Khai báo chuỗi",
+                "code": "hello = \"Hello World\"\nhello = 'Hello World'\n\nmulti_string = \"\"\"Multiline Strings\nLorem ipsum dolor sit amet,\nconsectetur adipiscing elit \"\"\""
             },
             "数値": {
                 "title": "Số",
-                "description": "Các kiểu số"
+                "description": "Các kiểu số",
+                "code": "x = 1    # int\ny = 2.8  # float\nz = 1j   # complex\n\n>>> print(type(x))\n<class 'int'>"
             },
             "ブール型": {
                 "title": "Boolean",
-                "description": "Kiểu boolean và chuyển đổi"
+                "description": "Kiểu boolean và chuyển đổi",
+                "code": "my_bool = True \nmy_bool = False\n\nbool(0)     # => False\nbool(1)     # => True"
             },
             "リスト": {
                 "title": "Danh sách",
-                "description": "Tạo danh sách"
+                "description": "Tạo danh sách",
+                "code": "list1 = [\"apple\", \"banana\", \"cherry\"]\nlist2 = [True, False, False]\nlist3 = [1, 5, 7, 9, 3]\nlist4 = list((1, 5, 7, 9, 3))"
             },
             "タプル": {
                 "title": "Tuple",
-                "description": "Tạo tuple - dãy bất biến"
+                "description": "Tạo tuple - dãy bất biến",
+                "code": "my_tuple = (1, 2, 3)\nmy_tuple = tuple((1, 2, 3))"
             },
             "セット": {
                 "title": "Set",
-                "description": "Tạo set - phần tử duy nhất"
+                "description": "Tạo set - phần tử duy nhất",
+                "code": "set1 = {\"a\", \"b\", \"c\"}   \nset2 = set((\"a\", \"b\", \"c\"))"
             },
             "辞書": {
                 "title": "Dictionary",
-                "description": "Thao tác dictionary"
+                "description": "Thao tác dictionary",
+                "code": ">>> empty_dict = {}\n>>> a = {\"one\": 1, \"two\": 2, \"three\": 3}\n>>> a[\"one\"]\n1\n>>> a.keys()\ndict_keys(['one', 'two', 'three'])\n>>> a.values()\ndict_values([1, 2, 3])\n>>> a.update({\"four\": 4})\n>>> a.keys()\ndict_keys(['one', 'two', 'three', 'four'])\n>>> a['four']\n4"
             },
             "キャスト - 整数": {
                 "title": "Ép kiểu - Số nguyên",
-                "description": "Ép kiểu sang số nguyên"
+                "description": "Ép kiểu sang số nguyên",
+                "code": "x = int(1)   # x will be 1\ny = int(2.8) # y will be 2\nz = int(\"3\") # z will be 3"
             },
             "キャスト - 浮動小数点": {
                 "title": "Ép kiểu - Số thực",
-                "description": "Ép kiểu sang số thực"
+                "description": "Ép kiểu sang số thực",
+                "code": "x = float(1)     # x will be 1.0\ny = float(2.8)   # y will be 2.8\nz = float(\"3\")   # z will be 3.0\nw = float(\"4.2\") # w will be 4.2"
             },
             "キャスト - 文字列": {
                 "title": "Ép kiểu - Chuỗi",
-                "description": "Ép kiểu sang chuỗi"
+                "description": "Ép kiểu sang chuỗi",
+                "code": "x = str(\"s1\") # x will be 's1'\ny = str(2)    # y will be '2'\nz = str(3.0)  # z will be '3.0'"
             }
         },
         "python-advanced-data-types": {
             "ヒープ": {
                 "title": "Heap",
-                "description": "Thao tác heap"
+                "description": "Thao tác heap",
+                "code": "import heapq\n\nmyList = [9, 5, 4, 1, 3, 2]\nheapq.heapify(myList) # turn myList into a Min Heap\nprint(myList)    # => [1, 3, 2, 5, 9, 4]\nprint(myList[0]) # first value is always the smallest in the heap\n\nheapq.heappush(myList, 10) # insert 10\nx = heapq.heappop(myList)  # pop and return smallest item\nprint(x)                   # => 1"
             },
             "最小ヒープを使った最大ヒープ": {
                 "title": "Max Heap dùng Min Heap",
-                "description": "Sử dụng min heap như max heap"
+                "description": "Sử dụng min heap như max heap",
+                "code": "myList = [9, 5, 4, 1, 3, 2]\nmyList = [-val for val in myList] # multiply by -1 to negate\nheapq.heapify(myList)\n\nx = heapq.heappop(myList)\nprint(-x) # => 9 (making sure to multiply by -1 again)"
             },
             "スタックとキュー": {
                 "title": "Stack và Queue",
-                "description": "Deque cho stack và queue"
+                "description": "Deque cho stack và queue",
+                "code": "from collections import deque\n\nq = deque()          # empty\nq = deque([1, 2, 3]) # with values\n\nq.append(4)     # append to right side\nq.appendleft(0) # append to left side\nprint(q)    # => deque([0, 1, 2, 3, 4])\n\nx = q.pop() # remove & return from right\ny = q.popleft() # remove & return from left\nprint(x)    # => 4\nprint(y)    # => 0\nprint(q)    # => deque([1, 2, 3])\n\nq.rotate(1) # rotate 1 step to the right\nprint(q)    # => deque([3, 1, 2])"
             }
         },
         "python-strings": {
             "配列風": {
                 "title": "Kiểu mảng",
-                "description": "Truy cập ký tự chuỗi"
+                "description": "Truy cập ký tự chuỗi",
+                "code": ">>> hello = \"Hello, World\"\n>>> print(hello[1])\ne\n>>> print(hello[-1])\nd"
             },
             "ループ": {
                 "title": "Vòng lặp",
-                "description": "Lặp qua chuỗi"
+                "description": "Lặp qua chuỗi",
+                "code": ">>> for char in \"foo\":\n...     print(char)\nf\no\no"
             },
             "文字列スライス": {
                 "title": "Cắt chuỗi",
-                "description": "Ví dụ cắt chuỗi"
+                "description": "Ví dụ cắt chuỗi",
+                "code": ">>> msg = \"Hello, World!\"\n>>> print(msg[2:5])\nllo\n>>> print(msg[:5])\nHello\n>>> print(msg[7:])\nWorld!\n>>> print(msg[-6:-1])\nWorld"
             },
             "文字列メソッド": {
                 "title": "Phương thức chuỗi",
-                "description": "Các phương thức chuỗi thông dụng"
+                "description": "Các phương thức chuỗi thông dụng",
+                "code": "text = \"Hello World\"\nprint(text.upper())      # => HELLO WORLD\nprint(text.lower())      # => hello world\nprint(text.strip())      # => Hello World\nprint(text.replace(\"H\", \"J\"))  # => Jello World\nprint(text.split(\" \"))   # => ['Hello', 'World']"
             }
         },
         "python-functions": {
             "位置引数": {
                 "title": "Tham số vị trí",
-                "description": "Tham số hàm theo vị trí"
+                "description": "Tham số hàm theo vị trí",
+                "code": "def positional_args(x, y, z):\n    return x, y, z\n\n# => (1, 2, 3)\npositional_args(1, 2, 3)"
             },
             "キーワード引数": {
                 "title": "Tham số từ khóa",
-                "description": "Tham số từ khóa với **kwargs"
+                "description": "Tham số từ khóa với **kwargs",
+                "code": "def keyword_args(**kwargs):\n    return kwargs\n\n# => {\"big\": \"foot\", \"loch\": \"ness\"}\nkeyword_args(big=\"foot\", loch=\"ness\")"
             },
             "複数の戻り値": {
                 "title": "Nhiều giá trị trả về",
-                "description": "Trả về nhiều giá trị"
+                "description": "Trả về nhiều giá trị",
+                "code": "def swap(x, y):\n    return y, x\n\nx = 1\ny = 2\nx, y = swap(x, y)  # => x = 2, y = 1"
             },
             "デフォルト値": {
                 "title": "Giá trị mặc định",
-                "description": "Giá trị tham số mặc định"
+                "description": "Giá trị tham số mặc định",
+                "code": "def add(x, y=10):\n    return x + y\n\nadd(5)      # => 15\nadd(5, 20)  # => 25"
             },
             "無名関数": {
                 "title": "Hàm ẩn danh",
-                "description": "Hàm lambda"
+                "description": "Hàm lambda",
+                "code": "# => True\n(lambda x: x > 2)(3)\n\n# => 5\n(lambda x, y: x ** 2 + y ** 2)(2, 1)"
             }
         },
         "python-modules": {
             "モジュールのインポート": {
                 "title": "Import Module",
-                "description": "Import toàn bộ module"
+                "description": "Import toàn bộ module",
+                "code": "import math\nprint(math.sqrt(16))  # => 4.0"
             },
             "モジュールから": {
                 "title": "Từ Module",
-                "description": "Import các hàm cụ thể"
+                "description": "Import các hàm cụ thể",
+                "code": "from math import ceil, floor\nprint(ceil(3.7))   # => 4.0\nprint(floor(3.7))  # => 3.0"
             },
             "すべてインポート": {
                 "title": "Import tất cả",
-                "description": "Import mọi thứ từ module"
+                "description": "Import mọi thứ từ module",
+                "code": "from math import *"
             },
             "モジュールの短縮": {
                 "title": "Bí danh Module",
-                "description": "Đặt bí danh cho module"
+                "description": "Đặt bí danh cho module",
+                "code": "import math as m\n\n# => True\nmath.sqrt(16) == m.sqrt(16)"
             },
             "関数と属性": {
                 "title": "Hàm và thuộc tính",
-                "description": "Liệt kê hàm và thuộc tính của module"
+                "description": "Liệt kê hàm và thuộc tính của module",
+                "code": "import math\ndir(math)"
             }
         },
         "python-file-handling": {
             "ファイル読み込み - 行ごと": {
                 "title": "Đọc tệp - Từng dòng",
-                "description": "Đọc tệp từng dòng"
+                "description": "Đọc tệp từng dòng",
+                "code": "with open(\"myfile.txt\") as file:\n    for line in file:\n        print(line)"
             },
             "ファイル読み込み - 行番号付き": {
                 "title": "Đọc tệp - Có số dòng",
-                "description": "Đọc tệp với số dòng"
+                "description": "Đọc tệp với số dòng",
+                "code": "file = open('myfile.txt', 'r')\nfor i, line in enumerate(file, start=1):\n    print(\"Number %s: %s\" % (i, line))"
             },
             "文字列の書き込み": {
                 "title": "Ghi chuỗi",
-                "description": "Ghi chuỗi vào tệp"
+                "description": "Ghi chuỗi vào tệp",
+                "code": "contents = {\"aa\": 12, \"bb\": 21}\nwith open(\"myfile1.txt\", \"w+\") as file:\n    file.write(str(contents))"
             },
             "文字列の読み込み": {
                 "title": "Đọc chuỗi",
-                "description": "Đọc chuỗi từ tệp"
+                "description": "Đọc chuỗi từ tệp",
+                "code": "with open('myfile1.txt', \"r+\") as file:\n    contents = file.read()\nprint(contents)"
             },
             "オブジェクトの書き込み": {
                 "title": "Ghi đối tượng",
-                "description": "Ghi đối tượng JSON vào tệp"
+                "description": "Ghi đối tượng JSON vào tệp",
+                "code": "contents = {\"aa\": 12, \"bb\": 21}\nwith open(\"myfile2.txt\", \"w+\") as file:\n    file.write(json.dumps(contents))"
             },
             "オブジェクトの読み込み": {
                 "title": "Đọc đối tượng",
-                "description": "Đọc đối tượng JSON từ tệp"
+                "description": "Đọc đối tượng JSON từ tệp",
+                "code": "with open('myfile2.txt', \"r+\") as file:\n    contents = json.load(file)\nprint(contents)"
             },
             "ファイルの削除": {
                 "title": "Xóa tệp",
-                "description": "Xóa một tệp"
+                "description": "Xóa một tệp",
+                "code": "import os\nos.remove(\"myfile.txt\")"
             },
             "確認して削除": {
                 "title": "Kiểm tra và xóa",
-                "description": "Kiểm tra tồn tại tệp trước khi xóa"
+                "description": "Kiểm tra tồn tại tệp trước khi xóa",
+                "code": "import os\nif os.path.exists(\"myfile.txt\"):\n    os.remove(\"myfile.txt\")\nelse:\n    print(\"The file does not exist\")"
             },
             "フォルダの削除": {
                 "title": "Xóa thư mục",
-                "description": "Xóa một thư mục"
+                "description": "Xóa một thư mục",
+                "code": "import os\nos.rmdir(\"myfolder\")"
             }
         },
         "python-classes-inheritance": {
             "定義": {
                 "title": "Định nghĩa",
-                "description": "Định nghĩa lớp cơ bản"
+                "description": "Định nghĩa lớp cơ bản",
+                "code": "class MyNewClass:\n    pass\n\n# Class Instantiation\nmy = MyNewClass()"
             },
             "コンストラクタ": {
                 "title": "Constructor",
-                "description": "Constructor của lớp"
+                "description": "Constructor của lớp",
+                "code": "class Animal:\n    def __init__(self, voice):\n        self.voice = voice\n \ncat = Animal('Meow')\nprint(cat.voice)    # => Meow\n \ndog = Animal('Woof') \nprint(dog.voice)    # => Woof"
             },
             "メソッド": {
                 "title": "Phương thức",
-                "description": "Phương thức của lớp"
+                "description": "Phương thức của lớp",
+                "code": "class Dog:\n\n    # Method of the class\n    def bark(self):\n        print(\"Ham-Ham\")\n \ncharlie = Dog()\ncharlie.bark()   # => \"Ham-Ham\""
             },
             "クラス変数": {
                 "title": "Biến lớp",
-                "description": "Biến lớp"
+                "description": "Biến lớp",
+                "code": "class MyClass:\n    class_variable = \"A class variable!\"\n\n# => A class variable!\nprint(MyClass.class_variable)\n\nx = MyClass()\n \n# => A class variable!\nprint(x.class_variable)"
             },
             "Super()関数": {
                 "title": "Hàm Super()",
-                "description": "Gọi phương thức cha với super()"
+                "description": "Gọi phương thức cha với super()",
+                "code": "class ParentClass:\n    def print_test(self):\n        print(\"Parent Method\")\n \nclass ChildClass(ParentClass):\n    def print_test(self):\n        print(\"Child Method\")\n        # Calls the parent's print_test()\n        super().print_test()\n\n>>> child_instance = ChildClass()\n>>> child_instance.print_test()\nChild Method\nParent Method"
             },
             "__repr__()メソッド": {
                 "title": "Phương thức __repr__()",
-                "description": "Phương thức biểu diễn chuỗi"
+                "description": "Phương thức biểu diễn chuỗi",
+                "code": "class Employee:\n    def __init__(self, name):\n        self.name = name\n \n    def __repr__(self):\n        return self.name\n \njohn = Employee('John')\nprint(john)  # => John"
             },
             "ユーザー定義例外": {
                 "title": "Ngoại lệ tự định nghĩa",
-                "description": "Lớp ngoại lệ tùy chỉnh"
+                "description": "Lớp ngoại lệ tùy chỉnh",
+                "code": "class CustomError(Exception):\n    pass"
             },
             "ポリモーフィズム": {
                 "title": "Đa hình",
-                "description": "Ví dụ đa hình"
+                "description": "Ví dụ đa hình",
+                "code": "class ParentClass:\n    def print_self(self):\n        print('A')\n \nclass ChildClass(ParentClass):\n    def print_self(self):\n        print('B')\n \nobj_A = ParentClass()\nobj_B = ChildClass()\n \nobj_A.print_self() # => A\nobj_B.print_self() # => B"
             },
             "オーバーライド": {
                 "title": "Ghi đè",
-                "description": "Ghi đè phương thức"
+                "description": "Ghi đè phương thức",
+                "code": "class ParentClass:\n    def print_self(self):\n        print(\"Parent\")\n \nclass ChildClass(ParentClass):\n    def print_self(self):\n        print(\"Child\")\n \nchild_instance = ChildClass()\nchild_instance.print_self() # => Child"
             },
             "継承": {
                 "title": "Kế thừa",
-                "description": "Kế thừa lớp"
+                "description": "Kế thừa lớp",
+                "code": "class Animal: \n    def __init__(self, name, legs):\n        self.name = name\n        self.legs = legs\n        \nclass Dog(Animal):\n    def sound(self):\n        print(\"Woof!\")\n \nYoki = Dog(\"Yoki\", 4)\nprint(Yoki.name) # => YOKI\nprint(Yoki.legs) # => 4\nYoki.sound()     # => Woof!"
             }
         },
         "miscellaneous": {
             "コメント": {
                 "title": "Chú thích",
-                "description": "Cú pháp chú thích"
+                "description": "Cú pháp chú thích",
+                "code": "# This is a single line comments.\n\n\"\"\" Multiline strings can be written\n    using three \"s, and are often used\n    as documentation.\n\"\"\"\n\n''' Multiline strings can be written\n    using three 's, and are often used\n    as documentation.\n'''"
             },
             "ジェネレータ": {
                 "title": "Generator",
-                "description": "Hàm generator"
+                "description": "Hàm generator",
+                "code": "def double_numbers(iterable):\n    for i in iterable:\n        yield i + i"
             },
             "ジェネレータからリストへ": {
                 "title": "Generator sang List",
-                "description": "Chuyển đổi generator sang list"
+                "description": "Chuyển đổi generator sang list",
+                "code": "values = (-x for x in [1,2,3,4,5])\ngen_to_list = list(values)\n\n# => [-1, -2, -3, -4, -5]\nprint(gen_to_list)"
             },
             "例外の処理": {
                 "title": "Xử lý ngoại lệ",
-                "description": "Xử lý ngoại lệ với try-except-else-finally"
+                "description": "Xử lý ngoại lệ với try-except-else-finally",
+                "code": "try:\n    # Use \"raise\" to raise an error\n    raise IndexError(\"This is an index error\")\nexcept IndexError as e:\n    pass                 # Pass is just a no-op. Usually you would do recovery here.\nexcept (TypeError, NameError):\n    pass                 # Multiple exceptions can be handled together, if required.\nelse:                    # Optional clause to the try/except block. Must follow all except blocks\n    print(\"All good!\")   # Runs only if the code in try raises no exceptions\nfinally:                 # Execute under all circumstances\n    print(\"We can clean up resources here\")"
             }
         }
     }

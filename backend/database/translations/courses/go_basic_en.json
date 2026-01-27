@@ -8,6 +8,10 @@
         "Go言語基礎コース": {
             "title": "Go Language Basic Course",
             "description": "Beginner-friendly Go language programming fundamentals course. Learn step by step from Go basic syntax to goroutines through 15 weeks of practical exercises."
+        },
+        "Go基礎": {
+            "title": "Go Basic Course",
+            "description": "Beginner-friendly Go language programming fundamentals course. Learn step by step from Go basic syntax to goroutines through 15 weeks of practical exercises."
         }
     },
     "milestones": {

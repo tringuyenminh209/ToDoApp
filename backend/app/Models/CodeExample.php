@@ -13,9 +13,9 @@ class CodeExample extends Model
     use HasFactory, HasTranslations;
 
     /**
-     * Các field có thể dịch
+     * Các field có thể dịch (title, description, code)
      */
-    protected array $translatable = ['title', 'description'];
+    protected array $translatable = ['title', 'description', 'code'];
 
     protected $fillable = [
         'section_id',

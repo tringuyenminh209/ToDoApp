@@ -43,293 +43,362 @@
         "getting-started": {
             "外部スタイルシート": {
                 "title": "Stylesheet ngoài",
-                "description": "Liên kết file CSS ngoài"
+                "description": "Liên kết file CSS ngoài",
+                "code": "<link href=\"./path/to/stylesheet/style.css\" rel=\"stylesheet\" type=\"text/css\">"
             },
             "内部スタイルシート": {
                 "title": "Stylesheet trong",
-                "description": "CSS nội bộ trong HTML"
+                "description": "CSS nội bộ trong HTML",
+                "code": "<style>\nbody {\n    background-color: linen;\n}\n</style>"
             },
             "インラインスタイル": {
                 "title": "Style inline",
-                "description": "Style CSS inline"
+                "description": "Style CSS inline",
+                "code": "<h2 style=\"text-align: center;\">Centered text</h2>\n\n<p style=\"color: blue; font-size: 18px;\">Blue, 18-point text</p>"
             },
             "クラスの追加": {
                 "title": "Thêm Class",
-                "description": "Thêm class CSS vào phần tử HTML"
+                "description": "Thêm class CSS vào phần tử HTML",
+                "code": "<div class=\"classname\"></div>\n<div class=\"class1 ... classn\"></div>"
             },
             "!important": {
                 "title": "!important",
-                "description": "Dùng !important để ghi đè style"
+                "description": "Dùng !important để ghi đè style",
+                "code": ".post-title {\n    color: blue !important;\n}"
             },
             "セレクタ": {
                 "title": "Selector",
-                "description": "Selector CSS cơ bản"
+                "description": "Selector CSS cơ bản",
+                "code": "h1 { } \n#job-title { }\ndiv.hero { }\ndiv > p { }"
             },
             "テキストの色": {
                 "title": "Màu văn bản",
-                "description": "Giá trị màu văn bản"
+                "description": "Giá trị màu văn bản",
+                "code": "color: #2a2aff;\ncolor: green;\ncolor: rgb(34, 12, 64, 0.6);\ncolor: hsla(30 100% 50% / 0.6);"
             },
             "背景": {
                 "title": "Nền",
-                "description": "Thuộc tính nền"
+                "description": "Thuộc tính nền",
+                "code": "background-color: blue;\nbackground-image: url(\"nyan-cat.gif\");\nbackground-image: url(\"../image.png\");"
             },
             "フォント": {
                 "title": "Font",
-                "description": "Thuộc tính font"
+                "description": "Thuộc tính font",
+                "code": ".page-title {\n    font-weight: bold;\n    font-size: 30px;\n    font-family: \"Courier New\";\n}"
             },
             "位置": {
                 "title": "Vị trí",
-                "description": "Thuộc tính position"
+                "description": "Thuộc tính position",
+                "code": ".box {\n    position: relative;\n    top: 20px;\n    left: 20px;\n}"
             },
             "アニメーション": {
                 "title": "Animation",
-                "description": "Shorthand animation CSS"
+                "description": "Shorthand animation CSS",
+                "code": "animation: 300ms linear 0s infinite;\n\nanimation: bounce 300ms linear infinite;"
             },
             "コメント": {
                 "title": "Chú thích",
-                "description": "Cú pháp chú thích CSS"
+                "description": "Cú pháp chú thích CSS",
+                "code": "/* This is a single line comment */\n\n/* This is a \n   multi-line comment */"
             },
             "Flexレイアウト": {
                 "title": "Layout Flex",
-                "description": "Layout Flexbox"
+                "description": "Layout Flexbox",
+                "code": "div {\n    display: flex;\n    justify-content: center;\n}\ndiv {\n    display: flex;\n    justify-content: flex-start;\n}"
             },
             "Gridレイアウト": {
                 "title": "Layout Grid",
-                "description": "Layout CSS Grid"
+                "description": "Layout CSS Grid",
+                "code": "#container {\n  display: grid;\n  grid: repeat(2, 60px) / auto-flow 80px;\n}\n\n#container > div {\n  background-color: #8ca0ff;\n  width: 50px;\n  height: 50px;\n}"
             },
             "変数とカウンター": {
                 "title": "Biến và Counter",
-                "description": "Biến và counter CSS"
+                "description": "Biến và counter CSS",
+                "code": "counter-set: subsection;\ncounter-increment: subsection;\ncounter-reset: subsection 0;\n\n:root {\n  --bg-color: brown;\n}\nelement {\n  background-color: var(--bg-color);\n}"
             }
         },
         "css-selectors": {
             "グループセレクタ": {
                 "title": "Selector nhóm",
-                "description": "Nhóm selector"
+                "description": "Nhóm selector",
+                "code": "h1, h2 {\n    color: red;\n}"
             },
             "チェーンセレクタ": {
                 "title": "Selector chuỗi",
-                "description": "Chuỗi selector"
+                "description": "Chuỗi selector",
+                "code": "h3.section-heading {\n    color: blue;\n}"
             },
             "属性セレクタ": {
                 "title": "Selector thuộc tính",
-                "description": "Selector thuộc tính"
+                "description": "Selector thuộc tính",
+                "code": "div[attribute=\"SomeValue\"] {\n    background-color: red;\n}"
             },
             "最初の子要素セレクタ": {
                 "title": "Selector con đầu tiên",
-                "description": "Pseudo-class con đầu tiên"
+                "description": "Pseudo-class con đầu tiên",
+                "code": "p:first-child {\n    font-weight: bold;\n}"
             },
             "子要素なしセレクタ": {
                 "title": "Selector không có con",
-                "description": "Pseudo-class empty"
+                "description": "Pseudo-class empty",
+                "code": ".box:empty {\n  background: lime;\n  height: 80px;\n  width: 80px;\n}"
             },
             "基本セレクタの表": {
                 "title": "Bảng selector cơ bản",
-                "description": "Các loại selector cơ bản"
+                "description": "Các loại selector cơ bản",
+                "code": "| *         | All elements                |\n| ---------- | --------------------------- |\n| div        | All div tags                |\n| .classname | All elements with class     |\n| #idname    | Element with ID             |\n| div,p      | All divs and paragraphs     |\n| #idname *  | All elements inside #idname |"
             },
             "結合子の表": {
                 "title": "Bảng combinator",
-                "description": "Selector combinator"
+                "description": "Selector combinator",
+                "code": "| Selector      | Description                       |\n| ------------- | --------------------------------- |\n| div.classname | Div with certain classname        |\n| div#idname    | Div with certain ID               |\n| div p         | Paragraphs inside divs            |\n| div > p       | All p tags one level deep in div  |\n| div + p       | P tags immediately after div      |\n| div ~ p       | P tags preceded by div            |"
             },
             "属性セレクタの表": {
                 "title": "Bảng selector thuộc tính",
-                "description": "Cú pháp selector thuộc tính"
+                "description": "Cú pháp selector thuộc tính",
+                "code": "| a[target]           | With a target attribute |\n| --------------------- | ----------------------- |\n| a[target=\"_blank\"] | Open in new tab         |\n| a[href^=\"/index\"]   | Starts with /index      |\n| [class|=\"chair\"]   | Starts with chair       |\n| [class*=\"chair\"]   | containing chair        |\n| [title~=\"chair\"]   | Contains the word chair |\n| a[href$=\".doc\"]     | Ends with .doc          |\n| [type=\"button\"]     | Specified type          |"
             },
             "ユーザーアクション疑似クラス": {
                 "title": "Pseudo-class hành động người dùng",
-                "description": "Pseudo-class link"
+                "description": "Pseudo-class link",
+                "code": "a:link    /* Link in normal state    */\na:active  /* Link in clicked state   */\na:hover   /* Link with mouse over it */\na:visited /* Visited link            */"
             },
             "疑似クラスの表": {
                 "title": "Bảng Pseudo-class",
-                "description": "Pseudo-class và pseudo-element"
+                "description": "Pseudo-class và pseudo-element",
+                "code": "| p::after        | Add content after p                                    |\n| p::before       | Add content before p                                   |\n| p::first-letter | First letter in p                                      |\n| p::first-line   | First line in p                                        |\n| ::selection     | Selected by user                                       |\n| ::placeholder   | Placeholder attribute                                 |\n| :root           | Documents root element                                |\n| :target         | Highlight active anchor                                |\n| div:empty       | Element with no children                              |\n| p:lang(en)      | P with en language attribute                          |\n| :not(span)      | Element that's not a span                             |"
             },
             "入力疑似クラス": {
                 "title": "Pseudo-class input",
-                "description": "Pseudo-class input"
+                "description": "Pseudo-class input",
+                "code": "input:checked       /* Checked inputs                                    */\ninput:disabled      /* Disabled inputs                                     */\ninput:enabled       /* Enabled inputs                                      */\ninput:focus         /* Input has focus                                      */\ninput:in-range      /* Value in range                                       */\ninput:out-of-range  /* Input value out of range                              */\ninput:valid         /* Input with valid value                                */\ninput:invalid       /* Input with invalid value                              */\ninput:optional      /* No required attribute                                 */\ninput:required      /* Input with required attribute                          */\ninput:read-only     /* With readonly attribute                                */\ninput:read-write    /* No readonly attribute                                 */\ninput:indeterminate /* With indeterminate state                               */"
             },
             "構造的疑似クラス": {
                 "title": "Pseudo-class cấu trúc",
-                "description": "Pseudo-class cấu trúc"
+                "description": "Pseudo-class cấu trúc",
+                "code": "p:first-child         /* First child                */\np:last-child          /* Last child                 */\np:first-of-type       /* First of some type         */\np:last-of-type        /* Last of some type          */\np:nth-child(2)        /* Second child of its parent */\np:nth-child(3n+2)     /* Nth-child (an + b) formula */\np:nth-last-child(2)   /* Second child from behind   */\np:nth-of-type(2)      /* Second p of its parent     */\np:nth-last-of-type(2) /* Second p from behind      */"
             }
         },
         "css-animations": {
             "アニメーションプロパティ": {
                 "title": "Thuộc tính Animation",
-                "description": "Các thuộc tính animation"
+                "description": "Các thuộc tính animation",
+                "code": "animation:                 /* (shorthand)                                          */\nanimation-name:            /* <name>                                                 */\nanimation-duration:        /* <time>ms                                               */\nanimation-timing-function: /* ease / linear / ease-in / ease-out / ease-in-out       */\nanimation-delay:           /* <time>ms                                               */\nanimation-iteration-count: /* infinite / <number>                                    */\nanimation-direction:       /* normal / reverse / alternate / alternate-reverse       */\nanimation-fill-mode:       /* none / forwards / backwards / both / initial / inherit */\nanimation-play-state:      /* running / paused                                        */"
             },
             "アニメーションの例": {
                 "title": "Ví dụ Animation",
-                "description": "Ví dụ shorthand animation"
+                "description": "Ví dụ shorthand animation",
+                "code": "/* @keyframes duration | timing-function | delay |\n   iteration-count | direction | fill-mode | play-state | name */\nanimation: 3s ease-in 1s 2 reverse both paused slidein;\n\n/* @keyframes duration | timing-function | delay | name */\nanimation: 3s linear 1s slidein;\n\n/* @keyframes duration | name */\nanimation: 3s slidein;\n\nanimation: 4s linear 0s infinite alternate move_eye;\nanimation: bounce 300ms linear 0s infinite normal;\nanimation: bounce 300ms linear infinite;\nanimation: bounce 300ms linear infinite alternate-reverse;\nanimation: bounce 300ms linear 2s infinite alternate-reverse forwards normal;"
             },
             "JavaScriptイベント": {
                 "title": "Sự kiện JavaScript",
-                "description": "Sự kiện kết thúc animation JS"
+                "description": "Sự kiện kết thúc animation JS",
+                "code": ".one('webkitAnimationEnd oanimationend msAnimationEnd animationend')"
             }
         },
         "css-flexbox": {
             "簡単な例": {
                 "title": "Ví dụ đơn giản",
-                "description": "Cài đặt flexbox cơ bản"
+                "description": "Cài đặt flexbox cơ bản",
+                "code": ".container {\n  display: flex;\n}\n\n.container > div {\n  flex: 1 1 auto;\n}"
             },
             "コンテナ - Display": {
                 "title": "Container - Display",
-                "description": "Giá trị display Flexbox"
+                "description": "Giá trị display Flexbox",
+                "code": ".container {\n  display: flex;\n  display: inline-flex;\n}"
             },
             "コンテナ - flex-direction": {
                 "title": "Container - flex-direction",
-                "description": "Tùy chọn flex direction"
+                "description": "Tùy chọn flex direction",
+                "code": ".container {\n  flex-direction: row;            /* ltr - default */\n  flex-direction: row-reverse;    /* rtl */\n  flex-direction: column;         /* top-bottom */\n  flex-direction: column-reverse; /* bottom-top */\n}"
             },
             "コンテナ - flex-wrap": {
                 "title": "Container - flex-wrap",
-                "description": "Tùy chọn flex wrap"
+                "description": "Tùy chọn flex wrap",
+                "code": ".container {\n  flex-wrap: nowrap; /* one-line */\n  flex-wrap: wrap;   /* multi-line */\n}"
             },
             "コンテナ - align-items": {
                 "title": "Container - align-items",
-                "description": "Tùy chọn align items"
+                "description": "Tùy chọn align items",
+                "code": ".container {\n  align-items: flex-start; /* vertical-align to top */\n  align-items: flex-end;   /* vertical-align to bottom */\n  align-items: center;     /* vertical-align to center */\n  align-items: stretch;    /* same height on all (default) */\n}"
             },
             "コンテナ - justify-content": {
                 "title": "Container - justify-content",
-                "description": "Tùy chọn justify content"
+                "description": "Tùy chọn justify content",
+                "code": ".container {\n  justify-content: flex-start;    /* [xxx        ] */\n  justify-content: center;        /* [    xxx    ] */\n  justify-content: flex-end;      /* [        xxx] */\n  justify-content: space-between; /* [x    x    x] */\n  justify-content: space-around;  /* [ x   x   x ] */\n  justify-content: space-evenly;  /* [  x  x  x  ] */\n}"
             },
             "子要素 - flex": {
                 "title": "Con - flex",
-                "description": "Thuộc tính shorthand flex"
+                "description": "Thuộc tính shorthand flex",
+                "code": ".container > div {\n  /* This: */\n  flex: 1 0 auto;\n\n  /* Is equivalent to this: */\n  flex-grow: 1;\n  flex-shrink: 0;\n  flex-basis: auto;\n}"
             },
             "子要素 - order": {
                 "title": "Con - order",
-                "description": "Thuộc tính order"
+                "description": "Thuộc tính order",
+                "code": ".container > div {\n  order: 1;\n}"
             },
             "子要素 - align-self": {
                 "title": "Con - align-self",
-                "description": "Thuộc tính align self"
+                "description": "Thuộc tính align self",
+                "code": ".container > div {\n  align-self: flex-start;  /* left */\n  margin-left: auto;       /* right */\n}"
             }
         },
         "css-flexbox-tricks": {
             "垂直中央揃え": {
                 "title": "Căn giữa dọc",
-                "description": "Căn giữa với margin auto"
+                "description": "Căn giữa với margin auto",
+                "code": ".container {\n  display: flex;\n}\n\n.container > div {\n  width: 100px;\n  height: 100px;\n  margin: auto;\n}"
             },
             "垂直中央揃え（2）": {
                 "title": "Căn giữa dọc (2)",
-                "description": "Căn giữa với align-items và justify-content"
+                "description": "Căn giữa với align-items và justify-content",
+                "code": ".container {\n  display: flex;\n\n  /* vertical */\n  align-items: center; \n\n  /* horizontal */\n  justify-content: center;\n}"
             },
             "並び替え": {
                 "title": "Sắp xếp lại",
-                "description": "Sắp xếp lại flex items"
+                "description": "Sắp xếp lại flex items",
+                "code": ".container > .top {\n order: 1;\n}\n\n.container > .bottom {\n order: 2;\n}"
             },
             "モバイルレイアウト": {
                 "title": "Layout Mobile",
-                "description": "Layout flex thân thiện mobile"
+                "description": "Layout flex thân thiện mobile",
+                "code": ".container {\n  display: flex;\n  flex-direction: column;\n}\n\n.container > .top {\n  flex: 0 0 100px;\n}\n\n.container > .content {\n  flex: 1 0 auto;\n}"
             },
             "テーブル風": {
                 "title": "Kiểu bảng",
-                "description": "Layout kiểu bảng với flexbox"
+                "description": "Layout kiểu bảng với flexbox",
+                "code": ".container {\n  display: flex;\n}\n\n/* the 'px' values here are just suggested percentages */\n.container > .checkbox { flex: 1 0 20px; }\n.container > .subject  { flex: 1 0 400px; }\n.container > .date     { flex: 1 0 120px; }"
             },
             "垂直": {
                 "title": "Dọc",
-                "description": "Căn giữa dọc tất cả items"
+                "description": "Căn giữa dọc tất cả items",
+                "code": ".container {\n  align-items: center;\n}"
             },
             "左と右": {
                 "title": "Trái và Phải",
-                "description": "Căn trái và phải"
+                "description": "Căn trái và phải",
+                "code": ".menu > .left  { align-self: flex-start; }\n.menu > .right { align-self: flex-end; }"
             }
         },
         "css-grid-layout": {
             "Grid Template Columns": {
                 "title": "Grid Template Columns",
-                "description": "Grid template columns"
+                "description": "Grid template columns",
+                "code": "#grid-container {\n    display: grid;\n    width: 100px;\n    grid-template-columns: 20px 20% 60%;\n}"
             },
             "fr相対単位": {
                 "title": "Đơn vị tương đối fr",
-                "description": "Đơn vị phân số (fr)"
+                "description": "Đơn vị phân số (fr)",
+                "code": ".grid {\n    display: grid;\n    width: 100px;\n    grid-template-columns: 1fr 60px 1fr;\n}"
             },
             "Grid Gap": {
                 "title": "Grid Gap",
-                "description": "Thuộc tính grid gap"
+                "description": "Thuộc tính grid gap",
+                "code": "/*The distance between rows is 20px*/\n/*The distance between columns is 10px*/\n#grid-container {\n    display: grid;\n    grid-gap: 20px 10px;\n}"
             },
             "CSSブロックレベルGrid": {
                 "title": "CSS Grid cấp Block",
-                "description": "Grid cấp block"
+                "description": "Grid cấp block",
+                "code": "#grid-container {\n    display: block;\n}"
             },
             "grid-row": {
                 "title": "grid-row",
-                "description": "Thuộc tính grid row"
+                "description": "Thuộc tính grid row",
+                "code": ".item {\n    grid-row: 1 / span 2;\n}"
             },
             "CSSインラインレベルGrid": {
                 "title": "CSS Grid cấp Inline",
-                "description": "Grid cấp inline"
+                "description": "Grid cấp inline",
+                "code": "#grid-container {\n    display: inline-grid;\n}"
             },
             "minmax()関数": {
                 "title": "Hàm minmax()",
-                "description": "Hàm minmax"
+                "description": "Hàm minmax",
+                "code": ".grid {\n    display: grid;\n    grid-template-columns: 100px minmax(100px, 500px) 100px; \n}"
             },
             "grid-row-startとgrid-row-end": {
                 "title": "grid-row-start và grid-row-end",
-                "description": "Grid row start và end"
+                "description": "Grid row start và end",
+                "code": "grid-row-start: 2;\ngrid-row-end: span 2;"
             },
             "CSS grid-row-gap": {
                 "title": "CSS grid-row-gap",
-                "description": "Grid row gap"
+                "description": "Grid row gap",
+                "code": "grid-row-gap: length;"
             },
             "CSS grid-area": {
                 "title": "CSS grid-area",
-                "description": "Shorthand grid area"
+                "description": "Shorthand grid area",
+                "code": ".item1 {\n    grid-area: 2 / 1 / span 2 / span 3;\n}"
             },
             "Justify Items": {
                 "title": "Justify Items",
-                "description": "Thuộc tính justify items"
+                "description": "Thuộc tính justify items",
+                "code": "#container {\n    display: grid;\n    justify-items: center;\n    grid-template-columns: 1fr;\n    grid-template-rows: 1fr 1fr 1fr;\n    grid-gap: 10px;\n}"
             },
             "CSS grid-template-areas": {
                 "title": "CSS grid-template-areas",
-                "description": "Grid template areas"
+                "description": "Grid template areas",
+                "code": ".item {\n    grid-area: nav;\n}\n.grid-container {\n    display: grid;\n    grid-template-areas:\n    'nav nav . .'\n    'nav nav . .';\n}"
             },
             "Justify Self": {
                 "title": "Justify Self",
-                "description": "Thuộc tính justify self"
+                "description": "Thuộc tính justify self",
+                "code": "#grid-container {\n    display: grid;\n    justify-items: start;\n}\n\n.grid-items {\n    justify-self: end;\n}"
             },
             "Align Items": {
                 "title": "Align Items",
-                "description": "Thuộc tính align items"
+                "description": "Thuộc tính align items",
+                "code": "#container {\n    display: grid;\n    align-items: start;\n    grid-template-columns: 1fr;\n    grid-template-rows: 1fr 1fr 1fr;\n    grid-gap: 10px;\n}"
             }
         },
         "css-dynamic-content": {
             "変数 - 定義": {
                 "title": "Biến - Định nghĩa",
-                "description": "Định nghĩa biến CSS"
+                "description": "Định nghĩa biến CSS",
+                "code": ":root {\n  --first-color: #16f;\n  --second-color: #ff7;\n}"
             },
             "変数 - 使用": {
                 "title": "Biến - Sử dụng",
-                "description": "Sử dụng biến CSS"
+                "description": "Sử dụng biến CSS",
+                "code": "#firstParagraph {\n  background-color: var(--first-color);\n  color: var(--second-color);\n}"
             },
             "カウンター - 設定": {
                 "title": "Counter - Thiết lập",
-                "description": "Thiết lập counter CSS"
+                "description": "Thiết lập counter CSS",
+                "code": "/* Set \"my-counter\" to 0 */\ncounter-set: my-counter;"
             },
             "カウンター - 増加": {
                 "title": "Counter - Tăng",
-                "description": "Tăng counter CSS"
+                "description": "Tăng counter CSS",
+                "code": "/* Increment \"my-counter\" by 1 */\ncounter-increment: my-counter;"
             },
             "カウンター - 減少": {
                 "title": "Counter - Giảm",
-                "description": "Giảm counter CSS"
+                "description": "Giảm counter CSS",
+                "code": "/* Decrement \"my-counter\" by 1 */\ncounter-increment: my-counter -1;"
             },
             "カウンター - リセット": {
                 "title": "Counter - Reset",
-                "description": "Reset counter CSS"
+                "description": "Reset counter CSS",
+                "code": "/* Reset \"my-counter\" to 0 */\ncounter-reset: my-counter;"
             },
             "カウンターの使用 - 基本": {
                 "title": "Sử dụng Counter - Cơ bản",
-                "description": "Sử dụng counter cơ bản"
+                "description": "Sử dụng counter cơ bản",
+                "code": "body { counter-reset: section; }\n\nh3::before {\n  counter-increment: section; \n  content: \"Section.\" counter(section);\n}"
             },
             "カウンターの使用 - ネスト": {
                 "title": "Sử dụng Counter - Lồng nhau",
-                "description": "Counter lồng nhau"
+                "description": "Counter lồng nhau",
+                "code": "ol {\n  counter-reset: section;   \n  list-marker-type: none;\n}\n\nli::before {\n  counter-increment: section;\n  content: counters(section, \".\") \" \"; \n}"
             }
         },
         "css-tricks": {
             "スクロールバースムーズ": {
                 "title": "Thanh cuộn mượt",
-                "description": "Hành vi cuộn mượt"
+                "description": "Hành vi cuộn mượt",
+                "code": "html {\n    scroll-behavior: smooth;\n}"
             }
         }
     }

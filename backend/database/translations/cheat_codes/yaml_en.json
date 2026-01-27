@@ -23,135 +23,167 @@
         "getting-started": {
             "YAMLの特徴": {
                 "title": "YAML Features",
-                "description": "Basic YAML features and rules"
+                "description": "Basic YAML features and rules",
+                "code": "# YAML is a data serialisation language designed to be directly writable and readable by humans\n\n# YAML does not allow the use of tabs\n# Must be space between the element parts\n# YAML is CASE sensitive\n# End your YAML file with the .yaml or .yml extension\n# YAML is a superset of JSON\n# Ansible playbooks are YAML files"
             },
             "スカラー型": {
                 "title": "Scalar Types",
-                "description": "Basic YAML data types"
+                "description": "Basic YAML data types",
+                "code": "n1: 1            # integer          \nn2: 1.234        # float      \n\ns1: 'abc'        # string        \ns2: \"abc\"        # string           \ns3: abc          # string           \n\nb: false         # boolean type \n\nd: 2015-04-05    # date type"
             },
             "変数": {
                 "title": "Variables",
-                "description": "Variables using anchors and aliases"
+                "description": "Variables using anchors and aliases",
+                "code": "some_thing: &VAR_NAME foobar\nother_thing: *VAR_NAME"
             },
             "コメント": {
                 "title": "Comments",
-                "description": "How to write comments in YAML"
+                "description": "How to write comments in YAML",
+                "code": "# A single line comment example\n\n# block level comment example\n# comment line 1\n# comment line 2\n# comment line 3"
             },
             "複数行文字列": {
                 "title": "Multi-line Strings",
-                "description": "Multi-line string (preserves newlines)"
+                "description": "Multi-line string (preserves newlines)",
+                "code": "description: |\n  hello\n  world"
             },
             "継承": {
                 "title": "Inheritance",
-                "description": "Mapping inheritance and merging"
+                "description": "Mapping inheritance and merging",
+                "code": "parent: &defaults\n  a: 2\n  b: 3\n\nchild:\n  <<: *defaults\n  b: 4"
             },
             "参照": {
                 "title": "References",
-                "description": "References using anchors"
+                "description": "References using anchors",
+                "code": "values: &ref\n  - Will be\n  - reused below\n  \nother_values:\n  i_am_ref: *ref"
             },
             "折りたたみ文字列": {
                 "title": "Folded Strings",
-                "description": "Multi-line string (converts newlines to spaces)"
+                "description": "Multi-line string (converts newlines to spaces)",
+                "code": "description: >\n  hello\n  world"
             },
             "複数ドキュメント": {
                 "title": "Multiple Documents",
-                "description": "Multiple documents in a YAML file"
+                "description": "Multiple documents in a YAML file",
+                "code": "---\ndocument: this is doc 1\n---\ndocument: this is doc 2"
             }
         },
         "collections": {
             "シーケンス（配列）": {
                 "title": "Sequences (Arrays)",
-                "description": "Basic array (sequence)"
+                "description": "Basic array (sequence)",
+                "code": "- Mark McGwire\n- Sammy Sosa\n- Ken Griffey"
             },
             "マッピング（辞書）": {
                 "title": "Mappings (Dictionaries)",
-                "description": "Basic mapping (key-value pairs)"
+                "description": "Basic mapping (key-value pairs)",
+                "code": "hr:  65       # Home runs\navg: 0.278    # Batting average\nrbi: 147      # Runs Batted In"
             },
             "マッピングからシーケンス": {
                 "title": "Mapping to Sequence",
-                "description": "Sequences within mappings"
+                "description": "Sequences within mappings",
+                "code": "attributes:\n  - a1\n  - a2\nmethods: [getter, setter]"
             },
             "シーケンスのマッピング": {
                 "title": "Sequence of Mappings",
-                "description": "Mappings within sequences"
+                "description": "Mappings within sequences",
+                "code": "children:\n  - name: Jimmy Smith\n    age: 15\n  - name: Jimmy Smith\n    age: 15\n  -\n    name: Sammy Sosa\n    age: 12"
             },
             "シーケンスのシーケンス": {
                 "title": "Sequence of Sequences",
-                "description": "Nested sequences"
+                "description": "Nested sequences",
+                "code": "my_sequences:\n  - [1, 2, 3]\n  - [4, 5, 6]\n  -  \n    - 7\n    - 8\n    - 9\n    - 0"
             },
             "マッピングのマッピング": {
                 "title": "Mapping of Mappings",
-                "description": "Nested mappings"
+                "description": "Nested mappings",
+                "code": "Mark McGwire: {hr: 65, avg: 0.278}\nSammy Sosa: {\n    hr: 63,\n    avg: 0.288\n  }"
             },
             "ネストされたコレクション": {
                 "title": "Nested Collections",
-                "description": "Complex nested structures"
+                "description": "Complex nested structures",
+                "code": "Jack:\n  id: 1\n  name: Franc\n  salary: 25000\n  hobby:\n    - a\n    - b\n  location: {country: \"A\", city: \"A-A\"}"
             },
             "順序なしセット": {
                 "title": "Unordered Sets",
-                "description": "Sets (no duplicates collection)"
+                "description": "Sets (no duplicates collection)",
+                "code": "set1: !!set\n  ? one\n  ? two\nset2: !!set {'one', \"two\"}"
             },
             "順序付きマッピング": {
                 "title": "Ordered Mappings",
-                "description": "Ordered preserving mappings"
+                "description": "Ordered preserving mappings",
+                "code": "ordered: !!omap\n- Mark McGwire: 65\n- Sammy Sosa: 63\n- Ken Griffy: 58"
             }
         },
         "reference": {
             "用語": {
                 "title": "Terminology",
-                "description": "Basic YAML terminology"
+                "description": "Basic YAML terminology",
+                "code": "# Sequences aka arrays or lists\n# Scalars aka strings or numbers\n# Mappings aka hashes or dictionaries"
             },
             "ドキュメント指示子": {
                 "title": "Document Indicators",
-                "description": "Document delimiter symbols"
+                "description": "Document delimiter symbols",
+                "code": "# %    - Directive indicator\n# ---  - Document header\n# ...  - Document terminator"
             },
             "コレクション指示子": {
                 "title": "Collection Indicators",
-                "description": "Collection symbols"
+                "description": "Collection symbols",
+                "code": "# ?    - Key indicator\n# :    - Value indicator\n# -    - Nested series entry indicator\n# ,    - Separate in-line branch entries\n# []   - Surround in-line series branch\n# {}   - Surround in-line keyed branch"
             },
             "エイリアス指示子": {
                 "title": "Alias Indicators",
-                "description": "Anchors and aliases"
+                "description": "Anchors and aliases",
+                "code": "# &  - Anchor property\n# *  - Alias indicator"
             },
             "特殊キー": {
                 "title": "Special Keys",
-                "description": "Special mapping keys"
+                "description": "Special mapping keys",
+                "code": "# =  - Default \"value\" mapping key\n# << - Merge keys from another mapping"
             },
             "スカラー指示子": {
                 "title": "Scalar Indicators",
-                "description": "Scalar value symbols"
+                "description": "Scalar value symbols",
+                "code": "# ''  - Surround in-line unescaped scalar\n# \"   - Surround in-line escaped scalar\n# |   - Block scalar indicator\n# >   - Folded scalar indicator\n# -   - Strip chomp modifier (|- or >-)\n# +   - Keep chomp modifier (|+ or >+)\n# 1-9 - Explicit indentation modifier"
             },
             "タグプロパティ": {
                 "title": "Tag Properties",
-                "description": "YAML tag types"
+                "description": "YAML tag types",
+                "code": "# none   - Unspecified tag (automatically resolved)\n# !      - Non-specific tag (by default, !!map/!!seq/!!str)\n# !foo   - Primary (by convention, means a local !foo tag)\n# !!foo  - Secondary (by convention, means tag:yaml.org,2002:foo)\n# !h!foo - Requires %TAG !h! <prefix>\n# !<foo> - Verbatim tag (always means foo)"
             },
             "コア型": {
                 "title": "Core Types",
-                "description": "YAML core data types"
+                "description": "YAML core data types",
+                "code": "# !!map - {Hash table, dictionary, mapping}\n# !!seq - {List, array, tuple, vector, sequence}\n# !!str - Unicode string"
             },
             "エスケープコード - 数値": {
                 "title": "Escape Codes - Numeric",
-                "description": "Numeric escape codes"
+                "description": "Numeric escape codes",
+                "code": "# \\x12       (8-bit)\n# \\u1234     (16-bit)\n# \\U00102030 (32-bit)"
             },
             "エスケープコード - 保護": {
                 "title": "Escape Codes - Protection",
-                "description": "Protection escape codes"
+                "description": "Protection escape codes",
+                "code": "# \\\\     (\\\\)\n# \\\"     (\")\n# \\      ( )\n# \\<TAB> (TAB)"
             },
             "エスケープコード - Cスタイル": {
                 "title": "Escape Codes - C-style",
-                "description": "C-style escape codes"
+                "description": "C-style escape codes",
+                "code": "# \\0  (NUL)\n# \\a  (BEL)\n# \\b  (BS)\n# \\f  (FF)\n# \\n  (LF)\n# \\r  (CR)\n# \\t  (TAB)\n# \\v  (VTAB)"
             },
             "追加のエスケープコード": {
                 "title": "Additional Escape Codes",
-                "description": "Additional escape codes"
+                "description": "Additional escape codes",
+                "code": "# \\e  (ESC)\n# \\_  (NBSP)\n# \\N  (NEL)\n# \\L  (LS)\n# \\P  (PS)"
             },
             "その他の型": {
                 "title": "Other Types",
-                "description": "Sets and ordered mappings"
+                "description": "Sets and ordered mappings",
+                "code": "# !!set  - {cherries, plums, apples}\n# !!omap - [one: 1, two: 2]"
             },
             "言語独立スカラー型": {
                 "title": "Language Independent Scalar Types",
-                "description": "Language-independent scalar type representations"
+                "description": "Language-independent scalar type representations",
+                "code": "# {~, null}              - Null (no value)\n# [1234, 0x4D2, 02333]     - [Decimal int, Hexadecimal int, Octal int]\n# [1_230.15, 12.3015e+02]  - [Fixed float, Exponential float]\n# [.inf, -.Inf, .NAN]      - [Infinity, Negative, Not a number]\n# {Y, true, Yes, ON}       - Boolean true\n# {n, FALSE, No, off}      - Boolean false"
             }
         }
     }

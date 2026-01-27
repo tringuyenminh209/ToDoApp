@@ -8,6 +8,10 @@
         "JavaScript基礎演習": {
             "title": "JavaScript Basic Course",
             "description": "Beginner-friendly JavaScript programming fundamentals course. Learn step by step from JavaScript basics to DOM manipulation, asynchronous processing, and external API integration through 15 weeks of practical exercises."
+        },
+        "JavaScript基礎": {
+            "title": "JavaScript Basic Course",
+            "description": "Beginner-friendly JavaScript programming fundamentals course. Learn step by step from JavaScript basics to DOM manipulation, asynchronous processing, and external API integration through 15 weeks of practical exercises."
         }
     },
     "milestones": {

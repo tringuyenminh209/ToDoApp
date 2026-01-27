@@ -23,135 +23,167 @@
         "getting-started": {
             "YAMLの特徴": {
                 "title": "Đặc điểm YAML",
-                "description": "Đặc điểm và quy tắc YAML cơ bản"
+                "description": "Đặc điểm và quy tắc YAML cơ bản",
+                "code": "# YAML is a data serialisation language designed to be directly writable and readable by humans\n\n# YAML does not allow the use of tabs\n# Must be space between the element parts\n# YAML is CASE sensitive\n# End your YAML file with the .yaml or .yml extension\n# YAML is a superset of JSON\n# Ansible playbooks are YAML files"
             },
             "スカラー型": {
                 "title": "Kiểu Scalar",
-                "description": "Kiểu dữ liệu YAML cơ bản"
+                "description": "Kiểu dữ liệu YAML cơ bản",
+                "code": "n1: 1            # integer          \nn2: 1.234        # float      \n\ns1: 'abc'        # string        \ns2: \"abc\"        # string           \ns3: abc          # string           \n\nb: false         # boolean type \n\nd: 2015-04-05    # date type"
             },
             "変数": {
                 "title": "Biến",
-                "description": "Biến sử dụng anchor và alias"
+                "description": "Biến sử dụng anchor và alias",
+                "code": "some_thing: &VAR_NAME foobar\nother_thing: *VAR_NAME"
             },
             "コメント": {
                 "title": "Chú thích",
-                "description": "Cách viết chú thích trong YAML"
+                "description": "Cách viết chú thích trong YAML",
+                "code": "# A single line comment example\n\n# block level comment example\n# comment line 1\n# comment line 2\n# comment line 3"
             },
             "複数行文字列": {
                 "title": "Chuỗi nhiều dòng",
-                "description": "Chuỗi nhiều dòng (giữ nguyên xuống dòng)"
+                "description": "Chuỗi nhiều dòng (giữ nguyên xuống dòng)",
+                "code": "description: |\n  hello\n  world"
             },
             "継承": {
                 "title": "Kế thừa",
-                "description": "Kế thừa và merge mapping"
+                "description": "Kế thừa và merge mapping",
+                "code": "parent: &defaults\n  a: 2\n  b: 3\n\nchild:\n  <<: *defaults\n  b: 4"
             },
             "参照": {
                 "title": "Tham chiếu",
-                "description": "Tham chiếu sử dụng anchor"
+                "description": "Tham chiếu sử dụng anchor",
+                "code": "values: &ref\n  - Will be\n  - reused below\n  \nother_values:\n  i_am_ref: *ref"
             },
             "折りたたみ文字列": {
                 "title": "Chuỗi gấp",
-                "description": "Chuỗi nhiều dòng (chuyển xuống dòng thành khoảng trắng)"
+                "description": "Chuỗi nhiều dòng (chuyển xuống dòng thành khoảng trắng)",
+                "code": "description: >\n  hello\n  world"
             },
             "複数ドキュメント": {
                 "title": "Nhiều Document",
-                "description": "Nhiều document trong một file YAML"
+                "description": "Nhiều document trong một file YAML",
+                "code": "---\ndocument: this is doc 1\n---\ndocument: this is doc 2"
             }
         },
         "collections": {
             "シーケンス（配列）": {
                 "title": "Sequence (Mảng)",
-                "description": "Mảng cơ bản (sequence)"
+                "description": "Mảng cơ bản (sequence)",
+                "code": "- Mark McGwire\n- Sammy Sosa\n- Ken Griffey"
             },
             "マッピング（辞書）": {
                 "title": "Mapping (Dictionary)",
-                "description": "Mapping cơ bản (cặp key-value)"
+                "description": "Mapping cơ bản (cặp key-value)",
+                "code": "hr:  65       # Home runs\navg: 0.278    # Batting average\nrbi: 147      # Runs Batted In"
             },
             "マッピングからシーケンス": {
                 "title": "Mapping sang Sequence",
-                "description": "Sequence trong mapping"
+                "description": "Sequence trong mapping",
+                "code": "attributes:\n  - a1\n  - a2\nmethods: [getter, setter]"
             },
             "シーケンスのマッピング": {
                 "title": "Sequence của Mapping",
-                "description": "Mapping trong sequence"
+                "description": "Mapping trong sequence",
+                "code": "children:\n  - name: Jimmy Smith\n    age: 15\n  - name: Jimmy Smith\n    age: 15\n  -\n    name: Sammy Sosa\n    age: 12"
             },
             "シーケンスのシーケンス": {
                 "title": "Sequence của Sequence",
-                "description": "Sequence lồng nhau"
+                "description": "Sequence lồng nhau",
+                "code": "my_sequences:\n  - [1, 2, 3]\n  - [4, 5, 6]\n  -  \n    - 7\n    - 8\n    - 9\n    - 0"
             },
             "マッピングのマッピング": {
                 "title": "Mapping của Mapping",
-                "description": "Mapping lồng nhau"
+                "description": "Mapping lồng nhau",
+                "code": "Mark McGwire: {hr: 65, avg: 0.278}\nSammy Sosa: {\n    hr: 63,\n    avg: 0.288\n  }"
             },
             "ネストされたコレクション": {
                 "title": "Collection lồng nhau",
-                "description": "Cấu trúc lồng nhau phức tạp"
+                "description": "Cấu trúc lồng nhau phức tạp",
+                "code": "Jack:\n  id: 1\n  name: Franc\n  salary: 25000\n  hobby:\n    - a\n    - b\n  location: {country: \"A\", city: \"A-A\"}"
             },
             "順序なしセット": {
                 "title": "Set không thứ tự",
-                "description": "Set (collection không trùng lặp)"
+                "description": "Set (collection không trùng lặp)",
+                "code": "set1: !!set\n  ? one\n  ? two\nset2: !!set {'one', \"two\"}"
             },
             "順序付きマッピング": {
                 "title": "Mapping có thứ tự",
-                "description": "Mapping giữ thứ tự"
+                "description": "Mapping giữ thứ tự",
+                "code": "ordered: !!omap\n- Mark McGwire: 65\n- Sammy Sosa: 63\n- Ken Griffy: 58"
             }
         },
         "reference": {
             "用語": {
                 "title": "Thuật ngữ",
-                "description": "Thuật ngữ YAML cơ bản"
+                "description": "Thuật ngữ YAML cơ bản",
+                "code": "# Sequences aka arrays or lists\n# Scalars aka strings or numbers\n# Mappings aka hashes or dictionaries"
             },
             "ドキュメント指示子": {
                 "title": "Chỉ thị Document",
-                "description": "Ký hiệu phân cách document"
+                "description": "Ký hiệu phân cách document",
+                "code": "# %    - Directive indicator\n# ---  - Document header\n# ...  - Document terminator"
             },
             "コレクション指示子": {
                 "title": "Chỉ thị Collection",
-                "description": "Ký hiệu collection"
+                "description": "Ký hiệu collection",
+                "code": "# ?    - Key indicator\n# :    - Value indicator\n# -    - Nested series entry indicator\n# ,    - Separate in-line branch entries\n# []   - Surround in-line series branch\n# {}   - Surround in-line keyed branch"
             },
             "エイリアス指示子": {
                 "title": "Chỉ thị Alias",
-                "description": "Anchor và alias"
+                "description": "Anchor và alias",
+                "code": "# &  - Anchor property\n# *  - Alias indicator"
             },
             "特殊キー": {
                 "title": "Key đặc biệt",
-                "description": "Key mapping đặc biệt"
+                "description": "Key mapping đặc biệt",
+                "code": "# =  - Default \"value\" mapping key\n# << - Merge keys from another mapping"
             },
             "スカラー指示子": {
                 "title": "Chỉ thị Scalar",
-                "description": "Ký hiệu giá trị scalar"
+                "description": "Ký hiệu giá trị scalar",
+                "code": "# ''  - Surround in-line unescaped scalar\n# \"   - Surround in-line escaped scalar\n# |   - Block scalar indicator\n# >   - Folded scalar indicator\n# -   - Strip chomp modifier (|- or >-)\n# +   - Keep chomp modifier (|+ or >+)\n# 1-9 - Explicit indentation modifier"
             },
             "タグプロパティ": {
                 "title": "Thuộc tính Tag",
-                "description": "Các loại tag YAML"
+                "description": "Các loại tag YAML",
+                "code": "# none   - Unspecified tag (automatically resolved)\n# !      - Non-specific tag (by default, !!map/!!seq/!!str)\n# !foo   - Primary (by convention, means a local !foo tag)\n# !!foo  - Secondary (by convention, means tag:yaml.org,2002:foo)\n# !h!foo - Requires %TAG !h! <prefix>\n# !<foo> - Verbatim tag (always means foo)"
             },
             "コア型": {
                 "title": "Kiểu cốt lõi",
-                "description": "Kiểu dữ liệu cốt lõi YAML"
+                "description": "Kiểu dữ liệu cốt lõi YAML",
+                "code": "# !!map - {Hash table, dictionary, mapping}\n# !!seq - {List, array, tuple, vector, sequence}\n# !!str - Unicode string"
             },
             "エスケープコード - 数値": {
                 "title": "Mã Escape - Số",
-                "description": "Mã escape số"
+                "description": "Mã escape số",
+                "code": "# \\x12       (8-bit)\n# \\u1234     (16-bit)\n# \\U00102030 (32-bit)"
             },
             "エスケープコード - 保護": {
                 "title": "Mã Escape - Bảo vệ",
-                "description": "Mã escape bảo vệ"
+                "description": "Mã escape bảo vệ",
+                "code": "# \\\\     (\\\\)\n# \\\"     (\")\n# \\      ( )\n# \\<TAB> (TAB)"
             },
             "エスケープコード - Cスタイル": {
                 "title": "Mã Escape - Kiểu C",
-                "description": "Mã escape kiểu C"
+                "description": "Mã escape kiểu C",
+                "code": "# \\0  (NUL)\n# \\a  (BEL)\n# \\b  (BS)\n# \\f  (FF)\n# \\n  (LF)\n# \\r  (CR)\n# \\t  (TAB)\n# \\v  (VTAB)"
             },
             "追加のエスケープコード": {
                 "title": "Mã Escape bổ sung",
-                "description": "Mã escape bổ sung"
+                "description": "Mã escape bổ sung",
+                "code": "# \\e  (ESC)\n# \\_  (NBSP)\n# \\N  (NEL)\n# \\L  (LS)\n# \\P  (PS)"
             },
             "その他の型": {
                 "title": "Kiểu khác",
-                "description": "Set và mapping có thứ tự"
+                "description": "Set và mapping có thứ tự",
+                "code": "# !!set  - {cherries, plums, apples}\n# !!omap - [one: 1, two: 2]"
             },
             "言語独立スカラー型": {
                 "title": "Kiểu Scalar độc lập ngôn ngữ",
-                "description": "Biểu diễn kiểu scalar độc lập ngôn ngữ"
+                "description": "Biểu diễn kiểu scalar độc lập ngôn ngữ",
+                "code": "# {~, null}              - Null (no value)\n# [1234, 0x4D2, 02333]     - [Decimal int, Hexadecimal int, Octal int]\n# [1_230.15, 12.3015e+02]  - [Fixed float, Exponential float]\n# [.inf, -.Inf, .NAN]      - [Infinity, Negative, Not a number]\n# {Y, true, Yes, ON}       - Boolean true\n# {n, FALSE, No, off}      - Boolean false"
             }
         }
     }

@@ -8,6 +8,10 @@
         "Docker実践マスターコース": {
             "title": "Docker Master Course",
             "description": "Complete Docker course from beginner to practical level using WSL2 + Docker Desktop environment. Master containerization, CI/CD, security, and monitoring over 12 weeks."
+        },
+        "Docker基礎": {
+            "title": "Docker Master Course",
+            "description": "Complete Docker course from beginner to practical level using WSL2 + Docker Desktop environment. Master containerization, CI/CD, security, and monitoring over 12 weeks."
         }
     },
     "milestones": {

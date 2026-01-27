@@ -8,6 +8,10 @@
         "TypeScript完全コース": {
             "title": "Khóa học TypeScript Hoàn chỉnh",
             "description": "Khóa học TypeScript dành cho người đã có kinh nghiệm với JavaScript. Học từ cơ bản hệ thống kiểu đến thao tác kiểu nâng cao và tích hợp framework thực tế trong 10 tuần."
+        },
+        "TypeScript基礎": {
+            "title": "Khóa học TypeScript Hoàn chỉnh",
+            "description": "Khóa học TypeScript dành cho người đã có kinh nghiệm với JavaScript. Học từ cơ bản hệ thống kiểu đến thao tác kiểu nâng cao và tích hợp framework thực tế trong 10 tuần."
         }
     },
     "milestones": {

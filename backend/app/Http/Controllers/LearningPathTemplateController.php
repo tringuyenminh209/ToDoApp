@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\KnowledgeItem;
 use App\Models\KnowledgeCategory;
 use App\Services\CategoryService;
+use App\Services\CourseTranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -392,16 +393,33 @@ class LearningPathTemplateController extends Controller
                 ], 401);
             }
 
-            // Get template with relationships
-            $template = LearningPathTemplate::with('milestones.tasks')->findOrFail($id);
+            // Get template with relationships and translations for current locale
+            $locale = app()->getLocale();
+            $template = LearningPathTemplate::withTranslations()
+                ->with('milestones.tasks')
+                ->findOrFail($id);
+
+            // Dịch vô luôn từ backend/database/translations/courses (ưu tiên), fallback template translations
+            $pathTitle = $template->title;
+            $pathDescription = $template->description ?? '';
+            if (in_array($locale, ['vi', 'en'], true)) {
+                $templateTrans = CourseTranslationService::getTemplateTranslation($template->title, $locale);
+                if ($templateTrans) {
+                    $pathTitle = $templateTrans['title'];
+                    $pathDescription = $templateTrans['description'] ?? $pathDescription;
+                } else {
+                    $pathTitle = $template->getTranslation('title', $locale) ?? $pathTitle;
+                    $pathDescription = $template->getTranslation('description', $locale) ?? $pathDescription;
+                }
+            }
 
             DB::beginTransaction();
 
-            // Create learning path from template
+            // Create learning path from template (title/description đã dịch từ course JSON khi vi/en)
             $learningPath = LearningPath::create([
                 'user_id' => $user->id,
-                'title' => $template->title,
-                'description' => $template->description,
+                'title' => $pathTitle,
+                'description' => $pathDescription,
                 'goal_type' => $this->mapCategoryToGoalType($template->category),
                 'estimated_hours_total' => $template->estimated_hours_total ?? 0,
                 'icon' => $template->icon,
@@ -411,12 +429,21 @@ class LearningPathTemplateController extends Controller
                 'ai_prompt' => null,
             ]);
 
-            // Clone milestones and tasks
+            // Clone milestones and tasks (dịch title/description từ course JSON khi vi/en)
             if ($template->milestones && $template->milestones->count() > 0) {
                 foreach ($template->milestones as $milestoneTemplate) {
+                    $mTitle = $milestoneTemplate->title ?? 'Untitled Milestone';
+                    $mDesc = $milestoneTemplate->description ?? '';
+                    if (in_array($locale, ['vi', 'en'], true)) {
+                        $mTrans = CourseTranslationService::getMilestoneTranslation($template->title, $mTitle, $locale);
+                        if ($mTrans) {
+                            $mTitle = $mTrans['title'];
+                            $mDesc = $mTrans['description'] ?? $mDesc;
+                        }
+                    }
                     $milestone = $learningPath->milestones()->create([
-                        'title' => $milestoneTemplate->title ?? 'Untitled Milestone',
-                        'description' => $milestoneTemplate->description,
+                        'title' => $mTitle,
+                        'description' => $mDesc,
                         'sort_order' => $milestoneTemplate->sort_order ?? 0,
                         'estimated_hours' => $milestoneTemplate->estimated_hours ?? 0,
                         'status' => 'pending',
@@ -425,33 +452,52 @@ class LearningPathTemplateController extends Controller
                     // Clone tasks if they exist
                     if ($milestoneTemplate->tasks && $milestoneTemplate->tasks->count() > 0) {
                         foreach ($milestoneTemplate->tasks as $taskTemplate) {
+                            $tTitle = $taskTemplate->title ?? 'Untitled Task';
+                            $tDesc = $taskTemplate->description ?? '';
+                            if (in_array($locale, ['vi', 'en'], true)) {
+                                $tTrans = CourseTranslationService::getTaskTranslation($template->title, $tTitle, $locale);
+                                if ($tTrans) {
+                                    $tTitle = $tTrans['title'];
+                                    $tDesc = $tTrans['description'] ?? $tDesc;
+                                }
+                            }
                             $task = Task::create([
                                 'user_id' => $user->id,
                                 'learning_milestone_id' => $milestone->id,
-                                'title' => $taskTemplate->title ?? 'Untitled Task',
-                                'description' => $taskTemplate->description,
+                                'title' => $tTitle,
+                                'description' => $tDesc,
                                 'category' => 'study',
                                 'estimated_minutes' => $taskTemplate->estimated_minutes ?? 0,
                                 'priority' => $taskTemplate->priority ?? 3,
                                 'status' => 'pending',
                             ]);
 
-                            // Create subtasks from template
-                            if (!empty($taskTemplate->subtasks) && is_array($taskTemplate->subtasks)) {
-                                foreach ($taskTemplate->subtasks as $subtaskData) {
-                                    $task->subtasks()->create([
-                                        'title' => $subtaskData['title'] ?? 'Subtask',
-                                        'description' => $subtaskData['description'] ?? null,
-                                        'estimated_minutes' => $subtaskData['estimated_minutes'] ?? 0,
-                                        'is_completed' => false,
-                                        'sort_order' => $subtaskData['sort_order'] ?? 0,
-                                    ]);
-                                }
+                            // Create subtasks from template (translated when locale is vi/en)
+                            $subtasksToCreate = CourseTranslationService::translateSubtasksForCreate(
+                                $taskTemplate->subtasks ?? [],
+                                $template->title,
+                                $taskTemplate->title ?? '',
+                                $locale
+                            );
+                            foreach ($subtasksToCreate as $subtaskData) {
+                                $task->subtasks()->create([
+                                    'title' => $subtaskData['title'] ?? 'Subtask',
+                                    'description' => $subtaskData['description'] ?? null,
+                                    'estimated_minutes' => $subtaskData['estimated_minutes'] ?? 0,
+                                    'is_completed' => false,
+                                    'sort_order' => $subtaskData['sort_order'] ?? 0,
+                                ]);
                             }
 
-                            // Create knowledge items from template
-                            if (!empty($taskTemplate->knowledge_items) && is_array($taskTemplate->knowledge_items)) {
-                                $this->createKnowledgeItems($user->id, $learningPath->id, $task->id, $taskTemplate->knowledge_items);
+                            // Create knowledge items from template (translated when locale is vi/en)
+                            $knowledgeItemsToCreate = CourseTranslationService::translateKnowledgeItemsForCreate(
+                                $taskTemplate->knowledge_items ?? [],
+                                $template->title,
+                                $taskTemplate->title ?? '',
+                                $locale
+                            );
+                            if (!empty($knowledgeItemsToCreate)) {
+                                $this->createKnowledgeItems($user->id, $learningPath->id, $task->id, $knowledgeItemsToCreate);
                             }
                         }
                     }

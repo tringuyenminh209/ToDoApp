@@ -55,311 +55,383 @@
         "getting-started": {
             "Console": {
                 "title": "Console",
-                "description": "Console methods for output"
+                "description": "Console methods for output",
+                "code": "// => Hello world!\nconsole.log('Hello world!');\n\n// => Hello Kizamu\nconsole.warn('hello %s', 'Kizamu');\n\n// Prints error message to stderr\nconsole.error(new Error('Oops!'));"
             },
             "数値": {
                 "title": "Numbers",
-                "description": "Number declaration"
+                "description": "Number declaration",
+                "code": "let amount = 6;\nlet price = 4.99;"
             },
             "変数": {
                 "title": "Variables",
-                "description": "Variable declaration with let, const, var"
+                "description": "Variable declaration with let, const, var",
+                "code": "let x = null;\nlet name = \"Tammy\";\nconst found = false;\n\n// => Tammy, false, null\nconsole.log(name, found, x);\n\nvar a;\nconsole.log(a); // => undefined"
             },
             "文字列": {
                 "title": "Strings",
-                "description": "String declaration and properties"
+                "description": "String declaration and properties",
+                "code": "let single = 'Wheres my bandit hat?';\nlet double = \"Wheres my bandit hat?\";\n\n// => 21\nconsole.log(single.length);"
             },
             "算術演算子": {
                 "title": "Arithmetic Operators",
-                "description": "Basic arithmetic operators"
+                "description": "Basic arithmetic operators",
+                "code": "5 + 5 = 10     // Addition\n10 - 5 = 5     // Subtraction\n5 * 10 = 50    // Multiplication\n10 / 5 = 2     // Division\n10 % 5 = 0     // Modulo"
             },
             "コメント": {
                 "title": "Comments",
-                "description": "Comment syntax"
+                "description": "Comment syntax",
+                "code": "// This line will denote a comment\n\n/*  \nThe below configuration must be \nchanged before deployment. \n*/"
             },
             "代入演算子": {
                 "title": "Assignment Operators",
-                "description": "Assignment operators"
+                "description": "Assignment operators",
+                "code": "let number = 100;\n\n// Both statements will add 10\nnumber = number + 10;\nnumber += 10;\n\nconsole.log(number); \n// => 120"
             },
             "文字列補間": {
                 "title": "String Interpolation",
-                "description": "String concatenation and template literals"
+                "description": "String concatenation and template literals",
+                "code": "let age = 7;\n\n// String concatenation\n'Tommy is ' + age + ' years old.';\n\n// String interpolation\n`Tommy is ${age} years old.`;"
             },
             "letキーワード": {
                 "title": "let Keyword",
-                "description": "Using the let keyword"
+                "description": "Using the let keyword",
+                "code": "let count; \nconsole.log(count); // => undefined\ncount = 10;\nconsole.log(count); // => 10"
             },
             "constキーワード": {
                 "title": "const Keyword",
-                "description": "const keyword - immutable binding"
+                "description": "const keyword - immutable binding",
+                "code": "const numberOfColumns = 4;\n\n// TypeError: Assignment to constant...\nnumberOfColumns = 8;"
             }
         },
         "javascript-conditionals": {
             "if文": {
                 "title": "if Statement",
-                "description": "Basic if statement"
+                "description": "Basic if statement",
+                "code": "const isMailSent = true;\n\nif (isMailSent) {\n  console.log('Mail sent to recipient');\n}"
             },
             "三項演算子": {
                 "title": "Ternary Operator",
-                "description": "Ternary conditional operator"
+                "description": "Ternary conditional operator",
+                "code": "var x=1;\n\n// => true\nresult = (x == 1) ? true : false;"
             },
             "論理演算子 ||": {
                 "title": "Logical Operator ||",
-                "description": "Logical OR operator"
+                "description": "Logical OR operator",
+                "code": "true || false;       // true\n10 > 5 || 10 > 20;   // true\nfalse || false;      // false\n10 > 100 || 10 > 20; // false"
             },
             "論理演算子 &&": {
                 "title": "Logical Operator &&",
-                "description": "Logical AND operator"
+                "description": "Logical AND operator",
+                "code": "true && true;        // true\n1 > 2 && 2 > 1;      // false\ntrue && false;       // false\n4 === 4 && 3 > 1;    // true"
             },
             "比較演算子": {
                 "title": "Comparison Operators",
-                "description": "Comparison operators"
+                "description": "Comparison operators",
+                "code": "1 > 3                // false\n3 > 1                // true\n250 >= 250           // true\n1 === 1              // true\n1 === 2              // false\n1 === '1'            // false"
             },
             "論理演算子 !": {
                 "title": "Logical Operator !",
-                "description": "Logical NOT operator"
+                "description": "Logical NOT operator",
+                "code": "let lateToWork = true;\nlet oppositeValue = !lateToWork;\n\n// => false\nconsole.log(oppositeValue);"
             },
             "Null合体演算子 ??": {
                 "title": "Nullish Coalescing ??",
-                "description": "Nullish coalescing operator"
+                "description": "Nullish coalescing operator",
+                "code": "null ?? 'I win';           //  'I win'\nundefined ?? 'Me too';     //  'Me too'\n\nfalse ?? 'I lose'          //  false\n0 ?? 'I lose again'        //  0\n'' ?? 'Damn it'            //  ''"
             },
             "else if": {
                 "title": "else if",
-                "description": "else if chain"
+                "description": "else if chain",
+                "code": "const size = 10;\n\nif (size > 100) {\n  console.log('Big');\n} else if (size > 20) {\n  console.log('Medium');\n} else if (size > 4) {\n  console.log('Small');\n} else {\n  console.log('Tiny');\n}\n// Print: Small"
             },
             "switch文": {
                 "title": "switch Statement",
-                "description": "switch statement"
+                "description": "switch statement",
+                "code": "const food = 'salad';\n\nswitch (food) {\n  case 'oyster':\n    console.log('The taste of the sea');\n    break;\n  case 'pizza':\n    console.log('A delicious pie');\n    break;\n  default:\n    console.log('Enjoy your meal');\n}"
             },
             "== vs ===": {
                 "title": "== vs ===",
-                "description": "Equality operator comparison"
+                "description": "Equality operator comparison",
+                "code": "0 == false   // true\n0 === false  // false, different type\n1 == \"1\"     // true,  automatic type conversion \n1 === \"1\"    // false, different type\nnull == undefined  // true\nnull === undefined // false\n'0' == false       // true\n'0' === false      // false"
             }
         },
         "javascript-functions": {
             "関数": {
                 "title": "Functions",
-                "description": "Function declaration"
+                "description": "Function declaration",
+                "code": "// Defining the function:\nfunction sum(num1, num2) {\n  return num1 + num2;\n}\n\n// Calling the function:\nsum(3, 6); // 9"
             },
             "無名関数": {
                 "title": "Anonymous Functions",
-                "description": "Named vs anonymous functions"
+                "description": "Named vs anonymous functions",
+                "code": "// Named function\nfunction rocketToMars() {\n  return 'BOOM!';\n}\n\n// Anonymous function\nconst rocketToMars = function() {\n  return 'BOOM!';\n}"
             },
             "アロー関数 - 2つの引数": {
                 "title": "Arrow Function - Two Arguments",
-                "description": "Arrow function with two parameters"
+                "description": "Arrow function with two parameters",
+                "code": "const sum = (param1, param2) => { \n  return param1 + param2; \n}; \nconsole.log(sum(2,5)); // => 7"
             },
             "アロー関数 - 引数なし": {
                 "title": "Arrow Function - No Arguments",
-                "description": "Arrow function without parameters"
+                "description": "Arrow function without parameters",
+                "code": "const printHello = () => { \n  console.log('hello'); \n}; \nprintHello(); // => hello"
             },
             "アロー関数 - 単一引数": {
                 "title": "Arrow Function - Single Argument",
-                "description": "Arrow function with single parameter"
+                "description": "Arrow function with single parameter",
+                "code": "const checkWeight = weight => { \n  console.log(`Weight : ${weight}`); \n}; \ncheckWeight(25); // => Weight : 25"
             },
             "簡潔なアロー関数": {
                 "title": "Concise Arrow Function",
-                "description": "Concise arrow function syntax"
+                "description": "Concise arrow function syntax",
+                "code": "const multiply = (a, b) => a * b; \n// => 60 \nconsole.log(multiply(2, 30));"
             },
             "returnキーワード": {
                 "title": "return Keyword",
-                "description": "Importance of return keyword"
+                "description": "Importance of return keyword",
+                "code": "// With return\nfunction sum(num1, num2) {\n  return num1 + num2;\n}\n\n// The function doesn't output the sum\nfunction sum(num1, num2) {\n  num1 + num2;\n}"
             },
             "関数の呼び出し": {
                 "title": "Calling Functions",
-                "description": "Calling functions"
+                "description": "Calling functions",
+                "code": "// Defining the function\nfunction sum(num1, num2) {\n  return num1 + num2;\n}\n\n// Calling the function\nsum(2, 4); // 6"
             },
             "関数式": {
                 "title": "Function Expression",
-                "description": "Function expression"
+                "description": "Function expression",
+                "code": "const dog = function() {\n  return 'Woof!';\n}"
             },
             "関数パラメータ": {
                 "title": "Function Parameters",
-                "description": "Function parameters"
+                "description": "Function parameters",
+                "code": "// The parameter is name\nfunction sayHello(name) {\n  return `Hello, ${name}!`;\n}"
             },
             "関数宣言": {
                 "title": "Function Declaration",
-                "description": "Function declaration syntax"
+                "description": "Function declaration syntax",
+                "code": "function add(num1, num2) {\n  return num1 + num2;\n}"
             }
         },
         "javascript-scope": {
             "スコープ": {
                 "title": "Scope",
-                "description": "Function scope"
+                "description": "Function scope",
+                "code": "function myFunction() { \n  \n  var pizzaName = \"Margarita\";\n  // Code here can use pizzaName\n  \n}\n\n// Code here can't use pizzaName"
             },
             "ブロックスコープ変数": {
                 "title": "Block-scoped Variables",
-                "description": "Block scope with const"
+                "description": "Block scope with const",
+                "code": "const isLoggedIn = true;\n\nif (isLoggedIn == true) {\n  const statusMessage = 'Logged in.';\n}\n\n// Uncaught ReferenceError...\nconsole.log(statusMessage);"
             },
             "グローバル変数": {
                 "title": "Global Variables",
-                "description": "Global scope"
+                "description": "Global scope",
+                "code": "// Variable declared globally\nconst color = 'blue';\n\nfunction printColor() {\n  console.log(color);\n}\n\nprintColor(); // => blue"
             },
             "let vs var": {
                 "title": "let vs var",
-                "description": "Scope difference between let and var"
+                "description": "Scope difference between let and var",
+                "code": "for (let i = 0; i < 3; i++) {\n  // This is the Max Scope for 'let'\n  // i accessible ✔️\n}\n// i not accessible ❌\n\nfor (var i = 0; i < 3; i++) {\n  // i accessible ✔️\n}\n// i accessible ✔️"
             },
             "クロージャ付きループ": {
                 "title": "Loop with Closure",
-                "description": "Closure behavior with var vs let"
+                "description": "Closure behavior with var vs let",
+                "code": "// Prints 3 thrice, not what we meant.\nfor (var i = 0; i < 3; i++) {\n  setTimeout(_ => console.log(i), 10);\n}\n\n// Prints 0, 1 and 2, as expected.\nfor (let j = 0; j < 3; j++) { \n  setTimeout(_ => console.log(j), 10);\n}"
             }
         },
         "javascript-arrays": {
             "配列": {
                 "title": "Arrays",
-                "description": "Array declaration"
+                "description": "Array declaration",
+                "code": "const fruits = [\"apple\", \"orange\", \"banana\"];\n\n// Different data types\nconst data = [1, 'chicken', false];"
             },
             "プロパティ .length": {
                 "title": ".length Property",
-                "description": "Array length property"
+                "description": "Array length property",
+                "code": "const numbers = [1, 2, 3, 4];\n\nconsole.log(numbers.length); // => 4"
             },
             "要素へのアクセス": {
                 "title": "Accessing Elements",
-                "description": "Accessing array elements by index"
+                "description": "Accessing array elements by index",
+                "code": "const fruits = [\"apple\", \"orange\", \"banana\"];\n\nconsole.log(fruits[0]); // => apple\nconsole.log(fruits[1]); // => orange"
             },
             ".push() メソッド": {
                 "title": ".push() Method",
-                "description": "Add element to end of array"
+                "description": "Add element to end of array",
+                "code": "const items = ['pencil', 'notebook', 'eraser'];\nitems.push('backpack');\nconsole.log(items);"
             },
             ".pop() メソッド": {
                 "title": ".pop() Method",
-                "description": "Remove last element from array"
+                "description": "Remove last element from array",
+                "code": "const items = ['pencil', 'notebook', 'eraser'];\nconst removedItem = items.pop();\nconsole.log(removedItem); // => eraser"
             },
             ".shift() メソッド": {
                 "title": ".shift() Method",
-                "description": "Remove first element from array"
+                "description": "Remove first element from array",
+                "code": "const items = ['pencil', 'notebook', 'eraser'];\nconst firstItem = items.shift();\nconsole.log(firstItem); // => pencil"
             },
             ".unshift() メソッド": {
                 "title": ".unshift() Method",
-                "description": "Add element to beginning of array"
+                "description": "Add element to beginning of array",
+                "code": "const items = ['pencil', 'notebook'];\nitems.unshift('eraser');\nconsole.log(items);"
             },
             ".slice() メソッド": {
                 "title": ".slice() Method",
-                "description": "Extract a portion of array"
+                "description": "Extract a portion of array",
+                "code": "const fruits = ['apple', 'orange', 'banana', 'mango'];\nconst citrus = fruits.slice(1, 3);\nconsole.log(citrus); // => ['orange', 'banana']"
             },
             ".splice() メソッド": {
                 "title": ".splice() Method",
-                "description": "Remove and insert elements"
+                "description": "Remove and insert elements",
+                "code": "const fruits = ['apple', 'orange', 'banana'];\nfruits.splice(1, 1, 'mango');\nconsole.log(fruits); // => ['apple', 'mango', 'banana']"
             },
             ".forEach() メソッド": {
                 "title": ".forEach() Method",
-                "description": "Iterate over array elements"
+                "description": "Iterate over array elements",
+                "code": "const fruits = ['apple', 'orange', 'banana'];\nfruits.forEach(fruit => {\n  console.log(fruit);\n});"
             },
             ".map() メソッド": {
                 "title": ".map() Method",
-                "description": "Transform array elements"
+                "description": "Transform array elements",
+                "code": "const numbers = [1, 2, 3];\nconst doubled = numbers.map(num => num * 2);\nconsole.log(doubled); // => [2, 4, 6]"
             },
             ".filter() メソッド": {
                 "title": ".filter() Method",
-                "description": "Filter array elements"
+                "description": "Filter array elements",
+                "code": "const numbers = [1, 2, 3, 4, 5];\nconst evens = numbers.filter(num => num % 2 === 0);\nconsole.log(evens); // => [2, 4]"
             },
             ".reduce() メソッド": {
                 "title": ".reduce() Method",
-                "description": "Reduce array to single value"
+                "description": "Reduce array to single value",
+                "code": "const numbers = [1, 2, 3, 4];\nconst sum = numbers.reduce((acc, num) => acc + num, 0);\nconsole.log(sum); // => 10"
             }
         },
         "javascript-objects": {
             "オブジェクトリテラル": {
                 "title": "Object Literal",
-                "description": "Object literal syntax"
+                "description": "Object literal syntax",
+                "code": "const person = {\n  name: 'John',\n  age: 30,\n  city: 'New York'\n};"
             },
             "プロパティへのアクセス": {
                 "title": "Accessing Properties",
-                "description": "Accessing object properties"
+                "description": "Accessing object properties",
+                "code": "const person = { name: 'John', age: 30 };\n\nconsole.log(person.name);     // => John\nconsole.log(person['age']);   // => 30"
             },
             "プロパティの追加": {
                 "title": "Adding Properties",
-                "description": "Adding properties to object"
+                "description": "Adding properties to object",
+                "code": "const person = { name: 'John' };\nperson.age = 30;\nperson['city'] = 'New York';\nconsole.log(person);"
             },
             "オブジェクトメソッド": {
                 "title": "Object Methods",
-                "description": "Object methods"
+                "description": "Object methods",
+                "code": "const person = {\n  name: 'John',\n  greet: function() {\n    return `Hello, I'm ${this.name}`;\n  }\n};\nconsole.log(person.greet());"
             },
             "Object.keys()": {
                 "title": "Object.keys()",
-                "description": "Get object keys"
+                "description": "Get object keys",
+                "code": "const person = { name: 'John', age: 30 };\nconst keys = Object.keys(person);\nconsole.log(keys); // => ['name', 'age']"
             },
             "Object.values()": {
                 "title": "Object.values()",
-                "description": "Get object values"
+                "description": "Get object values",
+                "code": "const person = { name: 'John', age: 30 };\nconst values = Object.values(person);\nconsole.log(values); // => ['John', 30]"
             }
         },
         "javascript-loops": {
             "forループ": {
                 "title": "for Loop",
-                "description": "Basic for loop"
+                "description": "Basic for loop",
+                "code": "for (let i = 0; i < 5; i++) {\n  console.log(i);\n}"
             },
             "for...ofループ": {
                 "title": "for...of Loop",
-                "description": "for...of loop for iterables"
+                "description": "for...of loop for iterables",
+                "code": "const fruits = ['apple', 'orange', 'banana'];\nfor (const fruit of fruits) {\n  console.log(fruit);\n}"
             },
             "for...inループ": {
                 "title": "for...in Loop",
-                "description": "for...in loop for objects"
+                "description": "for...in loop for objects",
+                "code": "const person = { name: 'John', age: 30 };\nfor (const key in person) {\n  console.log(key, person[key]);\n}"
             },
             "whileループ": {
                 "title": "while Loop",
-                "description": "while loop"
+                "description": "while loop",
+                "code": "let i = 0;\nwhile (i < 5) {\n  console.log(i);\n  i++;\n}"
             },
             "do...whileループ": {
                 "title": "do...while Loop",
-                "description": "do...while loop"
+                "description": "do...while loop",
+                "code": "let i = 0;\ndo {\n  console.log(i);\n  i++;\n} while (i < 5);"
             }
         },
         "javascript-classes": {
             "クラス宣言": {
                 "title": "Class Declaration",
-                "description": "Class declaration and instantiation"
+                "description": "Class declaration and instantiation",
+                "code": "class Person {\n  constructor(name) {\n    this.name = name;\n  }\n  \n  greet() {\n    return `Hello, I'm ${this.name}`;\n  }\n}\n\nconst john = new Person('John');\nconsole.log(john.greet());"
             },
             "クラス継承": {
                 "title": "Class Inheritance",
-                "description": "Class inheritance with extends"
+                "description": "Class inheritance with extends",
+                "code": "class Animal {\n  constructor(name) {\n    this.name = name;\n  }\n}\n\nclass Dog extends Animal {\n  bark() {\n    return 'Woof!';\n  }\n}\n\nconst dog = new Dog('Buddy');\nconsole.log(dog.name);"
             }
         },
         "javascript-promises": {
             "Promiseの作成": {
                 "title": "Creating Promises",
-                "description": "Creating and using Promises"
+                "description": "Creating and using Promises",
+                "code": "const promise = new Promise((resolve, reject) => {\n  if (res) {\n    resolve('Resolved!');\n  }\n  else {\n    reject(Error('Error'));\n  }\n});\n\npromise.then((res) => console.log(res), (err) => console.error(err));"
             },
             ".then() メソッド": {
                 "title": ".then() Method",
-                "description": "Promise then method"
+                "description": "Promise then method",
+                "code": "const promise = new Promise((resolve, reject) => {    \n  setTimeout(() => {\n    resolve('Result');\n  }, 200);\n});\n\npromise.then((res) => {\n  console.log(res);\n}, (err) => {\n  console.error(err);\n});"
             },
             ".catch() メソッド": {
                 "title": ".catch() Method",
-                "description": "Promise catch method"
+                "description": "Promise catch method",
+                "code": "const promise = new Promise((resolve, reject) => {  \n  setTimeout(() => {\n    reject(Error('Promise Rejected Unconditionally.'));\n  }, 1000);\n});\n\npromise.catch((err) => {\n  console.error(err);\n});"
             },
             "Promise.all()": {
                 "title": "Promise.all()",
-                "description": "Promise.all for multiple Promises"
+                "description": "Promise.all for multiple Promises",
+                "code": "const promise1 = new Promise((resolve, reject) => {\n  setTimeout(() => {\n    resolve(3);\n  }, 300);\n});\nconst promise2 = new Promise((resolve, reject) => {\n  setTimeout(() => {\n    resolve(2);\n  }, 200);\n});\n\nPromise.all([promise1, promise2]).then((res) => {\n  console.log(res[0]);\n  console.log(res[1]);\n});"
             }
         },
         "javascript-async-await": {
             "Async関数": {
                 "title": "Async Functions",
-                "description": "Async/await basics"
+                "description": "Async/await basics",
+                "code": "function helloWorld() {\n  return new Promise(resolve => {\n    setTimeout(() => {\n      resolve('Hello World!');\n    }, 2000);\n  });\n}\n\nasync function msg() {\n  const msg = await helloWorld();\n  console.log('Message:', msg);\n}\n\nmsg(); // Message: Hello World! <-- after 2 seconds"
             },
             "エラーハンドリング": {
                 "title": "Error Handling",
-                "description": "Try-catch error handling"
+                "description": "Try-catch error handling",
+                "code": "let json = '{ \"age\": 30 }'; // incomplete data\n\ntry {\n  let user = JSON.parse(json); // <-- no errors\n  console.log( user.name ); // no name!\n} catch (e) {\n  console.error( \"Invalid JSON data!\" );\n}"
             }
         },
         "javascript-requests": {
             "JSON": {
                 "title": "JSON",
-                "description": "JSON object syntax"
+                "description": "JSON object syntax",
+                "code": "const jsonObj = {\n  \"name\": \"Rick\",\n  \"id\": \"11A\",\n  \"level\": 4  \n};"
             },
             "fetch API": {
                 "title": "fetch API",
-                "description": "Fetch API POST request"
+                "description": "Fetch API POST request",
+                "code": "fetch(url, {\n    method: 'POST',\n    headers: {\n      'Content-type': 'application/json',\n      'apikey': apiKey\n    },\n    body: data\n  }).then(response => {\n    if (response.ok) {\n      return response.json();\n    }\n    throw new Error('Request failed!');\n  }, networkError => {\n    console.log(networkError.message)\n  })"
             },
             "JSONフォーマット": {
                 "title": "JSON Format",
-                "description": "Fetch API with JSON response"
+                "description": "Fetch API with JSON response",
+                "code": "fetch('url-that-returns-JSON')\n.then(response => response.json())\n.then(jsonResponse => {\n  console.log(jsonResponse);\n});"
             },
             "async await構文": {
                 "title": "async await Syntax",
-                "description": "Fetch API with async/await"
+                "description": "Fetch API with async/await",
+                "code": "const getSuggestions = async () => {\n  const wordQuery = inputField.value;\n  const endpoint = `${url}${queryParams}${wordQuery}`;\n  try{\n    const response = await fetch(endpoint, {cache: 'no-cache'});\n    if(response.ok){\n      const jsonResponse = await response.json()\n    }\n  }\n  catch(error){\n    console.log(error)\n  }\n}"
             }
         }
     }

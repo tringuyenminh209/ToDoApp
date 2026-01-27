@@ -8,6 +8,10 @@
         "Java基礎演習": {
             "title": "Java Basic Course",
             "description": "Beginner-friendly Java programming fundamentals course. Learn step by step from Java basic syntax to algorithms through 30 practical exercises."
+        },
+        "Java基礎": {
+            "title": "Java Basic Course",
+            "description": "Beginner-friendly Java programming fundamentals course. Learn step by step from Java basic syntax to algorithms through 30 practical exercises."
         }
     },
     "milestones": {

@@ -47,247 +47,304 @@
         "getting-started": {
             "MySQLへの接続": {
                 "title": "Connecting to MySQL",
-                "description": "How to connect to MySQL"
+                "description": "How to connect to MySQL",
+                "code": "mysql -u <user> -p\n\nmysql [db_name]\n\nmysql -h <host> -P <port> -u <user> -p [db_name]\n\nmysql -h <host> -u <user> -p [db_name]"
             },
             "データベース操作": {
                 "title": "Database Operations",
-                "description": "Create, list, switch, and delete databases"
+                "description": "Create, list, switch, and delete databases",
+                "code": "CREATE DATABASE db ;  # Create database\nSHOW DATABASES;        # List databases\nUSE db;                # Switch to db\nCONNECT db ;           # Switch to db\nDROP DATABASE db;      # Delete db"
             },
             "テーブル操作": {
                 "title": "Table Operations",
-                "description": "List, view structure, and delete tables"
+                "description": "List, view structure, and delete tables",
+                "code": "SHOW TABLES;           # List tables for current db\nSHOW FIELDS FROM t;   # List fields for a table\nDESC t;                # Show table structure\nSHOW CREATE TABLE t;   # Show create table sql\nTRUNCATE TABLE t;      # Remove all data in a table\nDROP TABLE t;          # Delete table"
             },
             "プロセス操作": {
                 "title": "Process Operations",
-                "description": "View and terminate running processes"
+                "description": "View and terminate running processes",
+                "code": "show processlist;  # List processes\nkill pid;          # kill process"
             },
             "バックアップの作成": {
                 "title": "Creating Backup",
-                "description": "Database backup and restore"
+                "description": "Database backup and restore",
+                "code": "# Create a backup\nmysqldump -u user -p db_name > db.sql\n\n# Export db without schema\nmysqldump -u user -p db_name --no-data=true --add-drop-table=false > db.sql\n\n# Restore a backup\nmysql -u user -p db_name < db.sql"
             }
         },
         "managing-tables": {
             "テーブルの作成": {
                 "title": "Creating Tables",
-                "description": "Create table with 3 columns"
+                "description": "Create table with 3 columns",
+                "code": "CREATE TABLE t (\n     id    INT,\n     name  VARCHAR DEFAULT NOT NULL,\n     price INT DEFAULT 0\n     PRIMARY KEY(id)\n);"
             },
             "テーブルの削除": {
                 "title": "Dropping Tables",
-                "description": "Remove table from database"
+                "description": "Remove table from database",
+                "code": "DROP TABLE t ;"
             },
             "カラムの追加": {
                 "title": "Adding Columns",
-                "description": "Add new column to table"
+                "description": "Add new column to table",
+                "code": "ALTER TABLE t ADD column;"
             },
             "カラムの削除": {
                 "title": "Dropping Columns",
-                "description": "Remove column from table"
+                "description": "Remove column from table",
+                "code": "ALTER TABLE t DROP COLUMN c ;"
             },
             "制約の追加": {
                 "title": "Adding Constraints",
-                "description": "Add constraint to table"
+                "description": "Add constraint to table",
+                "code": "ALTER TABLE t ADD constraint;"
             },
             "制約の削除": {
                 "title": "Dropping Constraints",
-                "description": "Remove constraint from table"
+                "description": "Remove constraint from table",
+                "code": "ALTER TABLE t DROP constraint;"
             },
             "テーブル名の変更": {
                 "title": "Renaming Tables",
-                "description": "Rename table from t1 to t2"
+                "description": "Rename table from t1 to t2",
+                "code": "ALTER TABLE t1 RENAME TO t2;"
             },
             "カラム名の変更": {
                 "title": "Renaming Columns",
-                "description": "Rename column from c1 to c2"
+                "description": "Rename column from c1 to c2",
+                "code": "ALTER TABLE t1 RENAME c1 TO c2 ;"
             },
             "テーブルデータの全削除": {
                 "title": "Truncating Tables",
-                "description": "Delete all data in table"
+                "description": "Delete all data in table",
+                "code": "TRUNCATE TABLE t;"
             }
         },
         "querying-data": {
             "基本的なSELECT": {
                 "title": "Basic SELECT",
-                "description": "Get data from columns c1, c2"
+                "description": "Get data from columns c1, c2",
+                "code": "SELECT c1, c2 FROM t"
             },
             "すべてのカラムを取得": {
                 "title": "Get All Columns",
-                "description": "Get all rows and columns"
+                "description": "Get all rows and columns",
+                "code": "SELECT * FROM t"
             },
             "WHERE句でフィルタリング": {
                 "title": "Filtering with WHERE",
-                "description": "Filter rows matching condition"
+                "description": "Filter rows matching condition",
+                "code": "SELECT c1, c2 FROM t\nWHERE condition"
             },
             "DISTINCTで重複を除外": {
                 "title": "Exclude Duplicates with DISTINCT",
-                "description": "Get rows without duplicates"
+                "description": "Get rows without duplicates",
+                "code": "SELECT DISTINCT c1 FROM t\nWHERE condition"
             },
             "ORDER BYでソート": {
                 "title": "Sorting with ORDER BY",
-                "description": "Sort result set ascending or descending"
+                "description": "Sort result set ascending or descending",
+                "code": "SELECT c1, c2 FROM t\nORDER BY c1 ASC [DESC]"
             },
             "LIMITとOFFSET": {
                 "title": "LIMIT and OFFSET",
-                "description": "Skip offset rows and return next n rows"
+                "description": "Skip offset rows and return next n rows",
+                "code": "SELECT c1, c2 FROM t\nORDER BY c1 \nLIMIT n OFFSET offset"
             },
             "GROUP BYでグループ化": {
                 "title": "Grouping with GROUP BY",
-                "description": "Group rows using aggregate functions"
+                "description": "Group rows using aggregate functions",
+                "code": "SELECT c1, aggregate(c2)\nFROM t\nGROUP BY c1"
             },
             "HAVING句でグループをフィルタ": {
                 "title": "Filtering Groups with HAVING",
-                "description": "Filter groups using HAVING clause"
+                "description": "Filter groups using HAVING clause",
+                "code": "SELECT c1, aggregate(c2)\nFROM t\nGROUP BY c1\nHAVING condition"
             }
         },
         "joins": {
             "INNER JOIN": {
                 "title": "INNER JOIN",
-                "description": "Inner join of t1 and t2"
+                "description": "Inner join of t1 and t2",
+                "code": "SELECT c1, c2 \nFROM t1\nINNER JOIN t2 ON condition"
             },
             "LEFT JOIN": {
                 "title": "LEFT JOIN",
-                "description": "Left outer join of t1 and t2"
+                "description": "Left outer join of t1 and t2",
+                "code": "SELECT c1, c2 \nFROM t1\nLEFT JOIN t2 ON condition"
             },
             "RIGHT JOIN": {
                 "title": "RIGHT JOIN",
-                "description": "Right outer join of t1 and t2"
+                "description": "Right outer join of t1 and t2",
+                "code": "SELECT c1, c2 \nFROM t1\nRIGHT JOIN t2 ON condition"
             },
             "FULL OUTER JOIN": {
                 "title": "FULL OUTER JOIN",
-                "description": "Perform full outer join"
+                "description": "Perform full outer join",
+                "code": "SELECT c1, c2 \nFROM t1\nFULL OUTER JOIN t2 ON condition"
             },
             "CROSS JOIN": {
                 "title": "CROSS JOIN",
-                "description": "Generate Cartesian product of table rows"
+                "description": "Generate Cartesian product of table rows",
+                "code": "SELECT c1, c2 \nFROM t1\nCROSS JOIN t2"
             },
             "自己結合": {
                 "title": "Self Join",
-                "description": "Join t1 to itself using INNER JOIN"
+                "description": "Join t1 to itself using INNER JOIN",
+                "code": "SELECT c1, c2\nFROM t1 A\nINNER JOIN t1 B ON condition"
             },
             "UNION": {
                 "title": "UNION",
-                "description": "Combine rows from two queries"
+                "description": "Combine rows from two queries",
+                "code": "SELECT c1, c2 FROM t1\nUNION [ALL]\nSELECT c1, c2 FROM t2"
             },
             "LIKEパターンマッチング": {
                 "title": "LIKE Pattern Matching",
-                "description": "Query rows using pattern matching %, _"
+                "description": "Query rows using pattern matching %, _",
+                "code": "SELECT c1, c2 FROM t1\nWHERE c1 [NOT] LIKE pattern"
             },
             "IN句": {
                 "title": "IN Clause",
-                "description": "Query rows in a list"
+                "description": "Query rows in a list",
+                "code": "SELECT c1, c2 FROM t\nWHERE c1 [NOT] IN value_list"
             },
             "BETWEEN句": {
                 "title": "BETWEEN Clause",
-                "description": "Query rows between two values"
+                "description": "Query rows between two values",
+                "code": "SELECT c1, c2 FROM t\nWHERE  c1 BETWEEN low AND high"
             },
             "NULLチェック": {
                 "title": "NULL Check",
-                "description": "Check if value is NULL in table"
+                "description": "Check if value is NULL in table",
+                "code": "SELECT c1, c2 FROM t\nWHERE  c1 IS [NOT] NULL"
             }
         },
         "constraints": {
             "主キー": {
                 "title": "Primary Key",
-                "description": "Set c1 and c2 as primary key"
+                "description": "Set c1 and c2 as primary key",
+                "code": "CREATE TABLE t(\n    c1 INT, c2 INT, c3 VARCHAR,\n    PRIMARY KEY (c1,c2)\n);"
             },
             "外部キー": {
                 "title": "Foreign Key",
-                "description": "Set c2 column as foreign key"
+                "description": "Set c2 column as foreign key",
+                "code": "CREATE TABLE t1(\n    c1 INT PRIMARY KEY,  \n    c2 INT,\n    FOREIGN KEY (c2) REFERENCES t2(c2)\n);"
             },
             "UNIQUE制約": {
                 "title": "UNIQUE Constraint",
-                "description": "Make c1 and c2 values unique"
+                "description": "Make c1 and c2 values unique",
+                "code": "CREATE TABLE t(\n    c1 INT, c1 INT,\n    UNIQUE(c2,c3)\n);"
             },
             "CHECK制約": {
                 "title": "CHECK Constraint",
-                "description": "Ensure c1 > 0 and c1 >= c2"
+                "description": "Ensure c1 > 0 and c1 >= c2",
+                "code": "CREATE TABLE t(\n  c1 INT, c2 INT,\n  CHECK(c1> 0 AND c1 >= c2)\n);"
             },
             "NOT NULL制約": {
                 "title": "NOT NULL Constraint",
-                "description": "Set c2 column value as NOT NULL"
+                "description": "Set c2 column value as NOT NULL",
+                "code": "CREATE TABLE t(\n     c1 INT PRIMARY KEY,\n     c2 VARCHAR NOT NULL\n);"
             }
         },
         "modifying-data": {
             "1行の挿入": {
                 "title": "Inserting One Row",
-                "description": "Insert one row into table"
+                "description": "Insert one row into table",
+                "code": "INSERT INTO t(column_list)\nVALUES(value_list);"
             },
             "複数行の挿入": {
                 "title": "Inserting Multiple Rows",
-                "description": "Insert multiple rows into table"
+                "description": "Insert multiple rows into table",
+                "code": "INSERT INTO t(column_list)\nVALUES (value_list), \n       (value_list), …;"
             },
             "SELECTからINSERT": {
                 "title": "INSERT from SELECT",
-                "description": "Insert rows from t2 to t1"
+                "description": "Insert rows from t2 to t1",
+                "code": "INSERT INTO t1(column_list)\nSELECT column_list\nFROM t2;"
             },
             "すべての行を更新": {
                 "title": "Updating All Rows",
-                "description": "Update column c1 with new value for all rows"
+                "description": "Update column c1 with new value for all rows",
+                "code": "UPDATE t\nSET c1 = new_value;"
             },
             "条件付きUPDATE": {
                 "title": "Conditional UPDATE",
-                "description": "Update columns c1, c2 matching condition"
+                "description": "Update columns c1, c2 matching condition",
+                "code": "UPDATE t\nSET c1 = new_value, \n        c2 = new_value\nWHERE condition;"
             },
             "すべてのデータを削除": {
                 "title": "Deleting All Data",
-                "description": "Delete all data in table"
+                "description": "Delete all data in table",
+                "code": "DELETE FROM t;"
             },
             "条件付きDELETE": {
                 "title": "Conditional DELETE",
-                "description": "Delete subset of rows in table"
+                "description": "Delete subset of rows in table",
+                "code": "DELETE FROM t\nWHERE condition;"
             }
         },
         "views": {
             "ビューの作成": {
                 "title": "Creating Views",
-                "description": "Create new view with c1 and c2"
+                "description": "Create new view with c1 and c2",
+                "code": "CREATE VIEW v(c1,c2) \nAS\nSELECT c1, c2\nFROM t;"
             },
             "CHECK OPTION付きビュー": {
                 "title": "View with CHECK OPTION",
-                "description": "Create new view with check option"
+                "description": "Create new view with check option",
+                "code": "CREATE VIEW v(c1,c2) \nAS\nSELECT c1, c2\nFROM t;\nWITH [CASCADED | LOCAL] CHECK OPTION;"
             }
         },
         "data-types": {
             "文字列型": {
                 "title": "String Types",
-                "description": "MySQL string data types"
+                "description": "MySQL string data types",
+                "code": "# CHAR       - String (0 - 255)\n# VARCHAR    - String (0 - 255)\n# TINYTEXT   - String (0 - 255)\n# TEXT       - String (0 - 65535)\n# BLOB       - String (0 - 65535)\n# MEDIUMTEXT - String (0 - 16777215)\n# MEDIUMBLOB - String (0 - 16777215)\n# LONGTEXT   - String (0 - 4294967295)\n# LONGBLOB   - String (0 - 4294967295)\n# ENUM       - One of preset options\n# SET        - Selection of preset options"
             },
             "日付・時刻型": {
                 "title": "Date/Time Types",
-                "description": "MySQL date/time data types"
+                "description": "MySQL date/time data types",
+                "code": "# DATE      - yyyy-MM-dd\n# TIME      - hh:mm:ss\n# DATETIME  - yyyy-MM-dd hh:mm:ss\n# TIMESTAMP - yyyy-MM-dd hh:mm:ss\n# YEAR      - yyyy"
             },
             "数値型": {
                 "title": "Numeric Types",
-                "description": "MySQL numeric data types"
+                "description": "MySQL numeric data types",
+                "code": "# TINYINT x   - Integer (-128 to 127)\n# SMALLINT x  - Integer (-32768 to 32767)\n# MEDIUMINT x - Integer (-8388608 to 8388607)\n# INT x       - Integer (-2147483648 to 2147483647)\n# BIGINT x    - Integer (-9223372036854775808 to 9223372036854775807)\n# FLOAT       - Decimal (precise to 23 digits)\n# DOUBLE      - Decimal (24 to 53 digits)\n# DECIMAL     - \"DOUBLE\" stored as string"
             }
         },
         "functions": {
             "文字列関数": {
                 "title": "String Functions",
-                "description": "Key string functions"
+                "description": "Key string functions",
+                "code": "# CONCAT(), SUBSTRING(), LENGTH(), UPPER(), LOWER()\n# REPLACE(), TRIM(), LEFT(), RIGHT(), MID()\n# CHAR_LENGTH(), LOCATE(), INSTR(), REVERSE()\n# LPAD(), RPAD(), LTRIM(), RTRIM()"
             },
             "日付・時刻関数": {
                 "title": "Date/Time Functions",
-                "description": "Key date/time functions"
+                "description": "Key date/time functions",
+                "code": "# NOW(), CURDATE(), CURTIME(), DATE(), TIME()\n# DATE_FORMAT(), DATE_ADD(), DATE_SUB()\n# DATEDIFF(), TIMEDIFF(), YEAR(), MONTH(), DAY()\n# HOUR(), MINUTE(), SECOND(), WEEK(), QUARTER()"
             },
             "数値関数": {
                 "title": "Numeric Functions",
-                "description": "Key numeric functions"
+                "description": "Key numeric functions",
+                "code": "# ABS(), CEIL(), FLOOR(), ROUND(), TRUNCATE()\n# MOD(), POW(), SQRT(), RAND()\n# SIN(), COS(), TAN(), LOG(), EXP()"
             },
             "集約関数": {
                 "title": "Aggregate Functions",
-                "description": "Key aggregate functions"
+                "description": "Key aggregate functions",
+                "code": "# AVG(), COUNT(), SUM(), MAX(), MIN()\n# COUNT(DISTINCT), GROUP_CONCAT()\n# STD(), STDDEV(), VARIANCE()"
             },
             "JSON関数": {
                 "title": "JSON Functions",
-                "description": "Key JSON functions"
+                "description": "Key JSON functions",
+                "code": "# JSON_ARRAY(), JSON_OBJECT(), JSON_EXTRACT()\n# JSON_SET(), JSON_INSERT(), JSON_REPLACE()\n# JSON_REMOVE(), JSON_CONTAINS(), JSON_KEYS()\n# JSON_LENGTH(), JSON_TYPE(), JSON_VALID()"
             },
             "型変換関数": {
                 "title": "Type Conversion Functions",
-                "description": "Type conversion functions"
+                "description": "Type conversion functions",
+                "code": "# CAST(), CONVERT(), BINARY"
             },
             "制御フロー関数": {
                 "title": "Control Flow Functions",
-                "description": "Control flow functions"
+                "description": "Control flow functions",
+                "code": "# CASE, IF(), IFNULL(), NULLIF()"
             }
         }
     }

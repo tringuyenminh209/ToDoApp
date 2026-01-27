@@ -8,6 +8,10 @@
         "SQL/データベース基礎コース": {
             "title": "SQL/Database Fundamentals Course",
             "description": "Complete SQL/database course for beginners. Learn practically from database basics to SQL operations, database design, and optimization over 12 weeks."
+        },
+        "SQL基礎": {
+            "title": "SQL/Database Fundamentals Course",
+            "description": "Complete SQL/database course for beginners. Learn practically from database basics to SQL operations, database design, and optimization over 12 weeks."
         }
     },
     "milestones": {

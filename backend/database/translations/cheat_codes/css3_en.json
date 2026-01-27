@@ -43,293 +43,362 @@
         "getting-started": {
             "外部スタイルシート": {
                 "title": "External Stylesheet",
-                "description": "Linking external CSS files"
+                "description": "Linking external CSS files",
+                "code": "<link href=\"./path/to/stylesheet/style.css\" rel=\"stylesheet\" type=\"text/css\">"
             },
             "内部スタイルシート": {
                 "title": "Internal Stylesheet",
-                "description": "Internal CSS in HTML"
+                "description": "Internal CSS in HTML",
+                "code": "<style>\nbody {\n    background-color: linen;\n}\n</style>"
             },
             "インラインスタイル": {
                 "title": "Inline Styles",
-                "description": "Inline CSS styles"
+                "description": "Inline CSS styles",
+                "code": "<h2 style=\"text-align: center;\">Centered text</h2>\n\n<p style=\"color: blue; font-size: 18px;\">Blue, 18-point text</p>"
             },
             "クラスの追加": {
                 "title": "Adding Classes",
-                "description": "Adding CSS classes to HTML elements"
+                "description": "Adding CSS classes to HTML elements",
+                "code": "<div class=\"classname\"></div>\n<div class=\"class1 ... classn\"></div>"
             },
             "!important": {
                 "title": "!important",
-                "description": "Using !important to override styles"
+                "description": "Using !important to override styles",
+                "code": ".post-title {\n    color: blue !important;\n}"
             },
             "セレクタ": {
                 "title": "Selectors",
-                "description": "Basic CSS selectors"
+                "description": "Basic CSS selectors",
+                "code": "h1 { } \n#job-title { }\ndiv.hero { }\ndiv > p { }"
             },
             "テキストの色": {
                 "title": "Text Color",
-                "description": "Text color values"
+                "description": "Text color values",
+                "code": "color: #2a2aff;\ncolor: green;\ncolor: rgb(34, 12, 64, 0.6);\ncolor: hsla(30 100% 50% / 0.6);"
             },
             "背景": {
                 "title": "Background",
-                "description": "Background properties"
+                "description": "Background properties",
+                "code": "background-color: blue;\nbackground-image: url(\"nyan-cat.gif\");\nbackground-image: url(\"../image.png\");"
             },
             "フォント": {
                 "title": "Font",
-                "description": "Font properties"
+                "description": "Font properties",
+                "code": ".page-title {\n    font-weight: bold;\n    font-size: 30px;\n    font-family: \"Courier New\";\n}"
             },
             "位置": {
                 "title": "Position",
-                "description": "Position properties"
+                "description": "Position properties",
+                "code": ".box {\n    position: relative;\n    top: 20px;\n    left: 20px;\n}"
             },
             "アニメーション": {
                 "title": "Animation",
-                "description": "CSS animation shorthand"
+                "description": "CSS animation shorthand",
+                "code": "animation: 300ms linear 0s infinite;\n\nanimation: bounce 300ms linear infinite;"
             },
             "コメント": {
                 "title": "Comments",
-                "description": "CSS comment syntax"
+                "description": "CSS comment syntax",
+                "code": "/* This is a single line comment */\n\n/* This is a \n   multi-line comment */"
             },
             "Flexレイアウト": {
                 "title": "Flex Layout",
-                "description": "Flexbox layout"
+                "description": "Flexbox layout",
+                "code": "div {\n    display: flex;\n    justify-content: center;\n}\ndiv {\n    display: flex;\n    justify-content: flex-start;\n}"
             },
             "Gridレイアウト": {
                 "title": "Grid Layout",
-                "description": "CSS Grid layout"
+                "description": "CSS Grid layout",
+                "code": "#container {\n  display: grid;\n  grid: repeat(2, 60px) / auto-flow 80px;\n}\n\n#container > div {\n  background-color: #8ca0ff;\n  width: 50px;\n  height: 50px;\n}"
             },
             "変数とカウンター": {
                 "title": "Variables and Counters",
-                "description": "CSS variables and counters"
+                "description": "CSS variables and counters",
+                "code": "counter-set: subsection;\ncounter-increment: subsection;\ncounter-reset: subsection 0;\n\n:root {\n  --bg-color: brown;\n}\nelement {\n  background-color: var(--bg-color);\n}"
             }
         },
         "css-selectors": {
             "グループセレクタ": {
                 "title": "Group Selector",
-                "description": "Grouping selectors"
+                "description": "Grouping selectors",
+                "code": "h1, h2 {\n    color: red;\n}"
             },
             "チェーンセレクタ": {
                 "title": "Chaining Selector",
-                "description": "Chaining selectors"
+                "description": "Chaining selectors",
+                "code": "h3.section-heading {\n    color: blue;\n}"
             },
             "属性セレクタ": {
                 "title": "Attribute Selector",
-                "description": "Attribute selector"
+                "description": "Attribute selector",
+                "code": "div[attribute=\"SomeValue\"] {\n    background-color: red;\n}"
             },
             "最初の子要素セレクタ": {
                 "title": "First Child Selector",
-                "description": "First child pseudo-class"
+                "description": "First child pseudo-class",
+                "code": "p:first-child {\n    font-weight: bold;\n}"
             },
             "子要素なしセレクタ": {
                 "title": "No Children Selector",
-                "description": "Empty pseudo-class"
+                "description": "Empty pseudo-class",
+                "code": ".box:empty {\n  background: lime;\n  height: 80px;\n  width: 80px;\n}"
             },
             "基本セレクタの表": {
                 "title": "Basic Selectors Table",
-                "description": "Basic selector types"
+                "description": "Basic selector types",
+                "code": "| *         | All elements                |\n| ---------- | --------------------------- |\n| div        | All div tags                |\n| .classname | All elements with class     |\n| #idname    | Element with ID             |\n| div,p      | All divs and paragraphs     |\n| #idname *  | All elements inside #idname |"
             },
             "結合子の表": {
                 "title": "Combinators Table",
-                "description": "Combinator selectors"
+                "description": "Combinator selectors",
+                "code": "| Selector      | Description                       |\n| ------------- | --------------------------------- |\n| div.classname | Div with certain classname        |\n| div#idname    | Div with certain ID               |\n| div p         | Paragraphs inside divs            |\n| div > p       | All p tags one level deep in div  |\n| div + p       | P tags immediately after div      |\n| div ~ p       | P tags preceded by div            |"
             },
             "属性セレクタの表": {
                 "title": "Attribute Selectors Table",
-                "description": "Attribute selector syntax"
+                "description": "Attribute selector syntax",
+                "code": "| a[target]           | With a target attribute |\n| --------------------- | ----------------------- |\n| a[target=\"_blank\"] | Open in new tab         |\n| a[href^=\"/index\"]   | Starts with /index      |\n| [class|=\"chair\"]   | Starts with chair       |\n| [class*=\"chair\"]   | containing chair        |\n| [title~=\"chair\"]   | Contains the word chair |\n| a[href$=\".doc\"]     | Ends with .doc          |\n| [type=\"button\"]     | Specified type          |"
             },
             "ユーザーアクション疑似クラス": {
                 "title": "User Action Pseudo-classes",
-                "description": "Link pseudo-classes"
+                "description": "Link pseudo-classes",
+                "code": "a:link    /* Link in normal state    */\na:active  /* Link in clicked state   */\na:hover   /* Link with mouse over it */\na:visited /* Visited link            */"
             },
             "疑似クラスの表": {
                 "title": "Pseudo-classes Table",
-                "description": "Pseudo-classes and pseudo-elements"
+                "description": "Pseudo-classes and pseudo-elements",
+                "code": "| p::after        | Add content after p                                    |\n| p::before       | Add content before p                                   |\n| p::first-letter | First letter in p                                      |\n| p::first-line   | First line in p                                        |\n| ::selection     | Selected by user                                       |\n| ::placeholder   | Placeholder attribute                                 |\n| :root           | Documents root element                                |\n| :target         | Highlight active anchor                                |\n| div:empty       | Element with no children                              |\n| p:lang(en)      | P with en language attribute                          |\n| :not(span)      | Element that's not a span                             |"
             },
             "入力疑似クラス": {
                 "title": "Input Pseudo-classes",
-                "description": "Input pseudo-classes"
+                "description": "Input pseudo-classes",
+                "code": "input:checked       /* Checked inputs                                    */\ninput:disabled      /* Disabled inputs                                     */\ninput:enabled       /* Enabled inputs                                      */\ninput:focus         /* Input has focus                                      */\ninput:in-range      /* Value in range                                       */\ninput:out-of-range  /* Input value out of range                              */\ninput:valid         /* Input with valid value                                */\ninput:invalid       /* Input with invalid value                              */\ninput:optional      /* No required attribute                                 */\ninput:required      /* Input with required attribute                          */\ninput:read-only     /* With readonly attribute                                */\ninput:read-write    /* No readonly attribute                                 */\ninput:indeterminate /* With indeterminate state                               */"
             },
             "構造的疑似クラス": {
                 "title": "Structural Pseudo-classes",
-                "description": "Structural pseudo-classes"
+                "description": "Structural pseudo-classes",
+                "code": "p:first-child         /* First child                */\np:last-child          /* Last child                 */\np:first-of-type       /* First of some type         */\np:last-of-type        /* Last of some type          */\np:nth-child(2)        /* Second child of its parent */\np:nth-child(3n+2)     /* Nth-child (an + b) formula */\np:nth-last-child(2)   /* Second child from behind   */\np:nth-of-type(2)      /* Second p of its parent     */\np:nth-last-of-type(2) /* Second p from behind      */"
             }
         },
         "css-animations": {
             "アニメーションプロパティ": {
                 "title": "Animation Properties",
-                "description": "Animation properties"
+                "description": "Animation properties",
+                "code": "animation:                 /* (shorthand)                                          */\nanimation-name:            /* <name>                                                 */\nanimation-duration:        /* <time>ms                                               */\nanimation-timing-function: /* ease / linear / ease-in / ease-out / ease-in-out       */\nanimation-delay:           /* <time>ms                                               */\nanimation-iteration-count: /* infinite / <number>                                    */\nanimation-direction:       /* normal / reverse / alternate / alternate-reverse       */\nanimation-fill-mode:       /* none / forwards / backwards / both / initial / inherit */\nanimation-play-state:      /* running / paused                                        */"
             },
             "アニメーションの例": {
                 "title": "Animation Examples",
-                "description": "Animation shorthand examples"
+                "description": "Animation shorthand examples",
+                "code": "/* @keyframes duration | timing-function | delay |\n   iteration-count | direction | fill-mode | play-state | name */\nanimation: 3s ease-in 1s 2 reverse both paused slidein;\n\n/* @keyframes duration | timing-function | delay | name */\nanimation: 3s linear 1s slidein;\n\n/* @keyframes duration | name */\nanimation: 3s slidein;\n\nanimation: 4s linear 0s infinite alternate move_eye;\nanimation: bounce 300ms linear 0s infinite normal;\nanimation: bounce 300ms linear infinite;\nanimation: bounce 300ms linear infinite alternate-reverse;\nanimation: bounce 300ms linear 2s infinite alternate-reverse forwards normal;"
             },
             "JavaScriptイベント": {
                 "title": "JavaScript Events",
-                "description": "JavaScript animation end events"
+                "description": "JavaScript animation end events",
+                "code": ".one('webkitAnimationEnd oanimationend msAnimationEnd animationend')"
             }
         },
         "css-flexbox": {
             "簡単な例": {
                 "title": "Simple Example",
-                "description": "Basic flexbox setup"
+                "description": "Basic flexbox setup",
+                "code": ".container {\n  display: flex;\n}\n\n.container > div {\n  flex: 1 1 auto;\n}"
             },
             "コンテナ - Display": {
                 "title": "Container - Display",
-                "description": "Flexbox display values"
+                "description": "Flexbox display values",
+                "code": ".container {\n  display: flex;\n  display: inline-flex;\n}"
             },
             "コンテナ - flex-direction": {
                 "title": "Container - flex-direction",
-                "description": "Flex direction options"
+                "description": "Flex direction options",
+                "code": ".container {\n  flex-direction: row;            /* ltr - default */\n  flex-direction: row-reverse;    /* rtl */\n  flex-direction: column;         /* top-bottom */\n  flex-direction: column-reverse; /* bottom-top */\n}"
             },
             "コンテナ - flex-wrap": {
                 "title": "Container - flex-wrap",
-                "description": "Flex wrap options"
+                "description": "Flex wrap options",
+                "code": ".container {\n  flex-wrap: nowrap; /* one-line */\n  flex-wrap: wrap;   /* multi-line */\n}"
             },
             "コンテナ - align-items": {
                 "title": "Container - align-items",
-                "description": "Align items options"
+                "description": "Align items options",
+                "code": ".container {\n  align-items: flex-start; /* vertical-align to top */\n  align-items: flex-end;   /* vertical-align to bottom */\n  align-items: center;     /* vertical-align to center */\n  align-items: stretch;    /* same height on all (default) */\n}"
             },
             "コンテナ - justify-content": {
                 "title": "Container - justify-content",
-                "description": "Justify content options"
+                "description": "Justify content options",
+                "code": ".container {\n  justify-content: flex-start;    /* [xxx        ] */\n  justify-content: center;        /* [    xxx    ] */\n  justify-content: flex-end;      /* [        xxx] */\n  justify-content: space-between; /* [x    x    x] */\n  justify-content: space-around;  /* [ x   x   x ] */\n  justify-content: space-evenly;  /* [  x  x  x  ] */\n}"
             },
             "子要素 - flex": {
                 "title": "Child - flex",
-                "description": "Flex shorthand property"
+                "description": "Flex shorthand property",
+                "code": ".container > div {\n  /* This: */\n  flex: 1 0 auto;\n\n  /* Is equivalent to this: */\n  flex-grow: 1;\n  flex-shrink: 0;\n  flex-basis: auto;\n}"
             },
             "子要素 - order": {
                 "title": "Child - order",
-                "description": "Order property"
+                "description": "Order property",
+                "code": ".container > div {\n  order: 1;\n}"
             },
             "子要素 - align-self": {
                 "title": "Child - align-self",
-                "description": "Align self property"
+                "description": "Align self property",
+                "code": ".container > div {\n  align-self: flex-start;  /* left */\n  margin-left: auto;       /* right */\n}"
             }
         },
         "css-flexbox-tricks": {
             "垂直中央揃え": {
                 "title": "Vertical Centering",
-                "description": "Centering with margin auto"
+                "description": "Centering with margin auto",
+                "code": ".container {\n  display: flex;\n}\n\n.container > div {\n  width: 100px;\n  height: 100px;\n  margin: auto;\n}"
             },
             "垂直中央揃え（2）": {
                 "title": "Vertical Centering (2)",
-                "description": "Centering with align-items and justify-content"
+                "description": "Centering with align-items and justify-content",
+                "code": ".container {\n  display: flex;\n\n  /* vertical */\n  align-items: center; \n\n  /* horizontal */\n  justify-content: center;\n}"
             },
             "並び替え": {
                 "title": "Reordering",
-                "description": "Reordering flex items"
+                "description": "Reordering flex items",
+                "code": ".container > .top {\n order: 1;\n}\n\n.container > .bottom {\n order: 2;\n}"
             },
             "モバイルレイアウト": {
                 "title": "Mobile Layout",
-                "description": "Mobile-friendly flex layout"
+                "description": "Mobile-friendly flex layout",
+                "code": ".container {\n  display: flex;\n  flex-direction: column;\n}\n\n.container > .top {\n  flex: 0 0 100px;\n}\n\n.container > .content {\n  flex: 1 0 auto;\n}"
             },
             "テーブル風": {
                 "title": "Table-like",
-                "description": "Table-like layout with flexbox"
+                "description": "Table-like layout with flexbox",
+                "code": ".container {\n  display: flex;\n}\n\n/* the 'px' values here are just suggested percentages */\n.container > .checkbox { flex: 1 0 20px; }\n.container > .subject  { flex: 1 0 400px; }\n.container > .date     { flex: 1 0 120px; }"
             },
             "垂直": {
                 "title": "Vertical",
-                "description": "Vertically center all items"
+                "description": "Vertically center all items",
+                "code": ".container {\n  align-items: center;\n}"
             },
             "左と右": {
                 "title": "Left and Right",
-                "description": "Left and right alignment"
+                "description": "Left and right alignment",
+                "code": ".menu > .left  { align-self: flex-start; }\n.menu > .right { align-self: flex-end; }"
             }
         },
         "css-grid-layout": {
             "Grid Template Columns": {
                 "title": "Grid Template Columns",
-                "description": "Grid template columns"
+                "description": "Grid template columns",
+                "code": "#grid-container {\n    display: grid;\n    width: 100px;\n    grid-template-columns: 20px 20% 60%;\n}"
             },
             "fr相対単位": {
                 "title": "fr Relative Unit",
-                "description": "Fractional unit (fr)"
+                "description": "Fractional unit (fr)",
+                "code": ".grid {\n    display: grid;\n    width: 100px;\n    grid-template-columns: 1fr 60px 1fr;\n}"
             },
             "Grid Gap": {
                 "title": "Grid Gap",
-                "description": "Grid gap property"
+                "description": "Grid gap property",
+                "code": "/*The distance between rows is 20px*/\n/*The distance between columns is 10px*/\n#grid-container {\n    display: grid;\n    grid-gap: 20px 10px;\n}"
             },
             "CSSブロックレベルGrid": {
                 "title": "CSS Block Level Grid",
-                "description": "Block level grid"
+                "description": "Block level grid",
+                "code": "#grid-container {\n    display: block;\n}"
             },
             "grid-row": {
                 "title": "grid-row",
-                "description": "Grid row property"
+                "description": "Grid row property",
+                "code": ".item {\n    grid-row: 1 / span 2;\n}"
             },
             "CSSインラインレベルGrid": {
                 "title": "CSS Inline Level Grid",
-                "description": "Inline level grid"
+                "description": "Inline level grid",
+                "code": "#grid-container {\n    display: inline-grid;\n}"
             },
             "minmax()関数": {
                 "title": "minmax() Function",
-                "description": "Minmax function"
+                "description": "Minmax function",
+                "code": ".grid {\n    display: grid;\n    grid-template-columns: 100px minmax(100px, 500px) 100px; \n}"
             },
             "grid-row-startとgrid-row-end": {
                 "title": "grid-row-start and grid-row-end",
-                "description": "Grid row start and end"
+                "description": "Grid row start and end",
+                "code": "grid-row-start: 2;\ngrid-row-end: span 2;"
             },
             "CSS grid-row-gap": {
                 "title": "CSS grid-row-gap",
-                "description": "Grid row gap"
+                "description": "Grid row gap",
+                "code": "grid-row-gap: length;"
             },
             "CSS grid-area": {
                 "title": "CSS grid-area",
-                "description": "Grid area shorthand"
+                "description": "Grid area shorthand",
+                "code": ".item1 {\n    grid-area: 2 / 1 / span 2 / span 3;\n}"
             },
             "Justify Items": {
                 "title": "Justify Items",
-                "description": "Justify items property"
+                "description": "Justify items property",
+                "code": "#container {\n    display: grid;\n    justify-items: center;\n    grid-template-columns: 1fr;\n    grid-template-rows: 1fr 1fr 1fr;\n    grid-gap: 10px;\n}"
             },
             "CSS grid-template-areas": {
                 "title": "CSS grid-template-areas",
-                "description": "Grid template areas"
+                "description": "Grid template areas",
+                "code": ".item {\n    grid-area: nav;\n}\n.grid-container {\n    display: grid;\n    grid-template-areas:\n    'nav nav . .'\n    'nav nav . .';\n}"
             },
             "Justify Self": {
                 "title": "Justify Self",
-                "description": "Justify self property"
+                "description": "Justify self property",
+                "code": "#grid-container {\n    display: grid;\n    justify-items: start;\n}\n\n.grid-items {\n    justify-self: end;\n}"
             },
             "Align Items": {
                 "title": "Align Items",
-                "description": "Align items property"
+                "description": "Align items property",
+                "code": "#container {\n    display: grid;\n    align-items: start;\n    grid-template-columns: 1fr;\n    grid-template-rows: 1fr 1fr 1fr;\n    grid-gap: 10px;\n}"
             }
         },
         "css-dynamic-content": {
             "変数 - 定義": {
                 "title": "Variables - Definition",
-                "description": "CSS variable definition"
+                "description": "CSS variable definition",
+                "code": ":root {\n  --first-color: #16f;\n  --second-color: #ff7;\n}"
             },
             "変数 - 使用": {
                 "title": "Variables - Usage",
-                "description": "CSS variable usage"
+                "description": "CSS variable usage",
+                "code": "#firstParagraph {\n  background-color: var(--first-color);\n  color: var(--second-color);\n}"
             },
             "カウンター - 設定": {
                 "title": "Counter - Set",
-                "description": "CSS counter setup"
+                "description": "CSS counter setup",
+                "code": "/* Set \"my-counter\" to 0 */\ncounter-set: my-counter;"
             },
             "カウンター - 増加": {
                 "title": "Counter - Increment",
-                "description": "CSS counter increment"
+                "description": "CSS counter increment",
+                "code": "/* Increment \"my-counter\" by 1 */\ncounter-increment: my-counter;"
             },
             "カウンター - 減少": {
                 "title": "Counter - Decrement",
-                "description": "CSS counter decrement"
+                "description": "CSS counter decrement",
+                "code": "/* Decrement \"my-counter\" by 1 */\ncounter-increment: my-counter -1;"
             },
             "カウンター - リセット": {
                 "title": "Counter - Reset",
-                "description": "CSS counter reset"
+                "description": "CSS counter reset",
+                "code": "/* Reset \"my-counter\" to 0 */\ncounter-reset: my-counter;"
             },
             "カウンターの使用 - 基本": {
                 "title": "Counter Usage - Basic",
-                "description": "Basic counter usage"
+                "description": "Basic counter usage",
+                "code": "body { counter-reset: section; }\n\nh3::before {\n  counter-increment: section; \n  content: \"Section.\" counter(section);\n}"
             },
             "カウンターの使用 - ネスト": {
                 "title": "Counter Usage - Nested",
-                "description": "Nested counters"
+                "description": "Nested counters",
+                "code": "ol {\n  counter-reset: section;   \n  list-marker-type: none;\n}\n\nli::before {\n  counter-increment: section;\n  content: counters(section, \".\") \" \"; \n}"
             }
         },
         "css-tricks": {
             "スクロールバースムーズ": {
                 "title": "Smooth Scrollbar",
-                "description": "Smooth scroll behavior"
+                "description": "Smooth scroll behavior",
+                "code": "html {\n    scroll-behavior: smooth;\n}"
             }
         }
     }

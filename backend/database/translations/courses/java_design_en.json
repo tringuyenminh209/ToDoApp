@@ -8,6 +8,10 @@
         "Javaプログラミング設計演習": {
             "title": "Java Programming Design Course",
             "description": "Practical course learning object-oriented programming and design patterns. Learn step by step from class design to GoF design patterns through 30 exercises."
+        },
+        "Java設計": {
+            "title": "Java Programming Design Course",
+            "description": "Practical course learning object-oriented programming and design patterns. Learn step by step from class design to GoF design patterns through 30 exercises."
         }
     },
     "milestones": {

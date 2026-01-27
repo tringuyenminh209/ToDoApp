@@ -51,205 +51,251 @@
         "getting-started": {
             "hello.go": {
                 "title": "hello.go",
-                "description": "Basic Hello World program"
+                "description": "Basic Hello World program",
+                "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, world!\")\n}"
             },
             "直接実行": {
                 "title": "Direct Run",
-                "description": "Running Go programs"
+                "description": "Running Go programs",
+                "code": "$ go run hello.go\nHello, world!"
             },
             "変数": {
                 "title": "Variables",
-                "description": "Variable declaration"
+                "description": "Variable declaration",
+                "code": "var s1 string\ns1 = \"Learn Go!\"\n\n// declare multiple variables at once\nvar b, c int = 1, 2\nvar d = true"
             },
             "短縮宣言": {
                 "title": "Short Declaration",
-                "description": "Short variable declaration"
+                "description": "Short variable declaration",
+                "code": "s1 := \"Learn Go!\"        // string\nb, c := 1, 2             // int\nd := true                // bool"
             },
             "関数": {
                 "title": "Functions",
-                "description": "Function definition"
+                "description": "Function definition",
+                "code": "package main\n\nimport \"fmt\"\n\n// The entry point of the programs\nfunc main() {\n    fmt.Println(\"Hello world!\")\n    say(\"Hello Go!\")\n}\n\nfunc say(message string) {\n    fmt.Println(\"You said: \", message)\n}"
             },
             "コメント": {
                 "title": "Comments",
-                "description": "Comment syntax"
+                "description": "Comment syntax",
+                "code": "// Single line comment\n\n/* Multi-\n line comment */"
             },
             "If文": {
                 "title": "If Statement",
-                "description": "If statement syntax"
+                "description": "If statement syntax",
+                "code": "if true {\n    fmt.Println(\"Yes!\")\n}"
             }
         },
         "go-basic-types": {
             "文字列": {
                 "title": "Strings",
-                "description": "String operations and concatenation"
+                "description": "String operations and concatenation",
+                "code": "s1 := \"Hello\" + \"World\"\n\ns2 := `A \"raw\" string literal\ncan include line breaks.`\n\n// Outputs: 10\nfmt.Println(len(s1))\n\n// Outputs: Hello\nfmt.Println(string(s1[0:5]))"
             },
             "数値": {
                 "title": "Numbers",
-                "description": "Numeric types"
+                "description": "Numeric types",
+                "code": "num := 3         // int\nnum := 3.        // float64\nnum := 3 + 4i    // complex128\nnum := byte('a') // byte (alias: uint8)\n\nvar u uint = 7        // uint (unsigned)\nvar p float32 = 22.7  // 32-bit float"
             },
             "演算子": {
                 "title": "Operators",
-                "description": "Arithmetic operators"
+                "description": "Arithmetic operators",
+                "code": "x := 5\nx++\nfmt.Println(\"x + 4 =\", x + 4)\nfmt.Println(\"x * 4 =\", x * 4)"
             },
             "ブール値": {
                 "title": "Booleans",
-                "description": "Boolean type"
+                "description": "Boolean type",
+                "code": "isTrue   := true\nisFalse  := false"
             },
             "ブール演算子": {
                 "title": "Boolean Operators",
-                "description": "Boolean operators"
+                "description": "Boolean operators",
+                "code": "fmt.Println(true && true)   // true\nfmt.Println(true && false)  // false\nfmt.Println(true || true)   // true\nfmt.Println(true || false)  // true\nfmt.Println(!true)          // false"
             },
             "配列": {
                 "title": "Arrays",
-                "description": "Array declaration and slicing"
+                "description": "Array declaration and slicing",
+                "code": "primes := [...]int{2, 3, 5, 7, 11, 13}\nfmt.Println(len(primes)) // => 6\n\n// Outputs: [2 3 5 7 11 13]\nfmt.Println(primes)\n\n// Same as [:3], Outputs: [2 3 5]\nfmt.Println(primes[0:3])"
             },
             "配列の宣言": {
                 "title": "Array Declaration",
-                "description": "Explicit size arrays"
+                "description": "Explicit size arrays",
+                "code": "var a [2]string\na[0] = \"Hello\"\na[1] = \"World\"\n\nfmt.Println(a[0], a[1]) //=> Hello World\nfmt.Println(a)   // => [Hello World]"
             },
             "2次元配列": {
                 "title": "2D Arrays",
-                "description": "Multidimensional arrays"
+                "description": "Multidimensional arrays",
+                "code": "var twoDimension [2][3]int\nfor i := 0; i < 2; i++ {\n    for j := 0; j < 3; j++ {\n        twoDimension[i][j] = i + j\n    }\n}\n// => 2d:  [[0 1 2] [1 2 3]]\nfmt.Println(\"2d: \", twoDimension)"
             },
             "ポインタ": {
                 "title": "Pointers",
-                "description": "Pointer basics"
+                "description": "Pointer basics",
+                "code": "func main () {\n  b := *getPointer()\n  fmt.Println(\"Value is\", b)\n}\n\nfunc getPointer () (myPointer *int) {\n  a := 234\n  return &a\n}"
             },
             "newによるポインタ": {
                 "title": "Pointers with new",
-                "description": "Creating pointers with new"
+                "description": "Creating pointers with new",
+                "code": "a := new(int)\n*a = 234"
             },
             "スライス": {
                 "title": "Slices",
-                "description": "Slice operations"
+                "description": "Slice operations",
+                "code": "s := make([]string, 3)\ns[0] = \"a\"\ns[1] = \"b\"\ns = append(s, \"d\")\ns = append(s, \"e\", \"f\")\n\nfmt.Println(s)\nfmt.Println(s[1])\nfmt.Println(len(s))\nfmt.Println(s[1:3])"
             },
             "スライスリテラル": {
                 "title": "Slice Literal",
-                "description": "Slice literal syntax"
+                "description": "Slice literal syntax",
+                "code": "slice := []int{2, 3, 4}"
             },
             "定数": {
                 "title": "Constants",
-                "description": "Constant declaration"
+                "description": "Constant declaration",
+                "code": "const s string = \"constant\"\nconst Phi = 1.618\nconst n = 500000000\nconst d = 3e20 / n\nfmt.Println(d)"
             },
             "型変換": {
                 "title": "Type Conversion",
-                "description": "Type conversion"
+                "description": "Type conversion",
+                "code": "i := 90\nf := float64(i)\nu := uint(i)\n\n// Will be equal to the character Z\ns := string(i)"
             },
             "Intから文字列へ": {
                 "title": "Int to String",
-                "description": "Int to string conversion"
+                "description": "Int to string conversion",
+                "code": "i := 90\n\n// need import \"strconv\"\ns := strconv.Itoa(i)\nfmt.Println(s) // Outputs: 90"
             }
         },
         "go-strings": {
             "文字列関数": {
                 "title": "String Functions",
-                "description": "String functions"
+                "description": "String functions",
+                "code": "package main\n\nimport (\n\t\"fmt\"\n\ts \"strings\"\n)\n\nfunc main() {\n    /* Need to import strings as s */\n\tfmt.Println(s.Contains(\"test\", \"e\"))\n\n    /* Build in */\n    fmt.Println(len(\"hello\"))  // => 5\n    // Outputs: 101\n\tfmt.Println(\"hello\"[1])\n    // Outputs: e\n\tfmt.Println(string(\"hello\"[1]))\n}"
             },
             "fmt.Printf": {
                 "title": "fmt.Printf",
-                "description": "Formatted output with fmt.Printf"
+                "description": "Formatted output with fmt.Printf",
+                "code": "package main\n\nimport (\n\t\"fmt\"\n\t\"os\"\n)\n\ntype point struct {\n\tx, y int\n}\n\nfunc main() {\n\tp := point{1, 2}\n\tfmt.Printf(\"%v\\n\", p)                        // => {1 2}\n\tfmt.Printf(\"%+v\\n\", p)                       // => {x:1 y:2}\n\tfmt.Printf(\"%#v\\n\", p)                       // => main.point{x:1, y:2}\n\tfmt.Printf(\"%T\\n\", p)                        // => main.point\n\tfmt.Printf(\"%t\\n\", true)                     // => TRUE\n\tfmt.Printf(\"%d\\n\", 123)                      // => 123\n\tfmt.Printf(\"%b\\n\", 14)                       // => 1110\n\tfmt.Printf(\"%c\\n\", 33)                       // => !\n\tfmt.Printf(\"%x\\n\", 456)                      // => 1c8\n\tfmt.Printf(\"%f\\n\", 78.9)                     // => 78.9\n\tfmt.Printf(\"%e\\n\", 123400000.0)              // => 1.23E+08\n\tfmt.Printf(\"%E\\n\", 123400000.0)              // => 1.23E+08\n\tfmt.Printf(\"%s\\n\", \"\\\"string\\\"\")             // => \"string\"\n\tfmt.Printf(\"%q\\n\", \"\\\"string\\\"\")             // => \"\\\"string\\\"\"\n\tfmt.Printf(\"%x\\n\", \"hex this\")               // => 6.86578E+15\n\tfmt.Printf(\"%p\\n\", &p)                       // => 0xc00002c040\n\tfmt.Printf(\"|%6d|%6d|\\n\", 12, 345)           // => |    12|   345|\n\tfmt.Printf(\"|%6.2f|%6.2f|\\n\", 1.2, 3.45)     // => |  1.20|  3.45|\n\tfmt.Printf(\"|%-6.2f|%-6.2f|\\n\", 1.2, 3.45)   // => |1.20  |3.45  |\n\tfmt.Printf(\"|%6s|%6s|\\n\", \"foo\", \"b\")        // => |   foo|     b|\n\tfmt.Printf(\"|%-6s|%-6s|\\n\", \"foo\", \"b\")      // => |foo   |b     |\n\n\ts := fmt.Sprintf(\"a %s\", \"string\")\n\tfmt.Println(s)\n\n\tfmt.Fprintf(os.Stderr, \"an %s\\n\", \"error\")\n}"
             }
         },
         "go-functions": {
             "複数の戻り値": {
                 "title": "Multiple Return Values",
-                "description": "Functions with multiple return values"
+                "description": "Functions with multiple return values",
+                "code": "func swap(x, y string) (string, string) {\n    return y, x\n}\n\na, b := swap(\"hello\", \"world\")\nfmt.Println(a, b)"
             },
             "名前付き戻り値": {
                 "title": "Named Return Values",
-                "description": "Named return values"
+                "description": "Named return values",
+                "code": "func split(sum int) (x, y int) {\n    x = sum * 4 / 9\n    y = sum - x\n    return\n}"
             },
             "可変長引数関数": {
                 "title": "Variadic Functions",
-                "description": "Variadic functions"
+                "description": "Variadic functions",
+                "code": "func sum(nums ...int) int {\n    total := 0\n    for _, num := range nums {\n        total += num\n    }\n    return total\n}\n\nfmt.Println(sum(1, 2, 3))"
             },
             "関数を値として": {
                 "title": "Functions as Values",
-                "description": "Functions as first-class values"
+                "description": "Functions as first-class values",
+                "code": "func main() {\n    // assign a function to a name\n    add := func(a, b int) int {\n        return a + b\n    }\n    // use the name to call the function\n    fmt.Println(add(3, 4)) // => 7\n}"
             },
             "クロージャ": {
                 "title": "Closures",
-                "description": "Closure example"
+                "description": "Closure example",
+                "code": "func scope() func() int{\n    outer_var := 2\n    foo := func() int {return outer_var}\n    return foo\n}\n\n// Outputs: 2\nfmt.Println(scope()())"
             }
         },
         "go-packages": {
             "インポート": {
                 "title": "Import",
-                "description": "Basic import"
+                "description": "Basic import",
+                "code": "import \"fmt\"\nimport \"math/rand\""
             },
             "インポートブロック": {
                 "title": "Import Block",
-                "description": "Import block syntax"
+                "description": "Import block syntax",
+                "code": "import (\n  \"fmt\"        // gives fmt.Println\n  \"math/rand\"  // gives rand.Intn\n)"
             },
             "エイリアス": {
                 "title": "Alias",
-                "description": "Import alias"
+                "description": "Import alias",
+                "code": "import r \"math/rand\"\n\nr.Intn()"
             },
             "名前のエクスポート": {
                 "title": "Exported Names",
-                "description": "Exported names"
+                "description": "Exported names",
+                "code": "// Begin with a capital letter\nfunc Hello () {\n  ···\n}"
             }
         },
         "go-concurrency": {
             "Goroutine": {
                 "title": "Goroutines",
-                "description": "Goroutine basics"
+                "description": "Goroutine basics",
+                "code": "package main\n\nimport (\n\t\"fmt\"\n\t\"time\"\n)\n\nfunc f(from string) {\n\tfor i := 0; i < 3; i++ {\n\t\tfmt.Println(from, \":\", i)\n\t}\n}\n\nfunc main() {\n\tf(\"direct\")\n\tgo f(\"goroutine\")\n\n\tgo func(msg string) {\n\t\tfmt.Println(msg)\n\t}(\"going\")\n\n\ttime.Sleep(time.Second)\n\tfmt.Println(\"done\")\n}"
             },
             "WaitGroup": {
                 "title": "WaitGroup",
-                "description": "WaitGroup for synchronization"
+                "description": "WaitGroup for synchronization",
+                "code": "package main\n\nimport (\n\t\"fmt\"\n\t\"sync\"\n\t\"time\"\n)\n\nfunc w(id int, wg *sync.WaitGroup) {\n\tdefer wg.Done()\n\tfmt.Printf(\"%d starting\\n\", id)\n\n\ttime.Sleep(time.Second)\n\tfmt.Printf(\"%d done\\n\", id)\n}\n\nfunc main() {\n\tvar wg sync.WaitGroup\n\tfor i := 1; i <= 5; i++ {\n\t\twg.Add(1)\n\t\tgo w(i, &wg)\n\t}\n\twg.Wait()\n}"
             },
             "チャネルのクローズ": {
                 "title": "Closing Channels",
-                "description": "Closing and iterating channels"
+                "description": "Closing and iterating channels",
+                "code": "ch <- 1\nch <- 2\nch <- 3\nclose(ch) // Closes a channel\n\n// Iterate the channel until closed\nfor i := range ch {\n  ···\n}\n\n// Closed if `ok == false`\nv, ok := <- ch"
             },
             "バッファ付きチャネル": {
                 "title": "Buffered Channels",
-                "description": "Buffered channels"
+                "description": "Buffered channels",
+                "code": "ch := make(chan int, 2)\nch <- 1\nch <- 2\nch <- 3\n// fatal error:\n// all goroutines are asleep - deadlock"
             }
         },
         "go-error-control": {
             "関数の遅延実行": {
                 "title": "Deferred Functions",
-                "description": "Defer statement"
+                "description": "Defer statement",
+                "code": "func main() {\n  defer func() {\n    fmt.Println(\"Done\")\n  }()\n  fmt.Println(\"Working...\")\n}"
             },
             "Defer": {
                 "title": "Defer",
-                "description": "Simple defer"
+                "description": "Simple defer",
+                "code": "func main() {\n  defer fmt.Println(\"Done\")\n  fmt.Println(\"Working...\")\n}"
             }
         },
         "go-methods": {
             "レシーバ": {
                 "title": "Receivers",
-                "description": "Methods with value receiver"
+                "description": "Methods with value receiver",
+                "code": "type Vertex struct {\n  X, Y float64\n}\n\nfunc (v Vertex) Abs() float64 {\n  return math.Sqrt(v.X * v.X + v.Y * v.Y)\n}\n\nv := Vertex{1, 2}\nv.Abs()"
             },
             "変更": {
                 "title": "Mutation",
-                "description": "Methods with pointer receiver"
+                "description": "Methods with pointer receiver",
+                "code": "func (v *Vertex) Scale(f float64) {\n  v.X = v.X * f\n  v.Y = v.Y * f\n}\n\nv := Vertex{6, 12}\nv.Scale(0.5)\n// `v` is updated"
             }
         },
         "go-interfaces": {
             "基本的なインターフェース": {
                 "title": "Basic Interface",
-                "description": "Interface definition"
+                "description": "Interface definition",
+                "code": "type Shape interface {\n  Area() float64\n  Perimeter() float64\n}"
             },
             "構造体": {
                 "title": "Struct",
-                "description": "Struct definition"
+                "description": "Struct definition",
+                "code": "type Rectangle struct {\n  Length, Width float64\n}"
             },
             "メソッド": {
                 "title": "Methods",
-                "description": "Implementing interface methods"
+                "description": "Implementing interface methods",
+                "code": "func (r Rectangle) Area() float64 {\n  return r.Length * r.Width\n}\n\nfunc (r Rectangle) Perimeter() float64 {\n  return 2 * (r.Length + r.Width)\n}"
             },
             "インターフェースの例": {
                 "title": "Interface Example",
-                "description": "Using interfaces"
+                "description": "Using interfaces",
+                "code": "func main() {\n  var r Shape = Rectangle{Length: 3, Width: 4}\n  fmt.Printf(\"Type of r: %T, Area: %v, Perimeter: %v.\", r, r.Area(), r.Perimeter())\n}"
             }
         },
         "miscellaneous": {
             "キーワード": {
                 "title": "Keywords",
-                "description": "Go keywords"
+                "description": "Go keywords",
+                "code": "break default func interface select\ncase defer go map struct\nchan else goto package switch\nconst fallthrough if range type\ncontinue for import return var"
             }
         }
     }

@@ -14,14 +14,15 @@ class CategoryService
     const DEFAULT_PARENT_CATEGORY_DESC = 'プログラミング演習用のフォルダ';
 
     /**
-     * Get or create the default parent category for programming exercises
+     * Get or create the default parent category for programming exercises.
+     * Sets vi/en translations so the category displays in the user's locale.
      *
      * @param int $userId
      * @return KnowledgeCategory
      */
     public function getOrCreateDefaultParent(int $userId): KnowledgeCategory
     {
-        return KnowledgeCategory::firstOrCreate(
+        $category = KnowledgeCategory::firstOrCreate(
             [
                 'user_id' => $userId,
                 'name' => self::DEFAULT_PARENT_CATEGORY_NAME,
@@ -34,6 +35,14 @@ class CategoryService
                 'sort_order' => 0
             ]
         );
+
+        // Ensure vi/en translations exist so UI shows translated name (e.g. "Bài tập lập trình")
+        $category->setTranslation('name', 'vi', 'Bài tập lập trình');
+        $category->setTranslation('description', 'vi', 'Thư mục bài tập lập trình');
+        $category->setTranslation('name', 'en', 'Programming Exercises');
+        $category->setTranslation('description', 'en', 'Folder for programming exercises');
+
+        return $category;
     }
 
     /**

@@ -8,6 +8,10 @@
         "Laravel基礎演習": {
             "title": "Laravel Basic Course",
             "description": "Beginner-friendly Laravel framework fundamentals course. Learn step by step from routing, Blade templates, Eloquent ORM to API development."
+        },
+        "Laravel基礎": {
+            "title": "Laravel Basic Course",
+            "description": "Beginner-friendly Laravel framework fundamentals course. Learn step by step from routing, Blade templates, Eloquent ORM to API development."
         }
     },
     "milestones": {

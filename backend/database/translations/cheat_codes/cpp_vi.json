@@ -43,237 +43,292 @@
         "getting-started": {
             "hello.cpp": {
                 "title": "hello.cpp",
-                "description": "Chương trình Hello World cơ bản"
+                "description": "Chương trình Hello World cơ bản",
+                "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello Kizamu\\n\";\n    return 0;\n}"
             },
             "コンパイルと実行": {
                 "title": "Biên dịch và Chạy",
-                "description": "Biên dịch và chạy chương trình C++"
+                "description": "Biên dịch và chạy chương trình C++",
+                "code": "$ g++ hello.cpp -o hello\n$ ./hello\nHello Kizamu"
             },
             "変数": {
                 "title": "Biến",
-                "description": "Khai báo biến và kiểu"
+                "description": "Khai báo biến và kiểu",
+                "code": "int number = 5;       // Integer\nfloat f = 0.95;       // Floating number\ndouble PI = 3.14159;  // Floating number\nchar yes = 'Y';       // Character\nstd::string s = \"ME\"; // String (text)\nbool isRight = true;  // Boolean\n\n// Constants\nconst float RATE = 0.8;"
             },
             "一様初期化": {
                 "title": "Khởi tạo đồng nhất",
-                "description": "Cú pháp khởi tạo đồng nhất"
+                "description": "Cú pháp khởi tạo đồng nhất",
+                "code": "int age {25};         // Since C++11\nstd::cout << age;     // Print 25"
             },
             "基本データ型": {
                 "title": "Kiểu dữ liệu nguyên thủy",
-                "description": "Bảng kiểu dữ liệu nguyên thủy"
+                "description": "Bảng kiểu dữ liệu nguyên thủy",
+                "code": "| Data Type | Size         | Range            |\n| --------- | ------------ | ---------------- |\n| int       | 4 bytes      | -231 to 231-1  |\n| float     | 4 bytes      | N/A            |\n| double    | 8 bytes      | N/A            |\n| char      | 1 byte       | -128 to 127     |\n| bool      | 1 byte       | true / false    |\n| void      | N/A          | N/A            |\n| wchar_t   | 2 or 4 bytes | 1 wide character |"
             },
             "ユーザー入力": {
                 "title": "Nhập liệu",
-                "description": "Đọc input từ người dùng"
+                "description": "Đọc input từ người dùng",
+                "code": "int num;\n\nstd::cout << \"Type a number: \";\nstd::cin >> num;\n\nstd::cout << \"You entered \" << num;"
             },
             "交換": {
                 "title": "Hoán đổi",
-                "description": "Hoán đổi biến"
+                "description": "Hoán đổi biến",
+                "code": "int a = 5, b = 10;\nstd::swap(a, b);\n\n// Outputs: a=10, b=5\nstd::cout << \"a=\" << a << \", b=\" << b;"
             },
             "コメント": {
                 "title": "Chú thích",
-                "description": "Cú pháp chú thích"
+                "description": "Cú pháp chú thích",
+                "code": "// A single one line comment in C++\n\n/* This is a multiple line comment\n   in C++ */"
             },
             "If文": {
                 "title": "Câu lệnh If",
-                "description": "Câu lệnh if cơ bản"
+                "description": "Câu lệnh if cơ bản",
+                "code": "if (a == 10) {\n    // do something\n}"
             },
             "ループ": {
                 "title": "Vòng lặp",
-                "description": "Vòng lặp for"
+                "description": "Vòng lặp for",
+                "code": "for (int i = 0; i < 10; i++) {\n    std::cout << i << \"\\n\";\n}"
             },
             "関数": {
                 "title": "Hàm",
-                "description": "Khai báo và định nghĩa hàm"
+                "description": "Khai báo và định nghĩa hàm",
+                "code": "#include <iostream>\n \nvoid hello(); // Declaring\n \nint main() {  // main function\n    hello();    // Calling\n}\n \nvoid hello() { // Defining\n    std::cout << \"Hello Kizamu!\\n\";\n}"
             },
             "参照": {
                 "title": "Tham chiếu",
-                "description": "Tham chiếu - bí danh biến"
+                "description": "Tham chiếu - bí danh biến",
+                "code": "int i = 1;\nint& ri = i; // ri is a reference to i\n\nri = 2; // i is now changed to 2\nstd::cout << \"i=\" << i;\n\ni = 3;   // i is now changed to 3\nstd::cout << \"ri=\" << ri;"
             },
             "名前空間": {
                 "title": "Namespace",
-                "description": "Sử dụng namespace"
+                "description": "Sử dụng namespace",
+                "code": "#include <iostream>\nnamespace ns1 {int val(){return 5;}}\nint main()\n{\n    std::cout << ns1::val();\n}"
             },
             "using namespace": {
                 "title": "using namespace",
-                "description": "Chỉ thị using namespace"
+                "description": "Chỉ thị using namespace",
+                "code": "#include <iostream>\nnamespace ns1 {int val(){return 5;}}\nusing namespace ns1;\nusing namespace std;\nint main()\n{\n    cout << val(); \n}"
             }
         },
         "cpp-arrays": {
             "宣言": {
                 "title": "Khai báo",
-                "description": "Khai báo và khởi tạo mảng"
+                "description": "Khai báo và khởi tạo mảng",
+                "code": "std::array<int, 3> marks; // Definition\nmarks[0] = 92;\nmarks[1] = 97;\nmarks[2] = 98;\n\n// Define and initialize\nstd::array<int, 3> = {92, 97, 98};\n\n// With empty members\nstd::array<int, 3> marks = {92, 97};\nstd::cout << marks[2]; // Outputs: 0"
             },
             "操作": {
                 "title": "Thao tác",
-                "description": "Thao tác mảng"
+                "description": "Thao tác mảng",
+                "code": "std::array<int, 6> marks = {92, 97, 98, 99, 98, 94};\n\n// Print first element\nstd::cout << marks[0];\n\n// Change 2th element to 99\nmarks[1] = 99;\n\n// Take input from the user\nstd::cin >> marks[2];"
             },
             "表示": {
                 "title": "Hiển thị",
-                "description": "Hiển thị phần tử mảng"
+                "description": "Hiển thị phần tử mảng",
+                "code": "char ref[5] = {'R', 'e', 'f'};\n\n// Range based for loop\nfor (const int &n : ref) {\n    std::cout << std::string(1, n);\n}\n\n// Traditional for loop\nfor (int i = 0; i < sizeof(ref); ++i) {\n    std::cout << ref[i];\n}"
             },
             "多次元配列": {
                 "title": "Mảng đa chiều",
-                "description": "Mảng đa chiều"
+                "description": "Mảng đa chiều",
+                "code": "int x[2][6] = {\n    {1,2,3,4,5,6}, {6,5,4,3,2,1}\n};\nfor (int i = 0; i < 2; ++i) {\n    for (int j = 0; j < 6; ++j) {\n        std::cout << x[i][j] << \" \";\n    }\n}\n// Outputs: 1 2 3 4 5 6 6 5 4 3 2 1"
             }
         },
         "cpp-conditionals": {
             "If節": {
                 "title": "Mệnh đề If",
-                "description": "Câu lệnh if cơ bản"
+                "description": "Câu lệnh if cơ bản",
+                "code": "if (a == 10) {\n    // do something\n}"
             },
             "If-Else": {
                 "title": "If-Else",
-                "description": "Câu lệnh if-else"
+                "description": "Câu lệnh if-else",
+                "code": "int number = 16;\n\nif (number % 2 == 0)\n{\n    std::cout << \"even\";\n}\nelse\n{\n    std::cout << \"odd\";\n}\n\n// Outputs: even"
             },
             "Else if文": {
                 "title": "Câu lệnh Else if",
-                "description": "Chuỗi else-if"
+                "description": "Chuỗi else-if",
+                "code": "int score = 99;\nif (score == 100) {\n    std::cout << \"Superb\";\n}\nelse if (score >= 90) {\n    std::cout << \"Excellent\";\n}\nelse if (score >= 80) {\n    std::cout << \"Very Good\";\n}\nelse if (score >= 70) {\n    std::cout << \"Good\";\n}\nelse if (score >= 60)\n    std::cout << \"OK\";\nelse\n    std::cout << \"What?\";"
             },
             "関係演算子": {
                 "title": "Toán tử quan hệ",
-                "description": "Bảng toán tử quan hệ"
+                "description": "Bảng toán tử quan hệ",
+                "code": "| a == b | a is equal to b              |\n| a != b | a is NOT equal to b          |\n| a < b  | a is less than b             |\n| a > b  | a is greater b               |\n| a <= b | a is less than or equal to b |\n| a >= b | a is greater or equal to b   |"
             },
             "代入演算子": {
                 "title": "Toán tử gán",
-                "description": "Bảng toán tử gán"
+                "description": "Bảng toán tử gán",
+                "code": "| Example | Equivalent to    |\n| ------- | ---------------- |\n| a += b  | Aka a = a + b  |\n| a -= b  | Aka a = a - b  |\n| a *= b  | Aka a = a * b  |\n| a /= b  | Aka a = a / b  |\n| a %= b  | Aka a = a % b  |"
             },
             "論理演算子": {
                 "title": "Toán tử logic",
-                "description": "Bảng toán tử logic"
+                "description": "Bảng toán tử logic",
+                "code": "| Example       | Meaning               |\n| ------------- | --------------------- |\n| exp1 && exp2  | Both are true (AND) |\n| exp1 || exp2 | Either is true (OR) |\n| !exp          | exp is false (NOT)  |"
             },
             "ビット演算子": {
                 "title": "Toán tử bit",
-                "description": "Bảng toán tử bit"
+                "description": "Bảng toán tử bit",
+                "code": "| Operator | Description             |\n| -------- | ----------------------- |\n| a & b    | Binary AND              |\n| a | b    | Binary OR               |\n| a ^ b    | Binary XOR              |\n| ~ a      | Binary One's Complement |\n| a << b   | Binary Shift Left       |\n| a >> b   | Binary Shift Right      |"
             },
             "三項演算子": {
                 "title": "Toán tử 3 ngôi",
-                "description": "Toán tử điều kiện 3 ngôi"
+                "description": "Toán tử điều kiện 3 ngôi",
+                "code": "int x = 3, y = 5, max;\nmax = (x > y) ? x : y;\n\n// Outputs: 5\nstd::cout << max << std::endl;"
             }
         },
         "cpp-loops": {
             "Forループ": {
                 "title": "Vòng lặp For",
-                "description": "Vòng lặp for cơ bản"
+                "description": "Vòng lặp for cơ bản",
+                "code": "for (int i = 0; i < 10; i++) {\n    std::cout << i << \"\\n\";\n}"
             },
             "Whileループ": {
                 "title": "Vòng lặp While",
-                "description": "Vòng lặp while"
+                "description": "Vòng lặp while",
+                "code": "int i = 0;\nwhile (i < 5) {\n    std::cout << i << \" \";\n    i++;\n}"
             },
             "Do-Whileループ": {
                 "title": "Vòng lặp Do-While",
-                "description": "Vòng lặp do-while"
+                "description": "Vòng lặp do-while",
+                "code": "int i = 0;\ndo {\n    std::cout << i << \" \";\n    i++;\n} while (i < 5);"
             },
             "範囲ベースForループ": {
                 "title": "Vòng lặp For theo phạm vi",
-                "description": "Vòng lặp for theo phạm vi (C++11)"
+                "description": "Vòng lặp for theo phạm vi (C++11)",
+                "code": "std::array<int, 5> arr = {1, 2, 3, 4, 5};\nfor (int x : arr) {\n    std::cout << x << \" \";\n}"
             },
             "BreakとContinue": {
                 "title": "Break và Continue",
-                "description": "Câu lệnh break và continue"
+                "description": "Câu lệnh break và continue",
+                "code": "for (int i = 0; i < 10; i++) {\n    if (i == 5) break;\n    if (i % 2 == 0) continue;\n    std::cout << i << \" \";\n}"
             }
         },
         "cpp-functions": {
             "関数の宣言": {
                 "title": "Khai báo hàm",
-                "description": "Khai báo và định nghĩa hàm"
+                "description": "Khai báo và định nghĩa hàm",
+                "code": "#include <iostream>\n \nvoid hello(); // Declaring\n \nint main() {  // main function\n    hello();    // Calling\n}\n \nvoid hello() { // Defining\n    std::cout << \"Hello Kizamu!\\n\";\n}"
             },
             "関数のパラメータ": {
                 "title": "Tham số hàm",
-                "description": "Hàm với tham số"
+                "description": "Hàm với tham số",
+                "code": "int add(int a, int b) {\n    return a + b;\n}\n\nint result = add(5, 3);\nstd::cout << result; // Outputs: 8"
             },
             "デフォルトパラメータ": {
                 "title": "Tham số mặc định",
-                "description": "Tham số hàm mặc định"
+                "description": "Tham số hàm mặc định",
+                "code": "int multiply(int a, int b = 2) {\n    return a * b;\n}\n\nmultiply(5);    // Returns 10\nmultiply(5, 3); // Returns 15"
             },
             "関数のオーバーロード": {
                 "title": "Nạp chồng hàm",
-                "description": "Nạp chồng hàm"
+                "description": "Nạp chồng hàm",
+                "code": "int add(int a, int b) {\n    return a + b;\n}\n\ndouble add(double a, double b) {\n    return a + b;\n}"
             },
             "参照渡し": {
                 "title": "Truyền tham chiếu",
-                "description": "Truyền tham số bằng tham chiếu"
+                "description": "Truyền tham số bằng tham chiếu",
+                "code": "void swap(int& a, int& b) {\n    int temp = a;\n    a = b;\n    b = temp;\n}\n\nint x = 5, y = 10;\nswap(x, y);\n// x = 10, y = 5"
             },
             "ポインタ渡し": {
                 "title": "Truyền con trỏ",
-                "description": "Truyền tham số bằng con trỏ"
+                "description": "Truyền tham số bằng con trỏ",
+                "code": "void increment(int* ptr) {\n    (*ptr)++;\n}\n\nint num = 5;\nincrement(&num);\n// num is now 6"
             }
         },
         "cpp-classes": {
             "クラスの定義": {
                 "title": "Định nghĩa lớp",
-                "description": "Định nghĩa lớp cơ bản"
+                "description": "Định nghĩa lớp cơ bản",
+                "code": "class MyClass {\n  public:             // Access specifier\n    int myNum;        // Attribute (int variable)\n    string myString;  // Attribute (string variable)\n};"
             },
             "オブジェクトの作成": {
                 "title": "Tạo đối tượng",
-                "description": "Tạo và sử dụng đối tượng"
+                "description": "Tạo và sử dụng đối tượng",
+                "code": "MyClass myObj;  // Create an object of MyClass\n\nmyObj.myNum = 15;          // Set the value of myNum to 15\nmyObj.myString = \"Hello\";  // Set the value of myString to \"Hello\"\n\ncout << myObj.myNum << endl;         // Output 15\ncout << myObj.myString << endl;      // Output \"Hello\""
             },
             "コンストラクタ": {
                 "title": "Constructor",
-                "description": "Constructor của lớp"
+                "description": "Constructor của lớp",
+                "code": "class MyClass {\n  public:\n    int myNum;\n    string myString;\n    MyClass() {  // Constructor\n      myNum = 0;\n      myString = \"\";\n    }\n};\n\nMyClass myObj;  // Create an object of MyClass\n\ncout << myObj.myNum << endl;         // Output 0\ncout << myObj.myString << endl;      // Output \"\""
             },
             "デストラクタ": {
                 "title": "Destructor",
-                "description": "Destructor của lớp"
+                "description": "Destructor của lớp",
+                "code": "class MyClass {\n  public:\n    int myNum;\n    string myString;\n    MyClass() {  // Constructor\n      myNum = 0;\n      myString = \"\";\n    }\n    ~MyClass() {  // Destructor\n      cout << \"Object destroyed.\" << endl;\n    }\n};\n\nMyClass myObj;  // Create an object of MyClass\n\n// Code here...\n\n// Object is destroyed automatically when the program exits the scope"
             },
             "クラスのメソッド": {
                 "title": "Phương thức lớp",
-                "description": "Phương thức của lớp"
+                "description": "Phương thức của lớp",
+                "code": "class MyClass {\n  public:\n    int myNum;\n    string myString;\n    void myMethod() {  // Method/function defined inside the class\n      cout << \"Hello World!\" << endl;\n    }\n};\n\nMyClass myObj;  // Create an object of MyClass\nmyObj.myMethod();  // Call the method"
             },
             "アクセス修飾子": {
                 "title": "Access Modifier",
-                "description": "Các access modifier"
+                "description": "Các access modifier",
+                "code": "class MyClass {\n  public:     // Public access specifier\n    int x;    // Public attribute\n  private:    // Private access specifier\n    int y;    // Private attribute\n  protected:  // Protected access specifier\n    int z;    // Protected attribute\n};\n\nMyClass myObj;\nmyObj.x = 25;  // Allowed (public)\nmyObj.y = 50;  // Not allowed (private)\nmyObj.z = 75;  // Not allowed (protected)"
             },
             "ゲッターとセッター": {
                 "title": "Getter và Setter",
-                "description": "Phương thức getter và setter"
+                "description": "Phương thức getter và setter",
+                "code": "class MyClass {\n  private:\n    int myNum;\n  public:\n    void setMyNum(int num) {  // Setter\n      myNum = num;\n    }\n    int getMyNum() {  // Getter\n      return myNum;\n    }\n};\n\nMyClass myObj;\nmyObj.setMyNum(15);  // Set the value of myNum to 15\ncout << myObj.getMyNum() << endl;  // Output 15"
             },
             "継承": {
                 "title": "Kế thừa",
-                "description": "Kế thừa lớp"
+                "description": "Kế thừa lớp",
+                "code": "class Vehicle {\n  public:\n    string brand = \"Ford\";\n    void honk() {\n      cout << \"Tuut, tuut!\" << endl;\n    }\n};\n\nclass Car : public Vehicle {\n  public:\n    string model = \"Mustang\";\n};\n\nCar myCar;\nmyCar.honk();  // Output \"Tuut, tuut!\"\ncout << myCar.brand + \" \" + myCar.model << endl;  // Output \"Ford Mustang\""
             }
         },
         "cpp-preprocessor": {
             "インクルード": {
                 "title": "Include",
-                "description": "Chỉ thị include"
+                "description": "Chỉ thị include",
+                "code": "#include \"iostream\"\n#include <iostream>"
             },
             "定義": {
                 "title": "Define",
-                "description": "Định nghĩa và hủy định nghĩa macro"
+                "description": "Định nghĩa và hủy định nghĩa macro",
+                "code": "#define FOO\n#define FOO \"hello\"\n\n#undef FOO"
             },
             "If": {
                 "title": "If",
-                "description": "Biên dịch có điều kiện"
+                "description": "Biên dịch có điều kiện",
+                "code": "#ifdef DEBUG\n  console.log('hi');\n#elif defined VERBOSE\n  ...\n#else\n  ...\n#endif"
             },
             "エラー": {
                 "title": "Error",
-                "description": "Chỉ thị error và warning"
+                "description": "Chỉ thị error và warning",
+                "code": "#if VERSION == 2.0\n  #error Unsupported\n  #warning Not really supported\n#endif"
             },
             "マクロ": {
                 "title": "Macro",
-                "description": "Macro kiểu hàm"
+                "description": "Macro kiểu hàm",
+                "code": "#define DEG(x) ((x) * 57.29)"
             },
             "トークン連結": {
                 "title": "Nối token",
-                "description": "Nối token"
+                "description": "Nối token",
+                "code": "#define DST(name) name##_s name##_t\nDST(object);   #=> object_s object_t;"
             },
             "文字列化": {
                 "title": "Chuỗi hóa",
-                "description": "Macro chuỗi hóa"
+                "description": "Macro chuỗi hóa",
+                "code": "#define STR(name) #name\nchar * a = STR(object);   #=> char * a = \"object\";"
             },
             "__FILE__と__LINE__": {
                 "title": "__FILE__ và __LINE__",
-                "description": "Macro file và dòng"
+                "description": "Macro file và dòng",
+                "code": "#define LOG(msg) console.log(__FILE__, __LINE__, msg)\n#=> console.log(\"file.txt\", 3, \"hey\")"
             }
         },
         "miscellaneous": {
             "エスケープシーケンス": {
                 "title": "Escape Sequence",
-                "description": "Bảng escape sequence"
+                "description": "Bảng escape sequence",
+                "code": "| Escape Sequences | Characters            |\n| ---------------- | --------------------- |\n| \\b              | Backspace             |\n| \\f              | Form feed             |\n| \\n              | Newline               |\n| \\r              | Return                |\n| \\t              | Horizontal tab        |\n| \\v              | Vertical tab          |\n| \\\\              | Backslash             |\n| \\'              | Single quotation mark |\n| \\\"              | Double quotation mark |\n| \\?              | Question mark         |\n| \\0              | Null Character        |"
             },
             "キーワード": {
                 "title": "Từ khóa",
-                "description": "Danh sách từ khóa C++"
+                "description": "Danh sách từ khóa C++",
+                "code": "alignas, alignof, and, and_eq, asm, auto, bitand, bitor, bool, break, case, catch, char, char8_t, char16_t, char32_t, class, compl, concept, const, consteval, constexpr, constinit, const_cast, continue, co_await, co_return, co_yield, decltype, default, delete, do, double, dynamic_cast, else, enum, explicit, export, extern, false, float, for, friend, goto, if, inline, int, long, mutable, namespace, new, noexcept, not, not_eq, nullptr, operator, or, or_eq, private, protected, public, reflexpr, register, reinterpret_cast, requires, return, short, signed, sizeof, static, static_assert, static_cast, struct, switch, synchronized, template, this, thread_local, throw, true, try, typedef, typeid, typename, union, unsigned, using, virtual, void, volatile, wchar_t, while, xor, xor_eq, final, override"
             }
         }
     }

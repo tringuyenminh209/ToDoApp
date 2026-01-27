@@ -35,153 +35,188 @@
         "getting-started": {
             "Hello HTML": {
                 "title": "Hello HTML",
-                "description": "Cấu trúc boilerplate HTML5 cơ bản"
+                "description": "Cấu trúc boilerplate HTML5 cơ bản",
+                "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>HTML5 Boilerplate</title>\n</head>\n<body>\n    <h1>Hello world, hello Kizamu!</h1>\n</body>\n</html>"
             },
             "コメント": {
                 "title": "Chú thích",
-                "description": "Cú pháp chú thích một dòng và nhiều dòng"
+                "description": "Cú pháp chú thích một dòng và nhiều dòng",
+                "code": "<!-- this is a comment -->\n\n<!--\n    Or you can comment out a\n    large number of lines.\n-->"
             },
             "段落": {
                 "title": "Đoạn văn",
-                "description": "Phần tử đoạn văn bản"
+                "description": "Phần tử đoạn văn bản",
+                "code": "<p>I'm from Kizamu</p>\n<p>Share reference cheat sheet.</p>"
             },
             "HTMLリンク": {
                 "title": "Link HTML",
-                "description": "Các loại link bao gồm email, điện thoại và SMS"
+                "description": "Các loại link bao gồm email, điện thoại và SMS",
+                "code": "<a href=\"https://Kizamu.com\">Kizamu</a>\n<a href=\"mailto:email@example.com\">Email</a>\n<a href=\"tel:+12345678\">Call</a>\n<a href=\"sms:+12345678&body=ha%20ha\">Msg</a>"
             },
             "画像タグ": {
                 "title": "Thẻ hình ảnh",
-                "description": "Phần tử hình ảnh với lazy loading và thuộc tính alt"
+                "description": "Phần tử hình ảnh với lazy loading và thuộc tính alt",
+                "code": "<img loading=\"lazy\" src=\"https://xxx.png\" alt=\"Describe image here\" width=\"400\" height=\"400\">"
             },
             "テキストフォーマット": {
                 "title": "Định dạng văn bản",
-                "description": "Các thẻ nhấn mạnh và định dạng văn bản"
+                "description": "Các thẻ nhấn mạnh và định dạng văn bản",
+                "code": "<b>Bold Text</b>\n<strong>This text is important</strong>\n<i>Italic Text</i>\n<em>This text is emphasized</em>\n<u>Underline Text</u>\n<pre>Pre-formatted Text</pre>\n<code>Source code</code>\n<del>Deleted text</del>\n<mark>Highlighted text (HTML5)</mark>\n<ins>Inserted text</ins>\n<sup>Makes text superscripted</sup>\n<sub>Makes text subscripted</sub>\n<small>Makes text smaller</small>\n<kbd>Ctrl</kbd>\n<blockquote>Text Block Quote</blockquote>"
             },
             "見出し": {
                 "title": "Tiêu đề",
-                "description": "6 cấp độ tiêu đề (H1-H6)"
+                "description": "6 cấp độ tiêu đề (H1-H6)",
+                "code": "<h1> This is Heading 1 </h1>\n<h2> This is Heading 2 </h2>\n<h3> This is Heading 3 </h3>\n<h4> This is Heading 4 </h4>\n<h5> This is Heading 5 </h5>\n<h6> This is Heading 6 </h6>"
             },
             "セクション分割": {
                 "title": "Phân chia Section",
-                "description": "Các phần tử container để tổ chức nội dung: div, span, p, br, hr"
+                "description": "Các phần tử container để tổ chức nội dung: div, span, p, br, hr",
+                "code": "<div>Division or Section</div>\n<span>Section of text within content</span>\n<p>Paragraph of Text</p>\n<br>\n<hr>"
             },
             "インラインフレーム": {
                 "title": "Iframe",
-                "description": "Nội dung nhúng trong trang web"
+                "description": "Nội dung nhúng trong trang web",
+                "code": "<iframe title=\"New York\"\n    width=\"342\"\n    height=\"306\"\n    id=\"gmap_canvas\"\n    src=\"https://maps.google.com/maps?q=2880%20Broadway,%20New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed\"\n    scrolling=\"no\">\n</iframe>"
             },
             "HTML内のJavaScript": {
                 "title": "JavaScript trong HTML",
-                "description": "Thẻ script nhúng cho code JavaScript"
+                "description": "Thẻ script nhúng cho code JavaScript",
+                "code": "<script type=\"text/javascript\">\n    let text = \"Hello Kizamu\";\n    alert(text);\n</script>"
             },
             "HTML内のCSS": {
                 "title": "CSS trong HTML",
-                "description": "Stylesheet nhúng cho CSS"
+                "description": "Stylesheet nhúng cho CSS",
+                "code": "<style type=\"text/css\">\n    h1 {\n        color: purple;\n    }\n</style>"
             }
         },
         "html5-tags": {
             "ドキュメント構造": {
                 "title": "Cấu trúc Document",
-                "description": "Các phần tử layout ngữ nghĩa: header, nav, main, footer"
+                "description": "Các phần tử layout ngữ nghĩa: header, nav, main, footer",
+                "code": "<body>\n  <header>\n    <nav>...</nav>\n  </header>\n  <main>\n    <h1>Kizamu</h1>\n  </main>\n  <footer>\n    <p>©2023 Kizamu</p>\n  </footer>\n</body>"
             },
             "ヘッダーナビゲーション": {
                 "title": "Navigation Header",
-                "description": "Menu navigation trong phần tử header"
+                "description": "Menu navigation trong phần tử header",
+                "code": "<header>\n  <nav>\n    <ul>\n      <li><a href=\"#\">Edit Page</a></li>\n      <li><a href=\"#\">Twitter</a></li>\n      <li><a href=\"#\">Facebook</a></li>\n    </ul>\n  </nav>\n</header>"
             },
             "HTML5動画": {
                 "title": "Video HTML5",
-                "description": "Nhúng video với controls và thông báo fallback"
+                "description": "Nhúng video với controls và thông báo fallback",
+                "code": "<video controls=\"\" width=\"100%\">\n    <source src=\"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4\" type=\"video/mp4\">\n    Sorry, your browser doesn't support embedded videos.\n</video>"
             },
             "HTML5音声": {
                 "title": "Audio HTML5",
-                "description": "Nhúng audio với controls"
+                "description": "Nhúng audio với controls",
+                "code": "<audio controls\n    src=\"https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3\">\n    Your browser does not support the audio element.\n</audio>"
             },
             "HTML5 Ruby": {
                 "title": "Ruby HTML5",
-                "description": "Ruby annotation cho hướng dẫn phát âm"
+                "description": "Ruby annotation cho hướng dẫn phát âm",
+                "code": "<ruby>\n  汉 <rp>(</rp><rt>hàn</rt><rp>)</rp>\n  字 <rp>(</rp><rt>zì</rt><rp>)</rp>\n</ruby>"
             },
             "HTML5 Progress": {
                 "title": "Progress HTML5",
-                "description": "Phần tử thanh tiến trình"
+                "description": "Phần tử thanh tiến trình",
+                "code": "<progress value=\"50\" max=\"100\"></progress>"
             },
             "HTML5 Mark": {
                 "title": "Mark HTML5",
-                "description": "Phần tử văn bản highlight để nhấn mạnh"
+                "description": "Phần tử văn bản highlight để nhấn mạnh",
+                "code": "<p>I Love <mark>Kizamu</mark></p>"
             }
         },
         "html-tables": {
             "テーブルの例": {
                 "title": "Ví dụ bảng",
-                "description": "Bảng cơ bản với header và body"
+                "description": "Bảng cơ bản với header và body",
+                "code": "<table>\n    <thead>\n        <tr>\n            <td>name</td>\n            <td>age</td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>Roberta</td>\n            <td>39</td>\n        </tr>\n        <tr>\n            <td>Oliver</td>\n            <td>25</td>\n        </tr>\n    </tbody>\n</table>"
             }
         },
         "html-lists": {
             "順序なしリスト": {
                 "title": "Danh sách không thứ tự",
-                "description": "Danh sách có dấu đầu dòng"
+                "description": "Danh sách có dấu đầu dòng",
+                "code": "<ul>\n    <li>I'm an item</li>\n    <li>I'm another item</li>\n    <li>I'm another item</li>\n</ul>"
             },
             "順序付きリスト": {
                 "title": "Danh sách có thứ tự",
-                "description": "Danh sách đánh số"
+                "description": "Danh sách đánh số",
+                "code": "<ol>\n    <li>I'm the first item</li>\n    <li>I'm the second item</li>\n    <li>I'm the third item</li>\n</ol>"
             },
             "定義リスト": {
                 "title": "Danh sách định nghĩa",
-                "description": "Thuật ngữ và định nghĩa của chúng"
+                "description": "Thuật ngữ và định nghĩa của chúng",
+                "code": "<dl>\n    <dt>A Term</dt>\n    <dd>Definition of a term</dd>\n    <dt>Another Term</dt>\n    <dd>Definition of another term</dd>\n</dl>"
             }
         },
         "html-forms": {
             "フォームタグ": {
                 "title": "Thẻ Form",
-                "description": "Form hoàn chỉnh thu thập email, password và checkbox"
+                "description": "Form hoàn chỉnh thu thập email, password và checkbox",
+                "code": "<form method=\"POST\" action=\"api/login\">\n  <label for=\"mail\">Email: </label>\n  <input type=\"email\" id=\"mail\" name=\"mail\">\n  <br/>\n  <label for=\"pw\">Password: </label>\n  <input type=\"password\" id=\"pw\" name=\"pw\">\n  <br/>\n  <input type=\"submit\" value=\"Login\">\n  <br/>\n  <input type=\"checkbox\" id=\"ck\" name=\"ck\">\n  <label for=\"ck\">Remember me</label>\n</form>"
             },
             "ラベルタグ": {
                 "title": "Thẻ Label",
-                "description": "Mẫu label lồng nhau và tham chiếu cho input form"
+                "description": "Mẫu label lồng nhau và tham chiếu cho input form",
+                "code": "<!-- Nested label -->\n<label>Click me \n<input type=\"text\" id=\"user\" name=\"name\"/>\n</label>\n\n<!-- 'for' attribute -->\n<label for=\"user\">Click me</label>\n<input id=\"user\" type=\"text\" name=\"name\"/>"
             },
             "Textarea": {
                 "title": "Textarea",
-                "description": "Điều khiển nhập văn bản nhiều dòng"
+                "description": "Điều khiển nhập văn bản nhiều dòng",
+                "code": "<textarea rows=\"2\" cols=\"30\" name=\"address\" id=\"address\"></textarea>"
             },
             "ラジオボタン": {
                 "title": "Radio Button",
-                "description": "Chọn đúng một tùy chọn từ nhóm"
+                "description": "Chọn đúng một tùy chọn từ nhóm",
+                "code": "<input type=\"radio\" name=\"gender\" id=\"m\">\n<label for=\"m\">Male</label>\n<input type=\"radio\" name=\"gender\" id=\"f\">\n<label for=\"f\">Female</label>"
             },
             "チェックボックス": {
                 "title": "Checkbox",
-                "description": "Chọn một hoặc nhiều tùy chọn"
+                "description": "Chọn một hoặc nhiều tùy chọn",
+                "code": "<input type=\"checkbox\" name=\"s\" id=\"soc\">\n<label for=\"soc\">Soccer</label>\n<input type=\"checkbox\" name=\"s\" id=\"bas\">\n<label for=\"bas\">Baseball</label>"
             },
             "Selectタグ": {
                 "title": "Thẻ Select",
-                "description": "Danh sách dropdown các tùy chọn"
+                "description": "Danh sách dropdown các tùy chọn",
+                "code": "<label for=\"city\">City:</label>\n<select name=\"city\" id=\"city\">\n    <option value=\"1\">Sydney</option>\n    <option value=\"2\">Melbourne</option>\n    <option value=\"3\">Cromwell</option>\n</select>"
             },
             "Fieldsetタグ": {
                 "title": "Thẻ Fieldset",
-                "description": "Các phần tử form được nhóm với tiêu đề legend"
+                "description": "Các phần tử form được nhóm với tiêu đề legend",
+                "code": "<fieldset>\n    <legend>Your favorite monster</legend>\n    <input type=\"radio\" id=\"kra\" name=\"m\">\n    <label for=\"kraken\">Kraken</label><br/>\n    <input type=\"radio\" id=\"sas\" name=\"m\">\n    <label for=\"sas\">Sasquatch</label>\n</fieldset>"
             },
             "Datalistタグ": {
                 "title": "Thẻ Datalist",
-                "description": "Tùy chọn định sẵn HTML5 cho trường input với autocomplete"
+                "description": "Tùy chọn định sẵn HTML5 cho trường input với autocomplete",
+                "code": "<label for=\"b\">Choose a browser: </label>\n<input list=\"list\" id=\"b\" name=\"browser\"/>\n<datalist id=\"list\">\n  <option value=\"Chrome\">\n  <option value=\"Firefox\">\n  <option value=\"Internet Explorer\">\n  <option value=\"Opera\">\n  <option value=\"Safari\">\n  <option value=\"Microsoft Edge\">\n</datalist>"
             },
             "送信とリセットボタン": {
                 "title": "Nút Submit và Reset",
-                "description": "Điều khiển gửi và reset form"
+                "description": "Điều khiển gửi và reset form",
+                "code": "<form action=\"register.php\" method=\"post\">\n  <label for=\"foo\">Name:</label>\n  <input type=\"text\" name=\"name\" id=\"foo\">\n  <input type=\"submit\" value=\"Submit\">\n  <input type=\"reset\" value=\"Reset\">\n</form>"
             }
         },
         "html-meta-tags": {
             "メタタグ": {
                 "title": "Thẻ Meta",
-                "description": "Metadata cơ bản bao gồm charset, title, URL, description và image"
+                "description": "Metadata cơ bản bao gồm charset, title, URL, description và image",
+                "code": "<meta charset=\"utf-8\">\n<title>···</title>\n<meta property=\"og:title\"  content=\"···\">\n<link rel=\"canonical\" href=\"https://···\">\n<meta name=\"description\" content=\"···\">\n<meta property=\"og:image\" content=\"https://···\">"
             },
             "Open Graph": {
                 "title": "Open Graph",
-                "description": "Metadata mạng xã hội cho Facebook, Instagram, Pinterest, LinkedIn"
+                "description": "Metadata mạng xã hội cho Facebook, Instagram, Pinterest, LinkedIn",
+                "code": "<meta property=\"og:type\" content=\"website\">\n<meta property=\"og:locale\" content=\"en_CA\">\n<meta property=\"og:title\" content=\"HTML cheatsheet\">\n<meta property=\"og:url\" content=\"https://Kizamu.com/html\">\n<meta property=\"og:image\" content=\"https://xxx.com/image.jpg\">\n<meta property=\"og:site_name\" content=\"Name of your website\">\n<meta property=\"og:description\" content=\"Description of this page\">"
             },
             "Twitter Cards": {
                 "title": "Twitter Cards",
-                "description": "Metadata riêng cho Twitter khi chia sẻ nội dung"
+                "description": "Metadata riêng cho Twitter khi chia sẻ nội dung",
+                "code": "<meta name=\"twitter:card\" content=\"summary\">\n<meta name=\"twitter:site\" content=\"@FechinLi\">\n<meta name=\"twitter:title\" content=\"HTML cheatsheet\">\n<meta name=\"twitter:url\" content=\"https://Kizamu.com/html\">\n<meta name=\"twitter:description\" content=\"Description of this page\">\n<meta name=\"twitter:image\" content=\"https://xxx.com/image.jpg\">"
             },
             "ジオタギング": {
                 "title": "Geotagging",
-                "description": "Metadata vị trí địa lý cho nội dung"
+                "description": "Metadata vị trí địa lý cho nội dung",
+                "code": "<meta name=\"ICBM\" content=\"45.416667,-75.7\">\n<meta name=\"geo.position\" content=\"45.416667;-75.7\">\n<meta name=\"geo.region\" content=\"ca-on\">\n<meta name=\"geo.placename\" content=\"Ottawa\">"
             }
         }
     }

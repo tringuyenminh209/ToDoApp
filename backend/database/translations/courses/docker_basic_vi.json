@@ -8,6 +8,10 @@
         "Docker実践マスターコース": {
             "title": "Khóa học Docker Master",
             "description": "Khóa học Docker hoàn chỉnh từ cơ bản đến thực tế sử dụng môi trường WSL2 + Docker Desktop. Thành thạo containerization, CI/CD, bảo mật và giám sát trong 12 tuần."
+        },
+        "Docker基礎": {
+            "title": "Khóa học Docker Master",
+            "description": "Khóa học Docker hoàn chỉnh từ cơ bản đến thực tế sử dụng môi trường WSL2 + Docker Desktop. Thành thạo containerization, CI/CD, bảo mật và giám sát trong 12 tuần."
         }
     },
     "milestones": {
