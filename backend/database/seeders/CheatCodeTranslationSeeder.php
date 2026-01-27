@@ -71,14 +71,20 @@ class CheatCodeTranslationSeeder extends Seeder
 
         $this->command->info("Importing {$language} ({$locale}) translations...");
 
+        $langModel = CheatCodeLanguage::where('name', $language)->first();
+        if (!$langModel) {
+            $this->command->warn("Language not found in DB: {$language}");
+            return;
+        }
+
         // Import language translations
         $this->importLanguageTranslations($translations, $locale);
         
-        // Import section translations
-        $this->importSectionTranslations($translations, $locale);
+        // Import section translations (scoped by language to avoid wrong section when slugs overlap)
+        $this->importSectionTranslations($translations, $locale, $langModel->id);
         
-        // Import example translations
-        $this->importExampleTranslations($translations, $locale);
+        // Import example translations (section lookup scoped by language)
+        $this->importExampleTranslations($translations, $locale, $langModel->id);
     }
 
     /**
@@ -108,18 +114,21 @@ class CheatCodeTranslationSeeder extends Seeder
 
     /**
      * Import section translations
+     * Section は slug が複数言語で重複するため、language_id でスコープする
      */
-    protected function importSectionTranslations(array $translations, string $locale): void
+    protected function importSectionTranslations(array $translations, string $locale, int $languageId): void
     {
         if (!isset($translations['sections'])) {
             return;
         }
 
         foreach ($translations['sections'] as $sectionSlug => $fields) {
-            $section = CheatCodeSection::where('slug', $sectionSlug)->first();
+            $section = CheatCodeSection::where('slug', $sectionSlug)
+                ->where('language_id', $languageId)
+                ->first();
             
             if (!$section) {
-                $this->command->warn("Section not found: {$sectionSlug}");
+                $this->command->warn("Section not found: {$sectionSlug} (language_id={$languageId})");
                 continue;
             }
 
@@ -133,8 +142,9 @@ class CheatCodeTranslationSeeder extends Seeder
 
     /**
      * Import example translations
+     * Section は slug が複数言語で重複するため、language_id で正しいセクションを取得する
      */
-    protected function importExampleTranslations(array $translations, string $locale): void
+    protected function importExampleTranslations(array $translations, string $locale, int $languageId): void
     {
         if (!isset($translations['examples'])) {
             return;
@@ -143,7 +153,9 @@ class CheatCodeTranslationSeeder extends Seeder
         $importedCount = 0;
 
         foreach ($translations['examples'] as $sectionSlug => $examples) {
-            $section = CheatCodeSection::where('slug', $sectionSlug)->first();
+            $section = CheatCodeSection::where('slug', $sectionSlug)
+                ->where('language_id', $languageId)
+                ->first();
             
             if (!$section) {
                 continue;
