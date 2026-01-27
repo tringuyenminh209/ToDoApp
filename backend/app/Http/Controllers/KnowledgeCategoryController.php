@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KnowledgeCategory;
 use App\Models\KnowledgeItem;
+use Database\Seeders\KnowledgeCategorySeeder;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
@@ -20,6 +21,16 @@ class KnowledgeCategoryController extends Controller
     {
         $user = $request->user();
 
+        try {
+            KnowledgeCategorySeeder::ensureDefaultsForUser($user);
+        } catch (\Throwable $e) {
+            Log::warning('KnowledgeCategorySeeder::ensureDefaultsForUser failed', [
+                'user_id' => $user->id,
+                'message' => $e->getMessage(),
+            ]);
+            // 失敗しても既存カテゴリは返す
+        }
+
         $categories = KnowledgeCategory::where('user_id', $user->id)
             ->withTranslations()
             ->with(['parent' => function ($q) {
@@ -28,10 +39,7 @@ class KnowledgeCategoryController extends Controller
                 $q->withTranslations();
             }])
             ->ordered()
-            ->get()
-            ->map(function ($category) {
-                return $category->toArrayWithTranslations();
-            });
+            ->get();
 
         // Get item counts for all categories in one query (more efficient)
         $categoryIds = $categories->pluck('id');
@@ -41,14 +49,16 @@ class KnowledgeCategoryController extends Controller
             ->selectRaw('category_id, count(*) as count')
             ->pluck('count', 'category_id');
 
-        // Update item_count for each category
+        // Set item_count on each model, then convert to array for response
         $categories->each(function ($category) use ($itemCounts) {
             $category->item_count = $itemCounts->get($category->id, 0);
         });
 
+        $data = $categories->map(fn ($category) => $category->toArrayWithTranslations());
+
         return response()->json([
             'success' => true,
-            'data' => $categories,
+            'data' => $data,
             'message' => 'Categories retrieved successfully'
         ]);
     }
@@ -60,6 +70,15 @@ class KnowledgeCategoryController extends Controller
     public function tree(Request $request): JsonResponse
     {
         $user = $request->user();
+
+        try {
+            KnowledgeCategorySeeder::ensureDefaultsForUser($user);
+        } catch (\Throwable $e) {
+            Log::warning('KnowledgeCategorySeeder::ensureDefaultsForUser failed', [
+                'user_id' => $user->id,
+                'message' => $e->getMessage(),
+            ]);
+        }
 
         // Get all categories for this user
         $allCategories = KnowledgeCategory::where('user_id', $user->id)

@@ -50,6 +50,34 @@ class KnowledgeCategorySeeder extends Seeder
     }
 
     /**
+     * 指定ユーザーにカテゴリが1件もない場合のみ、デフォルト知識カテゴリを作成する。
+     * API から呼び出し、ログインユーザーが「最初のユーザー」でなくても知識が空にならないようにする。
+     *
+     * @return bool 作成した場合 true、既に存在して何もしない場合 false
+     */
+    public static function ensureDefaultsForUser(User $user): bool
+    {
+        if (KnowledgeCategory::where('user_id', $user->id)->exists()) {
+            return false;
+        }
+
+        $instance = new self();
+        $categories = $instance->getCategoryStructure($user->id);
+
+        DB::beginTransaction();
+        try {
+            foreach ($categories as $category) {
+                $instance->createCategory($category);
+            }
+            DB::commit();
+            return true;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    /**
      * 子カテゴリを再帰的に作成します
      */
     private function createCategory(array $data, ?int $parentId = null): KnowledgeCategory
@@ -73,7 +101,7 @@ class KnowledgeCategorySeeder extends Seeder
     /**
      * 完全なカテゴリ構造を取得します
      */
-    private function getCategoryStructure(int $userId): array
+    protected function getCategoryStructure(int $userId): array
     {
         return [
             // 1. プログラミング言語

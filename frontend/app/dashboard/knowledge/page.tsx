@@ -54,37 +54,32 @@ export default function KnowledgePage() {
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      
+
       const categoryResponse = await knowledgeService.getCategories();
-      let categories: KnowledgeCategory[] = [];
-      if (categoryResponse.success && categoryResponse.data) {
-        categories = Array.isArray(categoryResponse.data.data) 
-          ? categoryResponse.data.data 
-          : (Array.isArray(categoryResponse.data) ? categoryResponse.data : []);
-      } else if (Array.isArray(categoryResponse.data)) {
-        categories = categoryResponse.data;
-      }
-      
+      const rawCategories = (categoryResponse as { success?: boolean; data?: unknown })?.data ?? categoryResponse;
+      const categories: KnowledgeCategory[] = Array.isArray((rawCategories as { data?: unknown })?.data)
+        ? ((rawCategories as { data: KnowledgeCategory[] }).data)
+        : Array.isArray(rawCategories)
+          ? (rawCategories as KnowledgeCategory[])
+          : [];
       setAllCategories(categories);
 
-      // Load all knowledge items
-      const params: any = {};
+      const params: Record<string, string> = {};
       if (filterType) params.type = filterType;
       if (searchQuery) params.search = searchQuery;
 
       const itemsResponse = await knowledgeService.getKnowledgeItems(params);
-      let items: KnowledgeItem[] = [];
-      if (itemsResponse.success && itemsResponse.data) {
-        items = Array.isArray(itemsResponse.data.data) 
-          ? itemsResponse.data.data 
-          : (Array.isArray(itemsResponse.data) ? itemsResponse.data : []);
-      } else if (Array.isArray(itemsResponse.data)) {
-        items = itemsResponse.data;
-      }
-      
+      const rawItems = (itemsResponse as { success?: boolean; data?: unknown })?.data ?? itemsResponse;
+      const items: KnowledgeItem[] = Array.isArray((rawItems as { data?: unknown })?.data)
+        ? ((rawItems as { data: KnowledgeItem[] }).data)
+        : Array.isArray(rawItems)
+          ? (rawItems as KnowledgeItem[])
+          : [];
       setAllItems(items);
     } catch (error) {
-      console.error('Failed to load data:', error);
+      console.error('Knowledge loadData failed:', error);
+      setAllCategories([]);
+      setAllItems([]);
     } finally {
       setLoading(false);
     }
