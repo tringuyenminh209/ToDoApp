@@ -82,39 +82,157 @@
     "tasks": {
         "第1回：フィールド": {
             "title": "Buổi 1: Fields",
-            "description": "Định nghĩa và sử dụng field (class variable), phạm vi biến"
+            "description": "Định nghĩa và sử dụng field (class variable), phạm vi biến",
+            "subtasks": {
+                "フィールドの基本定義": "Định nghĩa cơ bản field",
+                "public staticフィールドの使い方": "Cách dùng public static field",
+                "フィールドのスコープを理解": "Hiểu phạm vi field",
+                "実践問題：のび太のおつかい": "Bài tập: Việc vặt của Nobita"
+            },
+            "knowledge_items": {
+                "フィールドとは": { "title": "Field là gì", "content": "Biến khai báo ở mức class (ngoài method). Mọi method trong class đều dùng được. static = biến class; không static = biến instance." },
+                "スコープ（変数の有効範囲）": { "title": "Phạm vi biến", "content": "Local: chỉ trong khối. Field: cả class. Thu hẹp phạm vi tối đa." },
+                "フィールドとローカル変数の違い": { "title": "Field và biến local", "content": "Field dùng chung qua các lần gọi method; local được tạo lại mỗi lần." },
+                "フィールドの基本例": { "title": "Ví dụ field cơ bản", "content": "public static int sum; add(x), subtract(x); dùng từ main với Scanner." },
+                "フィールドのデフォルト値": { "title": "Giá trị mặc định field", "content": "Số = 0, boolean = false, tham chiếu = null. Biến local KHÔNG tự khởi tạo." },
+                "実践例：のび太のおつかい": { "title": "Thực hành: Việc vặt Nobita", "content": "Field money; buy(name,price); kiểm tra số dư, trừ tiền hoặc báo thiếu." }
+            }
         },
         "第2回：クラス": {
             "title": "Buổi 2: Classes",
-            "description": "Classes và instances, khái niệm cơ bản về lập trình hướng đối tượng"
+            "description": "Classes và instances, khái niệm cơ bản OOP",
+            "subtasks": {
+                "クラスの定義": "Định nghĩa class",
+                "インスタンスの生成": "Tạo instance",
+                "メソッドの定義と呼び出し": "Định nghĩa và gọi method",
+                "実践問題：Accountクラス、Monsterクラス": "Bài tập: class Account, Monster"
+            },
+            "knowledge_items": {
+                "オブジェクト指向プログラミング（OOP）": { "title": "Lập trình hướng đối tượng", "content": "Đóng gói, kế thừa, đa hình, trừu tượng. Tái sử dụng, dễ bảo trì, mở rộng." },
+                "クラスとは": { "title": "Class là gì", "content": "Bản thiết kế gồm field và method. new ClassName() tạo instance. CamelCase, danh từ." },
+                "クラスの定義と使用例": { "title": "Định nghĩa và ví dụ class", "content": "Monster có name, hp, attack; introduce(), attackEnemy(). Main: new Monster(), gán field, gọi method." },
+                "基本型と参照型の違い": { "title": "Kiểu cơ bản và tham chiếu", "content": "Cơ bản: giá trị trong biến. Tham chiếu: địa chỉ object. == so sánh tham chiếu với object." },
+                "参照型の動作例": { "title": "Hành vi kiểu tham chiếu", "content": "pika=rai làm cả hai trỏ cùng object; sửa một ảnh hưởng cái kia." },
+                "実践例：Accountクラス": { "title": "Thực hành: class Account", "content": "accountNumber, owner, balance; deposit(), withdraw(), showBalance()." },
+                "nullとNullPointerException": { "title": "null và NPE", "content": "null = không tham chiếu. Gọi method trên null gây NPE. Kiểm tra != null hoặc luôn khởi tạo." },
+                "thisキーワードの使い方": { "title": "Cách dùng this", "content": "this.field để phân biệt với tham số; return this để chain; gọi method khác trong cùng class." }
+            }
         },
         "第3回：コンストラクタとカプセル化": {
             "title": "Buổi 3: Constructors và Đóng gói",
-            "description": "Định nghĩa constructor, access modifiers, đóng gói"
+            "description": "Định nghĩa constructor, access modifiers, đóng gói",
+            "subtasks": {
+                "コンストラクタの定義": "Định nghĩa constructor",
+                "private修飾子とカプセル化": "private và đóng gói",
+                "getter/setterメソッド": "Method getter/setter",
+                "実践問題：SecretNumberクラス、Heroクラス": "Bài tập: class SecretNumber, Hero"
+            },
+            "knowledge_items": {
+                "コンストラクタとは": { "title": "Constructor là gì", "content": "Trùng tên class, không kiểu trả về; chạy một lần khi new. Constructor mặc định chỉ khi không định nghĩa cái nào." },
+                "コンストラクタの種類と使い方": { "title": "Loại và cách dùng constructor", "content": "Không đối, có đối, chain bằng this(...). Dòng đầu phải là super() hoặc this()." },
+                "カプセル化とは": { "title": "Đóng gói là gì", "content": "Ẩn field bằng private; mở qua getter/setter public. Dùng access modifier. Kiểm tra trong setter." },
+                "カプセル化の実装例": { "title": "Ví dụ đóng gói", "content": "Field private; get/set có kiểm tra biên; throw IllegalArgumentException khi giá trị sai." },
+                "実践例：SecretNumberクラス": { "title": "Thực hành: SecretNumber", "content": "Số bí mật random, attemptCount; guess(n), getAttemptCount(), reveal(). Không setter cho secret." },
+                "getter/setterのベストプラクティス": { "title": "Best practice getter/setter", "content": "getName/setName; kiểm tra trong setter; isXxx cho boolean; trả bản copy cho collection." }
+            }
         },
         "第4回：インスタンスメンバとクラスメンバ": {
             "title": "Buổi 4: Instance Members và Class Members",
-            "description": "Sự khác biệt giữa instance members và static members"
+            "description": "Sự khác biệt instance members và static members",
+            "subtasks": {
+                "static修飾子の理解": "Hiểu static",
+                "インスタンスメンバとクラスメンバの違い": "Instance vs class members",
+                "staticメソッドとstaticフィールド": "Static method và field",
+                "実践問題：Studentクラス、Cardクラス": "Bài tập: class Student, Card"
+            },
+            "knowledge_items": {
+                "メンバとは": { "title": "Member là gì", "content": "Class member = static (dùng chung). Instance member = theo từng instance. ClassName.staticMember." },
+                "static（静的）とは": { "title": "Static là gì", "content": "Một cho cả class, tạo khi load. Dùng cho hằng, util, đếm instance. Không dùng cho dữ liệu theo instance." },
+                "staticの基本使用例": { "title": "Ví dụ static cơ bản", "content": "private static int totalCount; static getTotalCount(); instance dùng được static; static không dùng được instance." },
+                "実践例：Cardクラス（トランプ）": { "title": "Thực hành: class Card", "content": "static SUITS, RANKS; createDeck(); getTotalCardsCreated()." },
+                "staticフィールドとメソッドの制約": { "title": "Ràng buộc static", "content": "Static method không truy cập field/method instance hay this. Có thể tạo instance mới rồi dùng." },
+                "インスタンス配列の使用例": { "title": "Ví dụ mảng instance", "content": "Monster[] party = new Monster[3]; gán new Monster() từng phần tử; for hoặc for-each." }
+            }
         },
         "第5回：クラスの継承": {
             "title": "Buổi 5: Kế thừa Class",
-            "description": "Kế thừa class, ghi đè method, từ khóa super"
+            "description": "Kế thừa class, ghi đè method, từ khóa super",
+            "subtasks": {
+                "extendsキーワードで継承": "Kế thừa bằng extends",
+                "superでスーパークラスを呼び出す": "Gọi superclass bằng super",
+                "メソッドのオーバーライド": "Ghi đè method",
+                "実践問題：Monsterクラスの継承": "Bài tập: kế thừa Monster"
+            },
+            "knowledge_items": {
+                "継承とは": { "title": "Kế thừa là gì", "content": "Subclass extends superclass; có field/method của cha. Chỉ kế thừa một. Constructor không kế thừa." },
+                "継承の基本例": { "title": "Ví dụ kế thừa cơ bản", "content": "FireMonster extends Monster; super(name,hp,attack); fireAttack()." },
+                "superキーワード": { "title": "Từ khóa super", "content": "super(args) dòng đầu trong constructor; super.method(); super.field. Phải gọi super nếu cha không có constructor không đối." },
+                "superの実践的な使用例": { "title": "super trong thực hành", "content": "Override showStatus() rồi gọi super.showStatus() rồi in thêm." },
+                "メソッドのオーバーライド": { "title": "Ghi đè method", "content": "Cùng chữ ký với cha. @Override. Kiểu trả về giống hoặc covariant. Không override private/static/final." },
+                "実践例：Monsterクラスの継承階層": { "title": "Thực hành: cây kế thừa Monster", "content": "Monster gốc; FireMonster, WaterMonster. override attack(); instanceof để kiểm tra kiểu." },
+                "継承の設計原則": { "title": "Nguyên tắc thiết kế kế thừa", "content": "Dùng cho is-a (FireMonster là Monster). Dùng composition cho has-a. Tránh cây sâu." }
+            }
         },
         "第6回：ポリモーフィズム": {
             "title": "Buổi 6: Đa hình",
-            "description": "Khái niệm và triển khai đa hình"
+            "description": "Khái niệm và triển khai đa hình",
+            "subtasks": {
+                "ポリモーフィズムの概念": "Khái niệm đa hình",
+                "アップキャストとダウンキャスト": "Upcast và downcast",
+                "instanceof演算子": "Toán tử instanceof",
+                "実践問題：Monsterクラスのポリモーフィズム": "Bài tập: đa hình Monster"
+            },
+            "knowledge_items": {
+                "ポリモーフィズムとは": { "title": "Đa hình là gì", "content": "Cùng lời gọi method, hành vi khác theo kiểu thực. Cần kế thừa, override, biến kiểu superclass." },
+                "型の互換性とアップキャスト": { "title": "Tương thích kiểu và upcast", "content": "Instance subclass gán được vào biến superclass. Upcast ngầm. Sau upcast không gọi method riêng subclass." },
+                "ポリモーフィズムの実践例": { "title": "Ví dụ đa hình", "content": "Monster[] party gồm Fire/Water/Monster; for (Monster m : party) m.attack(); mỗi con chạy attack của nó." },
+                "ダウンキャストとinstanceof": { "title": "Downcast và instanceof", "content": "(FireMonster)m phải ép tường minh. Dễ ClassCastException. if (m instanceof FireMonster) rồi ép." }
+            }
         },
         "第7回：抽象クラス": {
             "title": "Buổi 7: Abstract Classes",
-            "description": "Định nghĩa và sử dụng abstract class"
+            "description": "Định nghĩa và sử dụng abstract class",
+            "subtasks": {
+                "abstractクラスの定義": "Định nghĩa abstract class",
+                "抽象メソッドの定義": "Định nghĩa abstract method",
+                "抽象クラスの継承": "Kế thừa abstract class",
+                "実践問題：RPGCharacterクラス": "Bài tập: class RPGCharacter"
+            },
+            "knowledge_items": {
+                "抽象クラスとは": { "title": "Abstract class là gì", "content": "Không tạo instance. Có thể có method abstract và cụ thể, field. Subclass phải triển khai abstract." },
+                "抽象クラスの定義と実装": { "title": "Định nghĩa và triển khai abstract class", "content": "abstract class X { abstract void attack(); } class Warrior extends X { @Override void attack(){...} }." },
+                "Template Methodパターン": { "title": "Template Method pattern", "content": "Abstract class định nghĩa luồng; method abstract cho từng bước. Subclass triển khai bước." }
+            }
         },
         "第8回：インターフェイス": {
             "title": "Buổi 8: Interfaces",
-            "description": "Định nghĩa và triển khai interface"
+            "description": "Định nghĩa và triển khai interface",
+            "subtasks": {
+                "インターフェイスの定義": "Định nghĩa interface",
+                "implementsキーワード": "Từ khóa implements",
+                "複数のインターフェイスの実装": "Triển khai nhiều interface",
+                "実践問題：ICamera、IPhoneインターフェイス": "Bài tập: interface ICamera, IPhone"
+            },
+            "knowledge_items": {
+                "インターフェイスとは": { "title": "Interface là gì", "content": "Hợp đồng: mọi method abstract (ngầm). Field là hằng. Class implements một hay nhiều." },
+                "複数インターフェイスの実装": { "title": "Triển khai nhiều interface", "content": "class Duck implements Flyable, Swimmable. Override fly() và swim()." },
+                "抽象クラス vs インターフェイス": { "title": "Abstract class vs interface", "content": "Abstract: is-a, có thể có code. Interface: can-do, chỉ hợp đồng, implements nhiều." }
+            }
         },
         "第9回：拡張for文と列挙型": {
-            "title": "Buổi 9: Enhanced For Loop và Enumerations",
-            "description": "Enhanced for loop, enum types"
+            "title": "Buổi 9: Enhanced For và Enumerations",
+            "description": "Enhanced for loop, enum types",
+            "subtasks": {
+                "拡張for文の使い方": "Cách dùng enhanced for",
+                "enum型の定義": "Định nghĩa enum",
+                "列挙型の実践": "Thực hành enum",
+                "実践問題：じゃんけんゲーム": "Bài tập: game oẳn tù tì"
+            },
+            "knowledge_items": {
+                "拡張for文（for-each）": { "title": "Enhanced for (for-each)", "content": "for (Kiểu phần tử : mảngHoặcCollection) { }. Không chỉ số, không vượt biên." },
+                "列挙型（enum）とは": { "title": "Enum là gì", "content": "Hằng đặt tên trong một kiểu. Season.SPRING. An toàn kiểu, dễ đọc. switch(season){ case SPRING: ... }." },
+                "enum実践例：じゃんけん": { "title": "Ví dụ enum: oẳn tù tì", "content": "enum Hand { ROCK, SCISSORS, PAPER }; beats(other); name, constructor, method." }
+            }
         },
         "第10回：チャレンジ課題①（予備日）": {
             "title": "Buổi 10: Bài tập Thử thách ① (Ngày Dự phòng)",
@@ -130,35 +248,133 @@
         },
         "第13回：コレクションとデータ構造": {
             "title": "Buổi 13: Collections và Cấu trúc Dữ liệu",
-            "description": "Java Collections Framework, List, Set, Map"
+            "description": "Java Collections Framework, List, Set, Map",
+            "subtasks": {
+                "ListインターフェイスとArrayList": "List interface và ArrayList",
+                "SetインターフェイスとHashSet": "Set interface và HashSet",
+                "MapインターフェイスとHashMap": "Map interface và HashMap",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "コレクションフレームワーク": { "title": "Collections framework", "content": "List (thứ tự, trùng được), Set (không trùng), Map (khóa-giá trị). ArrayList, HashSet, HashMap." },
+                "ArrayList（List）の使い方": { "title": "Cách dùng ArrayList (List)", "content": "add, get, size, remove, contains. for-each. Generic ArrayList<String>." },
+                "HashSet（Set）の使い方": { "title": "Cách dùng HashSet (Set)", "content": "add (không trùng), size, contains. Thứ tự không đảm bảo." },
+                "HashMap（Map）の使い方": { "title": "Cách dùng HashMap (Map)", "content": "put(key,value), get(key), containsKey. keySet(), entrySet() để duyệt." }
+            }
         },
         "第14回：例外処理（try～catch）": {
             "title": "Buổi 14: Xử lý Ngoại lệ (try-catch)",
-            "description": "Xử lý ngoại lệ với khối try-catch"
+            "description": "Xử lý ngoại lệ với khối try-catch",
+            "subtasks": {
+                "try-catch文の基本": "Cơ bản try-catch",
+                "例外の種類（RuntimeException、IOExceptionなど）": "Các loại ngoại lệ (Runtime, IO, ...)",
+                "finallyブロック": "Khối finally",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "例外処理とは": { "title": "Xử lý ngoại lệ là gì", "content": "try { } catch (Kiểu e) { } finally { }. Catch xử lý lỗi; chương trình có thể tiếp tục." },
+                "try-catch の実践例": { "title": "Ví dụ try-catch", "content": "Parse int, chia; catch NumberFormatException, ArithmeticException, Exception." },
+                "例外の種類": { "title": "Các loại ngoại lệ", "content": "RuntimeException (unchecked); checked như IOException cần try-catch hoặc throws." }
+            }
         },
         "第15回：スレッド": {
             "title": "Buổi 15: Threads",
-            "description": "Tạo và quản lý threads"
+            "description": "Tạo và quản lý threads",
+            "subtasks": {
+                "Threadクラスの継承": "Kế thừa Thread",
+                "Runnableインターフェイスの実装": "Triển khai Runnable",
+                "スレッドの同期": "Đồng bộ luồng",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "スレッド（マルチスレッド）とは": { "title": "Thread là gì", "content": "Đơn vị thực thi. Đa luồng = chạy nhiều luồng. Extend Thread hoặc implement Runnable." },
+                "Threadクラスを継承する方法": { "title": "Kế thừa Thread", "content": "class MyThread extends Thread { run() { } }. start() để chạy." },
+                "Runnableインターフェイスを実装する方法": { "title": "Triển khai Runnable", "content": "class R implements Runnable { run() { } }. new Thread(r).start(). Ưu tiên khi đã extend class khác." },
+                "スレッドの同期（synchronized）": { "title": "Đồng bộ luồng (synchronized)", "content": "method hoặc khối synchronized: chỉ một luồng tại một thời điểm. Tránh đua dữ liệu dùng chung." },
+                "同期化の実践例": { "title": "Ví dụ đồng bộ", "content": "BankAccount deposit/withdraw synchronized; nhiều luồng truy cập cùng tài khoản an toàn." }
+            }
         },
         "第16回：ファイル入出力": {
             "title": "Buổi 16: File I/O",
-            "description": "Thao tác đọc và ghi file"
+            "description": "Thao tác đọc và ghi file",
+            "subtasks": {
+                "ファイルの読み込み": "Đọc file",
+                "ファイルの書き込み": "Ghi file",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "ファイル入出力の基本": { "title": "Cơ bản file I/O", "content": "FileReader/Writer, BufferedReader/Writer. try-with-resources để tự đóng." },
+                "ファイルの読み込み（BufferedReader）": { "title": "Đọc bằng BufferedReader", "content": "try (BufferedReader br = new BufferedReader(new FileReader(path))) { readLine(); }." },
+                "ファイルの書き込み（BufferedWriter）": { "title": "Ghi bằng BufferedWriter", "content": "try (BufferedWriter bw = ...) { write(), newLine(); }. FileWriter(path, true) để ghi thêm." },
+                "ファイルのコピー（実践例）": { "title": "Ví dụ copy file", "content": "BufferedReader + BufferedWriter; đọc từng dòng, ghi từng dòng trong vòng lặp." },
+                "ファイル操作のベストプラクティス": { "title": "Best practice file I/O", "content": "Dùng try-with-resources; dùng Buffered; xử lý FileNotFoundException, IOException." }
+            }
         },
         "第17回：ストリーム": {
             "title": "Buổi 17: Streams",
-            "description": "Thao tác và xử lý streams"
+            "description": "Thao tác và xử lý streams",
+            "subtasks": {
+                "バイナリストリーム": "Byte streams",
+                "オブジェクトのシリアライズ": "Serialize đối tượng",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "ストリームとは": { "title": "Stream là gì", "content": "Byte: InputStream/OutputStream. Ký tự: Reader/Writer. FileInputStream, ObjectInputStream, ..." },
+                "バイナリファイルのコピー": { "title": "Copy file nhị phân", "content": "FileInputStream read(), FileOutputStream write(). Dùng byte[] buffer cho hiệu năng." },
+                "シリアライズとは": { "title": "Serialization là gì", "content": "Object → bytes. implements Serializable. transient loại trừ field. Nên có serialVersionUID." },
+                "オブジェクトのシリアライズと復元": { "title": "Serialize và deserialize object", "content": "ObjectOutputStream writeObject(); ObjectInputStream readObject()." },
+                "transientキーワードの使用": { "title": "Dùng transient", "content": "Field transient không lưu; sau deserialize là null/mặc định." }
+            }
         },
         "第18回：例外処理（throw、throws）": {
             "title": "Buổi 18: Xử lý Ngoại lệ (throw, throws)",
-            "description": "Ném ngoại lệ, mệnh đề throws"
+            "description": "Ném ngoại lệ, mệnh đề throws",
+            "subtasks": {
+                "throwで例外を投げる": "Ném bằng throw",
+                "throwsで例外を宣言": "Khai báo bằng throws",
+                "カスタム例外クラスの作成": "Tạo class ngoại lệ tùy chỉnh",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "throwキーワード：例外を投げる": { "title": "throw: ném ngoại lệ", "content": "throw new SomeException(\"msg\"); khi trạng thái không hợp lệ hoặc lỗi nghiệp vụ." },
+                "throwの実践例": { "title": "Ví dụ throw", "content": "BankAccount: throw IllegalArgumentException/IllegalStateException trong constructor và withdraw." },
+                "throwsキーワード：例外を宣言する": { "title": "throws: khai báo ngoại lệ", "content": "void m() throws IOException. Người gọi phải catch hoặc khai báo. Checked vs unchecked." },
+                "throwsの実践例": { "title": "Ví dụ throws", "content": "readFile() throws IOException; người gọi dùng try-catch." },
+                "カスタム例外クラスの作成": { "title": "Tạo class ngoại lệ tùy chỉnh", "content": "extends Exception (checked) hoặc RuntimeException (unchecked). Constructor nhận message." },
+                "カスタム例外の実装例": { "title": "Ví dụ ngoại lệ tùy chỉnh", "content": "InsufficientBalanceException extends Exception; withdraw throws; người gọi catch." }
+            }
         },
         "第19回：ラムダ式": {
             "title": "Buổi 19: Lambda Expressions",
-            "description": "Cú pháp và sử dụng lambda expression"
+            "description": "Cú pháp và sử dụng lambda expression",
+            "subtasks": {
+                "ラムダ式の基本構文": "Cú pháp lambda cơ bản",
+                "関数型インターフェイス": "Functional interface",
+                "メソッド参照": "Method reference",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "匿名クラスとは": { "title": "Anonymous class là gì", "content": "Class/instance không tên; ngắn hơn khi dùng một lần. new Interface(){ }." },
+                "関数型インターフェイスとは": { "title": "Functional interface là gì", "content": "Interface có đúng một method trừu tượng. Cho phép dùng lambda." },
+                "ラムダ式とは": { "title": "Lambda là gì", "content": "() -> body hoặc (a,b) -> expr. Cách viết ngắn cho anonymous class một method." }
+            }
         },
         "第20回：メモリ管理、コレクションとラムダ式": {
-            "title": "Buổi 20: Quản lý Bộ nhớ, Collections và Lambda Expressions",
-            "description": "Quản lý bộ nhớ, collections với lambda expressions"
+            "title": "Buổi 20: Quản lý Bộ nhớ, Collections và Lambda",
+            "description": "Quản lý bộ nhớ, collections với lambda",
+            "subtasks": {
+                "ガーベッジコレクションの理解": "Hiểu GC",
+                "コレクションとラムダ式": "Collections và lambda",
+                "Stream APIの基礎": "Cơ bản Stream API",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "ガーベッジコレクションとは": { "title": "Garbage collection là gì", "content": "JVM giải phóng object không còn tham chiếu. Không cần free tay. Tránh collection static tăng mãi." },
+                "コレクションとラムダ式": { "title": "Collections và lambda", "content": "forEach(x -> ...), removeIf(pred), sort(comparator). Method ref: System.out::println." },
+                "Stream APIの基礎": { "title": "Cơ bản Stream API", "content": "list.stream().filter().map().collect(). filter, map, collect, sum, ..." },
+                "Stream APIの主なメソッド": { "title": "Các method chính Stream API", "content": "Trung gian: filter, map, sorted, distinct. Kết thúc: forEach, collect, count, anyMatch, reduce." },
+                "Stream APIの実践例": { "title": "Ví dụ Stream API", "content": "people.stream().filter(p->age>=25).map(Person::getName).collect(toList()); average, max." }
+            }
         },
         "第21回：チャレンジ課題③（予備日）": {
             "title": "Buổi 21: Bài tập Thử thách ③ (Ngày Dự phòng)",
@@ -166,31 +382,99 @@
         },
         "第22回：プログラム設計①（Strategy）": {
             "title": "Buổi 22: Thiết kế Chương trình ① (Strategy Pattern)",
-            "description": "Triển khai Strategy design pattern"
+            "description": "Triển khai Strategy design pattern",
+            "subtasks": {
+                "デリゲート（委譲）の理解": "Hiểu delegate (ủy thác)",
+                "Strategyパターンの概念": "Khái niệm Strategy pattern",
+                "Strategyパターンの実装": "Triển khai Strategy pattern",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "Delegate（デリゲート）とは": { "title": "Delegate là gì", "content": "Ủy thác: chuyển việc cho class khác thay vì làm tại chỗ. Liên kết lỏng, linh hoạt." },
+                "Strategyパターンとは": { "title": "Strategy pattern là gì", "content": "Đóng gói thuật toán; đổi lúc chạy. Context giữ strategy; gọi strategy.algorithm()." }
+            }
         },
         "第23回：プログラム設計③（Composite）": {
             "title": "Buổi 23: Thiết kế Chương trình ② (Composite Pattern)",
-            "description": "Triển khai Composite design pattern"
+            "description": "Triển khai Composite design pattern",
+            "subtasks": {
+                "Compositeパターンの概念": "Khái niệm Composite pattern",
+                "Compositeパターンの実装": "Triển khai Composite pattern",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "Compositeパターンとは": { "title": "Composite pattern là gì", "content": "Cây: Component (interface), Leaf, Composite (có con). Xử lý leaf và composite thống nhất." },
+                "Compositeパターンの実装例（ファイルシステム）": { "title": "Ví dụ Composite (hệ file)", "content": "FileSystemComponent; File (lá), Folder (composite với add, getSize, print)." }
+            }
         },
         "第24回：プログラム設計③（State）": {
             "title": "Buổi 24: Thiết kế Chương trình ③ (State Pattern)",
-            "description": "Triển khai State design pattern"
+            "description": "Triển khai State design pattern",
+            "subtasks": {
+                "Stateパターンの概念": "Khái niệm State pattern",
+                "Stateパターンの実装": "Triển khai State pattern",
+                "実践問題：ガチャマシン、ストップウォッチ": "Bài tập: máy gacha, đồng hồ bấm giờ"
+            },
+            "knowledge_items": {
+                "Stateパターンとは": { "title": "State pattern là gì", "content": "Hành vi phụ thuộc trạng thái. Các class State; context giữ state hiện tại; state.handle(context) có thể đặt state tiếp theo." },
+                "Stateパターンの実装例（信号機）": { "title": "Ví dụ State (đèn giao thông)", "content": "RedState, GreenState, YellowState; mỗi handle() đặt state tiếp theo trên TrafficLight." },
+                "Stateパターンのメリット": { "title": "Lợi ích State pattern", "content": "Không if-else lớn; thêm state = thêm class; chuyển trạng thái rõ; một trách nhiệm mỗi state." }
+            }
         },
         "第25回：プログラム設計④（Iterator）": {
             "title": "Buổi 25: Thiết kế Chương trình ④ (Iterator Pattern)",
-            "description": "Triển khai Iterator design pattern"
+            "description": "Triển khai Iterator design pattern",
+            "subtasks": {
+                "Iteratorパターンの概念": "Khái niệm Iterator pattern",
+                "Iteratorパターンの実装": "Triển khai Iterator pattern",
+                "実践問題：Menuクラス": "Bài tập: class Menu"
+            },
+            "knowledge_items": {
+                "Iteratorパターンとは": { "title": "Iterator pattern là gì", "content": "Duyệt collection mà không lộ cấu trúc. hasNext(), next(). Aggregate cung cấp iterator()." },
+                "Iteratorパターンの実装例": { "title": "Ví dụ Iterator", "content": "BookShelf implements Aggregate; BookShelfIterator có hasNext/next. Client dùng iterator()." },
+                "Iteratorパターンのメリット": { "title": "Lợi ích Iterator", "content": "Ẩn cấu trúc bên trong; cùng cách truy cập mọi collection; nhiều lần duyệt đồng thời." }
+            }
         },
         "第26回：プログラム設計⑤（Adapter・Command）": {
-            "title": "Buổi 26: Thiết kế Chương trình ⑤ (Adapter và Command Patterns)",
-            "description": "Triển khai Adapter và Command design patterns"
+            "title": "Buổi 26: Thiết kế Chương trình ⑤ (Adapter và Command)",
+            "description": "Triển khai Adapter và Command design patterns",
+            "subtasks": {
+                "Adapterパターンの概念と実装": "Khái niệm và triển khai Adapter pattern",
+                "Commandパターンの概念と実装": "Khái niệm và triển khai Command pattern"
+            },
+            "knowledge_items": {
+                "Adapterパターンとは": { "title": "Adapter pattern là gì", "content": "Làm khớp interface không tương thích. Target (client), Adaptee (có sẵn), Adapter implements Target và bọc Adaptee." },
+                "Adapterパターンの実装例": { "title": "Ví dụ Adapter", "content": "MediaPlayer vs OldAudioPlayer.playMp3. AudioPlayerAdapter implements MediaPlayer, gọi oldPlayer.playMp3." },
+                "Commandパターンとは": { "title": "Command pattern là gì", "content": "Đóng gói yêu cầu thành object. execute(), undo(). Invoker giữ command; lịch sử cho undo/redo." },
+                "Commandパターンの実装例（テキストエディタ）": { "title": "Ví dụ Command (trình soạn thảo)", "content": "WriteCommand, undo(); CommandManager stack; executeCommand, undo()." }
+            }
         },
         "第27回：プログラム設計⑥（Visitor）": {
             "title": "Buổi 27: Thiết kế Chương trình ⑥ (Visitor Pattern)",
-            "description": "Triển khai Visitor design pattern"
+            "description": "Triển khai Visitor design pattern",
+            "subtasks": {
+                "Visitorパターンの概念": "Khái niệm Visitor pattern",
+                "Visitorパターンの実装": "Triển khai Visitor pattern",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "Visitorパターンとは": { "title": "Visitor pattern là gì", "content": "Tách cấu trúc và thao tác. Element.accept(visitor); visitor.visit(this). Thao tác mới = class Visitor mới." },
+                "Visitorパターンの実装例（簡易版）": { "title": "Ví dụ Visitor (đơn giản)", "content": "File, Folder implement Element; PrintVisitor, SizeCalculator implement Visitor; accept(visitor) phân phối." }
+            }
         },
         "第28回：プログラム設計⑦（Singleton・Observer）": {
-            "title": "Buổi 28: Thiết kế Chương trình ⑦ (Singleton và Observer Patterns)",
-            "description": "Triển khai Singleton và Observer design patterns"
+            "title": "Buổi 28: Thiết kế Chương trình ⑦ (Singleton và Observer)",
+            "description": "Triển khai Singleton và Observer design patterns",
+            "subtasks": {
+                "Singletonパターンの概念と実装": "Khái niệm và triển khai Singleton pattern",
+                "Observerパターンの概念と実装": "Khái niệm và triển khai Observer pattern"
+            },
+            "knowledge_items": {
+                "Singletonパターンとは": { "title": "Singleton pattern là gì", "content": "Một instance mỗi class. Constructor private, static getInstance(). Khởi tạo sớm hoặc lười." },
+                "Singletonパターンの実装例": { "title": "Ví dụ Singleton", "content": "DatabaseConnection INSTANCE; constructor private; getInstance(). Logger lazy + synchronized." },
+                "Observerパターンとは": { "title": "Observer pattern là gì", "content": "Subject thông báo observer khi đổi. register, remove, notify. Publish-subscribe." },
+                "Observerパターンの実装例（温度センサー）": { "title": "Ví dụ Observer (cảm biến nhiệt)", "content": "TemperatureSensor subject; TemperatureDisplay, WarningSystem observers; setTemperature gọi notify." }
+            }
         },
         "第29回：期末テスト（練習問題）": {
             "title": "Buổi 29: Kiểm tra Cuối kỳ (Bài tập Thực hành)",

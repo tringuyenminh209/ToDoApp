@@ -55,51 +55,150 @@
     "tasks": {
         "第1週：Reactとは？環境構築とJSX": {
             "title": "Tuần 1: React là gì? Thiết lập Môi trường và JSX",
-            "description": "Tổng quan React, Create React App, JSX, cơ bản về component"
+            "description": "Tổng quan React, Create React App, JSX, cơ bản về component",
+            "subtasks": {
+                "Reactをインストール": "Cài đặt React",
+                "JSXを学習": "Học JSX",
+                "最初のコンポーネントを作成": "Tạo component đầu tiên"
+            },
+            "knowledge_items": {
+                "Reactとは？": { "title": "React là gì?", "content": "Thư viện UI theo component. Virtual DOM, khai báo, luồng dữ liệu một chiều. Bởi Meta." },
+                "React環境構築": { "title": "Thiết lập môi trường React", "content": "npx create-react-app, Vite + react template. Thư mục: src/, public/, package.json." },
+                "JSXの基本": { "title": "Cơ bản JSX", "content": "Một phần tử cha hoặc <>. className, style={{}}. Tự đóng /. {} cho JS. {/* comment */}." }
+            }
         },
         "第2週：コンポーネント、Props、State": {
             "title": "Tuần 2: Components, Props, State",
-            "description": "Tạo component, truyền dữ liệu với Props, quản lý trạng thái với State"
+            "description": "Tạo component, truyền dữ liệu với Props, quản lý trạng thái với State",
+            "subtasks": {
+                "コンポーネントを学習": "Học components",
+                "Propsを学習": "Học Props",
+                "Stateを学習": "Học State"
+            },
+            "knowledge_items": {
+                "コンポーネントの種類": { "title": "Các loại Component", "content": "Function component (khuyến nghị), arrow. Props, export/import. Ưu tiên function hơn class." },
+                "Props（プロパティ）": { "title": "Props", "content": "Dữ liệu từ cha sang con. Destructure { name }. Mặc định, children. Truyền object/array." },
+                "State（useState）": { "title": "State (useState)", "content": "[value, setValue] = useState(init). setValue để cập nhật. Object/array: spread rồi set." }
+            }
         },
         "第3週：イベント処理、リスト、フォーム": {
             "title": "Tuần 3: Xử lý Sự kiện, Danh sách, Form",
-            "description": "Xử lý sự kiện, render danh sách, điều khiển form"
+            "description": "Xử lý sự kiện, render danh sách, điều khiển form",
+            "subtasks": {
+                "イベント処理を学習": "Học xử lý sự kiện",
+                "リストレンダリングを学習": "Học render danh sách",
+                "フォーム制御を学習": "Học điều khiển form"
+            },
+            "knowledge_items": {
+                "イベント処理": { "title": "Xử lý Sự kiện", "content": "onClick={handler}, (e) =>. e.target, e.preventDefault(). onChange, onSubmit, onFocus, v.v." },
+                "リストレンダリングとkey": { "title": "List Rendering và Key", "content": "map() thành list. key duy nhất, ưu tiên id không dùng index. Key ở phần tử ngoài trong map." },
+                "制御されたコンポーネント": { "title": "Controlled Component", "content": "value + onChange từ state. Một handleChange với name. checkbox: checked. Validate khi submit." }
+            }
         },
         "第4週：useState、useEffect": {
             "title": "Tuần 4: useState, useEffect",
-            "description": "Cơ bản quản lý trạng thái, xử lý side effects, lifecycle"
+            "description": "Cơ bản quản lý trạng thái, xử lý side effects, lifecycle",
+            "subtasks": {
+                "useStateの詳細を学習": "Học chi tiết useState",
+                "useEffectを学習": "Học useEffect"
+            },
+            "knowledge_items": {
+                "useEffectの基本": { "title": "Cơ bản useEffect", "content": "useEffect(fn), fn chạy sau render. [] = chỉ lúc mount. [dep] = khi dep đổi. Return cleanup." },
+                "useEffectの依存配列": { "title": "Mảng phụ thuộc useEffect", "content": "Không deps: mỗi lần render. []: mount một lần. [a,b]: khi a hoặc b đổi. Tránh object/array trong deps." }
+            }
         },
         "第5週：useContext、useReducer": {
             "title": "Tuần 5: useContext, useReducer",
-            "description": "Chia sẻ trạng thái với Context API, quản lý trạng thái phức tạp với useReducer"
+            "description": "Chia sẻ trạng thái với Context API, quản lý trạng thái phức tạp với useReducer",
+            "subtasks": {
+                "useContextを学習": "Học useContext",
+                "useReducerを学習": "Học useReducer"
+            },
+            "knowledge_items": {
+                "useContext": { "title": "useContext", "content": "createContext, Provider value={}. useContext(MyContext). Bọc bằng custom hook cho an toàn." },
+                "useReducer": { "title": "useReducer", "content": "(state, action) => newState. dispatch({ type, payload }). Dùng cho state phức tạp kiểu redux." }
+            }
         },
         "第6週：その他のHooksとカスタムフック": {
             "title": "Tuần 6: Các Hooks khác và Custom Hooks",
-            "description": "useRef, useMemo, useCallback, tạo custom hook"
+            "description": "useRef, useMemo, useCallback, tạo custom hook",
+            "subtasks": {
+                "useRef、useMemo、useCallbackを学習": "Học useRef, useMemo, useCallback",
+                "カスタムフックを作成": "Tạo custom hooks"
+            },
+            "knowledge_items": {
+                "useRef、useMemo、useCallback": { "title": "useRef, useMemo, useCallback", "content": "useRef: ref DOM hoặc biến giữ. useMemo: ghi nhớ giá trị. useCallback: ghi nhớ hàm. Mảng deps." },
+                "カスタムフック": { "title": "Custom Hooks", "content": "useX() dùng hooks khác. useLocalStorage, useFetch, useToggle, useDebounce. Tái sử dụng logic." }
+            }
         },
         "第7週：React Router": {
             "title": "Tuần 7: React Router",
-            "description": "Routing, navigation, dynamic routes, nested routes"
+            "description": "Routing, navigation, dynamic routes, nested routes",
+            "subtasks": {
+                "React Routerの基本を学習": "Học cơ bản React Router",
+                "動的ルートとナビゲーションを学習": "Học dynamic route và navigation"
+            },
+            "knowledge_items": {
+                "React Router v6": { "title": "React Router v6", "content": "BrowserRouter, Routes, Route, Link. useParams(), useNavigate(), useSearchParams(). Outlet cho nested. Protected routes." }
+            }
         },
         "第8週：Redux Toolkit基礎": {
             "title": "Tuần 8: Cơ bản Redux Toolkit",
-            "description": "Redux Toolkit, Slice, Store, Reducer"
+            "description": "Redux Toolkit, Slice, Store, Reducer",
+            "subtasks": {
+                "Redux Toolkitをセットアップ": "Thiết lập Redux Toolkit",
+                "Slice作成と使用を学習": "Học tạo và dùng Slice"
+            },
+            "knowledge_items": {
+                "Redux Toolkitの概要": { "title": "Tổng quan Redux Toolkit", "content": "configureStore, createSlice. Ít boilerplate. DevTools, middleware mặc định." },
+                "SliceとStore": { "title": "Slice và Store", "content": "createSlice({ name, initialState, reducers }). export actions & reducer. Provider với store." }
+            }
         },
         "第9週：非同期処理とミドルウェア": {
             "title": "Tuần 9: Xử lý Bất đồng bộ và Middleware",
-            "description": "createAsyncThunk, RTK Query, middleware"
+            "description": "createAsyncThunk, RTK Query, middleware",
+            "subtasks": {
+                "非同期アクションを学習": "Học async actions",
+                "RTK Queryを学習": "Học RTK Query"
+            },
+            "knowledge_items": {
+                "createAsyncThunk": { "title": "createAsyncThunk", "content": "Thunk bất đồng bộ cho fetch. pending/fulfilled/rejected trong extraReducers. dispatch(thunk())." },
+                "RTK Query": { "title": "RTK Query", "content": "createApi, baseQuery. Định nghĩa endpoints. useGetXQuery, useMutation. Cache, refetch." }
+            }
         },
         "第10週：パフォーマンス最適化": {
             "title": "Tuần 10: Tối ưu Hiệu suất",
-            "description": "React.memo, Code Splitting, Lazy Loading, kỹ thuật tối ưu"
+            "description": "React.memo, Code Splitting, Lazy Loading, kỹ thuật tối ưu",
+            "subtasks": {
+                "パフォーマンス最適化技術を学習": "Học kỹ thuật tối ưu hiệu suất"
+            },
+            "knowledge_items": {
+                "React.memoとメモ化": { "title": "React.memo và Memoization", "content": "React.memo(Comp) so sánh props. useMemo/useCallback để tránh rerender thừa." },
+                "Code SplittingとLazy": { "title": "Code Splitting và Lazy", "content": "React.lazy(() => import()). Suspense fallback. Tách theo route hoặc component." }
+            }
         },
         "第11週：テスト": {
             "title": "Tuần 11: Testing",
-            "description": "Jest, React Testing Library, test component"
+            "description": "Jest, React Testing Library, test component",
+            "subtasks": {
+                "React Testing Libraryを学習": "Học React Testing Library"
+            },
+            "knowledge_items": {
+                "Jestの基本": { "title": "Cơ bản Jest", "content": "describe, it, expect(). toBe, toHaveBeenCalled. Mock với jest.fn()." },
+                "React Testing Library": { "title": "React Testing Library", "content": "render(), screen, userEvent. getByRole, getByText. Test hành vi, không test chi tiết. waitFor." }
+            }
         },
         "第12週：TypeScript + React、デプロイ": {
             "title": "Tuần 12: TypeScript + React, Deployment",
-            "description": "Tích hợp TypeScript và React, best practices, deployment"
+            "description": "Tích hợp TypeScript và React, best practices, deployment",
+            "subtasks": {
+                "TypeScript + Reactを学習": "Học TypeScript + React",
+                "デプロイとベストプラクティスを学習": "Học deployment và best practices"
+            },
+            "knowledge_items": {
+                "TypeScriptとReact": { "title": "TypeScript và React", "content": "FC, kiểu Props, useState<T>, useRef<T>. Generic components. Strict mode." },
+                "デプロイ": { "title": "Deployment", "content": "npm run build. Host tĩnh: Vercel, Netlify. Biến môi trường, routing cho SPA." }
+            }
         }
     }
 }

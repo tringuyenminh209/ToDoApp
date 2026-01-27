@@ -78,55 +78,241 @@
     "tasks": {
         "第0回：環境構築": {
             "title": "Buổi 0: Thiết lập Môi trường",
-            "description": "Cài đặt Composer, Node.js, Laravel và tạo dự án"
+            "description": "Cài đặt Composer, Node.js, Laravel và tạo dự án",
+            "subtasks": {
+                "Composerをインストール": "Cài đặt Composer",
+                "Node.jsをインストール": "Cài đặt Node.js",
+                "Laravelプロジェクトを作成": "Tạo dự án Laravel",
+                "開発サーバーを起動": "Khởi động máy chủ phát triển",
+                "プロジェクト構造を理解": "Hiểu cấu trúc dự án"
+            },
+            "knowledge_items": {
+                "Laravelプロジェクトの作成": { "title": "Tạo dự án Laravel", "content": "Dùng composer create-project laravel/laravel. Cần PHP, Composer, Node sẵn sàng." },
+                "Laravelのディレクトリ構造": { "title": "Cấu trúc thư mục Laravel", "content": "app, config, database, public, resources, routes. app/ cho logic; routes/ cho URL." },
+                "Composerとは？": { "title": "Composer là gì?", "content": "Trình quản lý dependency PHP. Quản lý gói và autoload." },
+                "詳細なディレクトリ構造": { "title": "Chi tiết cấu trúc thư mục", "content": "app/Http, app/Models; config/*.php; database/migrations, seeders; resources/views." },
+                "環境設定（.env）": { "title": "Cấu hình môi trường (.env)", "content": "APP_KEY, DB_*, APP_DEBUG. Copy từ .env.example. Chạy php artisan key:generate." },
+                "よく使うArtisanコマンド": { "title": "Lệnh Artisan thường dùng", "content": "serve, make:controller, make:model, migrate, route:list." },
+                "トラブルシューティング": { "title": "Xử lý sự cố", "content": "PHP/extensions, cache Composer, quyền file, cổng bận." }
+            }
         },
         "第1回：Laravelの説明・ルーティングとコントローラ": {
             "title": "Buổi 1: Tổng quan Laravel, Routing và Controllers",
-            "description": "Khái niệm cơ bản Laravel, routing, tạo controller"
+            "description": "Khái niệm cơ bản Laravel, routing, tạo controller",
+            "subtasks": {
+                "Laravelの基本概念を理解": "Hiểu khái niệm cơ bản Laravel",
+                "ルーティングの基本（routes/web.php）": "Routing cơ bản (routes/web.php)",
+                "コントローラの作成": "Tạo controller",
+                "コントローラとルートの連携": "Kết nối controller và route",
+                "ハンズオン課題を完了": "Hoàn thành bài thực hành"
+            },
+            "knowledge_items": {
+                "基本的なルーティング": { "title": "Routing cơ bản", "content": "Route::get(path, closure). Trả view hoặc chuỗi. Khai báo trong routes/web.php." },
+                "コントローラの作成": { "title": "Tạo Controllers", "content": "php artisan make:controller NameController. Method trả view() hoặc response." },
+                "MVCアーキテクチャ": { "title": "Kiến trúc MVC", "content": "Model = dữ liệu; View = giao diện; Controller = logic. Request → Route → Controller → View." },
+                "ルーティングの詳細": { "title": "Chi tiết Routing", "content": "get, post, put, delete, any. Tên route, route()." },
+                "コントローラの詳細パターン": { "title": "Mẫu Controller", "content": "Resource controller, single-action, invokable." },
+                "コントローラ作成のオプション": { "title": "Tùy chọn tạo Controller", "content": "make:controller --resource, --api, --invokable." },
+                "ルートパラメータの詳細": { "title": "Tham số Route", "content": "Route::get('/user/{id}', fn($id)=>...). Tùy chọn {id?}, ràng buộc." }
+            }
         },
         "第2回：Bladeテンプレート": {
             "title": "Buổi 2: Blade Templates",
-            "description": "Cú pháp Blade cơ bản, biến, directives, layouts"
+            "description": "Cú pháp Blade cơ bản, biến, directives, layouts",
+            "subtasks": {
+                "Bladeの基本構文": "Cú pháp Blade cơ bản",
+                "変数の表示とエスケープ": "Hiển thị và escape biến",
+                "ディレクティブ（@if, @foreach, @while）": "Directives (@if, @foreach, @while)",
+                "レイアウトと継承": "Layout và kế thừa",
+                "課題02を完了": "Hoàn thành bài 02"
+            },
+            "knowledge_items": {
+                "Bladeの基本構文": { "title": "Cú pháp Blade cơ bản", "content": "{{ $var }}, {!! $html !!}, @ directive. Lưu trong resources/views." },
+                "Bladeテンプレートエンジンとは": { "title": "Blade là gì?", "content": "Template engine của Laravel. .blade.php. Biên dịch sang PHP, cache." },
+                "Blade ディレクティブ詳細": { "title": "Chi tiết Blade Directives", "content": "@if/@else/@endif, @foreach/@endforeach, @while, @empty, @include, @yield/@section." },
+                "レイアウトと継承": { "title": "Layout và kế thừa", "content": "@extends('layout'), @section/@yield, @push/@stack. Một layout, nhiều view." },
+                "セキュリティとエスケープ": { "title": "Bảo mật và escape", "content": "{{ }} tự escape; {!! !!} raw. Ưu tiên {{ }} cho dữ liệu user." }
+            }
         },
         "第3回：ビュー作成・ルーティング": {
             "title": "Buổi 3: Tạo Views và Routing",
-            "description": "Tạo nhiều views, routing nâng cao, truyền dữ liệu sang views"
+            "description": "Tạo nhiều views, routing nâng cao, truyền dữ liệu sang views",
+            "subtasks": {
+                "複数のビューを作成": "Tạo nhiều view",
+                "ルーティングの応用": "Routing nâng cao",
+                "コントローラからビューへデータを渡す": "Truyền dữ liệu từ controller sang view",
+                "記事一覧・詳細・登録・編集画面を作成": "Tạo màn hình danh sách, chi tiết, thêm, sửa bài",
+                "課題03を完了": "Hoàn thành bài 03"
+            },
+            "knowledge_items": {
+                "コントローラからビューへデータを渡す": { "title": "Truyền dữ liệu sang View", "content": "view('name', ['key'=>$val]) hoặc view()->with(). Trong Blade dùng $key." },
+                "データ渡しの様々な方法": { "title": "Cách truyền dữ liệu", "content": "Mảng, view()->with(), compact('a','b'). View::share() cho toàn cục." },
+                "Bladeでのデータ表示パターン": { "title": "Hiển thị dữ liệu trong Blade", "content": "{{ $item->title }}, @foreach, optional($obj)->prop, $loop trong foreach." }
+            }
         },
         "第4回：リクエスト・バリデーション": {
             "title": "Buổi 4: Requests và Validation",
-            "description": "Xử lý form request, quy tắc validation"
+            "description": "Xử lý form request, quy tắc validation",
+            "subtasks": {
+                "Requestオブジェクトの使い方": "Cách dùng Request",
+                "基本的なバリデーションルール": "Quy tắc validation cơ bản",
+                "バリデーションエラーの表示": "Hiển thị lỗi validation",
+                "FormRequestクラスの作成": "Tạo lớp FormRequest",
+                "課題04を完了": "Hoàn thành bài 04"
+            },
+            "knowledge_items": {
+                "バリデーションの基本": { "title": "Cơ bản Validation", "content": "Request $request->validate([ rules ]). Lỗi → redirect back kèm errors." },
+                "よく使うバリデーションルール": { "title": "Quy tắc validation thường dùng", "content": "required, string, max:n, email, unique:table,col, numeric, in:a,b." },
+                "FormRequestクラス": { "title": "Lớp FormRequest", "content": "php artisan make:request NameRequest. rules(), authorize(). Inject vào controller." },
+                "Bladeでのエラー表示パターン": { "title": "Hiển thị lỗi trong Blade", "content": "@error('field')...@enderror, $errors->get('field'), $errors->any()." }
+            }
         },
         "第5回：マイグレーション、モデル、シーダー": {
             "title": "Buổi 5: Migrations, Models, Seeders",
-            "description": "Database migrations, Eloquent models, seeders"
+            "description": "Database migrations, Eloquent models, seeders",
+            "subtasks": {
+                "マイグレーションの作成": "Tạo migration",
+                "テーブル構造を定義": "Định nghĩa cấu trúc bảng",
+                "Eloquentモデルの作成": "Tạo Eloquent model",
+                "シーダーの作成と実行": "Tạo và chạy seeder",
+                "Factoryの使い方": "Cách dùng Factory",
+                "課題05を完了": "Hoàn thành bài 05"
+            },
+            "knowledge_items": {
+                "マイグレーションとモデル": { "title": "Migrations và Models", "content": "Migration định nghĩa schema; Model ánh xạ bảng. make:migration, make:model -m." },
+                "シーダーの作成": { "title": "Tạo Seeders", "content": "database/seeders. run() chèn dữ liệu. Gọi trong DatabaseSeeder. php artisan db:seed." },
+                "マイグレーションの基本コマンド": { "title": "Lệnh Migration cơ bản", "content": "migrate, migrate:rollback, migrate:fresh --seed, migrate:status." },
+                "マイグレーションの詳細なカラム定義": { "title": "Kiểu cột Migration", "content": "string, text, integer, bigIncrements, timestamps, foreignId, boolean, json." },
+                "Eloquentモデルとファクトリ": { "title": "Eloquent Model và Factory", "content": "fillable, tên bảng. Factory::define(); Model::factory()->count(n)->create()." }
+            }
         },
         "第6回：DB処理（SELECT）": {
             "title": "Buổi 6: Thao tác DB (SELECT)",
-            "description": "Thao tác SELECT bằng Eloquent"
+            "description": "Thao tác SELECT bằng Eloquent",
+            "subtasks": {
+                "all()で全件取得": "Lấy toàn bộ với all()",
+                "find()でID指定取得": "Lấy theo ID với find()",
+                "where()で条件検索": "Tìm theo điều kiện với where()",
+                "取得したデータをビューで表示": "Hiển thị dữ liệu trong view",
+                "課題06を完了": "Hoàn thành bài 06"
+            },
+            "knowledge_items": {
+                "Eloquent SELECT操作": { "title": "Eloquent SELECT", "content": "Model::all(), find($id), findOrFail. Trả collection hoặc model." },
+                "Eloquent クエリビルダーの詳細": { "title": "Chi tiết Query Builder", "content": "where, orWhere, whereIn, orderBy, skip/take, get(), first(), count(), pluck()." }
+            }
         },
         "第7回：DB処理（条件付きSELECT、INSERT）": {
             "title": "Buổi 7: Thao tác DB (SELECT có điều kiện, INSERT)",
-            "description": "Truy vấn có điều kiện và thao tác INSERT"
+            "description": "Truy vấn có điều kiện và thao tác INSERT",
+            "subtasks": {
+                "複数条件での検索": "Tìm theo nhiều điều kiện",
+                "リレーションを使った検索": "Tìm dùng relation",
+                "create()でデータ追加": "Thêm dữ liệu với create()",
+                "フォームからデータを登録": "Đăng ký dữ liệu từ form",
+                "課題07を完了": "Hoàn thành bài 07"
+            },
+            "knowledge_items": {
+                "条件付きSELECTとINSERT": { "title": "SELECT có điều kiện và INSERT", "content": "where()->get(); Model::create($request->validated())." },
+                "INSERT操作の詳細パターン": { "title": "Mẫu INSERT", "content": "create([...]), new Model; fill([...]); save(). Mass assignment: fillable/guarded." }
+            }
         },
         "第8回：DB処理（UPDATE）": {
             "title": "Buổi 8: Thao tác DB (UPDATE)",
-            "description": "Thao tác UPDATE bằng Eloquent"
+            "description": "Thao tác UPDATE bằng Eloquent",
+            "subtasks": {
+                "update()でデータ更新": "Cập nhật với update()",
+                "fill()とsave()で更新": "Cập nhật với fill() và save()",
+                "フォームからデータを更新": "Cập nhật dữ liệu từ form",
+                "課題08を完了": "Hoàn thành bài 08"
+            },
+            "knowledge_items": {
+                "UPDATE操作の基本": { "title": "Cơ bản UPDATE", "content": "$model->update([...]) hoặc $model->fill([...])->save()." },
+                "コントローラでのUPDATE処理": { "title": "UPDATE trong Controller", "content": "Tìm model, validate, update() hoặc fill+save, redirect." },
+                "編集フォームのBlade": { "title": "Form sửa trong Blade", "content": "old() để điền lại, value={{ $model->col }}, route kèm id." },
+                "UPDATE操作のベストプラクティス": { "title": "Thực hành UPDATE tốt", "content": "Validate, dùng FormRequest, không mass-assign id. Kiểm tra quyền." },
+                "インクリメント・デクリメント": { "title": "Increment/Decrement", "content": "increment('col'), increment('col', n), decrement('col')." }
+            }
         },
         "第9回：DB処理（DELETE）": {
             "title": "Buổi 9: Thao tác DB (DELETE)",
-            "description": "Thao tác DELETE bằng Eloquent"
+            "description": "Thao tác DELETE bằng Eloquent",
+            "subtasks": {
+                "delete()でデータ削除": "Xóa với delete()",
+                "destroy()でID指定削除": "Xóa theo ID với destroy()",
+                "ソフトデリートの理解": "Hiểu soft delete",
+                "課題09を完了": "Hoàn thành bài 09"
+            },
+            "knowledge_items": {
+                "DELETE操作の基本": { "title": "Cơ bản DELETE", "content": "$model->delete(); Model::destroy($id|[$ids])." },
+                "コントローラでのDELETE処理": { "title": "DELETE trong Controller", "content": "Tìm model, có thể check policy, delete(), redirect. Route POST/DELETE." },
+                "ソフトデリート（論理削除）": { "title": "Soft Delete (xóa logic)", "content": "Trait SoftDeletes; cột deleted_at. Model vẫn trong DB, mặc định bị loại." },
+                "ソフトデリートの実装例": { "title": "Ví dụ Soft Delete", "content": "use SoftDeletes; withTrashed(), onlyTrashed(), restore(), forceDelete()." },
+                "リレーションの削除": { "title": "Xóa relation", "content": "Cascade trong migration hoặc xóa trong code. detach() cho pivot." },
+                "DELETE操作の注意点": { "title": "Lưu ý DELETE", "content": "Xác nhận ý định trong UI. Kiểm tra khóa ngoại. Dùng transaction cho nhiều dòng." }
+            }
         },
         "第10回：API": {
             "title": "Buổi 10: API",
-            "description": "Phát triển RESTful API"
+            "description": "Phát triển RESTful API",
+            "subtasks": {
+                "APIルートの定義": "Định nghĩa API routes",
+                "JSONレスポンスの返却": "Trả response JSON",
+                "CRUD操作のAPI実装": "Triển khai API CRUD",
+                "APIリソースクラスの使用": "Dùng API Resource",
+                "課題10を完了": "Hoàn thành bài 10"
+            },
+            "knowledge_items": {
+                "RESTful APIとは": { "title": "RESTful API là gì", "content": "Resource, HTTP verb (GET/POST/PUT/DELETE), JSON. Stateless." },
+                "RESTful APIの基本実装": { "title": "Triển khai REST cơ bản", "content": "routes/api.php, prefix api. Trả response()->json()." },
+                "APIコントローラの完全実装": { "title": "Ví dụ API Controller", "content": "index, store, show, update, destroy. Validate, Eloquent, JSON response." },
+                "APIリソースクラス": { "title": "Lớp API Resource", "content": "php artisan make:resource NameResource. toArray() định dạng output. Resource::collection()." },
+                "エラーハンドリング": { "title": "Xử lý lỗi", "content": "abort(404), lỗi validation 422, try/catch trả JSON." },
+                "API認証（Sanctum）": { "title": "Xác thực API (Sanctum)", "content": "Laravel Sanctum cho SPA/token. Middleware auth:sanctum." },
+                "JavaScriptでAPIを呼び出す": { "title": "Gọi API từ JavaScript", "content": "fetch() hoặc axios. Headers, method. Xử lý loading và lỗi." }
+            }
         },
         "第11回：ファイルアップロード": {
             "title": "Buổi 11: Tải lên File",
-            "description": "Xử lý tải lên file trong Laravel"
+            "description": "Xử lý tải lên file trong Laravel",
+            "subtasks": {
+                "ファイルアップロードの基本": "Cơ bản tải file",
+                "ファイルのバリデーション": "Validation file",
+                "ストレージへの保存": "Lưu vào storage",
+                "画像の表示とサムネイル": "Hiển thị ảnh và thumbnail",
+                "課題11を完了": "Hoàn thành bài 11"
+            },
+            "knowledge_items": {
+                "Laravelストレージシステム": { "title": "Hệ thống Storage Laravel", "content": "storage/app, public. php artisan storage:link. Storage facade, local/s3." },
+                "ファイルアップロードの基本": { "title": "Cơ bản tải file", "content": "enctype=multipart/form-data. $request->file('key'), store(), storeAs()." },
+                "アップロードフォーム": { "title": "Form tải lên", "content": "input type=file, accept, multiple. CSRF, method POST." },
+                "画像の表示": { "title": "Hiển thị ảnh", "content": "Storage::url(), asset('storage/...'). Link từ public storage." },
+                "Storage ファサードの使い方": { "title": "Cách dùng Storage Facade", "content": "Storage::put, get, delete, exists. disk('local'|'public')." },
+                "画像のリサイズ（Intervention Image）": { "title": "Resize ảnh (Intervention)", "content": "Gói tùy chọn resize/crop. fit, resize, save." },
+                "ファイルアップロードのベストプラクティス": { "title": "Thực hành tải file tốt", "content": "Validate loại/kích thước, lưu ngoài public nếu nhạy cảm, tên file unique." },
+                "複数ファイルのアップロード": { "title": "Tải nhiều file", "content": "input multiple, $request->file('key') là mảng. Lặp và store." }
+            }
         },
         "第12回：総合問題": {
             "title": "Buổi 12: Dự án Tổng hợp",
-            "description": "Dự án tổng hợp sử dụng tất cả khái niệm đã học"
+            "description": "Dự án tổng hợp sử dụng tất cả khái niệm đã học",
+            "subtasks": {
+                "要件定義と設計": "Định nghĩa yêu cầu và thiết kế",
+                "データベース設計とマイグレーション": "Thiết kế DB và migrations",
+                "ルーティングとコントローラ実装": "Triển khai routing và controller",
+                "ビューとBladeテンプレート作成": "Tạo view và Blade template",
+                "バリデーションとエラーハンドリング": "Validation và xử lý lỗi",
+                "テストとデバッグ": "Kiểm thử và gỡ lỗi"
+            },
+            "knowledge_items": {
+                "総合問題の概要": { "title": "Tổng quan Dự án Tổng hợp", "content": "Áp dụng routing, Blade, Eloquent, validation, CRUD trong một app." },
+                "開発手順": { "title": "Quy trình phát triển", "content": "Thiết kế DB → migrate → models → routes/controllers → views → validation." },
+                "サンプル：記事管理システムのマイグレーション": { "title": "Mẫu: Migration hệ thống bài", "content": "Bảng articles: title, body, user_id, timestamps. Khóa ngoại." },
+                "サンプル：モデルとリレーション": { "title": "Mẫu: Models và Relations", "content": "Article belongsTo User. User hasMany Article. fillable, casts." },
+                "サンプル：完全なCRUDコントローラ": { "title": "Mẫu: Controller CRUD đầy đủ", "content": "index, create, store, show, edit, update, destroy. Resource routes." },
+                "サンプル：FormRequest": { "title": "Mẫu: FormRequest", "content": "StoreArticleRequest, UpdateArticleRequest. rules(), authorize()." },
+                "チェックリスト": { "title": "Danh sách kiểm tra", "content": "Routes, validation, auth, flash messages, xử lý 404, CSRF." },
+                "よくあるエラーと解決方法": { "title": "Lỗi thường gặp và cách xử lý", "content": "Mass assignment, 404, CSRF token, validation redirect, N+1." }
+            }
         }
     }
 }

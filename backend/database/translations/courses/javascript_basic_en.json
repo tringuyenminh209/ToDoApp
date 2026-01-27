@@ -60,63 +60,230 @@
     "tasks": {
         "第1週：JavaScriptの基礎・条件分岐": {
             "title": "Week 1: JavaScript Basics and Conditionals",
-            "description": "JavaScript basic syntax, variables, data types, operators, if statements, switch statements"
+            "description": "JavaScript basic syntax, variables, data types, operators, if statements, switch statements",
+            "subtasks": {
+                "JavaScriptとは・開発環境の準備": "What is JavaScript & dev environment setup",
+                "変数とデータ型": "Variables and data types",
+                "演算子": "Operators",
+                "if文による条件分岐": "Conditionals with if",
+                "switch文": "switch statement",
+                "練習問題": "Practice"
+            },
+            "knowledge_items": {
+                "JavaScriptとは": { "title": "What is JavaScript", "content": "Runs in browser; dynamic pages, events; use with HTML/CSS. Embed: inline, <script>, or external file." },
+                "変数とデータ型": { "title": "Variables and data types", "content": "let/const (block scope); var avoid. Primitives: Number, String, Boolean, undefined, null. Object, Array. typeof." },
+                "基本的な変数の使用例": { "title": "Basic variable example", "content": "let/const, console.log, template literal `${x}`, arithmetic." },
+                "演算子": { "title": "Operators", "content": "Arithmetic +-*/%**; assignment += etc; comparison == vs ===; logical &&||!; string +." },
+                "if文による条件分岐": { "title": "Conditionals with if", "content": "if, if-else, if-else if-else. Ternary (cond)?a:b." },
+                "if文の実践例": { "title": "if practical example", "content": "Login check, discount by amount, even/odd." },
+                "switch文": { "title": "switch statement", "content": "switch(expr){ case val: break; default }. Strict ===. Fall-through when break omitted." },
+                "switch文の実践例": { "title": "switch practical example", "content": "Command handler, user role, HTTP status." }
+            }
         },
         "第2週：配列・ループ・関数": {
             "title": "Week 2: Arrays, Loops, and Functions",
-            "description": "Arrays, loops (for, while, forEach), function definition and calls"
+            "description": "Arrays, loops (for, while, forEach), function definition and calls",
+            "subtasks": {
+                "配列の基本": "Array basics",
+                "for文とwhile文": "for and while",
+                "配列とループの組み合わせ": "Arrays and loops",
+                "関数の定義と呼び出し": "Function definition and calls",
+                "練習問題": "Practice"
+            },
+            "knowledge_items": {
+                "配列の基本": { "title": "Array basics", "content": "[] or [1,2,3]; arr[0]; arr.length; arr[i]=x." },
+                "配列の主なメソッド": { "title": "Main array methods", "content": "push, pop, unshift, shift; indexOf, includes; slice, concat." },
+                "配列の実践例": { "title": "Array example", "content": "Todo list, scores, Math.max(...arr), sum/average." },
+                "for文とwhile文": { "title": "for and while", "content": "for(init;cond;up){}; for-of; while(cond){}; do-while; break, continue." },
+                "ループの実践例": { "title": "Loop example", "content": "Times table, filter evens, find name, sum with while." },
+                "関数の基本": { "title": "Function basics", "content": "function fn(){}, const fn=function(){}, arrow ()=>{}. Params, default, return. Scope." },
+                "関数の実践例": { "title": "Function example", "content": "sumArray, averageArray, findMax, reverseString, isEven, filterEven." }
+            }
         },
         "第3週：DOM": {
             "title": "Week 3: DOM",
-            "description": "DOM (Document Object Model) basics, getting and manipulating elements"
+            "description": "DOM (Document Object Model) basics, getting and manipulating elements",
+            "subtasks": {
+                "DOMとは": "What is DOM",
+                "要素の取得方法": "How to get elements",
+                "要素の内容を変更": "Change element content",
+                "スタイルの変更": "Change styles",
+                "属性の操作": "Attribute handling"
+            },
+            "knowledge_items": {
+                "DOMとは": { "title": "What is DOM", "content": "Tree of HTML; get/change content, style, attributes; add/remove nodes; events." },
+                "要素の取得方法": { "title": "Getting elements", "content": "getElementById, getElementsByClassName, getElementsByTagName; querySelector, querySelectorAll." },
+                "要素取得の実践例": { "title": "Get elements example", "content": "ById, querySelectorAll, forEach; CSS selectors." },
+                "要素の内容を変更": { "title": "Change content", "content": "textContent (plain); innerHTML (HTML). input.value." },
+                "内容変更の実践例": { "title": "Content change example", "content": "title textContent; div innerHTML; input value; dynamic list." },
+                "スタイルと属性の操作": { "title": "Style and attributes", "content": "element.style.prop; classList add/remove/toggle/contains; getAttribute, setAttribute." },
+                "スタイル操作の実践例": { "title": "Style example", "content": "box styles; toggle class on click; image switch; conditional style by score." }
+            }
         },
         "第4週：イベント処理": {
             "title": "Week 4: Event Handling",
-            "description": "Event listeners, click events, input events, keyboard events"
+            "description": "Event listeners, click events, input events, keyboard events",
+            "subtasks": {
+                "イベントとは": "What are events",
+                "イベントリスナーの追加": "Adding event listeners",
+                "様々なイベントタイプ": "Event types",
+                "イベントオブジェクト": "Event object",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "イベントとは": { "title": "What are events", "content": "click, dblclick, mouseenter/leave; keydown/up; submit, change, input, focus, blur; DOMContentLoaded, load, resize, scroll." },
+                "addEventListener() の使い方": { "title": "addEventListener usage", "content": "element.addEventListener(type, handler); removeEventListener; { once, capture }." },
+                "イベント処理の実践例": { "title": "Event handling example", "content": "Click count; input→output; mouseenter/leave; keydown; DOMContentLoaded." },
+                "イベントオブジェクト": { "title": "Event object", "content": "e.type, e.target, e.currentTarget; clientX/Y; e.key; e.preventDefault(), e.stopPropagation()." },
+                "イベントオブジェクトの実践例": { "title": "Event object example", "content": "Form preventDefault; mousemove coords; target info; Ctrl+S, Esc; email validation." }
+            }
         },
         "第5週：ループとイベント": {
             "title": "Week 5: Loops and Events",
-            "description": "Combining loops with event handling, practical exercises"
+            "description": "Combining loops with event handling, practical exercises",
+            "subtasks": {
+                "配列とループの復習": "Arrays and loops review",
+                "ループで複数要素にイベントを追加": "Add events in loop",
+                "イベント委譲（Event Delegation）": "Event delegation",
+                "実践：ToDoリストアプリ": "Practice: ToDo app"
+            },
+            "knowledge_items": {
+                "ループで複数要素にイベントを追加": { "title": "Add events in loop", "content": "querySelectorAll + forEach; same or per-index handler." },
+                "複数ボタンのイベント処理例": { "title": "Multiple buttons example", "content": "data-color buttons; delete-btn via closest('li').remove()." },
+                "イベント委譲（Event Delegation）": { "title": "Event delegation", "content": "Listener on parent; if (e.target.matches(...)) handle. Works for dynamically added elements." },
+                "ToDoリストの実装例": { "title": "ToDo list example", "content": "addTodo, keypress Enter; list.addEventListener click → delete or toggle completed." }
+            }
         },
         "第6週：Elementの作成・追加": {
             "title": "Week 6: Creating and Adding Elements",
-            "description": "Creating DOM elements dynamically, adding elements to the page"
+            "description": "Creating DOM elements dynamically, adding elements to the page",
+            "subtasks": {
+                "createElement()で要素を作成": "Create with createElement()",
+                "appendChild(), insertBefore()": "appendChild, insertBefore",
+                "documentFragmentの活用": "Using DocumentFragment",
+                "実践：動的なカード生成": "Practice: dynamic cards"
+            },
+            "knowledge_items": {
+                "要素の作成と追加": { "title": "Create and add elements", "content": "createElement; textContent/innerHTML/attributes; appendChild; insertBefore; append, prepend." },
+                "要素作成の実践例": { "title": "Create element example", "content": "createListItem; createCard with title, desc, button; append to container." },
+                "DocumentFragmentの活用": { "title": "DocumentFragment", "content": "createDocumentFragment(); append to fragment in loop; one appendChild(fragment). Fewer reflows." },
+                "DocumentFragmentの実践例": { "title": "DocumentFragment example", "content": "renderProducts into fragment then append; table rows in fragment." }
+            }
         },
         "第7週：Elementの削除・動的なElementへのイベント追加": {
             "title": "Week 7: Deleting Elements and Adding Events to Dynamic Elements",
-            "description": "Removing elements, event delegation, adding events to dynamically created elements"
+            "description": "Removing elements, event delegation, adding events to dynamically created elements",
+            "subtasks": {
+                "要素の削除（remove, removeChild）": "Remove elements (remove, removeChild)",
+                "要素のクローン（cloneNode）": "Clone (cloneNode)",
+                "動的要素へのイベント追加": "Events on dynamic elements",
+                "実践：動的フォーム生成": "Practice: dynamic form"
+            },
+            "knowledge_items": {
+                "要素の削除": { "title": "Removing elements", "content": "element.remove(); parent.removeChild(child); clear: innerHTML='', while firstChild remove, replaceChildren()." },
+                "削除の実践例": { "title": "Remove example", "content": "delete-btn in li calls li.remove(); deleteSelected by :checked; clearAll confirm." },
+                "cloneNode() - 要素の複製": { "title": "cloneNode", "content": "cloneNode(false) shallow; cloneNode(true) deep. No event listeners; watch duplicate ids." },
+                "動的フォームフィールドの追加": { "title": "Dynamic form fields", "content": "Clone template; set value/name; removeBtn removes row; keep at least one." }
+            }
         },
         "第8週：予備日（中間評価週）": {
             "title": "Week 8: Reserve Day (Mid-term Evaluation Week)",
-            "description": "Comprehensive review and mid-term assignment for weeks 1-7"
+            "description": "Comprehensive review and mid-term assignment for weeks 1-7",
+            "subtasks": {
+                "基礎知識の復習": "Review basics",
+                "DOM操作の復習": "Review DOM",
+                "中間課題：ToDoアプリの完成": "Mid-term: complete ToDo app"
+            },
+            "knowledge_items": {
+                "第1週～第7週の復習ポイント": { "title": "Review points 1-7", "content": "let/const, types, operators, if/switch, loops, functions; getElement*, querySelector*; textContent, innerHTML, style, classList; addEventListener, delegation; createElement, append, remove, fragment, cloneNode." },
+                "中間課題：ToDoアプリ完全版": { "title": "Mid-term: full ToDo app", "content": "todos array; add, delete, toggle; renderTodos with fragment; filter all/active/completed; dataset.id." }
+            }
         },
         "第9週：WebStorageの利用": {
             "title": "Week 9: Using WebStorage",
-            "description": "Data persistence using localStorage and sessionStorage"
+            "description": "Data persistence using localStorage and sessionStorage",
+            "subtasks": {
+                "WebStorageとは": "What is WebStorage",
+                "localStorage, sessionStorageの使い方": "Using localStorage and sessionStorage",
+                "ToDoアプリにストレージ機能を追加": "Add storage to ToDo app"
+            },
+            "knowledge_items": {
+                "WebStorageとは": { "title": "What is WebStorage", "content": "localStorage (persistent); sessionStorage (tab session). setItem, getItem, removeItem, clear. Strings only." },
+                "localStorageの基本的な使い方": { "title": "localStorage basics", "content": "setItem/getItem; number via parseInt; array/object with JSON.stringify/parse." },
+                "ToDoアプリ with localStorage": { "title": "ToDo with localStorage", "content": "todos = JSON.parse(localStorage.getItem('todos'))||[]; saveTodos() on change; load on DOMContentLoaded." }
+            }
         },
         "第10週：JSONについて": {
             "title": "Week 10: About JSON",
-            "description": "JSON format, parsing and stringifying JSON data"
+            "description": "JSON format, parsing and stringifying JSON data",
+            "subtasks": {
+                "JSONとは": "What is JSON",
+                "JSON.stringify(), JSON.parse()": "JSON.stringify and JSON.parse",
+                "JSONデータの操作": "JSON data handling"
+            },
+            "knowledge_items": {
+                "JSONとは": { "title": "What is JSON", "content": "Lightweight text format; {} and []; double quotes for keys; types: string, number, boolean, null, array, object." },
+                "JSON.stringify() と JSON.parse()": { "title": "stringify and parse", "content": "JSON.stringify(obj); JSON.parse(str); try/catch for parse; with localStorage." },
+                "JSONデータの実践例": { "title": "JSON example", "content": "Parse users array; filter/map; stringify; config save/load." }
+            }
         },
         "第11週：非同期処理・タイマー関数": {
             "title": "Week 11: Asynchronous Processing and Timer Functions",
-            "description": "setTimeout, setInterval, Promise, async/await"
+            "description": "setTimeout, setInterval, Promise, async/await",
+            "subtasks": {
+                "setTimeout, setInterval": "setTimeout, setInterval",
+                "Promiseの基礎": "Promise basics",
+                "async/await": "async/await"
+            },
+            "knowledge_items": {
+                "タイマー関数とは": { "title": "Timer functions", "content": "setTimeout(fn, ms) once; clearTimeout(id); setInterval(fn, ms); clearInterval(id)." },
+                "Promiseとは": { "title": "What is Promise", "content": "new Promise((resolve,reject)=>{}); then/catch; chain; Promise.all([])." },
+                "async/awaitとは": { "title": "async/await", "content": "async fn returns Promise; await waits; try/catch; sequential vs Promise.all parallel." },
+                "実践例：カウントダウン付きメッセージ表示": { "title": "Countdown example", "content": "wait(sec) Promise; showCountdown async loop; btn disabled during run." }
+            }
         },
         "第12週：外部APIと非同期通信": {
             "title": "Week 12: External APIs and Asynchronous Communication",
-            "description": "Fetch API, making HTTP requests, handling API responses"
+            "description": "Fetch API, making HTTP requests, handling API responses",
+            "subtasks": {
+                "fetch APIの基礎": "fetch API basics",
+                "REST APIとの連携": "REST API integration",
+                "エラーハンドリング": "Error handling"
+            },
+            "knowledge_items": {
+                "fetch APIとは": { "title": "What is fetch API", "content": "fetch(url) returns Promise; response.json(); method, headers, body for POST/PUT/DELETE; response.ok, status." },
+                "REST APIとは": { "title": "What is REST API", "content": "GET/POST/PUT/DELETE on resources; JSONPlaceholder for practice; query params." },
+                "エラーハンドリング": { "title": "Error handling", "content": "try/catch network; if(!response.ok) throw; status 404/500; retry, timeout, user-facing message." },
+                "実践例：天気情報の取得と表示": { "title": "Weather fetch example", "content": "getWeather(city); check response.ok; displayWeather(data); JSONPlaceholder practice." }
+            }
         },
         "第13週：総合課題①": {
             "title": "Week 13: Comprehensive Project 1",
-            "description": "First comprehensive web application project"
+            "description": "First comprehensive web application project",
+            "subtasks": {
+                "プロジェクト計画": "Project planning",
+                "UI設計と実装": "UI design and implementation",
+                "機能実装": "Feature implementation"
+            }
         },
         "第14週：総合課題②": {
             "title": "Week 14: Comprehensive Project 2",
-            "description": "Second comprehensive web application project"
+            "description": "Second comprehensive web application project",
+            "subtasks": {
+                "データ永続化の実装": "Data persistence",
+                "エラーハンドリング": "Error handling",
+                "UI/UXの改善": "UI/UX improvements"
+            }
         },
         "第15週：総合課題③（最終発表）": {
             "title": "Week 15: Comprehensive Project 3 (Final Presentation)",
-            "description": "Final comprehensive project and presentation"
+            "description": "Final comprehensive project and presentation",
+            "subtasks": {
+                "コードのリファクタリング": "Code refactoring",
+                "テストとデバッグ": "Testing and debugging",
+                "ドキュメント作成": "Documentation",
+                "発表準備": "Presentation prep"
+            }
         }
     }
 }

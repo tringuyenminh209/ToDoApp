@@ -69,55 +69,241 @@
     "tasks": {
         "第0回：環境構築": {
             "title": "Session 0: Environment Setup",
-            "description": "PHP development environment setup (XAMPP, MAMP, or Docker)"
+            "description": "PHP development environment setup (XAMPP, MAMP, or Docker)",
+            "subtasks": {
+                "開発環境をセットアップ": "Set up development environment",
+                "Webサーバーを起動": "Start web server",
+                "Hello Worldプログラムを作成": "Create Hello World program"
+            },
+            "knowledge_items": {
+                "Hello Worldの基本": { "title": "Hello World Basics", "content": "<?php echo \"Hello World!\"; ?>. Opening/closing tags, echo, semicolon." },
+                "PHPの基本構文": { "title": "PHP Basic Syntax", "content": "<?php ... ?>. echo, semicolon. Closing tag optional at file end." },
+                "開発環境の選択肢": { "title": "Development Environment Options", "content": "XAMPP (cross‑platform), MAMP (Mac/Win), Docker. Choose per need." },
+                "phpinfo()で環境確認": { "title": "Check Environment with phpinfo()", "content": "phpinfo(), phpinfo(INFO_GENERAL), phpversion() to verify PHP." },
+                "よくあるトラブルシューティング": { "title": "Common Troubleshooting", "content": "Port 80 in use, PHP file downloaded, encoding. Check Apache, PHP module, UTF-8." }
+            }
         },
         "第1回：PHPの基本": {
             "title": "Session 1: PHP Basics",
-            "description": "Variables, data types, operators, string operations basics"
+            "description": "Variables, data types, operators, string operations basics",
+            "subtasks": {
+                "変数の宣言と代入": "Variable declaration and assignment",
+                "データ型の理解（string, int, float, bool）": "Understand data types (string, int, float, bool)",
+                "演算子（+, -, *, /, %, .）": "Operators (+, -, *, /, %, .)",
+                "文字列の連結と出力": "String concatenation and output",
+                "課題01を完了": "Complete assignment 01"
+            },
+            "knowledge_items": {
+                "変数と演算子の例": { "title": "Variable and Operator Example", "content": "$name, $age, arithmetic, concatenation with ." },
+                "PHPの変数": { "title": "PHP Variables", "content": "Start with $. Dynamic typing. Concatenate with . ; echo/print." },
+                "PHPのデータ型": { "title": "PHP Data Types", "content": "string, int, float, bool; array, object; null, resource." },
+                "データ型の確認と変換": { "title": "Type Check and Cast", "content": "var_dump(), gettype(), is_*(), (int)/(float)/(bool) cast." },
+                "演算子の優先順位": { "title": "Operator Precedence", "content": "** then */% then +- then .; == vs ===; &&, ||, !." },
+                "文字列操作の詳細": { "title": "String Operations", "content": "Interpolation in \"\", heredoc, strlen/mb_strlen, str_replace, substr." },
+                "変数のスコープ": { "title": "Variable Scope", "content": "Local, global (need global keyword), superglobals $_GET, $_POST, etc." }
+            }
         },
         "第2回：配列・連想配列": {
             "title": "Session 2: Arrays and Associative Arrays",
-            "description": "Array and associative array declaration, operations, loop processing"
+            "description": "Array and associative array declaration, operations, loop processing",
+            "subtasks": {
+                "配列の基本（array(), []）": "Array basics (array(), [])",
+                "配列の要素へのアクセス": "Access array elements",
+                "連想配列の基本": "Associative array basics",
+                "foreach文で配列をループ": "Loop arrays with foreach",
+                "課題02を完了": "Complete assignment 02"
+            },
+            "knowledge_items": {
+                "配列と連想配列の例": { "title": "Array and Associative Array Example", "content": "[] and ['key'=>'value'], foreach." },
+                "配列の宣言方法": { "title": "Array Declaration", "content": "[1,2,3], ['k'=>'v'], array(). Prefer short syntax." },
+                "配列の操作": { "title": "Array Operations", "content": "[] push, array_push/unshift, pop/shift, unset, in_array, array_merge, array_slice." },
+                "多次元配列": { "title": "Multidimensional Arrays", "content": "Nested arrays, $a[0]['key'], foreach with key => value." },
+                "便利な配列関数": { "title": "Useful Array Functions", "content": "count, sort/rsort/asort/ksort, array_keys/values, implode/explode." }
+            }
         },
         "第3回：定数・別ファイル読み込み・フォーム処理①": {
             "title": "Session 3: Constants, File Includes, Form Processing (Part 1)",
-            "description": "Constant definition, require/include, $_GET/$_POST basics"
+            "description": "Constant definition, require/include, $_GET/$_POST basics",
+            "subtasks": {
+                "定数の定義（define, const）": "Define constants (define, const)",
+                "require/includeでファイル読み込み": "Load files with require/include",
+                "$_GETでデータを受け取る": "Receive data with $_GET",
+                "$_POSTでデータを受け取る": "Receive data with $_POST",
+                "課題03を完了": "Complete assignment 03"
+            },
+            "knowledge_items": {
+                "フォーム処理の例": { "title": "Form Processing Example", "content": "$_GET/$_POST with ??, define/const, require/include." },
+                "定数の定義方法": { "title": "Defining Constants", "content": "define('NAME', val), const NAME = val. __FILE__, __DIR__, etc." },
+                "require vs include": { "title": "require vs include", "content": "require = fatal if missing; include = warning. _once prevents duplicate." },
+                "$_GETと$_POSTの詳細": { "title": "$_GET and $_POST Details", "content": "?? default, REQUEST_METHOD, isset/empty, filter_input()." },
+                "HTMLフォームの例": { "title": "HTML Form Example", "content": "method GET/POST, name, checkboxes as name[], select." },
+                "GETとPOSTの使い分け": { "title": "When to Use GET vs POST", "content": "GET: search, bookmarkable. POST: login, create, sensitive, file upload." }
+            }
         },
         "第4回：フォーム処理②": {
             "title": "Session 4: Form Processing (Part 2)",
-            "description": "Form validation, error handling, security measures"
+            "description": "Form validation, error handling, security measures",
+            "subtasks": {
+                "フォームのバリデーション": "Form validation",
+                "エラーメッセージの表示": "Display error messages",
+                "XSS対策（htmlspecialchars）": "XSS protection (htmlspecialchars)",
+                "複数ページのフォーム処理": "Multi-page form processing",
+                "課題04を完了": "Complete assignment 04"
+            },
+            "knowledge_items": {
+                "セキュアなフォーム処理": { "title": "Secure Form Processing", "content": "htmlspecialchars ENT_QUOTES UTF-8, validation, error array." },
+                "バリデーションのパターン": { "title": "Validation Patterns", "content": "empty, mb_strlen, filter_var EMAIL, is_numeric, preg_match." },
+                "XSS（クロスサイトスクリプティング）対策": { "title": "XSS Prevention", "content": "htmlspecialchars on output, ENT_QUOTES, UTF-8. Never trust input." },
+                "完全なフォーム処理の例": { "title": "Complete Form Example", "content": "POST check, trim, validate, errors by field, repopulate, redirect on success." },
+                "セキュリティのベストプラクティス": { "title": "Security Best Practices", "content": "Validate input, escape output, CSRF token, prepared statements, password_hash, HTTPS." }
+            }
         },
         "第5回：ファイルアップロード": {
             "title": "Session 5: File Upload",
-            "description": "File upload processing using $_FILES, image upload and display"
+            "description": "File upload processing using $_FILES, image upload and display",
+            "subtasks": {
+                "$_FILESの基本": "$_FILES basics",
+                "ファイルのアップロード処理": "File upload handling",
+                "ファイルサイズとタイプのチェック": "Check file size and type",
+                "画像の表示": "Display images",
+                "課題05を完了": "Complete assignment 05"
+            },
+            "knowledge_items": {
+                "ファイルアップロードの例": { "title": "File Upload Example", "content": "move_uploaded_file, tmp_name, upload dir, uniqid filename." },
+                "$_FILES配列の構造": { "title": "$_FILES Structure", "content": "name, type, tmp_name, error, size. UPLOAD_ERR_* codes." },
+                "セキュアなファイルアップロード": { "title": "Secure File Upload", "content": "Check error, max size, MIME with finfo, whitelist extension, unique name." },
+                "HTMLフォーム（ファイルアップロード）": { "title": "Upload HTML Form", "content": "enctype=multipart/form-data, MAX_FILE_SIZE, accept, multiple." },
+                "ファイルアップロードのセキュリティ": { "title": "Upload Security", "content": "Validate type and size, unique filename, save outside webroot or disable execute." },
+                "画像のリサイズと表示": { "title": "Image Resize and Display", "content": "GD: getimagesize, imagecreatefrom*, imagecopyresampled, imagejpeg; display with img src." }
+            }
         },
         "第6回：クッキー・セッション": {
             "title": "Session 6: Cookies and Sessions",
-            "description": "Cookie and session setup, retrieval, deletion, login functionality implementation"
+            "description": "Cookie and session setup, retrieval, deletion, login functionality implementation",
+            "subtasks": {
+                "クッキーの設定と取得": "Set and get cookies",
+                "セッションの開始と管理": "Start and manage sessions",
+                "ログイン機能の実装": "Implement login",
+                "セッションを使った認証": "Authentication with sessions",
+                "課題06を完了": "Complete assignment 06"
+            },
+            "knowledge_items": {
+                "セッション管理の例": { "title": "Session Management Example", "content": "session_start(), $_SESSION, login check, session_destroy()." },
+                "クッキーとセッションの違い": { "title": "Cookie vs Session", "content": "Cookie: client, small; Session: server, secure. Session ID in cookie." },
+                "クッキーの詳細な使い方": { "title": "Cookie Usage", "content": "setcookie(expires, path, secure, httponly), samesite, $_COOKIE, delete by past expiry." },
+                "セッションの完全な使い方": { "title": "Session Usage", "content": "session_start, $_SESSION, regenerate_id, unset/destroy, cookie params, timeout." },
+                "完全なログインシステムの実装": { "title": "Full Login System", "content": "Verify credentials, session_regenerate_id, store user in session, remember token, logout." },
+                "セッションのセキュリティ対策": { "title": "Session Security", "content": "regenerate_id on login, HTTPS, httponly/secure, CSRF token, timeout, password_hash." }
+            }
         },
         "第8回：DB接続（SELECT）": {
             "title": "Session 8: Database Connection (SELECT)",
-            "description": "Database connection using PDO, data retrieval with SELECT statements"
+            "description": "Database connection using PDO, data retrieval with SELECT statements",
+            "subtasks": {
+                "PDOの基本接続": "Basic PDO connection",
+                "SELECT文の実行": "Execute SELECT",
+                "fetchAll()でデータ取得": "Fetch data with fetchAll()",
+                "テーブルにデータを表示": "Display data in table",
+                "課題08を完了": "Complete assignment 08"
+            },
+            "knowledge_items": {
+                "PDO接続とSELECTの例": { "title": "PDO Connection and SELECT Example", "content": "new PDO(dsn, user, pass), query(), fetchAll(PDO::FETCH_ASSOC)." },
+                "PDOとは？": { "title": "What is PDO?", "content": "PHP Data Objects. DB-agnostic, prepared statements, exceptions. Prefer over mysqli." },
+                "PDOの接続オプション": { "title": "PDO Connection Options", "content": "ERRMODE_EXCEPTION, DEFAULT_FETCH_MODE, ATTR_EMULATE_PREPARES." },
+                "フェッチモードの種類": { "title": "Fetch Modes", "content": "FETCH_ASSOC, FETCH_NUM, FETCH_BOTH, FETCH_OBJ. Prefer FETCH_ASSOC." },
+                "様々なSELECT文": { "title": "Various SELECTs", "content": "query/fetch/fetchAll, COUNT, while fetch, ORDER BY LIMIT, JOIN." },
+                "HTMLテーブルで表示": { "title": "Display in HTML Table", "content": "foreach rows, htmlspecialchars each cell, empty check." }
+            }
         },
         "第9回：DB接続（SELECT②条件付き）": {
             "title": "Session 9: Database Connection (SELECT with Conditions)",
-            "description": "WHERE clause, placeholders, prepared statements"
+            "description": "WHERE clause, placeholders, prepared statements",
+            "subtasks": {
+                "WHERE句の使い方": "Use WHERE clause",
+                "プレースホルダー（:name）": "Placeholders (:name)",
+                "プリペアドステートメント": "Prepared statements",
+                "SQLインジェクション対策": "SQL injection prevention",
+                "課題09を完了": "Complete assignment 09"
+            },
+            "knowledge_items": {
+                "プリペアドステートメントの例": { "title": "Prepared Statement Example", "content": "prepare('... :id'), execute(['id'=>$v])." },
+                "SQLインジェクションとは？": { "title": "What is SQL Injection?", "content": "Never concatenate user input into SQL. Use placeholders." },
+                "プレースホルダーの種類": { "title": "Placeholder Types", "content": "Named :name, positional ?. bindParam/bindValue. LIKE and IN patterns." },
+                "プレースホルダーの制限": { "title": "Placeholder Limits", "content": "Values only. Table/column names: use whitelist, not placeholders." }
+            }
         },
         "第10回：DB接続（INSERT）": {
             "title": "Session 10: Database Connection (INSERT)",
-            "description": "Add data with INSERT statements, register form data to database"
+            "description": "Add data with INSERT statements, register form data to database",
+            "subtasks": {
+                "INSERT文の基本": "INSERT basics",
+                "フォームデータをINSERT": "INSERT form data",
+                "バリデーションとエラーハンドリング": "Validation and error handling",
+                "登録後のリダイレクト": "Redirect after registration",
+                "課題10を完了": "Complete assignment 10"
+            },
+            "knowledge_items": {
+                "INSERT文の例": { "title": "INSERT Example", "content": "prepare('INSERT ... VALUES (:n,:e)'), execute, header Location, exit." },
+                "完全なINSERT処理": { "title": "Full INSERT Flow", "content": "Validate, PDO prepare/execute, lastInsertId(), handle duplicate key." },
+                "複数データのINSERT": { "title": "Multiple INSERTs", "content": "Multi-row VALUES, or loop with beginTransaction/commit/rollBack." },
+                "lastInsertId()とrowCount()": { "title": "lastInsertId() and rowCount()", "content": "lastInsertId() for AUTO_INCREMENT; rowCount() for affected rows (not SELECT)." }
+            }
         },
         "第11回：UPDATE・DELETE・Extra": {
             "title": "Session 11: UPDATE, DELETE, and Extra",
-            "description": "UPDATE statements, DELETE statements, transaction processing"
+            "description": "UPDATE statements, DELETE statements, transaction processing",
+            "subtasks": {
+                "UPDATE文の基本": "UPDATE basics",
+                "フォームからデータを更新": "Update data from form",
+                "DELETE文の基本": "DELETE basics",
+                "トランザクション処理": "Transaction processing",
+                "課題11を完了": "Complete assignment 11"
+            },
+            "knowledge_items": {
+                "UPDATEとDELETEの例": { "title": "UPDATE and DELETE Example", "content": "prepare/execute for UPDATE and DELETE; beginTransaction/commit/rollBack." },
+                "UPDATE文の実践例": { "title": "UPDATE Practical Example", "content": "Single/multiple columns, WHERE, rowCount(), form-driven update." },
+                "トランザクションとは？": { "title": "What are Transactions?", "content": "ACID. beginTransaction, commit, rollBack. Use for multi-step updates." },
+                "DELETE文の実践例": { "title": "DELETE Practical Example", "content": "Single/multiple rows, logical delete (flag), confirm then delete, related tables." }
+            }
         },
         "第12回：JSON": {
             "title": "Session 12: JSON",
-            "description": "JSON encoding/decoding, JSON API creation"
+            "description": "JSON encoding/decoding, JSON API creation",
+            "subtasks": {
+                "json_encode()とjson_decode()": "json_encode() and json_decode()",
+                "配列をJSONに変換": "Convert array to JSON",
+                "JSON APIエンドポイントの作成": "Create JSON API endpoint",
+                "Content-Typeヘッダーの設定": "Set Content-Type header",
+                "課題12を完了": "Complete assignment 12"
+            },
+            "knowledge_items": {
+                "JSON処理の例": { "title": "JSON Example", "content": "json_encode(JSON_UNESCAPED_UNICODE), json_decode($str, true), header Content-Type." },
+                "json_encodeの詳細": { "title": "json_encode Details", "content": "JSON_UNESCAPED_UNICODE, JSON_PRETTY_PRINT, JSON_NUMERIC_CHECK, json_last_error_msg." },
+                "json_decodeの詳細": { "title": "json_decode Details", "content": "Second param true = array. json_last_error. file_get_contents(php://input) for POST body." },
+                "データベースとJSON": { "title": "Database and JSON", "content": "Fetch rows, json_encode for response. success/data/error structure, HTTP status." },
+                "JSONのベストプラクティス": { "title": "JSON Best Practices", "content": "Content-Type application/json, escape Unicode, error check, consistent response shape, CORS if needed." }
+            }
         },
         "第13回～第14回：自作API": {
             "title": "Session 13-14: Custom API Development",
-            "description": "RESTful API design and implementation, integration with frontend"
+            "description": "RESTful API design and implementation, integration with frontend",
+            "subtasks": {
+                "RESTful APIの設計": "Design RESTful API",
+                "GET APIの実装": "Implement GET API",
+                "POST APIの実装": "Implement POST API",
+                "PUT/PATCH APIの実装": "Implement PUT/PATCH API",
+                "DELETE APIの実装": "Implement DELETE API",
+                "フロントエンドとの連携": "Integrate with frontend",
+                "エラーハンドリングとバリデーション": "Error handling and validation"
+            },
+            "knowledge_items": {
+                "RESTful APIの例": { "title": "RESTful API Example", "content": "Switch on REQUEST_METHOD, GET list, POST body from php://input, JSON response." },
+                "RESTful APIのベストプラクティス": { "title": "REST Best Practices", "content": "Correct HTTP methods, status codes, JSON, CORS, validation, error handling." },
+                "完全なCRUD API": { "title": "Full CRUD API", "content": "GET one/many, POST, PUT/PATCH, DELETE, OPTIONS, PATH_INFO, validate input." },
+                "HTTPメソッドとステータスコード": { "title": "HTTP Methods and Status Codes", "content": "GET/POST/PUT/DELETE. 200, 201, 400, 401, 404, 405, 500." },
+                "JavaScriptからAPIを呼び出す": { "title": "Call API from JavaScript", "content": "fetch GET/POST/PUT/DELETE, headers, body JSON.stringify, async/await." },
+                "API開発のセキュリティ": { "title": "API Security", "content": "Auth (e.g. JWT), rate limit, validate input, prepared statements, CORS, HTTPS." }
+            }
         }
     }
 }

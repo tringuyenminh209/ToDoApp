@@ -55,51 +55,150 @@
     "tasks": {
         "第1週：Reactとは？環境構築とJSX": {
             "title": "Week 1: What is React? Environment Setup and JSX",
-            "description": "React overview, Create React App, JSX, component basics"
+            "description": "React overview, Create React App, JSX, component basics",
+            "subtasks": {
+                "Reactをインストール": "Install React",
+                "JSXを学習": "Learn JSX",
+                "最初のコンポーネントを作成": "Create first component"
+            },
+            "knowledge_items": {
+                "Reactとは？": { "title": "What is React?", "content": "Component-based UI library. Virtual DOM, declarative, one-way data flow. By Meta." },
+                "React環境構築": { "title": "React Environment Setup", "content": "npx create-react-app, Vite + react template. Folder: src/, public/, package.json." },
+                "JSXの基本": { "title": "JSX Basics", "content": "Single parent or <>. className, style={{}}. Self-closing /. {} for JS. {/* comment */}." }
+            }
         },
         "第2週：コンポーネント、Props、State": {
             "title": "Week 2: Components, Props, State",
-            "description": "Component creation, data passing with Props, state management with State"
+            "description": "Component creation, data passing with Props, state management with State",
+            "subtasks": {
+                "コンポーネントを学習": "Learn components",
+                "Propsを学習": "Learn Props",
+                "Stateを学習": "Learn State"
+            },
+            "knowledge_items": {
+                "コンポーネントの種類": { "title": "Component Types", "content": "Function components (recommended), arrow. Props, export/import. Prefer function over class." },
+                "Props（プロパティ）": { "title": "Props", "content": "Parent-to-child data. Destructure { name }. Defaults, children. Pass objects/arrays." },
+                "State（useState）": { "title": "State (useState)", "content": "[value, setValue] = useState(init). setValue to update. Object/array: spread then set." }
+            }
         },
         "第3週：イベント処理、リスト、フォーム": {
             "title": "Week 3: Event Handling, Lists, Forms",
-            "description": "Event handling, list rendering, form control"
+            "description": "Event handling, list rendering, form control",
+            "subtasks": {
+                "イベント処理を学習": "Learn event handling",
+                "リストレンダリングを学習": "Learn list rendering",
+                "フォーム制御を学習": "Learn form control"
+            },
+            "knowledge_items": {
+                "イベント処理": { "title": "Event Handling", "content": "onClick={handler}, (e) =>. e.target, e.preventDefault(). onChange, onSubmit, onFocus, etc." },
+                "リストレンダリングとkey": { "title": "List Rendering and Keys", "content": "map() to list. key unique, prefer id not index. Key on top-level in map." },
+                "制御されたコンポーネント": { "title": "Controlled Components", "content": "value + onChange from state. Single handleChange with name. checkbox: checked. Validate on submit." }
+            }
         },
         "第4週：useState、useEffect": {
             "title": "Week 4: useState, useEffect",
-            "description": "State management basics, side effect handling, lifecycle"
+            "description": "State management basics, side effect handling, lifecycle",
+            "subtasks": {
+                "useStateの詳細を学習": "Learn useState in detail",
+                "useEffectを学習": "Learn useEffect"
+            },
+            "knowledge_items": {
+                "useEffectの基本": { "title": "useEffect Basics", "content": "useEffect(fn), fn runs after render. [] = mount only. [dep] = when dep changes. Return cleanup." },
+                "useEffectの依存配列": { "title": "useEffect Dependency Array", "content": "No deps: every render. []: mount once. [a,b]: when a or b changes. Avoid object/array in deps; use primitives." }
+            }
         },
         "第5週：useContext、useReducer": {
             "title": "Week 5: useContext, useReducer",
-            "description": "State sharing with Context API, complex state management with useReducer"
+            "description": "State sharing with Context API, complex state management with useReducer",
+            "subtasks": {
+                "useContextを学習": "Learn useContext",
+                "useReducerを学習": "Learn useReducer"
+            },
+            "knowledge_items": {
+                "useContext": { "title": "useContext", "content": "createContext, Provider value={}. useContext(MyContext). Wrap with custom hook for safety." },
+                "useReducer": { "title": "useReducer", "content": "(state, action) => newState. dispatch({ type, payload }). Use for complex or local redux-like state." }
+            }
         },
         "第6週：その他のHooksとカスタムフック": {
             "title": "Week 6: Other Hooks and Custom Hooks",
-            "description": "useRef, useMemo, useCallback, custom hook creation"
+            "description": "useRef, useMemo, useCallback, custom hook creation",
+            "subtasks": {
+                "useRef、useMemo、useCallbackを学習": "Learn useRef, useMemo, useCallback",
+                "カスタムフックを作成": "Create custom hooks"
+            },
+            "knowledge_items": {
+                "useRef、useMemo、useCallback": { "title": "useRef, useMemo, useCallback", "content": "useRef: DOM ref or mutable value. useMemo: memoize value. useCallback: memoize function. Deps array." },
+                "カスタムフック": { "title": "Custom Hooks", "content": "useX() that uses other hooks. useLocalStorage, useFetch, useToggle, useDebounce. Reuse logic." }
+            }
         },
         "第7週：React Router": {
             "title": "Week 7: React Router",
-            "description": "Routing, navigation, dynamic routes, nested routes"
+            "description": "Routing, navigation, dynamic routes, nested routes",
+            "subtasks": {
+                "React Routerの基本を学習": "Learn React Router basics",
+                "動的ルートとナビゲーションを学習": "Learn dynamic routes and navigation"
+            },
+            "knowledge_items": {
+                "React Router v6": { "title": "React Router v6", "content": "BrowserRouter, Routes, Route, Link. useParams(), useNavigate(), useSearchParams(). Outlet for nested. Protected routes." }
+            }
         },
         "第8週：Redux Toolkit基礎": {
             "title": "Week 8: Redux Toolkit Fundamentals",
-            "description": "Redux Toolkit, Slice, Store, Reducer"
+            "description": "Redux Toolkit, Slice, Store, Reducer",
+            "subtasks": {
+                "Redux Toolkitをセットアップ": "Set up Redux Toolkit",
+                "Slice作成と使用を学習": "Learn Slice creation and usage"
+            },
+            "knowledge_items": {
+                "Redux Toolkitの概要": { "title": "Redux Toolkit Overview", "content": "configureStore, createSlice. Less boilerplate. DevTools, default middleware." },
+                "SliceとStore": { "title": "Slice and Store", "content": "createSlice({ name, initialState, reducers }). export actions & reducer. Provider with store." }
+            }
         },
         "第9週：非同期処理とミドルウェア": {
             "title": "Week 9: Asynchronous Processing and Middleware",
-            "description": "createAsyncThunk, RTK Query, middleware"
+            "description": "createAsyncThunk, RTK Query, middleware",
+            "subtasks": {
+                "非同期アクションを学習": "Learn async actions",
+                "RTK Queryを学習": "Learn RTK Query"
+            },
+            "knowledge_items": {
+                "createAsyncThunk": { "title": "createAsyncThunk", "content": "Async thunk for fetch. pending/fulfilled/rejected in extraReducers. dispatch(thunk())." },
+                "RTK Query": { "title": "RTK Query", "content": "createApi, baseQuery. define endpoints. useGetXQuery, useMutation. Caching, refetch." }
+            }
         },
         "第10週：パフォーマンス最適化": {
             "title": "Week 10: Performance Optimization",
-            "description": "React.memo, Code Splitting, Lazy Loading, optimization techniques"
+            "description": "React.memo, Code Splitting, Lazy Loading, optimization techniques",
+            "subtasks": {
+                "パフォーマンス最適化技術を学習": "Learn performance optimization techniques"
+            },
+            "knowledge_items": {
+                "React.memoとメモ化": { "title": "React.memo and Memoization", "content": "React.memo(Comp) for props equality. useMemo/useCallback to avoid unnecessary rerenders." },
+                "Code SplittingとLazy": { "title": "Code Splitting and Lazy", "content": "React.lazy(() => import()). Suspense fallback. Route-based or component-based split." }
+            }
         },
         "第11週：テスト": {
             "title": "Week 11: Testing",
-            "description": "Jest, React Testing Library, component testing"
+            "description": "Jest, React Testing Library, component testing",
+            "subtasks": {
+                "React Testing Libraryを学習": "Learn React Testing Library"
+            },
+            "knowledge_items": {
+                "Jestの基本": { "title": "Jest Basics", "content": "describe, it, expect(). toBe, toHaveBeenCalled. Mock with jest.fn()." },
+                "React Testing Library": { "title": "React Testing Library", "content": "render(), screen, userEvent. getByRole, getByText. Test behavior, not implementation. waitFor." }
+            }
         },
         "第12週：TypeScript + React、デプロイ": {
             "title": "Week 12: TypeScript + React, Deployment",
-            "description": "TypeScript and React integration, best practices, deployment"
+            "description": "TypeScript and React integration, best practices, deployment",
+            "subtasks": {
+                "TypeScript + Reactを学習": "Learn TypeScript + React",
+                "デプロイとベストプラクティスを学習": "Learn deployment and best practices"
+            },
+            "knowledge_items": {
+                "TypeScriptとReact": { "title": "TypeScript and React", "content": "FC, Props types, useState<T>, useRef<T>. Generic components. Strict mode." },
+                "デプロイ": { "title": "Deployment", "content": "npm run build. Static hosting: Vercel, Netlify. Env vars, routing for SPA." }
+            }
         }
     }
 }

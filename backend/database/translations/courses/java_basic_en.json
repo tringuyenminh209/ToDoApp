@@ -83,123 +83,299 @@
     "tasks": {
         "第1回：環境設定と画面出力": {
             "title": "Session 1: Environment Setup and Screen Output",
-            "description": "Java development environment setup and screen output using System.out.println()"
+            "description": "Java development environment setup and screen output using System.out.println()",
+            "subtasks": {
+                "開発環境をセットアップ": "Set up development environment",
+                "Hello Worldプログラムを作成": "Create Hello World program",
+                "ASCIIアートで文字を出力（E, Cなど）": "Output characters with ASCII art (E, C, etc.)",
+                "メソッドを使った出力プログラム": "Output program using methods"
+            },
+            "knowledge_items": {
+                "Javaとは？": { "title": "What is Java?", "content": "# What is Java?\n\n**Java** is a programming language developed by Sun Microsystems (now Oracle) in 1995.\n\n## Java features\n1. **Platform independence**: Write Once, Run Anywhere\n2. **Object-oriented**: Classes and objects\n3. **Garbage collection**: Automatic memory management\n4. **Rich libraries**: Standard library\n5. **Robustness**: Strong typing, exception handling\n\n## Java use cases\n- Android apps, Web (Spring), enterprise systems, desktop apps, big data (Hadoop)." },
+                "Java開発環境の準備": { "title": "Java Development Environment Setup", "content": "# Java Development Environment\n\n## Requirements\n- **JDK** (Oracle JDK or OpenJDK). Check: `java -version`, `javac -version`\n- **IDE**: IntelliJ IDEA (recommended), JCPad (beginners), Eclipse\n\n## Steps\n1. Install JDK\n2. Install IDE\n3. Set JAVA_HOME and PATH\n4. Verify with Hello World" },
+                "Hello Worldの基本": { "title": "Hello World Basics", "content": "public class JKad01S1 {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World!\");\n    }\n}" },
+                "Javaプログラムの構造": { "title": "Java Program Structure", "content": "# Java Program Structure\n\n```java\npublic class ClassName {\n    public static void main(String[] args) {\n        // program logic\n    }\n}\n```\n- File name must match class name.\n- Semicolons, braces, case-sensitive." },
+                "ASCIIアートの出力例": { "title": "ASCII Art Output Example", "content": "Use multiple System.out.println() to draw letters (E, C, etc.)." },
+                "メソッドを使った出力": { "title": "Output Using Methods", "content": "Define static methods (e.g. printHello(), printWorld()) and call them from main()." },
+                "System.out.println()とSystem.out.print()の違い": { "title": "println() vs print()", "content": "- **println()**: adds newline after output.\n- **print()**: no newline.\n- Escape: \\n newline, \\t tab, \\\" quote." },
+                "コンパイルと実行": { "title": "Compile and Run", "content": "Compile: `javac FileName.java`\nRun: `java FileName` (no .class extension). IDE: use Run button." }
+            }
         },
         "第2回：変数と式①（int型①）": {
             "title": "Session 2: Variables and Expressions 1 (int type 1)",
-            "description": "int type variable declaration, assignment, four arithmetic operations, modulo operation"
+            "description": "int type variable declaration, assignment, four arithmetic operations, modulo operation",
+            "subtasks": {
+                "変数の宣言と代入": "Variable declaration and assignment",
+                "四則演算（+, -, *, /）": "Arithmetic (+, -, *, /)",
+                "剰余演算（%）": "Modulo (%)",
+                "実践問題：リンゴの分配": "Practice: apple distribution"
+            },
+            "knowledge_items": {
+                "変数とは？": { "title": "What are variables?", "content": "Variables store data. Declare with type and name; assign with =." },
+                "int型の詳細": { "title": "int type", "content": "32-bit integer. Range about ±2.1e9." },
+                "変数の宣言と代入": { "title": "Declaration and assignment", "content": "int x; x = 10; or int x = 10;" },
+                "四則演算": { "title": "Arithmetic", "content": "+ - * / % . Integer division truncates." },
+                "剰余演算（%）の使い道": { "title": "Uses of modulo", "content": "Even/odd, divisibility, remainder, digit extraction." },
+                "リンゴの分配問題": { "title": "Apple distribution", "content": "Use / for per-person count, % for remainder." }
+            }
         },
         "第3回：変数と式②（int型②）": {
             "title": "Session 3: Variables and Expressions 2 (int type 2)",
-            "description": "Compound assignment operators, increment/decrement operators"
+            "description": "Compound assignment operators, increment/decrement operators",
+            "subtasks": {
+                "複雑な式の計算": "Complex expressions",
+                "演算子の優先順位": "Operator precedence",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "複雑な式の計算": { "title": "Complex expressions", "content": "Combine operators; use parentheses for order." },
+                "インクリメントとデクリメント": { "title": "Increment and decrement", "content": "x++; x--; x+=n; x*=n;" },
+                "演算子の優先順位": { "title": "Operator precedence", "content": "() then * / % then + - then =." }
+            }
         },
         "第4回：String型とキーボード入力": {
             "title": "Session 4: String Type and Keyboard Input",
-            "description": "String type, Scanner class, keyboard input"
+            "description": "String type, Scanner class, keyboard input",
+            "subtasks": { "String型の基本": "String basics", "Scannerクラスの使い方": "Using Scanner", "nextInt()で整数入力": "nextInt() for integers", "nextLine()で文字列入力": "nextLine() for strings", "実践問題：入力と出力": "Practice: input and output" },
+            "knowledge_items": { "String型とは？": { "title": "String type", "content": "Strings in \"\"; immutables; + concatenates." }, "Scannerクラスとは？": { "title": "Scanner class", "content": "import java.util.Scanner; new Scanner(System.in); nextInt(), nextLine(); close()." }, "Scannerの基本的な使い方": { "title": "Basic Scanner usage", "content": "Create, prompt, read, print, close." }, "Scannerクラスの主要メソッド": { "title": "Scanner methods", "content": "nextInt, nextLong, nextDouble, nextLine, next." }, "複数の値を入力する": { "title": "Multiple inputs", "content": "Call nextInt/nextLine repeatedly." }, "nextInt()とnextLine()の組み合わせ": { "title": "nextInt + nextLine", "content": "Call nextLine() once to consume newline after nextInt()." }, "計算機プログラム": { "title": "Calculator program", "content": "Read two numbers, output sum, difference, product, quotient." } }
         },
         "第5回：if文①": {
             "title": "Session 5: if Statement 1",
-            "description": "Conditional branching using if statements, comparison operators"
+            "description": "Conditional branching using if statements, comparison operators",
+            "subtasks": { "if文の基本構文": "if syntax", "比較演算子（>, <, ==, !=）": "Comparison operators", "最大値・最小値を求める": "Find max/min", "実践問題：5人の点数から最高点を求める": "Practice: max of 5 scores" },
+            "knowledge_items": { "if文で最大値を求める": { "title": "Finding max with if", "content": "Initialize max; compare each value; update max." }, "if文の構文": { "title": "if syntax", "content": "if (condition) { } . Use > < >= <= == != ." } }
         },
         "第6回：while文①": {
             "title": "Session 6: while Statement 1",
-            "description": "Loop processing using while statements"
+            "description": "Loop processing using while statements",
+            "subtasks": { "while文の基本構文": "while syntax", "カウンタ変数を使ったループ": "Counter loop", "条件によるループ終了": "Loop exit by condition", "実践問題": "Practice" },
+            "knowledge_items": { "while文の構文": { "title": "while syntax", "content": "while (condition) { } — repeat while true; avoid infinite loop." } }
         },
         "第7回：ネストとインデント": {
             "title": "Session 7: Nesting and Indentation",
-            "description": "Nested if statements, nested loops, importance of indentation"
+            "description": "Nested if statements, nested loops, importance of indentation",
+            "subtasks": { "ネストしたif文": "Nested if", "ネストしたループ": "Nested loops", "インデントの正しい使い方": "Indentation", "実践問題": "Practice" },
+            "knowledge_items": { "ネストしたif文の例": { "title": "Nested if example", "content": "if inside if; score ranges → grade." }, "ネストしたループの例（九九表）": { "title": "Nested loop (times table)", "content": "Outer i, inner j; print i*j." }, "インデントの重要性": { "title": "Indentation", "content": "Use 4 spaces or tab; keep blocks aligned." }, "インデントの良い例と悪い例": { "title": "Good vs bad indentation", "content": "Align braces and block contents." } }
         },
         "第8回：チャレンジ課題①": {
             "title": "Session 8: Challenge Exercise 1",
-            "description": "Comprehensive review exercise covering Sessions 1-7"
+            "description": "Comprehensive review exercise covering Sessions 1-7",
+            "subtasks": { "基本構文の復習": "Review basics", "変数と演算の総合問題": "Variables and arithmetic", "if文とwhile文の組み合わせ": "if and while", "応用課題": "Applied tasks" },
+            "knowledge_items": { "復習すべき重要ポイント": { "title": "Review points", "content": "Syntax, variables, Scanner, if, while, nesting." }, "練習問題：数当てゲーム": { "title": "Number guessing game", "content": "while loop; prompt; compare; report count." } }
         },
         "第9回：クラス替えテスト①（練習問題）": {
             "title": "Session 9: Class Test 1 (Practice Problems)",
-            "description": "Test practice to check understanding of Sessions 1-8"
+            "description": "Test practice to check understanding of Sessions 1-8",
+            "subtasks": { "基本問題（変数と式）": "Basics (variables)", "応用問題（if文）": "if problems", "応用問題（while文）": "while problems", "総合問題": "Combined" },
+            "knowledge_items": { "テスト対策のチェックリスト": { "title": "Test checklist", "content": "Variables, arithmetic, Scanner, if, while, nesting, indentation." }, "テスト練習問題：合計と平均": { "title": "Sum and average", "content": "Loop until 0; sum and count; average = (double)sum/count." } }
         },
         "第10回：チャレンジ課題②": {
             "title": "Session 10: Challenge Exercise 2",
-            "description": "More advanced comprehensive exercise"
+            "description": "More advanced comprehensive exercise",
+            "subtasks": { "複雑なループ処理": "Complex loops", "パターン出力": "Pattern output", "総合応用課題": "Applied" },
+            "knowledge_items": { "チャレンジ：素数判定": { "title": "Prime check", "content": "Check 2..sqrt(n) for divisor." }, "チャレンジ：三角形のパターン": { "title": "Triangle pattern", "content": "Nested loop: outer rows, inner stars per row." } }
         },
         "第11回：変数と式③（整数型と実数型）": {
             "title": "Session 11: Variables and Expressions 3 (Integer and Real Types)",
-            "description": "Usage of long type, double type, float type"
+            "description": "Usage of long type, double type, float type",
+            "subtasks": { "long型の使い方": "Using long", "double型とfloat型": "double and float", "型変換（キャスト）": "Type cast", "実践問題": "Practice" },
+            "knowledge_items": { "整数型と実数型の基本": { "title": "Integer and real types", "content": "long L suffix; float f suffix; (double)x for real division." }, "データ型の種類と範囲": { "title": "Types and ranges", "content": "byte, short, int, long; float, double. Cast: (int)x, (double)n." } }
         },
         "第12回：if文②（if～else if）": {
             "title": "Session 12: if Statement 2 (if-else if)",
-            "description": "if-else if-else syntax, multiple conditional branches"
+            "description": "if-else if-else syntax, multiple conditional branches",
+            "subtasks": { "if-else文の基本": "if-else basics", "if-else if-else構文": "if-else if-else", "複数条件の判定": "Multiple conditions", "実践問題": "Practice" },
+            "knowledge_items": { "if-else if-else構文の例": { "title": "if-else if example", "content": "Score ranges → grade A/B/C/D/F." }, "if-else if-else構文のポイント": { "title": "Points", "content": "Evaluate top to bottom; first true wins; else optional." } }
         },
         "第13回：if文③（論理演算子、boolean）": {
             "title": "Session 13: if Statement 3 (Logical Operators, boolean)",
-            "description": "&& (AND), || (OR), ! (NOT), boolean type"
+            "description": "&& (AND), || (OR), ! (NOT), boolean type",
+            "subtasks": { "boolean型の基本": "boolean basics", "論理演算子（&&, ||, !）": "Logical operators", "複雑な条件式": "Complex conditions", "実践問題": "Practice" },
+            "knowledge_items": { "論理演算子の例": { "title": "Logical operator examples", "content": "&& both true; || either true; ! negate." }, "論理演算子の真理値表": { "title": "Truth tables", "content": "AND, OR, NOT. Short-circuit evaluation." } }
         },
         "第14回：while文②（do～while、break、continue）": {
             "title": "Session 14: while Statement 2 (do-while, break, continue)",
-            "description": "do-while statements, break and continue statements"
+            "description": "do-while statements, break and continue statements",
+            "subtasks": { "do-while文の基本": "do-while basics", "break文でループ脱出": "break", "continue文でスキップ": "continue", "実践問題": "Practice" },
+            "knowledge_items": { "do-while文の例": { "title": "do-while example", "content": "Loop at least once; good for input validation." }, "break文とcontinue文の例": { "title": "break and continue", "content": "break exits loop; continue skips to next iteration." }, "while文とdo-while文の違い": { "title": "while vs do-while", "content": "while checks first; do-while runs body first." } }
         },
         "第15回：配列": {
             "title": "Session 15: Arrays",
-            "description": "Array declaration, initialization, element access"
+            "description": "Array declaration, initialization, element access",
+            "subtasks": { "配列の宣言と初期化": "Declare and init", "配列要素へのアクセス": "Element access", "配列の長さ（length）": "length", "配列の応用問題": "Applied" },
+            "knowledge_items": { "配列の基本": { "title": "Array basics", "content": "int[] a = new int[n]; or int[] a = {1,2,3}; a.length; a[i]." }, "配列を使った合計と平均": { "title": "Sum and average", "content": "Loop over indices or for-each; (double)sum/length." }, "配列の重要ポイント": { "title": "Key points", "content": "0-based; length fixed; bounds check." } }
         },
         "第16回：for文①（for文の基本と配列）": {
             "title": "Session 16: for Statement 1 (for Statement Basics and Arrays)",
-            "description": "Basic for statement syntax, using for with arrays"
+            "description": "Basic for statement syntax, using for with arrays",
+            "subtasks": { "for文の基本構文": "for syntax", "for文と配列の組み合わせ": "for and arrays", "拡張for文（for-each）": "for-each", "実践問題": "Practice" },
+            "knowledge_items": { "for文の基本": { "title": "for basics", "content": "for(init; cond; update){}. for(int x : arr){}." }, "for文を使った配列操作": { "title": "Array operations with for", "content": "Max, count, etc. using for." }, "for文の構文": { "title": "for syntax", "content": "Init once; check; body; update; repeat." } }
         },
         "第17回：for文②（ループ処理の流れ、スコープ）": {
             "title": "Session 17: for Statement 2 (Loop Flow, Scope)",
-            "description": "Loop processing flow, variable scope"
+            "description": "Loop processing flow, variable scope",
+            "subtasks": { "for文の実行フロー詳細": "for flow", "変数のスコープ": "Scope", "ネストしたfor文": "Nested for", "実践問題": "Practice" },
+            "knowledge_items": { "変数のスコープ": { "title": "Variable scope", "content": "Variable visible only inside its block." }, "ネストしたfor文の例": { "title": "Nested for", "content": "Times table; triangle of *." }, "変数のスコープとは": { "title": "What is scope", "content": "Block scope; loop variable only in loop." } }
         },
         "第18回：チャレンジ課題③": {
             "title": "Session 18: Challenge Exercise 3",
-            "description": "Comprehensive review exercise covering Sessions 11-17"
+            "description": "Comprehensive review exercise covering Sessions 11-17",
+            "subtasks": { "配列の応用問題": "Array applied", "for文の応用問題": "for applied", "総合課題": "Combined" },
+            "knowledge_items": { "第11回～第17回の復習ポイント": { "title": "Review 11-17", "content": "Types, if-else if, logic, do-while, break/continue, arrays, for, scope." }, "チャレンジ：配列のソート（選択ソート）": { "title": "Selection sort", "content": "For each i, find min in rest, swap." } }
         },
         "第19回：クラス替えテスト②（練習問題）": {
             "title": "Session 19: Class Test 2 (Practice Problems)",
-            "description": "Test practice to check understanding of Sessions 11-18"
+            "description": "Test practice to check understanding of Sessions 11-18",
+            "subtasks": { "基本問題（配列とfor文）": "Arrays and for", "応用問題（論理演算）": "Logical ops", "総合問題": "Combined" },
+            "knowledge_items": { "テスト対策チェックリスト": { "title": "Test checklist", "content": "long/double, cast, if-else if, &&||!, do-while, break/continue, arrays, for, scope." }, "テスト練習問題：配列の統計": { "title": "Array stats", "content": "Sum, average, max, min, count above average." } }
         },
         "第20回：チャレンジ課題④": {
             "title": "Session 20: Challenge Exercise 4",
-            "description": "More advanced comprehensive exercise"
+            "description": "More advanced comprehensive exercise",
+            "subtasks": { "2次元配列の準備": "2D arrays", "探索アルゴリズム": "Search algorithm", "総合応用課題": "Applied" },
+            "knowledge_items": { "チャレンジ：線形探索": { "title": "Linear search", "content": "Loop until found or end; return index or -1." }, "チャレンジ：2次元配列の基本": { "title": "2D array basics", "content": "int[][] m; m[i][j]; nested loops for sum per row." } }
         },
         "第21回：多重ループと多次元配列": {
             "title": "Session 21: Nested Loops and Multidimensional Arrays",
-            "description": "Nested for statements, 2D arrays, 3D arrays"
+            "description": "Nested for statements, 2D arrays, 3D arrays",
+            "subtasks": {
+                "2次元配列の宣言と初期化": "2D array declaration and initialization",
+                "多重ループでの配列操作": "Array operations with nested loops",
+                "3次元配列の基本": "3D array basics"
+            },
+            "knowledge_items": {
+                "2次元配列の基本": { "title": "2D array basics", "content": "Declare int[][] matrix; initialize with {{...},{...}}; use nested for or for-each to access matrix[i][j]." },
+                "2次元配列の応用：行列の転置": { "title": "2D array applied: matrix transpose", "content": "Swap rows and columns; transposed[j][i] = original[i][j]; use nested loops." },
+                "多次元配列の重要ポイント": { "title": "Multidimensional array key points", "content": "arr.length = row count; arr[i].length = column count. Use for tables, grids, game boards." }
+            }
         },
         "第22回：メソッド①": {
             "title": "Session 22: Methods 1",
-            "description": "Method definition, parameters, return values"
+            "description": "Method definition, parameters, return values",
+            "subtasks": {
+                "メソッドの基本構文": "Method basic syntax",
+                "引数と戻り値": "Parameters and return values",
+                "メソッドの実践": "Method practice"
+            },
+            "knowledge_items": {
+                "メソッドの基本": { "title": "Method basics", "content": "void/no-arg; return type + no-arg; void + param; return + param. Example: add(int a, int b) returns a+b." },
+                "メソッドを使った配列操作": { "title": "Array operations with methods", "content": "sumArray(arr), averageArray(arr), maxArray(arr); call from main." },
+                "メソッドの構文": { "title": "Method syntax", "content": "access static returnType name(params){ return value; }. Use for reuse, readability, maintenance." }
+            }
         },
         "第23回：メソッド②": {
             "title": "Session 23: Methods 2",
-            "description": "Method overloading, recursive calls"
+            "description": "Method overloading, recursive calls",
+            "subtasks": {
+                "メソッドのオーバーロード": "Method overloading",
+                "再帰呼び出しの基本": "Recursion basics",
+                "再帰の応用": "Recursion applied"
+            },
+            "knowledge_items": {
+                "メソッドのオーバーロード": { "title": "Method overloading", "content": "Same name, different param count/type: add(int,int), add(int,int,int), add(double,double)." },
+                "再帰呼び出しの例": { "title": "Recursion examples", "content": "factorial(n)=n*factorial(n-1) with base n<=1; fibonacci(n)=fib(n-1)+fib(n-2)." },
+                "オーバーロードと再帰": { "title": "Overloading and recursion", "content": "Overload: same name, different params; recursion needs base case and recursive case. Avoid deep recursion (stack overflow)." }
+            }
         },
         "第24回：switch文": {
             "title": "Session 24: switch Statement",
-            "description": "switch statement syntax, case and break"
+            "description": "switch statement syntax, case and break",
+            "subtasks": {
+                "switch文の基本構文": "switch basic syntax",
+                "break文とdefault": "break and default",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "switch文の基本": { "title": "switch basics", "content": "switch(expr){ case val: ... break; default: ... }. Use for day→weekday, month→season." },
+                "breakを省略した例（フォールスルー）": { "title": "Fall-through (omitting break)", "content": "case 12: case 1: case 2: season=\"Winter\"; break; groups multiple values." },
+                "switch文の構文": { "title": "switch syntax", "content": "Expression: int, char, String, enum. break prevents fall-through; default is optional. Use switch for single-value branches." }
+            }
         },
         "第25回：文字と文字列": {
             "title": "Session 25: Characters and Strings",
-            "description": "char type, String class methods, string manipulation"
+            "description": "char type, String class methods, string manipulation",
+            "subtasks": {
+                "char型の基本": "char basics",
+                "String型のメソッド": "String methods",
+                "文字列の比較と検索": "String comparison and search",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "char型と文字列の基本": { "title": "char and string basics", "content": "char c='A'; (int)c gives code. String str; str.length(), str.charAt(i)." },
+                "Stringクラスの主要メソッド": { "title": "String main methods", "content": "substring, toUpperCase, toLowerCase, indexOf, contains, replace, split. Compare with equals(), not ==." },
+                "Stringクラスの主要メソッド一覧": { "title": "String methods overview", "content": "length, charAt, indexOf, contains, toUpperCase, toLowerCase, trim, split, substring. Always use equals() for content comparison." }
+            }
         },
         "第26回：ビット演算とシフト演算": {
             "title": "Session 26: Bitwise and Shift Operations",
-            "description": "Bitwise operators (&, |, ^, ~), shift operators (<<, >>, >>>)"
+            "description": "Bitwise operators (&, |, ^, ~), shift operators (<<, >>, >>>)",
+            "subtasks": {
+                "ビット演算の基本": "Bitwise basics",
+                "シフト演算": "Shift operations",
+                "実践応用": "Applied practice"
+            },
+            "knowledge_items": {
+                "ビット演算の基本": { "title": "Bitwise basics", "content": "& AND, | OR, ^ XOR, ~ NOT. Integer.toBinaryString() for binary view." },
+                "シフト演算": { "title": "Shift operations", "content": "<< left (×2), >> arithmetic right (÷2), >>> logical right. (n>0 && (n&(n-1))==0) for power-of-two check." },
+                "ビット演算とシフト演算": { "title": "Bitwise and shift", "content": "AND/OR/XOR/NOT; << >> >>>. Use for flags, fast multiply/divide, masks. Less common in daily code." }
+            }
         },
         "第27回：プログラミング演習①（バブルソート・マージソート）": {
             "title": "Session 27: Programming Exercise 1 (Bubble Sort, Merge Sort)",
-            "description": "Understand and implement bubble sort and merge sort algorithms"
+            "description": "Understand and implement bubble sort and merge sort algorithms",
+            "subtasks": {
+                "バブルソートのアルゴリズムを理解": "Understand bubble sort",
+                "バブルソートを実装": "Implement bubble sort",
+                "マージソートのアルゴリズムを理解": "Understand merge sort",
+                "マージソートを実装": "Implement merge sort"
+            },
+            "knowledge_items": {
+                "バブルソート": { "title": "Bubble sort", "content": "O(n²). Compare adjacent elements, swap if wrong order; repeat until no swaps." },
+                "マージソート": { "title": "Merge sort", "content": "O(n log n). Split, sort halves, merge. Stable; good for large data." },
+                "ソートアルゴリズムの比較": { "title": "Sort algorithm comparison", "content": "Bubble: simple, O(n²). Merge: O(n log n), stable. Choose by size and stability needs." }
+            }
         },
         "第28回：プログラミング演習②（クイックソートに挑戦！）": {
             "title": "Session 28: Programming Exercise 2 (Challenge Quick Sort!)",
-            "description": "Understand and implement quick sort algorithm"
+            "description": "Understand and implement quick sort algorithm",
+            "subtasks": {
+                "クイックソートのアルゴリズムを理解": "Understand quick sort",
+                "クイックソートを実装": "Implement quick sort",
+                "パフォーマンス比較": "Performance comparison"
+            },
+            "knowledge_items": {
+                "クイックソート": { "title": "Quick sort", "content": "Pick pivot; partition smaller left, larger right; recurse. Average O(n log n), worst O(n²)." },
+                "クイックソートの仕組み": { "title": "How quick sort works", "content": "Pivot (e.g. last), partition, recurse. In-place, unstable. Pivot choice: last, first, middle, random, median-of-three." }
+            }
         },
         "第29回：プログラミング演習（総合練習）": {
             "title": "Session 29: Programming Exercise (Comprehensive Practice)",
-            "description": "Comprehensive programming practice"
+            "description": "Comprehensive programming practice",
+            "subtasks": {
+                "アルゴリズムの復習": "Algorithm review",
+                "総合問題①": "Comprehensive problem 1",
+                "総合問題②": "Comprehensive problem 2"
+            },
+            "knowledge_items": {
+                "Java基礎演習の総まとめ": { "title": "Java basics summary", "content": "Syntax, types, control flow, arrays, String, methods, recursion, sorting/searching. Next: OOP, exceptions, collections, I/O, GUI." },
+                "総合問題例：二分探索": { "title": "Example: binary search", "content": "On sorted array: mid=(left+right)/2; if arr[mid]==target return mid; else narrow left/right. O(log n)." }
+            }
         },
         "第30回：プログラミング演習③（リバーシ！）": {
             "title": "Session 30: Programming Exercise 3 (Reversi!)",
-            "description": "Complete Reversi game implementation"
+            "description": "Complete Reversi game implementation",
+            "subtasks": {
+                "ゲーム盤面の表示": "Display game board",
+                "石を置く処理": "Place-stone logic",
+                "石をひっくり返す処理": "Flip-stones logic",
+                "勝敗判定": "Win/loss judgement",
+                "ゲームループの完成": "Complete game loop"
+            },
+            "knowledge_items": {
+                "リバーシの基本構造": { "title": "Reversi basic structure", "content": "8×8 board as int[][]; EMPTY=0, BLACK=1, WHITE=2. initBoard(), printBoard(), initial 2×2 center." },
+                "石をひっくり返す処理の例": { "title": "Flip logic example", "content": "canFlip(row,col,player,dr,dc): walk direction; flip(): turn opponent stones to player along direction." },
+                "リバーシゲーム実装のポイント": { "title": "Reversi implementation points", "content": "Board, place check, 8 directions, flip logic, win by count, game loop. dr,dc for (-1,-1)..(1,1). Optional: AI, hints, save/load." }
+            }
         }
     }
 }

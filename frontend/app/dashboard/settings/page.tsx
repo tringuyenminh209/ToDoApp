@@ -68,12 +68,13 @@ const ToggleField = ({
       <div className="text-sm text-white font-semibold">{label}</div>
       {description && <div className="text-xs text-white/60 mt-1">{description}</div>}
     </div>
-    <label className="relative inline-flex items-center cursor-pointer">
+    <label className="relative inline-flex items-center cursor-pointer" aria-label={label}>
       <input
         type="checkbox"
         className="sr-only peer"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
+        aria-label={label}
       />
       <div className="w-10 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:bg-[#1F6FEB] transition">
         <div className="w-5 h-5 bg-white rounded-full shadow translate-x-0.5 peer-checked:translate-x-4 transition" />
@@ -141,6 +142,11 @@ export default function SettingsPage() {
       const normalized = normalizeSettings(response?.data);
       setSettings(normalized);
       setReminderTimesInput(normalized.reminder_times.join(', '));
+      setCurrentLang(normalized.language);
+      if (typeof window !== 'undefined' && normalized.language) {
+        localStorage.setItem('selectedLanguage', normalized.language);
+        window.dispatchEvent(new Event('languageChange'));
+      }
       setSuccessMessage(t.settingsSaved);
     } catch (error) {
       console.error('Failed to save settings:', error);
@@ -204,11 +210,13 @@ export default function SettingsPage() {
               {t.settingsAppearance}
             </div>
             <div>
-              <label className="text-sm text-white/70">{t.settingsTheme}</label>
+              <label htmlFor="settings-theme" className="text-sm text-white/70">{t.settingsTheme}</label>
               <select
+                id="settings-theme"
                 value={settings.theme}
                 onChange={(event) => updateSetting('theme', event.target.value as SettingsForm['theme'])}
                 className="w-full mt-2 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                aria-label={t.settingsTheme}
               >
                 <option value="auto" className="text-black">
                   {t.themeAuto}
@@ -230,47 +238,55 @@ export default function SettingsPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm text-white/70">{t.settingsFocusMinutes}</label>
+                <label htmlFor="settings-focus-minutes" className="text-sm text-white/70">{t.settingsFocusMinutes}</label>
                 <input
+                  id="settings-focus-minutes"
                   type="number"
                   min={1}
                   max={120}
                   value={settings.default_focus_minutes}
                   onChange={(event) => updateSetting('default_focus_minutes', Number(event.target.value))}
                   className="w-full mt-2 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                  aria-label={t.settingsFocusMinutes}
                 />
               </div>
               <div>
-                <label className="text-sm text-white/70">{t.settingsPomodoroDuration}</label>
+                <label htmlFor="settings-pomodoro-duration" className="text-sm text-white/70">{t.settingsPomodoroDuration}</label>
                 <input
+                  id="settings-pomodoro-duration"
                   type="number"
                   min={1}
                   max={120}
                   value={settings.pomodoro_duration}
                   onChange={(event) => updateSetting('pomodoro_duration', Number(event.target.value))}
                   className="w-full mt-2 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                  aria-label={t.settingsPomodoroDuration}
                 />
               </div>
               <div>
-                <label className="text-sm text-white/70">{t.settingsBreakMinutes}</label>
+                <label htmlFor="settings-break-minutes" className="text-sm text-white/70">{t.settingsBreakMinutes}</label>
                 <input
+                  id="settings-break-minutes"
                   type="number"
                   min={1}
                   max={60}
                   value={settings.break_minutes}
                   onChange={(event) => updateSetting('break_minutes', Number(event.target.value))}
                   className="w-full mt-2 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                  aria-label={t.settingsBreakMinutes}
                 />
               </div>
               <div>
-                <label className="text-sm text-white/70">{t.settingsLongBreakMinutes}</label>
+                <label htmlFor="settings-long-break-minutes" className="text-sm text-white/70">{t.settingsLongBreakMinutes}</label>
                 <input
+                  id="settings-long-break-minutes"
                   type="number"
                   min={1}
                   max={60}
                   value={settings.long_break_minutes}
                   onChange={(event) => updateSetting('long_break_minutes', Number(event.target.value))}
                   className="w-full mt-2 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                  aria-label={t.settingsLongBreakMinutes}
                 />
               </div>
             </div>
@@ -299,14 +315,16 @@ export default function SettingsPage() {
               {t.settingsGoals}
             </div>
             <div>
-              <label className="text-sm text-white/70">{t.settingsDailyTargetTasks}</label>
+              <label htmlFor="settings-daily-target-tasks" className="text-sm text-white/70">{t.settingsDailyTargetTasks}</label>
               <input
+                id="settings-daily-target-tasks"
                 type="number"
                 min={1}
                 max={100}
                 value={settings.daily_target_tasks}
                 onChange={(event) => updateSetting('daily_target_tasks', Number(event.target.value))}
                 className="w-full mt-2 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                aria-label={t.settingsDailyTargetTasks}
               />
             </div>
           </div>
@@ -338,12 +356,14 @@ export default function SettingsPage() {
                 onChange={(value) => updateSetting('goal_reminders', value)}
               />
               <div>
-                <label className="text-sm text-white/70">{t.settingsReminderTimes}</label>
+                <label htmlFor="settings-reminder-times" className="text-sm text-white/70">{t.settingsReminderTimes}</label>
                 <input
+                  id="settings-reminder-times"
                   value={reminderTimesInput}
                   onChange={(event) => setReminderTimesInput(event.target.value)}
                   placeholder="09:00, 18:00"
                   className="w-full mt-2 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                  aria-label={t.settingsReminderTimes}
                 />
                 <p className="text-xs text-white/50 mt-1">{t.settingsReminderHint}</p>
               </div>
@@ -357,15 +377,21 @@ export default function SettingsPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm text-white/70">{t.settingsLanguage}</label>
+                <label htmlFor="settings-language" className="text-sm text-white/70">{t.settingsLanguage}</label>
                 <select
+                  id="settings-language"
                   value={settings.language}
                   onChange={(event) => {
                     const lang = event.target.value as Language;
                     updateSetting('language', lang);
                     setCurrentLang(lang);
+                    if (typeof window !== 'undefined') {
+                      localStorage.setItem('selectedLanguage', lang);
+                      window.dispatchEvent(new Event('languageChange'));
+                    }
                   }}
                   className="w-full mt-2 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                  aria-label={t.settingsLanguage}
                 >
                   <option value="vi" className="text-black">
                     Tiếng Việt
@@ -379,11 +405,13 @@ export default function SettingsPage() {
                 </select>
               </div>
               <div>
-                <label className="text-sm text-white/70">{t.settingsTimezone}</label>
+                <label htmlFor="settings-timezone" className="text-sm text-white/70">{t.settingsTimezone}</label>
                 <input
+                  id="settings-timezone"
                   value={settings.timezone}
                   onChange={(event) => updateSetting('timezone', event.target.value)}
                   className="w-full mt-2 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                  aria-label={t.settingsTimezone}
                 />
               </div>
             </div>

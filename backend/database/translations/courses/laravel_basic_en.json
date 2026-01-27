@@ -78,55 +78,241 @@
     "tasks": {
         "第0回：環境構築": {
             "title": "Session 0: Environment Setup",
-            "description": "Composer, Node.js, Laravel installation and project creation"
+            "description": "Composer, Node.js, Laravel installation and project creation",
+            "subtasks": {
+                "Composerをインストール": "Install Composer",
+                "Node.jsをインストール": "Install Node.js",
+                "Laravelプロジェクトを作成": "Create Laravel project",
+                "開発サーバーを起動": "Start development server",
+                "プロジェクト構造を理解": "Understand project structure"
+            },
+            "knowledge_items": {
+                "Laravelプロジェクトの作成": { "title": "Creating Laravel Project", "content": "Use composer create-project laravel/laravel. Ensures PHP, Composer, Node ready." },
+                "Laravelのディレクトリ構造": { "title": "Laravel Directory Structure", "content": "app, config, database, public, resources, routes. app/ for logic; routes/ for URLs." },
+                "Composerとは？": { "title": "What is Composer?", "content": "PHP dependency manager. Manages packages and autoload." },
+                "詳細なディレクトリ構造": { "title": "Directory Structure Details", "content": "app/Http, app/Models; config/*.php; database/migrations, seeders; resources/views." },
+                "環境設定（.env）": { "title": "Environment (.env)", "content": "APP_KEY, DB_*, APP_DEBUG. Copy from .env.example. Run php artisan key:generate." },
+                "よく使うArtisanコマンド": { "title": "Common Artisan Commands", "content": "serve, make:controller, make:model, migrate, route:list." },
+                "トラブルシューティング": { "title": "Troubleshooting", "content": "PHP/extensions, Composer cache, permissions, port in use." }
+            }
         },
         "第1回：Laravelの説明・ルーティングとコントローラ": {
             "title": "Session 1: Laravel Overview, Routing and Controllers",
-            "description": "Laravel basic concepts, routing, controller creation"
+            "description": "Laravel basic concepts, routing, controller creation",
+            "subtasks": {
+                "Laravelの基本概念を理解": "Understand Laravel basic concepts",
+                "ルーティングの基本（routes/web.php）": "Routing basics (routes/web.php)",
+                "コントローラの作成": "Create controller",
+                "コントローラとルートの連携": "Connect controller and routes",
+                "ハンズオン課題を完了": "Complete hands-on assignment"
+            },
+            "knowledge_items": {
+                "基本的なルーティング": { "title": "Basic Routing", "content": "Route::get(path, closure). Return view or string. Defined in routes/web.php." },
+                "コントローラの作成": { "title": "Creating Controllers", "content": "php artisan make:controller NameController. Methods return view() or response." },
+                "MVCアーキテクチャ": { "title": "MVC Architecture", "content": "Model = data; View = UI; Controller = logic. Request → Route → Controller → View." },
+                "ルーティングの詳細": { "title": "Routing Details", "content": "get, post, put, delete, any. Route names, route()." },
+                "コントローラの詳細パターン": { "title": "Controller Patterns", "content": "Resource controllers, single-action, invokable." },
+                "コントローラ作成のオプション": { "title": "Controller Creation Options", "content": "make:controller --resource, --api, --invokable." },
+                "ルートパラメータの詳細": { "title": "Route Parameters", "content": "Route::get('/user/{id}', fn($id)=>...). Optional {id?}, constraints." }
+            }
         },
         "第2回：Bladeテンプレート": {
             "title": "Session 2: Blade Templates",
-            "description": "Blade basic syntax, variables, directives, layouts"
+            "description": "Blade basic syntax, variables, directives, layouts",
+            "subtasks": {
+                "Bladeの基本構文": "Blade basic syntax",
+                "変数の表示とエスケープ": "Display and escape variables",
+                "ディレクティブ（@if, @foreach, @while）": "Directives (@if, @foreach, @while)",
+                "レイアウトと継承": "Layouts and inheritance",
+                "課題02を完了": "Complete assignment 02"
+            },
+            "knowledge_items": {
+                "Bladeの基本構文": { "title": "Blade Basic Syntax", "content": "{{ $var }}, {!! $html !!}, @ directive. Stored in resources/views." },
+                "Bladeテンプレートエンジンとは": { "title": "What is Blade?", "content": "Laravel template engine. .blade.php. Compiles to PHP, cached." },
+                "Blade ディレクティブ詳細": { "title": "Blade Directives", "content": "@if/@else/@endif, @foreach/@endforeach, @while, @empty, @include, @yield/@section." },
+                "レイアウトと継承": { "title": "Layouts and Inheritance", "content": "@extends('layout'), @section/@yield, @push/@stack. One layout, many views." },
+                "セキュリティとエスケープ": { "title": "Security and Escaping", "content": "{{ }} auto-escapes; {!! !!} raw. Prefer {{ }} for user data." }
+            }
         },
         "第3回：ビュー作成・ルーティング": {
             "title": "Session 3: View Creation and Routing",
-            "description": "Create multiple views, advanced routing, pass data to views"
+            "description": "Create multiple views, advanced routing, pass data to views",
+            "subtasks": {
+                "複数のビューを作成": "Create multiple views",
+                "ルーティングの応用": "Advanced routing",
+                "コントローラからビューへデータを渡す": "Pass data from controller to view",
+                "記事一覧・詳細・登録・編集画面を作成": "Create list, detail, create, edit views",
+                "課題03を完了": "Complete assignment 03"
+            },
+            "knowledge_items": {
+                "コントローラからビューへデータを渡す": { "title": "Passing Data to Views", "content": "view('name', ['key'=>$val]) or view()->with(). Access as $key in Blade." },
+                "データ渡しの様々な方法": { "title": "Ways to Pass Data", "content": "Array, view()->with(), compact('a','b'). View::share() for global." },
+                "Bladeでのデータ表示パターン": { "title": "Data Display in Blade", "content": "{{ $item->title }}, @foreach, optional($obj)->prop, $loop in foreach." }
+            }
         },
         "第4回：リクエスト・バリデーション": {
             "title": "Session 4: Requests and Validation",
-            "description": "Form request processing, validation rules"
+            "description": "Form request processing, validation rules",
+            "subtasks": {
+                "Requestオブジェクトの使い方": "Use Request object",
+                "基本的なバリデーションルール": "Basic validation rules",
+                "バリデーションエラーの表示": "Display validation errors",
+                "FormRequestクラスの作成": "Create FormRequest class",
+                "課題04を完了": "Complete assignment 04"
+            },
+            "knowledge_items": {
+                "バリデーションの基本": { "title": "Validation Basics", "content": "Request $request->validate([ rules ]). Fails → redirect back with errors." },
+                "よく使うバリデーションルール": { "title": "Common Validation Rules", "content": "required, string, max:n, email, unique:table,col, numeric, in:a,b." },
+                "FormRequestクラス": { "title": "FormRequest Class", "content": "php artisan make:request NameRequest. rules(), authorize(). Injected in controller." },
+                "Bladeでのエラー表示パターン": { "title": "Error Display in Blade", "content": "@error('field')...@enderror, $errors->get('field'), $errors->any()." }
+            }
         },
         "第5回：マイグレーション、モデル、シーダー": {
             "title": "Session 5: Migrations, Models, Seeders",
-            "description": "Database migrations, Eloquent models, seeders"
+            "description": "Database migrations, Eloquent models, seeders",
+            "subtasks": {
+                "マイグレーションの作成": "Create migration",
+                "テーブル構造を定義": "Define table structure",
+                "Eloquentモデルの作成": "Create Eloquent model",
+                "シーダーの作成と実行": "Create and run seeder",
+                "Factoryの使い方": "Use Factory",
+                "課題05を完了": "Complete assignment 05"
+            },
+            "knowledge_items": {
+                "マイグレーションとモデル": { "title": "Migrations and Models", "content": "Migrations define schema; Models map tables. make:migration, make:model -m." },
+                "シーダーの作成": { "title": "Creating Seeders", "content": "database/seeders. run() inserts data. Call in DatabaseSeeder. php artisan db:seed." },
+                "マイグレーションの基本コマンド": { "title": "Migration Commands", "content": "migrate, migrate:rollback, migrate:fresh --seed, migrate:status." },
+                "マイグレーションの詳細なカラム定義": { "title": "Migration Column Types", "content": "string, text, integer, bigIncrements, timestamps, foreignId, boolean, json." },
+                "Eloquentモデルとファクトリ": { "title": "Eloquent Model and Factory", "content": "fillable, table name. Factory::define(); Model::factory()->count(n)->create()." }
+            }
         },
         "第6回：DB処理（SELECT）": {
             "title": "Session 6: Database Operations (SELECT)",
-            "description": "SELECT operations using Eloquent"
+            "description": "SELECT operations using Eloquent",
+            "subtasks": {
+                "all()で全件取得": "Fetch all with all()",
+                "find()でID指定取得": "Fetch by ID with find()",
+                "where()で条件検索": "Conditional search with where()",
+                "取得したデータをビューで表示": "Display fetched data in view",
+                "課題06を完了": "Complete assignment 06"
+            },
+            "knowledge_items": {
+                "Eloquent SELECT操作": { "title": "Eloquent SELECT", "content": "Model::all(), find($id), findOrFail. Returns collection or model." },
+                "Eloquent クエリビルダーの詳細": { "title": "Query Builder Details", "content": "where, orWhere, whereIn, orderBy, skip/take, get(), first(), count(), pluck()." }
+            }
         },
         "第7回：DB処理（条件付きSELECT、INSERT）": {
             "title": "Session 7: Database Operations (Conditional SELECT, INSERT)",
-            "description": "Conditional queries and INSERT operations"
+            "description": "Conditional queries and INSERT operations",
+            "subtasks": {
+                "複数条件での検索": "Search with multiple conditions",
+                "リレーションを使った検索": "Search using relations",
+                "create()でデータ追加": "Add data with create()",
+                "フォームからデータを登録": "Register data from form",
+                "課題07を完了": "Complete assignment 07"
+            },
+            "knowledge_items": {
+                "条件付きSELECTとINSERT": { "title": "Conditional SELECT and INSERT", "content": "where()->get(); Model::create($request->validated())." },
+                "INSERT操作の詳細パターン": { "title": "INSERT Patterns", "content": "create([...]), new Model; fill([...]); save(). Mass assignment: fillable/guarded." }
+            }
         },
         "第8回：DB処理（UPDATE）": {
             "title": "Session 8: Database Operations (UPDATE)",
-            "description": "UPDATE operations using Eloquent"
+            "description": "UPDATE operations using Eloquent",
+            "subtasks": {
+                "update()でデータ更新": "Update with update()",
+                "fill()とsave()で更新": "Update with fill() and save()",
+                "フォームからデータを更新": "Update data from form",
+                "課題08を完了": "Complete assignment 08"
+            },
+            "knowledge_items": {
+                "UPDATE操作の基本": { "title": "UPDATE Basics", "content": "$model->update([...]) or $model->fill([...])->save()." },
+                "コントローラでのUPDATE処理": { "title": "UPDATE in Controller", "content": "Find model, validate input, update() or fill+save, redirect." },
+                "編集フォームのBlade": { "title": "Edit Form in Blade", "content": "old() for repopulation, value={{ $model->col }}, route with id." },
+                "UPDATE操作のベストプラクティス": { "title": "UPDATE Best Practices", "content": "Validate, use FormRequest, avoid mass-assign id. Check authorization." },
+                "インクリメント・デクリメント": { "title": "Increment/Decrement", "content": "increment('col'), increment('col', n), decrement('col')." }
+            }
         },
         "第9回：DB処理（DELETE）": {
             "title": "Session 9: Database Operations (DELETE)",
-            "description": "DELETE operations using Eloquent"
+            "description": "DELETE operations using Eloquent",
+            "subtasks": {
+                "delete()でデータ削除": "Delete with delete()",
+                "destroy()でID指定削除": "Delete by ID with destroy()",
+                "ソフトデリートの理解": "Understand soft deletes",
+                "課題09を完了": "Complete assignment 09"
+            },
+            "knowledge_items": {
+                "DELETE操作の基本": { "title": "DELETE Basics", "content": "$model->delete(); Model::destroy($id|[$ids])." },
+                "コントローラでのDELETE処理": { "title": "DELETE in Controller", "content": "Find model, optionally check policy, delete(), redirect. POST/DELETE route." },
+                "ソフトデリート（論理削除）": { "title": "Soft Deletes", "content": "SoftDeletes trait; deleted_at column. Model stays in DB, excluded by default." },
+                "ソフトデリートの実装例": { "title": "Soft Delete Example", "content": "use SoftDeletes; withTrashed(), onlyTrashed(), restore(), forceDelete()." },
+                "リレーションの削除": { "title": "Deleting Relations", "content": "Cascade in migration or delete in code. detach() for pivot." },
+                "DELETE操作の注意点": { "title": "DELETE Notes", "content": "Confirm intent in UI. Check foreign keys. Use transactions for multi-row." }
+            }
         },
         "第10回：API": {
             "title": "Session 10: API",
-            "description": "RESTful API development"
+            "description": "RESTful API development",
+            "subtasks": {
+                "APIルートの定義": "Define API routes",
+                "JSONレスポンスの返却": "Return JSON responses",
+                "CRUD操作のAPI実装": "Implement CRUD API",
+                "APIリソースクラスの使用": "Use API Resource classes",
+                "課題10を完了": "Complete assignment 10"
+            },
+            "knowledge_items": {
+                "RESTful APIとは": { "title": "What is RESTful API", "content": "Resources, HTTP verbs (GET/POST/PUT/DELETE), JSON. Stateless." },
+                "RESTful APIの基本実装": { "title": "Basic REST Implementation", "content": "routes/api.php, prefix api. Return response()->json()." },
+                "APIコントローラの完全実装": { "title": "API Controller Example", "content": "index, store, show, update, destroy. Validate, Eloquent, JSON response." },
+                "APIリソースクラス": { "title": "API Resource Class", "content": "php artisan make:resource NameResource. toArray() shapes output. Resource::collection()." },
+                "エラーハンドリング": { "title": "Error Handling", "content": "abort(404), validation errors as 422, try/catch with JSON." },
+                "API認証（Sanctum）": { "title": "API Auth (Sanctum)", "content": "Laravel Sanctum for SPA/token auth. auth:sanctum middleware." },
+                "JavaScriptでAPIを呼び出す": { "title": "Calling API from JS", "content": "fetch() or axios. Headers, methods. Handle loading and errors." }
+            }
         },
         "第11回：ファイルアップロード": {
             "title": "Session 11: File Upload",
-            "description": "File upload handling in Laravel"
+            "description": "File upload handling in Laravel",
+            "subtasks": {
+                "ファイルアップロードの基本": "File upload basics",
+                "ファイルのバリデーション": "File validation",
+                "ストレージへの保存": "Save to storage",
+                "画像の表示とサムネイル": "Display image and thumbnail",
+                "課題11を完了": "Complete assignment 11"
+            },
+            "knowledge_items": {
+                "Laravelストレージシステム": { "title": "Laravel Storage", "content": "storage/app, public. php artisan storage:link. Storage facade, local/s3." },
+                "ファイルアップロードの基本": { "title": "File Upload Basics", "content": "enctype=multipart/form-data. $request->file('key'), store(), storeAs()." },
+                "アップロードフォーム": { "title": "Upload Form", "content": "input type=file, accept, multiple. CSRF, method POST." },
+                "画像の表示": { "title": "Displaying Images", "content": "Storage::url(), asset('storage/...'). Link from public storage." },
+                "Storage ファサードの使い方": { "title": "Storage Facade", "content": "Storage::put, get, delete, exists. disk('local'|'public')." },
+                "画像のリサイズ（Intervention Image）": { "title": "Image Resize (Intervention)", "content": "Optional package for resize/crop. fit, resize, save." },
+                "ファイルアップロードのベストプラクティス": { "title": "Upload Best Practices", "content": "Validate type/size, store outside public if sensitive, unique names." },
+                "複数ファイルのアップロード": { "title": "Multiple File Upload", "content": "input multiple, $request->file('key') as array. Loop and store." }
+            }
         },
         "第12回：総合問題": {
             "title": "Session 12: Comprehensive Project",
-            "description": "Comprehensive project using all learned concepts"
+            "description": "Comprehensive project using all learned concepts",
+            "subtasks": {
+                "要件定義と設計": "Requirements and design",
+                "データベース設計とマイグレーション": "Database design and migrations",
+                "ルーティングとコントローラ実装": "Routing and controller implementation",
+                "ビューとBladeテンプレート作成": "Views and Blade templates",
+                "バリデーションとエラーハンドリング": "Validation and error handling",
+                "テストとデバッグ": "Testing and debugging"
+            },
+            "knowledge_items": {
+                "総合問題の概要": { "title": "Comprehensive Project Overview", "content": "Apply routing, Blade, Eloquent, validation, CRUD in one app." },
+                "開発手順": { "title": "Development Steps", "content": "Design DB → migrate → models → routes/controllers → views → validation." },
+                "サンプル：記事管理システムのマイグレーション": { "title": "Sample: Article Migrations", "content": "articles table: title, body, user_id, timestamps. Foreign keys." },
+                "サンプル：モデルとリレーション": { "title": "Sample: Models and Relations", "content": "Article belongsTo User. User hasMany Article. fillable, casts." },
+                "サンプル：完全なCRUDコントローラ": { "title": "Sample: Full CRUD Controller", "content": "index, create, store, show, edit, update, destroy. Resource routes." },
+                "サンプル：FormRequest": { "title": "Sample: FormRequest", "content": "StoreArticleRequest, UpdateArticleRequest. rules(), authorize()." },
+                "チェックリスト": { "title": "Checklist", "content": "Routes, validation, auth, flash messages, 404 handling, CSRF." },
+                "よくあるエラーと解決方法": { "title": "Common Errors and Fixes", "content": "Mass assignment, 404, CSRF token, validation redirect, N+1." }
+            }
         }
     }
 }

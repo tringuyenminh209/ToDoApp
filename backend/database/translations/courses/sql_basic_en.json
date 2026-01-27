@@ -55,51 +55,166 @@
     "tasks": {
         "第1週：データベース基礎とセットアップ": {
             "title": "Week 1: Database Basics and Setup",
-            "description": "Database concepts, RDBMS, MySQL installation and basic operations"
+            "description": "Database concepts, RDBMS, MySQL installation and basic operations",
+            "subtasks": {
+                "MySQLをインストール": "Install MySQL",
+                "データベースの概念を理解": "Understand database concepts",
+                "最初のデータベースを作成": "Create first database"
+            },
+            "knowledge_items": {
+                "データベースとは？": { "title": "What is a Database?", "content": "RDBMS vs NoSQL. Tables, rows, columns. Primary key, foreign key. MySQL, PostgreSQL, SQLite." },
+                "MySQLの基本操作": { "title": "MySQL Basic Operations", "content": "SHOW DATABASES; CREATE DATABASE; USE; DROP. utf8mb4, collation." }
+            }
         },
         "第2週：テーブル作成とデータ型": {
             "title": "Week 2: Table Creation and Data Types",
-            "description": "CREATE TABLE, data types, constraints, INSERT statements"
+            "description": "CREATE TABLE, data types, constraints, INSERT statements",
+            "subtasks": {
+                "データ型を学習": "Learn data types",
+                "テーブルを作成": "Create tables",
+                "INSERT文を学習": "Learn INSERT"
+            },
+            "knowledge_items": {
+                "SQLのデータ型": { "title": "SQL Data Types", "content": "INT, DECIMAL, VARCHAR, TEXT. DATE, DATETIME, TIMESTAMP. BOOLEAN, ENUM, JSON." },
+                "テーブル作成": { "title": "Creating Tables", "content": "CREATE TABLE, PRIMARY KEY, AUTO_INCREMENT, NOT NULL, UNIQUE, CHECK, DEFAULT. DESCRIBE." },
+                "INSERT文 - データ挿入": { "title": "INSERT - Data Insertion", "content": "INSERT INTO ... VALUES. Multiple rows. DEFAULT, LAST_INSERT_ID()." }
+            }
         },
         "第3週：SELECT、UPDATE、DELETE": {
             "title": "Week 3: SELECT, UPDATE, DELETE",
-            "description": "Basic operations for data retrieval, update, and deletion"
+            "description": "Basic operations for data retrieval, update, and deletion",
+            "subtasks": {
+                "SELECT文を学習": "Learn SELECT",
+                "UPDATE文を学習": "Learn UPDATE",
+                "DELETE文を学習": "Learn DELETE"
+            },
+            "knowledge_items": {
+                "SELECT文 - データ取得": { "title": "SELECT - Data Retrieval", "content": "SELECT * / cols, AS, DISTINCT, LIMIT, OFFSET." },
+                "UPDATE文 - データ更新": { "title": "UPDATE - Data Update", "content": "UPDATE ... SET ... WHERE. Always use WHERE to avoid updating all rows." },
+                "DELETE文 - データ削除": { "title": "DELETE - Data Deletion", "content": "DELETE FROM ... WHERE. TRUNCATE. Logical delete with flag." }
+            }
         },
         "第4週：WHERE句と条件指定": {
             "title": "Week 4: WHERE Clause and Condition Specification",
-            "description": "WHERE clause, comparison operators, logical operators, LIKE, IN, BETWEEN"
+            "description": "WHERE clause, comparison operators, logical operators, LIKE, IN, BETWEEN",
+            "subtasks": {
+                "WHERE句の基本を学習": "Learn WHERE basics",
+                "LIKE、IN、BETWEENを学習": "Learn LIKE, IN, BETWEEN",
+                "NULL値の扱いを学習": "Learn NULL handling"
+            },
+            "knowledge_items": {
+                "WHERE句 - 条件指定": { "title": "WHERE - Conditions", "content": "=, !=, <, >, AND, OR, NOT. Combine conditions." },
+                "LIKE、IN、BETWEEN": { "title": "LIKE, IN, BETWEEN", "content": "LIKE '%x%', _; IN (list); BETWEEN a AND b. IS NULL, IS NOT NULL." }
+            }
         },
         "第5週：ORDER BY、GROUP BY、集計関数": {
             "title": "Week 5: ORDER BY, GROUP BY, Aggregate Functions",
-            "description": "Data sorting, grouping, COUNT/SUM/AVG/MAX/MIN"
+            "description": "Data sorting, grouping, COUNT/SUM/AVG/MAX/MIN",
+            "subtasks": {
+                "ORDER BYを学習": "Learn ORDER BY",
+                "集計関数を学習": "Learn aggregate functions",
+                "GROUP BYとHAVINGを学習": "Learn GROUP BY and HAVING"
+            },
+            "knowledge_items": {
+                "ORDER BY - ソート": { "title": "ORDER BY - Sorting", "content": "ORDER BY col ASC/DESC. Multiple columns. NULL order." },
+                "集計関数": { "title": "Aggregate Functions", "content": "COUNT(*), SUM, AVG, MAX, MIN. ROUND, DISTINCT in COUNT." },
+                "GROUP BY と HAVING": { "title": "GROUP BY and HAVING", "content": "GROUP BY col. HAVING filters groups. WHERE before GROUP BY, HAVING after." }
+            }
         },
         "第6週：JOIN（テーブル結合）": {
             "title": "Week 6: JOIN (Table Joins)",
-            "description": "INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN, self-joins"
+            "description": "INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN, self-joins",
+            "subtasks": {
+                "INNER JOINを学習": "Learn INNER JOIN",
+                "LEFT/RIGHT JOINを学習": "Learn LEFT/RIGHT JOIN",
+                "複数テーブルのJOINを学習": "Learn multi-table JOIN"
+            },
+            "knowledge_items": {
+                "JOINの種類": { "title": "Types of JOIN", "content": "INNER: matched only. LEFT: all left + match. RIGHT: all right + match. CROSS: all pairs." },
+                "INNER JOIN": { "title": "INNER JOIN", "content": "ON condition. Table aliases. Multiple JOINs." },
+                "LEFT JOIN と RIGHT JOIN": { "title": "LEFT and RIGHT JOIN", "content": "LEFT keeps unmatched left rows. Find missing with WHERE right.id IS NULL." },
+                "CROSS JOIN と自己結合": { "title": "CROSS JOIN and Self-Join", "content": "CROSS: Cartesian product. Self-join: same table with aliases, hierarchy." }
+            }
         },
         "第7週：サブクエリとCTE": {
             "title": "Week 7: Subqueries and CTE",
-            "description": "Subqueries (nested queries), WITH clause (CTE)"
+            "description": "Subqueries (nested queries), WITH clause (CTE)",
+            "subtasks": {
+                "サブクエリの基本を学習": "Learn subquery basics",
+                "相関サブクエリを学習": "Learn correlated subqueries",
+                "CTEを学習": "Learn CTE"
+            },
+            "knowledge_items": {
+                "サブクエリ": { "title": "Subqueries", "content": "Subquery in WHERE (IN, EXISTS), FROM (derived table), SELECT (scalar). Scalar, row, table subqueries." },
+                "CTE（Common Table Expression）": { "title": "CTE (Common Table Expression)", "content": "WITH name AS (SELECT ...). Multiple CTEs. Recursive CTE for hierarchies, number series." }
+            }
         },
         "第8週：ウィンドウ関数と高度な集計": {
             "title": "Week 8: Window Functions and Advanced Aggregation",
-            "description": "ROW_NUMBER, RANK, LEAD/LAG, cumulative aggregation"
+            "description": "ROW_NUMBER, RANK, LEAD/LAG, cumulative aggregation",
+            "subtasks": {
+                "ROW_NUMBER、RANKを学習": "Learn ROW_NUMBER and RANK",
+                "LEAD/LAGを学習": "Learn LEAD/LAG",
+                "累積集計を学習": "Learn cumulative aggregation"
+            },
+            "knowledge_items": {
+                "ウィンドウ関数の基本": { "title": "Window Functions Basics", "content": "ROW_NUMBER, RANK, DENSE_RANK. OVER (ORDER BY), PARTITION BY. Top-N per group." },
+                "LEAD、LAG、集計ウィンドウ": { "title": "LEAD, LAG, Aggregate Windows", "content": "LEAD/LAG for next/prev row. SUM/AVG OVER. ROWS BETWEEN. FIRST_VALUE, LAST_VALUE." }
+            }
         },
         "第9週：トランザクションとインデックス": {
             "title": "Week 9: Transactions and Indexes",
-            "description": "ACID properties, COMMIT/ROLLBACK, index creation and optimization"
+            "description": "ACID properties, COMMIT/ROLLBACK, index creation and optimization",
+            "subtasks": {
+                "トランザクションを学習": "Learn transactions",
+                "インデックスを学習": "Learn indexes",
+                "クエリ最適化を学習": "Learn query optimization"
+            },
+            "knowledge_items": {
+                "トランザクション": { "title": "Transactions", "content": "START TRANSACTION, COMMIT, ROLLBACK. SAVEPOINT. Isolation levels." },
+                "インデックス": { "title": "Indexes", "content": "CREATE INDEX, UNIQUE, FULLTEXT. SHOW INDEX. EXPLAIN. When to use indexes." },
+                "クエリ最適化のヒント": { "title": "Query Optimization Tips", "content": "Avoid SELECT *. Use indexed columns in WHERE. LIMIT. EXISTS vs JOIN. EXPLAIN." }
+            }
         },
         "第10週：データベース設計と正規化": {
             "title": "Week 10: Database Design and Normalization",
-            "description": "ER diagrams, normalization (1NF to 3NF), constraints"
+            "description": "ER diagrams, normalization (1NF to 3NF), constraints",
+            "subtasks": {
+                "ER図を学習": "Learn ER diagrams",
+                "正規化を学習": "Learn normalization",
+                "制約を学習": "Learn constraints"
+            },
+            "knowledge_items": {
+                "データベース正規化": { "title": "Database Normalization", "content": "1NF: no repeating groups. 2NF: no partial dependency. 3NF: no transitive dependency. Trade-offs." },
+                "制約（Constraints）": { "title": "Constraints", "content": "PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, NOT NULL, DEFAULT. ON DELETE/UPDATE." }
+            }
         },
         "第11週：ビューとストアドプロシージャ": {
             "title": "Week 11: Views and Stored Procedures",
-            "description": "VIEW, STORED PROCEDURE, FUNCTION"
+            "description": "VIEW, STORED PROCEDURE, FUNCTION",
+            "subtasks": {
+                "VIEWを学習": "Learn VIEW",
+                "STORED PROCEDUREを学習": "Learn STORED PROCEDURE",
+                "FUNCTIONを学習": "Learn FUNCTION"
+            },
+            "knowledge_items": {
+                "VIEW（ビュー）": { "title": "VIEW", "content": "CREATE VIEW, CREATE OR REPLACE, DROP. Updatable views. SHOW CREATE VIEW." },
+                "STORED PROCEDURE（ストアドプロシージャ）": { "title": "Stored Procedure", "content": "CREATE PROCEDURE, IN/OUT params. CALL. Cursor, LOOP, conditional logic." }
+            }
         },
         "第12週：トリガーとベストプラクティス": {
             "title": "Week 12: Triggers and Best Practices",
-            "description": "TRIGGER, backup, security, performance tuning"
+            "description": "TRIGGER, backup, security, performance tuning",
+            "subtasks": {
+                "TRIGGERを学習": "Learn TRIGGER",
+                "バックアップとセキュリティを学習": "Learn backup and security",
+                "ベストプラクティスを学習": "Learn best practices"
+            },
+            "knowledge_items": {
+                "TRIGGER（トリガー）": { "title": "TRIGGER", "content": "BEFORE/AFTER INSERT/UPDATE/DELETE. NEW, OLD. Audit log, validation." },
+                "バックアップとリストア": { "title": "Backup and Restore", "content": "mysqldump, --no-data, --no-create-info. Restore. Compression." },
+                "SQLベストプラクティス": { "title": "SQL Best Practices", "content": "Naming, types, indexes, SELECT*, prepared statements, transactions, backup." }
+            }
         }
     }
 }

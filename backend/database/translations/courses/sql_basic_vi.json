@@ -55,51 +55,166 @@
     "tasks": {
         "第1週：データベース基礎とセットアップ": {
             "title": "Tuần 1: Cơ bản Cơ sở Dữ liệu và Thiết lập",
-            "description": "Khái niệm cơ sở dữ liệu, RDBMS, cài đặt MySQL và thao tác cơ bản"
+            "description": "Khái niệm cơ sở dữ liệu, RDBMS, cài đặt MySQL và thao tác cơ bản",
+            "subtasks": {
+                "MySQLをインストール": "Cài đặt MySQL",
+                "データベースの概念を理解": "Hiểu khái niệm cơ sở dữ liệu",
+                "最初のデータベースを作成": "Tạo cơ sở dữ liệu đầu tiên"
+            },
+            "knowledge_items": {
+                "データベースとは？": { "title": "Cơ sở Dữ liệu là gì?", "content": "RDBMS vs NoSQL. Bảng, hàng, cột. Khóa chính, khóa ngoại. MySQL, PostgreSQL, SQLite." },
+                "MySQLの基本操作": { "title": "Thao tác Cơ bản MySQL", "content": "SHOW DATABASES; CREATE DATABASE; USE; DROP. utf8mb4, collation." }
+            }
         },
         "第2週：テーブル作成とデータ型": {
             "title": "Tuần 2: Tạo Bảng và Kiểu Dữ liệu",
-            "description": "CREATE TABLE, kiểu dữ liệu, ràng buộc, câu lệnh INSERT"
+            "description": "CREATE TABLE, kiểu dữ liệu, ràng buộc, câu lệnh INSERT",
+            "subtasks": {
+                "データ型を学習": "Học kiểu dữ liệu",
+                "テーブルを作成": "Tạo bảng",
+                "INSERT文を学習": "Học câu lệnh INSERT"
+            },
+            "knowledge_items": {
+                "SQLのデータ型": { "title": "Kiểu Dữ liệu SQL", "content": "INT, DECIMAL, VARCHAR, TEXT. DATE, DATETIME, TIMESTAMP. BOOLEAN, ENUM, JSON." },
+                "テーブル作成": { "title": "Tạo Bảng", "content": "CREATE TABLE, PRIMARY KEY, AUTO_INCREMENT, NOT NULL, UNIQUE, CHECK, DEFAULT. DESCRIBE." },
+                "INSERT文 - データ挿入": { "title": "INSERT - Chèn Dữ liệu", "content": "INSERT INTO ... VALUES. Nhiều hàng. DEFAULT, LAST_INSERT_ID()." }
+            }
         },
         "第3週：SELECT、UPDATE、DELETE": {
             "title": "Tuần 3: SELECT, UPDATE, DELETE",
-            "description": "Thao tác cơ bản để lấy, cập nhật và xóa dữ liệu"
+            "description": "Thao tác cơ bản để lấy, cập nhật và xóa dữ liệu",
+            "subtasks": {
+                "SELECT文を学習": "Học câu lệnh SELECT",
+                "UPDATE文を学習": "Học câu lệnh UPDATE",
+                "DELETE文を学習": "Học câu lệnh DELETE"
+            },
+            "knowledge_items": {
+                "SELECT文 - データ取得": { "title": "SELECT - Lấy Dữ liệu", "content": "SELECT * / cột, AS, DISTINCT, LIMIT, OFFSET." },
+                "UPDATE文 - データ更新": { "title": "UPDATE - Cập nhật Dữ liệu", "content": "UPDATE ... SET ... WHERE. Luôn dùng WHERE để tránh cập nhật toàn bộ hàng." },
+                "DELETE文 - データ削除": { "title": "DELETE - Xóa Dữ liệu", "content": "DELETE FROM ... WHERE. TRUNCATE. Xóa logic bằng cờ." }
+            }
         },
         "第4週：WHERE句と条件指定": {
             "title": "Tuần 4: Mệnh đề WHERE và Chỉ định Điều kiện",
-            "description": "Mệnh đề WHERE, toán tử so sánh, toán tử logic, LIKE, IN, BETWEEN"
+            "description": "Mệnh đề WHERE, toán tử so sánh, toán tử logic, LIKE, IN, BETWEEN",
+            "subtasks": {
+                "WHERE句の基本を学習": "Học cơ bản WHERE",
+                "LIKE、IN、BETWEENを学習": "Học LIKE, IN, BETWEEN",
+                "NULL値の扱いを学習": "Học xử lý giá trị NULL"
+            },
+            "knowledge_items": {
+                "WHERE句 - 条件指定": { "title": "WHERE - Điều kiện", "content": "=, !=, <, >, AND, OR, NOT. Kết hợp điều kiện." },
+                "LIKE、IN、BETWEEN": { "title": "LIKE, IN, BETWEEN", "content": "LIKE '%x%', _; IN (danh sách); BETWEEN a AND b. IS NULL, IS NOT NULL." }
+            }
         },
         "第5週：ORDER BY、GROUP BY、集計関数": {
             "title": "Tuần 5: ORDER BY, GROUP BY, Hàm Tổng hợp",
-            "description": "Sắp xếp dữ liệu, nhóm, COUNT/SUM/AVG/MAX/MIN"
+            "description": "Sắp xếp dữ liệu, nhóm, COUNT/SUM/AVG/MAX/MIN",
+            "subtasks": {
+                "ORDER BYを学習": "Học ORDER BY",
+                "集計関数を学習": "Học hàm tổng hợp",
+                "GROUP BYとHAVINGを学習": "Học GROUP BY và HAVING"
+            },
+            "knowledge_items": {
+                "ORDER BY - ソート": { "title": "ORDER BY - Sắp xếp", "content": "ORDER BY cột ASC/DESC. Nhiều cột. Thứ tự NULL." },
+                "集計関数": { "title": "Hàm Tổng hợp", "content": "COUNT(*), SUM, AVG, MAX, MIN. ROUND, DISTINCT trong COUNT." },
+                "GROUP BY と HAVING": { "title": "GROUP BY và HAVING", "content": "GROUP BY cột. HAVING lọc nhóm. WHERE trước GROUP BY, HAVING sau." }
+            }
         },
         "第6週：JOIN（テーブル結合）": {
             "title": "Tuần 6: JOIN (Kết hợp Bảng)",
-            "description": "INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN, tự kết hợp"
+            "description": "INNER JOIN, LEFT JOIN, RIGHT JOIN, CROSS JOIN, tự kết hợp",
+            "subtasks": {
+                "INNER JOINを学習": "Học INNER JOIN",
+                "LEFT/RIGHT JOINを学習": "Học LEFT/RIGHT JOIN",
+                "複数テーブルのJOINを学習": "Học JOIN nhiều bảng"
+            },
+            "knowledge_items": {
+                "JOINの種類": { "title": "Các loại JOIN", "content": "INNER: chỉ khớp. LEFT: toàn bộ trái + khớp. RIGHT: toàn bộ phải + khớp. CROSS: tất cả cặp." },
+                "INNER JOIN": { "title": "INNER JOIN", "content": "Điều kiện ON. Bí danh bảng. Nhiều JOIN." },
+                "LEFT JOIN と RIGHT JOIN": { "title": "LEFT và RIGHT JOIN", "content": "LEFT giữ hàng trái không khớp. Tìm thiếu với WHERE right.id IS NULL." },
+                "CROSS JOIN と自己結合": { "title": "CROSS JOIN và Tự kết hợp", "content": "CROSS: tích Đề-các. Tự kết: cùng bảng với bí danh, cấu trúc phân cấp." }
+            }
         },
         "第7週：サブクエリとCTE": {
             "title": "Tuần 7: Truy vấn Con và CTE",
-            "description": "Truy vấn con (truy vấn lồng nhau), mệnh đề WITH (CTE)"
+            "description": "Truy vấn con (truy vấn lồng nhau), mệnh đề WITH (CTE)",
+            "subtasks": {
+                "サブクエリの基本を学習": "Học cơ bản truy vấn con",
+                "相関サブクエリを学習": "Học truy vấn con tương quan",
+                "CTEを学習": "Học CTE"
+            },
+            "knowledge_items": {
+                "サブクエリ": { "title": "Truy vấn Con", "content": "Truy vấn con trong WHERE (IN, EXISTS), FROM (bảng dẫn xuất), SELECT (vô hướng)." },
+                "CTE（Common Table Expression）": { "title": "CTE (Common Table Expression)", "content": "WITH tên AS (SELECT ...). Nhiều CTE. CTE đệ quy cho cấu trúc phân cấp, chuỗi số." }
+            }
         },
         "第8週：ウィンドウ関数と高度な集計": {
             "title": "Tuần 8: Hàm Cửa sổ và Tổng hợp Nâng cao",
-            "description": "ROW_NUMBER, RANK, LEAD/LAG, tổng hợp tích lũy"
+            "description": "ROW_NUMBER, RANK, LEAD/LAG, tổng hợp tích lũy",
+            "subtasks": {
+                "ROW_NUMBER、RANKを学習": "Học ROW_NUMBER và RANK",
+                "LEAD/LAGを学習": "Học LEAD/LAG",
+                "累積集計を学習": "Học tổng hợp tích lũy"
+            },
+            "knowledge_items": {
+                "ウィンドウ関数の基本": { "title": "Cơ bản Hàm Cửa sổ", "content": "ROW_NUMBER, RANK, DENSE_RANK. OVER (ORDER BY), PARTITION BY. Top-N theo nhóm." },
+                "LEAD、LAG、集計ウィンドウ": { "title": "LEAD, LAG, Cửa sổ Tổng hợp", "content": "LEAD/LAG cho hàng trước/sau. SUM/AVG OVER. ROWS BETWEEN. FIRST_VALUE, LAST_VALUE." }
+            }
         },
         "第9週：トランザクションとインデックス": {
             "title": "Tuần 9: Giao dịch và Chỉ mục",
-            "description": "Thuộc tính ACID, COMMIT/ROLLBACK, tạo và tối ưu chỉ mục"
+            "description": "Thuộc tính ACID, COMMIT/ROLLBACK, tạo và tối ưu chỉ mục",
+            "subtasks": {
+                "トランザクションを学習": "Học giao dịch",
+                "インデックスを学習": "Học chỉ mục",
+                "クエリ最適化を学習": "Học tối ưu truy vấn"
+            },
+            "knowledge_items": {
+                "トランザクション": { "title": "Giao dịch", "content": "START TRANSACTION, COMMIT, ROLLBACK. SAVEPOINT. Mức cô lập." },
+                "インデックス": { "title": "Chỉ mục", "content": "CREATE INDEX, UNIQUE, FULLTEXT. SHOW INDEX. EXPLAIN. Khi nào dùng chỉ mục." },
+                "クエリ最適化のヒント": { "title": "Gợi ý Tối ưu Truy vấn", "content": "Tránh SELECT *. Dùng cột có chỉ mục trong WHERE. LIMIT. EXISTS vs JOIN. EXPLAIN." }
+            }
         },
         "第10週：データベース設計と正規化": {
             "title": "Tuần 10: Thiết kế Cơ sở Dữ liệu và Chuẩn hóa",
-            "description": "Sơ đồ ER, chuẩn hóa (1NF đến 3NF), ràng buộc"
+            "description": "Sơ đồ ER, chuẩn hóa (1NF đến 3NF), ràng buộc",
+            "subtasks": {
+                "ER図を学習": "Học sơ đồ ER",
+                "正規化を学習": "Học chuẩn hóa",
+                "制約を学習": "Học ràng buộc"
+            },
+            "knowledge_items": {
+                "データベース正規化": { "title": "Chuẩn hóa Cơ sở Dữ liệu", "content": "1NF: không nhóm lặp. 2NF: không phụ thuộc bộ phận. 3NF: không phụ thuộc bắc cầu. Đánh đổi." },
+                "制約（Constraints）": { "title": "Ràng buộc (Constraints)", "content": "PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, NOT NULL, DEFAULT. ON DELETE/UPDATE." }
+            }
         },
         "第11週：ビューとストアドプロシージャ": {
             "title": "Tuần 11: View và Stored Procedure",
-            "description": "VIEW, STORED PROCEDURE, FUNCTION"
+            "description": "VIEW, STORED PROCEDURE, FUNCTION",
+            "subtasks": {
+                "VIEWを学習": "Học VIEW",
+                "STORED PROCEDUREを学習": "Học STORED PROCEDURE",
+                "FUNCTIONを学習": "Học FUNCTION"
+            },
+            "knowledge_items": {
+                "VIEW（ビュー）": { "title": "VIEW", "content": "CREATE VIEW, CREATE OR REPLACE, DROP. View có thể cập nhật. SHOW CREATE VIEW." },
+                "STORED PROCEDURE（ストアドプロシージャ）": { "title": "Stored Procedure", "content": "CREATE PROCEDURE, tham số IN/OUT. CALL. Con trỏ, LOOP, logic điều kiện." }
+            }
         },
         "第12週：トリガーとベストプラクティス": {
             "title": "Tuần 12: Trigger và Thực hành Tốt nhất",
-            "description": "TRIGGER, sao lưu, bảo mật, tinh chỉnh hiệu suất"
+            "description": "TRIGGER, sao lưu, bảo mật, tinh chỉnh hiệu suất",
+            "subtasks": {
+                "TRIGGERを学習": "Học TRIGGER",
+                "バックアップとセキュリティを学習": "Học sao lưu và bảo mật",
+                "ベストプラクティスを学習": "Học thực hành tốt nhất"
+            },
+            "knowledge_items": {
+                "TRIGGER（トリガー）": { "title": "TRIGGER", "content": "BEFORE/AFTER INSERT/UPDATE/DELETE. NEW, OLD. Nhật ký kiểm toán, xác thực." },
+                "バックアップとリストア": { "title": "Sao lưu và Khôi phục", "content": "mysqldump, --no-data, --no-create-info. Khôi phục. Nén." },
+                "SQLベストプラクティス": { "title": "Thực hành Tốt nhất SQL", "content": "Đặt tên, kiểu, chỉ mục, SELECT*, prepared statements, giao dịch, sao lưu." }
+            }
         }
     }
 }

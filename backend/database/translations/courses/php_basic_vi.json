@@ -69,55 +69,241 @@
     "tasks": {
         "第0回：環境構築": {
             "title": "Buổi 0: Thiết lập Môi trường",
-            "description": "Thiết lập môi trường phát triển PHP (XAMPP, MAMP, hoặc Docker)"
+            "description": "Thiết lập môi trường phát triển PHP (XAMPP, MAMP, hoặc Docker)",
+            "subtasks": {
+                "開発環境をセットアップ": "Thiết lập môi trường phát triển",
+                "Webサーバーを起動": "Khởi động web server",
+                "Hello Worldプログラムを作成": "Tạo chương trình Hello World"
+            },
+            "knowledge_items": {
+                "Hello Worldの基本": { "title": "Cơ bản Hello World", "content": "<?php echo \"Hello World!\"; ?>. Thẻ mở/đóng, echo, chấm phẩy." },
+                "PHPの基本構文": { "title": "Cú pháp PHP cơ bản", "content": "<?php ... ?>. echo, chấm phẩy. Thẻ đóng có thể bỏ ở cuối file." },
+                "開発環境の選択肢": { "title": "Lựa chọn môi trường phát triển", "content": "XAMPP (đa nền), MAMP (Mac/Win), Docker. Chọn theo nhu cầu." },
+                "phpinfo()で環境確認": { "title": "Kiểm tra môi trường bằng phpinfo()", "content": "phpinfo(), phpinfo(INFO_GENERAL), phpversion() để xác nhận PHP." },
+                "よくあるトラブルシューティング": { "title": "Xử lý sự cố thường gặp", "content": "Cổng 80 bận, file PHP bị tải xuống, encoding. Kiểm tra Apache, module PHP, UTF-8." }
+            }
         },
         "第1回：PHPの基本": {
             "title": "Buổi 1: PHP Cơ bản",
-            "description": "Biến, kiểu dữ liệu, toán tử, thao tác chuỗi cơ bản"
+            "description": "Biến, kiểu dữ liệu, toán tử, thao tác chuỗi cơ bản",
+            "subtasks": {
+                "変数の宣言と代入": "Khai báo và gán biến",
+                "データ型の理解（string, int, float, bool）": "Hiểu kiểu dữ liệu (string, int, float, bool)",
+                "演算子（+, -, *, /, %, .）": "Toán tử (+, -, *, /, %, .)",
+                "文字列の連結と出力": "Nối chuỗi và xuất",
+                "課題01を完了": "Hoàn thành bài 01"
+            },
+            "knowledge_items": {
+                "変数と演算子の例": { "title": "Ví dụ biến và toán tử", "content": "$name, $age, số học, nối chuỗi bằng ." },
+                "PHPの変数": { "title": "Biến PHP", "content": "Bắt đầu bằng $. Kiểu động. Nối bằng . ; echo/print." },
+                "PHPのデータ型": { "title": "Kiểu dữ liệu PHP", "content": "string, int, float, bool; array, object; null, resource." },
+                "データ型の確認と変換": { "title": "Kiểm tra và ép kiểu", "content": "var_dump(), gettype(), is_*(), ép (int)/(float)/(bool)." },
+                "演算子の優先順位": { "title": "Thứ tự ưu tiên toán tử", "content": "** rồi */% rồi +- rồi .; == với ===; &&, ||, !." },
+                "文字列操作の詳細": { "title": "Thao tác chuỗi", "content": "Nội suy trong \"\", heredoc, strlen/mb_strlen, str_replace, substr." },
+                "変数のスコープ": { "title": "Phạm vi biến", "content": "Local, global (cần từ khóa global), siêu toàn cục $_GET, $_POST, v.v." }
+            }
         },
         "第2回：配列・連想配列": {
             "title": "Buổi 2: Mảng và Mảng Kết hợp",
-            "description": "Khai báo mảng và mảng kết hợp, thao tác, xử lý vòng lặp"
+            "description": "Khai báo mảng và mảng kết hợp, thao tác, xử lý vòng lặp",
+            "subtasks": {
+                "配列の基本（array(), []）": "Cơ bản mảng (array(), [])",
+                "配列の要素へのアクセス": "Truy cập phần tử mảng",
+                "連想配列の基本": "Cơ bản mảng kết hợp",
+                "foreach文で配列をループ": "Duyệt mảng bằng foreach",
+                "課題02を完了": "Hoàn thành bài 02"
+            },
+            "knowledge_items": {
+                "配列と連想配列の例": { "title": "Ví dụ mảng và mảng kết hợp", "content": "[] và ['key'=>'value'], foreach." },
+                "配列の宣言方法": { "title": "Khai báo mảng", "content": "[1,2,3], ['k'=>'v'], array(). Ưu tiên cú pháp ngắn." },
+                "配列の操作": { "title": "Thao tác mảng", "content": "[] push, array_push/unshift, pop/shift, unset, in_array, array_merge, array_slice." },
+                "多次元配列": { "title": "Mảng đa chiều", "content": "Mảng lồng nhau, $a[0]['key'], foreach với key => value." },
+                "便利な配列関数": { "title": "Hàm mảng hữu ích", "content": "count, sort/rsort/asort/ksort, array_keys/values, implode/explode." }
+            }
         },
         "第3回：定数・別ファイル読み込み・フォーム処理①": {
             "title": "Buổi 3: Hằng số, Include File, Xử lý Form (Phần 1)",
-            "description": "Định nghĩa hằng số, require/include, cơ bản $_GET/$_POST"
+            "description": "Định nghĩa hằng số, require/include, cơ bản $_GET/$_POST",
+            "subtasks": {
+                "定数の定義（define, const）": "Định nghĩa hằng (define, const)",
+                "require/includeでファイル読み込み": "Đọc file bằng require/include",
+                "$_GETでデータを受け取る": "Nhận dữ liệu bằng $_GET",
+                "$_POSTでデータを受け取る": "Nhận dữ liệu bằng $_POST",
+                "課題03を完了": "Hoàn thành bài 03"
+            },
+            "knowledge_items": {
+                "フォーム処理の例": { "title": "Ví dụ xử lý form", "content": "$_GET/$_POST với ??, define/const, require/include." },
+                "定数の定義方法": { "title": "Định nghĩa hằng số", "content": "define('NAME', val), const NAME = val. __FILE__, __DIR__, v.v." },
+                "require vs include": { "title": "require và include", "content": "require = lỗi chết nếu thiếu; include = cảnh báo. _once tránh trùng." },
+                "$_GETと$_POSTの詳細": { "title": "Chi tiết $_GET và $_POST", "content": "?? mặc định, REQUEST_METHOD, isset/empty, filter_input()." },
+                "HTMLフォームの例": { "title": "Ví dụ form HTML", "content": "method GET/POST, name, checkbox name[], select." },
+                "GETとPOSTの使い分け": { "title": "Khi nào dùng GET vs POST", "content": "GET: tìm kiếm, đánh dấu. POST: đăng nhập, tạo, nhạy cảm, upload file." }
+            }
         },
         "第4回：フォーム処理②": {
             "title": "Buổi 4: Xử lý Form (Phần 2)",
-            "description": "Xác thực form, xử lý lỗi, biện pháp bảo mật"
+            "description": "Xác thực form, xử lý lỗi, biện pháp bảo mật",
+            "subtasks": {
+                "フォームのバリデーション": "Xác thực form",
+                "エラーメッセージの表示": "Hiển thị thông báo lỗi",
+                "XSS対策（htmlspecialchars）": "Phòng XSS (htmlspecialchars)",
+                "複数ページのフォーム処理": "Xử lý form nhiều trang",
+                "課題04を完了": "Hoàn thành bài 04"
+            },
+            "knowledge_items": {
+                "セキュアなフォーム処理": { "title": "Xử lý form an toàn", "content": "htmlspecialchars ENT_QUOTES UTF-8, validation, mảng lỗi." },
+                "バリデーションのパターン": { "title": "Mẫu validation", "content": "empty, mb_strlen, filter_var EMAIL, is_numeric, preg_match." },
+                "XSS（クロスサイトスクリプティング）対策": { "title": "Phòng chống XSS", "content": "htmlspecialchars khi xuất, ENT_QUOTES, UTF-8. Không tin input." },
+                "完全なフォーム処理の例": { "title": "Ví dụ form đầy đủ", "content": "Kiểm tra POST, trim, validate, lỗi theo trường, điền lại, redirect khi thành công." },
+                "セキュリティのベストプラクティス": { "title": "Thực hành bảo mật tốt", "content": "Validate input, escape output, token CSRF, prepared statements, password_hash, HTTPS." }
+            }
         },
         "第5回：ファイルアップロード": {
             "title": "Buổi 5: Upload File",
-            "description": "Xử lý upload file sử dụng $_FILES, upload và hiển thị hình ảnh"
+            "description": "Xử lý upload file sử dụng $_FILES, upload và hiển thị hình ảnh",
+            "subtasks": {
+                "$_FILESの基本": "Cơ bản $_FILES",
+                "ファイルのアップロード処理": "Xử lý upload file",
+                "ファイルサイズとタイプのチェック": "Kiểm tra kích thước và loại file",
+                "画像の表示": "Hiển thị ảnh",
+                "課題05を完了": "Hoàn thành bài 05"
+            },
+            "knowledge_items": {
+                "ファイルアップロードの例": { "title": "Ví dụ upload file", "content": "move_uploaded_file, tmp_name, thư mục upload, tên file uniqid." },
+                "$_FILES配列の構造": { "title": "Cấu trúc $_FILES", "content": "name, type, tmp_name, error, size. Mã UPLOAD_ERR_*." },
+                "セキュアなファイルアップロード": { "title": "Upload file an toàn", "content": "Kiểm tra error, kích thước tối đa, MIME bằng finfo, whitelist phần mở rộng, tên unique." },
+                "HTMLフォーム（ファイルアップロード）": { "title": "Form HTML upload", "content": "enctype=multipart/form-data, MAX_FILE_SIZE, accept, multiple." },
+                "ファイルアップロードのセキュリティ": { "title": "Bảo mật upload", "content": "Validate loại và kích thước, tên file unique, lưu ngoài webroot hoặc tắt thực thi." },
+                "画像のリサイズと表示": { "title": "Resize và hiển thị ảnh", "content": "GD: getimagesize, imagecreatefrom*, imagecopyresampled, imagejpeg; hiển thị bằng img src." }
+            }
         },
         "第6回：クッキー・セッション": {
             "title": "Buổi 6: Cookies và Sessions",
-            "description": "Thiết lập, lấy, xóa cookies và sessions, triển khai chức năng đăng nhập"
+            "description": "Thiết lập, lấy, xóa cookies và sessions, triển khai chức năng đăng nhập",
+            "subtasks": {
+                "クッキーの設定と取得": "Thiết lập và lấy cookie",
+                "セッションの開始と管理": "Bắt đầu và quản lý session",
+                "ログイン機能の実装": "Triển khai chức năng đăng nhập",
+                "セッションを使った認証": "Xác thực bằng session",
+                "課題06を完了": "Hoàn thành bài 06"
+            },
+            "knowledge_items": {
+                "セッション管理の例": { "title": "Ví dụ quản lý session", "content": "session_start(), $_SESSION, kiểm tra đăng nhập, session_destroy()." },
+                "クッキーとセッションの違い": { "title": "Cookie và Session", "content": "Cookie: phía client, nhỏ; Session: phía server, an toàn. Session ID trong cookie." },
+                "クッキーの詳細な使い方": { "title": "Cách dùng cookie", "content": "setcookie(expires, path, secure, httponly), samesite, $_COOKIE, xóa bằng expiry quá khứ." },
+                "セッションの完全な使い方": { "title": "Cách dùng session", "content": "session_start, $_SESSION, regenerate_id, unset/destroy, tham số cookie, timeout." },
+                "完全なログインシステムの実装": { "title": "Hệ thống đăng nhập đầy đủ", "content": "Xác minh thông tin, session_regenerate_id, lưu user vào session, remember token, logout." },
+                "セッションのセキュリティ対策": { "title": "Bảo mật session", "content": "regenerate_id khi login, HTTPS, httponly/secure, token CSRF, timeout, password_hash." }
+            }
         },
         "第8回：DB接続（SELECT）": {
             "title": "Buổi 8: Kết nối DB (SELECT)",
-            "description": "Kết nối cơ sở dữ liệu sử dụng PDO, lấy dữ liệu bằng câu lệnh SELECT"
+            "description": "Kết nối cơ sở dữ liệu sử dụng PDO, lấy dữ liệu bằng câu lệnh SELECT",
+            "subtasks": {
+                "PDOの基本接続": "Kết nối PDO cơ bản",
+                "SELECT文の実行": "Thực thi SELECT",
+                "fetchAll()でデータ取得": "Lấy dữ liệu bằng fetchAll()",
+                "テーブルにデータを表示": "Hiển thị dữ liệu trong bảng",
+                "課題08を完了": "Hoàn thành bài 08"
+            },
+            "knowledge_items": {
+                "PDO接続とSELECTの例": { "title": "Ví dụ PDO và SELECT", "content": "new PDO(dsn, user, pass), query(), fetchAll(PDO::FETCH_ASSOC)." },
+                "PDOとは？": { "title": "PDO là gì?", "content": "PHP Data Objects. Không phụ DB, prepared statements, ngoại lệ. Ưu tiên hơn mysqli." },
+                "PDOの接続オプション": { "title": "Tùy chọn kết nối PDO", "content": "ERRMODE_EXCEPTION, DEFAULT_FETCH_MODE, ATTR_EMULATE_PREPARES." },
+                "フェッチモードの種類": { "title": "Các chế độ fetch", "content": "FETCH_ASSOC, FETCH_NUM, FETCH_BOTH, FETCH_OBJ. Nên dùng FETCH_ASSOC." },
+                "様々なSELECT文": { "title": "Các dạng SELECT", "content": "query/fetch/fetchAll, COUNT, while fetch, ORDER BY LIMIT, JOIN." },
+                "HTMLテーブルで表示": { "title": "Hiển thị trong bảng HTML", "content": "foreach từng dòng, htmlspecialchars từng ô, kiểm tra rỗng." }
+            }
         },
         "第9回：DB接続（SELECT②条件付き）": {
             "title": "Buổi 9: Kết nối DB (SELECT có Điều kiện)",
-            "description": "Mệnh đề WHERE, placeholder, prepared statements"
+            "description": "Mệnh đề WHERE, placeholder, prepared statements",
+            "subtasks": {
+                "WHERE句の使い方": "Cách dùng WHERE",
+                "プレースホルダー（:name）": "Placeholder (:name)",
+                "プリペアドステートメント": "Prepared statements",
+                "SQLインジェクション対策": "Phòng SQL injection",
+                "課題09を完了": "Hoàn thành bài 09"
+            },
+            "knowledge_items": {
+                "プリペアドステートメントの例": { "title": "Ví dụ prepared statement", "content": "prepare('... :id'), execute(['id'=>$v])." },
+                "SQLインジェクションとは？": { "title": "SQL Injection là gì?", "content": "Không nối input user vào SQL. Dùng placeholder." },
+                "プレースホルダーの種類": { "title": "Các loại placeholder", "content": "Tên :name, vị trí ?. bindParam/bindValue. Mẫu LIKE và IN." },
+                "プレースホルダーの制限": { "title": "Giới hạn placeholder", "content": "Chỉ dùng cho giá trị. Tên bảng/cột: dùng whitelist, không dùng placeholder." }
+            }
         },
         "第10回：DB接続（INSERT）": {
             "title": "Buổi 10: Kết nối DB (INSERT)",
-            "description": "Thêm dữ liệu bằng câu lệnh INSERT, đăng ký dữ liệu form vào cơ sở dữ liệu"
+            "description": "Thêm dữ liệu bằng câu lệnh INSERT, đăng ký dữ liệu form vào cơ sở dữ liệu",
+            "subtasks": {
+                "INSERT文の基本": "Cơ bản INSERT",
+                "フォームデータをINSERT": "INSERT dữ liệu form",
+                "バリデーションとエラーハンドリング": "Validation và xử lý lỗi",
+                "登録後のリダイレクト": "Redirect sau khi đăng ký",
+                "課題10を完了": "Hoàn thành bài 10"
+            },
+            "knowledge_items": {
+                "INSERT文の例": { "title": "Ví dụ INSERT", "content": "prepare('INSERT ... VALUES (:n,:e)'), execute, header Location, exit." },
+                "完全なINSERT処理": { "title": "Luồng INSERT đầy đủ", "content": "Validate, PDO prepare/execute, lastInsertId(), xử lý trùng khóa." },
+                "複数データのINSERT": { "title": "INSERT nhiều dòng", "content": "Nhiều VALUES, hoặc vòng lặp với beginTransaction/commit/rollBack." },
+                "lastInsertId()とrowCount()": { "title": "lastInsertId() và rowCount()", "content": "lastInsertId() cho AUTO_INCREMENT; rowCount() cho số dòng bị ảnh hưởng (không dùng cho SELECT)." }
+            }
         },
         "第11回：UPDATE・DELETE・Extra": {
             "title": "Buổi 11: UPDATE, DELETE và Extra",
-            "description": "Câu lệnh UPDATE, DELETE, xử lý transaction"
+            "description": "Câu lệnh UPDATE, DELETE, xử lý transaction",
+            "subtasks": {
+                "UPDATE文の基本": "Cơ bản UPDATE",
+                "フォームからデータを更新": "Cập nhật dữ liệu từ form",
+                "DELETE文の基本": "Cơ bản DELETE",
+                "トランザクション処理": "Xử lý transaction",
+                "課題11を完了": "Hoàn thành bài 11"
+            },
+            "knowledge_items": {
+                "UPDATEとDELETEの例": { "title": "Ví dụ UPDATE và DELETE", "content": "prepare/execute cho UPDATE và DELETE; beginTransaction/commit/rollBack." },
+                "UPDATE文の実践例": { "title": "Ví dụ UPDATE thực tế", "content": "Một/nhiều cột, WHERE, rowCount(), cập nhật từ form." },
+                "トランザクションとは？": { "title": "Transaction là gì?", "content": "ACID. beginTransaction, commit, rollBack. Dùng cho cập nhật nhiều bước." },
+                "DELETE文の実践例": { "title": "Ví dụ DELETE thực tế", "content": "Xóa một/nhiều dòng, xóa logic (cờ), xác nhận rồi xóa, bảng liên quan." }
+            }
         },
         "第12回：JSON": {
             "title": "Buổi 12: JSON",
-            "description": "Mã hóa/giải mã JSON, tạo JSON API"
+            "description": "Mã hóa/giải mã JSON, tạo JSON API",
+            "subtasks": {
+                "json_encode()とjson_decode()": "json_encode() và json_decode()",
+                "配列をJSONに変換": "Chuyển mảng sang JSON",
+                "JSON APIエンドポイントの作成": "Tạo endpoint JSON API",
+                "Content-Typeヘッダーの設定": "Thiết lập header Content-Type",
+                "課題12を完了": "Hoàn thành bài 12"
+            },
+            "knowledge_items": {
+                "JSON処理の例": { "title": "Ví dụ xử lý JSON", "content": "json_encode(JSON_UNESCAPED_UNICODE), json_decode($str, true), header Content-Type." },
+                "json_encodeの詳細": { "title": "Chi tiết json_encode", "content": "JSON_UNESCAPED_UNICODE, JSON_PRETTY_PRINT, JSON_NUMERIC_CHECK, json_last_error_msg." },
+                "json_decodeの詳細": { "title": "Chi tiết json_decode", "content": "Tham số thứ hai true = mảng. json_last_error. file_get_contents(php://input) cho body POST." },
+                "データベースとJSON": { "title": "Database và JSON", "content": "Lấy dòng, json_encode cho response. Cấu trúc success/data/error, mã trạng thái HTTP." },
+                "JSONのベストプラクティス": { "title": "Thực hành JSON tốt", "content": "Content-Type application/json, escape Unicode, kiểm tra lỗi, format phản hồi thống nhất, CORS nếu cần." }
+            }
         },
         "第13回～第14回：自作API": {
             "title": "Buổi 13-14: Phát triển API Tùy chỉnh",
-            "description": "Thiết kế và triển khai RESTful API, tích hợp với frontend"
+            "description": "Thiết kế và triển khai RESTful API, tích hợp với frontend",
+            "subtasks": {
+                "RESTful APIの設計": "Thiết kế RESTful API",
+                "GET APIの実装": "Triển khai GET API",
+                "POST APIの実装": "Triển khai POST API",
+                "PUT/PATCH APIの実装": "Triển khai PUT/PATCH API",
+                "DELETE APIの実装": "Triển khai DELETE API",
+                "フロントエンドとの連携": "Tích hợp với frontend",
+                "エラーハンドリングとバリデーション": "Xử lý lỗi và validation"
+            },
+            "knowledge_items": {
+                "RESTful APIの例": { "title": "Ví dụ RESTful API", "content": "Switch theo REQUEST_METHOD, GET danh sách, POST body từ php://input, response JSON." },
+                "RESTful APIのベストプラクティス": { "title": "Thực hành REST tốt", "content": "Đúng HTTP method, mã trạng thái, JSON, CORS, validation, xử lý lỗi." },
+                "完全なCRUD API": { "title": "API CRUD đầy đủ", "content": "GET một/nhiều, POST, PUT/PATCH, DELETE, OPTIONS, PATH_INFO, validate input." },
+                "HTTPメソッドとステータスコード": { "title": "HTTP method và mã trạng thái", "content": "GET/POST/PUT/DELETE. 200, 201, 400, 401, 404, 405, 500." },
+                "JavaScriptからAPIを呼び出す": { "title": "Gọi API từ JavaScript", "content": "fetch GET/POST/PUT/DELETE, headers, body JSON.stringify, async/await." },
+                "API開発のセキュリティ": { "title": "Bảo mật API", "content": "Xác thực (vd. JWT), giới hạn tần suất, validate input, prepared statements, CORS, HTTPS." }
+            }
         }
     }
 }

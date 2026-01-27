@@ -83,123 +83,299 @@
     "tasks": {
         "第1回：環境設定と画面出力": {
             "title": "Buổi 1: Cài đặt môi trường và xuất màn hình",
-            "description": "Cài đặt môi trường phát triển Java và xuất màn hình với System.out.println()"
+            "description": "Cài đặt môi trường phát triển Java và xuất màn hình với System.out.println()",
+            "subtasks": {
+                "開発環境をセットアップ": "Cài đặt môi trường phát triển",
+                "Hello Worldプログラムを作成": "Tạo chương trình Hello World",
+                "ASCIIアートで文字を出力（E, Cなど）": "Xuất chữ bằng ASCII art (E, C, v.v.)",
+                "メソッドを使った出力プログラム": "Chương trình xuất dùng phương thức"
+            },
+            "knowledge_items": {
+                "Javaとは？": { "title": "Java là gì?", "content": "# Java là gì?\n\n**Java** là ngôn ngữ lập trình do Sun Microsystems (nay là Oracle) phát triển năm 1995.\n\n## Đặc điểm\n1. **Độc lập nền tảng**: Viết một lần, chạy mọi nơi\n2. **Hướng đối tượng**: Class và object\n3. **Thu gom rác**: Quản lý bộ nhớ tự động\n4. **Thư viện phong phú**: Thư viện chuẩn\n5. **Mạnh mẽ**: Kiểu chặt, xử lý ngoại lệ\n\n## Ứng dụng: Android, Web (Spring), hệ thống doanh nghiệp, desktop, big data." },
+                "Java開発環境の準備": { "title": "Chuẩn bị môi trường Java", "content": "# Môi trường phát triển Java\n\n- **JDK** (Oracle JDK hoặc OpenJDK). Kiểm tra: `java -version`, `javac -version`\n- **IDE**: IntelliJ IDEA (khuyến nghị), JCPad (người mới), Eclipse.\n\nCác bước: Cài JDK → Cài IDE → Đặt JAVA_HOME, PATH → Chạy thử Hello World." },
+                "Hello Worldの基本": { "title": "Cơ bản Hello World", "content": "public class JKad01S1 {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World!\");\n    }\n}" },
+                "Javaプログラムの構造": { "title": "Cấu trúc chương trình Java", "content": "Tên file trùng tên class. Dùng ; và {}. Phân biệt hoa thường." },
+                "ASCIIアートの出力例": { "title": "Ví dụ xuất ASCII art", "content": "Dùng nhiều System.out.println() để vẽ chữ (E, C, ...)." },
+                "メソッドを使った出力": { "title": "Xuất dùng phương thức", "content": "Định nghĩa phương thức tĩnh (printHello(), printWorld()) và gọi từ main()." },
+                "System.out.println()とSystem.out.print()の違い": { "title": "println() và print()", "content": "- **println()**: xuất xong xuống dòng.\n- **print()**: không xuống dòng. \\n, \\t, \\\"." },
+                "コンパイルと実行": { "title": "Biên dịch và chạy", "content": "Biên dịch: `javac TênFile.java`\nChạy: `java TênFile`. Trong IDE: bấm Run." }
+            }
         },
         "第2回：変数と式①（int型①）": {
             "title": "Buổi 2: Biến và biểu thức ① (kiểu int ①)",
-            "description": "Khai báo biến kiểu int, gán giá trị, phép tính cơ bản, phép chia lấy dư"
+            "description": "Khai báo biến kiểu int, gán giá trị, phép tính cơ bản, phép chia lấy dư",
+            "subtasks": {
+                "変数の宣言と代入": "Khai báo và gán biến",
+                "四則演算（+, -, *, /）": "Bốn phép tính (+, -, *, /)",
+                "剰余演算（%）": "Phép chia lấy dư (%)",
+                "実践問題：リンゴの分配": "Bài tập: Chia táo"
+            },
+            "knowledge_items": {
+                "変数とは？": { "title": "Biến là gì?", "content": "Biến lưu dữ liệu. Khai báo kiểu và tên; gán bằng =." },
+                "int型の詳細": { "title": "Kiểu int", "content": "Số nguyên 32 bit. Khoảng ±2.1e9." },
+                "変数の宣言と代入": { "title": "Khai báo và gán", "content": "int x; x = 10; hoặc int x = 10;" },
+                "四則演算": { "title": "Số học", "content": "+ - * / % . Chia nguyên cắt phần lẻ." },
+                "剰余演算（%）の使い道": { "title": "Dùng phép chia dư", "content": "Chẵn/lẻ, chia hết, phần dư, tách chữ số." },
+                "リンゴの分配問題": { "title": "Bài toán chia táo", "content": "Dùng / cho số mỗi người, % cho số dư." }
+            }
         },
         "第3回：変数と式②（int型②）": {
             "title": "Buổi 3: Biến và biểu thức ② (kiểu int ②)",
-            "description": "Toán tử gán kết hợp, toán tử tăng giảm"
+            "description": "Toán tử gán kết hợp, toán tử tăng giảm",
+            "subtasks": {
+                "複雑な式の計算": "Tính biểu thức phức tạp",
+                "演算子の優先順位": "Thứ tự ưu tiên toán tử",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "複雑な式の計算": { "title": "Biểu thức phức tạp", "content": "Kết hợp toán tử; dùng ngoặc để chỉ thứ tự." },
+                "インクリメントとデクリメント": { "title": "Tăng và giảm", "content": "x++; x--; x+=n; x*=n;" },
+                "演算子の優先順位": { "title": "Thứ tự ưu tiên", "content": "() rồi * / % rồi + - rồi =." }
+            }
         },
         "第4回：String型とキーボード入力": {
             "title": "Buổi 4: Kiểu String và nhập từ bàn phím",
-            "description": "Kiểu String, lớp Scanner, nhập từ bàn phím"
+            "description": "Kiểu String, lớp Scanner, nhập từ bàn phím",
+            "subtasks": { "String型の基本": "Cơ bản String", "Scannerクラスの使い方": "Cách dùng Scanner", "nextInt()で整数入力": "nextInt() nhập số nguyên", "nextLine()で文字列入力": "nextLine() nhập chuỗi", "実践問題：入力と出力": "Bài tập: nhập và xuất" },
+            "knowledge_items": { "String型とは？": { "title": "Kiểu String", "content": "Chuỗi trong \"\"; bất biến; + nối chuỗi." }, "Scannerクラスとは？": { "title": "Lớp Scanner", "content": "import java.util.Scanner; new Scanner(System.in); nextInt(), nextLine(); close()." }, "Scannerの基本的な使い方": { "title": "Cách dùng Scanner cơ bản", "content": "Tạo, nhắc, đọc, in, đóng." }, "Scannerクラスの主要メソッド": { "title": "Các phương thức Scanner", "content": "nextInt, nextLong, nextDouble, nextLine, next." }, "複数の値を入力する": { "title": "Nhập nhiều giá trị", "content": "Gọi nextInt/nextLine nhiều lần." }, "nextInt()とnextLine()の組み合わせ": { "title": "nextInt + nextLine", "content": "Gọi nextLine() một lần để \"ăn\" ký tự xuống dòng sau nextInt()." }, "計算機プログラム": { "title": "Chương trình máy tính", "content": "Đọc hai số, in tổng, hiệu, tích, thương." } }
         },
         "第5回：if文①": {
             "title": "Buổi 5: Câu lệnh if ①",
-            "description": "Rẽ nhánh với if, toán tử so sánh"
+            "description": "Rẽ nhánh với if, toán tử so sánh",
+            "subtasks": { "if文の基本構文": "Cú pháp if", "比較演算子（>, <, ==, !=）": "Toán tử so sánh", "最大値・最小値を求める": "Tìm max/min", "実践問題：5人の点数から最高点を求める": "Bài tập: điểm cao nhất của 5 người" },
+            "knowledge_items": { "if文で最大値を求める": { "title": "Tìm max bằng if", "content": "Khởi tạo max; so sánh từng giá trị; cập nhật max." }, "if文の構文": { "title": "Cú pháp if", "content": "if (điều_kiện) { } . Dùng > < >= <= == != ." } }
         },
         "第6回：while文①": {
             "title": "Buổi 6: Câu lệnh while ①",
-            "description": "Xử lý vòng lặp với while"
+            "description": "Xử lý vòng lặp với while",
+            "subtasks": { "while文の基本構文": "Cú pháp while", "カウンタ変数を使ったループ": "Vòng lặp biến đếm", "条件によるループ終了": "Thoát vòng lặp theo điều kiện", "実践問題": "Bài tập" },
+            "knowledge_items": { "while文の構文": { "title": "Cú pháp while", "content": "while (điều_kiện) { } — lặp khi điều kiện đúng; tránh lặp vô hạn." } }
         },
         "第7回：ネストとインデント": {
             "title": "Buổi 7: Lồng nhau và thụt đầu dòng",
-            "description": "Lồng if, lồng vòng lặp, tầm quan trọng của thụt đầu dòng"
+            "description": "Lồng if, lồng vòng lặp, tầm quan trọng của thụt đầu dòng",
+            "subtasks": { "ネストしたif文": "if lồng nhau", "ネストしたループ": "Vòng lặp lồng nhau", "インデントの正しい使い方": "Cách thụt dòng đúng", "実践問題": "Bài tập" },
+            "knowledge_items": { "ネストしたif文の例": { "title": "Ví dụ if lồng nhau", "content": "if trong if; khoảng điểm → xếp loại." }, "ネストしたループの例（九九表）": { "title": "Vòng lặp lồng (bảng cửu chương)", "content": "i ngoài, j trong; in i*j." }, "インデントの重要性": { "title": "Tầm quan trọng thụt dòng", "content": "Dùng 4 dấu cách hoặc tab; căn khối đều." }, "インデントの良い例と悪い例": { "title": "Ví dụ tốt và xấu", "content": "Căn ngoặc và nội dung khối." } }
         },
         "第8回：チャレンジ課題①": {
             "title": "Buổi 8: Bài thách thức ①",
-            "description": "Bài tập tổng hợp từ buổi 1 đến buổi 7"
+            "description": "Bài tập tổng hợp từ buổi 1 đến buổi 7",
+            "subtasks": { "基本構文の復習": "Ôn cú pháp", "変数と演算の総合問題": "Biến và phép toán", "if文とwhile文の組み合わせ": "if và while", "応用課題": "Bài ứng dụng" },
+            "knowledge_items": { "復習すべき重要ポイント": { "title": "Điểm cần ôn", "content": "Cú pháp, biến, Scanner, if, while, lồng nhau." }, "練習問題：数当てゲーム": { "title": "Trò chơi đoán số", "content": "Vòng while; nhắc; so sánh; báo số lần." } }
         },
         "第9回：クラス替えテスト①（練習問題）": {
             "title": "Buổi 9: Bài kiểm tra xếp lớp ① (Bài luyện tập)",
-            "description": "Luyện tập kiểm tra mức độ hiểu từ buổi 1 đến buổi 8"
+            "description": "Luyện tập kiểm tra mức độ hiểu từ buổi 1 đến buổi 8",
+            "subtasks": { "基本問題（変数と式）": "Câu cơ bản (biến, biểu thức)", "応用問題（if文）": "Câu if", "応用問題（while文）": "Câu while", "総合問題": "Tổng hợp" },
+            "knowledge_items": { "テスト対策のチェックリスト": { "title": "Checklist ôn thi", "content": "Biến, số học, Scanner, if, while, lồng, thụt dòng." }, "テスト練習問題：合計と平均": { "title": "Tổng và trung bình", "content": "Lặp đến 0; sum và count; average = (double)sum/count." } }
         },
         "第10回：チャレンジ課題②": {
             "title": "Buổi 10: Bài thách thức ②",
-            "description": "Bài tập tổng hợp nâng cao"
+            "description": "Bài tập tổng hợp nâng cao",
+            "subtasks": { "複雑なループ処理": "Xử lý vòng lặp phức tạp", "パターン出力": "Xuất mẫu", "総合応用課題": "Ứng dụng tổng hợp" },
+            "knowledge_items": { "チャレンジ：素数判定": { "title": "Kiểm tra số nguyên tố", "content": "Duyệt 2..sqrt(n) tìm ước." }, "チャレンジ：三角形のパターン": { "title": "Mẫu tam giác", "content": "Vòng lồng: hàng ngoài, số sao mỗi hàng trong." } }
         },
         "第11回：変数と式③（整数型と実数型）": {
             "title": "Buổi 11: Biến và biểu thức ③ (kiểu số nguyên và số thực)",
-            "description": "Cách sử dụng kiểu long, double, float"
+            "description": "Cách sử dụng kiểu long, double, float",
+            "subtasks": { "long型の使い方": "Cách dùng long", "double型とfloat型": "double và float", "型変換（キャスト）": "Ép kiểu (cast)", "実践問題": "Bài tập" },
+            "knowledge_items": { "整数型と実数型の基本": { "title": "Kiểu nguyên và thực", "content": "long hậu tố L; float hậu tố f; (double)x để chia thực." }, "データ型の種類と範囲": { "title": "Các kiểu và khoảng giá trị", "content": "byte, short, int, long; float, double. Ép: (int)x, (double)n." } }
         },
         "第12回：if文②（if～else if）": {
             "title": "Buổi 12: Câu lệnh if ② (if～else if)",
-            "description": "Cấu trúc if-else if-else, rẽ nhánh nhiều điều kiện"
+            "description": "Cấu trúc if-else if-else, rẽ nhánh nhiều điều kiện",
+            "subtasks": { "if-else文の基本": "Cơ bản if-else", "if-else if-else構文": "Cú pháp if-else if-else", "複数条件の判定": "Nhiều điều kiện", "実践問題": "Bài tập" },
+            "knowledge_items": { "if-else if-else構文の例": { "title": "Ví dụ if-else if", "content": "Khoảng điểm → xếp loại A/B/C/D/F." }, "if-else if-else構文のポイント": { "title": "Điểm chính", "content": "Đánh giá từ trên xuống; điều kiện đúng đầu tiên thắng; else tùy chọn." } }
         },
         "第13回：if文③（論理演算子、boolean）": {
             "title": "Buổi 13: Câu lệnh if ③ (toán tử logic, boolean)",
-            "description": "&& (AND), || (OR), ! (NOT), kiểu boolean"
+            "description": "&& (AND), || (OR), ! (NOT), kiểu boolean",
+            "subtasks": { "boolean型の基本": "Cơ bản boolean", "論理演算子（&&, ||, !）": "Toán tử logic", "複雑な条件式": "Điều kiện phức tạp", "実践問題": "Bài tập" },
+            "knowledge_items": { "論理演算子の例": { "title": "Ví dụ toán tử logic", "content": "&& cả hai đúng; || một trong hai đúng; ! phủ định." }, "論理演算子の真理値表": { "title": "Bảng chân trị", "content": "AND, OR, NOT. Short-circuit." } }
         },
         "第14回：while文②（do～while、break、continue）": {
             "title": "Buổi 14: Câu lệnh while ② (do～while, break, continue)",
-            "description": "Câu lệnh do-while, break, continue"
+            "description": "Câu lệnh do-while, break, continue",
+            "subtasks": { "do-while文の基本": "Cơ bản do-while", "break文でループ脱出": "break", "continue文でスキップ": "continue", "実践問題": "Bài tập" },
+            "knowledge_items": { "do-while文の例": { "title": "Ví dụ do-while", "content": "Chạy ít nhất một lần; phù hợp kiểm tra nhập." }, "break文とcontinue文の例": { "title": "break và continue", "content": "break thoát vòng lặp; continue nhảy sang lần lặp sau." }, "while文とdo-while文の違い": { "title": "while và do-while", "content": "while kiểm tra trước; do-while chạy thân trước." } }
         },
         "第15回：配列": {
             "title": "Buổi 15: Mảng",
-            "description": "Khai báo mảng, khởi tạo, truy cập phần tử"
+            "description": "Khai báo mảng, khởi tạo, truy cập phần tử",
+            "subtasks": { "配列の宣言と初期化": "Khai báo và khởi tạo", "配列要素へのアクセス": "Truy cập phần tử", "配列の長さ（length）": "length", "配列の応用問題": "Ứng dụng" },
+            "knowledge_items": { "配列の基本": { "title": "Cơ bản mảng", "content": "int[] a = new int[n]; hoặc int[] a = {1,2,3}; a.length; a[i]." }, "配列を使った合計と平均": { "title": "Tổng và trung bình", "content": "Duyệt theo chỉ số hoặc for-each; (double)sum/length." }, "配列の重要ポイント": { "title": "Điểm quan trọng", "content": "Chỉ số từ 0; độ dài cố định; kiểm tra biên." } }
         },
         "第16回：for文①（for文の基本と配列）": {
             "title": "Buổi 16: Câu lệnh for ① (cơ bản for và mảng)",
-            "description": "Cú pháp cơ bản for, kết hợp với mảng"
+            "description": "Cú pháp cơ bản for, kết hợp với mảng",
+            "subtasks": { "for文の基本構文": "Cú pháp for", "for文と配列の組み合わせ": "for và mảng", "拡張for文（for-each）": "for-each", "実践問題": "Bài tập" },
+            "knowledge_items": { "for文の基本": { "title": "Cơ bản for", "content": "for(khởi tạo; điều kiện; cập nhật){}. for(int x : arr){}." }, "for文を使った配列操作": { "title": "Thao tác mảng bằng for", "content": "Max, đếm, v.v. bằng for." }, "for文の構文": { "title": "Cú pháp for", "content": "Khởi tạo 1 lần; kiểm tra; thân; cập nhật; lặp." } }
         },
         "第17回：for文②（ループ処理の流れ、スコープ）": {
-            "title": "Buổi 17: Câu lệnh for ② (luồng xử lý vòng lặp, phạm vi biến)",
-            "description": "Luồng thực thi for, phạm vi biến"
+            "title": "Buổi 17: Câu lệnh for ② (luồng vòng lặp, phạm vi biến)",
+            "description": "Luồng thực thi for, phạm vi biến",
+            "subtasks": { "for文の実行フロー詳細": "Luồng for", "変数のスコープ": "Phạm vi biến", "ネストしたfor文": "for lồng nhau", "実践問題": "Bài tập" },
+            "knowledge_items": { "変数のスコープ": { "title": "Phạm vi biến", "content": "Biến chỉ thấy trong khối của nó." }, "ネストしたfor文の例": { "title": "Ví dụ for lồng", "content": "Bảng cửu chương; tam giác *." }, "変数のスコープとは": { "title": "Phạm vi là gì", "content": "Phạm vi khối; biến vòng lặp chỉ trong vòng lặp." } }
         },
         "第18回：チャレンジ課題③": {
             "title": "Buổi 18: Bài thách thức ③",
-            "description": "Bài tập tổng hợp từ buổi 11 đến buổi 17"
+            "description": "Bài tập tổng hợp từ buổi 11 đến buổi 17",
+            "subtasks": { "配列の応用問題": "Mảng ứng dụng", "for文の応用問題": "for ứng dụng", "総合課題": "Tổng hợp" },
+            "knowledge_items": { "第11回～第17回の復習ポイント": { "title": "Ôn buổi 11-17", "content": "Kiểu, if-else if, logic, do-while, break/continue, mảng, for, phạm vi." }, "チャレンジ：配列のソート（選択ソート）": { "title": "Sắp xếp chọn", "content": "Với mỗi i, tìm min ở phần còn lại, đổi chỗ." } }
         },
         "第19回：クラス替えテスト②（練習問題）": {
             "title": "Buổi 19: Bài kiểm tra xếp lớp ② (Bài luyện tập)",
-            "description": "Luyện tập kiểm tra mức độ hiểu từ buổi 11 đến buổi 18"
+            "description": "Luyện tập kiểm tra mức độ hiểu từ buổi 11 đến buổi 18",
+            "subtasks": { "基本問題（配列とfor文）": "Mảng và for", "応用問題（論理演算）": "Toán tử logic", "総合問題": "Tổng hợp" },
+            "knowledge_items": { "テスト対策チェックリスト": { "title": "Checklist ôn thi", "content": "long/double, cast, if-else if, &&||!, do-while, break/continue, mảng, for, phạm vi." }, "テスト練習問題：配列の統計": { "title": "Thống kê mảng", "content": "Tổng, trung bình, max, min, đếm trên trung bình." } }
         },
         "第20回：チャレンジ課題④": {
             "title": "Buổi 20: Bài thách thức ④",
-            "description": "Bài tập tổng hợp nâng cao"
+            "description": "Bài tập tổng hợp nâng cao",
+            "subtasks": { "2次元配列の準備": "Mảng 2 chiều", "探索アルゴリズム": "Thuật toán tìm kiếm", "総合応用課題": "Ứng dụng tổng hợp" },
+            "knowledge_items": { "チャレンジ：線形探索": { "title": "Tìm kiếm tuyến tính", "content": "Duyệt đến khi tìm thấy hoặc hết; trả về chỉ số hoặc -1." }, "チャレンジ：2次元配列の基本": { "title": "Cơ bản mảng 2 chiều", "content": "int[][] m; m[i][j]; vòng lồng để tổng từng hàng." } }
         },
         "第21回：多重ループと多次元配列": {
             "title": "Buổi 21: Vòng lặp lồng và mảng đa chiều",
-            "description": "Lồng for, mảng 2 chiều, mảng 3 chiều"
+            "description": "Lồng for, mảng 2 chiều, mảng 3 chiều",
+            "subtasks": {
+                "2次元配列の宣言と初期化": "Khai báo và khởi tạo mảng 2 chiều",
+                "多重ループでの配列操作": "Thao tác mảng bằng vòng lặp lồng",
+                "3次元配列の基本": "Cơ bản mảng 3 chiều"
+            },
+            "knowledge_items": {
+                "2次元配列の基本": { "title": "Cơ bản mảng 2 chiều", "content": "Khai báo int[][] matrix; khởi tạo {{...},{...}}; dùng for lồng hoặc for-each để truy cập matrix[i][j]." },
+                "2次元配列の応用：行列の転置": { "title": "Ứng dụng: chuyển vị ma trận", "content": "Đổi hàng thành cột; transposed[j][i]=original[i][j]; dùng vòng lặp lồng." },
+                "多次元配列の重要ポイント": { "title": "Điểm quan trọng mảng đa chiều", "content": "arr.length=số hàng; arr[i].length=số cột. Dùng cho bảng, lưới, bàn cờ." }
+            }
         },
         "第22回：メソッド①": {
             "title": "Buổi 22: Phương thức ①",
-            "description": "Định nghĩa phương thức, tham số, giá trị trả về"
+            "description": "Định nghĩa phương thức, tham số, giá trị trả về",
+            "subtasks": {
+                "メソッドの基本構文": "Cú pháp cơ bản phương thức",
+                "引数と戻り値": "Tham số và giá trị trả về",
+                "メソッドの実践": "Thực hành phương thức"
+            },
+            "knowledge_items": {
+                "メソッドの基本": { "title": "Cơ bản phương thức", "content": "void/không đối; kiểu trả về+không đối; void+đối; trả về+đối. Ví dụ: add(int a, int b) trả a+b." },
+                "メソッドを使った配列操作": { "title": "Thao tác mảng bằng phương thức", "content": "sumArray(arr), averageArray(arr), maxArray(arr); gọi từ main." },
+                "メソッドの構文": { "title": "Cú pháp phương thức", "content": "access static kiểuTrảVề tên(đối){ return giá trị; }. Dùng để tái sử dụng, dễ đọc, dễ bảo trì." }
+            }
         },
         "第23回：メソッド②": {
             "title": "Buổi 23: Phương thức ②",
-            "description": "Nạp chồng phương thức, gọi đệ quy"
+            "description": "Nạp chồng phương thức, gọi đệ quy",
+            "subtasks": {
+                "メソッドのオーバーロード": "Nạp chồng phương thức",
+                "再帰呼び出しの基本": "Cơ bản đệ quy",
+                "再帰の応用": "Ứng dụng đệ quy"
+            },
+            "knowledge_items": {
+                "メソッドのオーバーロード": { "title": "Nạp chồng phương thức", "content": "Cùng tên, khác số/kiểu tham số: add(int,int), add(int,int,int), add(double,double)." },
+                "再帰呼び出しの例": { "title": "Ví dụ đệ quy", "content": "factorial(n)=n*factorial(n-1) với nền n<=1; fibonacci(n)=fib(n-1)+fib(n-2)." },
+                "オーバーロードと再帰": { "title": "Nạp chồng và đệ quy", "content": "Nạp chồng: cùng tên, khác tham số; đệ quy cần trường hợp nền và trường hợp gọi lại. Tránh đệ quy sâu (tràn stack)." }
+            }
         },
         "第24回：switch文": {
             "title": "Buổi 24: Câu lệnh switch",
-            "description": "Cú pháp switch, case và break"
+            "description": "Cú pháp switch, case và break",
+            "subtasks": {
+                "switch文の基本構文": "Cú pháp cơ bản switch",
+                "break文とdefault": "break và default",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "switch文の基本": { "title": "Cơ bản switch", "content": "switch(biểu_thức){ case giá_trị: ... break; default: ... }. Dùng cho số ngày→thứ, tháng→mùa." },
+                "breakを省略した例（フォールスルー）": { "title": "Fall-through (bỏ break)", "content": "case 12: case 1: case 2: season=\"Đông\"; break; gộp nhiều giá trị." },
+                "switch文の構文": { "title": "Cú pháp switch", "content": "Biểu thức: int, char, String, enum. break tránh rơi case; default tùy chọn. Dùng switch khi rẽ nhánh theo một giá trị." }
+            }
         },
         "第25回：文字と文字列": {
             "title": "Buổi 25: Ký tự và chuỗi",
-            "description": "Kiểu char, các phương thức lớp String, xử lý chuỗi"
+            "description": "Kiểu char, các phương thức lớp String, xử lý chuỗi",
+            "subtasks": {
+                "char型の基本": "Cơ bản char",
+                "String型のメソッド": "Phương thức String",
+                "文字列の比較と検索": "So sánh và tìm chuỗi",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "char型と文字列の基本": { "title": "Cơ bản char và chuỗi", "content": "char c='A'; (int)c cho mã. String str; str.length(), str.charAt(i)." },
+                "Stringクラスの主要メソッド": { "title": "Các phương thức chính của String", "content": "substring, toUpperCase, toLowerCase, indexOf, contains, replace, split. So sánh bằng equals(), không dùng ==." },
+                "Stringクラスの主要メソッド一覧": { "title": "Tổng quan phương thức String", "content": "length, charAt, indexOf, contains, toUpperCase, toLowerCase, trim, split, substring. Luôn dùng equals() để so sánh nội dung." }
+            }
         },
         "第26回：ビット演算とシフト演算": {
             "title": "Buổi 26: Toán tử bit và dịch bit",
-            "description": "Toán tử bit (&, |, ^, ~), toán tử dịch (<<, >>, >>>)"
+            "description": "Toán tử bit (&, |, ^, ~), toán tử dịch (<<, >>, >>>)",
+            "subtasks": {
+                "ビット演算の基本": "Cơ bản toán tử bit",
+                "シフト演算": "Toán tử dịch",
+                "実践応用": "Ứng dụng thực hành"
+            },
+            "knowledge_items": {
+                "ビット演算の基本": { "title": "Cơ bản toán tử bit", "content": "& AND, | OR, ^ XOR, ~ NOT. Integer.toBinaryString() để xem dạng nhị phân." },
+                "シフト演算": { "title": "Toán tử dịch", "content": "<< trái (×2), >> phải số học (÷2), >>> phải logic. (n>0 && (n&(n-1))==0) để kiểm tra lũy thừa 2." },
+                "ビット演算とシフト演算": { "title": "Toán tử bit và dịch", "content": "AND/OR/XOR/NOT; << >> >>>. Dùng cho cờ, nhân/chia nhanh, mặt nạ. Ít dùng trong code thường ngày." }
+            }
         },
         "第27回：プログラミング演習①（バブルソート・マージソート）": {
             "title": "Buổi 27: Bài tập lập trình ① (Bubble Sort, Merge Sort)",
-            "description": "Hiểu và triển khai thuật toán bubble sort và merge sort"
+            "description": "Hiểu và triển khai thuật toán bubble sort và merge sort",
+            "subtasks": {
+                "バブルソートのアルゴリズムを理解": "Hiểu thuật toán bubble sort",
+                "バブルソートを実装": "Triển khai bubble sort",
+                "マージソートのアルゴリズムを理解": "Hiểu thuật toán merge sort",
+                "マージソートを実装": "Triển khai merge sort"
+            },
+            "knowledge_items": {
+                "バブルソート": { "title": "Bubble sort", "content": "O(n²). So sánh cặp liền kề, đổi chỗ nếu sai thứ tự; lặp đến khi không còn đổi." },
+                "マージソート": { "title": "Merge sort", "content": "O(n log n). Chia, sắp nửa, trộn. Ổn định; phù hợp dữ liệu lớn." },
+                "ソートアルゴリズムの比較": { "title": "So sánh thuật toán sắp xếp", "content": "Bubble: đơn giản, O(n²). Merge: O(n log n), ổn định. Chọn theo kích thước và nhu cầu ổn định." }
+            }
         },
         "第28回：プログラミング演習②（クイックソートに挑戦！）": {
             "title": "Buổi 28: Bài tập lập trình ② (Thử thách Quick Sort!)",
-            "description": "Hiểu và triển khai thuật toán quick sort"
+            "description": "Hiểu và triển khai thuật toán quick sort",
+            "subtasks": {
+                "クイックソートのアルゴリズムを理解": "Hiểu thuật toán quick sort",
+                "クイックソートを実装": "Triển khai quick sort",
+                "パフォーマンス比較": "So sánh hiệu năng"
+            },
+            "knowledge_items": {
+                "クイックソート": { "title": "Quick sort", "content": "Chọn pivot; phân hoạch nhỏ trái, lớn phải; đệ quy. Trung bình O(n log n), xấu nhất O(n²)." },
+                "クイックソートの仕組み": { "title": "Cách hoạt động quick sort", "content": "Pivot (vd cuối), phân hoạch, đệ quy. At chỗ, không ổn định. Chọn pivot: cuối, đầu, giữa, ngẫu nhiên, median-of-three." }
+            }
         },
         "第29回：プログラミング演習（総合練習）": {
             "title": "Buổi 29: Bài tập lập trình (Tổng hợp)",
-            "description": "Luyện tập lập trình tổng hợp"
+            "description": "Luyện tập lập trình tổng hợp",
+            "subtasks": {
+                "アルゴリズムの復習": "Ôn thuật toán",
+                "総合問題①": "Bài tổng hợp ①",
+                "総合問題②": "Bài tổng hợp ②"
+            },
+            "knowledge_items": {
+                "Java基礎演習の総まとめ": { "title": "Tổng kết Java cơ bản", "content": "Cú pháp, kiểu, điều khiển, mảng, String, phương thức, đệ quy, sắp xếp/tìm kiếm. Tiếp: OOP, ngoại lệ, collection, I/O, GUI." },
+                "総合問題例：二分探索": { "title": "Ví dụ: tìm kiếm nhị phân", "content": "Trên mảng đã sắp: mid=(left+right)/2; nếu arr[mid]==target return mid; không thì thu hẹp trái/phải. O(log n)." }
+            }
         },
         "第30回：プログラミング演習③（リバーシ！）": {
             "title": "Buổi 30: Bài tập lập trình ③ (Reversi!)",
-            "description": "Hoàn thành triển khai game Reversi"
+            "description": "Hoàn thành triển khai game Reversi",
+            "subtasks": {
+                "ゲーム盤面の表示": "Hiển thị bàn cờ",
+                "石を置く処理": "Xử lý đặt quân",
+                "石をひっくり返す処理": "Xử lý lật quân",
+                "勝敗判定": "Xác định thắng/thua",
+                "ゲームループの完成": "Hoàn thiện vòng lặp game"
+            },
+            "knowledge_items": {
+                "リバーシの基本構造": { "title": "Cấu trúc cơ bản Reversi", "content": "Bàn 8×8 int[][]; EMPTY=0, BLACK=1, WHITE=2. initBoard(), printBoard(), 2×2 giữa ban đầu." },
+                "石をひっくり返す処理の例": { "title": "Ví dụ logic lật quân", "content": "canFlip(row,col,player,dr,dc): đi theo hướng; flip(): đổi quân đối thủ thành quân mình theo hướng." },
+                "リバーシゲーム実装のポイント": { "title": "Điểm cần lưu ý khi làm Reversi", "content": "Bàn cờ, kiểm tra đặt, 8 hướng, logic lật, thắng theo số quân, vòng lặp game. dr,dc cho (-1,-1)..(1,1). Tùy chọn: AI, gợi ý, lưu/load." }
+            }
         }
     }
 }

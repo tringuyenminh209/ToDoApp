@@ -82,39 +82,157 @@
     "tasks": {
         "第1回：フィールド": {
             "title": "Session 1: Fields",
-            "description": "Field (class variable) definition and usage, variable scope"
+            "description": "Field (class variable) definition and usage, variable scope",
+            "subtasks": {
+                "フィールドの基本定義": "Basic field definition",
+                "public staticフィールドの使い方": "Using public static fields",
+                "フィールドのスコープを理解": "Understanding field scope",
+                "実践問題：のび太のおつかい": "Practice: Nobita's errand"
+            },
+            "knowledge_items": {
+                "フィールドとは": { "title": "What are fields", "content": "Variables declared at class level (outside methods). Visible to all methods in the class. static = class variable; without static = instance variable." },
+                "スコープ（変数の有効範囲）": { "title": "Scope (variable visibility)", "content": "Local: inside block only. Field: whole class. Keep scope as narrow as possible." },
+                "フィールドとローカル変数の違い": { "title": "Field vs local variable", "content": "Field shared across method calls; local reset each call." },
+                "フィールドの基本例": { "title": "Field basic example", "content": "public static int sum; add(x), subtract(x); use from main with Scanner." },
+                "フィールドのデフォルト値": { "title": "Field default values", "content": "Numeric 0, boolean false, reference null. Local variables are NOT auto-initialized." },
+                "実践例：のび太のおつかい": { "title": "Practice: Nobita's errand", "content": "Field money; buy(name,price); check balance, deduct, or report shortage." }
+            }
         },
         "第2回：クラス": {
             "title": "Session 2: Classes",
-            "description": "Classes and instances, basic concepts of object-oriented programming"
+            "description": "Classes and instances, basic concepts of object-oriented programming",
+            "subtasks": {
+                "クラスの定義": "Class definition",
+                "インスタンスの生成": "Instance creation",
+                "メソッドの定義と呼び出し": "Method definition and call",
+                "実践問題：Accountクラス、Monsterクラス": "Practice: Account class, Monster class"
+            },
+            "knowledge_items": {
+                "オブジェクト指向プログラミング（OOP）": { "title": "Object-oriented programming", "content": "Encapsulation, inheritance, polymorphism, abstraction. Reuse, maintainability, extensibility." },
+                "クラスとは": { "title": "What is a class", "content": "Blueprint with fields and methods. new ClassName() creates an instance. CamelCase, noun for name." },
+                "クラスの定義と使用例": { "title": "Class definition and example", "content": "Monster with name, hp, attack; introduce(), attackEnemy(). Main: new Monster(), set fields, call methods." },
+                "基本型と参照型の違い": { "title": "Primitive vs reference types", "content": "Primitive: value in variable. Reference: address to object. == compares references for objects." },
+                "参照型の動作例": { "title": "Reference type behaviour", "content": "pika=rai makes both point to same object; changing one affects the other." },
+                "実践例：Accountクラス": { "title": "Practice: Account class", "content": "accountNumber, owner, balance; deposit(), withdraw(), showBalance()." },
+                "nullとNullPointerException": { "title": "null and NPE", "content": "null = no reference. Calling method on null causes NPE. Check != null or ensure instantiation." },
+                "thisキーワードの使い方": { "title": "Using this", "content": "this.field vs param name; return this for chaining; call other methods in same class." }
+            }
         },
         "第3回：コンストラクタとカプセル化": {
             "title": "Session 3: Constructors and Encapsulation",
-            "description": "Constructor definition, access modifiers, encapsulation"
+            "description": "Constructor definition, access modifiers, encapsulation",
+            "subtasks": {
+                "コンストラクタの定義": "Constructor definition",
+                "private修飾子とカプセル化": "private modifier and encapsulation",
+                "getter/setterメソッド": "getter/setter methods",
+                "実践問題：SecretNumberクラス、Heroクラス": "Practice: SecretNumber class, Hero class"
+            },
+            "knowledge_items": {
+                "コンストラクタとは": { "title": "What is a constructor", "content": "Same name as class, no return type; runs once on new. Default constructor only if none defined." },
+                "コンストラクタの種類と使い方": { "title": "Constructor types and usage", "content": "No-arg, with-args, chaining with this(...). First line must be super() or this()." },
+                "カプセル化とは": { "title": "What is encapsulation", "content": "Hide fields with private; expose via public getter/setter. Use access modifiers. Validate in setter." },
+                "カプセル化の実装例": { "title": "Encapsulation example", "content": "private fields; get/set with bounds check; throw IllegalArgumentException for invalid values." },
+                "実践例：SecretNumberクラス": { "title": "Practice: SecretNumber", "content": "Random secret, attemptCount; guess(n), getAttemptCount(), reveal(). No setter for secret." },
+                "getter/setterのベストプラクティス": { "title": "Getter/setter best practices", "content": "getName/setName; validate in setter; isXxx for boolean; return copy for collections." }
+            }
         },
         "第4回：インスタンスメンバとクラスメンバ": {
             "title": "Session 4: Instance Members and Class Members",
-            "description": "Difference between instance members and static members"
+            "description": "Difference between instance members and static members",
+            "subtasks": {
+                "static修飾子の理解": "Understanding static modifier",
+                "インスタンスメンバとクラスメンバの違い": "Instance vs class members",
+                "staticメソッドとstaticフィールド": "Static methods and fields",
+                "実践問題：Studentクラス、Cardクラス": "Practice: Student class, Card class"
+            },
+            "knowledge_items": {
+                "メンバとは": { "title": "What are members", "content": "Class member = static (shared). Instance member = per instance. ClassName.staticMember." },
+                "static（静的）とは": { "title": "What is static", "content": "One per class, created at load. Use for constants, utils, instance count. Not for per-instance data." },
+                "staticの基本使用例": { "title": "Static basic example", "content": "private static int totalCount; static getTotalCount(); instance can use static; static cannot use instance." },
+                "実践例：Cardクラス（トランプ）": { "title": "Practice: Card class", "content": "static SUITS, RANKS; createDeck(); getTotalCardsCreated()." },
+                "staticフィールドとメソッドの制約": { "title": "Static constraints", "content": "Static method cannot access instance fields/methods or this. Can create new instance and use it." },
+                "インスタンス配列の使用例": { "title": "Instance array example", "content": "Monster[] party = new Monster[3]; assign new Monster() to each; for-loop or for-each." }
+            }
         },
         "第5回：クラスの継承": {
             "title": "Session 5: Class Inheritance",
-            "description": "Class inheritance, method overriding, super keyword"
+            "description": "Class inheritance, method overriding, super keyword",
+            "subtasks": {
+                "extendsキーワードで継承": "Inheritance with extends",
+                "superでスーパークラスを呼び出す": "Calling superclass with super",
+                "メソッドのオーバーライド": "Method overriding",
+                "実践問題：Monsterクラスの継承": "Practice: Monster inheritance"
+            },
+            "knowledge_items": {
+                "継承とは": { "title": "What is inheritance", "content": "Subclass extends superclass; gets fields/methods. Single inheritance only. Constructor not inherited." },
+                "継承の基本例": { "title": "Inheritance basic example", "content": "FireMonster extends Monster; super(name,hp,attack); fireAttack()." },
+                "superキーワード": { "title": "super keyword", "content": "super(args) first line in constructor; super.method(); super.field. Must call super if no no-arg in parent." },
+                "superの実践的な使用例": { "title": "super in practice", "content": "Override showStatus() and call super.showStatus() then add own output." },
+                "メソッドのオーバーライド": { "title": "Method overriding", "content": "Same signature as parent. @Override. Return type same or covariant. Cannot override private/static/final." },
+                "実践例：Monsterクラスの継承階層": { "title": "Practice: Monster hierarchy", "content": "Monster base; FireMonster, WaterMonster. override attack(); instanceof for type checks." },
+                "継承の設計原則": { "title": "Inheritance design", "content": "Use for is-a (FireMonster is a Monster). Use composition for has-a. Avoid deep hierarchies." }
+            }
         },
         "第6回：ポリモーフィズム": {
             "title": "Session 6: Polymorphism",
-            "description": "Polymorphism concepts and implementation"
+            "description": "Polymorphism concepts and implementation",
+            "subtasks": {
+                "ポリモーフィズムの概念": "Polymorphism concept",
+                "アップキャストとダウンキャスト": "Upcast and downcast",
+                "instanceof演算子": "instanceof operator",
+                "実践問題：Monsterクラスのポリモーフィズム": "Practice: Monster polymorphism"
+            },
+            "knowledge_items": {
+                "ポリモーフィズムとは": { "title": "What is polymorphism", "content": "Same method call, different behaviour by actual type. Needs inheritance, override, superclass reference." },
+                "型の互換性とアップキャスト": { "title": "Type compatibility and upcast", "content": "Subclass instance fits superclass variable. Upcast implicit. After upcast cannot call subclass-only methods." },
+                "ポリモーフィズムの実践例": { "title": "Polymorphism example", "content": "Monster[] party with Fire/Water/Monster; for (Monster m : party) m.attack(); each runs its own attack." },
+                "ダウンキャストとinstanceof": { "title": "Downcast and instanceof", "content": "(FireMonster)m explicit. Risk of ClassCastException. if (m instanceof FireMonster) then cast." }
+            }
         },
         "第7回：抽象クラス": {
             "title": "Session 7: Abstract Classes",
-            "description": "Abstract class definition and usage"
+            "description": "Abstract class definition and usage",
+            "subtasks": {
+                "abstractクラスの定義": "Abstract class definition",
+                "抽象メソッドの定義": "Abstract method definition",
+                "抽象クラスの継承": "Abstract class inheritance",
+                "実践問題：RPGCharacterクラス": "Practice: RPGCharacter class"
+            },
+            "knowledge_items": {
+                "抽象クラスとは": { "title": "What is abstract class", "content": "Cannot instantiate. Can have abstract and concrete methods, fields. Subclass must implement abstract methods." },
+                "抽象クラスの定義と実装": { "title": "Abstract class definition and implementation", "content": "abstract class X { abstract void attack(); } class Warrior extends X { @Override void attack(){...} }." },
+                "Template Methodパターン": { "title": "Template Method pattern", "content": "Abstract class defines flow; abstract methods for steps. Subclasses implement steps." }
+            }
         },
         "第8回：インターフェイス": {
             "title": "Session 8: Interfaces",
-            "description": "Interface definition and implementation"
+            "description": "Interface definition and implementation",
+            "subtasks": {
+                "インターフェイスの定義": "Interface definition",
+                "implementsキーワード": "implements keyword",
+                "複数のインターフェイスの実装": "Implementing multiple interfaces",
+                "実践問題：ICamera、IPhoneインターフェイス": "Practice: ICamera, IPhone interfaces"
+            },
+            "knowledge_items": {
+                "インターフェイスとは": { "title": "What is an interface", "content": "Contract: all methods abstract (implicit). Fields are constants. Class implements one or more." },
+                "複数インターフェイスの実装": { "title": "Implementing multiple interfaces", "content": "class Duck implements Flyable, Swimmable. Override fly() and swim()." },
+                "抽象クラス vs インターフェイス": { "title": "Abstract class vs interface", "content": "Abstract: is-a, can have implementation. Interface: can-do, contract only, multiple implement." }
+            }
         },
         "第9回：拡張for文と列挙型": {
             "title": "Session 9: Enhanced For Loop and Enumerations",
-            "description": "Enhanced for loop, enum types"
+            "description": "Enhanced for loop, enum types",
+            "subtasks": {
+                "拡張for文の使い方": "Using enhanced for",
+                "enum型の定義": "Defining enum type",
+                "列挙型の実践": "Enum practice",
+                "実践問題：じゃんけんゲーム": "Practice: rock-paper-scissors game"
+            },
+            "knowledge_items": {
+                "拡張for文（for-each）": { "title": "Enhanced for (for-each)", "content": "for (Type item : arrayOrCollection) { }. No index, no out-of-bounds." },
+                "列挙型（enum）とは": { "title": "What is enum", "content": "Named constants in a type. Season.SPRING. Type-safe, readable. switch(season){ case SPRING: ... }." },
+                "enum実践例：じゃんけん": { "title": "Enum example: rock-paper-scissors", "content": "enum Hand { ROCK, SCISSORS, PAPER }; beats(other); name, constructor, methods." }
+            }
         },
         "第10回：チャレンジ課題①（予備日）": {
             "title": "Session 10: Challenge Exercise 1 (Reserve Day)",
@@ -130,35 +248,133 @@
         },
         "第13回：コレクションとデータ構造": {
             "title": "Session 13: Collections and Data Structures",
-            "description": "Java Collections Framework, List, Set, Map"
+            "description": "Java Collections Framework, List, Set, Map",
+            "subtasks": {
+                "ListインターフェイスとArrayList": "List interface and ArrayList",
+                "SetインターフェイスとHashSet": "Set interface and HashSet",
+                "MapインターフェイスとHashMap": "Map interface and HashMap",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "コレクションフレームワーク": { "title": "Collections framework", "content": "List (order, duplicate OK), Set (no duplicate), Map (key-value). ArrayList, HashSet, HashMap." },
+                "ArrayList（List）の使い方": { "title": "Using ArrayList (List)", "content": "add, get, size, remove, contains. for-each. Generic type ArrayList<String>." },
+                "HashSet（Set）の使い方": { "title": "Using HashSet (Set)", "content": "add (no duplicate), size, contains. Order not guaranteed." },
+                "HashMap（Map）の使い方": { "title": "Using HashMap (Map)", "content": "put(key,value), get(key), containsKey. keySet(), entrySet() for iteration." }
+            }
         },
         "第14回：例外処理（try～catch）": {
             "title": "Session 14: Exception Handling (try-catch)",
-            "description": "Exception handling with try-catch blocks"
+            "description": "Exception handling with try-catch blocks",
+            "subtasks": {
+                "try-catch文の基本": "try-catch basics",
+                "例外の種類（RuntimeException、IOExceptionなど）": "Exception types (Runtime, IO, etc.)",
+                "finallyブロック": "finally block",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "例外処理とは": { "title": "What is exception handling", "content": "try { } catch (Type e) { } finally { }. Catch handles error; program can continue." },
+                "try-catch の実践例": { "title": "try-catch example", "content": "Parse int, divide; catch NumberFormatException, ArithmeticException, Exception." },
+                "例外の種類": { "title": "Exception types", "content": "RuntimeException (unchecked); checked like IOException need try-catch or throws." }
+            }
         },
         "第15回：スレッド": {
             "title": "Session 15: Threads",
-            "description": "Thread creation and management"
+            "description": "Thread creation and management",
+            "subtasks": {
+                "Threadクラスの継承": "Extending Thread class",
+                "Runnableインターフェイスの実装": "Implementing Runnable",
+                "スレッドの同期": "Thread synchronization",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "スレッド（マルチスレッド）とは": { "title": "What are threads", "content": "Execution unit. Multi-thread = run multiple flows. Extend Thread or implement Runnable." },
+                "Threadクラスを継承する方法": { "title": "Extending Thread", "content": "class MyThread extends Thread { run() { } }. start() to run." },
+                "Runnableインターフェイスを実装する方法": { "title": "Implementing Runnable", "content": "class R implements Runnable { run() { } }. new Thread(r).start(). Preferred when already extending." },
+                "スレッドの同期（synchronized）": { "title": "Thread synchronization (synchronized)", "content": "synchronized method or block: only one thread at a time. Prevents race on shared data." },
+                "同期化の実践例": { "title": "Synchronization example", "content": "BankAccount deposit/withdraw synchronized; multiple threads access same account safely." }
+            }
         },
         "第16回：ファイル入出力": {
             "title": "Session 16: File I/O",
-            "description": "File reading and writing operations"
+            "description": "File reading and writing operations",
+            "subtasks": {
+                "ファイルの読み込み": "File reading",
+                "ファイルの書き込み": "File writing",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "ファイル入出力の基本": { "title": "File I/O basics", "content": "FileReader/Writer, BufferedReader/Writer. try-with-resources for auto close." },
+                "ファイルの読み込み（BufferedReader）": { "title": "Reading with BufferedReader", "content": "try (BufferedReader br = new BufferedReader(new FileReader(path))) { readLine(); }." },
+                "ファイルの書き込み（BufferedWriter）": { "title": "Writing with BufferedWriter", "content": "try (BufferedWriter bw = ...) { write(), newLine(); }. FileWriter(path, true) for append." },
+                "ファイルのコピー（実践例）": { "title": "File copy example", "content": "BufferedReader + BufferedWriter; read line, write line in loop." },
+                "ファイル操作のベストプラクティス": { "title": "File I/O best practices", "content": "Use try-with-resources; use Buffered; handle FileNotFoundException, IOException." }
+            }
         },
         "第17回：ストリーム": {
             "title": "Session 17: Streams",
-            "description": "Stream operations and processing"
+            "description": "Stream operations and processing",
+            "subtasks": {
+                "バイナリストリーム": "Byte streams",
+                "オブジェクトのシリアライズ": "Object serialization",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "ストリームとは": { "title": "What are streams", "content": "Byte: InputStream/OutputStream. Character: Reader/Writer. FileInputStream, ObjectInputStream, etc." },
+                "バイナリファイルのコピー": { "title": "Binary file copy", "content": "FileInputStream read(), FileOutputStream write(). Use byte[] buffer for efficiency." },
+                "シリアライズとは": { "title": "What is serialization", "content": "Object → bytes. implements Serializable. transient excludes field. serialVersionUID recommended." },
+                "オブジェクトのシリアライズと復元": { "title": "Serialize and deserialize object", "content": "ObjectOutputStream writeObject(); ObjectInputStream readObject()." },
+                "transientキーワードの使用": { "title": "Using transient", "content": "transient field not saved; after deserialize it is null/default." }
+            }
         },
         "第18回：例外処理（throw、throws）": {
             "title": "Session 18: Exception Handling (throw, throws)",
-            "description": "Throwing exceptions, throws clause"
+            "description": "Throwing exceptions, throws clause",
+            "subtasks": {
+                "throwで例外を投げる": "Throwing with throw",
+                "throwsで例外を宣言": "Declaring with throws",
+                "カスタム例外クラスの作成": "Custom exception class",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "throwキーワード：例外を投げる": { "title": "throw: throwing exceptions", "content": "throw new SomeException(\"msg\"); for invalid state or business error." },
+                "throwの実践例": { "title": "throw example", "content": "BankAccount: throw IllegalArgumentException/IllegalStateException in constructor and withdraw." },
+                "throwsキーワード：例外を宣言する": { "title": "throws: declaring exceptions", "content": "void m() throws IOException. Caller must catch or declare. Checked vs unchecked." },
+                "throwsの実践例": { "title": "throws example", "content": "readFile() throws IOException; caller uses try-catch." },
+                "カスタム例外クラスの作成": { "title": "Custom exception class", "content": "extends Exception (checked) or RuntimeException (unchecked). Constructor with message." },
+                "カスタム例外の実装例": { "title": "Custom exception example", "content": "InsufficientBalanceException extends Exception; withdraw throws it; caller catches." }
+            }
         },
         "第19回：ラムダ式": {
             "title": "Session 19: Lambda Expressions",
-            "description": "Lambda expression syntax and usage"
+            "description": "Lambda expression syntax and usage",
+            "subtasks": {
+                "ラムダ式の基本構文": "Lambda basic syntax",
+                "関数型インターフェイス": "Functional interfaces",
+                "メソッド参照": "Method reference",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "匿名クラスとは": { "title": "What are anonymous classes", "content": "Class/instance without name; shorter when used once. new Interface(){ }." },
+                "関数型インターフェイスとは": { "title": "What is functional interface", "content": "Interface with single abstract method. Enables lambda." },
+                "ラムダ式とは": { "title": "What are lambdas", "content": "() -> body or (a,b) -> expr. Short for single-method anonymous class." }
+            }
         },
         "第20回：メモリ管理、コレクションとラムダ式": {
             "title": "Session 20: Memory Management, Collections and Lambda Expressions",
-            "description": "Memory management, collections with lambda expressions"
+            "description": "Memory management, collections with lambda expressions",
+            "subtasks": {
+                "ガーベッジコレクションの理解": "Understanding GC",
+                "コレクションとラムダ式": "Collections and lambdas",
+                "Stream APIの基礎": "Stream API basics",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "ガーベッジコレクションとは": { "title": "What is garbage collection", "content": "JVM frees unreferenced objects. No manual free. Avoid static collections that grow forever." },
+                "コレクションとラムダ式": { "title": "Collections and lambdas", "content": "forEach(x -> ...), removeIf(pred), sort(comparator). Method ref: System.out::println." },
+                "Stream APIの基礎": { "title": "Stream API basics", "content": "list.stream().filter().map().collect(). filter, map, collect, sum, etc." },
+                "Stream APIの主なメソッド": { "title": "Stream API main methods", "content": "Intermediate: filter, map, sorted, distinct. Terminal: forEach, collect, count, anyMatch, reduce." },
+                "Stream APIの実践例": { "title": "Stream API example", "content": "people.stream().filter(p->age>=25).map(Person::getName).collect(toList()); average, max." }
+            }
         },
         "第21回：チャレンジ課題③（予備日）": {
             "title": "Session 21: Challenge Exercise 3 (Reserve Day)",
@@ -166,31 +382,99 @@
         },
         "第22回：プログラム設計①（Strategy）": {
             "title": "Session 22: Program Design 1 (Strategy Pattern)",
-            "description": "Strategy design pattern implementation"
+            "description": "Strategy design pattern implementation",
+            "subtasks": {
+                "デリゲート（委譲）の理解": "Understanding delegate (delegation)",
+                "Strategyパターンの概念": "Strategy pattern concept",
+                "Strategyパターンの実装": "Strategy pattern implementation",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "Delegate（デリゲート）とは": { "title": "What is delegate", "content": "Delegation: pass work to another class instead of implementing in-place. Loose coupling, flexible." },
+                "Strategyパターンとは": { "title": "What is Strategy pattern", "content": "Encapsulate algorithm; swap at runtime. Context holds strategy; calls strategy.algorithm()." }
+            }
         },
         "第23回：プログラム設計③（Composite）": {
             "title": "Session 23: Program Design 2 (Composite Pattern)",
-            "description": "Composite design pattern implementation"
+            "description": "Composite design pattern implementation",
+            "subtasks": {
+                "Compositeパターンの概念": "Composite pattern concept",
+                "Compositeパターンの実装": "Composite pattern implementation",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "Compositeパターンとは": { "title": "What is Composite pattern", "content": "Tree: Component (interface), Leaf, Composite (has children). Treat leaf and composite uniformly." },
+                "Compositeパターンの実装例（ファイルシステム）": { "title": "Composite example (file system)", "content": "FileSystemComponent; File (leaf), Folder (composite with add, getSize, print)." }
+            }
         },
         "第24回：プログラム設計③（State）": {
             "title": "Session 24: Program Design 3 (State Pattern)",
-            "description": "State design pattern implementation"
+            "description": "State design pattern implementation",
+            "subtasks": {
+                "Stateパターンの概念": "State pattern concept",
+                "Stateパターンの実装": "State pattern implementation",
+                "実践問題：ガチャマシン、ストップウォッチ": "Practice: gacha machine, stopwatch"
+            },
+            "knowledge_items": {
+                "Stateパターンとは": { "title": "What is State pattern", "content": "Behaviour depends on state. State classes; context holds current state; state.handle(context) may set next state." },
+                "Stateパターンの実装例（信号機）": { "title": "State example (traffic light)", "content": "RedState, GreenState, YellowState; each handle() sets next state on TrafficLight." },
+                "Stateパターンのメリット": { "title": "State pattern benefits", "content": "No big if-else; add state = add class; clear transitions; single responsibility per state." }
+            }
         },
         "第25回：プログラム設計④（Iterator）": {
             "title": "Session 25: Program Design 4 (Iterator Pattern)",
-            "description": "Iterator design pattern implementation"
+            "description": "Iterator design pattern implementation",
+            "subtasks": {
+                "Iteratorパターンの概念": "Iterator pattern concept",
+                "Iteratorパターンの実装": "Iterator pattern implementation",
+                "実践問題：Menuクラス": "Practice: Menu class"
+            },
+            "knowledge_items": {
+                "Iteratorパターンとは": { "title": "What is Iterator pattern", "content": "Traverse collection without exposing structure. hasNext(), next(). Aggregate provides iterator()." },
+                "Iteratorパターンの実装例": { "title": "Iterator example", "content": "BookShelf implements Aggregate; BookShelfIterator has hasNext/next. Client uses iterator()." },
+                "Iteratorパターンのメリット": { "title": "Iterator benefits", "content": "Hide internal structure; same access for any collection; multiple simultaneous traversals." }
+            }
         },
         "第26回：プログラム設計⑤（Adapter・Command）": {
             "title": "Session 26: Program Design 5 (Adapter and Command Patterns)",
-            "description": "Adapter and Command design patterns implementation"
+            "description": "Adapter and Command design patterns implementation",
+            "subtasks": {
+                "Adapterパターンの概念と実装": "Adapter pattern concept and implementation",
+                "Commandパターンの概念と実装": "Command pattern concept and implementation"
+            },
+            "knowledge_items": {
+                "Adapterパターンとは": { "title": "What is Adapter pattern", "content": "Adapt incompatible interface. Target (client), Adaptee (existing), Adapter implements Target and wraps Adaptee." },
+                "Adapterパターンの実装例": { "title": "Adapter example", "content": "MediaPlayer vs OldAudioPlayer.playMp3. AudioPlayerAdapter implements MediaPlayer, calls oldPlayer.playMp3." },
+                "Commandパターンとは": { "title": "What is Command pattern", "content": "Encapsulate request as object. execute(), undo(). Invoker holds commands; history for undo/redo." },
+                "Commandパターンの実装例（テキストエディタ）": { "title": "Command example (text editor)", "content": "WriteCommand, undo(); CommandManager stack; executeCommand, undo()." }
+            }
         },
         "第27回：プログラム設計⑥（Visitor）": {
             "title": "Session 27: Program Design 6 (Visitor Pattern)",
-            "description": "Visitor design pattern implementation"
+            "description": "Visitor design pattern implementation",
+            "subtasks": {
+                "Visitorパターンの概念": "Visitor pattern concept",
+                "Visitorパターンの実装": "Visitor pattern implementation",
+                "実践問題": "Practice"
+            },
+            "knowledge_items": {
+                "Visitorパターンとは": { "title": "What is Visitor pattern", "content": "Separate structure from operations. Element.accept(visitor); visitor.visit(this). New op = new Visitor class." },
+                "Visitorパターンの実装例（簡易版）": { "title": "Visitor example (simplified)", "content": "File, Folder implement Element; PrintVisitor, SizeCalculator implement Visitor; accept(visitor) dispatches." }
+            }
         },
         "第28回：プログラム設計⑦（Singleton・Observer）": {
             "title": "Session 28: Program Design 7 (Singleton and Observer Patterns)",
-            "description": "Singleton and Observer design patterns implementation"
+            "description": "Singleton and Observer design patterns implementation",
+            "subtasks": {
+                "Singletonパターンの概念と実装": "Singleton pattern concept and implementation",
+                "Observerパターンの概念と実装": "Observer pattern concept and implementation"
+            },
+            "knowledge_items": {
+                "Singletonパターンとは": { "title": "What is Singleton pattern", "content": "One instance per class. private constructor, static getInstance(). Eager or lazy init." },
+                "Singletonパターンの実装例": { "title": "Singleton example", "content": "DatabaseConnection INSTANCE; private constructor; getInstance(). Logger lazy + synchronized." },
+                "Observerパターンとは": { "title": "What is Observer pattern", "content": "Subject notifies observers on change. register, remove, notify. Publish-subscribe." },
+                "Observerパターンの実装例（温度センサー）": { "title": "Observer example (temperature sensor)", "content": "TemperatureSensor subject; TemperatureDisplay, WarningSystem observers; setTemperature triggers notify." }
+            }
         },
         "第29回：期末テスト（練習問題）": {
             "title": "Session 29: Final Test (Practice Problem)",

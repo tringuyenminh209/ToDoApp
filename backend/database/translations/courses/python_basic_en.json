@@ -61,63 +61,187 @@
     "tasks": {
         "第1週：環境設定とHello World": {
             "title": "Week 1: Environment Setup and Hello World",
-            "description": "Python development environment setup and screen output using print()"
+            "description": "Python development environment setup and screen output using print()",
+            "subtasks": {
+                "Pythonをインストール": "Install Python",
+                "VS Codeをセットアップ": "Set up VS Code",
+                "Hello Worldプログラムを作成": "Create Hello World program"
+            },
+            "knowledge_items": {
+                "Pythonとは？": { "title": "What is Python?", "content": "Interpreted, readable, versatile. Used in web, data, AI, automation. No compile step." },
+                "Hello World": { "title": "Hello World", "content": "print('Hello, World!'). Multiple print() calls. Comments with #." }
+            }
         },
         "第2週：変数とデータ型": {
             "title": "Week 2: Variables and Data Types",
-            "description": "Learning Python variable declaration, basic data types, type conversion"
+            "description": "Learning Python variable declaration, basic data types, type conversion",
+            "subtasks": {
+                "変数の宣言方法を学習": "Learn variable declaration",
+                "基本データ型を理解": "Understand basic data types",
+                "型変換を学習": "Learn type conversion"
+            },
+            "knowledge_items": {
+                "変数とデータ型": { "title": "Variables and Data Types", "content": "int, float, str, bool. No type declaration. name = 'Alice'; age = 25." },
+                "変数とデータ型の例": { "title": "Variable and Type Example", "content": "Assign, print, type()." },
+                "型変換": { "title": "Type Conversion", "content": "int(), float(), str(). Convert input strings before arithmetic." }
+            }
         },
         "第3週：演算子と文字列操作": {
             "title": "Week 3: Operators and String Operations",
-            "description": "Learning arithmetic operators, comparison operators, logical operators, string operations"
+            "description": "Learning arithmetic operators, comparison operators, logical operators, string operations",
+            "subtasks": {
+                "算術演算子を学習": "Learn arithmetic operators",
+                "文字列操作を学習": "Learn string operations"
+            },
+            "knowledge_items": {
+                "算術演算子": { "title": "Arithmetic Operators", "content": "+, -, *, /, //, %, **. Assignment, comparison, logical: and, or, not." },
+                "文字列操作": { "title": "String Operations", "content": "+, *, [i], [start:end], upper(), lower(), replace()." }
+            }
         },
         "第4週：ユーザー入力とフォーマット": {
             "title": "Week 4: User Input and Formatting",
-            "description": "Input using input() and formatted output using f-string"
+            "description": "Input using input() and formatted output using f-string",
+            "subtasks": {
+                "ユーザー入力を受け取る": "Receive user input",
+                "フォーマット出力を学習": "Learn formatted output"
+            },
+            "knowledge_items": {
+                "ユーザー入力": { "title": "User Input", "content": "input(prompt) returns str. int(input()) or float(input()) for numbers." },
+                "フォーマット出力": { "title": "Formatted Output", "content": "f-string f'{x}', {n:.1f}, {n:,}. format(), % (legacy)." }
+            }
         },
         "第5週：条件分岐（if/elif/else）": {
             "title": "Week 5: Conditional Branching (if/elif/else)",
-            "description": "Basics of conditional branching and nested conditionals"
+            "description": "Basics of conditional branching and nested conditionals",
+            "subtasks": {
+                "if/elif/else文を学習": "Learn if/elif/else",
+                "比較演算子と論理演算子を学習": "Learn comparison and logical operators"
+            },
+            "knowledge_items": {
+                "If/Elif/Else": { "title": "If/Elif/Else", "content": "if cond: / elif cond: / else:. Indentation matters. and, or in conditions." }
+            }
         },
         "第6週：ループ（while, for）": {
             "title": "Week 6: Loops (while, for)",
-            "description": "while loops and for loops, usage of range()"
+            "description": "while loops and for loops, usage of range()",
+            "subtasks": {
+                "while文を学習": "Learn while loop",
+                "for文とrange()を学習": "Learn for loop and range()"
+            },
+            "knowledge_items": {
+                "Whileループ": { "title": "While Loop", "content": "while cond: body. count += 1. break to exit, input() in loop." },
+                "Forループ": { "title": "For Loop", "content": "for i in range(n), range(start,end,step). for x in list. enumerate(), break, continue." }
+            }
         },
         "第7週：関数": {
             "title": "Week 7: Functions",
-            "description": "Function definition, arguments, return values, default arguments, variable-length arguments"
+            "description": "Function definition, arguments, return values, default arguments, variable-length arguments",
+            "subtasks": {
+                "基本的な関数を定義": "Define basic functions",
+                "デフォルト引数を学習": "Learn default arguments"
+            },
+            "knowledge_items": {
+                "関数の定義": { "title": "Defining Functions", "content": "def name(params): body. return. Multiple return values unpacked." },
+                "デフォルト引数と可変長引数": { "title": "Default and Variable Arguments", "content": "def f(a, b=1). *args, **kwargs." }
+            }
         },
         "第8週：リストとタプル": {
             "title": "Week 8: Lists and Tuples",
-            "description": "List and tuple operations, methods, differences"
+            "description": "List and tuple operations, methods, differences",
+            "subtasks": {
+                "リストを学習": "Learn lists",
+                "タプルを学習": "Learn tuples"
+            },
+            "knowledge_items": {
+                "リスト": { "title": "Lists", "content": "[], indexing, slicing. append, insert, remove, pop. len, in, sort, reverse." },
+                "タプル": { "title": "Tuples", "content": "(). Immutable. Unpacking x,y = t. Use for fixed data." }
+            }
         },
         "第9週：辞書とセット": {
             "title": "Week 9: Dictionaries and Sets",
-            "description": "Dictionary (dict) and set operations"
+            "description": "Dictionary (dict) and set operations",
+            "subtasks": {
+                "辞書を学習": "Learn dictionaries",
+                "セットを学習": "Learn sets"
+            },
+            "knowledge_items": {
+                "辞書（Dictionary）": { "title": "Dictionary", "content": "{k:v}. [] and .get(). Assign, del, pop. keys(), values(), items()." },
+                "セット（Set）": { "title": "Set", "content": "Unique items. add, remove, discard. | & - ^. list(set(...)) to dedupe." }
+            }
         },
         "第10週：リスト内包表記とイテレータ": {
             "title": "Week 10: List Comprehensions and Iterators",
-            "description": "List comprehensions, dictionary comprehensions, generators"
+            "description": "List comprehensions, dictionary comprehensions, generators",
+            "subtasks": {
+                "リスト内包表記を学習": "Learn list comprehensions",
+                "ジェネレータを学習": "Learn generators"
+            },
+            "knowledge_items": {
+                "リスト内包表記": { "title": "List Comprehension", "content": "[x for x in iter if cond]. [a if cond else b for x in iter]. Nested." },
+                "辞書・セット内包表記": { "title": "Dict and Set Comprehensions", "content": "{k:v for ...}, {x for ...}. Generator (x for x in ...), yield." }
+            }
         },
         "第11週：クラスとオブジェクト": {
             "title": "Week 11: Classes and Objects",
-            "description": "Class definition, constructor, instance variables and methods"
+            "description": "Class definition, constructor, instance variables and methods",
+            "subtasks": {
+                "クラスを学習": "Learn classes",
+                "インスタンス変数とメソッドを学習": "Learn instance variables and methods"
+            },
+            "knowledge_items": {
+                "クラスの定義": { "title": "Class Definition", "content": "class Name:. __init__(self, ...). self.attr. Methods take self." },
+                "クラス変数とクラスメソッド": { "title": "Class Variables and Methods", "content": "Class attr shared. @classmethod, @staticmethod." }
+            }
         },
         "第12週：継承とポリモーフィズム": {
             "title": "Week 12: Inheritance and Polymorphism",
-            "description": "Class inheritance, method overriding, super()"
+            "description": "Class inheritance, method overriding, super()",
+            "subtasks": {
+                "継承を学習": "Learn inheritance",
+                "ポリモーフィズムを学習": "Learn polymorphism"
+            },
+            "knowledge_items": {
+                "継承": { "title": "Inheritance", "content": "class Child(Parent):. super().__init__(). Override methods." },
+                "ポリモーフィズム": { "title": "Polymorphism", "content": "Same interface, different behavior. isinstance()." }
+            }
         },
         "第13週：カプセル化と特殊メソッド": {
             "title": "Week 13: Encapsulation and Special Methods",
-            "description": "Private variables, properties, special methods (__str__, __repr__, etc.)"
+            "description": "Private variables, properties, special methods (__str__, __repr__, etc.)",
+            "subtasks": {
+                "カプセル化を学習": "Learn encapsulation",
+                "特殊メソッドを学習": "Learn special methods"
+            },
+            "knowledge_items": {
+                "カプセル化": { "title": "Encapsulation", "content": "__attr private. @property getter. Control access via methods." },
+                "特殊メソッド": { "title": "Special Methods", "content": "__str__, __repr__, __add__, __eq__, __len__. Customize operators and built-ins." }
+            }
         },
         "第14週：モジュールと例外処理": {
             "title": "Week 14: Modules and Exception Handling",
-            "description": "Module imports, creation, exception handling"
+            "description": "Module imports, creation, exception handling",
+            "subtasks": {
+                "モジュールを学習": "Learn modules",
+                "例外処理を学習": "Learn exception handling"
+            },
+            "knowledge_items": {
+                "モジュール": { "title": "Modules", "content": "import x, from x import y, as alias. Standard lib: math, datetime, random." },
+                "例外処理": { "title": "Exception Handling", "content": "try/except/else/finally. except TypeError, ValueError. raise. Custom exceptions." }
+            }
         },
         "第15週：ファイル操作と実践プロジェクト": {
             "title": "Week 15: File Operations and Practical Project",
-            "description": "File read/write, CSV files, JSON files"
+            "description": "File read/write, CSV files, JSON files",
+            "subtasks": {
+                "ファイルの読み書きを学習": "Learn file read/write",
+                "CSV・JSONファイルを学習": "Learn CSV and JSON files",
+                "実践プロジェクトを作成": "Create practical project"
+            },
+            "knowledge_items": {
+                "ファイル操作": { "title": "File Operations", "content": "with open(path, 'r'|'w'|'a', encoding='utf-8') as f. read(), readline(), write()." },
+                "CSV・JSONファイル": { "title": "CSV and JSON", "content": "csv.reader/writer. json.load/json.dump. ensure_ascii=False, indent." },
+                "Pythonのベストプラクティス": { "title": "Python Best Practices", "content": "PEP 8, snake_case, venv, requirements.txt, project layout." }
+            }
         }
     }
 }

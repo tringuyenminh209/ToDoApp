@@ -271,21 +271,35 @@ class KnowledgeController extends Controller
     }
 
     /**
-     * Get a single knowledge item
+     * Get a single knowledge item (with translations for current locale)
      */
     public function show(Request $request, $id)
     {
         $user = $request->user();
         $item = KnowledgeItem::where('user_id', $user->id)
-            ->with(['category', 'learningPath', 'sourceTask'])
+            ->withTranslations()
+            ->with(['category' => fn ($q) => $q->withTranslations(), 'learningPath', 'sourceTask'])
             ->findOrFail($id);
 
         // Increment view count
         $item->increment('view_count');
 
+        $itemArray = $item->toArray();
+        if (method_exists($item, 'getTranslatableFields')) {
+            foreach ($item->getTranslatableFields() as $field) {
+                $translated = $item->getTranslation($field);
+                if ($translated !== null) {
+                    $itemArray[$field] = $translated;
+                }
+            }
+        }
+        if ($item->category && method_exists($item->category, 'getTranslatableFields')) {
+            $itemArray['category'] = $item->category->toArrayWithTranslations();
+        }
+
         return response()->json([
             'success' => true,
-            'data' => $item,
+            'data' => $itemArray,
             'message' => 'Knowledge item retrieved successfully'
         ]);
     }

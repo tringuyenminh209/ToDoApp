@@ -60,63 +60,230 @@
     "tasks": {
         "第1週：JavaScriptの基礎・条件分岐": {
             "title": "Tuần 1: Cơ bản JavaScript và Rẽ nhánh Điều kiện",
-            "description": "Cú pháp JavaScript cơ bản, biến, kiểu dữ liệu, toán tử, câu lệnh if, câu lệnh switch"
+            "description": "Cú pháp JavaScript cơ bản, biến, kiểu dữ liệu, toán tử, if, switch",
+            "subtasks": {
+                "JavaScriptとは・開発環境の準備": "JavaScript là gì và chuẩn bị môi trường",
+                "変数とデータ型": "Biến và kiểu dữ liệu",
+                "演算子": "Toán tử",
+                "if文による条件分岐": "Rẽ nhánh với if",
+                "switch文": "Câu lệnh switch",
+                "練習問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "JavaScriptとは": { "title": "JavaScript là gì", "content": "Chạy trên trình duyệt; trang động, sự kiện; dùng với HTML/CSS. Nhúng: inline, <script>, hoặc file ngoài." },
+                "変数とデータ型": { "title": "Biến và kiểu dữ liệu", "content": "let/const (phạm vi khối); tránh var. Kiểu cơ bản: Number, String, Boolean, undefined, null. Object, Array. typeof." },
+                "基本的な変数の使用例": { "title": "Ví dụ biến cơ bản", "content": "let/const, console.log, template literal `${x}`, số học." },
+                "演算子": { "title": "Toán tử", "content": "Số học +-*/%**; gán += ...; so sánh == vs ===; logic &&||!; chuỗi +." },
+                "if文による条件分岐": { "title": "Rẽ nhánh với if", "content": "if, if-else, if-else if-else. Ternary (đk)?a:b." },
+                "if文の実践例": { "title": "Ví dụ if thực hành", "content": "Kiểm tra đăng nhập, giảm theo số tiền, chẵn/lẻ." },
+                "switch文": { "title": "Câu lệnh switch", "content": "switch(biểu_thức){ case giá_trị: break; default }. So sánh ===. Fall-through khi bỏ break." },
+                "switch文の実践例": { "title": "Ví dụ switch thực hành", "content": "Xử lý lệnh, vai trò user, mã trạng thái HTTP." }
+            }
         },
         "第2週：配列・ループ・関数": {
             "title": "Tuần 2: Mảng, Vòng lặp và Hàm",
-            "description": "Mảng, vòng lặp (for, while, forEach), định nghĩa và gọi hàm"
+            "description": "Mảng, vòng lặp (for, while, forEach), định nghĩa và gọi hàm",
+            "subtasks": {
+                "配列の基本": "Cơ bản mảng",
+                "for文とwhile文": "for và while",
+                "配列とループの組み合わせ": "Mảng và vòng lặp",
+                "関数の定義と呼び出し": "Định nghĩa và gọi hàm",
+                "練習問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "配列の基本": { "title": "Cơ bản mảng", "content": "[] hoặc [1,2,3]; arr[0]; arr.length; arr[i]=x." },
+                "配列の主なメソッド": { "title": "Các method mảng chính", "content": "push, pop, unshift, shift; indexOf, includes; slice, concat." },
+                "配列の実践例": { "title": "Ví dụ mảng", "content": "Danh sách todo, điểm số, Math.max(...arr), tổng/trung bình." },
+                "for文とwhile文": { "title": "for và while", "content": "for(khởi tạo;đk;cập nhật){}; for-of; while(đk){}; do-while; break, continue." },
+                "ループの実践例": { "title": "Ví dụ vòng lặp", "content": "Bảng cửu chương, lọc số chẵn, tìm tên, tổng bằng while." },
+                "関数の基本": { "title": "Cơ bản hàm", "content": "function fn(){}, const fn=function(){}, arrow ()=>{}. Tham số, mặc định, return. Phạm vi." },
+                "関数の実践例": { "title": "Ví dụ hàm", "content": "sumArray, averageArray, findMax, reverseString, isEven, filterEven." }
+            }
         },
         "第3週：DOM": {
             "title": "Tuần 3: DOM",
-            "description": "Cơ bản DOM (Document Object Model), lấy và thao tác phần tử"
+            "description": "Cơ bản DOM, lấy và thao tác phần tử",
+            "subtasks": {
+                "DOMとは": "DOM là gì",
+                "要素の取得方法": "Cách lấy phần tử",
+                "要素の内容を変更": "Thay nội dung phần tử",
+                "スタイルの変更": "Thay đổi style",
+                "属性の操作": "Thao tác thuộc tính"
+            },
+            "knowledge_items": {
+                "DOMとは": { "title": "DOM là gì", "content": "Cây HTML; lấy/đổi nội dung, style, thuộc tính; thêm/xóa nút; sự kiện." },
+                "要素の取得方法": { "title": "Lấy phần tử", "content": "getElementById, getElementsByClassName, getElementsByTagName; querySelector, querySelectorAll." },
+                "要素取得の実践例": { "title": "Ví dụ lấy phần tử", "content": "ById, querySelectorAll, forEach; bộ chọn CSS." },
+                "要素の内容を変更": { "title": "Thay nội dung", "content": "textContent (chữ); innerHTML (HTML). input.value." },
+                "内容変更の実践例": { "title": "Ví dụ thay nội dung", "content": "title textContent; div innerHTML; giá trị input; danh sách động." },
+                "スタイルと属性の操作": { "title": "Style và thuộc tính", "content": "element.style.prop; classList add/remove/toggle/contains; getAttribute, setAttribute." },
+                "スタイル操作の実践例": { "title": "Ví dụ style", "content": "Style hộp; toggle class khi click; đổi ảnh; style theo điểm." }
+            }
         },
         "第4週：イベント処理": {
             "title": "Tuần 4: Xử lý Sự kiện",
-            "description": "Event listener, sự kiện click, sự kiện input, sự kiện bàn phím"
+            "description": "Event listener, click, input, bàn phím",
+            "subtasks": {
+                "イベントとは": "Sự kiện là gì",
+                "イベントリスナーの追加": "Thêm event listener",
+                "様々なイベントタイプ": "Các loại sự kiện",
+                "イベントオブジェクト": "Đối tượng sự kiện",
+                "実践問題": "Bài tập"
+            },
+            "knowledge_items": {
+                "イベントとは": { "title": "Sự kiện là gì", "content": "click, dblclick, mouseenter/leave; keydown/up; submit, change, input, focus, blur; DOMContentLoaded, load, resize, scroll." },
+                "addEventListener() の使い方": { "title": "Cách dùng addEventListener", "content": "element.addEventListener(loại, handler); removeEventListener; { once, capture }." },
+                "イベント処理の実践例": { "title": "Ví dụ xử lý sự kiện", "content": "Đếm click; input→output; mouseenter/leave; keydown; DOMContentLoaded." },
+                "イベントオブジェクト": { "title": "Đối tượng sự kiện", "content": "e.type, e.target, e.currentTarget; clientX/Y; e.key; e.preventDefault(), e.stopPropagation()." },
+                "イベントオブジェクトの実践例": { "title": "Ví dụ event object", "content": "Form preventDefault; tọa độ mousemove; thông tin target; Ctrl+S, Esc; kiểm tra email." }
+            }
         },
         "第5週：ループとイベント": {
             "title": "Tuần 5: Vòng lặp và Sự kiện",
-            "description": "Kết hợp vòng lặp với xử lý sự kiện, bài tập thực hành"
+            "description": "Kết hợp vòng lặp với xử lý sự kiện, bài tập thực hành",
+            "subtasks": {
+                "配列とループの復習": "Ôn mảng và vòng lặp",
+                "ループで複数要素にイベントを追加": "Thêm sự kiện trong vòng lặp",
+                "イベント委譲（Event Delegation）": "Event delegation",
+                "実践：ToDoリストアプリ": "Thực hành: app ToDo"
+            },
+            "knowledge_items": {
+                "ループで複数要素にイベントを追加": { "title": "Thêm sự kiện trong vòng lặp", "content": "querySelectorAll + forEach; handler chung hoặc theo index." },
+                "複数ボタンのイベント処理例": { "title": "Ví dụ nhiều nút", "content": "Nút data-color; delete-btn qua closest('li').remove()." },
+                "イベント委譲（Event Delegation）": { "title": "Event delegation", "content": "Listener trên cha; if (e.target.matches(...)) xử lý. Áp dụng cho phần tử thêm sau." },
+                "ToDoリストの実装例": { "title": "Ví dụ ToDo list", "content": "addTodo, keypress Enter; list.addEventListener click → xóa hoặc toggle completed." }
+            }
         },
         "第6週：Elementの作成・追加": {
             "title": "Tuần 6: Tạo và Thêm Phần tử",
-            "description": "Tạo phần tử DOM động, thêm phần tử vào trang"
+            "description": "Tạo phần tử DOM động, thêm phần tử vào trang",
+            "subtasks": {
+                "createElement()で要素を作成": "Tạo bằng createElement()",
+                "appendChild(), insertBefore()": "appendChild, insertBefore",
+                "documentFragmentの活用": "Dùng DocumentFragment",
+                "実践：動的なカード生成": "Thực hành: tạo thẻ động"
+            },
+            "knowledge_items": {
+                "要素の作成と追加": { "title": "Tạo và thêm phần tử", "content": "createElement; textContent/innerHTML/thuộc tính; appendChild; insertBefore; append, prepend." },
+                "要素作成の実践例": { "title": "Ví dụ tạo phần tử", "content": "createListItem; createCard với title, desc, nút; append vào container." },
+                "DocumentFragmentの活用": { "title": "DocumentFragment", "content": "createDocumentFragment(); append vào fragment trong vòng lặp; một appendChild(fragment). Ít reflow." },
+                "DocumentFragmentの実践例": { "title": "Ví dụ DocumentFragment", "content": "renderProducts vào fragment rồi append; hàng bảng trong fragment." }
+            }
         },
         "第7週：Elementの削除・動的なElementへのイベント追加": {
             "title": "Tuần 7: Xóa Phần tử và Thêm Sự kiện cho Phần tử Động",
-            "description": "Xóa phần tử, event delegation, thêm sự kiện cho phần tử được tạo động"
+            "description": "Xóa phần tử, event delegation, sự kiện cho phần tử tạo động",
+            "subtasks": {
+                "要素の削除（remove, removeChild）": "Xóa phần tử (remove, removeChild)",
+                "要素のクローン（cloneNode）": "Clone (cloneNode)",
+                "動的要素へのイベント追加": "Sự kiện cho phần tử động",
+                "実践：動的フォーム生成": "Thực hành: form động"
+            },
+            "knowledge_items": {
+                "要素の削除": { "title": "Xóa phần tử", "content": "element.remove(); parent.removeChild(child); xóa hết: innerHTML='', while firstChild remove, replaceChildren()." },
+                "削除の実践例": { "title": "Ví dụ xóa", "content": "delete-btn trong li gọi li.remove(); deleteSelected theo :checked; clearAll confirm." },
+                "cloneNode() - 要素の複製": { "title": "cloneNode", "content": "cloneNode(false) nông; cloneNode(true) sâu. Không copy listener; cẩn id trùng." },
+                "動的フォームフィールドの追加": { "title": "Thêm trường form động", "content": "Clone template; gán value/name; removeBtn xóa dòng; giữ ít nhất một." }
+            }
         },
         "第8週：予備日（中間評価週）": {
             "title": "Tuần 8: Ngày Dự phòng (Tuần Đánh giá Giữa kỳ)",
-            "description": "Ôn tập tổng hợp và bài tập giữa kỳ từ tuần 1 đến tuần 7"
+            "description": "Ôn tập tổng hợp và bài tập giữa kỳ từ tuần 1 đến tuần 7",
+            "subtasks": {
+                "基礎知識の復習": "Ôn kiến thức cơ bản",
+                "DOM操作の復習": "Ôn thao tác DOM",
+                "中間課題：ToDoアプリの完成": "Bài giữa kỳ: hoàn thiện app ToDo"
+            },
+            "knowledge_items": {
+                "第1週～第7週の復習ポイント": { "title": "Điểm ôn tuần 1-7", "content": "let/const, kiểu, toán tử, if/switch, vòng lặp, hàm; getElement*, querySelector*; textContent, innerHTML, style, classList; addEventListener, delegation; createElement, append, remove, fragment, cloneNode." },
+                "中間課題：ToDoアプリ完全版": { "title": "Bài giữa kỳ: ToDo đầy đủ", "content": "Mảng todos; thêm, xóa, bật tắt; renderTodos với fragment; lọc all/active/completed; dataset.id." }
+            }
         },
         "第9週：WebStorageの利用": {
             "title": "Tuần 9: Sử dụng WebStorage",
-            "description": "Lưu trữ dữ liệu bền vững bằng localStorage và sessionStorage"
+            "description": "Lưu dữ liệu bền vững bằng localStorage và sessionStorage",
+            "subtasks": {
+                "WebStorageとは": "WebStorage là gì",
+                "localStorage, sessionStorageの使い方": "Cách dùng localStorage, sessionStorage",
+                "ToDoアプリにストレージ機能を追加": "Thêm lưu trữ cho app ToDo"
+            },
+            "knowledge_items": {
+                "WebStorageとは": { "title": "WebStorage là gì", "content": "localStorage (bền); sessionStorage (theo tab). setItem, getItem, removeItem, clear. Chỉ chuỗi." },
+                "localStorageの基本的な使い方": { "title": "Cơ bản localStorage", "content": "setItem/getItem; số qua parseInt; mảng/object với JSON.stringify/parse." },
+                "ToDoアプリ with localStorage": { "title": "ToDo với localStorage", "content": "todos = JSON.parse(localStorage.getItem('todos'))||[]; saveTodos() khi đổi; load khi DOMContentLoaded." }
+            }
         },
         "第10週：JSONについて": {
             "title": "Tuần 10: Về JSON",
-            "description": "Định dạng JSON, parse và stringify dữ liệu JSON"
+            "description": "Định dạng JSON, parse và stringify",
+            "subtasks": {
+                "JSONとは": "JSON là gì",
+                "JSON.stringify(), JSON.parse()": "JSON.stringify và JSON.parse",
+                "JSONデータの操作": "Thao tác dữ liệu JSON"
+            },
+            "knowledge_items": {
+                "JSONとは": { "title": "JSON là gì", "content": "Định dạng văn bản nhẹ; {} và []; khóa phải nháy kép; kiểu: string, number, boolean, null, array, object." },
+                "JSON.stringify() と JSON.parse()": { "title": "stringify và parse", "content": "JSON.stringify(obj); JSON.parse(str); try/catch khi parse; với localStorage." },
+                "JSONデータの実践例": { "title": "Ví dụ JSON", "content": "Parse mảng users; filter/map; stringify; lưu/load config." }
+            }
         },
         "第11週：非同期処理・タイマー関数": {
             "title": "Tuần 11: Xử lý Bất đồng bộ và Hàm Timer",
-            "description": "setTimeout, setInterval, Promise, async/await"
+            "description": "setTimeout, setInterval, Promise, async/await",
+            "subtasks": {
+                "setTimeout, setInterval": "setTimeout, setInterval",
+                "Promiseの基礎": "Cơ bản Promise",
+                "async/await": "async/await"
+            },
+            "knowledge_items": {
+                "タイマー関数とは": { "title": "Hàm timer là gì", "content": "setTimeout(fn, ms) một lần; clearTimeout(id); setInterval(fn, ms); clearInterval(id)." },
+                "Promiseとは": { "title": "Promise là gì", "content": "new Promise((resolve,reject)=>{}); then/catch; chain; Promise.all([])." },
+                "async/awaitとは": { "title": "async/await", "content": "async fn trả Promise; await chờ; try/catch; tuần tự vs Promise.all song song." },
+                "実践例：カウントダウン付きメッセージ表示": { "title": "Ví dụ đếm ngược", "content": "wait(giây) Promise; showCountdown async vòng lặp; nút disabled khi chạy." }
+            }
         },
         "第12週：外部APIと非同期通信": {
             "title": "Tuần 12: API Bên ngoài và Giao tiếp Bất đồng bộ",
-            "description": "Fetch API, thực hiện HTTP request, xử lý phản hồi API"
+            "description": "Fetch API, HTTP request, xử lý phản hồi API",
+            "subtasks": {
+                "fetch APIの基礎": "Cơ bản fetch API",
+                "REST APIとの連携": "Tích hợp REST API",
+                "エラーハンドリング": "Xử lý lỗi"
+            },
+            "knowledge_items": {
+                "fetch APIとは": { "title": "fetch API là gì", "content": "fetch(url) trả Promise; response.json(); method, headers, body cho POST/PUT/DELETE; response.ok, status." },
+                "REST APIとは": { "title": "REST API là gì", "content": "GET/POST/PUT/DELETE trên tài nguyên; JSONPlaceholder để luyện; query params." },
+                "エラーハンドリング": { "title": "Xử lý lỗi", "content": "try/catch mạng; if(!response.ok) throw; status 404/500; retry, timeout, thông báo cho user." },
+                "実践例：天気情報の取得と表示": { "title": "Ví dụ lấy thời tiết", "content": "getWeather(thành phố); kiểm tra response.ok; displayWeather(data); luyện JSONPlaceholder." }
+            }
         },
         "第13週：総合課題①": {
             "title": "Tuần 13: Dự án Tổng hợp ①",
-            "description": "Dự án ứng dụng web tổng hợp đầu tiên"
+            "description": "Dự án ứng dụng web tổng hợp đầu tiên",
+            "subtasks": {
+                "プロジェクト計画": "Kế hoạch dự án",
+                "UI設計と実装": "Thiết kế và triển khai UI",
+                "機能実装": "Triển khai chức năng"
+            }
         },
         "第14週：総合課題②": {
             "title": "Tuần 14: Dự án Tổng hợp ②",
-            "description": "Dự án ứng dụng web tổng hợp thứ hai"
+            "description": "Dự án ứng dụng web tổng hợp thứ hai",
+            "subtasks": {
+                "データ永続化の実装": "Triển khai lưu trữ dữ liệu",
+                "エラーハンドリング": "Xử lý lỗi",
+                "UI/UXの改善": "Cải thiện UI/UX"
+            }
         },
         "第15週：総合課題③（最終発表）": {
             "title": "Tuần 15: Dự án Tổng hợp ③ (Thuyết trình Cuối kỳ)",
-            "description": "Dự án tổng hợp cuối cùng và thuyết trình"
+            "description": "Dự án tổng hợp cuối và thuyết trình",
+            "subtasks": {
+                "コードのリファクタリング": "Refactor mã",
+                "テストとデバッグ": "Kiểm thử và gỡ lỗi",
+                "ドキュメント作成": "Viết tài liệu",
+                "発表準備": "Chuẩn bị thuyết trình"
+            }
         }
     }
 }

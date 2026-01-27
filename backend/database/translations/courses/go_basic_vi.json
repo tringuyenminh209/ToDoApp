@@ -61,63 +61,261 @@
     "tasks": {
         "第1週：環境設定とHello World": {
             "title": "Tuần 1: Thiết lập Môi trường và Hello World",
-            "description": "Thiết lập môi trường phát triển Go và xuất màn hình bằng fmt.Println()"
+            "description": "Thiết lập môi trường phát triển Go và xuất màn hình bằng fmt.Println()",
+            "subtasks": {
+                "Goをインストール": "Cài đặt Go",
+                "VS Codeをセットアップ": "Thiết lập VS Code",
+                "Hello Worldプログラムを作成": "Tạo chương trình Hello World"
+            },
+            "knowledge_items": {
+                "Goとは？": {
+                    "title": "Go là gì?",
+                    "content": "# Go là gì?\n\n**Go** (Golang) là ngôn ngữ lập trình được Google phát triển vào năm 2009.\n\n## Đặc điểm Go\n1. **Đơn giản và dễ đọc**: Cú pháp ngắn gọn\n2. **Biên dịch nhanh**: Build rất nhanh\n3. **Giỏi xử lý đồng thời**: Goroutines và channels\n4. **Kiểu tĩnh**: Kiểm tra kiểu tại thời điểm biên dịch\n5. **Garbage collection**: Quản lý bộ nhớ tự động\n\n## Mục đích Sử dụng Go\n- Máy chủ Web API\n- Microservices\n- Công cụ CLI\n- Hạ tầng đám mây (Docker, Kubernetes)"
+                },
+                "Hello World": {
+                    "title": "Hello World",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, World!\")\n}"
+                },
+                "演習：開発環境セットアップ": {
+                    "title": "Bài tập: Thiết lập Môi trường Phát triển",
+                    "content": "# Bài tập: Thiết lập Môi trường Phát triển Go\n\n## Mục tiêu\nXây dựng môi trường phát triển Go và chạy chương trình cơ bản\n\n## Các bước\n\n### 1. Xác minh Cài đặt Go\n```bash\n# Kiểm tra phiên bản\ngo version\n# go version go1.22.0 windows/amd64\n\n# Kiểm tra biến môi trường\ngo env GOPATH\ngo env GOROOT\n```\n\n### 2. Tạo Workspace\n```bash\nmkdir -p ~/go-projects/hello\ncd ~/go-projects/hello\n\n# Khởi tạo Go Modules\ngo mod init example.com/hello\n```\n\n### 3. Chương trình Hello World\n```go\n// main.go\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, Go!\")\n    fmt.Println(\"Go version:\", runtime.Version())\n}\n```\n\n### 4. Build và Chạy\n```bash\n# Chạy (build + thực thi)\ngo run main.go\n\n# Chỉ build\ngo build\n\n# Chạy tệp thực thi\n./hello        # Linux/Mac\nhello.exe      # Windows\n\n# Cross-compile (Windows → Linux)\nGOOS=linux GOARCH=amd64 go build -o hello-linux\n```\n\n### 5. Sử dụng Công cụ Go\n```bash\n# Định dạng\ngo fmt main.go\n\n# Kiểm tra mã\ngo vet main.go\n\n# Kiểm tra dependencies\ngo list -m all\n\n# Tổ chức dependencies\ngo mod tidy\n```\n\n## Điểm Kiểm tra\n- [ ] Go đã được cài đặt\n- [ ] GOPATH đã được thiết lập\n- [ ] Tạo dự án với go mod init\n- [ ] Chạy chương trình với go run\n- [ ] Tạo tệp thực thi với go build"
+                },
+                "トラブルシューティング：よくある問題": {
+                    "title": "Khắc phục Sự cố: Vấn đề Thường gặp",
+                    "content": "# Khắc phục Sự cố: Vấn đề Thường gặp\n\n## Vấn đề 1: go command not found\n\n**Nguyên nhân:** PATH chưa được thiết lập\n\n**Giải pháp:**\n```bash\n# Windows (PowerShell)\n$env:PATH += \";C:\\Go\\bin\"\n\n# Linux/Mac (bash)\nexport PATH=$PATH:/usr/local/go/bin\nexport PATH=$PATH:$HOME/go/bin\n\n# Làm vĩnh viễn (.bashrc hoặc .zshrc)\necho 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc\n```\n\n## Vấn đề 2: package XXX is not in GOROOT\n\n**Nguyên nhân:** Go Modules chưa được khởi tạo\n\n**Giải pháp:**\n```bash\ngo mod init example.com/myproject\ngo mod tidy\n```\n\n## Vấn đề 3: import cycle not allowed\n\n**Nguyên nhân:** Tham chiếu package vòng tròn\n\n**Giải pháp:**\n- Xem xét lại cấu trúc package\n- Tách các kiểu chung vào package khác\n- Đảo ngược dependencies bằng interfaces\n\n## Vấn đề 4: undefined: XXX\n\n**Nguyên nhân:** Biến hoặc hàm chưa được định nghĩa\n\n**Kiểm tra:**\n```bash\n# Hiển thị lỗi build chi tiết\ngo build -v\n\n# Hiển thị thông tin kiểu\ngo doc fmt.Println\n```\n\n## Vấn đề 5: race condition detected\n\n**Chẩn đoán:**\n```bash\n# Kích hoạt race detector\ngo run -race main.go\ngo test -race\n```\n\n**Giải pháp:**\n- Sử dụng mutex\n- Đồng bộ với channels\n- Sử dụng atomic operations"
+                }
+            }
         },
         "第2週：変数とデータ型": {
             "title": "Tuần 2: Biến và Kiểu Dữ liệu",
-            "description": "Học khai báo biến Go, kiểu dữ liệu cơ bản, type inference"
+            "description": "Học khai báo biến Go, kiểu dữ liệu cơ bản, type inference",
+            "subtasks": {
+                "変数の宣言方法を学習": "Học phương pháp khai báo biến",
+                "基本データ型を理解": "Hiểu kiểu dữ liệu cơ bản"
+            },
+            "knowledge_items": {
+                "変数の宣言方法": {
+                    "title": "Phương pháp Khai báo Biến",
+                    "content": "# Phương pháp Khai báo Biến\n\n```go\n// Từ khóa var\nvar name string = \"Gopher\"\n\n// Type inference\nvar age = 25\n\n// Khai báo ngắn (thường dùng nhất)\nmessage := \"Hello!\"\n```"
+                },
+                "変数宣言の例": {
+                    "title": "Ví dụ Khai báo Biến",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    var message string = \"Hello\"\n    count := 100\n    pi := 3.14\n    \n    fmt.Println(message, count, pi)\n}"
+                },
+                "データ型の詳細": {
+                    "title": "Chi tiết Kiểu Dữ liệu",
+                    "content": "# Kiểu Dữ liệu Go\n\n## Kiểu Cơ bản\n\n### Kiểu Số nguyên\n```go\nvar a int8    // -128 ~ 127\nvar b int16   // -32768 ~ 32767\nvar c int32   // -2147483648 ~ 2147483647\nvar d int64   // -9223372036854775808 ~ 9223372036854775807\nvar e int     // Phụ thuộc kiến trúc (32 hoặc 64 bit)\n\nvar f uint8   // 0 ~ 255\nvar g uint16  // 0 ~ 65535\nvar h uint32  // 0 ~ 4294967295\nvar i uint64  // 0 ~ 18446744073709551615\nvar j uint    // Phụ thuộc kiến trúc\n\nvar k byte    // Bí danh cho uint8\nvar l rune    // Bí danh cho int32 (Unicode code point)\n```\n\n### Kiểu Số thực\n```go\nvar x float32  // ±1.18e-38 ~ ±3.4e38\nvar y float64  // ±2.23e-308 ~ ±1.80e308\nvar z complex64   // Phần thực và ảo của float32\nvar w complex128  // Phần thực và ảo của float64\n```\n\n### Kiểu Khác\n```go\nvar flag bool        // true hoặc false\nvar text string      // Chuỗi (UTF-8)\nvar ptr *int         // Con trỏ\n```\n\n## Giá trị Zero\n\nTrong Go, biến chưa khởi tạo tự động được đặt thành giá trị zero:\n\n```go\nvar i int       // 0\nvar f float64   // 0.0\nvar b bool      // false\nvar s string    // \"\" (chuỗi rỗng)\nvar p *int      // nil\n```"
+                },
+                "型変換とconst": {
+                    "title": "Chuyển đổi Kiểu và const",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // Chuyển đổi kiểu\n    var i int = 42\n    var f float64 = float64(i)\n    var u uint = uint(f)\n    \n    fmt.Printf(\"i=%d, f=%.2f, u=%d\\n\", i, f, u)\n    \n    // Hằng số\n    const Pi = 3.14159\n    const (\n        StatusOK = 200\n        StatusNotFound = 404\n        StatusError = 500\n    )\n    \n    // iota (hằng số tuần tự)\n    const (\n        Sunday = iota     // 0\n        Monday            // 1\n        Tuesday           // 2\n        Wednesday         // 3\n        Thursday          // 4\n        Friday            // 5\n        Saturday          // 6\n    )\n    \n    fmt.Println(\"Monday:\", Monday)\n    fmt.Println(\"Friday:\", Friday)\n    \n    // Hằng số có kiểu vs không kiểu\n    const TypedConst int = 100\n    const UntypedConst = 100\n    \n    var x int32 = UntypedConst     // OK\n    // var y int32 = TypedConst    // Lỗi: cannot use TypedConst (type int) as type int32\n}"
+                },
+                "演習：温度変換プログラム": {
+                    "title": "Bài tập: Chương trình Chuyển đổi Nhiệt độ",
+                    "content": "# Bài tập: Chương trình Chuyển đổi Nhiệt độ\n\n## Mục tiêu\nTạo chương trình chuyển đổi nhiệt độ từ Celsius sang Fahrenheit\n\n## Yêu cầu\n\n1. Nhận nhiệt độ Celsius từ người dùng\n2. Chuyển đổi sang Fahrenheit và hiển thị\n3. Fahrenheit = Celsius × 9/5 + 32\n\n## Mã Mẫu\n\n```go\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n    var celsius float64\n    \n    fmt.Print(\"Nhập nhiệt độ Celsius: \")\n    fmt.Scan(&celsius)\n    \n    // Chuyển đổi sang Fahrenheit\n    fahrenheit := celsius*9/5 + 32\n    \n    fmt.Printf(\"%.2f°C = %.2f°F\\n\", celsius, fahrenheit)\n    \n    // Phần thưởng: Kiểm tra absolute zero\n    const AbsoluteZero = -273.15\n    if celsius < AbsoluteZero {\n        fmt.Println(\"Cảnh báo: Nhiệt độ dưới absolute zero\")\n    }\n}\n```\n\n## Thử thách Mở rộng\n\n1. Thêm chuyển đổi Fahrenheit→Celsius\n2. Thêm nhiệt độ Kelvin\n3. Chuyển đổi nhiều nhiệt độ cùng lúc\n4. Kiểm tra tính hợp lệ nhiệt độ\n\n## Ví dụ Thực thi\n\n```\nNhập nhiệt độ Celsius: 25\n25.00°C = 77.00°F\n\nNhập nhiệt độ Celsius: -300\n-300.00°C = -508.00°F\nCảnh báo: Nhiệt độ dưới absolute zero\n```"
+                }
+            }
         },
         "第3週：演算子と式": {
             "title": "Tuần 3: Toán tử và Biểu thức",
-            "description": "Học toán tử số học, toán tử so sánh, toán tử logic"
+            "description": "Học toán tử số học, toán tử so sánh, toán tử logic",
+            "subtasks": {
+                "算術演算子を学習": "Học toán tử số học"
+            },
+            "knowledge_items": {
+                "算術演算子": {
+                    "title": "Toán tử Số học",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    a, b := 10, 3\n    \n    fmt.Println(a + b)  // 13\n    fmt.Println(a - b)  // 7\n    fmt.Println(a * b)  // 30\n    fmt.Println(a / b)  // 3\n    fmt.Println(a % b)  // 1\n}"
+                }
+            }
         },
         "第4週：ユーザー入力とフォーマット": {
             "title": "Tuần 4: Đầu vào Người dùng và Định dạng",
-            "description": "Đầu vào bằng fmt.Scan() và xuất định dạng bằng fmt.Printf()"
+            "description": "Đầu vào bằng fmt.Scan() và xuất định dạng bằng fmt.Printf()",
+            "subtasks": {
+                "ユーザー入力を受け取る": "Nhận đầu vào từ người dùng"
+            },
+            "knowledge_items": {
+                "ユーザー入力": {
+                    "title": "Đầu vào Người dùng",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    var name string\n    var age int\n    \n    fmt.Print(\"Nhập tên: \")\n    fmt.Scan(&name)\n    \n    fmt.Print(\"Nhập tuổi: \")\n    fmt.Scan(&age)\n    \n    fmt.Printf(\"%s %d tuổi\\n\", name, age)\n}"
+                }
+            }
         },
         "第5週：If/ElseとSwitch": {
             "title": "Tuần 5: If/Else và Switch",
-            "description": "Rẽ nhánh điều kiện với if/else và switch statements"
+            "description": "Rẽ nhánh điều kiện với if/else và switch statements",
+            "subtasks": {
+                "if/else文を学習": "Học câu lệnh if/else"
+            },
+            "knowledge_items": {
+                "If/Else": {
+                    "title": "If/Else",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    age := 20\n    \n    if age >= 18 {\n        fmt.Println(\"Người lớn\")\n    } else {\n        fmt.Println(\"Trẻ em\")\n    }\n    \n    // If với khởi tạo\n    if score := 85; score >= 80 {\n        fmt.Println(\"Đạt\")\n    }\n}"
+                },
+                "Switch文": {
+                    "title": "Câu lệnh Switch",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    day := \"Monday\"\n    \n    switch day {\n    case \"Monday\":\n        fmt.Println(\"Thứ Hai\")\n    case \"Tuesday\":\n        fmt.Println(\"Thứ Ba\")\n    default:\n        fmt.Println(\"Khác\")\n    }\n}"
+                }
+            }
         },
         "第6週：ループ（for）": {
             "title": "Tuần 6: Vòng lặp (for)",
-            "description": "Cú pháp và sử dụng vòng lặp for"
+            "description": "Cú pháp và sử dụng vòng lặp for",
+            "subtasks": {
+                "for文を学習": "Học câu lệnh for"
+            },
+            "knowledge_items": {
+                "For文": {
+                    "title": "Câu lệnh For",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // For cơ bản\n    for i := 0; i < 5; i++ {\n        fmt.Println(i)\n    }\n    \n    // Giống while\n    j := 0\n    for j < 5 {\n        fmt.Println(j)\n        j++\n    }\n    \n    // Vòng lặp vô hạn\n    // for {\n    //     fmt.Println(\"infinite\")\n    // }\n}"
+                }
+            }
         },
         "第7週：関数": {
             "title": "Tuần 7: Hàm",
-            "description": "Định nghĩa hàm, tham số, giá trị trả về, nhiều giá trị trả về"
+            "description": "Định nghĩa hàm, tham số, giá trị trả về, nhiều giá trị trả về",
+            "subtasks": {
+                "関数を定義": "Định nghĩa hàm"
+            },
+            "knowledge_items": {
+                "関数の定義": {
+                    "title": "Định nghĩa Hàm",
+                    "content": "package main\n\nimport \"fmt\"\n\n// Hàm cơ bản\nfunc greet(name string) {\n    fmt.Printf(\"Hello, %s!\\n\", name)\n}\n\n// Có giá trị trả về\nfunc add(a, b int) int {\n    return a + b\n}\n\n// Nhiều giá trị trả về\nfunc divide(a, b float64) (float64, error) {\n    if b == 0 {\n        return 0, fmt.Errorf(\"division by zero\")\n    }\n    return a / b, nil\n}\n\nfunc main() {\n    greet(\"Gopher\")\n    sum := add(3, 5)\n    fmt.Println(\"Sum:\", sum)\n    \n    result, err := divide(10, 2)\n    if err != nil {\n        fmt.Println(\"Error:\", err)\n    } else {\n        fmt.Println(\"Result:\", result)\n    }\n}"
+                }
+            }
         },
         "第8週：配列とスライス": {
             "title": "Tuần 8: Arrays và Slices",
-            "description": "Thao tác array và slice, phương thức"
+            "description": "Thao tác array và slice, phương thức",
+            "subtasks": {
+                "配列を学習": "Học arrays",
+                "スライスを学習": "Học slices"
+            },
+            "knowledge_items": {
+                "配列とスライス": {
+                    "title": "Arrays và Slices",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // Array (độ dài cố định)\n    var arr [3]int = [3]int{1, 2, 3}\n    fmt.Println(arr)\n    \n    // Slice (độ dài thay đổi)\n    slice := []int{1, 2, 3, 4, 5}\n    fmt.Println(slice)\n    \n    // Thao tác slice\n    slice = append(slice, 6)\n    fmt.Println(slice)\n    \n    // Slicing\n    sub := slice[1:4]  // [2, 3, 4]\n    fmt.Println(sub)\n}"
+                }
+            }
         },
         "第9週：マップ": {
             "title": "Tuần 9: Maps",
-            "description": "Thao tác và sử dụng map"
+            "description": "Thao tác và sử dụng map",
+            "subtasks": {
+                "マップを学習": "Học maps"
+            },
+            "knowledge_items": {
+                "マップ": {
+                    "title": "Maps",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // Tạo map\n    ages := make(map[string]int)\n    ages[\"Alice\"] = 25\n    ages[\"Bob\"] = 30\n    \n    // Literal\n    scores := map[string]int{\n        \"Math\":    90,\n        \"English\": 85,\n    }\n    \n    // Truy cập\n    fmt.Println(ages[\"Alice\"])  // 25\n    \n    // Kiểm tra tồn tại\n    value, exists := ages[\"Charlie\"]\n    if exists {\n        fmt.Println(value)\n    } else {\n        fmt.Println(\"Not found\")\n    }\n    \n    // Xóa\n    delete(ages, \"Bob\")\n    \n    // Vòng lặp\n    for name, age := range ages {\n        fmt.Printf(\"%s: %d\\n\", name, age)\n    }\n}"
+                }
+            }
         },
         "第10週：構造体": {
             "title": "Tuần 10: Structs",
-            "description": "Định nghĩa struct, truy cập field, struct methods"
+            "description": "Định nghĩa struct, truy cập field, struct methods",
+            "subtasks": {
+                "構造体を学習": "Học structs"
+            },
+            "knowledge_items": {
+                "構造体": {
+                    "title": "Structs",
+                    "content": "package main\n\nimport \"fmt\"\n\n// Định nghĩa struct\ntype Person struct {\n    Name string\n    Age  int\n}\n\nfunc main() {\n    // Tạo struct\n    p1 := Person{Name: \"Alice\", Age: 25}\n    \n    // Truy cập field\n    fmt.Println(p1.Name)  // Alice\n    fmt.Println(p1.Age)   // 25\n    \n    // Cập nhật field\n    p1.Age = 26\n    \n    // Con trỏ\n    p2 := &Person{Name: \"Bob\", Age: 30}\n    fmt.Println(p2.Name)\n}"
+                }
+            }
         },
         "第11週：メソッドとレシーバー": {
             "title": "Tuần 11: Methods và Receivers",
-            "description": "Định nghĩa method với receivers, value receivers vs pointer receivers"
+            "description": "Định nghĩa method với receivers, value receivers vs pointer receivers",
+            "subtasks": {
+                "メソッドを学習": "Học methods"
+            },
+            "knowledge_items": {
+                "メソッド": {
+                    "title": "Methods",
+                    "content": "package main\n\nimport \"fmt\"\n\ntype Rectangle struct {\n    Width  float64\n    Height float64\n}\n\n// Value receiver\nfunc (r Rectangle) Area() float64 {\n    return r.Width * r.Height\n}\n\n// Pointer receiver\nfunc (r *Rectangle) Scale(factor float64) {\n    r.Width *= factor\n    r.Height *= factor\n}\n\nfunc main() {\n    rect := Rectangle{Width: 10, Height: 5}\n    \n    fmt.Println(\"Area:\", rect.Area())  // 50\n    \n    rect.Scale(2)\n    fmt.Println(\"After scale:\", rect.Area())  // 200\n}"
+                }
+            }
         },
         "第12週：インターフェース": {
             "title": "Tuần 12: Interfaces",
-            "description": "Định nghĩa và triển khai interface"
+            "description": "Định nghĩa và triển khai interface",
+            "subtasks": {
+                "インターフェースを学習": "Học interfaces"
+            },
+            "knowledge_items": {
+                "インターフェース": {
+                    "title": "Interfaces",
+                    "content": "package main\n\nimport \"fmt\"\n\n// Định nghĩa interface\ntype Shape interface {\n    Area() float64\n}\n\ntype Circle struct {\n    Radius float64\n}\n\nfunc (c Circle) Area() float64 {\n    return 3.14 * c.Radius * c.Radius\n}\n\ntype Rectangle struct {\n    Width, Height float64\n}\n\nfunc (r Rectangle) Area() float64 {\n    return r.Width * r.Height\n}\n\n// Hàm nhận interface\nfunc printArea(s Shape) {\n    fmt.Printf(\"Area: %.2f\\n\", s.Area())\n}\n\nfunc main() {\n    c := Circle{Radius: 5}\n    r := Rectangle{Width: 10, Height: 5}\n    \n    printArea(c)  // Area: 78.50\n    printArea(r)  // Area: 50.00\n}"
+                }
+            }
         },
         "第13週：エラーハンドリング": {
             "title": "Tuần 13: Xử lý Lỗi",
-            "description": "Mẫu xử lý lỗi, error interface, custom errors"
+            "description": "Mẫu xử lý lỗi, error interface, custom errors",
+            "subtasks": {
+                "エラーハンドリングを学習": "Học xử lý lỗi"
+            },
+            "knowledge_items": {
+                "エラーハンドリング": {
+                    "title": "Xử lý Lỗi",
+                    "content": "package main\n\nimport (\n    \"errors\"\n    \"fmt\"\n)\n\nfunc divide(a, b float64) (float64, error) {\n    if b == 0 {\n        return 0, errors.New(\"division by zero\")\n    }\n    return a / b, nil\n}\n\nfunc main() {\n    result, err := divide(10, 2)\n    if err != nil {\n        fmt.Println(\"Error:\", err)\n        return\n    }\n    fmt.Println(\"Result:\", result)\n    \n    // defer (thực thi khi hàm kết thúc)\n    defer fmt.Println(\"This runs last\")\n    fmt.Println(\"This runs first\")\n}"
+                }
+            }
         },
         "第14週：ゴルーチンとチャネル": {
             "title": "Tuần 14: Goroutines và Channels",
-            "description": "Tạo goroutine, thao tác channel, lập trình đồng thời"
+            "description": "Tạo goroutine, thao tác channel, lập trình đồng thời",
+            "subtasks": {
+                "ゴルーチンを学習": "Học goroutines",
+                "チャネルを学習": "Học channels"
+            },
+            "knowledge_items": {
+                "ゴルーチン": {
+                    "title": "Goroutines",
+                    "content": "package main\n\nimport (\n    \"fmt\"\n    \"time\"\n)\n\nfunc sayHello(name string) {\n    for i := 0; i < 3; i++ {\n        fmt.Printf(\"Hello, %s!\\n\", name)\n        time.Sleep(100 * time.Millisecond)\n    }\n}\n\nfunc main() {\n    // Gọi hàm bình thường (đồng bộ)\n    // sayHello(\"Alice\")\n    \n    // Goroutine (thực thi đồng thời)\n    go sayHello(\"Alice\")\n    go sayHello(\"Bob\")\n    \n    // Đợi để main goroutine không kết thúc\n    time.Sleep(1 * time.Second)\n    fmt.Println(\"Done\")\n}"
+                },
+                "チャネル": {
+                    "title": "Channels",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc sum(numbers []int, ch chan int) {\n    total := 0\n    for _, num := range numbers {\n        total += num\n    }\n    ch <- total  // Gửi vào channel\n}\n\nfunc main() {\n    numbers := []int{1, 2, 3, 4, 5, 6}\n    \n    ch := make(chan int)\n    \n    // Tính toán đồng thời với 2 goroutines\n    go sum(numbers[:len(numbers)/2], ch)\n    go sum(numbers[len(numbers)/2:], ch)\n    \n    // Nhận 2 kết quả\n    result1, result2 := <-ch, <-ch\n    \n    fmt.Println(\"Total:\", result1+result2)  // 21\n}"
+                }
+            }
         },
         "第15週：高度なトピックとベストプラクティス": {
             "title": "Tuần 15: Chủ đề Nâng cao và Best Practices",
-            "description": "Go packages, testing, best practices"
+            "description": "Go packages, testing, best practices",
+            "subtasks": {
+                "パッケージを学習": "Học packages",
+                "テストを学習": "Học testing",
+                "実践プロジェクトを作成": "Tạo dự án thực tế"
+            },
+            "knowledge_items": {
+                "Goのパッケージ": {
+                    "title": "Go Packages",
+                    "content": "# Go Packages\n\n## Tạo Packages\n\n```go\n// mypackage/mypackage.go\npackage mypackage\n\nfunc Hello(name string) string {\n    return \"Hello, \" + name\n}\n```\n\n## Sử dụng Packages\n\n```go\n// main.go\npackage main\n\nimport (\n    \"fmt\"\n    \"myproject/mypackage\"\n)\n\nfunc main() {\n    msg := mypackage.Hello(\"Gopher\")\n    fmt.Println(msg)\n}\n```\n\n## Go Modules\n```bash\n# Khởi tạo module\ngo mod init example.com/myproject\n\n# Thêm dependencies\ngo get github.com/gin-gonic/gin\n\n# Tổ chức dependencies\ngo mod tidy\n```"
+                },
+                "テストの書き方": {
+                    "title": "Cách Viết Test",
+                    "content": "// math.go\npackage math\n\nfunc Add(a, b int) int {\n    return a + b\n}\n\n// math_test.go\npackage math\n\nimport \"testing\"\n\nfunc TestAdd(t *testing.T) {\n    result := Add(2, 3)\n    expected := 5\n    \n    if result != expected {\n        t.Errorf(\"Add(2, 3) = %d; want %d\", result, expected)\n    }\n}\n\n// Chạy test\n// go test"
+                },
+                "Goのベストプラクティス": {
+                    "title": "Best Practices Go",
+                    "content": "# Best Practices Go\n\n## Phong cách Mã\n1. Định dạng với `gofmt`\n2. Lint với `golint`\n3. Luôn kiểm tra lỗi\n4. Sử dụng tên biến ngắn\n5. Giữ interfaces nhỏ\n\n## Cấu trúc Dự án\n```\nmyproject/\n├── cmd/\n│   └── myapp/\n│       └── main.go\n├── internal/\n│   └── package/\n├── pkg/\n│   └── public/\n├── go.mod\n└── go.sum\n```\n\n## Xử lý Lỗi\n- Đừng bỏ qua lỗi\n- Thông báo lỗi phù hợp\n- Sử dụng kiểu lỗi tùy chỉnh\n\n## Hiệu suất\n- Viết benchmarks\n- Sử dụng profiling\n- Tránh cấp phát không cần thiết"
+                },
+                "REST API完全実装例": {
+                    "title": "Ví dụ Triển khai REST API Hoàn chỉnh",
+                    "content": "// main.go - REST API sử dụng Gin\npackage main\n\nimport (\n    \"github.com/gin-gonic/gin\"\n    \"net/http\"\n    \"strconv\"\n)\n\ntype Book struct {\n    ID     int    `json:\"id\"`\n    Title  string `json:\"title\"`\n    Author string `json:\"author\"`\n    Year   int    `json:\"year\"`\n}\n\nvar books = []Book{\n    {ID: 1, Title: \"The Go Programming Language\", Author: \"Alan Donovan\", Year: 2015},\n    {ID: 2, Title: \"Learning Go\", Author: \"Jon Bodner\", Year: 2021},\n}\n\nfunc main() {\n    router := gin.Default()\n    \n    // CORS middleware\n    router.Use(corsMiddleware())\n    \n    // Routes\n    router.GET(\"/api/books\", getBooks)\n    router.GET(\"/api/books/:id\", getBook)\n    router.POST(\"/api/books\", createBook)\n    router.PUT(\"/api/books/:id\", updateBook)\n    router.DELETE(\"/api/books/:id\", deleteBook)\n    \n    router.Run(\":8080\")\n}\n\n// GET /api/books\nfunc getBooks(c *gin.Context) {\n    c.JSON(http.StatusOK, gin.H{\"data\": books})\n}\n\n// GET /api/books/:id\nfunc getBook(c *gin.Context) {\n    id, _ := strconv.Atoi(c.Param(\"id\"))\n    \n    for _, book := range books {\n        if book.ID == id {\n            c.JSON(http.StatusOK, gin.H{\"data\": book})\n            return\n        }\n    }\n    \n    c.JSON(http.StatusNotFound, gin.H{\"error\": \"Book not found\"})\n}\n\n// POST /api/books\nfunc createBook(c *gin.Context) {\n    var newBook Book\n    \n    if err := c.ShouldBindJSON(&newBook); err != nil {\n        c.JSON(http.StatusBadRequest, gin.H{\"error\": err.Error()})\n        return\n    }\n    \n    newBook.ID = len(books) + 1\n    books = append(books, newBook)\n    \n    c.JSON(http.StatusCreated, gin.H{\"data\": newBook})\n}\n\n// PUT /api/books/:id\nfunc updateBook(c *gin.Context) {\n    id, _ := strconv.Atoi(c.Param(\"id\"))\n    \n    var updated Book\n    if err := c.ShouldBindJSON(&updated); err != nil {\n        c.JSON(http.StatusBadRequest, gin.H{\"error\": err.Error()})\n        return\n    }\n    \n    for i, book := range books {\n        if book.ID == id {\n            books[i].Title = updated.Title\n            books[i].Author = updated.Author\n            books[i].Year = updated.Year\n            c.JSON(http.StatusOK, gin.H{\"data\": books[i]})\n            return\n        }\n    }\n    \n    c.JSON(http.StatusNotFound, gin.H{\"error\": \"Book not found\"})\n}\n\n// DELETE /api/books/:id\nfunc deleteBook(c *gin.Context) {\n    id, _ := strconv.Atoi(c.Param(\"id\"))\n    \n    for i, book := range books {\n        if book.ID == id {\n            books = append(books[:i], books[i+1:]...)\n            c.JSON(http.StatusOK, gin.H{\"message\": \"Book deleted\"})\n            return\n        }\n    }\n    \n    c.JSON(http.StatusNotFound, gin.H{\"error\": \"Book not found\"})\n}\n\nfunc corsMiddleware() gin.HandlerFunc {\n    return func(c *gin.Context) {\n        c.Writer.Header().Set(\"Access-Control-Allow-Origin\", \"*\")\n        c.Writer.Header().Set(\"Access-Control-Allow-Methods\", \"GET,POST,PUT,DELETE,OPTIONS\")\n        c.Writer.Header().Set(\"Access-Control-Allow-Headers\", \"Content-Type\")\n        \n        if c.Request.Method == \"OPTIONS\" {\n            c.AbortWithStatus(http.StatusNoContent)\n            return\n        }\n        \n        c.Next()\n    }\n}"
+                },
+                "最終課題：Todo API with PostgreSQL": {
+                    "title": "Bài tập Cuối: Todo API với PostgreSQL",
+                    "content": "# Bài tập Cuối: Todo REST API\n\n## Mục tiêu\nXây dựng REST API hoàn chỉnh sử dụng Gin + PostgreSQL + Goroutines\n\n## Yêu cầu\n\n### 1. Yêu cầu Chức năng\n- [ ] Thao tác CRUD (Create, Read, Update, Delete)\n- [ ] Kết nối database PostgreSQL\n- [ ] Xác thực JWT\n- [ ] Validation\n- [ ] Xử lý lỗi\n- [ ] Logging\n- [ ] Test\n\n### 2. Endpoints\n\n```\nPOST   /api/auth/register  - Đăng ký người dùng\nPOST   /api/auth/login     - Đăng nhập\nGET    /api/todos          - Lấy danh sách Todo\nGET    /api/todos/:id      - Lấy chi tiết Todo\nPOST   /api/todos          - Tạo Todo\nPUT    /api/todos/:id      - Cập nhật Todo\nDELETE /api/todos/:id      - Xóa Todo\n```\n\n### 3. Schema Database\n\n```sql\nCREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE todos (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    completed BOOLEAN DEFAULT FALSE,\n    due_date TIMESTAMP,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n```\n\n### 4. Cấu trúc Dự án\n\n```\ntodo-api/\n├── main.go\n├── go.mod\n├── go.sum\n├── config/\n│   └── database.go\n├── models/\n│   ├── user.go\n│   └── todo.go\n├── controllers/\n│   ├── auth.go\n│   └── todo.go\n├── middleware/\n│   ├── auth.go\n│   └── logger.go\n├── routes/\n│   └── routes.go\n├── utils/\n│   ├── jwt.go\n│   └── validator.go\n└── tests/\n    ├── auth_test.go\n    └── todo_test.go\n```\n\n### 5. Ví dụ Triển khai (models/todo.go)\n\n```go\npackage models\n\nimport \"time\"\n\ntype Todo struct {\n    ID          int       `json:\"id\"`\n    UserID      int       `json:\"user_id\"`\n    Title       string    `json:\"title\" binding:\"required,min=3,max=255\"`\n    Description string    `json:\"description\"`\n    Completed   bool      `json:\"completed\"`\n    DueDate     time.Time `json:\"due_date\"`\n    CreatedAt   time.Time `json:\"created_at\"`\n    UpdatedAt   time.Time `json:\"updated_at\"`\n}\n```\n\n### 6. Triển khai Test\n\n```go\n// tests/todo_test.go\npackage tests\n\nimport (\n    \"testing\"\n    \"github.com/stretchr/testify/assert\"\n)\n\nfunc TestCreateTodo(t *testing.T) {\n    // Mã test\n    assert.Equal(t, expected, actual)\n}\n```\n\n### 7. Thực thi\n\n```bash\n# Cài đặt dependencies\ngo mod init todo-api\ngo get github.com/gin-gonic/gin\ngo get gorm.io/gorm\ngo get gorm.io/driver/postgres\ngo get github.com/golang-jwt/jwt/v5\n\n# Chạy\ngo run main.go\n\n# Test\ngo test ./...\n\n# Build\ngo build -o todo-api\n```\n\n## Tiêu chí Đánh giá\n\n- Chất lượng Mã: 30 điểm\n- Hoàn thiện Chức năng: 30 điểm\n- Xử lý Lỗi: 15 điểm\n- Test: 15 điểm\n- Tài liệu: 10 điểm\n\n## Thử thách Phần thưởng\n\n- [ ] Docker hóa (+5 điểm)\n- [ ] CI/CD (GitHub Actions) (+5 điểm)\n- [ ] Thông báo WebSocket (+10 điểm)\n- [ ] Caching (Redis) (+5 điểm)"
+                },
+                "Goベストプラクティスまとめ": {
+                    "title": "Tóm tắt Best Practices Go",
+                    "content": "# Hướng dẫn Best Practices Go Hoàn chỉnh\n\n## 1. Phong cách Mã\n\n### Định dạng\n```bash\n# Tự động định dạng\ngo fmt ./...\n\n# Định dạng nghiêm ngặt hơn\ngoimports -w .\n```\n\n### Quy ước Đặt tên\n```go\n// Package: chữ thường, số ít\npackage user\n\n// Hàm: camelCase\nfunc GetUserByID(id int) (*User, error)\n\n// Biến: camelCase\nvar userCount int\n\n// Hằng số: camelCase\nconst MaxRetries = 3\n\n// Xuất: bắt đầu bằng chữ hoa\ntype User struct {}\n\n// Không xuất: bắt đầu bằng chữ thường\ntype user struct {}\n```\n\n## 2. Xử lý Lỗi\n\n### Mẫu Cơ bản\n```go\n// Luôn kiểm tra lỗi\nresult, err := someFunction()\nif err != nil {\n    return nil, fmt.Errorf(\"someFunction failed: %w\", err)\n}\n\n// Giá trị trả về cuối là error\nfunc DoSomething() (Result, error)\n\n// Lỗi tùy chỉnh\nvar ErrNotFound = errors.New(\"not found\")\n\ntype ValidationError struct {\n    Field string\n    Message string\n}\n\nfunc (e *ValidationError) Error() string {\n    return fmt.Sprintf(\"%s: %s\", e.Field, e.Message)\n}\n```\n\n## 3. Xử lý Đồng thời\n\n### Goroutines\n```go\n// Đợi với WaitGroup\nvar wg sync.WaitGroup\n\nfor i := 0; i < 10; i++ {\n    wg.Add(1)\n    go func(i int) {\n        defer wg.Done()\n        // Xử lý\n    }(i)\n}\n\nwg.Wait()\n\n// Hủy với Context\nctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)\ndefer cancel()\n\ngo func() {\n    select {\n    case <-ctx.Done():\n        fmt.Println(\"Cancelled\")\n        return\n    case result := <-ch:\n        fmt.Println(result)\n    }\n}()\n```\n\n## 4. Hiệu suất\n\n### Hiệu quả Bộ nhớ\n```go\n// Đảm bảo dung lượng slice trước\nslice := make([]int, 0, 100)\n\n// Nối chuỗi với strings.Builder\nvar builder strings.Builder\nfor i := 0; i < 1000; i++ {\n    builder.WriteString(\"test\")\n}\nresult := builder.String()\n\n// Con trỏ vs Giá trị\n// Struct nhỏ: truyền theo giá trị\ntype Point struct { X, Y int }\nfunc Move(p Point) Point\n\n// Struct lớn: truyền theo con trỏ\ntype LargeStruct struct { /* many fields */ }\nfunc Process(p *LargeStruct) error\n```\n\n## 5. Test\n\n### Test Theo Bảng\n```go\nfunc TestAdd(t *testing.T) {\n    tests := []struct {\n        name string\n        a, b int\n        want int\n    }{\n        {\"positive\", 1, 2, 3},\n        {\"negative\", -1, -2, -3},\n        {\"zero\", 0, 0, 0},\n    }\n    \n    for _, tt := range tests {\n        t.Run(tt.name, func(t *testing.T) {\n            got := Add(tt.a, tt.b)\n            if got != tt.want {\n                t.Errorf(\"Add(%d, %d) = %d; want %d\",\n                    tt.a, tt.b, got, tt.want)\n            }\n        })\n    }\n}\n```\n\n## 6. Bảo mật\n\n```go\n// Băm mật khẩu\nimport \"golang.org/x/crypto/bcrypt\"\n\nhash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)\nvalid := bcrypt.CompareHashAndPassword(hash, []byte(password))\n\n// Phòng chống SQL injection\ndb.Exec(\"INSERT INTO users (name) VALUES ($1)\", name)\n\n// Phòng chống XSS\nimport \"html/template\"\nt := template.Must(template.New(\"name\").Parse(tmpl))\n```"
+                }
+            }
         }
     }
 }

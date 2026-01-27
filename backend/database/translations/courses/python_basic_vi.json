@@ -61,63 +61,187 @@
     "tasks": {
         "第1週：環境設定とHello World": {
             "title": "Tuần 1: Thiết lập Môi trường và Hello World",
-            "description": "Thiết lập môi trường phát triển Python và xuất màn hình bằng print()"
+            "description": "Thiết lập môi trường phát triển Python và xuất màn hình bằng print()",
+            "subtasks": {
+                "Pythonをインストール": "Cài đặt Python",
+                "VS Codeをセットアップ": "Thiết lập VS Code",
+                "Hello Worldプログラムを作成": "Tạo chương trình Hello World"
+            },
+            "knowledge_items": {
+                "Pythonとは？": { "title": "Python là gì?", "content": "Thông dịch, dễ đọc, đa dụng. Dùng cho web, data, AI, tự động hóa. Không cần biên dịch." },
+                "Hello World": { "title": "Hello World", "content": "print('Hello, World!'). Nhiều lệnh print(). Comment bằng #." }
+            }
         },
         "第2週：変数とデータ型": {
             "title": "Tuần 2: Biến và Kiểu Dữ liệu",
-            "description": "Học khai báo biến Python, kiểu dữ liệu cơ bản, chuyển đổi kiểu"
+            "description": "Học khai báo biến Python, kiểu dữ liệu cơ bản, chuyển đổi kiểu",
+            "subtasks": {
+                "変数の宣言方法を学習": "Học cách khai báo biến",
+                "基本データ型を理解": "Hiểu kiểu dữ liệu cơ bản",
+                "型変換を学習": "Học chuyển đổi kiểu"
+            },
+            "knowledge_items": {
+                "変数とデータ型": { "title": "Biến và Kiểu Dữ liệu", "content": "int, float, str, bool. Không khai báo kiểu. name = 'Alice'; age = 25." },
+                "変数とデータ型の例": { "title": "Ví dụ biến và kiểu", "content": "Gán, print, type()." },
+                "型変換": { "title": "Chuyển đổi kiểu", "content": "int(), float(), str(). Ép chuỗi input trước khi tính toán." }
+            }
         },
         "第3週：演算子と文字列操作": {
             "title": "Tuần 3: Toán tử và Thao tác Chuỗi",
-            "description": "Học toán tử số học, toán tử so sánh, toán tử logic, thao tác chuỗi"
+            "description": "Học toán tử số học, toán tử so sánh, toán tử logic, thao tác chuỗi",
+            "subtasks": {
+                "算術演算子を学習": "Học toán tử số học",
+                "文字列操作を学習": "Học thao tác chuỗi"
+            },
+            "knowledge_items": {
+                "算術演算子": { "title": "Toán tử số học", "content": "+, -, *, /, //, %, **. Gán, so sánh, logic: and, or, not." },
+                "文字列操作": { "title": "Thao tác chuỗi", "content": "+, *, [i], [start:end], upper(), lower(), replace()." }
+            }
         },
         "第4週：ユーザー入力とフォーマット": {
             "title": "Tuần 4: Đầu vào Người dùng và Định dạng",
-            "description": "Đầu vào bằng input() và xuất định dạng bằng f-string"
+            "description": "Đầu vào bằng input() và xuất định dạng bằng f-string",
+            "subtasks": {
+                "ユーザー入力を受け取る": "Nhận đầu vào người dùng",
+                "フォーマット出力を学習": "Học xuất định dạng"
+            },
+            "knowledge_items": {
+                "ユーザー入力": { "title": "Đầu vào người dùng", "content": "input(prompt) trả str. int(input()) hoặc float(input()) cho số." },
+                "フォーマット出力": { "title": "Xuất định dạng", "content": "f-string f'{x}', {n:.1f}, {n:,}. format(), % (cũ)." }
+            }
         },
         "第5週：条件分岐（if/elif/else）": {
             "title": "Tuần 5: Rẽ nhánh Điều kiện (if/elif/else)",
-            "description": "Cơ bản về rẽ nhánh điều kiện và câu lệnh điều kiện lồng nhau"
+            "description": "Cơ bản về rẽ nhánh điều kiện và câu lệnh điều kiện lồng nhau",
+            "subtasks": {
+                "if/elif/else文を学習": "Học if/elif/else",
+                "比較演算子と論理演算子を学習": "Học toán tử so sánh và logic"
+            },
+            "knowledge_items": {
+                "If/Elif/Else": { "title": "If/Elif/Else", "content": "if cond: / elif cond: / else:. Thụt lề quan trọng. and, or trong điều kiện." }
+            }
         },
         "第6週：ループ（while, for）": {
             "title": "Tuần 6: Vòng lặp (while, for)",
-            "description": "Vòng lặp while và for, cách sử dụng range()"
+            "description": "Vòng lặp while và for, cách sử dụng range()",
+            "subtasks": {
+                "while文を学習": "Học vòng lặp while",
+                "for文とrange()を学習": "Học for và range()"
+            },
+            "knowledge_items": {
+                "Whileループ": { "title": "Vòng lặp While", "content": "while cond: body. count += 1. break để thoát, input() trong vòng lặp." },
+                "Forループ": { "title": "Vòng lặp For", "content": "for i in range(n), range(start,end,step). for x in list. enumerate(), break, continue." }
+            }
         },
         "第7週：関数": {
             "title": "Tuần 7: Hàm",
-            "description": "Định nghĩa hàm, đối số, giá trị trả về, đối số mặc định, đối số độ dài biến"
+            "description": "Định nghĩa hàm, đối số, giá trị trả về, đối số mặc định, đối số độ dài biến",
+            "subtasks": {
+                "基本的な関数を定義": "Định nghĩa hàm cơ bản",
+                "デフォルト引数を学習": "Học đối số mặc định"
+            },
+            "knowledge_items": {
+                "関数の定義": { "title": "Định nghĩa Hàm", "content": "def name(params): body. return. Nhiều giá trị trả về có thể gán nhiều biến." },
+                "デフォルト引数と可変長引数": { "title": "Đối số mặc định và biến", "content": "def f(a, b=1). *args, **kwargs." }
+            }
         },
         "第8週：リストとタプル": {
             "title": "Tuần 8: List và Tuple",
-            "description": "Thao tác list và tuple, phương thức, sự khác biệt"
+            "description": "Thao tác list và tuple, phương thức, sự khác biệt",
+            "subtasks": {
+                "リストを学習": "Học list",
+                "タプルを学習": "Học tuple"
+            },
+            "knowledge_items": {
+                "リスト": { "title": "List", "content": "[], chỉ số, cắt. append, insert, remove, pop. len, in, sort, reverse." },
+                "タプル": { "title": "Tuple", "content": "(). Bất biến. Gán x,y = t. Dùng cho dữ liệu cố định." }
+            }
         },
         "第9週：辞書とセット": {
             "title": "Tuần 9: Dictionary và Set",
-            "description": "Thao tác dictionary (dict) và set"
+            "description": "Thao tác dictionary (dict) và set",
+            "subtasks": {
+                "辞書を学習": "Học dictionary",
+                "セットを学習": "Học set"
+            },
+            "knowledge_items": {
+                "辞書（Dictionary）": { "title": "Dictionary", "content": "{k:v}. [] và .get(). Gán, del, pop. keys(), values(), items()." },
+                "セット（Set）": { "title": "Set", "content": "Phần tử duy nhất. add, remove, discard. | & - ^. list(set(...)) để bỏ trùng." }
+            }
         },
         "第10週：リスト内包表記とイテレータ": {
             "title": "Tuần 10: List Comprehension và Iterator",
-            "description": "List comprehension, dictionary comprehension, generator"
+            "description": "List comprehension, dictionary comprehension, generator",
+            "subtasks": {
+                "リスト内包表記を学習": "Học list comprehension",
+                "ジェネレータを学習": "Học generator"
+            },
+            "knowledge_items": {
+                "リスト内包表記": { "title": "List Comprehension", "content": "[x for x in iter if cond]. [a if cond else b for x in iter]. Lồng nhau." },
+                "辞書・セット内包表記": { "title": "Dict và Set Comprehension", "content": "{k:v for ...}, {x for ...}. Generator (x for x in ...), yield." }
+            }
         },
         "第11週：クラスとオブジェクト": {
             "title": "Tuần 11: Class và Object",
-            "description": "Định nghĩa class, constructor, biến instance và phương thức"
+            "description": "Định nghĩa class, constructor, biến instance và phương thức",
+            "subtasks": {
+                "クラスを学習": "Học class",
+                "インスタンス変数とメソッドを学習": "Học biến instance và phương thức"
+            },
+            "knowledge_items": {
+                "クラスの定義": { "title": "Định nghĩa Class", "content": "class Name:. __init__(self, ...). self.attr. Phương thức nhận self." },
+                "クラス変数とクラスメソッド": { "title": "Biến class và Phương thức class", "content": "Thuộc tính class dùng chung. @classmethod, @staticmethod." }
+            }
         },
         "第12週：継承とポリモーフィズム": {
             "title": "Tuần 12: Kế thừa và Đa hình",
-            "description": "Kế thừa class, ghi đè phương thức, super()"
+            "description": "Kế thừa class, ghi đè phương thức, super()",
+            "subtasks": {
+                "継承を学習": "Học kế thừa",
+                "ポリモーフィズムを学習": "Học đa hình"
+            },
+            "knowledge_items": {
+                "継承": { "title": "Kế thừa", "content": "class Child(Parent):. super().__init__(). Ghi đè phương thức." },
+                "ポリモーフィズム": { "title": "Đa hình", "content": "Cùng giao diện, hành vi khác. isinstance()." }
+            }
         },
         "第13週：カプセル化と特殊メソッド": {
             "title": "Tuần 13: Đóng gói và Phương thức Đặc biệt",
-            "description": "Biến private, property, phương thức đặc biệt (__str__, __repr__, v.v.)"
+            "description": "Biến private, property, phương thức đặc biệt (__str__, __repr__, v.v.)",
+            "subtasks": {
+                "カプセル化を学習": "Học đóng gói",
+                "特殊メソッドを学習": "Học phương thức đặc biệt"
+            },
+            "knowledge_items": {
+                "カプセル化": { "title": "Đóng gói", "content": "__attr private. @property getter. Kiểm soát truy cập qua phương thức." },
+                "特殊メソッド": { "title": "Phương thức Đặc biệt", "content": "__str__, __repr__, __add__, __eq__, __len__. Tùy biến toán tử và built-in." }
+            }
         },
         "第14週：モジュールと例外処理": {
             "title": "Tuần 14: Modules và Xử lý Ngoại lệ",
-            "description": "Import module, tạo module, xử lý ngoại lệ"
+            "description": "Import module, tạo module, xử lý ngoại lệ",
+            "subtasks": {
+                "モジュールを学習": "Học module",
+                "例外処理を学習": "Học xử lý ngoại lệ"
+            },
+            "knowledge_items": {
+                "モジュール": { "title": "Modules", "content": "import x, from x import y, as alias. Thư viện chuẩn: math, datetime, random." },
+                "例外処理": { "title": "Xử lý Ngoại lệ", "content": "try/except/else/finally. except TypeError, ValueError. raise. Ngoại lệ tùy chỉnh." }
+            }
         },
         "第15週：ファイル操作と実践プロジェクト": {
             "title": "Tuần 15: Thao tác File và Dự án Thực tế",
-            "description": "Đọc/ghi file, file CSV, file JSON"
+            "description": "Đọc/ghi file, file CSV, file JSON",
+            "subtasks": {
+                "ファイルの読み書きを学習": "Học đọc/ghi file",
+                "CSV・JSONファイルを学習": "Học file CSV và JSON",
+                "実践プロジェクトを作成": "Tạo dự án thực tế"
+            },
+            "knowledge_items": {
+                "ファイル操作": { "title": "Thao tác File", "content": "with open(path, 'r'|'w'|'a', encoding='utf-8') as f. read(), readline(), write()." },
+                "CSV・JSONファイル": { "title": "File CSV và JSON", "content": "csv.reader/writer. json.load/json.dump. ensure_ascii=False, indent." },
+                "Pythonのベストプラクティス": { "title": "Thực hành Python tốt", "content": "PEP 8, snake_case, venv, requirements.txt, cấu trúc dự án." }
+            }
         }
     }
 }

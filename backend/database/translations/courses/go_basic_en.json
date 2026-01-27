@@ -61,63 +61,261 @@
     "tasks": {
         "第1週：環境設定とHello World": {
             "title": "Week 1: Environment Setup and Hello World",
-            "description": "Go development environment setup and screen output using fmt.Println()"
+            "description": "Go development environment setup and screen output using fmt.Println()",
+            "subtasks": {
+                "Goをインストール": "Install Go",
+                "VS Codeをセットアップ": "Set up VS Code",
+                "Hello Worldプログラムを作成": "Create Hello World program"
+            },
+            "knowledge_items": {
+                "Goとは？": {
+                    "title": "What is Go?",
+                    "content": "# What is Go?\n\n**Go** (Golang) is a programming language developed by Google in 2009.\n\n## Go Features\n1. **Simple and readable**: Concise syntax\n2. **Fast compilation**: Very fast builds\n3. **Great at concurrency**: Goroutines and channels\n4. **Statically typed**: Type checking at compile time\n5. **Garbage collection**: Automatic memory management\n\n## Go Use Cases\n- Web API servers\n- Microservices\n- CLI tools\n- Cloud infrastructure (Docker, Kubernetes)"
+                },
+                "Hello World": {
+                    "title": "Hello World",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, World!\")\n}"
+                },
+                "演習：開発環境セットアップ": {
+                    "title": "Exercise: Development Environment Setup",
+                    "content": "# Exercise: Go Development Environment Setup\n\n## Goal\nBuild Go development environment and run basic programs\n\n## Steps\n\n### 1. Verify Go Installation\n```bash\n# Check version\ngo version\n# go version go1.22.0 windows/amd64\n\n# Check environment variables\ngo env GOPATH\ngo env GOROOT\n```\n\n### 2. Create Workspace\n```bash\nmkdir -p ~/go-projects/hello\ncd ~/go-projects/hello\n\n# Initialize Go Modules\ngo mod init example.com/hello\n```\n\n### 3. Hello World Program\n```go\n// main.go\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, Go!\")\n    fmt.Println(\"Go version:\", runtime.Version())\n}\n```\n\n### 4. Build and Run\n```bash\n# Run (build + execute)\ngo run main.go\n\n# Build only\ngo build\n\n# Run executable\n./hello        # Linux/Mac\nhello.exe      # Windows\n\n# Cross-compile (Windows → Linux)\nGOOS=linux GOARCH=amd64 go build -o hello-linux\n```\n\n### 5. Using Go Tools\n```bash\n# Format\ngo fmt main.go\n\n# Code inspection\ngo vet main.go\n\n# Check dependencies\ngo list -m all\n\n# Organize dependencies\ngo mod tidy\n```\n\n## Checkpoints\n- [ ] Go is installed\n- [ ] GOPATH is set\n- [ ] Created project with go mod init\n- [ ] Ran program with go run\n- [ ] Created executable with go build"
+                },
+                "トラブルシューティング：よくある問題": {
+                    "title": "Troubleshooting: Common Issues",
+                    "content": "# Troubleshooting: Common Issues\n\n## Issue 1: go command not found\n\n**Cause:** PATH not set\n\n**Solution:**\n```bash\n# Windows (PowerShell)\n$env:PATH += \";C:\\Go\\bin\"\n\n# Linux/Mac (bash)\nexport PATH=$PATH:/usr/local/go/bin\nexport PATH=$PATH:$HOME/go/bin\n\n# Make permanent (.bashrc or .zshrc)\necho 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc\n```\n\n## Issue 2: package XXX is not in GOROOT\n\n**Cause:** Go Modules not initialized\n\n**Solution:**\n```bash\ngo mod init example.com/myproject\ngo mod tidy\n```\n\n## Issue 3: import cycle not allowed\n\n**Cause:** Circular package reference\n\n**Solution:**\n- Review package structure\n- Separate common types into different package\n- Invert dependencies using interfaces\n\n## Issue 4: undefined: XXX\n\n**Cause:** Variable or function undefined\n\n**Check:**\n```bash\n# Show detailed build errors\ngo build -v\n\n# Show type information\ngo doc fmt.Println\n```\n\n## Issue 5: race condition detected\n\n**Diagnosis:**\n```bash\n# Enable race detector\ngo run -race main.go\ngo test -race\n```\n\n**Solution:**\n- Use mutex\n- Synchronize with channels\n- Use atomic operations"
+                }
+            }
         },
         "第2週：変数とデータ型": {
             "title": "Week 2: Variables and Data Types",
-            "description": "Learning Go variable declaration, basic data types, type inference"
+            "description": "Learning Go variable declaration, basic data types, type inference",
+            "subtasks": {
+                "変数の宣言方法を学習": "Learn variable declaration methods",
+                "基本データ型を理解": "Understand basic data types"
+            },
+            "knowledge_items": {
+                "変数の宣言方法": {
+                    "title": "Variable Declaration Methods",
+                    "content": "# Variable Declaration Methods\n\n```go\n// var keyword\nvar name string = \"Gopher\"\n\n// Type inference\nvar age = 25\n\n// Short declaration (most commonly used)\nmessage := \"Hello!\"\n```"
+                },
+                "変数宣言の例": {
+                    "title": "Variable Declaration Examples",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    var message string = \"Hello\"\n    count := 100\n    pi := 3.14\n    \n    fmt.Println(message, count, pi)\n}"
+                },
+                "データ型の詳細": {
+                    "title": "Data Type Details",
+                    "content": "# Go Data Types\n\n## Basic Types\n\n### Integer Types\n```go\nvar a int8    // -128 ~ 127\nvar b int16   // -32768 ~ 32767\nvar c int32   // -2147483648 ~ 2147483647\nvar d int64   // -9223372036854775808 ~ 9223372036854775807\nvar e int     // Architecture dependent (32 or 64 bit)\n\nvar f uint8   // 0 ~ 255\nvar g uint16  // 0 ~ 65535\nvar h uint32  // 0 ~ 4294967295\nvar i uint64  // 0 ~ 18446744073709551615\nvar j uint    // Architecture dependent\n\nvar k byte    // Alias for uint8\nvar l rune    // Alias for int32 (Unicode code point)\n```\n\n### Floating Point Types\n```go\nvar x float32  // ±1.18e-38 ~ ±3.4e38\nvar y float64  // ±2.23e-308 ~ ±1.80e308\nvar z complex64   // Real and imaginary parts of float32\nvar w complex128  // Real and imaginary parts of float64\n```\n\n### Other Types\n```go\nvar flag bool        // true or false\nvar text string      // String (UTF-8)\nvar ptr *int         // Pointer\n```\n\n## Zero Values\n\nIn Go, uninitialized variables are automatically set to zero values:\n\n```go\nvar i int       // 0\nvar f float64   // 0.0\nvar b bool      // false\nvar s string    // \"\" (empty string)\nvar p *int      // nil\n```"
+                },
+                "型変換とconst": {
+                    "title": "Type Conversion and const",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // Type conversion\n    var i int = 42\n    var f float64 = float64(i)\n    var u uint = uint(f)\n    \n    fmt.Printf(\"i=%d, f=%.2f, u=%d\\n\", i, f, u)\n    \n    // Constants\n    const Pi = 3.14159\n    const (\n        StatusOK = 200\n        StatusNotFound = 404\n        StatusError = 500\n    )\n    \n    // iota (sequential constants)\n    const (\n        Sunday = iota     // 0\n        Monday            // 1\n        Tuesday           // 2\n        Wednesday         // 3\n        Thursday          // 4\n        Friday            // 5\n        Saturday          // 6\n    )\n    \n    fmt.Println(\"Monday:\", Monday)\n    fmt.Println(\"Friday:\", Friday)\n    \n    // Typed constant vs untyped constant\n    const TypedConst int = 100\n    const UntypedConst = 100\n    \n    var x int32 = UntypedConst     // OK\n    // var y int32 = TypedConst    // Error: cannot use TypedConst (type int) as type int32\n}"
+                },
+                "演習：温度変換プログラム": {
+                    "title": "Exercise: Temperature Conversion Program",
+                    "content": "# Exercise: Temperature Conversion Program\n\n## Goal\nCreate a Celsius to Fahrenheit temperature conversion program\n\n## Requirements\n\n1. Get Celsius temperature from user\n2. Convert to Fahrenheit and display\n3. Fahrenheit = Celsius × 9/5 + 32\n\n## Sample Code\n\n```go\npackage main\n\nimport \"fmt\"\n\nfunc main() {\n    var celsius float64\n    \n    fmt.Print(\"Enter Celsius temperature: \")\n    fmt.Scan(&celsius)\n    \n    // Convert to Fahrenheit\n    fahrenheit := celsius*9/5 + 32\n    \n    fmt.Printf(\"%.2f°C = %.2f°F\\n\", celsius, fahrenheit)\n    \n    // Bonus: Absolute zero check\n    const AbsoluteZero = -273.15\n    if celsius < AbsoluteZero {\n        fmt.Println(\"Warning: Temperature below absolute zero\")\n    }\n}\n```\n\n## Extended Challenges\n\n1. Add Fahrenheit→Celsius conversion\n2. Add Kelvin temperature\n3. Convert multiple temperatures at once\n4. Temperature validity check\n\n## Execution Example\n\n```\nEnter Celsius temperature: 25\n25.00°C = 77.00°F\n\nEnter Celsius temperature: -300\n-300.00°C = -508.00°F\nWarning: Temperature below absolute zero\n```"
+                }
+            }
         },
         "第3週：演算子と式": {
             "title": "Week 3: Operators and Expressions",
-            "description": "Learning arithmetic operators, comparison operators, logical operators"
+            "description": "Learning arithmetic operators, comparison operators, logical operators",
+            "subtasks": {
+                "算術演算子を学習": "Learn arithmetic operators"
+            },
+            "knowledge_items": {
+                "算術演算子": {
+                    "title": "Arithmetic Operators",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    a, b := 10, 3\n    \n    fmt.Println(a + b)  // 13\n    fmt.Println(a - b)  // 7\n    fmt.Println(a * b)  // 30\n    fmt.Println(a / b)  // 3\n    fmt.Println(a % b)  // 1\n}"
+                }
+            }
         },
         "第4週：ユーザー入力とフォーマット": {
             "title": "Week 4: User Input and Formatting",
-            "description": "Input using fmt.Scan() and formatted output using fmt.Printf()"
+            "description": "Input using fmt.Scan() and formatted output using fmt.Printf()",
+            "subtasks": {
+                "ユーザー入力を受け取る": "Receive user input"
+            },
+            "knowledge_items": {
+                "ユーザー入力": {
+                    "title": "User Input",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    var name string\n    var age int\n    \n    fmt.Print(\"Enter name: \")\n    fmt.Scan(&name)\n    \n    fmt.Print(\"Enter age: \")\n    fmt.Scan(&age)\n    \n    fmt.Printf(\"%s is %d years old\\n\", name, age)\n}"
+                }
+            }
         },
         "第5週：If/ElseとSwitch": {
             "title": "Week 5: If/Else and Switch",
-            "description": "Conditional branching with if/else and switch statements"
+            "description": "Conditional branching with if/else and switch statements",
+            "subtasks": {
+                "if/else文を学習": "Learn if/else statements"
+            },
+            "knowledge_items": {
+                "If/Else": {
+                    "title": "If/Else",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    age := 20\n    \n    if age >= 18 {\n        fmt.Println(\"Adult\")\n    } else {\n        fmt.Println(\"Minor\")\n    }\n    \n    // If with initialization\n    if score := 85; score >= 80 {\n        fmt.Println(\"Pass\")\n    }\n}"
+                },
+                "Switch文": {
+                    "title": "Switch Statement",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    day := \"Monday\"\n    \n    switch day {\n    case \"Monday\":\n        fmt.Println(\"Monday\")\n    case \"Tuesday\":\n        fmt.Println(\"Tuesday\")\n    default:\n        fmt.Println(\"Other\")\n    }\n}"
+                }
+            }
         },
         "第6週：ループ（for）": {
             "title": "Week 6: Loops (for)",
-            "description": "for loop syntax and usage"
+            "description": "for loop syntax and usage",
+            "subtasks": {
+                "for文を学習": "Learn for statements"
+            },
+            "knowledge_items": {
+                "For文": {
+                    "title": "For Statement",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // Basic for\n    for i := 0; i < 5; i++ {\n        fmt.Println(i)\n    }\n    \n    // Like while\n    j := 0\n    for j < 5 {\n        fmt.Println(j)\n        j++\n    }\n    \n    // Infinite loop\n    // for {\n    //     fmt.Println(\"infinite\")\n    // }\n}"
+                }
+            }
         },
         "第7週：関数": {
             "title": "Week 7: Functions",
-            "description": "Function definition, parameters, return values, multiple return values"
+            "description": "Function definition, parameters, return values, multiple return values",
+            "subtasks": {
+                "関数を定義": "Define functions"
+            },
+            "knowledge_items": {
+                "関数の定義": {
+                    "title": "Function Definition",
+                    "content": "package main\n\nimport \"fmt\"\n\n// Basic function\nfunc greet(name string) {\n    fmt.Printf(\"Hello, %s!\\n\", name)\n}\n\n// With return value\nfunc add(a, b int) int {\n    return a + b\n}\n\n// Multiple return values\nfunc divide(a, b float64) (float64, error) {\n    if b == 0 {\n        return 0, fmt.Errorf(\"division by zero\")\n    }\n    return a / b, nil\n}\n\nfunc main() {\n    greet(\"Gopher\")\n    sum := add(3, 5)\n    fmt.Println(\"Sum:\", sum)\n    \n    result, err := divide(10, 2)\n    if err != nil {\n        fmt.Println(\"Error:\", err)\n    } else {\n        fmt.Println(\"Result:\", result)\n    }\n}"
+                }
+            }
         },
         "第8週：配列とスライス": {
             "title": "Week 8: Arrays and Slices",
-            "description": "Array and slice operations, methods"
+            "description": "Array and slice operations, methods",
+            "subtasks": {
+                "配列を学習": "Learn arrays",
+                "スライスを学習": "Learn slices"
+            },
+            "knowledge_items": {
+                "配列とスライス": {
+                    "title": "Arrays and Slices",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // Array (fixed length)\n    var arr [3]int = [3]int{1, 2, 3}\n    fmt.Println(arr)\n    \n    // Slice (variable length)\n    slice := []int{1, 2, 3, 4, 5}\n    fmt.Println(slice)\n    \n    // Slice operations\n    slice = append(slice, 6)\n    fmt.Println(slice)\n    \n    // Slicing\n    sub := slice[1:4]  // [2, 3, 4]\n    fmt.Println(sub)\n}"
+                }
+            }
         },
         "第9週：マップ": {
             "title": "Week 9: Maps",
-            "description": "Map operations and usage"
+            "description": "Map operations and usage",
+            "subtasks": {
+                "マップを学習": "Learn maps"
+            },
+            "knowledge_items": {
+                "マップ": {
+                    "title": "Maps",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // Create map\n    ages := make(map[string]int)\n    ages[\"Alice\"] = 25\n    ages[\"Bob\"] = 30\n    \n    // Literal\n    scores := map[string]int{\n        \"Math\":    90,\n        \"English\": 85,\n    }\n    \n    // Access\n    fmt.Println(ages[\"Alice\"])  // 25\n    \n    // Existence check\n    value, exists := ages[\"Charlie\"]\n    if exists {\n        fmt.Println(value)\n    } else {\n        fmt.Println(\"Not found\")\n    }\n    \n    // Delete\n    delete(ages, \"Bob\")\n    \n    // Loop\n    for name, age := range ages {\n        fmt.Printf(\"%s: %d\\n\", name, age)\n    }\n}"
+                }
+            }
         },
         "第10週：構造体": {
             "title": "Week 10: Structs",
-            "description": "Struct definition, field access, struct methods"
+            "description": "Struct definition, field access, struct methods",
+            "subtasks": {
+                "構造体を学習": "Learn structs"
+            },
+            "knowledge_items": {
+                "構造体": {
+                    "title": "Structs",
+                    "content": "package main\n\nimport \"fmt\"\n\n// Struct definition\ntype Person struct {\n    Name string\n    Age  int\n}\n\nfunc main() {\n    // Create struct\n    p1 := Person{Name: \"Alice\", Age: 25}\n    \n    // Field access\n    fmt.Println(p1.Name)  // Alice\n    fmt.Println(p1.Age)   // 25\n    \n    // Update field\n    p1.Age = 26\n    \n    // Pointer\n    p2 := &Person{Name: \"Bob\", Age: 30}\n    fmt.Println(p2.Name)\n}"
+                }
+            }
         },
         "第11週：メソッドとレシーバー": {
             "title": "Week 11: Methods and Receivers",
-            "description": "Method definition with receivers, value receivers vs pointer receivers"
+            "description": "Method definition with receivers, value receivers vs pointer receivers",
+            "subtasks": {
+                "メソッドを学習": "Learn methods"
+            },
+            "knowledge_items": {
+                "メソッド": {
+                    "title": "Methods",
+                    "content": "package main\n\nimport \"fmt\"\n\ntype Rectangle struct {\n    Width  float64\n    Height float64\n}\n\n// Value receiver\nfunc (r Rectangle) Area() float64 {\n    return r.Width * r.Height\n}\n\n// Pointer receiver\nfunc (r *Rectangle) Scale(factor float64) {\n    r.Width *= factor\n    r.Height *= factor\n}\n\nfunc main() {\n    rect := Rectangle{Width: 10, Height: 5}\n    \n    fmt.Println(\"Area:\", rect.Area())  // 50\n    \n    rect.Scale(2)\n    fmt.Println(\"After scale:\", rect.Area())  // 200\n}"
+                }
+            }
         },
         "第12週：インターフェース": {
             "title": "Week 12: Interfaces",
-            "description": "Interface definition and implementation"
+            "description": "Interface definition and implementation",
+            "subtasks": {
+                "インターフェースを学習": "Learn interfaces"
+            },
+            "knowledge_items": {
+                "インターフェース": {
+                    "title": "Interfaces",
+                    "content": "package main\n\nimport \"fmt\"\n\n// Interface definition\ntype Shape interface {\n    Area() float64\n}\n\ntype Circle struct {\n    Radius float64\n}\n\nfunc (c Circle) Area() float64 {\n    return 3.14 * c.Radius * c.Radius\n}\n\ntype Rectangle struct {\n    Width, Height float64\n}\n\nfunc (r Rectangle) Area() float64 {\n    return r.Width * r.Height\n}\n\n// Function that accepts interface\nfunc printArea(s Shape) {\n    fmt.Printf(\"Area: %.2f\\n\", s.Area())\n}\n\nfunc main() {\n    c := Circle{Radius: 5}\n    r := Rectangle{Width: 10, Height: 5}\n    \n    printArea(c)  // Area: 78.50\n    printArea(r)  // Area: 50.00\n}"
+                }
+            }
         },
         "第13週：エラーハンドリング": {
             "title": "Week 13: Error Handling",
-            "description": "Error handling patterns, error interface, custom errors"
+            "description": "Error handling patterns, error interface, custom errors",
+            "subtasks": {
+                "エラーハンドリングを学習": "Learn error handling"
+            },
+            "knowledge_items": {
+                "エラーハンドリング": {
+                    "title": "Error Handling",
+                    "content": "package main\n\nimport (\n    \"errors\"\n    \"fmt\"\n)\n\nfunc divide(a, b float64) (float64, error) {\n    if b == 0 {\n        return 0, errors.New(\"division by zero\")\n    }\n    return a / b, nil\n}\n\nfunc main() {\n    result, err := divide(10, 2)\n    if err != nil {\n        fmt.Println(\"Error:\", err)\n        return\n    }\n    fmt.Println(\"Result:\", result)\n    \n    // defer (executes when function exits)\n    defer fmt.Println(\"This runs last\")\n    fmt.Println(\"This runs first\")\n}"
+                }
+            }
         },
         "第14週：ゴルーチンとチャネル": {
             "title": "Week 14: Goroutines and Channels",
-            "description": "Goroutine creation, channel operations, concurrent programming"
+            "description": "Goroutine creation, channel operations, concurrent programming",
+            "subtasks": {
+                "ゴルーチンを学習": "Learn goroutines",
+                "チャネルを学習": "Learn channels"
+            },
+            "knowledge_items": {
+                "ゴルーチン": {
+                    "title": "Goroutines",
+                    "content": "package main\n\nimport (\n    \"fmt\"\n    \"time\"\n)\n\nfunc sayHello(name string) {\n    for i := 0; i < 3; i++ {\n        fmt.Printf(\"Hello, %s!\\n\", name)\n        time.Sleep(100 * time.Millisecond)\n    }\n}\n\nfunc main() {\n    // Normal function call (synchronous)\n    // sayHello(\"Alice\")\n    \n    // Goroutine (concurrent execution)\n    go sayHello(\"Alice\")\n    go sayHello(\"Bob\")\n    \n    // Wait so main goroutine doesn't finish\n    time.Sleep(1 * time.Second)\n    fmt.Println(\"Done\")\n}"
+                },
+                "チャネル": {
+                    "title": "Channels",
+                    "content": "package main\n\nimport \"fmt\"\n\nfunc sum(numbers []int, ch chan int) {\n    total := 0\n    for _, num := range numbers {\n        total += num\n    }\n    ch <- total  // Send to channel\n}\n\nfunc main() {\n    numbers := []int{1, 2, 3, 4, 5, 6}\n    \n    ch := make(chan int)\n    \n    // Concurrent calculation with 2 goroutines\n    go sum(numbers[:len(numbers)/2], ch)\n    go sum(numbers[len(numbers)/2:], ch)\n    \n    // Receive 2 results\n    result1, result2 := <-ch, <-ch\n    \n    fmt.Println(\"Total:\", result1+result2)  // 21\n}"
+                }
+            }
         },
         "第15週：高度なトピックとベストプラクティス": {
             "title": "Week 15: Advanced Topics and Best Practices",
-            "description": "Go packages, testing, best practices"
+            "description": "Go packages, testing, best practices",
+            "subtasks": {
+                "パッケージを学習": "Learn packages",
+                "テストを学習": "Learn testing",
+                "実践プロジェクトを作成": "Create practical project"
+            },
+            "knowledge_items": {
+                "Goのパッケージ": {
+                    "title": "Go Packages",
+                    "content": "# Go Packages\n\n## Creating Packages\n\n```go\n// mypackage/mypackage.go\npackage mypackage\n\nfunc Hello(name string) string {\n    return \"Hello, \" + name\n}\n```\n\n## Using Packages\n\n```go\n// main.go\npackage main\n\nimport (\n    \"fmt\"\n    \"myproject/mypackage\"\n)\n\nfunc main() {\n    msg := mypackage.Hello(\"Gopher\")\n    fmt.Println(msg)\n}\n```\n\n## Go Modules\n```bash\n# Initialize module\ngo mod init example.com/myproject\n\n# Add dependencies\ngo get github.com/gin-gonic/gin\n\n# Organize dependencies\ngo mod tidy\n```"
+                },
+                "テストの書き方": {
+                    "title": "How to Write Tests",
+                    "content": "// math.go\npackage math\n\nfunc Add(a, b int) int {\n    return a + b\n}\n\n// math_test.go\npackage math\n\nimport \"testing\"\n\nfunc TestAdd(t *testing.T) {\n    result := Add(2, 3)\n    expected := 5\n    \n    if result != expected {\n        t.Errorf(\"Add(2, 3) = %d; want %d\", result, expected)\n    }\n}\n\n// Run tests\n// go test"
+                },
+                "Goのベストプラクティス": {
+                    "title": "Go Best Practices",
+                    "content": "# Go Best Practices\n\n## Coding Style\n1. Format with `gofmt`\n2. Lint with `golint`\n3. Always check errors\n4. Use short variable names\n5. Keep interfaces small\n\n## Project Structure\n```\nmyproject/\n├── cmd/\n│   └── myapp/\n│       └── main.go\n├── internal/\n│   └── package/\n├── pkg/\n│   └── public/\n├── go.mod\n└── go.sum\n```\n\n## Error Handling\n- Don't ignore errors\n- Appropriate error messages\n- Use custom error types\n\n## Performance\n- Write benchmarks\n- Use profiling\n- Avoid unnecessary allocations"
+                },
+                "REST API完全実装例": {
+                    "title": "Complete REST API Implementation Example",
+                    "content": "// main.go - REST API using Gin\npackage main\n\nimport (\n    \"github.com/gin-gonic/gin\"\n    \"net/http\"\n    \"strconv\"\n)\n\ntype Book struct {\n    ID     int    `json:\"id\"`\n    Title  string `json:\"title\"`\n    Author string `json:\"author\"`\n    Year   int    `json:\"year\"`\n}\n\nvar books = []Book{\n    {ID: 1, Title: \"The Go Programming Language\", Author: \"Alan Donovan\", Year: 2015},\n    {ID: 2, Title: \"Learning Go\", Author: \"Jon Bodner\", Year: 2021},\n}\n\nfunc main() {\n    router := gin.Default()\n    \n    // CORS middleware\n    router.Use(corsMiddleware())\n    \n    // Routes\n    router.GET(\"/api/books\", getBooks)\n    router.GET(\"/api/books/:id\", getBook)\n    router.POST(\"/api/books\", createBook)\n    router.PUT(\"/api/books/:id\", updateBook)\n    router.DELETE(\"/api/books/:id\", deleteBook)\n    \n    router.Run(\":8080\")\n}\n\n// GET /api/books\nfunc getBooks(c *gin.Context) {\n    c.JSON(http.StatusOK, gin.H{\"data\": books})\n}\n\n// GET /api/books/:id\nfunc getBook(c *gin.Context) {\n    id, _ := strconv.Atoi(c.Param(\"id\"))\n    \n    for _, book := range books {\n        if book.ID == id {\n            c.JSON(http.StatusOK, gin.H{\"data\": book})\n            return\n        }\n    }\n    \n    c.JSON(http.StatusNotFound, gin.H{\"error\": \"Book not found\"})\n}\n\n// POST /api/books\nfunc createBook(c *gin.Context) {\n    var newBook Book\n    \n    if err := c.ShouldBindJSON(&newBook); err != nil {\n        c.JSON(http.StatusBadRequest, gin.H{\"error\": err.Error()})\n        return\n    }\n    \n    newBook.ID = len(books) + 1\n    books = append(books, newBook)\n    \n    c.JSON(http.StatusCreated, gin.H{\"data\": newBook})\n}\n\n// PUT /api/books/:id\nfunc updateBook(c *gin.Context) {\n    id, _ := strconv.Atoi(c.Param(\"id\"))\n    \n    var updated Book\n    if err := c.ShouldBindJSON(&updated); err != nil {\n        c.JSON(http.StatusBadRequest, gin.H{\"error\": err.Error()})\n        return\n    }\n    \n    for i, book := range books {\n        if book.ID == id {\n            books[i].Title = updated.Title\n            books[i].Author = updated.Author\n            books[i].Year = updated.Year\n            c.JSON(http.StatusOK, gin.H{\"data\": books[i]})\n            return\n        }\n    }\n    \n    c.JSON(http.StatusNotFound, gin.H{\"error\": \"Book not found\"})\n}\n\n// DELETE /api/books/:id\nfunc deleteBook(c *gin.Context) {\n    id, _ := strconv.Atoi(c.Param(\"id\"))\n    \n    for i, book := range books {\n        if book.ID == id {\n            books = append(books[:i], books[i+1:]...)\n            c.JSON(http.StatusOK, gin.H{\"message\": \"Book deleted\"})\n            return\n        }\n    }\n    \n    c.JSON(http.StatusNotFound, gin.H{\"error\": \"Book not found\"})\n}\n\nfunc corsMiddleware() gin.HandlerFunc {\n    return func(c *gin.Context) {\n        c.Writer.Header().Set(\"Access-Control-Allow-Origin\", \"*\")\n        c.Writer.Header().Set(\"Access-Control-Allow-Methods\", \"GET,POST,PUT,DELETE,OPTIONS\")\n        c.Writer.Header().Set(\"Access-Control-Allow-Headers\", \"Content-Type\")\n        \n        if c.Request.Method == \"OPTIONS\" {\n            c.AbortWithStatus(http.StatusNoContent)\n            return\n        }\n        \n        c.Next()\n    }\n}"
+                },
+                "最終課題：Todo API with PostgreSQL": {
+                    "title": "Final Assignment: Todo API with PostgreSQL",
+                    "content": "# Final Assignment: Todo REST API\n\n## Goal\nBuild a complete REST API using Gin + PostgreSQL + Goroutines\n\n## Requirements\n\n### 1. Functional Requirements\n- [ ] CRUD operations (Create, Read, Update, Delete)\n- [ ] PostgreSQL database connection\n- [ ] JWT authentication\n- [ ] Validation\n- [ ] Error handling\n- [ ] Logging\n- [ ] Tests\n\n### 2. Endpoints\n\n```\nPOST   /api/auth/register  - User registration\nPOST   /api/auth/login     - Login\nGET    /api/todos          - Get todo list\nGET    /api/todos/:id      - Get todo details\nPOST   /api/todos          - Create todo\nPUT    /api/todos/:id      - Update todo\nDELETE /api/todos/:id      - Delete todo\n```\n\n### 3. Database Schema\n\n```sql\nCREATE TABLE users (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(255) NOT NULL,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE todos (\n    id SERIAL PRIMARY KEY,\n    user_id INT REFERENCES users(id),\n    title VARCHAR(255) NOT NULL,\n    description TEXT,\n    completed BOOLEAN DEFAULT FALSE,\n    due_date TIMESTAMP,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n```\n\n### 4. Project Structure\n\n```\ntodo-api/\n├── main.go\n├── go.mod\n├── go.sum\n├── config/\n│   └── database.go\n├── models/\n│   ├── user.go\n│   └── todo.go\n├── controllers/\n│   ├── auth.go\n│   └── todo.go\n├── middleware/\n│   ├── auth.go\n│   └── logger.go\n├── routes/\n│   └── routes.go\n├── utils/\n│   ├── jwt.go\n│   └── validator.go\n└── tests/\n    ├── auth_test.go\n    └── todo_test.go\n```\n\n### 5. Sample Implementation (models/todo.go)\n\n```go\npackage models\n\nimport \"time\"\n\ntype Todo struct {\n    ID          int       `json:\"id\"`\n    UserID      int       `json:\"user_id\"`\n    Title       string    `json:\"title\" binding:\"required,min=3,max=255\"`\n    Description string    `json:\"description\"`\n    Completed   bool      `json:\"completed\"`\n    DueDate     time.Time `json:\"due_date\"`\n    CreatedAt   time.Time `json:\"created_at\"`\n    UpdatedAt   time.Time `json:\"updated_at\"`\n}\n```\n\n### 6. Test Implementation\n\n```go\n// tests/todo_test.go\npackage tests\n\nimport (\n    \"testing\"\n    \"github.com/stretchr/testify/assert\"\n)\n\nfunc TestCreateTodo(t *testing.T) {\n    // Test code\n    assert.Equal(t, expected, actual)\n}\n```\n\n### 7. Execution\n\n```bash\n# Install dependencies\ngo mod init todo-api\ngo get github.com/gin-gonic/gin\ngo get gorm.io/gorm\ngo get gorm.io/driver/postgres\ngo get github.com/golang-jwt/jwt/v5\n\n# Run\ngo run main.go\n\n# Test\ngo test ./...\n\n# Build\ngo build -o todo-api\n```\n\n## Evaluation Criteria\n\n- Code Quality: 30 points\n- Feature Completeness: 30 points\n- Error Handling: 15 points\n- Tests: 15 points\n- Documentation: 10 points\n\n## Bonus Challenges\n\n- [ ] Dockerize (+5 points)\n- [ ] CI/CD (GitHub Actions) (+5 points)\n- [ ] WebSocket notifications (+10 points)\n- [ ] Caching (Redis) (+5 points)"
+                },
+                "Goベストプラクティスまとめ": {
+                    "title": "Go Best Practices Summary",
+                    "content": "# Complete Go Best Practices Guide\n\n## 1. Coding Style\n\n### Formatting\n```bash\n# Auto format\ngo fmt ./...\n\n# Stricter formatting\ngoimports -w .\n```\n\n### Naming Conventions\n```go\n// Package: lowercase, singular\npackage user\n\n// Function: camelCase\nfunc GetUserByID(id int) (*User, error)\n\n// Variable: camelCase\nvar userCount int\n\n// Constant: camelCase\nconst MaxRetries = 3\n\n// Exported: starts with capital\ntype User struct {}\n\n// Unexported: starts with lowercase\ntype user struct {}\n```\n\n## 2. Error Handling\n\n### Basic Pattern\n```go\n// Always check errors\nresult, err := someFunction()\nif err != nil {\n    return nil, fmt.Errorf(\"someFunction failed: %w\", err)\n}\n\n// Last return value is error\nfunc DoSomething() (Result, error)\n\n// Custom errors\nvar ErrNotFound = errors.New(\"not found\")\n\ntype ValidationError struct {\n    Field string\n    Message string\n}\n\nfunc (e *ValidationError) Error() string {\n    return fmt.Sprintf(\"%s: %s\", e.Field, e.Message)\n}\n```\n\n## 3. Concurrency\n\n### Goroutines\n```go\n// Wait with WaitGroup\nvar wg sync.WaitGroup\n\nfor i := 0; i < 10; i++ {\n    wg.Add(1)\n    go func(i int) {\n        defer wg.Done()\n        // Process\n    }(i)\n}\n\nwg.Wait()\n\n// Cancel with Context\nctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)\ndefer cancel()\n\ngo func() {\n    select {\n    case <-ctx.Done():\n        fmt.Println(\"Cancelled\")\n        return\n    case result := <-ch:\n        fmt.Println(result)\n    }\n}()\n```\n\n## 4. Performance\n\n### Memory Efficiency\n```go\n// Pre-allocate slice capacity\nslice := make([]int, 0, 100)\n\n// String concatenation with strings.Builder\nvar builder strings.Builder\nfor i := 0; i < 1000; i++ {\n    builder.WriteString(\"test\")\n}\nresult := builder.String()\n\n// Pointer vs Value\n// Small structs: pass by value\ntype Point struct { X, Y int }\nfunc Move(p Point) Point\n\n// Large structs: pass by pointer\ntype LargeStruct struct { /* many fields */ }\nfunc Process(p *LargeStruct) error\n```\n\n## 5. Testing\n\n### Table-Driven Tests\n```go\nfunc TestAdd(t *testing.T) {\n    tests := []struct {\n        name string\n        a, b int\n        want int\n    }{\n        {\"positive\", 1, 2, 3},\n        {\"negative\", -1, -2, -3},\n        {\"zero\", 0, 0, 0},\n    }\n    \n    for _, tt := range tests {\n        t.Run(tt.name, func(t *testing.T) {\n            got := Add(tt.a, tt.b)\n            if got != tt.want {\n                t.Errorf(\"Add(%d, %d) = %d; want %d\",\n                    tt.a, tt.b, got, tt.want)\n            }\n        })\n    }\n}\n```\n\n## 6. Security\n\n```go\n// Password hashing\nimport \"golang.org/x/crypto/bcrypt\"\n\nhash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)\nvalid := bcrypt.CompareHashAndPassword(hash, []byte(password))\n\n// SQL injection prevention\ndb.Exec(\"INSERT INTO users (name) VALUES ($1)\", name)\n\n// XSS prevention\nimport \"html/template\"\nt := template.Must(template.New(\"name\").Parse(tmpl))\n```"
+                }
+            }
         }
     }
 }

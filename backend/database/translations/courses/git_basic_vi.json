@@ -55,43 +55,262 @@
     "tasks": {
         "第1週：Gitとは？環境設定": {
             "title": "Tuần 1: Git là gì? Thiết lập Môi trường",
-            "description": "Khái niệm quản lý phiên bản, cài đặt Git, cấu hình ban đầu"
+            "description": "Khái niệm quản lý phiên bản, cài đặt Git, cấu hình ban đầu",
+            "subtasks": {
+                "Gitをインストール": "Cài đặt Git",
+                "Gitの初期設定": "Cấu hình Git ban đầu",
+                "バージョン管理の概念を理解": "Hiểu khái niệm quản lý phiên bản",
+                "最初のリポジトリを作成": "Tạo repository đầu tiên"
+            },
+            "knowledge_items": {
+                "Gitとは？": {
+                    "title": "Git là gì?",
+                    "content": "# Git là gì?\n\n**Git** là hệ thống quản lý phiên bản phân tán được phát triển bởi Linus Torvalds vào năm 2005.\n\n## Quản lý Phiên bản là gì?\nHệ thống ghi lại và quản lý lịch sử thay đổi của mã nguồn.\n\n### Lợi ích\n1. **Quản lý Lịch sử**: Ghi lại khi nào, ai, và cái gì đã thay đổi\n2. **Sao lưu**: Có thể quay lại trạng thái trước\n3. **Phát triển Song song**: Nhiều người có thể phát triển đồng thời\n4. **Thay đổi Thử nghiệm**: An toàn thử nghiệm với branches\n\n## Đặc điểm Git\n- **Phân tán**: Mỗi nhà phát triển có bản sao đầy đủ\n- **Nhanh**: Hầu hết thao tác hoàn thành cục bộ\n- **Branches Nhẹ**: Dễ thử nghiệm và phát triển tính năng\n- **Tính Toàn vẹn Dữ liệu**: Quản lý bằng SHA-1 hash\n\n## Sự khác biệt giữa Git và GitHub\n- **Git**: Hệ thống quản lý phiên bản (công cụ)\n- **GitHub**: Dịch vụ lưu trữ cho Git repositories (dịch vụ web)"
+                },
+                "Git初期設定": {
+                    "title": "Cấu hình Git Ban đầu",
+                    "content": "# Kiểm tra phiên bản Git\ngit --version\n\n# Thiết lập thông tin người dùng (bắt buộc)\ngit config --global user.name \"Your Name\"\ngit config --global user.email \"your.email@example.com\"\n\n# Thiết lập tên nhánh mặc định\ngit config --global init.defaultBranch main\n\n# Thiết lập trình soạn thảo (tùy chọn)\ngit config --global core.editor \"code --wait\"\n\n# Kiểm tra cấu hình\ngit config --list\ngit config user.name\ngit config user.email"
+                },
+                "最初のリポジトリ作成": {
+                    "title": "Tạo Repository Đầu tiên",
+                    "content": "# Tạo thư mục mới\nmkdir my-first-repo\ncd my-first-repo\n\n# Khởi tạo như Git repository\ngit init\n\n# Thư mục .git được tạo (thư mục ẩn)\nls -la\n\n# Tạo tệp\necho \"# My First Repository\" > README.md\n\n# Kiểm tra trạng thái\ngit status"
+                }
+            }
         },
         "第2週：基本コマンド（add, commit, log）": {
             "title": "Tuần 2: Lệnh Cơ bản (add, commit, log)",
-            "description": "Cơ bản về staging, commits, xem lịch sử"
+            "description": "Cơ bản về staging, commits, xem lịch sử",
+            "subtasks": {
+                "git addを学習": "Học git add",
+                "git commitを学習": "Học git commit",
+                "git logを学習": "Học git log",
+                "コミットメッセージの書き方を学習": "Học cách viết commit message"
+            },
+            "knowledge_items": {
+                "Gitの3つのエリア": {
+                    "title": "3 Vùng của Git",
+                    "content": "# 3 Vùng của Git\n\n```\nWorking Directory → Staging Area → Repository\n(Thư mục Làm việc)  (Staging)     (Repository)\n```\n\n1. **Working Directory**: Nơi bạn chỉnh sửa tệp\n2. **Staging Area**: Nơi bạn chuẩn bị thay đổi cho commit\n3. **Repository**: Nơi lịch sử đã commit được lưu trữ\n\n## Quy trình Cơ bản\n```bash\n# 1. Chỉnh sửa tệp\necho \"Hello Git\" > file.txt\n\n# 2. Thêm vào staging\ngit add file.txt\n\n# 3. Commit (ghi vào lịch sử)\ngit commit -m \"Add file.txt\"\n```"
+                },
+                "git add - ステージング": {
+                    "title": "git add - Staging",
+                    "content": "# Stage tệp cụ thể\ngit add README.md\ngit add src/main.js\n\n# Stage nhiều tệp\ngit add file1.txt file2.txt\n\n# Stage tất cả thay đổi\ngit add .\ngit add -A\n\n# Chế độ tương tác\ngit add -i\n\n# Chế độ patch (stage một phần thay đổi)\ngit add -p\n\n# Kiểm tra trạng thái staging\ngit status"
+                },
+                "git commit - コミット": {
+                    "title": "git commit - Commit",
+                    "content": "# Commit cơ bản\ngit commit -m \"Add new feature\"\n\n# Commit message nhiều dòng\ngit commit -m \"Add user authentication\" -m \"- Implement login form\" -m \"- Add validation\"\n\n# Stage + commit đồng thời (chỉ tệp đã theo dõi)\ngit commit -am \"Update README\"\n\n# Viết commit message trong trình soạn thảo\ngit commit\n\n# Sửa commit trước\ngit commit --amend\n\n# Commit trống (cho test, v.v.)\ngit commit --allow-empty -m \"Trigger CI\""
+                },
+                "git log - 履歴確認": {
+                    "title": "git log - Xem Lịch sử",
+                    "content": "# Hiển thị log cơ bản\ngit log\n\n# Hiển thị gọn (một dòng)\ngit log --oneline\n\n# Hiển thị đồ thị\ngit log --graph --oneline --all\n\n# Chỉ hiển thị N commit mới nhất\ngit log -5\ngit log -n 3\n\n# Với thống kê\ngit log --stat\n\n# Hiển thị thay đổi\ngit log -p\ngit log --patch\n\n# Lọc theo tác giả\ngit log --author=\"John\"\n\n# Lọc theo ngày\ngit log --since=\"2024-01-01\"\ngit log --after=\"1 week ago\"\n\n# Lịch sử tệp\ngit log README.md\n\n# Định dạng tùy chỉnh\ngit log --pretty=format:\"%h - %an, %ar : %s\""
+                },
+                "良いコミットメッセージの書き方": {
+                    "title": "Cách Viết Commit Message Tốt",
+                    "content": "# Cách Viết Commit Message Tốt\n\n## Quy tắc Cơ bản\n1. **Dòng 1**: Tóm tắt trong 50 ký tự (mệnh lệnh)\n2. **Dòng 2**: Dòng trống\n3. **Dòng 3+**: Mô tả chi tiết (xuống dòng ở 72 ký tự)\n\n## Ví dụ Định dạng\n```\nAdd user authentication feature\n\n- Implement login form with email/password\n- Add JWT token generation\n- Create auth middleware for protected routes\n- Add input validation\n\nFixes #123\n```\n\n## Quy ước Tiền tố (Conventional Commits)\n- `feat:` Tính năng mới\n- `fix:` Sửa lỗi\n- `docs:` Tài liệu\n- `style:` Kiểu mã\n- `refactor:` Tái cấu trúc\n- `test:` Thêm test\n- `chore:` Build, thay đổi cấu hình\n\nVí dụ:\n```\nfeat: add user profile page\nfix: resolve login redirect issue\ndocs: update API documentation\n```"
+                }
+            }
         },
         "第3週：ブランチとマージの基礎": {
             "title": "Tuần 3: Cơ bản Branch và Merge",
-            "description": "Tạo branch, chuyển đổi, merge branches"
+            "description": "Tạo branch, chuyển đổi, merge branches",
+            "subtasks": {
+                "ブランチの概念を理解": "Hiểu khái niệm branch",
+                "ブランチを作成・切り替え": "Tạo và chuyển đổi branch",
+                "マージを学習": "Học merge",
+                "コンフリクト解消を学習": "Học giải quyết xung đột"
+            },
+            "knowledge_items": {
+                "ブランチとは？": {
+                    "title": "Branch là gì?",
+                    "content": "# Branch là gì?\n\nBranches tạo các dòng phát triển độc lập.\n\n## Mục đích Sử dụng Branches\n1. **Phát triển Tính năng**: Phát triển tính năng mới độc lập\n2. **Sửa Lỗi**: Sửa vấn đề production\n3. **Thử nghiệm**: Kiểm tra thay đổi thử nghiệm\n4. **Phát hành**: Quản lý phiên bản\n\n## Chiến lược Branch\n```\nmain (production)\n  |\n  |-- develop (development)\n  |     |\n  |     |-- feature/user-auth (Tính năng A)\n  |     |-- feature/payment (Tính năng B)\n  |\n  |-- hotfix/critical-bug (Sửa khẩn cấp)\n```\n\n## Branches Mặc định\n- **main** / **master**: Cho production\n- **develop**: Cho development\n- **feature/xxx**: Cho phát triển tính năng"
+                },
+                "ブランチ操作": {
+                    "title": "Thao tác Branch",
+                    "content": "# Liệt kê branches\ngit branch\ngit branch -a  # Cũng hiển thị remote branches\n\n# Tạo branch mới\ngit branch feature/login\ngit branch develop\n\n# Chuyển đổi branch\ngit checkout feature/login\ngit checkout develop\n\n# Tạo + chuyển đổi (đồng thời)\ngit checkout -b feature/payment\ngit checkout -b hotfix/bug-123\n\n# Lệnh mới (Git 2.23+)\ngit switch feature/login  # Chuyển đổi\ngit switch -c feature/new  # Tạo + chuyển đổi\n\n# Đổi tên branch\ngit branch -m old-name new-name\n\n# Xóa branch\ngit branch -d feature/login  # Chỉ đã merge\ngit branch -D feature/login  # Xóa cưỡng bức"
+                },
+                "マージ": {
+                    "title": "Merge",
+                    "content": "# Merge cơ bản (Fast-forward)\ngit checkout main\ngit merge feature/login\n\n# Tạo merge commit (--no-ff)\ngit merge --no-ff feature/payment\n\n# Hủy merge\ngit merge --abort\n\n# Kiểm tra branches đã merge\ngit branch --merged\ngit branch --no-merged\n\n# Ví dụ: Quy trình phát triển tính năng\n# 1. Tạo branch mới\ngit checkout -b feature/user-profile\n\n# 2. Phát triển & commit\ngit add .\ngit commit -m \"Add user profile page\"\n\n# 3. Quay lại main branch\ngit checkout main\n\n# 4. Merge\ngit merge feature/user-profile\n\n# 5. Xóa branch\ngit branch -d feature/user-profile"
+                },
+                "コンフリクト（競合）解消": {
+                    "title": "Giải quyết Xung đột",
+                    "content": "# Khi xung đột xảy ra\n$ git merge feature/payment\nAuto-merging file.txt\nCONFLICT (content): Merge conflict in file.txt\nAutomatic merge failed; fix conflicts and then commit the result.\n\n# Kiểm tra tệp xung đột\ngit status\n\n# Dấu xung đột trong tệp\n<<<<<<< HEAD\nĐây là nội dung từ branch hiện tại\n=======\nĐây là nội dung từ branch đang merge\n>>>>>>> feature/payment\n\n# Các bước Giải quyết:\n# 1. Chỉnh sửa tệp thủ công và xóa dấu\n# 2. Quyết định giữ thay đổi nào\n# 3. Stage\ngit add file.txt\n\n# 4. Hoàn thành merge commit\ngit commit\n\n# Hủy giải quyết xung đột\ngit merge --abort\n\n# Sử dụng công cụ merge\ngit mergetool"
+                }
+            }
         },
         "第4週：GitHubとリモートリポジトリ": {
             "title": "Tuần 4: GitHub và Remote Repositories",
-            "description": "Thiết lập tài khoản GitHub, tạo remote repositories"
+            "description": "Thiết lập tài khoản GitHub, tạo remote repositories",
+            "subtasks": {
+                "GitHubアカウントを作成": "Tạo tài khoản GitHub",
+                "SSH/HTTPS認証を設定": "Thiết lập xác thực SSH/HTTPS",
+                "リモートリポジトリを作成": "Tạo remote repository",
+                "clone、remoteを学習": "Học clone và remote"
+            },
+            "knowledge_items": {
+                "GitHubとは？": {
+                    "title": "GitHub là gì?",
+                    "content": "# GitHub là gì?\n\n**GitHub** là dịch vụ lưu trữ cho Git repositories.\n\n## Tính năng Chính của GitHub\n1. **Lưu trữ Repository**: Lưu mã trên đám mây\n2. **Cộng tác**: Phát triển với nhóm\n3. **Quản lý Issue**: Theo dõi lỗi và yêu cầu tính năng\n4. **Pull Request**: Code review\n5. **GitHub Actions**: Tự động hóa CI/CD\n6. **GitHub Pages**: Lưu trữ website\n7. **Quản lý Dự án**: Bảng kanban\n\n## Dịch vụ Cạnh tranh GitHub\n- **GitLab**: Có thể tự lưu trữ\n- **Bitbucket**: Tích hợp với sản phẩm Atlassian\n- **Azure Repos**: Sản phẩm Microsoft\n\n## Public vs Private\n- **Public**: Ai cũng có thể xem (mã nguồn mở)\n- **Private**: Chỉ người được mời mới xem được"
+                },
+                "SSH認証設定": {
+                    "title": "Thiết lập Xác thực SSH",
+                    "content": "# Tạo SSH key\nssh-keygen -t ed25519 -C \"your.email@example.com\"\n\n# Sao chép SSH key vào clipboard (Mac)\npbcopy < ~/.ssh/id_ed25519.pub\n\n# Sao chép SSH key vào clipboard (Windows)\ncat ~/.ssh/id_ed25519.pub | clip\n\n# Sao chép SSH key vào clipboard (Linux)\ncat ~/.ssh/id_ed25519.pub | xclip -selection clipboard\n\n# GitHub > Settings > SSH and GPG keys > New SSH key\n# Nhập tiêu đề và dán key\n\n# Kiểm tra kết nối\nssh -T git@github.com\n# Thành công: \"Hi username! You've successfully authenticated...\""
+                },
+                "リモートリポジトリ操作": {
+                    "title": "Thao tác Remote Repository",
+                    "content": "# Clone repository hiện có\ngit clone https://github.com/username/repo.git\ngit clone git@github.com:username/repo.git  # SSH\n\n# Clone branch cụ thể\ngit clone -b develop https://github.com/username/repo.git\n\n# Thêm remote repository\ngit remote add origin https://github.com/username/repo.git\n\n# Kiểm tra remote repositories\ngit remote -v\n\n# Chi tiết remote repository\ngit remote show origin\n\n# Thay đổi URL remote repository\ngit remote set-url origin git@github.com:username/repo.git\n\n# Xóa remote repository\ngit remote remove origin\n\n# Nhiều remotes\ngit remote add upstream https://github.com/original/repo.git\ngit remote add origin https://github.com/myname/repo.git"
+                }
+            }
         },
         "第5週：Push、Pull、Fetch": {
             "title": "Tuần 5: Push, Pull, Fetch",
-            "description": "Đồng bộ local và remote repositories"
+            "description": "Đồng bộ local và remote repositories",
+            "subtasks": {
+                "git pushを学習": "Học git push",
+                "git pullを学習": "Học git pull",
+                "git fetchを学習": "Học git fetch",
+                "pullとfetchの違いを理解": "Hiểu sự khác biệt giữa pull và fetch"
+            },
+            "knowledge_items": {
+                "git push - アップロード": {
+                    "title": "git push - Tải lên",
+                    "content": "# Push cơ bản\ngit push origin main\ngit push origin develop\n\n# Push lần đầu (thiết lập upstream branch)\ngit push -u origin main\ngit push --set-upstream origin feature/login\n\n# Có thể bỏ qua sau đó\ngit push\n\n# Push tất cả branches\ngit push --all\n\n# Push tags\ngit push --tags\ngit push origin v1.0.0\n\n# Force push (nguy hiểm!)\ngit push -f origin main\ngit push --force-with-lease origin main  # An toàn hơn\n\n# Xóa branch\ngit push origin --delete feature/old-branch\ngit push origin :feature/old-branch  # Cú pháp cũ"
+                },
+                "git pull - ダウンロード + マージ": {
+                    "title": "git pull - Tải xuống + Merge",
+                    "content": "# Pull cơ bản (fetch + merge)\ngit pull origin main\n\n# Nếu upstream branch đã được thiết lập\ngit pull\n\n# Pull với rebase\ngit pull --rebase origin main\n\n# Lấy tất cả remote branches\ngit pull --all\n\n# Ví dụ: Quy trình phát triển nhóm\n# 1. Lấy mới nhất trước khi làm việc\ngit pull origin main\n\n# 2. Công việc phát triển\ngit add .\ngit commit -m \"Add feature\"\n\n# 3. Pull lại trước khi push\ngit pull origin main\n\n# 4. Giải quyết xung đột nếu có\n\n# 5. Push\ngit push origin main"
+                },
+                "git fetch - ダウンロードのみ": {
+                    "title": "git fetch - Chỉ Tải xuống",
+                    "content": "# Lấy thay đổi remote (không merge)\ngit fetch origin\n\n# Lấy branch cụ thể\ngit fetch origin main\n\n# Lấy từ tất cả remotes\ngit fetch --all\n\n# Phản ánh remote branches đã xóa\ngit fetch --prune\ngit fetch -p\n\n# Sự khác biệt giữa fetch và pull\n# git pull = git fetch + git merge\n\n# Quy trình cập nhật an toàn\n# 1. Chỉ fetch trước\ngit fetch origin main\n\n# 2. Kiểm tra khác biệt\ngit diff main origin/main\ngit log main..origin/main\n\n# 3. Merge nếu không có vấn đề\ngit merge origin/main\n\n# Hoặc pull ngay từ đầu\ngit pull origin main"
+                },
+                "PullとFetchの違い": {
+                    "title": "Sự khác biệt giữa Pull và Fetch",
+                    "content": "# Sự khác biệt giữa Pull và Fetch\n\n## git fetch\n- **Chỉ tải xuống** thay đổi remote\n- Branch local không thay đổi\n- Có thể kiểm tra khác biệt an toàn\n\n```bash\ngit fetch origin\ngit diff main origin/main  # Kiểm tra khác biệt\ngit merge origin/main      # Merge thủ công\n```\n\n## git pull\n- **Tải xuống + merge** thay đổi remote\n- Kết hợp `git fetch` + `git merge`\n- Tự động merge\n\n```bash\ngit pull origin main\n# = git fetch origin main + git merge origin/main\n```\n\n## Nên Dùng Cái nào?\n- **Người mới**: `git pull` là OK\n- **Thận trọng**: `git fetch` → kiểm tra → `git merge`\n- **Phát triển Nhóm**: `git pull --rebase` để giữ lịch sử sạch\n\n## pull --rebase\n```bash\ngit pull --rebase origin main\n```\nGiữ lịch sử thẳng mà không tạo merge commits."
+                }
+            }
         },
         "第6週：プルリクエストとコードレビュー": {
             "title": "Tuần 6: Pull Requests và Code Review",
-            "description": "Tạo pull requests, quy trình code review"
+            "description": "Tạo pull requests, quy trình code review",
+            "subtasks": {
+                "Pull Requestを作成": "Tạo Pull Request",
+                "コードレビューを学習": "Học code review",
+                "Issueを作成・管理": "Tạo và quản lý Issues"
+            },
+            "knowledge_items": {
+                "Pull Requestとは？": {
+                    "title": "Pull Request là gì?",
+                    "content": "# Pull Request (PR) là gì?\n\n**Pull Request (PR)** là yêu cầu để người khác xem xét thay đổi của bạn và merge chúng.\n\n## Lợi ích PR\n1. **Code Review**: Tìm lỗi và vi phạm best practices\n2. **Chia sẻ Kiến thức**: Nhóm hiểu mã\n3. **Cải thiện Chất lượng**: Được kiểm tra bởi nhiều người\n4. **Diễn đàn Thảo luận**: Thảo luận cách triển khai\n\n## Quy trình PR\n```\n1. Tạo branch\n   git checkout -b feature/new-feature\n\n2. Phát triển & commit\n   git add .\n   git commit -m \"Add new feature\"\n\n3. Push\n   git push origin feature/new-feature\n\n4. Tạo PR trên GitHub\n   - Nhập tiêu đề và mô tả\n   - Chỉ định reviewers\n\n5. Review & Sửa\n   - Xử lý phản hồi\n   - Thêm commits\n\n6. Merge\n   - Merge sau khi review được chấp nhận\n\n7. Xóa branch\n   git branch -d feature/new-feature\n```"
+                },
+                "良いPRの書き方": {
+                    "title": "Cách Viết PR Tốt",
+                    "content": "# Cách Viết Pull Request Tốt\n\n## Tiêu đề\n- Ngắn gọn và rõ ràng về nội dung\n- Ví dụ: `Add user authentication feature`\n- Ví dụ: `Fix login redirect bug #123`\n\n## Mô tả\n```markdown\n## Tổng quan\nĐã thêm tính năng xác thực người dùng.\n\n## Thay đổi\n- Triển khai form đăng nhập\n- Thêm xác thực JWT\n- Tạo middleware xác thực\n- Thêm validation\n\n## Test\n- [ ] Trường hợp đăng nhập thành công\n- [ ] Trường hợp đăng nhập thất bại\n- [ ] Hết hạn token\n\n## Screenshots\n(Nếu có thay đổi UI)\n\n## Issues Liên quan\nFixes #123\nCloses #124\n```\n\n## Kích thước PR\n- **Càng nhỏ càng tốt**: Dễ review\n- **1 PR cho 1 tính năng/sửa lỗi**\n- Lý tưởng: dưới 500 dòng\n\n## Tự Review\nXem lại mã của chính mình trước khi tạo PR."
+                },
+                "PR作成の流れ": {
+                    "title": "Quy trình Tạo PR",
+                    "content": "# 1. Tạo branch mới\ngit checkout -b feature/user-profile\n\n# 2. Công việc phát triển\n# ... viết mã ...\n\n# 3. Commit\ngit add .\ngit commit -m \"feat: add user profile page\"\n\n# 4. Push lên remote\ngit push -u origin feature/user-profile\n\n# 5. Tạo PR trên GitHub\n# https://github.com/username/repo/pull/new/feature/user-profile\n# Hoặc click link hiển thị trong trình duyệt\n\n# 6. Xử lý comment review\n# ... sửa ...\ngit add .\ngit commit -m \"refactor: improve validation logic\"\ngit push\n\n# 7. Sau khi merge, xóa local branch\ngit checkout main\ngit pull\ngit branch -d feature/user-profile\n\n# 8. Xóa remote branch (có thể tự động xóa trên GitHub)\ngit push origin --delete feature/user-profile"
+                },
+                "GitHub Issues": {
+                    "title": "GitHub Issues",
+                    "content": "# GitHub Issues\n\n**Issue** được sử dụng cho báo cáo lỗi, yêu cầu tính năng và quản lý tác vụ.\n\n## Loại Issue\n1. **Bug Report**: Báo cáo lỗi\n2. **Feature Request**: Đề xuất tính năng mới\n3. **Question**: Câu hỏi\n4. **Task**: Quản lý tác vụ\n\n## Ví dụ Template Issue\n```markdown\n## Mô tả Lỗi\nNút đăng nhập không phản hồi khi nhấn\n\n## Các bước Tái hiện\n1. Mở trang đăng nhập\n2. Nhập email và mật khẩu\n3. Nhấn nút đăng nhập\n\n## Hành vi Mong đợi\nChuyển hướng đến dashboard\n\n## Hành vi Thực tế\nKhông có gì xảy ra\n\n## Môi trường\n- OS: Windows 11\n- Browser: Chrome 120\n```\n\n## Tích hợp Issue và PR\n```bash\n# Tham chiếu Issue trong commit message\ngit commit -m \"Fix login button, refs #123\"\n\n# Đóng Issue trong PR\n# Thêm vào mô tả PR:\nFixes #123\nCloses #124\nResolves #125\n```"
+                }
+            }
         },
         "第7週：Rebase、Stash、Reset": {
             "title": "Tuần 7: Rebase, Stash, Reset",
-            "description": "Thao tác Git nâng cao cho quản lý lịch sử"
+            "description": "Thao tác Git nâng cao cho quản lý lịch sử",
+            "subtasks": {
+                "git rebaseを学習": "Học git rebase",
+                "git stashを学習": "Học git stash",
+                "git reset/revertを学習": "Học git reset/revert"
+            },
+            "knowledge_items": {
+                "git rebase - 履歴を整理": {
+                    "title": "git rebase - Tổ chức Lịch sử",
+                    "content": "# Rebase cơ bản\ngit checkout feature\ngit rebase main\n\n# Interactive rebase (chỉnh sửa commits quá khứ)\ngit rebase -i HEAD~3  # Chỉnh sửa 3 commit mới nhất\n\n# Lệnh có thể dùng trong rebase:\n# pick: Sử dụng commit như cũ\n# reword: Thay đổi commit message\n# edit: Chỉnh sửa commit\n# squash: Kết hợp với commit trước\n# fixup: Kết hợp với commit trước (bỏ message)\n# drop: Xóa commit\n\n# Ví dụ: Kết hợp nhiều commits thành một\ngit rebase -i HEAD~4\n# pick abc123 Add feature A\n# squash def456 Fix typo\n# squash ghi789 Update tests\n# squash jkl012 Fix bug\n\n# Hủy rebase\ngit rebase --abort\n\n# Tiếp tục rebase (sau khi giải quyết xung đột)\ngit add .\ngit rebase --continue\n\n# Bỏ qua rebase\ngit rebase --skip"
+                },
+                "MergeとRebaseの違い": {
+                    "title": "Sự khác biệt giữa Merge và Rebase",
+                    "content": "# Sự khác biệt giữa Merge và Rebase\n\n## git merge\n```\nmain:     A---B---C---F (merge commit)\n               \\       /\nfeature:        D---E\n```\n- Tạo merge commit\n- Lịch sử phân nhánh\n- Tất cả lịch sử được bảo tồn\n- **An toàn** và dễ hiểu\n\n## git rebase\n```\nmain:     A---B---C\nfeature:              D'---E'\n```\n- Làm lịch sử thẳng\n- Lịch sử sạch\n- Commits được viết lại\n- **Lịch sử đơn giản**\n\n## Nên Dùng Cái nào?\n- **Merge**: Branches đã publish, phát triển nhóm\n- **Rebase**: Branches của riêng bạn, khi muốn giữ lịch sử sạch\n\n## ⚠️ Cảnh báo\n**Đừng rebase commits đã push!**\nNó sẽ làm nhầm lẫn thành viên nhóm."
+                },
+                "git stash - 一時保存": {
+                    "title": "git stash - Lưu Tạm thời",
+                    "content": "# Lưu công việc hiện tại tạm thời\ngit stash\ngit stash save \"Work in progress on feature X\"\n\n# Bao gồm untracked files\ngit stash -u\ngit stash --include-untracked\n\n# Liệt kê stashes\ngit stash list\n# stash@{0}: WIP on main: abc123 Latest commit\n# stash@{1}: On feature: def456 Old work\n\n# Áp dụng stash (không xóa)\ngit stash apply\ngit stash apply stash@{1}\n\n# Áp dụng stash và xóa\ngit stash pop\ngit stash pop stash@{0}\n\n# Xem nội dung stash\ngit stash show\ngit stash show -p stash@{0}\n\n# Xóa stash\ngit stash drop stash@{0}\ngit stash clear  # Xóa tất cả\n\n# Ví dụ thực tế:\n# 1. Cần sửa lỗi khẩn cấp khi đang làm việc\ngit stash  # Lưu công việc hiện tại\ngit checkout -b hotfix/critical-bug\n# ... sửa lỗi ...\ngit checkout feature\ngit stash pop  # Tiếp tục công việc"
+                },
+                "git reset vs git revert": {
+                    "title": "git reset vs git revert",
+                    "content": "# git reset - Hủy commit (viết lại lịch sử)\n# --soft: Chỉ hủy commit (thay đổi vẫn ở staging)\ngit reset --soft HEAD~1\n\n# --mixed (mặc định): Hủy commit + staging\ngit reset HEAD~1\ngit reset --mixed HEAD~1\n\n# --hard: Hủy tất cả (nguy hiểm!)\ngit reset --hard HEAD~1\n\n# Reset đến commit cụ thể\ngit reset --hard abc123\n\n# git revert - Tạo revert commit (giữ lịch sử)\ngit revert HEAD  # Revert commit mới nhất\ngit revert abc123  # Revert commit cụ thể\n\n# Revert nhiều commits\ngit revert HEAD~3..HEAD\n\n# Khi nào dùng reset vs revert\n# - Trước khi push: reset OK\n# - Sau khi push: dùng revert (an toàn)\n\n# Reset tệp cụ thể\ngit reset HEAD file.txt  # Unstage\ngit checkout -- file.txt  # Bỏ thay đổi"
+                }
+            }
         },
         "第8週：タグ、Cherry-pick、高度なテクニック": {
             "title": "Tuần 8: Tags, Cherry-pick, Kỹ thuật Nâng cao",
-            "description": "Quản lý tag, cherry-pick, kỹ thuật Git nâng cao"
+            "description": "Quản lý tag, cherry-pick, kỹ thuật Git nâng cao",
+            "subtasks": {
+                "タグを学習": "Học tags",
+                "git cherry-pickを学習": "Học git cherry-pick",
+                "便利なGitコマンドを学習": "Học lệnh Git hữu ích"
+            },
+            "knowledge_items": {
+                "git tag - バージョン管理": {
+                    "title": "git tag - Quản lý Phiên bản",
+                    "content": "# Lightweight tag\ngit tag v1.0.0\ngit tag v1.1.0\n\n# Annotated tag (khuyến nghị)\ngit tag -a v1.0.0 -m \"Version 1.0.0 release\"\ngit tag -a v2.0.0 -m \"Major update with breaking changes\"\n\n# Liệt kê tags\ngit tag\ngit tag -l \"v1.*\"  # Tìm kiếm theo mẫu\n\n# Hiển thị chi tiết tag\ngit show v1.0.0\n\n# Gắn tag cho commit quá khứ\ngit tag -a v0.9.0 abc123 -m \"Beta release\"\n\n# Push tags\ngit push origin v1.0.0  # Tag cụ thể\ngit push origin --tags  # Tất cả tags\n\n# Checkout tag\ngit checkout v1.0.0\n\n# Xóa tag\ngit tag -d v1.0.0  # Local\ngit push origin --delete v1.0.0  # Remote\n\n# Semantic Versioning\n# v1.2.3\n#  | | └─ Patch: Sửa lỗi\n#  | └─── Minor: Thêm tính năng (tương thích ngược)\n#  └───── Major: Thay đổi phá vỡ"
+                },
+                "git cherry-pick": {
+                    "title": "git cherry-pick",
+                    "content": "# Chỉ lấy commit cụ thể\ngit cherry-pick abc123\n\n# Nhiều commits\ngit cherry-pick abc123 def456 ghi789\n\n# Phạm vi commits\ngit cherry-pick abc123..def456\n\n# Xung đột trong cherry-pick\ngit cherry-pick abc123\n# ... giải quyết xung đột ...\ngit add .\ngit cherry-pick --continue\n\n# Hủy cherry-pick\ngit cherry-pick --abort\n\n# Ví dụ thực tế:\n# Áp dụng sửa lỗi từ hotfix branch vào develop\ngit checkout develop\ngit cherry-pick abc123  # Lấy commit từ hotfix"
+                },
+                "便利なGitコマンド": {
+                    "title": "Lệnh Git Hữu ích",
+                    "content": "# git blame - Hiển thị người chỉnh sửa cuối của mỗi dòng\ngit blame file.txt\ngit blame -L 10,20 file.txt  # Chỉ dòng 10-20\n\n# git diff - Hiển thị khác biệt\ngit diff  # Working directory vs staging\ngit diff --staged  # Staging vs repository\ngit diff HEAD  # Working directory vs commit mới nhất\ngit diff main..feature  # Khác biệt giữa branches\ngit diff abc123 def456  # Khác biệt giữa commits\ngit diff --stat  # Chỉ thống kê\n\n# git show - Hiển thị nội dung commit\ngit show abc123\ngit show HEAD~2\ngit show v1.0.0\n\n# git reflog - Tất cả lịch sử thao tác\ngit reflog\ngit reflog show HEAD\n\n# Khôi phục sau khi reset nhầm\ngit reflog\ngit reset --hard abc123  # Quay lại commit tìm thấy trong reflog\n\n# git clean - Xóa tệp chưa theo dõi\ngit clean -n  # Kiểm tra tệp sẽ xóa (dry run)\ngit clean -f  # Thực thi xóa\ngit clean -fd  # Cũng xóa thư mục\n\n# git bisect - Tìm commit đã đưa lỗi vào\ngit bisect start\ngit bisect bad  # Hiện tại có lỗi\ngit bisect good abc123  # Commit này OK\n# ... tự động thu hẹp bằng tìm kiếm nhị phân ...\ngit bisect reset  # Kết thúc"
+                }
+            }
         },
         "第9週：ブランチ戦略とチーム開発": {
             "title": "Tuần 9: Chiến lược Branch và Phát triển Nhóm",
-            "description": "Git Flow, GitHub Flow, chiến lược cộng tác"
+            "description": "Git Flow, GitHub Flow, chiến lược cộng tác",
+            "subtasks": {
+                "Git Flowを学習": "Học Git Flow",
+                "GitHub Flowを学習": "Học GitHub Flow",
+                "フォークとコラボレーションを学習": "Học fork và cộng tác"
+            },
+            "knowledge_items": {
+                "Git Flow": {
+                    "title": "Git Flow",
+                    "content": "# Git Flow\n\nGit Flow là mô hình branching được đề xuất bởi Vincent Driessen.\n\n## Loại Branch\n\n### Branches Vĩnh viễn\n1. **main (master)**: Cho production\n2. **develop**: Branch chính cho development\n\n### Branches Tạm thời\n3. **feature/xxx**: Phát triển tính năng mới\n4. **release/x.x.x**: Chuẩn bị phát hành\n5. **hotfix/xxx**: Sửa lỗi khẩn cấp\n\n## Quy trình\n\n```\nmain ─────●─────────────●─────────●──\n          │             ↑         ↑\n          │        release/1.1  hotfix/bug\n          ↓             │         │\ndevelop ──●─────●───●───●─────────●──\n              ↗   ↗   ↘\n        feature/ feature/ feature/\n          A        B        C\n```\n\n## Cách Dùng\n\n### Phát triển Tính năng Mới\n```bash\n# Branch từ develop\ngit checkout develop\ngit checkout -b feature/user-auth\n# Phát triển...\ngit checkout develop\ngit merge --no-ff feature/user-auth\ngit branch -d feature/user-auth\n```\n\n### Phát hành\n```bash\ngit checkout -b release/1.0.0 develop\n# Sửa lỗi, cập nhật số phiên bản\ngit checkout main\ngit merge --no-ff release/1.0.0\ngit tag -a v1.0.0\ngit checkout develop\ngit merge --no-ff release/1.0.0\n```\n\n### Hotfix\n```bash\ngit checkout -b hotfix/critical-bug main\n# Sửa...\ngit checkout main\ngit merge --no-ff hotfix/critical-bug\ngit tag -a v1.0.1\ngit checkout develop\ngit merge --no-ff hotfix/critical-bug\n```"
+                },
+                "GitHub Flow": {
+                    "title": "GitHub Flow",
+                    "content": "# GitHub Flow\n\nQuy trình đơn giản được GitHub khuyến nghị.\n\n## Đặc điểm\n- **1 branch chính**: Chỉ main\n- **Triển khai Liên tục**: Triển khai thường xuyên\n- **Đơn giản**: Dễ hơn Git Flow\n\n## Quy trình\n\n```\nmain ──●─────────●─────────●─────────●──\n        ↘       ↗  ↘      ↗  ↘       ↗\n      feature/A  feature/B  feature/C\n```\n\n## Các bước\n\n### 1. Tạo Branch\n```bash\ngit checkout -b feature/new-button\n```\n\n### 2. Thêm Commits\n```bash\ngit add .\ngit commit -m \"Add new button\"\ngit push origin feature/new-button\n```\n\n### 3. Tạo Pull Request\nTạo PR trên GitHub\n\n### 4. Review & Thảo luận\nThành viên nhóm review\n\n### 5. Triển khai và Test\nTest trong môi trường staging\n\n### 6. Merge vào main\nMerge PR → Tự động triển khai\n\n## So sánh Git Flow và GitHub Flow\n\n| | Git Flow | GitHub Flow |\n|---|---|---|\n| **Độ phức tạp** | Phức tạp | Đơn giản |\n| **Branches** | 5 loại | 2 loại |\n| **Phù hợp** | Phát hành định kỳ | Triển khai liên tục |\n| **Nhóm** | Quy mô lớn | Quy mô nhỏ-trung |\n| **Phát hành** | Quản lý phiên bản | Luôn mới nhất |"
+                },
+                "フォークとコラボレーション": {
+                    "title": "Fork và Cộng tác",
+                    "content": "# Fork và Cộng tác\n\n## Mô hình Collaborator\nCó quyền truy cập trực tiếp vào repository\n\n```bash\n# 1. Clone\ngit clone git@github.com:team/project.git\n\n# 2. Tạo branch\ngit checkout -b feature/my-work\n\n# 3. Push\ngit push origin feature/my-work\n\n# 4. Tạo PR\n```\n\n## Mô hình Fork (Mã nguồn mở)\nSao chép vào tài khoản của bạn và làm việc\n\n### Các bước\n\n1. **Fork trên GitHub**\n   - Nhấn nút \"Fork\" trên repository gốc\n\n2. **Clone**\n```bash\ngit clone git@github.com:myname/project.git\ncd project\n```\n\n3. **Thêm upstream**\n```bash\ngit remote add upstream git@github.com:original/project.git\ngit remote -v\n# origin: Fork của bạn\n# upstream: Repository gốc\n```\n\n4. **Tạo branch & làm việc**\n```bash\ngit checkout -b feature/my-contribution\n# ... phát triển ...\ngit push origin feature/my-contribution\n```\n\n5. **Tạo PR**\n   - PR từ fork của bạn đến repository gốc\n\n6. **Lấy thay đổi upstream**\n```bash\ngit fetch upstream\ngit checkout main\ngit merge upstream/main\ngit push origin main\n```\n\n## Nên Dùng Cái nào?\n- **Collaborator**: Private, phát triển nhóm\n- **Fork**: Mã nguồn mở, người đóng góp bên ngoài"
+                }
+            }
         },
         "第10週：.gitignore、GitHub Actions、ベストプラクティス": {
             "title": "Tuần 10: .gitignore, GitHub Actions, Best Practices",
-            "description": "Cấu hình .gitignore, cơ bản GitHub Actions, best practices"
+            "description": "Cấu hình .gitignore, cơ bản GitHub Actions, best practices",
+            "subtasks": {
+                ".gitignoreを学習": "Học .gitignore",
+                "GitHub Actionsの基礎を学習": "Học cơ bản GitHub Actions",
+                "Gitのベストプラクティスを学習": "Học best practices Git"
+            },
+            "knowledge_items": {
+                ".gitignore": {
+                    "title": ".gitignore",
+                    "content": "# .gitignore - Chỉ định tệp cần bỏ qua\n\n# Tệp đặc trưng OS\n.DS_Store        # macOS\nThumbs.db        # Windows\n\n# Trình soạn thảo\n.vscode/\n.idea/\n*.swp\n*.swo\n\n# Dependencies\nnode_modules/\nvendor/\n__pycache__/\n*.pyc\n\n# Build artifacts\nbuild/\ndist/\n*.exe\n*.o\n*.class\n\n# Biến môi trường & tệp cấu hình\n.env\n.env.local\nconfig.local.js\n\n# Tệp log\n*.log\nlogs/\n\n# Databases\n*.sqlite\n*.db\n\n# Mẫu\n# Tất cả tệp txt\n*.txt\n\n# Ngoại lệ: Theo dõi README.txt\n!README.txt\n\n# Toàn bộ thư mục\ntemp/\n\n# Mẫu lồng nhau\n**/node_modules/\n\n# Thiết lập .gitignore toàn cục\ngit config --global core.excludesfile ~/.gitignore_global\n\n# Trình tạo .gitignore\n# https://gitignore.io"
+                },
+                "GitHub Actions基礎": {
+                    "title": "Cơ bản GitHub Actions",
+                    "content": "# .github/workflows/ci.yml\nname: CI\n\non:\n  push:\n    branches: [ main, develop ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    \n    steps:\n    - uses: actions/checkout@v3\n    \n    - name: Setup Node.js\n      uses: actions/setup-node@v3\n      with:\n        node-version: '18'\n    \n    - name: Install dependencies\n      run: npm install\n    \n    - name: Run tests\n      run: npm test\n    \n    - name: Run linter\n      run: npm run lint\n\n  build:\n    runs-on: ubuntu-latest\n    needs: test\n    \n    steps:\n    - uses: actions/checkout@v3\n    \n    - name: Build\n      run: npm run build\n    \n    - name: Upload artifact\n      uses: actions/upload-artifact@v3\n      with:\n        name: build-files\n        path: dist/"
+                },
+                "Gitのベストプラクティス": {
+                    "title": "Best Practices Git",
+                    "content": "# Best Practices Git\n\n## Commits\n1. **Nhỏ và thường xuyên**: Commit cho mỗi tính năng/sửa lỗi\n2. **Đơn vị có ý nghĩa**: Nhóm thay đổi liên quan\n3. **Message tốt**: Rõ ràng về cái gì và tại sao thay đổi\n4. **Commit mã hoạt động**: Tránh lỗi build\n\n## Branches\n1. **Bảo vệ main/develop**: Đừng push trực tiếp\n2. **Branch cho mỗi tính năng**: feature/xxx\n3. **Giữ ngắn hạn**: Đừng để lâu\n4. **Quy ước đặt tên**: Duy trì tính nhất quán\n\n## Pull Requests\n1. **PR nhỏ**: Kích thước dễ review\n2. **Mô tả chi tiết**: Bối cảnh, thay đổi, phương pháp test\n3. **Tự review**: Tự kiểm tra trước\n4. **Vượt qua CI**: Sau khi test thành công\n\n## Code Review\n1. **Xây dựng**: Đề xuất cải thiện rõ ràng\n2. **Nhanh chóng**: Trong 24 giờ\n3. **Đặt câu hỏi**: Hỏi nếu không hiểu\n4. **Tiêu chí chấp nhận**: Làm rõ\n\n## Những điều Không nên Làm\n1. ❌ Rebase commits đã push\n2. ❌ Push trực tiếp vào main branch\n3. ❌ Commits quá lớn\n4. ❌ Commit message vô nghĩa (chỉ \"fix\", \"update\")\n5. ❌ Commit mật khẩu hoặc khóa bí mật\n6. ❌ Dùng `git push -f` trên branch production\n\n## Alias Hữu ích\n```bash\ngit config --global alias.st status\ngit config --global alias.co checkout\ngit config --global alias.br branch\ngit config --global alias.ci commit\ngit config --global alias.unstage 'reset HEAD --'\ngit config --global alias.last 'log -1 HEAD'\ngit config --global alias.lg \"log --graph --oneline --all\"\n```"
+                }
+            }
         }
     }
 }

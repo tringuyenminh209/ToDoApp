@@ -55,43 +55,136 @@
     "tasks": {
         "第1週：TypeScriptとは？環境構築": {
             "title": "Week 1: What is TypeScript? Environment Setup",
-            "description": "TypeScript overview, installation, tsconfig.json, compilation"
+            "description": "TypeScript overview, installation, tsconfig.json, compilation",
+            "subtasks": {
+                "TypeScriptをインストール": "Install TypeScript",
+                "tsconfig.jsonを設定": "Configure tsconfig.json",
+                "最初のTypeScriptプログラムを作成": "Create first TypeScript program"
+            },
+            "knowledge_items": {
+                "TypeScriptとは？": { "title": "What is TypeScript?", "content": "Static typing, JS superset, IDE support. TS vs JS. Used in Angular, React, Vue, Node." },
+                "TypeScript環境構築": { "title": "TypeScript Environment Setup", "content": "npm install typescript, tsc --init, tsc -w, ts-node." },
+                "tsconfig.json": { "title": "tsconfig.json", "content": "target, module, outDir, rootDir, strict, sourceMap, include/exclude." }
+            }
         },
         "第2週：基本的な型": {
             "title": "Week 2: Basic Types",
-            "description": "Primitive types, arrays, tuples, Enum, Any, Unknown"
+            "description": "Primitive types, arrays, tuples, Enum, Any, Unknown",
+            "subtasks": {
+                "プリミティブ型を学習": "Learn primitive types",
+                "配列とタプルを学習": "Learn arrays and tuples",
+                "Enum、Any、Unknownを学習": "Learn Enum, Any, Unknown"
+            },
+            "knowledge_items": {
+                "プリミティブ型": { "title": "Primitive Types", "content": "string, number, boolean. Type inference. null, undefined. Literal types, type alias." },
+                "配列とタプル": { "title": "Arrays and Tuples", "content": "number[], Array<T>. Tuples [string, number]. Labeled tuple. Rest in tuple." },
+                "Enum、Any、Unknown、Never": { "title": "Enum, Any, Unknown, Never", "content": "enum, const enum. any (avoid), unknown (safe). never, void." }
+            }
         },
         "第3週：関数とインターフェース": {
             "title": "Week 3: Functions and Interfaces",
-            "description": "Function typing, optional parameters, interfaces, type aliases"
+            "description": "Function typing, optional parameters, interfaces, type aliases",
+            "subtasks": {
+                "関数の型付けを学習": "Learn function typing",
+                "インターフェースを学習": "Learn interfaces"
+            },
+            "knowledge_items": {
+                "関数の型付け": { "title": "Function Typing", "content": "Params and return types. Optional, default, rest. Function type. Overloads." },
+                "インターフェース": { "title": "Interfaces", "content": "interface, optional, readonly. extends. SearchFunc, index signature." },
+                "InterfaceとType Aliasの違い": { "title": "Interface vs Type Alias", "content": "Interface: extensible, declaration merge. Type: union, tuple, complex types." }
+            }
         },
         "第4週：Union型とIntersection型": {
             "title": "Week 4: Union Types and Intersection Types",
-            "description": "Union types, Intersection types, type guards, Type Assertion"
+            "description": "Union types, Intersection types, type guards, Type Assertion",
+            "subtasks": {
+                "Union型を学習": "Learn Union types",
+                "Intersection型を学習": "Learn Intersection types",
+                "型ガードを学習": "Learn type guards"
+            },
+            "knowledge_items": {
+                "Union型とIntersection型": { "title": "Union and Intersection Types", "content": "A | B (either), A & B (both). Discriminated union." },
+                "型ガード": { "title": "Type Guards", "content": "typeof, instanceof, in. Custom 'pet is Fish'. Discriminated union with kind." },
+                "Type Assertion（型アサーション）": { "title": "Type Assertion", "content": "as HTMLElement. Non-null !. as const. Prefer type guards." }
+            }
         },
         "第5週：ジェネリクス": {
             "title": "Week 5: Generics",
-            "description": "Generic functions, generic classes, constraints, default types"
+            "description": "Generic functions, generic classes, constraints, default types",
+            "subtasks": {
+                "ジェネリック関数を学習": "Learn generic functions",
+                "ジェネリッククラスを学習": "Learn generic classes",
+                "ジェネリック制約を学習": "Learn generic constraints"
+            },
+            "knowledge_items": {
+                "ジェネリック関数": { "title": "Generic Functions", "content": "function identity<T>(arg: T): T. Multiple type params. Generic interface." },
+                "ジェネリッククラス": { "title": "Generic Classes", "content": "class Box<T>. Stack<T>, Pair<K,V>." },
+                "ジェネリック制約とデフォルト型": { "title": "Generic Constraints and Defaults", "content": "T extends HasLength. keyof. Default type param. merge<T,U>." }
+            }
         },
         "第6週：ユーティリティ型とMapped Types": {
             "title": "Week 6: Utility Types and Mapped Types",
-            "description": "Partial, Required, Readonly, Pick, Omit, Record, Mapped Types"
+            "description": "Partial, Required, Readonly, Pick, Omit, Record, Mapped Types",
+            "subtasks": {
+                "ビルトインユーティリティ型を学習": "Learn built-in utility types",
+                "Mapped Typesを学習": "Learn Mapped Types",
+                "Conditional Typesを学習": "Learn Conditional Types"
+            },
+            "knowledge_items": {
+                "ユーティリティ型": { "title": "Utility Types", "content": "Partial, Required, Readonly, Pick, Omit, Record. Exclude, Extract, NonNullable, ReturnType, Parameters." },
+                "Mapped Types": { "title": "Mapped Types", "content": "[P in keyof T]?: T[P]. Nullable<T>. Key remapping with as." },
+                "Conditional Types": { "title": "Conditional Types", "content": "T extends U ? X : Y. infer. DeepReadonly. Distributive conditional." }
+            }
         },
         "第7週：クラスとOOP": {
             "title": "Week 7: Classes and OOP",
-            "description": "Classes, inheritance, access modifiers, abstract classes, implements"
+            "description": "Classes, inheritance, access modifiers, abstract classes, implements",
+            "subtasks": {
+                "クラスの基本を学習": "Learn class basics",
+                "継承とポリモーフィズムを学習": "Learn inheritance and polymorphism"
+            },
+            "knowledge_items": {
+                "クラスの基本": { "title": "Class Basics", "content": "class, constructor, property shorthand. get/set. static. readonly." },
+                "継承と抽象クラス": { "title": "Inheritance and Abstract Class", "content": "extends, super. abstract class, abstract method. implements (interface)." }
+            }
         },
         "第8週：デコレータとモジュール": {
             "title": "Week 8: Decorators and Modules",
-            "description": "Decorators, Namespace, module system"
+            "description": "Decorators, Namespace, module system",
+            "subtasks": {
+                "デコレータを学習": "Learn decorators",
+                "Namespaceとモジュールを学習": "Learn Namespace and modules"
+            },
+            "knowledge_items": {
+                "デコレータ": { "title": "Decorators", "content": "Class, method, property, param decorators. experimentalDecorators. Decorator factory." },
+                "モジュールとNamespace": { "title": "Modules and Namespace", "content": "export/import, default. namespace (legacy). import type. Re-export." }
+            }
         },
         "第9週：React/Vue + TypeScript": {
             "title": "Week 9: React/Vue + TypeScript",
-            "description": "Using TypeScript with React/Vue, component typing"
+            "description": "Using TypeScript with React/Vue, component typing",
+            "subtasks": {
+                "React + TypeScriptを学習": "Learn React + TypeScript",
+                "Hooksの型付けを学習": "Learn typing Hooks"
+            },
+            "knowledge_items": {
+                "React + TypeScript": { "title": "React + TypeScript", "content": "FC<Props>, useState<T>, useRef<T>, useReducer. Custom hooks. Event types." },
+                "Vue 3 + TypeScript": { "title": "Vue 3 + TypeScript", "content": "defineComponent, PropType. ref, computed. Script setup, defineProps, defineEmits." }
+            }
         },
         "第10週：Node.js + TypeScript、テスト、ベストプラクティス": {
             "title": "Week 10: Node.js + TypeScript, Testing, Best Practices",
-            "description": "Express + TypeScript, Jest, ESLint, best practices"
+            "description": "Express + TypeScript, Jest, ESLint, best practices",
+            "subtasks": {
+                "Node.js + TypeScriptを学習": "Learn Node.js + TypeScript",
+                "Jestでテストを学習": "Learn testing with Jest",
+                "ベストプラクティスを学習": "Learn best practices"
+            },
+            "knowledge_items": {
+                "Express + TypeScript": { "title": "Express + TypeScript", "content": "Request<{id}>, Response. Typed body, middleware, error handler." },
+                "Jest + TypeScript": { "title": "Jest + TypeScript", "content": "ts-jest, describe/it. Mock with jest.MockedFunction. Typed tests." },
+                "TypeScriptベストプラクティス": { "title": "TypeScript Best Practices", "content": "Prefer inference, avoid any, strict mode, type guards, utility types, path alias, ESLint." }
+            }
         }
     }
 }

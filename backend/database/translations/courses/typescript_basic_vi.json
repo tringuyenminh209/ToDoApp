@@ -55,43 +55,136 @@
     "tasks": {
         "第1週：TypeScriptとは？環境構築": {
             "title": "Tuần 1: TypeScript là gì? Thiết lập Môi trường",
-            "description": "Tổng quan TypeScript, cài đặt, tsconfig.json, biên dịch"
+            "description": "Tổng quan TypeScript, cài đặt, tsconfig.json, biên dịch",
+            "subtasks": {
+                "TypeScriptをインストール": "Cài đặt TypeScript",
+                "tsconfig.jsonを設定": "Cấu hình tsconfig.json",
+                "最初のTypeScriptプログラムを作成": "Tạo chương trình TypeScript đầu tiên"
+            },
+            "knowledge_items": {
+                "TypeScriptとは？": { "title": "TypeScript là gì?", "content": "Kiểu tĩnh, siêu tập của JS, hỗ trợ IDE. TS vs JS. Dùng trong Angular, React, Vue, Node." },
+                "TypeScript環境構築": { "title": "Thiết lập Môi trường TypeScript", "content": "npm install typescript, tsc --init, tsc -w, ts-node." },
+                "tsconfig.json": { "title": "tsconfig.json", "content": "target, module, outDir, rootDir, strict, sourceMap, include/exclude." }
+            }
         },
         "第2週：基本的な型": {
             "title": "Tuần 2: Kiểu Cơ bản",
-            "description": "Kiểu nguyên thủy, mảng, tuple, Enum, Any, Unknown"
+            "description": "Kiểu nguyên thủy, mảng, tuple, Enum, Any, Unknown",
+            "subtasks": {
+                "プリミティブ型を学習": "Học kiểu nguyên thủy",
+                "配列とタプルを学習": "Học mảng và tuple",
+                "Enum、Any、Unknownを学習": "Học Enum, Any, Unknown"
+            },
+            "knowledge_items": {
+                "プリミティブ型": { "title": "Kiểu Nguyên thủy", "content": "string, number, boolean. Suy luận kiểu. null, undefined. Kiểu literal, type alias." },
+                "配列とタプル": { "title": "Mảng và Tuple", "content": "number[], Array<T>. Tuple [string, number]. Tuple có nhãn. Rest trong tuple." },
+                "Enum、Any、Unknown、Never": { "title": "Enum, Any, Unknown, Never", "content": "enum, const enum. any (tránh), unknown (an toàn). never, void." }
+            }
         },
         "第3週：関数とインターフェース": {
             "title": "Tuần 3: Hàm và Interface",
-            "description": "Gán kiểu cho hàm, tham số tùy chọn, interface, type alias"
+            "description": "Gán kiểu cho hàm, tham số tùy chọn, interface, type alias",
+            "subtasks": {
+                "関数の型付けを学習": "Học gán kiểu cho hàm",
+                "インターフェースを学習": "Học interface"
+            },
+            "knowledge_items": {
+                "関数の型付け": { "title": "Gán Kiểu cho Hàm", "content": "Tham số và kiểu trả về. Tùy chọn, mặc định, rest. Kiểu hàm. Overload." },
+                "インターフェース": { "title": "Interface", "content": "interface, optional, readonly. extends. SearchFunc, chỉ mục chữ ký." },
+                "InterfaceとType Aliasの違い": { "title": "Interface và Type Alias khác nhau thế nào", "content": "Interface: mở rộng được, gộp khai báo. Type: union, tuple, kiểu phức tạp." }
+            }
         },
         "第4週：Union型とIntersection型": {
             "title": "Tuần 4: Union Type và Intersection Type",
-            "description": "Union types, Intersection types, type guards, Type Assertion"
+            "description": "Union types, Intersection types, type guards, Type Assertion",
+            "subtasks": {
+                "Union型を学習": "Học Union types",
+                "Intersection型を学習": "Học Intersection types",
+                "型ガードを学習": "Học type guards"
+            },
+            "knowledge_items": {
+                "Union型とIntersection型": { "title": "Union và Intersection Types", "content": "A | B (một trong hai), A & B (cả hai). Discriminated union." },
+                "型ガード": { "title": "Type Guards", "content": "typeof, instanceof, in. Tùy chỉnh 'pet is Fish'. Discriminated union với kind." },
+                "Type Assertion（型アサーション）": { "title": "Type Assertion", "content": "as HTMLElement. Non-null !. as const. Ưu tiên type guards." }
+            }
         },
         "第5週：ジェネリクス": {
             "title": "Tuần 5: Generics",
-            "description": "Generic functions, generic classes, constraints, default types"
+            "description": "Generic functions, generic classes, constraints, default types",
+            "subtasks": {
+                "ジェネリック関数を学習": "Học generic functions",
+                "ジェネリッククラスを学習": "Học generic classes",
+                "ジェネリック制約を学習": "Học generic constraints"
+            },
+            "knowledge_items": {
+                "ジェネリック関数": { "title": "Generic Functions", "content": "function identity<T>(arg: T): T. Nhiều tham số kiểu. Generic interface." },
+                "ジェネリッククラス": { "title": "Generic Classes", "content": "class Box<T>. Stack<T>, Pair<K,V>." },
+                "ジェネリック制約とデフォルト型": { "title": "Ràng buộc và Kiểu Mặc định Generic", "content": "T extends HasLength. keyof. Tham số kiểu mặc định. merge<T,U>." }
+            }
         },
         "第6週：ユーティリティ型とMapped Types": {
             "title": "Tuần 6: Utility Types và Mapped Types",
-            "description": "Partial, Required, Readonly, Pick, Omit, Record, Mapped Types"
+            "description": "Partial, Required, Readonly, Pick, Omit, Record, Mapped Types",
+            "subtasks": {
+                "ビルトインユーティリティ型を学習": "Học utility types có sẵn",
+                "Mapped Typesを学習": "Học Mapped Types",
+                "Conditional Typesを学習": "Học Conditional Types"
+            },
+            "knowledge_items": {
+                "ユーティリティ型": { "title": "Utility Types", "content": "Partial, Required, Readonly, Pick, Omit, Record. Exclude, Extract, NonNullable, ReturnType, Parameters." },
+                "Mapped Types": { "title": "Mapped Types", "content": "[P in keyof T]?: T[P]. Nullable<T>. Đổi tên khóa với as." },
+                "Conditional Types": { "title": "Conditional Types", "content": "T extends U ? X : Y. infer. DeepReadonly. Conditional phân phối." }
+            }
         },
         "第7週：クラスとOOP": {
             "title": "Tuần 7: Class và OOP",
-            "description": "Class, kế thừa, access modifiers, abstract class, implements"
+            "description": "Class, kế thừa, access modifiers, abstract class, implements",
+            "subtasks": {
+                "クラスの基本を学習": "Học cơ bản class",
+                "継承とポリモーフィズムを学習": "Học kế thừa và đa hình"
+            },
+            "knowledge_items": {
+                "クラスの基本": { "title": "Cơ bản Class", "content": "class, constructor, viết tắt thuộc tính. get/set. static. readonly." },
+                "継承と抽象クラス": { "title": "Kế thừa và Abstract Class", "content": "extends, super. abstract class, abstract method. implements (interface)." }
+            }
         },
         "第8週：デコレータとモジュール": {
             "title": "Tuần 8: Decorators và Modules",
-            "description": "Decorators, Namespace, hệ thống module"
+            "description": "Decorators, Namespace, hệ thống module",
+            "subtasks": {
+                "デコレータを学習": "Học decorators",
+                "Namespaceとモジュールを学習": "Học Namespace và modules"
+            },
+            "knowledge_items": {
+                "デコレータ": { "title": "Decorators", "content": "Decorator class, method, property, param. experimentalDecorators. Decorator factory." },
+                "モジュールとNamespace": { "title": "Modules và Namespace", "content": "export/import, default. namespace (cũ). import type. Re-export." }
+            }
         },
         "第9週：React/Vue + TypeScript": {
             "title": "Tuần 9: React/Vue + TypeScript",
-            "description": "Sử dụng TypeScript với React/Vue, gán kiểu cho component"
+            "description": "Sử dụng TypeScript với React/Vue, gán kiểu cho component",
+            "subtasks": {
+                "React + TypeScriptを学習": "Học React + TypeScript",
+                "Hooksの型付けを学習": "Học gán kiểu cho Hooks"
+            },
+            "knowledge_items": {
+                "React + TypeScript": { "title": "React + TypeScript", "content": "FC<Props>, useState<T>, useRef<T>, useReducer. Custom hooks. Kiểu sự kiện." },
+                "Vue 3 + TypeScript": { "title": "Vue 3 + TypeScript", "content": "defineComponent, PropType. ref, computed. Script setup, defineProps, defineEmits." }
+            }
         },
         "第10週：Node.js + TypeScript、テスト、ベストプラクティス": {
             "title": "Tuần 10: Node.js + TypeScript, Testing, Best Practices",
-            "description": "Express + TypeScript, Jest, ESLint, best practices"
+            "description": "Express + TypeScript, Jest, ESLint, best practices",
+            "subtasks": {
+                "Node.js + TypeScriptを学習": "Học Node.js + TypeScript",
+                "Jestでテストを学習": "Học test với Jest",
+                "ベストプラクティスを学習": "Học best practices"
+            },
+            "knowledge_items": {
+                "Express + TypeScript": { "title": "Express + TypeScript", "content": "Request<{id}>, Response. Body có kiểu, middleware, error handler." },
+                "Jest + TypeScript": { "title": "Jest + TypeScript", "content": "ts-jest, describe/it. Mock với jest.MockedFunction. Test có kiểu." },
+                "TypeScriptベストプラクティス": { "title": "TypeScript Best Practices", "content": "Ưu tiên inference, tránh any, strict, type guards, utility types, path alias, ESLint." }
+            }
         }
     }
 }

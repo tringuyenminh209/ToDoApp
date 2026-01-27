@@ -55,43 +55,262 @@
     "tasks": {
         "第1週：Gitとは？環境設定": {
             "title": "Week 1: What is Git? Environment Setup",
-            "description": "Version control concepts, Git installation, initial configuration"
+            "description": "Version control concepts, Git installation, initial configuration",
+            "subtasks": {
+                "Gitをインストール": "Install Git",
+                "Gitの初期設定": "Initial Git configuration",
+                "バージョン管理の概念を理解": "Understand version control concepts",
+                "最初のリポジトリを作成": "Create first repository"
+            },
+            "knowledge_items": {
+                "Gitとは？": {
+                    "title": "What is Git?",
+                    "content": "# What is Git?\n\n**Git** is a distributed version control system developed by Linus Torvalds in 2005.\n\n## What is Version Control?\nA system for recording and managing change history of source code.\n\n### Benefits\n1. **History Management**: Records when, who, and what was changed\n2. **Backup**: Can revert to previous states\n3. **Parallel Development**: Multiple people can develop simultaneously\n4. **Experimental Changes**: Safely test with branches\n\n## Git Features\n- **Distributed**: Each developer has a full copy\n- **Fast**: Most operations complete locally\n- **Lightweight Branches**: Easy to experiment and develop features\n- **Data Integrity**: Managed with SHA-1 hash\n\n## Difference between Git and GitHub\n- **Git**: Version control system (tool)\n- **GitHub**: Hosting service for Git repositories (web service)"
+                },
+                "Git初期設定": {
+                    "title": "Git Initial Configuration",
+                    "content": "# Check Git version\ngit --version\n\n# Set user information (required)\ngit config --global user.name \"Your Name\"\ngit config --global user.email \"your.email@example.com\"\n\n# Set default branch name\ngit config --global init.defaultBranch main\n\n# Set editor (optional)\ngit config --global core.editor \"code --wait\"\n\n# Check configuration\ngit config --list\ngit config user.name\ngit config user.email"
+                },
+                "最初のリポジトリ作成": {
+                    "title": "Create First Repository",
+                    "content": "# Create new directory\nmkdir my-first-repo\ncd my-first-repo\n\n# Initialize as Git repository\ngit init\n\n# .git directory is created (hidden folder)\nls -la\n\n# Create file\necho \"# My First Repository\" > README.md\n\n# Check status\ngit status"
+                }
+            }
         },
         "第2週：基本コマンド（add, commit, log）": {
             "title": "Week 2: Basic Commands (add, commit, log)",
-            "description": "Staging, commits, history viewing basics"
+            "description": "Staging, commits, history viewing basics",
+            "subtasks": {
+                "git addを学習": "Learn git add",
+                "git commitを学習": "Learn git commit",
+                "git logを学習": "Learn git log",
+                "コミットメッセージの書き方を学習": "Learn how to write commit messages"
+            },
+            "knowledge_items": {
+                "Gitの3つのエリア": {
+                    "title": "Git's Three Areas",
+                    "content": "# Git's Three Areas\n\n```\nWorking Directory → Staging Area → Repository\n(Working Directory)  (Staging)     (Repository)\n```\n\n1. **Working Directory**: Where you edit files\n2. **Staging Area**: Where you prepare changes for commit\n3. **Repository**: Where committed history is stored\n\n## Basic Workflow\n```bash\n# 1. Edit file\necho \"Hello Git\" > file.txt\n\n# 2. Add to staging\ngit add file.txt\n\n# 3. Commit (record to history)\ngit commit -m \"Add file.txt\"\n```"
+                },
+                "git add - ステージング": {
+                    "title": "git add - Staging",
+                    "content": "# Stage specific file\ngit add README.md\ngit add src/main.js\n\n# Stage multiple files\ngit add file1.txt file2.txt\n\n# Stage all changes\ngit add .\ngit add -A\n\n# Interactive mode\ngit add -i\n\n# Patch mode (stage parts of changes)\ngit add -p\n\n# Check staging status\ngit status"
+                },
+                "git commit - コミット": {
+                    "title": "git commit - Commit",
+                    "content": "# Basic commit\ngit commit -m \"Add new feature\"\n\n# Multi-line commit message\ngit commit -m \"Add user authentication\" -m \"- Implement login form\" -m \"- Add validation\"\n\n# Stage + commit simultaneously (tracked files only)\ngit commit -am \"Update README\"\n\n# Write commit message in editor\ngit commit\n\n# Amend previous commit\ngit commit --amend\n\n# Empty commit (for testing, etc.)\ngit commit --allow-empty -m \"Trigger CI\""
+                },
+                "git log - 履歴確認": {
+                    "title": "git log - View History",
+                    "content": "# Basic log display\ngit log\n\n# Compact display (one line)\ngit log --oneline\n\n# Graph display\ngit log --graph --oneline --all\n\n# Show only latest N commits\ngit log -5\ngit log -n 3\n\n# With statistics\ngit log --stat\n\n# Show changes\ngit log -p\ngit log --patch\n\n# Filter by author\ngit log --author=\"John\"\n\n# Filter by date\ngit log --since=\"2024-01-01\"\ngit log --after=\"1 week ago\"\n\n# File history\ngit log README.md\n\n# Custom format\ngit log --pretty=format:\"%h - %an, %ar : %s\""
+                },
+                "良いコミットメッセージの書き方": {
+                    "title": "How to Write Good Commit Messages",
+                    "content": "# How to Write Good Commit Messages\n\n## Basic Rules\n1. **Line 1**: Summary within 50 characters (imperative)\n2. **Line 2**: Blank line\n3. **Line 3+**: Detailed description (wrap at 72 characters)\n\n## Format Example\n```\nAdd user authentication feature\n\n- Implement login form with email/password\n- Add JWT token generation\n- Create auth middleware for protected routes\n- Add input validation\n\nFixes #123\n```\n\n## Prefix Convention (Conventional Commits)\n- `feat:` New feature\n- `fix:` Bug fix\n- `docs:` Documentation\n- `style:` Code style\n- `refactor:` Refactoring\n- `test:` Add tests\n- `chore:` Build, configuration changes\n\nExample:\n```\nfeat: add user profile page\nfix: resolve login redirect issue\ndocs: update API documentation\n```"
+                }
+            }
         },
         "第3週：ブランチとマージの基礎": {
             "title": "Week 3: Branch and Merge Fundamentals",
-            "description": "Branch creation, switching, merging branches"
+            "description": "Branch creation, switching, merging branches",
+            "subtasks": {
+                "ブランチの概念を理解": "Understand branch concepts",
+                "ブランチを作成・切り替え": "Create and switch branches",
+                "マージを学習": "Learn merging",
+                "コンフリクト解消を学習": "Learn conflict resolution"
+            },
+            "knowledge_items": {
+                "ブランチとは？": {
+                    "title": "What are Branches?",
+                    "content": "# What are Branches?\n\nBranches create independent development lines.\n\n## Uses of Branches\n1. **Feature Development**: Develop new features independently\n2. **Bug Fixes**: Fix production issues\n3. **Experiments**: Test experimental changes\n4. **Releases**: Version management\n\n## Branch Strategy\n```\nmain (production)\n  |\n  |-- develop (development)\n  |     |\n  |     |-- feature/user-auth (Feature A)\n  |     |-- feature/payment (Feature B)\n  |\n  |-- hotfix/critical-bug (Emergency fix)\n```\n\n## Default Branches\n- **main** / **master**: For production\n- **develop**: For development\n- **feature/xxx**: For feature development"
+                },
+                "ブランチ操作": {
+                    "title": "Branch Operations",
+                    "content": "# List branches\ngit branch\ngit branch -a  # Also show remote branches\n\n# Create new branch\ngit branch feature/login\ngit branch develop\n\n# Switch branch\ngit checkout feature/login\ngit checkout develop\n\n# Create + switch (simultaneous)\ngit checkout -b feature/payment\ngit checkout -b hotfix/bug-123\n\n# New command (Git 2.23+)\ngit switch feature/login  # Switch\ngit switch -c feature/new  # Create + switch\n\n# Rename branch\ngit branch -m old-name new-name\n\n# Delete branch\ngit branch -d feature/login  # Merged only\ngit branch -D feature/login  # Force delete"
+                },
+                "マージ": {
+                    "title": "Merge",
+                    "content": "# Basic merge (Fast-forward)\ngit checkout main\ngit merge feature/login\n\n# Create merge commit (--no-ff)\ngit merge --no-ff feature/payment\n\n# Abort merge\ngit merge --abort\n\n# Check merged branches\ngit branch --merged\ngit branch --no-merged\n\n# Example: Feature development flow\n# 1. Create new branch\ngit checkout -b feature/user-profile\n\n# 2. Develop & commit\ngit add .\ngit commit -m \"Add user profile page\"\n\n# 3. Return to main branch\ngit checkout main\n\n# 4. Merge\ngit merge feature/user-profile\n\n# 5. Delete branch\ngit branch -d feature/user-profile"
+                },
+                "コンフリクト（競合）解消": {
+                    "title": "Conflict Resolution",
+                    "content": "# When conflict occurs\n$ git merge feature/payment\nAuto-merging file.txt\nCONFLICT (content): Merge conflict in file.txt\nAutomatic merge failed; fix conflicts and then commit the result.\n\n# Check conflict files\ngit status\n\n# Conflict markers in file\n<<<<<<< HEAD\nThis is the content from current branch\n=======\nThis is the content from branch being merged\n>>>>>>> feature/payment\n\n# Resolution steps:\n# 1. Manually edit file and remove markers\n# 2. Decide which changes to keep\n# 3. Stage\ngit add file.txt\n\n# 4. Complete merge commit\ngit commit\n\n# Abort conflict resolution\ngit merge --abort\n\n# Use merge tool\ngit mergetool"
+                }
+            }
         },
         "第4週：GitHubとリモートリポジトリ": {
             "title": "Week 4: GitHub and Remote Repositories",
-            "description": "GitHub account setup, creating remote repositories"
+            "description": "GitHub account setup, creating remote repositories",
+            "subtasks": {
+                "GitHubアカウントを作成": "Create GitHub account",
+                "SSH/HTTPS認証を設定": "Set up SSH/HTTPS authentication",
+                "リモートリポジトリを作成": "Create remote repository",
+                "clone、remoteを学習": "Learn clone and remote"
+            },
+            "knowledge_items": {
+                "GitHubとは？": {
+                    "title": "What is GitHub?",
+                    "content": "# What is GitHub?\n\n**GitHub** is a hosting service for Git repositories.\n\n## Main GitHub Features\n1. **Repository Hosting**: Store code in the cloud\n2. **Collaboration**: Develop with teams\n3. **Issue Management**: Track bugs and feature requests\n4. **Pull Request**: Code review\n5. **GitHub Actions**: CI/CD automation\n6. **GitHub Pages**: Website hosting\n7. **Project Management**: Kanban boards\n\n## GitHub Competitors\n- **GitLab**: Self-hosting possible\n- **Bitbucket**: Integrates with Atlassian products\n- **Azure Repos**: Microsoft product\n\n## Public vs Private\n- **Public**: Anyone can view (open source)\n- **Private**: Only invited people can view"
+                },
+                "SSH認証設定": {
+                    "title": "SSH Authentication Setup",
+                    "content": "# Generate SSH key\nssh-keygen -t ed25519 -C \"your.email@example.com\"\n\n# Copy SSH key to clipboard (Mac)\npbcopy < ~/.ssh/id_ed25519.pub\n\n# Copy SSH key to clipboard (Windows)\ncat ~/.ssh/id_ed25519.pub | clip\n\n# Copy SSH key to clipboard (Linux)\ncat ~/.ssh/id_ed25519.pub | xclip -selection clipboard\n\n# GitHub > Settings > SSH and GPG keys > New SSH key\n# Enter title and paste key\n\n# Test connection\nssh -T git@github.com\n# Success: \"Hi username! You've successfully authenticated...\""
+                },
+                "リモートリポジトリ操作": {
+                    "title": "Remote Repository Operations",
+                    "content": "# Clone existing repository\ngit clone https://github.com/username/repo.git\ngit clone git@github.com:username/repo.git  # SSH\n\n# Clone specific branch\ngit clone -b develop https://github.com/username/repo.git\n\n# Add remote repository\ngit remote add origin https://github.com/username/repo.git\n\n# Check remote repositories\ngit remote -v\n\n# Remote repository details\ngit remote show origin\n\n# Change remote repository URL\ngit remote set-url origin git@github.com:username/repo.git\n\n# Remove remote repository\ngit remote remove origin\n\n# Multiple remotes\ngit remote add upstream https://github.com/original/repo.git\ngit remote add origin https://github.com/myname/repo.git"
+                }
+            }
         },
         "第5週：Push、Pull、Fetch": {
             "title": "Week 5: Push, Pull, Fetch",
-            "description": "Synchronizing local and remote repositories"
+            "description": "Synchronizing local and remote repositories",
+            "subtasks": {
+                "git pushを学習": "Learn git push",
+                "git pullを学習": "Learn git pull",
+                "git fetchを学習": "Learn git fetch",
+                "pullとfetchの違いを理解": "Understand difference between pull and fetch"
+            },
+            "knowledge_items": {
+                "git push - アップロード": {
+                    "title": "git push - Upload",
+                    "content": "# Basic push\ngit push origin main\ngit push origin develop\n\n# First push (set upstream branch)\ngit push -u origin main\ngit push --set-upstream origin feature/login\n\n# Can be omitted afterwards\ngit push\n\n# Push all branches\ngit push --all\n\n# Push tags\ngit push --tags\ngit push origin v1.0.0\n\n# Force push (dangerous!)\ngit push -f origin main\ngit push --force-with-lease origin main  # Safer\n\n# Delete branch\ngit push origin --delete feature/old-branch\ngit push origin :feature/old-branch  # Old syntax"
+                },
+                "git pull - ダウンロード + マージ": {
+                    "title": "git pull - Download + Merge",
+                    "content": "# Basic pull (fetch + merge)\ngit pull origin main\n\n# If upstream branch is set\ngit pull\n\n# Pull with rebase\ngit pull --rebase origin main\n\n# Fetch all remote branches\ngit pull --all\n\n# Example: Team development flow\n# 1. Get latest before work\ngit pull origin main\n\n# 2. Development work\ngit add .\ngit commit -m \"Add feature\"\n\n# 3. Pull again before pushing\ngit pull origin main\n\n# 4. Resolve conflicts if any\n\n# 5. Push\ngit push origin main"
+                },
+                "git fetch - ダウンロードのみ": {
+                    "title": "git fetch - Download Only",
+                    "content": "# Fetch remote changes (don't merge)\ngit fetch origin\n\n# Fetch specific branch\ngit fetch origin main\n\n# Fetch from all remotes\ngit fetch --all\n\n# Reflect deleted remote branches\ngit fetch --prune\ngit fetch -p\n\n# Difference between fetch and pull\n# git pull = git fetch + git merge\n\n# Safe update flow\n# 1. Fetch only first\ngit fetch origin main\n\n# 2. Check differences\ngit diff main origin/main\ngit log main..origin/main\n\n# 3. Merge if no issues\ngit merge origin/main\n\n# Or pull from the start\ngit pull origin main"
+                },
+                "PullとFetchの違い": {
+                    "title": "Difference between Pull and Fetch",
+                    "content": "# Difference between Pull and Fetch\n\n## git fetch\n- **Download only** remote changes\n- Local branch is not changed\n- Can safely check differences\n\n```bash\ngit fetch origin\ngit diff main origin/main  # Check differences\ngit merge origin/main      # Manually merge\n```\n\n## git pull\n- **Download + merge** remote changes\n- Combination of `git fetch` + `git merge`\n- Automatically merged\n\n```bash\ngit pull origin main\n# = git fetch origin main + git merge origin/main\n```\n\n## Which to Use?\n- **Beginners**: `git pull` is OK\n- **Cautious**: `git fetch` → check → `git merge`\n- **Team Development**: `git pull --rebase` to keep history clean\n\n## pull --rebase\n```bash\ngit pull --rebase origin main\n```\nKeeps history linear without merge commits."
+                }
+            }
         },
         "第6週：プルリクエストとコードレビュー": {
             "title": "Week 6: Pull Requests and Code Review",
-            "description": "Creating pull requests, code review process"
+            "description": "Creating pull requests, code review process",
+            "subtasks": {
+                "Pull Requestを作成": "Create Pull Request",
+                "コードレビューを学習": "Learn code review",
+                "Issueを作成・管理": "Create and manage Issues"
+            },
+            "knowledge_items": {
+                "Pull Requestとは？": {
+                    "title": "What is a Pull Request?",
+                    "content": "# What is a Pull Request?\n\n**Pull Request (PR)** is a request to have others review your changes and merge them.\n\n## PR Benefits\n1. **Code Review**: Find bugs and best practice violations\n2. **Knowledge Sharing**: Team understands the code\n3. **Quality Improvement**: Checked by multiple eyes\n4. **Discussion Forum**: Discuss implementation approaches\n\n## PR Workflow\n```\n1. Create branch\n   git checkout -b feature/new-feature\n\n2. Develop & commit\n   git add .\n   git commit -m \"Add new feature\"\n\n3. Push\n   git push origin feature/new-feature\n\n4. Create PR on GitHub\n   - Enter title and description\n   - Specify reviewers\n\n5. Review & Fix\n   - Address feedback\n   - Add commits\n\n6. Merge\n   - Merge after review approval\n\n7. Delete branch\n   git branch -d feature/new-feature\n```"
+                },
+                "良いPRの書き方": {
+                    "title": "How to Write Good PRs",
+                    "content": "# How to Write Good Pull Requests\n\n## Title\n- Concise and clear about content\n- Example: `Add user authentication feature`\n- Example: `Fix login redirect bug #123`\n\n## Description\n```markdown\n## Overview\nAdded user authentication feature.\n\n## Changes\n- Implemented login form\n- Added JWT authentication\n- Created auth middleware\n- Added validation\n\n## Tests\n- [ ] Login success case\n- [ ] Login failure case\n- [ ] Token expiration\n\n## Screenshots\n(If UI changes)\n\n## Related Issues\nFixes #123\nCloses #124\n```\n\n## PR Size\n- **Smaller is better**: Easier to review\n- **1 PR per feature/fix**\n- Ideal: under 500 lines\n\n## Self Review\nReview your own code before creating PR."
+                },
+                "PR作成の流れ": {
+                    "title": "PR Creation Flow",
+                    "content": "# 1. Create new branch\ngit checkout -b feature/user-profile\n\n# 2. Development work\n# ... write code ...\n\n# 3. Commit\ngit add .\ngit commit -m \"feat: add user profile page\"\n\n# 4. Push to remote\ngit push -u origin feature/user-profile\n\n# 5. Create PR on GitHub\n# https://github.com/username/repo/pull/new/feature/user-profile\n# Or click link shown in browser\n\n# 6. Address review comments\n# ... make fixes ...\ngit add .\ngit commit -m \"refactor: improve validation logic\"\ngit push\n\n# 7. After merge, delete local branch\ngit checkout main\ngit pull\ngit branch -d feature/user-profile\n\n# 8. Delete remote branch too (can be auto-deleted on GitHub)\ngit push origin --delete feature/user-profile"
+                },
+                "GitHub Issues": {
+                    "title": "GitHub Issues",
+                    "content": "# GitHub Issues\n\n**Issues** are used for bug reports, feature requests, and task management.\n\n## Issue Types\n1. **Bug Report**: Report bugs\n2. **Feature Request**: Propose new features\n3. **Question**: Ask questions\n4. **Task**: Task management\n\n## Issue Template Example\n```markdown\n## Bug Description\nLogin button doesn't respond when clicked\n\n## Reproduction Steps\n1. Open login page\n2. Enter email and password\n3. Click login button\n\n## Expected Behavior\nRedirect to dashboard\n\n## Actual Behavior\nNothing happens\n\n## Environment\n- OS: Windows 11\n- Browser: Chrome 120\n```\n\n## Issue and PR Integration\n```bash\n# Reference Issue in commit message\ngit commit -m \"Fix login button, refs #123\"\n\n# Close Issue in PR\n# Add to PR description:\nFixes #123\nCloses #124\nResolves #125\n```"
+                }
+            }
         },
         "第7週：Rebase、Stash、Reset": {
             "title": "Week 7: Rebase, Stash, Reset",
-            "description": "Advanced Git operations for history management"
+            "description": "Advanced Git operations for history management",
+            "subtasks": {
+                "git rebaseを学習": "Learn git rebase",
+                "git stashを学習": "Learn git stash",
+                "git reset/revertを学習": "Learn git reset/revert"
+            },
+            "knowledge_items": {
+                "git rebase - 履歴を整理": {
+                    "title": "git rebase - Organize History",
+                    "content": "# Basic rebase\ngit checkout feature\ngit rebase main\n\n# Interactive rebase (edit past commits)\ngit rebase -i HEAD~3  # Edit latest 3 commits\n\n# Commands available during rebase:\n# pick: Use commit as is\n# reword: Change commit message\n# edit: Edit commit\n# squash: Combine with previous commit\n# fixup: Combine with previous commit (discard message)\n# drop: Delete commit\n\n# Example: Combine multiple commits into one\ngit rebase -i HEAD~4\n# pick abc123 Add feature A\n# squash def456 Fix typo\n# squash ghi789 Update tests\n# squash jkl012 Fix bug\n\n# Abort rebase\ngit rebase --abort\n\n# Continue rebase (after resolving conflicts)\ngit add .\ngit rebase --continue\n\n# Skip rebase\ngit rebase --skip"
+                },
+                "MergeとRebaseの違い": {
+                    "title": "Difference between Merge and Rebase",
+                    "content": "# Difference between Merge and Rebase\n\n## git merge\n```\nmain:     A---B---C---F (merge commit)\n               \\       /\nfeature:        D---E\n```\n- Creates merge commit\n- History branches\n- All history is preserved\n- **Safe** and easy to understand\n\n## git rebase\n```\nmain:     A---B---C\nfeature:              D'---E'\n```\n- Makes history linear\n- Clean history\n- Commits are rewritten\n- **Simple history**\n\n## Which to Use?\n- **Merge**: Published branches, team development\n- **Rebase**: Your own branches, when you want clean history\n\n## ⚠️ Warning\n**Don't rebase pushed commits!**\nIt confuses team members."
+                },
+                "git stash - 一時保存": {
+                    "title": "git stash - Temporary Save",
+                    "content": "# Temporarily save current work\ngit stash\ngit stash save \"Work in progress on feature X\"\n\n# Include untracked files\ngit stash -u\ngit stash --include-untracked\n\n# List stashes\ngit stash list\n# stash@{0}: WIP on main: abc123 Latest commit\n# stash@{1}: On feature: def456 Old work\n\n# Apply stash (don't delete)\ngit stash apply\ngit stash apply stash@{1}\n\n# Apply stash and delete\ngit stash pop\ngit stash pop stash@{0}\n\n# Show stash contents\ngit stash show\ngit stash show -p stash@{0}\n\n# Delete stash\ngit stash drop stash@{0}\ngit stash clear  # Delete all\n\n# Practical example:\n# 1. Urgent bug fix needed while working\ngit stash  # Save current work\ngit checkout -b hotfix/critical-bug\n# ... fix bug ...\ngit checkout feature\ngit stash pop  # Resume work"
+                },
+                "git reset vs git revert": {
+                    "title": "git reset vs git revert",
+                    "content": "# git reset - Undo commit (rewrite history)\n# --soft: Only undo commit (changes remain staged)\ngit reset --soft HEAD~1\n\n# --mixed (default): Undo commit + staging\ngit reset HEAD~1\ngit reset --mixed HEAD~1\n\n# --hard: Undo everything (dangerous!)\ngit reset --hard HEAD~1\n\n# Reset to specific commit\ngit reset --hard abc123\n\n# git revert - Create revert commit (preserve history)\ngit revert HEAD  # Revert latest commit\ngit revert abc123  # Revert specific commit\n\n# Revert multiple commits\ngit revert HEAD~3..HEAD\n\n# When to use reset vs revert\n# - Before push: reset is OK\n# - After push: use revert (safe)\n\n# Reset specific file\ngit reset HEAD file.txt  # Unstage\ngit checkout -- file.txt  # Discard changes"
+                }
+            }
         },
         "第8週：タグ、Cherry-pick、高度なテクニック": {
             "title": "Week 8: Tags, Cherry-pick, Advanced Techniques",
-            "description": "Tag management, cherry-pick, advanced Git techniques"
+            "description": "Tag management, cherry-pick, advanced Git techniques",
+            "subtasks": {
+                "タグを学習": "Learn tags",
+                "git cherry-pickを学習": "Learn git cherry-pick",
+                "便利なGitコマンドを学習": "Learn useful Git commands"
+            },
+            "knowledge_items": {
+                "git tag - バージョン管理": {
+                    "title": "git tag - Version Management",
+                    "content": "# Lightweight tag\ngit tag v1.0.0\ngit tag v1.1.0\n\n# Annotated tag (recommended)\ngit tag -a v1.0.0 -m \"Version 1.0.0 release\"\ngit tag -a v2.0.0 -m \"Major update with breaking changes\"\n\n# List tags\ngit tag\ngit tag -l \"v1.*\"  # Pattern search\n\n# Show tag details\ngit show v1.0.0\n\n# Tag past commit\ngit tag -a v0.9.0 abc123 -m \"Beta release\"\n\n# Push tags\ngit push origin v1.0.0  # Specific tag\ngit push origin --tags  # All tags\n\n# Checkout tag\ngit checkout v1.0.0\n\n# Delete tag\ngit tag -d v1.0.0  # Local\ngit push origin --delete v1.0.0  # Remote\n\n# Semantic Versioning\n# v1.2.3\n#  | | └─ Patch: Bug fixes\n#  | └─── Minor: Feature additions (backward compatible)\n#  └───── Major: Breaking changes"
+                },
+                "git cherry-pick": {
+                    "title": "git cherry-pick",
+                    "content": "# Pick specific commit only\ngit cherry-pick abc123\n\n# Multiple commits\ngit cherry-pick abc123 def456 ghi789\n\n# Commit range\ngit cherry-pick abc123..def456\n\n# Conflict during cherry-pick\ngit cherry-pick abc123\n# ... resolve conflict ...\ngit add .\ngit cherry-pick --continue\n\n# Abort cherry-pick\ngit cherry-pick --abort\n\n# Practical example:\n# Apply bug fix from hotfix branch to develop\ngit checkout develop\ngit cherry-pick abc123  # Pick commit from hotfix"
+                },
+                "便利なGitコマンド": {
+                    "title": "Useful Git Commands",
+                    "content": "# git blame - Show last editor of each line\ngit blame file.txt\ngit blame -L 10,20 file.txt  # Lines 10-20 only\n\n# git diff - Show differences\ngit diff  # Working directory vs staging\ngit diff --staged  # Staging vs repository\ngit diff HEAD  # Working directory vs latest commit\ngit diff main..feature  # Differences between branches\ngit diff abc123 def456  # Differences between commits\ngit diff --stat  # Statistics only\n\n# git show - Show commit contents\ngit show abc123\ngit show HEAD~2\ngit show v1.0.0\n\n# git reflog - All operation history\ngit reflog\ngit reflog show HEAD\n\n# Recovery after accidental reset\ngit reflog\ngit reset --hard abc123  # Return to commit found in reflog\n\n# git clean - Delete untracked files\ngit clean -n  # Check files to be deleted (dry run)\ngit clean -f  # Execute deletion\ngit clean -fd  # Also delete directories\n\n# git bisect - Find commit that introduced bug\ngit bisect start\ngit bisect bad  # Current has bug\ngit bisect good abc123  # This commit was OK\n# ... automatically narrows down with binary search ...\ngit bisect reset  # Finish"
+                }
+            }
         },
         "第9週：ブランチ戦略とチーム開発": {
             "title": "Week 9: Branch Strategy and Team Development",
-            "description": "Git Flow, GitHub Flow, collaboration strategies"
+            "description": "Git Flow, GitHub Flow, collaboration strategies",
+            "subtasks": {
+                "Git Flowを学習": "Learn Git Flow",
+                "GitHub Flowを学習": "Learn GitHub Flow",
+                "フォークとコラボレーションを学習": "Learn fork and collaboration"
+            },
+            "knowledge_items": {
+                "Git Flow": {
+                    "title": "Git Flow",
+                    "content": "# Git Flow\n\nGit Flow is a branching model proposed by Vincent Driessen.\n\n## Branch Types\n\n### Permanent Branches\n1. **main (master)**: For production\n2. **develop**: Main branch for development\n\n### Temporary Branches\n3. **feature/xxx**: New feature development\n4. **release/x.x.x**: Release preparation\n5. **hotfix/xxx**: Emergency bug fixes\n\n## Workflow\n\n```\nmain ─────●─────────────●─────────●──\n          │             ↑         ↑\n          │        release/1.1  hotfix/bug\n          ↓             │         │\ndevelop ──●─────●───●───●─────────●──\n              ↗   ↗   ↘\n        feature/ feature/ feature/\n          A        B        C\n```\n\n## Usage\n\n### New Feature Development\n```bash\n# Branch from develop\ngit checkout develop\ngit checkout -b feature/user-auth\n# Develop...\ngit checkout develop\ngit merge --no-ff feature/user-auth\ngit branch -d feature/user-auth\n```\n\n### Release\n```bash\ngit checkout -b release/1.0.0 develop\n# Bug fixes, version number updates\ngit checkout main\ngit merge --no-ff release/1.0.0\ngit tag -a v1.0.0\ngit checkout develop\ngit merge --no-ff release/1.0.0\n```\n\n### Hotfix\n```bash\ngit checkout -b hotfix/critical-bug main\n# Fix...\ngit checkout main\ngit merge --no-ff hotfix/critical-bug\ngit tag -a v1.0.1\ngit checkout develop\ngit merge --no-ff hotfix/critical-bug\n```"
+                },
+                "GitHub Flow": {
+                    "title": "GitHub Flow",
+                    "content": "# GitHub Flow\n\nSimple workflow recommended by GitHub.\n\n## Features\n- **Single main branch**: Only main\n- **Continuous Deployment**: Deploy frequently\n- **Simple**: Easier than Git Flow\n\n## Workflow\n\n```\nmain ──●─────────●─────────●─────────●──\n        ↘       ↗  ↘      ↗  ↘       ↗\n      feature/A  feature/B  feature/C\n```\n\n## Steps\n\n### 1. Create Branch\n```bash\ngit checkout -b feature/new-button\n```\n\n### 2. Add Commits\n```bash\ngit add .\ngit commit -m \"Add new button\"\ngit push origin feature/new-button\n```\n\n### 3. Create Pull Request\nCreate PR on GitHub\n\n### 4. Review & Discuss\nTeam members review\n\n### 5. Deploy and Test\nTest in staging environment\n\n### 6. Merge to main\nMerge PR → Auto deploy\n\n## Git Flow vs GitHub Flow\n\n| | Git Flow | GitHub Flow |\n|---|---|---|\n| **Complexity** | Complex | Simple |\n| **Branches** | 5 types | 2 types |\n| **Best for** | Scheduled releases | Continuous deployment |\n| **Team** | Large | Small to medium |\n| **Release** | Version management | Always latest |"
+                },
+                "フォークとコラボレーション": {
+                    "title": "Fork and Collaboration",
+                    "content": "# Fork and Collaboration\n\n## Collaborator Model\nHas direct access to repository\n\n```bash\n# 1. Clone\ngit clone git@github.com:team/project.git\n\n# 2. Create branch\ngit checkout -b feature/my-work\n\n# 3. Push\ngit push origin feature/my-work\n\n# 4. Create PR\n```\n\n## Fork Model (Open Source)\nCopy to your account and work\n\n### Steps\n\n1. **Fork on GitHub**\n   - Click \"Fork\" button on original repository\n\n2. **Clone**\n```bash\ngit clone git@github.com:myname/project.git\ncd project\n```\n\n3. **Add upstream**\n```bash\ngit remote add upstream git@github.com:original/project.git\ngit remote -v\n# origin: Your fork\n# upstream: Original repository\n```\n\n4. **Create branch & work**\n```bash\ngit checkout -b feature/my-contribution\n# ... develop ...\ngit push origin feature/my-contribution\n```\n\n5. **Create PR**\n   - PR from your fork to original repository\n\n6. **Get upstream changes**\n```bash\ngit fetch upstream\ngit checkout main\ngit merge upstream/main\ngit push origin main\n```\n\n## Which to Use?\n- **Collaborator**: Private, team development\n- **Fork**: Open source, external contributors"
+                }
+            }
         },
         "第10週：.gitignore、GitHub Actions、ベストプラクティス": {
             "title": "Week 10: .gitignore, GitHub Actions, Best Practices",
-            "description": ".gitignore configuration, GitHub Actions basics, best practices"
+            "description": ".gitignore configuration, GitHub Actions basics, best practices",
+            "subtasks": {
+                ".gitignoreを学習": "Learn .gitignore",
+                "GitHub Actionsの基礎を学習": "Learn GitHub Actions basics",
+                "Gitのベストプラクティスを学習": "Learn Git best practices"
+            },
+            "knowledge_items": {
+                ".gitignore": {
+                    "title": ".gitignore",
+                    "content": "# .gitignore - Specify files to ignore\n\n# OS-specific files\n.DS_Store        # macOS\nThumbs.db        # Windows\n\n# Editors\n.vscode/\n.idea/\n*.swp\n*.swo\n\n# Dependencies\nnode_modules/\nvendor/\n__pycache__/\n*.pyc\n\n# Build artifacts\nbuild/\ndist/\n*.exe\n*.o\n*.class\n\n# Environment variables & config files\n.env\n.env.local\nconfig.local.js\n\n# Log files\n*.log\nlogs/\n\n# Databases\n*.sqlite\n*.db\n\n# Patterns\n# All txt files\n*.txt\n\n# Exception: Track README.txt\n!README.txt\n\n# Entire directory\ntemp/\n\n# Nested patterns\n**/node_modules/\n\n# Set global .gitignore\ngit config --global core.excludesfile ~/.gitignore_global\n\n# .gitignore generator\n# https://gitignore.io"
+                },
+                "GitHub Actions基礎": {
+                    "title": "GitHub Actions Basics",
+                    "content": "# .github/workflows/ci.yml\nname: CI\n\non:\n  push:\n    branches: [ main, develop ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    \n    steps:\n    - uses: actions/checkout@v3\n    \n    - name: Setup Node.js\n      uses: actions/setup-node@v3\n      with:\n        node-version: '18'\n    \n    - name: Install dependencies\n      run: npm install\n    \n    - name: Run tests\n      run: npm test\n    \n    - name: Run linter\n      run: npm run lint\n\n  build:\n    runs-on: ubuntu-latest\n    needs: test\n    \n    steps:\n    - uses: actions/checkout@v3\n    \n    - name: Build\n      run: npm run build\n    \n    - name: Upload artifact\n      uses: actions/upload-artifact@v3\n      with:\n        name: build-files\n        path: dist/"
+                },
+                "Gitのベストプラクティス": {
+                    "title": "Git Best Practices",
+                    "content": "# Git Best Practices\n\n## Commits\n1. **Small and frequent**: Commit per feature/fix\n2. **Meaningful units**: Group related changes\n3. **Good messages**: Clearly state what and why changed\n4. **Commit working code**: Avoid build errors\n\n## Branches\n1. **Protect main/develop**: Don't push directly\n2. **Branch per feature**: feature/xxx\n3. **Keep short-lived**: Don't leave for long periods\n4. **Naming convention**: Maintain consistency\n\n## Pull Requests\n1. **Small PRs**: Easy to review size\n2. **Detailed description**: Background, changes, testing methods\n3. **Self review**: Check yourself first\n4. **Pass CI**: After tests succeed\n\n## Code Review\n1. **Constructive**: Clear improvement suggestions\n2. **Quick**: Within 24 hours\n3. **Ask questions**: Ask if you don't understand\n4. **Approval criteria**: Make clear\n\n## Don'ts\n1. ❌ Rebase pushed commits\n2. ❌ Push directly to main branch\n3. ❌ Too large commits\n4. ❌ Meaningless commit messages (only \"fix\", \"update\")\n5. ❌ Commit passwords or secret keys\n6. ❌ Use `git push -f` on production branch\n\n## Useful Aliases\n```bash\ngit config --global alias.st status\ngit config --global alias.co checkout\ngit config --global alias.br branch\ngit config --global alias.ci commit\ngit config --global alias.unstage 'reset HEAD --'\ngit config --global alias.last 'log -1 HEAD'\ngit config --global alias.lg \"log --graph --oneline --all\"\n```"
+                }
+            }
         }
     }
 }
