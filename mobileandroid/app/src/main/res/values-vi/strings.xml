@@ -75,6 +75,9 @@
     <string name="error_network">Lỗi kết nối mạng</string>
     <string name="error_server">Lỗi máy chủ</string>
     <string name="error_unknown">Đã xảy ra lỗi không xác định</string>
+    <string name="schedule_overlap_error">Các khóa học không được trùng giờ.</string>
+    <string name="schedule_gap_error">Hai khóa học phải cách nhau ít nhất 1 giờ.</string>
+    <string name="schedule_required_error">Vui lòng thêm lịch học</string>
 
     <!-- Onboarding -->
     <string name="onboarding_title">Chào mừng đến với Kizamu</string>

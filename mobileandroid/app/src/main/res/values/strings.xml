@@ -75,6 +75,9 @@
     <string name="error_network">ネットワークエラー</string>
     <string name="error_server">サーバーエラー</string>
     <string name="error_unknown">不明なエラーが発生しました</string>
+    <string name="schedule_overlap_error">スケジュールの時間が重なっています。</string>
+    <string name="schedule_gap_error">2つのスケジュールは少なくとも1時間以上空けてください。</string>
+    <string name="schedule_required_error">学習スケジュールを追加してください</string>
 
     <!-- Onboarding -->
     <string name="onboarding_title">Kizamuへようこそ</string>

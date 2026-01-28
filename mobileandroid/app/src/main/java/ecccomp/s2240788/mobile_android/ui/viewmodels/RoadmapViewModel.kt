@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import ecccomp.s2240788.mobile_android.data.models.*
 import ecccomp.s2240788.mobile_android.data.repository.RoadmapRepository
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
+import ecccomp.s2240788.mobile_android.utils.ScheduleValidationUtils
 import kotlinx.coroutines.launch
 
 /**
@@ -120,6 +121,12 @@ class RoadmapViewModel : ViewModel() {
                 _importedRoadmapData.value = null
                 _importedLearningPathId.value = null
 
+                ScheduleValidationUtils.validateOverlapAndGap(studySchedules)?.let { msg ->
+                    _error.value = msg
+                    _isImporting.value = false
+                    return@launch
+                }
+
                 val result = roadmapRepository.importRoadmap(
                     source = "popular",
                     roadmapId = roadmapId,
@@ -156,6 +163,12 @@ class RoadmapViewModel : ViewModel() {
                 _error.value = null
                 _importedRoadmapData.value = null
                 _importedLearningPathId.value = null
+
+                ScheduleValidationUtils.validateOverlapAndGap(studySchedules)?.let { msg ->
+                    _error.value = msg
+                    _isImporting.value = false
+                    return@launch
+                }
 
                 val result = roadmapRepository.importRoadmap(
                     source = "ai",

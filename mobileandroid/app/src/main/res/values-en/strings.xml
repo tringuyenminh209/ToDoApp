@@ -75,6 +75,9 @@
     <string name="error_network">Network error</string>
     <string name="error_server">Server error</string>
     <string name="error_unknown">An unknown error occurred</string>
+    <string name="schedule_overlap_error">Schedules cannot overlap.</string>
+    <string name="schedule_gap_error">Two courses must be at least 1 hour apart.</string>
+    <string name="schedule_required_error">Please add a schedule</string>
 
     <!-- Onboarding -->
     <string name="onboarding_title">Welcome to Kizamu</string>

@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import ecccomp.s2240788.mobile_android.data.api.ApiService
 import ecccomp.s2240788.mobile_android.data.models.*
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
+import ecccomp.s2240788.mobile_android.utils.ScheduleValidationUtils
 import kotlinx.coroutines.launch
 
 /**
@@ -253,6 +254,17 @@ class TemplateViewModel : ViewModel() {
             try {
                 _isLoading.value = true
                 _error.value = null
+
+                if (studySchedules.isEmpty()) {
+                    _error.value = "学習スケジュールを追加してください"
+                    _isLoading.value = false
+                    return@launch
+                }
+                ScheduleValidationUtils.validateOverlapAndGap(studySchedules)?.let { msg ->
+                    _error.value = msg
+                    _isLoading.value = false
+                    return@launch
+                }
 
                 val request = CloneTemplateRequest(studySchedules = studySchedules)
                 val response = apiService.cloneTemplate(templateId, request)

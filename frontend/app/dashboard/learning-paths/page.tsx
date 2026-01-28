@@ -12,6 +12,50 @@ import {
   type StudyScheduleInput,
 } from '@/lib/services/learningPathTemplateService';
 
+const GAP_MINUTES = 60;
+
+/** HH:MM → phút từ 0h */
+function timeToMinutes(t: string): number {
+  const [h, m] = (t || '00:00').split(':').map(Number);
+  return (h ?? 0) * 60 + (m ?? 0);
+}
+
+/**
+ * Kiểm tra trong cùng 1 ngày: không trùng giờ, và 2 slot cách nhau ít nhất GAP_MINUTES.
+ * Trả về { valid, message }.
+ */
+function validateScheduleRows(
+  rows: StudyScheduleInput[],
+  msgs: { overlap: string; gap: string }
+): { valid: boolean; message?: string } {
+  const byDay = new Map<number, { start: number; end: number }[]>();
+  for (const r of rows) {
+    if (!r.study_time) continue;
+    const start = timeToMinutes(r.study_time);
+    const dur = Math.max(0, r.duration_minutes ?? 60);
+    const end = start + dur;
+    const list = byDay.get(r.day_of_week) ?? [];
+    list.push({ start, end });
+    byDay.set(r.day_of_week, list);
+  }
+  for (const [, slots] of byDay) {
+    if (slots.length < 2) continue;
+    for (let i = 0; i < slots.length; i++) {
+      for (let j = i + 1; j < slots.length; j++) {
+        const a = slots[i];
+        const b = slots[j];
+        const overlap = a.start < b.end && b.start < a.end;
+        if (overlap) return { valid: false, message: msgs.overlap };
+        const earlier = a.start <= b.start ? a : b;
+        const later = a.start <= b.start ? b : a;
+        const gap = later.start - earlier.end;
+        if (gap < GAP_MINUTES) return { valid: false, message: msgs.gap };
+      }
+    }
+  }
+  return { valid: true };
+}
+
 export default function LearningPathsPage() {
   const router = useRouter();
   const [currentLang, setCurrentLang] = useState<Language>('ja');
@@ -189,15 +233,24 @@ export default function LearningPathsPage() {
       setTemplateError(t.timeRequired);
       return;
     }
+    const scheduleValidation = validateScheduleRows(scheduleRows, {
+      overlap: t.scheduleOverlapError,
+      gap: t.scheduleGapError,
+    });
+    if (!scheduleValidation.valid) {
+      setTemplateError(scheduleValidation.message ?? t.scheduleOverlapError);
+      return;
+    }
     try {
       setTemplateError('');
       setIsCloning(true);
       await learningPathTemplateService.cloneTemplate(selectedTemplate.id, scheduleRows);
       closeTemplateModal();
       await loadLearningPaths();
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Failed to clone template:', error);
-      setTemplateError(t.errorMessage);
+      const err = error as { response?: { data?: { message?: string } } };
+      setTemplateError(err?.response?.data?.message ?? t.errorMessage);
     } finally {
       setIsCloning(false);
     }

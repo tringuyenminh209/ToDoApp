@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LearningPath;
 use App\Models\LearningPathTemplate;
+use App\Models\StudySchedule;
 use App\Models\Task;
 use App\Models\KnowledgeItem;
 use App\Models\KnowledgeCategory;
@@ -383,16 +384,18 @@ class LearningPathTemplateController extends Controller
             'study_schedules.*.duration_minutes' => 'nullable|integer|min:15|max:480',
         ]);
 
-        try {
-            // Validate user
-            $user = $request->user();
-            if (!$user) {
-                return response()->json([
-                    'success' => false,
-                    'message' => '認証が必要です'
-                ], 401);
-            }
+        $user = $request->user();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => '認証が必要です'], 401);
+        }
 
+        // Kiểm tra trùng giờ và khoảng cách 1 giờ (trong request + với lịch hiện có của user)
+        $conflictMessage = $this->validateStudySchedulesConflict($user->id, $request->study_schedules);
+        if ($conflictMessage !== null) {
+            return response()->json(['success' => false, 'message' => $conflictMessage], 422);
+        }
+
+        try {
             // Get template with relationships and translations for current locale
             $locale = app()->getLocale();
             $template = LearningPathTemplate::withTranslations()
@@ -615,6 +618,69 @@ class LearningPathTemplateController extends Controller
         ];
 
         return $mapping[$category] ?? 'personal';
+    }
+
+    private const SCHEDULE_GAP_MINUTES = 60;
+
+    /**
+     * Kiểm tra trùng giờ và khoảng cách tối thiểu 1 giờ giữa các slot trong cùng ngày.
+     * So sánh cả lịch hiện có của user và danh sách newSchedules.
+     * @return string|null Thông báo lỗi nếu vi phạm, null nếu hợp lệ
+     */
+    private function validateStudySchedulesConflict(int $userId, array $newSchedules): ?string
+    {
+        $toMinutes = function ($time): int {
+            $parts = explode(':', (string) $time);
+            return ((int) ($parts[0] ?? 0)) * 60 + ((int) ($parts[1] ?? 0));
+        };
+
+        $byDay = function (array $items) use ($toMinutes): array {
+            $out = [];
+            foreach ($items as $s) {
+                $day = (int) ($s['day_of_week'] ?? $s->day_of_week ?? 0);
+                $start = $toMinutes($s['study_time'] ?? $s->study_time ?? '00:00');
+                $dur = (int) ($s['duration_minutes'] ?? $s->duration_minutes ?? 60);
+                $end = $start + $dur;
+                if (!isset($out[$day])) {
+                    $out[$day] = [];
+                }
+                $out[$day][] = ['start' => $start, 'end' => $end];
+            }
+            return $out;
+        };
+
+        $existing = StudySchedule::whereHas('learningPath', fn ($q) => $q->where('user_id', $userId))
+            ->get()
+            ->all();
+        $existingByDay = $byDay($existing);
+        $newByDay = $byDay($newSchedules);
+
+        $allDays = array_unique(array_merge(array_keys($existingByDay), array_keys($newByDay)));
+        foreach ($allDays as $day) {
+            $slots = array_merge(
+                $existingByDay[$day] ?? [],
+                $newByDay[$day] ?? []
+            );
+            if (count($slots) < 2) {
+                continue;
+            }
+            for ($i = 0; $i < count($slots); $i++) {
+                for ($j = $i + 1; $j < count($slots); $j++) {
+                    $a = $slots[$i];
+                    $b = $slots[$j];
+                    if ($a['start'] < $b['end'] && $b['start'] < $a['end']) {
+                        return __('スケジュールの時間が重なっています。2つ以上のスケジュールは1時間以上空けてください。');
+                    }
+                    $earlier = $a['start'] <= $b['start'] ? $a : $b;
+                    $later = $a['start'] <= $b['start'] ? $b : $a;
+                    if ($later['start'] - $earlier['end'] < self::SCHEDULE_GAP_MINUTES) {
+                        return __('2つのスケジュールは少なくとも1時間以上空けてください。');
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
