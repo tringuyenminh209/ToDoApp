@@ -1,5 +1,6 @@
 # Laravel
 backend/.env
+backend/.config/
 backend/vendor/
 backend/storage/logs/*
 backend/storage/framework/cache/*
@@ -144,6 +145,11 @@ mobileandroid/local.properties
 mobileandroid/.idea/
 mobileandroid/build_errors.txt
 mobileandroid/app/google-services.json
+mobileandroid/key.properties
+mobileandroid/*.jks
+mobileandroid/*.keystore
+mobileandroid/app/*.jks
+mobileandroid/app/*.keystore
 
 # 本番環境用設定
 .env.production
@@ -158,6 +164,9 @@ scripts/tmp/
 scripts/temp/
 deploy-*.log
 deploy.log
+
+# ローカル専用スクリプト（ユーザー固有パスなど）
+setup-port-forwarding.local.bat
 
 # AWS関連（機密情報を含むファイル）
 # テンプレートファイル（ecs-task-definition.json）は含める
