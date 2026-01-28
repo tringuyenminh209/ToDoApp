@@ -67,22 +67,22 @@ object NetworkModule {
     }
 }
 
-// Auth Interceptor để thêm token vào header
+// Auth Interceptor: token + X-Locale（APIで知識・コース等の言語を合わせる）
 class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = TokenManager.getToken()
+        val builder = chain.request().newBuilder()
+            .addHeader("Accept", "application/json")
+            .addHeader("Content-Type", "application/json")
 
-        val request = if (token != null) {
-            chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $token")
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .build()
-        } else {
-            chain.request()
+        NetworkModule.contextRef?.get()?.let { ctx ->
+            builder.addHeader("X-Locale", LocaleHelper.getLanguage(ctx))
+        }
+        if (token != null) {
+            builder.addHeader("Authorization", "Bearer $token")
         }
 
-        return chain.proceed(request)
+        return chain.proceed(builder.build())
     }
 }
 

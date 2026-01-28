@@ -32,6 +32,10 @@
     <!-- Input Field Height -->
     <dimen name="input_field_height">56dp</dimen>
 
+    <!-- Cheat code / code block -->
+    <dimen name="code_block_min_height">200dp</dimen>
+    <dimen name="code_block_max_height">420dp</dimen>
+
     <!-- Icon Size -->
     <dimen name="icon_size_sm">16dp</dimen>
     <dimen name="icon_size_md">24dp</dimen>

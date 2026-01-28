@@ -67,7 +67,7 @@
             tools:visibility="visible"
             tools:text="Begin with a PHP open tag" />
 
-        <!-- Code Block with Syntax Highlighting -->
+        <!-- Code Block with Syntax Highlighting（高さ最小・スクロールで全体表示） -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_code_container"
             android:layout_width="match_parent"
@@ -92,8 +92,7 @@
                 android:scrollbars="horizontal|vertical"
                 android:overScrollMode="always"
                 android:clipToPadding="false"
-                android:clipChildren="false"
-                android:minHeight="50dp" />
+                android:minHeight="@dimen/code_block_min_height" />
 
         </com.google.android.material.card.MaterialCardView>
 

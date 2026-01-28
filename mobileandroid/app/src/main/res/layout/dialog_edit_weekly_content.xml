@@ -6,6 +6,19 @@
     android:orientation="vertical"
     android:padding="24dp">
 
+    <!-- Scrollable content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="400dp"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <!-- Title -->
     <TextView
         android:layout_width="match_parent"
@@ -171,27 +184,29 @@
             android:gravity="top|start" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Buttons -->
+    <!-- Nút Đóng & Cập nhật -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end">
+        android:gravity="end"
+        android:layout_marginTop="8dp">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_cancel"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
+            android:text="@string/timetable_dialog_close"
             android:layout_marginEnd="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save" />
+            android:text="@string/timetable_dialog_update" />
     </LinearLayout>
 
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>
-

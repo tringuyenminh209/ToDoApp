@@ -68,7 +68,7 @@ class SettingsActivity : BaseActivity() {
             binding.spinnerTheme.adapter = adapter
         }
 
-        // Language spinner
+        // Language spinner（初期表示はLocaleHelperの実際の言語に合わせる）
         ArrayAdapter.createFromResource(
             this,
             R.array.language_options,
@@ -76,6 +76,7 @@ class SettingsActivity : BaseActivity() {
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spinnerLanguage.adapter = adapter
+            binding.spinnerLanguage.setSelection(getLanguagePosition(LocaleHelper.getLanguage(this)))
         }
 
         // Pomodoro time spinner
@@ -214,8 +215,9 @@ class SettingsActivity : BaseActivity() {
         // Theme
         binding.spinnerTheme.setSelection(getThemePosition(settings.theme))
 
-        // Language
-        binding.spinnerLanguage.setSelection(getLanguagePosition(settings.language))
+        // Language: 実際に適用中のロケールを表示（API/キャッシュと不一致時はLocaleHelperを優先）
+        val displayLanguage = LocaleHelper.getLanguage(this)
+        binding.spinnerLanguage.setSelection(getLanguagePosition(displayLanguage))
 
         // Pomodoro time
         binding.spinnerPomodoroTime.setSelection(getPomodoroPosition(settings.pomodoroDuration))

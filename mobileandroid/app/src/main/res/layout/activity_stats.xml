@@ -231,15 +231,6 @@
                             android:textSize="14sp"
                             android:layout_marginTop="@dimen/spacing_xs" />
 
-                        <TextView
-                            android:id="@+id/tv_today_change"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/compared_to_yesterday"
-                            android:textColor="@color/success"
-                            android:textSize="12sp"
-                            android:layout_marginTop="@dimen/spacing_xs" />
-
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
@@ -278,15 +269,6 @@
                             android:text="@string/minutes_this_week"
                             android:textColor="@color/text_muted"
                             android:textSize="14sp"
-                            android:layout_marginTop="@dimen/spacing_xs" />
-
-                        <TextView
-                            android:id="@+id/tv_week_change"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/compared_to_last_week"
-                            android:textColor="@color/success"
-                            android:textSize="12sp"
                             android:layout_marginTop="@dimen/spacing_xs" />
 
                     </LinearLayout>
@@ -338,15 +320,6 @@
                             android:textSize="14sp"
                             android:layout_marginTop="@dimen/spacing_xs" />
 
-                        <TextView
-                            android:id="@+id/tv_tasks_change"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/compared_to_last_week"
-                            android:textColor="@color/success"
-                            android:textSize="12sp"
-                            android:layout_marginTop="@dimen/spacing_xs" />
-
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
@@ -385,15 +358,6 @@
                             android:text="@string/completion_rate"
                             android:textColor="@color/text_muted"
                             android:textSize="14sp"
-                            android:layout_marginTop="@dimen/spacing_xs" />
-
-                        <TextView
-                            android:id="@+id/tv_completion_change"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/compared_to_last_week"
-                            android:textColor="@color/success"
-                            android:textSize="12sp"
                             android:layout_marginTop="@dimen/spacing_xs" />
 
                     </LinearLayout>

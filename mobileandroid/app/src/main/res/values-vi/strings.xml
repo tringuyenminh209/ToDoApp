@@ -592,6 +592,8 @@
     <string name="timetable_status_break">Giờ nghỉ</string>
     <string name="timetable_status_free">Thời gian rảnh</string>
     <string name="timetable_edit_weekly_content">Sửa nội dung tuần</string>
+    <string name="timetable_dialog_close">Đóng</string>
+    <string name="timetable_dialog_update">Cập nhật</string>
     <string name="timetable_weekly_title">Tiêu đề tuần</string>
     <string name="timetable_weekly_content">Nội dung/Chủ đề</string>
     <string name="timetable_weekly_homework">Bài tập về nhà</string>

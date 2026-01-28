@@ -143,9 +143,9 @@ class CodeExampleAdapter(
                 layoutAlgorithm = android.webkit.WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
             }
             
-            // WebViewのスクロールを有効化
+            // 縦スクロール有効（コードが長いとき下まで見える）
             webView.isHorizontalScrollBarEnabled = true
-            webView.isVerticalScrollBarEnabled = false  // 高さは自動調整するため、縦スクロールは不要
+            webView.isVerticalScrollBarEnabled = true
             webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
 
             // Generate highlighted HTML
@@ -292,15 +292,16 @@ class CodeExampleAdapter(
                             
                             // より正確な高さを取得するため、もう一度測定
                             webView.post {
-                                // 追加のマージンを考慮（行間、パディングなど）
+                                val res = webView.context.resources
+                                val minPx = res.getDimensionPixelSize(R.dimen.code_block_min_height)
+                                val maxPx = res.getDimensionPixelSize(R.dimen.code_block_max_height)
                                 val padding = webView.paddingTop + webView.paddingBottom
-                                // 安全マージンを追加（約30%でより余裕を持たせる）
                                 val safetyMargin = (contentHeight * 0.3).toInt().coerceAtLeast(20)
-                                val finalHeight = contentHeight + padding + safetyMargin
-                                
+                                var finalHeight = contentHeight + padding + safetyMargin
+                                finalHeight = finalHeight.coerceIn(minPx, maxPx)
+
                                 val params = webView.layoutParams
-                                // 最小高さを確保
-                                params.height = finalHeight.coerceAtLeast(60)
+                                params.height = finalHeight
                                 webView.layoutParams = params
                                 
                                 // レイアウト後に再度確認して確実に
@@ -318,11 +319,11 @@ class CodeExampleAdapter(
                                         try {
                                             val verifyHeight = verifyResult?.removeSurrounding("\"")?.toIntOrNull() ?: 0
                                             if (verifyHeight > contentHeight) {
-                                                // 実際の高さが予想より大きい場合、更新
                                                 val params = webView.layoutParams
                                                 val padding = webView.paddingTop + webView.paddingBottom
                                                 val safetyMargin = (verifyHeight * 0.3).toInt().coerceAtLeast(20)
-                                                params.height = verifyHeight + padding + safetyMargin
+                                                val h = (verifyHeight + padding + safetyMargin).coerceIn(minPx, maxPx)
+                                                params.height = h
                                                 webView.layoutParams = params
                                             }
                                         } catch (e: Exception) {
@@ -366,15 +367,14 @@ class CodeExampleAdapter(
                         View.MeasureSpec.EXACTLY
                     )
                     webView.measure(widthMeasureSpec, heightMeasureSpec)
-
+                    val res = webView.context.resources
+                    val minPx = res.getDimensionPixelSize(R.dimen.code_block_min_height)
+                    val maxPx = res.getDimensionPixelSize(R.dimen.code_block_max_height)
                     val params = webView.layoutParams
-                    params.height = webView.measuredHeight
+                    params.height = webView.measuredHeight.coerceIn(minPx, maxPx)
                     webView.layoutParams = params
                 } else {
-                    // まだwidthがない場合、少し遅延して再試行
-                    webView.postDelayed({
-                        fallbackMeasureHeight(webView)
-                    }, 100)
+                    webView.postDelayed({ fallbackMeasureHeight(webView) }, 100)
                 }
             }
         }

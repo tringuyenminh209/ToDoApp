@@ -592,6 +592,8 @@
     <string name="timetable_status_break">Break</string>
     <string name="timetable_status_free">Free Time</string>
     <string name="timetable_edit_weekly_content">Edit Weekly Content</string>
+    <string name="timetable_dialog_close">Close</string>
+    <string name="timetable_dialog_update">Update</string>
     <string name="timetable_weekly_title">Weekly Title</string>
     <string name="timetable_weekly_content">Content/Topics</string>
     <string name="timetable_weekly_homework">Homework</string>

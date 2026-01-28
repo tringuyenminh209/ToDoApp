@@ -659,6 +659,8 @@
     <string name="timetable_status_break">休憩中</string>
     <string name="timetable_status_free">空き時間</string>
     <string name="timetable_edit_weekly_content">週別内容を編集</string>
+    <string name="timetable_dialog_close">閉じる</string>
+    <string name="timetable_dialog_update">更新</string>
     <string name="timetable_weekly_title">週別タイトル</string>
     <string name="timetable_weekly_content">内容・トピック</string>
     <string name="timetable_weekly_homework">宿題</string>

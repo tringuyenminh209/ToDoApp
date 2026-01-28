@@ -97,22 +97,18 @@ class StatsActivity : BaseActivity() {
         val todayFocusMinutes = getTodayFocusMinutes(stats)
         android.util.Log.d("StatsActivity", "Today focus minutes: $todayFocusMinutes")
         binding.tvTodayFocus.text = formatFocusTimeValue(todayFocusMinutes)
-        binding.tvTodayChange.text = getString(R.string.compared_to_yesterday, "-")
 
         // Week Focus
         val weekFocusMinutes = stats.weekly_stats.focus_time
         android.util.Log.d("StatsActivity", "Week focus minutes: $weekFocusMinutes")
         binding.tvWeekFocus.text = formatFocusTimeValue(weekFocusMinutes)
-        binding.tvWeekChange.text = getString(R.string.compared_to_last_week, "-")
 
         // Stats Grid - Row 2
         // Tasks Completed (lifetime)
         binding.tvTasksCompleted.text = stats.completed_tasks.toString()
-        binding.tvTasksChange.text = getString(R.string.compared_to_last_week, "-")
 
-        // Completion Rate
+        // Completion Rate（%のみ表示、小数1桁）
         binding.tvCompletionRate.text = String.format("%.1f%%", stats.completion_rate)
-        binding.tvCompletionChange.text = getString(R.string.compared_to_last_week, "-")
 
         // Set Deep Work title with day count
         binding.tvDeepWorkTitle.text = getString(R.string.deep_work_past_days, 7)
@@ -313,13 +309,9 @@ class StatsActivity : BaseActivity() {
         binding.tvStreakValue.text = "0"
         binding.tvStreakRecord.text = getString(R.string.streak_record, 0)
         binding.tvTodayFocus.text = "0m"
-        binding.tvTodayChange.text = getString(R.string.compared_to_yesterday, "-")
         binding.tvWeekFocus.text = "0m"
-        binding.tvWeekChange.text = getString(R.string.compared_to_last_week, "-")
         binding.tvTasksCompleted.text = "0"
-        binding.tvTasksChange.text = getString(R.string.compared_to_last_week, "-")
-        binding.tvCompletionRate.text = "0.0%"
-        binding.tvCompletionChange.text = getString(R.string.compared_to_last_week, "-")
+        binding.tvCompletionRate.text = "0%"
 
         // Set Deep Work title with day count
         binding.tvDeepWorkTitle.text = getString(R.string.deep_work_past_days, 7)
