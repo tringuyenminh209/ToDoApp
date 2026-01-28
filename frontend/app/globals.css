@@ -980,6 +980,20 @@
   color: #d7ba7d;
 }
 
+/* HTML block: tag/attr/value rõ hơn (tránh "màu tệ") */
+.code-block code.language-html .hljs-tag {
+  color: #6fb3d9;
+}
+.code-block code.language-html .hljs-property {
+  color: #e6db74;
+}
+.code-block code.language-html .hljs-string {
+  color: #a6e22e;
+}
+.code-block code.language-html .hljs-comment {
+  color: #6a9955;
+}
+
 .markdown-preview .hljs-type,
 .code-block .hljs-type {
   color: #4ec9b0;

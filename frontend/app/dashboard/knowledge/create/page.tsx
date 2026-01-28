@@ -78,6 +78,7 @@ function highlightCode(code: string, language: string): string {
   };
 
   const lang = language.toLowerCase();
+  const langKey = ({ yml: 'yaml', compose: 'docker', mysql: 'sql', database: 'sql', bash: 'shell', sh: 'shell' } as Record<string, string>)[lang] || lang;
 
   // Language-specific token patterns
   const patterns: Record<string, Array<{ regex: RegExp; className: string }>> = {
@@ -141,8 +142,32 @@ function highlightCode(code: string, language: string): string {
     ],
     html: [
       { regex: /<!--[\s\S]*?-->/g, className: 'comment' },
-      { regex: /<[^>]+>/g, className: 'tag' },
+      { regex: /<!DOCTYPE[\s\S]*?>/gi, className: 'tag' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
+      { regex: /[\w-]+(?=\s*=)/g, className: 'property' },
+      { regex: /<\/?[\w-]+/g, className: 'tag' },
+    ],
+    yaml: [
+      { regex: /#.*/g, className: 'comment' },
+      { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
+      { regex: /^\s*[\w.-]+(?=\s*:)/gm, className: 'property' },
+      { regex: /\b(true|false|yes|no|on|off|null)\b/gi, className: 'keyword' },
+      { regex: /:\s*\d+/g, className: 'number' },
+      { regex: /[-]{3}|\.{3}/g, className: 'operator' },
+    ],
+    dockerfile: [
+      { regex: /#.*/g, className: 'comment' },
+      { regex: /^\s*(FROM|RUN|CMD|ENTRYPOINT|COPY|ADD|WORKDIR|ENV|EXPOSE|VOLUME|USER|ARG|LABEL|ONBUILD|HEALTHCHECK|SHELL)\b/gim, className: 'keyword' },
+      { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
+      { regex: /\b\d+\b/g, className: 'number' },
+    ],
+    docker: [
+      { regex: /#.*/g, className: 'comment' },
+      { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
+      { regex: /^\s*[\w.-]+(?=\s*:)/gm, className: 'property' },
+      { regex: /\b(build|image|ports|volumes|environment|networks|depends_on|restart|container_name)\b/gim, className: 'keyword' },
+      { regex: /:\s*\d+/g, className: 'number' },
+      { regex: /[-]{3}|\.{3}/g, className: 'operator' },
     ],
     css: [
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
@@ -154,13 +179,25 @@ function highlightCode(code: string, language: string): string {
     sql: [
       { regex: /--.*/g, className: 'comment' },
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
+      { regex: /#.*/g, className: 'comment' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
-      { regex: /\b(SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|TABLE|INDEX|PRIMARY|KEY|FOREIGN|REFERENCES|JOIN|INNER|LEFT|RIGHT|FULL|ON|GROUP|BY|ORDER|HAVING|AS|AND|OR|NOT|IN|LIKE|IS|NULL|DISTINCT|COUNT|SUM|AVG|MAX|MIN|UNION|ALL)\b/gi, className: 'keyword' },
+      { regex: /\b(SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|TABLE|INDEX|PRIMARY|KEY|FOREIGN|REFERENCES|JOIN|INNER|LEFT|RIGHT|FULL|ON|GROUP|BY|ORDER|HAVING|AS|AND|OR|NOT|IN|LIKE|IS|NULL|DISTINCT|COUNT|SUM|AVG|MAX|MIN|UNION|ALL|LIMIT|OFFSET|VALUES|SET|INTO|DEFAULT|CASE|WHEN|THEN|END|ELSE|BETWEEN|EXISTS|DATABASE|USE|SHOW|GRANT|REVOKE|ADD|MODIFY|COLUMN|REPLACE|TRUNCATE|COMMIT|ROLLBACK|EXPLAIN|DESCRIBE|DESC)\b/gi, className: 'keyword' },
+      { regex: /\b(VARCHAR|INT|BIGINT|DECIMAL|DATE|DATETIME|BOOLEAN|TEXT|BLOB|CHAR|FLOAT|DOUBLE)\b/gi, className: 'class-name' },
+      { regex: /@\w+/g, className: 'variable' },
       { regex: /\b\d+\.?\d*\b/g, className: 'number' },
+      { regex: /[=<>!]=?|[+\-*\/]/g, className: 'operator' },
+    ],
+    shell: [
+      { regex: /#.*/g, className: 'comment' },
+      { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\$'[^']*'|\$"[^"]*")/g, className: 'string' },
+      { regex: /\$(?:\{[^}]+\}|\w+)/g, className: 'variable' },
+      { regex: /\b(mysqldump|mysql|psql|pg_dump|gzip|gunzip|source|bash|sh|cd|echo|export)\b/gi, className: 'keyword' },
+      { regex: /\b(if|then|else|fi|for|do|done|while|case|esac|exit|return)\b/gi, className: 'keyword' },
+      { regex: /\b\d+\b/g, className: 'number' },
     ],
   };
 
-  const langPatterns = patterns[lang] || [];
+  const langPatterns = patterns[langKey] || [];
 
   if (langPatterns.length === 0) {
     // No highlighting for unknown languages
@@ -176,7 +213,7 @@ function highlightCode(code: string, language: string): string {
     });
   });
 
-  return `<pre class="code-block"><code class="language-${lang}">${highlighted}</code></pre>`;
+  return `<pre class="code-block"><code class="language-${langKey}">${highlighted}</code></pre>`;
 }
 
 export default function KnowledgeEditorPage() {

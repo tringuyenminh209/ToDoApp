@@ -56,7 +56,7 @@ function markdownToHtml(markdown: string): string {
   return html;
 }
 
-/** Giải mã HTML entities (named + numeric + hex, kể cả double-encode), lặp đến khi ổn định */
+/** HTMLエンティティを復号（&lt;&gt;&quot;&apos;&amp; および数値実体）。二重エンコードにも対応し、安定するまでループ */
 function decodeHtmlEntities(text: string): string {
   if (!text || typeof text !== 'string') return text;
   let prev = '';
@@ -75,6 +75,19 @@ function decodeHtmlEntities(text: string): string {
   return s;
 }
 
+/** コードブロック内の二重エンコード（&amp;lt; → &lt;）を表示用に1段階戻す。&lt;/&gt; が文字として表示される問題対策 */
+function fixDoubleEncodedCodeBlocks(html: string): string {
+  return html.replace(/<code[^>]*>([\s\S]*?)<\/code>/gi, (match, inner) => {
+    const fixed = inner
+      .replace(/&amp;lt;/g, '&lt;')
+      .replace(/&amp;gt;/g, '&gt;')
+      .replace(/&amp;amp;/g, '&amp;');
+    const open = match.slice(0, match.indexOf(inner));
+    const close = match.slice(match.indexOf(inner) + inner.length);
+    return open + fixed + close;
+  });
+}
+
 function highlightCode(code: string, language: string): string {
   const raw = decodeHtmlEntities(code);
 
@@ -86,6 +99,7 @@ function highlightCode(code: string, language: string): string {
   };
 
   const lang = language.toLowerCase();
+  const langKey = ({ yml: 'yaml', compose: 'docker', mysql: 'sql', database: 'sql', bash: 'shell', sh: 'shell' } as Record<string, string>)[lang] || lang;
 
   const patterns: Record<string, Array<{ regex: RegExp; className: string }>> = {
     java: [
@@ -202,8 +216,34 @@ function highlightCode(code: string, language: string): string {
     html: [
       { regex: /<!--[\s\S]*?-->/g, className: 'comment' },
       { regex: /<!DOCTYPE[\s\S]*?>/gi, className: 'tag' },
-      { regex: /<[^>]+>/g, className: 'tag' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
+      { regex: /[\w-]+(?=\s*=)/g, className: 'property' },
+      { regex: /<\/?[\w-]+/g, className: 'tag' },
+    ],
+    yaml: [
+      { regex: /#.*/g, className: 'comment' },
+      { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
+      { regex: /^\s*[\w.-]+(?=\s*:)/gm, className: 'property' },
+      { regex: /\b(true|false|yes|no|on|off|null)\b/gi, className: 'keyword' },
+      { regex: /:\s*\d+/g, className: 'number' },
+      { regex: /[-]{3}|\.{3}/g, className: 'operator' },
+      { regex: /&[\w]+|\*[\w]+/g, className: 'variable' },
+    ],
+    dockerfile: [
+      { regex: /#.*/g, className: 'comment' },
+      { regex: /^\s*(FROM|RUN|CMD|ENTRYPOINT|COPY|ADD|WORKDIR|ENV|EXPOSE|VOLUME|USER|ARG|LABEL|ONBUILD|HEALTHCHECK|STOPSIGNAL|SHELL)\b/gim, className: 'keyword' },
+      { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
+      { regex: /AS\s+\w+/gi, className: 'class-name' },
+      { regex: /\b\d+\b/g, className: 'number' },
+    ],
+    docker: [
+      { regex: /#.*/g, className: 'comment' },
+      { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
+      { regex: /^\s*[\w.-]+(?=\s*:)/gm, className: 'property' },
+      { regex: /\b(true|false|yes|no|on|off|null)\b/gi, className: 'keyword' },
+      { regex: /(build|image|ports|volumes|environment|networks|depends_on|restart|container_name)\b/gim, className: 'keyword' },
+      { regex: /:\s*\d+/g, className: 'number' },
+      { regex: /[-]{3}|\.{3}/g, className: 'operator' },
     ],
     css: [
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
@@ -219,39 +259,52 @@ function highlightCode(code: string, language: string): string {
     sql: [
       { regex: /--.*/g, className: 'comment' },
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
+      { regex: /#.*/g, className: 'comment' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
-      { regex: /\b(SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|TABLE|INDEX|PRIMARY|KEY|FOREIGN|REFERENCES|JOIN|INNER|LEFT|RIGHT|FULL|ON|GROUP|BY|ORDER|HAVING|AS|AND|OR|NOT|IN|LIKE|IS|NULL|DISTINCT|COUNT|SUM|AVG|MAX|MIN|UNION|ALL|LIMIT|OFFSET|VALUES|SET|INTO|DEFAULT|CASE|WHEN|THEN|END|ELSE|BETWEEN|EXISTS|EXTRACT|DATE|COALESCE|NULLIF)\b/gi, className: 'keyword' },
-      { regex: /\b(VARCHAR|INT|BIGINT|DECIMAL|DATE|DATETIME|BOOLEAN|TEXT|BLOB)\b/gi, className: 'class-name' },
+      { regex: /\b(SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|TABLE|INDEX|PRIMARY|KEY|FOREIGN|REFERENCES|JOIN|INNER|LEFT|RIGHT|FULL|ON|GROUP|BY|ORDER|HAVING|AS|AND|OR|NOT|IN|LIKE|IS|NULL|DISTINCT|COUNT|SUM|AVG|MAX|MIN|UNION|ALL|LIMIT|OFFSET|VALUES|SET|INTO|DEFAULT|CASE|WHEN|THEN|END|ELSE|BETWEEN|EXISTS|EXTRACT|DATE|COALESCE|NULLIF|DATABASE|USE|SHOW|GRANT|REVOKE|ADD|MODIFY|COLUMN|IF|EXISTS|REPLACE|TRUNCATE|COMMIT|ROLLBACK|START|TRANSACTION|EXPLAIN|DESCRIBE|DESC)\b/gi, className: 'keyword' },
+      { regex: /\b(VARCHAR|INT|BIGINT|DECIMAL|DATE|DATETIME|BOOLEAN|TEXT|BLOB|CHAR|FLOAT|DOUBLE)\b/gi, className: 'class-name' },
       { regex: /@\w+/g, className: 'variable' },
       { regex: /\b\d+\.?\d*\b/g, className: 'number' },
+      { regex: /[=<>!]=?|[+\-*\/]/g, className: 'operator' },
+    ],
+    shell: [
+      { regex: /#.*/g, className: 'comment' },
+      { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\$'[^']*'|\$"[^"]*")/g, className: 'string' },
+      { regex: /\$(?:\{[^}]+\}|\w+)/g, className: 'variable' },
+      { regex: /\b(mysqldump|mysql|psql|pg_dump|gzip|gunzip|source|bash|sh|cd|echo|export|source)\b/gi, className: 'keyword' },
+      { regex: /\b(if|then|else|fi|for|do|done|while|case|esac|exit|return)\b/gi, className: 'keyword' },
+      { regex: /^\s*\w+(?=\s)/gm, className: 'function' },
+      { regex: /\b\d+\b/g, className: 'number' },
+    ],
+    bash: [
+      { regex: /#.*/g, className: 'comment' },
+      { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\$'[^']*'|\$"[^"]*")/g, className: 'string' },
+      { regex: /\$(?:\{[^}]+\}|\w+)/g, className: 'variable' },
+      { regex: /\b(mysqldump|mysql|psql|pg_dump|gzip|gunzip|source|bash|sh|cd|echo|export)\b/gi, className: 'keyword' },
+      { regex: /\b(if|then|else|fi|for|do|done|while|case|esac|exit|return)\b/gi, className: 'keyword' },
+      { regex: /\b\d+\b/g, className: 'number' },
     ],
   };
 
-  const langPatterns = patterns[lang] || [];
+  const langPatterns = patterns[langKey] || [];
 
   if (langPatterns.length === 0) {
     return `<pre class="code-block"><code>${escapeHtml(raw)}</code></pre>`;
   }
 
-  let highlighted = escapeHtml(raw);
-
-  // Track positions that are already highlighted to avoid double highlighting
+  // 正規表現は raw（復号済み）に対して実行。エスケープ後に実行すると &lt; の & がオペレータにマッチして崩れる
   const highlightedRanges: Array<{ start: number; end: number }> = [];
-
   const allMatches: Array<{ match: string; index: number; className: string }> = [];
 
   langPatterns.forEach(({ regex, className }) => {
     const regexCopy = new RegExp(regex.source, regex.flags);
     let match;
-
-    while ((match = regexCopy.exec(highlighted)) !== null) {
+    while ((match = regexCopy.exec(raw)) !== null) {
       const start = match.index;
       const end = start + match[0].length;
-
       const overlaps = highlightedRanges.some(
         (range) => !(end <= range.start || start >= range.end)
       );
-
       if (!overlaps) {
         allMatches.push({ match: match[0], index: start, className });
         highlightedRanges.push({ start, end });
@@ -259,15 +312,23 @@ function highlightCode(code: string, language: string): string {
     }
   });
 
-  allMatches.sort((a, b) => b.index - a.index);
+  allMatches.sort((a, b) => a.index - b.index);
 
+  // マッチしていない部分は escapeHtml、マッチ部分は span で囲んで中身だけ escapeHtml（&lt;/&gt; が正しく表示される）
+  let out = '';
+  let lastEnd = 0;
   allMatches.forEach(({ match: matchText, index, className }) => {
-    const before = highlighted.substring(0, index);
-    const after = highlighted.substring(index + matchText.length);
-    highlighted = before + `<span class="hljs-${className}">${matchText}</span>` + after;
+    if (index > lastEnd) {
+      out += escapeHtml(raw.substring(lastEnd, index));
+    }
+    out += `<span class="hljs-${className}">${escapeHtml(matchText)}</span>`;
+    lastEnd = index + matchText.length;
   });
+  if (lastEnd < raw.length) {
+    out += escapeHtml(raw.substring(lastEnd));
+  }
 
-  return `<pre class="code-block"><code class="language-${lang}">${highlighted}</code></pre>`;
+  return `<pre class="code-block"><code class="language-${langKey}">${out}</code></pre>`;
 }
 
 export default function KnowledgeDetailPage() {
@@ -327,9 +388,19 @@ export default function KnowledgeDetailPage() {
         'html': 'html',
         'css': 'css',
         'sql': 'sql',
+        'mysql': 'sql',
+        'database': 'sql',
         'json': 'json',
         'xml': 'xml',
         'markdown': 'markdown',
+        'yaml': 'yaml',
+        'yml': 'yaml',
+        'docker': 'docker',
+        'dockerfile': 'dockerfile',
+        'compose': 'docker',
+        'shell': 'shell',
+        'bash': 'bash',
+        'sh': 'shell',
       };
       return langMap[lang] || 'plaintext';
     }
@@ -764,13 +835,15 @@ export default function KnowledgeDetailPage() {
               <div
                 className="markdown-preview prose prose-invert max-w-none text-white min-w-0 break-words overflow-x-auto"
                 dangerouslySetInnerHTML={{
-                  __html: knowledgeItem.content
-                    ? convertContentToHtml(
-                      knowledgeItem.content,
-                      knowledgeItem.item_type ?? (knowledgeItem as { type?: string }).type,
-                      knowledgeItem.code_language,
-                    )
-                    : '<p class="text-white/50 italic">No content</p>',
+                  __html: fixDoubleEncodedCodeBlocks(
+                    knowledgeItem.content
+                      ? convertContentToHtml(
+                        knowledgeItem.content,
+                        knowledgeItem.item_type ?? (knowledgeItem as { type?: string }).type,
+                        knowledgeItem.code_language,
+                      )
+                      : '<p class="text-white/50 italic">No content</p>',
+                  ),
                 }}
               />
             )}
