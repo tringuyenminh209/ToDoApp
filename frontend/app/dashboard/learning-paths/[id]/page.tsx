@@ -7,6 +7,12 @@ import { Icon } from '@iconify/react';
 import { translations, type Language } from '@/lib/i18n';
 import { learningPathService, LearningPath, LearningMilestone } from '@/lib/services/learningPathService';
 
+interface KnowledgeItemRef {
+  id: number;
+  title?: string;
+  item_type?: string;
+}
+
 interface Task {
   id: number;
   title: string;
@@ -16,7 +22,8 @@ interface Task {
   estimated_minutes?: number;
   deadline?: string;
   subtasks?: Subtask[];
-  knowledge_items?: any[];
+  knowledge_items?: KnowledgeItemRef[];
+  knowledgeItems?: KnowledgeItemRef[];
 }
 
 interface Subtask {
@@ -34,7 +41,21 @@ export default function LearningPathDetailPage() {
   const [learningPath, setLearningPath] = useState<LearningPath | null>(null);
   const [loading, setLoading] = useState(true);
   const [expandedMilestones, setExpandedMilestones] = useState<Set<number>>(new Set());
+  const [expandedTasks, setExpandedTasks] = useState<Set<number>>(new Set());
   const t = translations[currentLang];
+
+  const toggleTaskDetail = (taskId: number) => {
+    setExpandedTasks((prev) => {
+      const next = new Set(prev);
+      if (next.has(taskId)) next.delete(taskId);
+      else next.add(taskId);
+      return next;
+    });
+  };
+
+  const expandTaskToShowKnowledge = (taskId: number) => {
+    setExpandedTasks((prev) => new Set(prev).add(taskId));
+  };
 
   useEffect(() => {
     const loadLanguage = () => {
@@ -422,70 +443,120 @@ export default function LearningPathDetailPage() {
                   {/* Tasks List */}
                   {isExpanded && tasks.length > 0 && (
                     <div className="mt-4 ml-8 space-y-2">
-                      {tasks.map((task) => (
-                        <div
-                          key={task.id}
-                          className="bg-white/10 rounded-lg p-3 border border-white/20 border-l-2 border-[#0FA968]/40 hover:bg-white/15 transition"
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="flex items-center space-x-2 mb-1">
-                                <Icon icon="mdi:checkbox-marked-circle-outline" className="text-white/60" />
-                                <h4 className="text-white font-medium">{task.title}</h4>
-                                <span
-                                  className={`px-2 py-0.5 rounded text-xs ${getTaskStatusColor(task.status)}`}
-                                >
-                                  {getTaskStatusLabel(task.status)}
-                                </span>
-                              </div>
-                              {task.description && (
-                                <p className="text-sm text-white/60 ml-6 mb-2">{task.description}</p>
-                              )}
-                              <div className="flex items-center space-x-3 ml-6 text-xs text-white/50">
-                                {task.priority && (
-                                  <span className="flex items-center">
-                                    <Icon icon="mdi:flag" className="mr-1" />
-                                    {t.priority}: {task.priority}
+                      {tasks.map((task) => {
+                        const isTaskExpanded = expandedTasks.has(task.id);
+                        const knowledgeItems = (task.knowledge_items ?? task.knowledgeItems ?? []) as KnowledgeItemRef[];
+                        return (
+                          <div
+                            key={task.id}
+                            className="bg-white/10 rounded-lg p-3 border border-white/20 border-l-2 border-[#0FA968]/40 hover:bg-white/15 transition"
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center flex-wrap gap-2 mb-1">
+                                  <Icon icon="mdi:checkbox-marked-circle-outline" className="text-white/60 shrink-0" />
+                                  <h4 className="text-white font-medium">{task.title}</h4>
+                                  <span
+                                    className={`px-2 py-0.5 rounded text-xs shrink-0 ${getTaskStatusColor(task.status)}`}
+                                  >
+                                    {getTaskStatusLabel(task.status)}
                                   </span>
-                                )}
-                                {task.estimated_minutes && (
-                                  <span className="flex items-center">
-                                    <Icon icon="mdi:clock-outline" className="mr-1" />
-                                    {Math.round(task.estimated_minutes / 60)}h {task.estimated_minutes % 60}m
-                                  </span>
-                                )}
-                                {task.deadline && (
-                                  <span className="flex items-center">
-                                    <Icon icon="mdi:calendar" className="mr-1" />
-                                    {formatDate(task.deadline)}
-                                  </span>
-                                )}
-                              </div>
-                              {/* Subtasks */}
-                              {task.subtasks && task.subtasks.length > 0 && (
-                                <div className="mt-2 ml-6 space-y-1">
-                                  {task.subtasks.map((subtask) => (
-                                    <div
-                                      key={subtask.id}
-                                      className="flex items-center space-x-2 text-sm text-white/70"
-                                    >
-                                      <Icon
-                                        icon={subtask.is_completed ? 'mdi:check-circle' : 'mdi:circle-outline'}
-                                        className={subtask.is_completed ? 'text-green-400' : 'text-white/40'}
-                                      />
-                                      <span
-                                        className={subtask.is_completed ? 'line-through text-white/50' : ''}
-                                      >
-                                        {subtask.title}
-                                      </span>
-                                    </div>
-                                  ))}
+                                  <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); toggleTaskDetail(task.id); }}
+                                    className="ml-auto shrink-0 px-2 py-1 rounded-lg bg-[#1F6FEB]/30 hover:bg-[#1F6FEB]/50 text-white text-xs font-medium flex items-center space-x-1 transition"
+                                  >
+                                    <Icon icon={isTaskExpanded ? 'mdi:chevron-up' : 'mdi:chevron-down'} />
+                                    <span>{t.viewTaskDetail ?? '詳細を見る'}</span>
+                                  </button>
                                 </div>
-                              )}
+                                {task.description && (
+                                  <p className="text-sm text-white/60 ml-6 mb-2">{task.description}</p>
+                                )}
+                                <div className="flex items-center space-x-3 ml-6 text-xs text-white/50 flex-wrap gap-x-3">
+                                  {task.priority != null && task.priority > 0 && (
+                                    <span className="flex items-center">
+                                      <Icon icon="mdi:flag" className="mr-1" />
+                                      {t.priority}: {task.priority}
+                                    </span>
+                                  )}
+                                  {task.estimated_minutes != null && task.estimated_minutes > 0 && (
+                                    <span className="flex items-center">
+                                      <Icon icon="mdi:clock-outline" className="mr-1" />
+                                      {Math.floor(task.estimated_minutes / 60)}h {task.estimated_minutes % 60}m
+                                    </span>
+                                  )}
+                                  {task.deadline && (
+                                    <span className="flex items-center">
+                                      <Icon icon="mdi:calendar" className="mr-1" />
+                                      {formatDate(task.deadline)}
+                                    </span>
+                                  )}
+                                </div>
+                                {/* Subtasks */}
+                                {task.subtasks && task.subtasks.length > 0 && (
+                                  <div className="mt-2 ml-6 space-y-1" id={`task-${task.id}-subtasks`}>
+                                    {task.subtasks.map((subtask) => (
+                                      <div
+                                        key={subtask.id}
+                                        className="flex items-center justify-between gap-2 text-sm text-white/70 group"
+                                      >
+                                        <div className="flex items-center space-x-2 min-w-0">
+                                          <Icon
+                                            icon={subtask.is_completed ? 'mdi:check-circle' : 'mdi:circle-outline'}
+                                            className={subtask.is_completed ? 'text-green-400 shrink-0' : 'text-white/40 shrink-0'}
+                                          />
+                                          <span
+                                            className={subtask.is_completed ? 'line-through text-white/50' : ''}
+                                          >
+                                            {subtask.title}
+                                          </span>
+                                        </div>
+                                        <button
+                                          type="button"
+                                          onClick={(e) => { e.stopPropagation(); expandTaskToShowKnowledge(task.id); }}
+                                          className="shrink-0 px-2 py-0.5 rounded bg-white/10 hover:bg-[#1F6FEB]/30 text-white/80 hover:text-white text-xs flex items-center space-x-1 transition opacity-80 group-hover:opacity-100"
+                                          title={t.knowledgeContent}
+                                        >
+                                          <Icon icon="mdi:book-open-page-variant" className="text-sm" />
+                                          <span>{currentLang === 'ja' ? '表示' : currentLang === 'vi' ? 'Xem' : 'View'}</span>
+                                        </button>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
                             </div>
+                            {/* Task detail: Knowledge content (expandable) */}
+                            {isTaskExpanded && (
+                              <div className="mt-3 ml-6 pt-3 border-t border-white/10" id={`task-${task.id}-knowledge`}>
+                                <div className="flex items-center space-x-2 mb-2 text-white/90">
+                                  <Icon icon="mdi:book-open-variant" />
+                                  <span className="font-medium text-sm">{t.knowledgeContent}</span>
+                                </div>
+                                {knowledgeItems.length > 0 ? (
+                                  <ul className="space-y-1.5">
+                                    {knowledgeItems.map((item) => (
+                                      <li key={item.id}>
+                                        <Link
+                                          href={`/dashboard/knowledge/${item.id}`}
+                                          className="flex items-center space-x-2 text-sm text-[#6fb3d9] hover:text-[#9cdcfe] hover:underline"
+                                        >
+                                          <Icon icon="mdi:file-document-outline" className="shrink-0" />
+                                          <span>{item.title || `#${item.id}`}</span>
+                                          <Icon icon="mdi:open-in-new" className="text-xs shrink-0" />
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  <p className="text-sm text-white/50 italic">{t.noKnowledgeItems}</p>
+                                )}
+                              </div>
+                            )}
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
 

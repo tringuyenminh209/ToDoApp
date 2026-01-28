@@ -321,6 +321,8 @@ export const translations = {
     titleDesc: 'Tiêu đề Z-A',
     mostViewed: 'Xem nhiều nhất',
     noKnowledgeItems: 'Chưa có mục kiến thức nào',
+    viewTaskDetail: 'Xem chi tiết',
+    knowledgeContent: 'Nội dung kiến thức',
     folders: 'Thư mục',
     files: 'Tệp',
     // Knowledge Editor translations
@@ -806,6 +808,8 @@ export const translations = {
     titleDesc: 'Title Z-A',
     mostViewed: 'Most Viewed',
     noKnowledgeItems: 'No knowledge items yet',
+    viewTaskDetail: 'View details',
+    knowledgeContent: 'Knowledge content',
     folders: 'Folders',
     files: 'Files',
     // Knowledge Editor translations
@@ -1292,6 +1296,8 @@ export const translations = {
     titleDesc: 'タイトル Z-A',
     mostViewed: '閲覧数順',
     noKnowledgeItems: 'ナレッジアイテムがまだありません',
+    viewTaskDetail: '詳細を見る',
+    knowledgeContent: 'ナレッジ',
     folders: 'フォルダ',
     files: 'ファイル',
     // Knowledge Editor translations
