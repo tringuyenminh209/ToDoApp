@@ -287,17 +287,56 @@ export default function LandingPage() {
                       <div className="text-zinc-500 text-sm">{t.landingDashboardTitle}</div>
                     </div>
                     <div className="grid grid-cols-3 gap-4 mt-6">
+                      {/* Chưa bắt đầu */}
                       <div className="bg-zinc-800 rounded-lg p-3 border border-zinc-700">
-                        <div className="text-zinc-400 text-xs mb-2">{t.landingTodo}</div>
-                        <div className="h-20 bg-zinc-700 rounded" />
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-zinc-400 text-xs font-medium flex items-center gap-1.5">
+                            <Icon icon="mdi:checkbox-blank-outline" className="text-zinc-500" />
+                            {t.landingTodo}
+                          </span>
+                          <span className="text-zinc-500 text-xs bg-zinc-700/80 px-2 py-0.5 rounded-full">3</span>
+                        </div>
+                        <div className="space-y-1.5">
+                          <div className="h-2.5 bg-zinc-700 rounded w-full" />
+                          <div className="h-2.5 bg-zinc-700 rounded w-4/5" />
+                          <div className="h-2.5 bg-zinc-700 rounded w-3/4" />
+                        </div>
                       </div>
-                      <div className="bg-zinc-800 rounded-lg p-3 border border-zinc-700">
-                        <div className="text-zinc-400 text-xs mb-2">{t.landingInProgress}</div>
-                        <div className="h-20 bg-[#0FA968]/20 border border-[#0FA968]/30 rounded" />
+                      {/* Đang tiến hành */}
+                      <div className="bg-zinc-800 rounded-lg p-3 border border-zinc-700 ring-1 ring-[#0FA968]/30">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-[#0FA968]/90 text-xs font-medium flex items-center gap-1.5">
+                            <Icon icon="mdi:progress-clock" className="text-[#0FA968]" />
+                            {t.landingInProgress}
+                          </span>
+                          <span className="text-[#0FA968]/80 text-xs bg-[#0FA968]/15 px-2 py-0.5 rounded-full">1</span>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="h-2.5 bg-zinc-700 rounded w-full" />
+                          <div className="h-1.5 bg-zinc-700 rounded-full overflow-hidden">
+                            <div className="h-full bg-[#0FA968] rounded-full w-[65%]" />
+                          </div>
+                        </div>
                       </div>
+                      {/* Hoàn thành */}
                       <div className="bg-zinc-800 rounded-lg p-3 border border-zinc-700">
-                        <div className="text-zinc-400 text-xs mb-2">{t.landingDone}</div>
-                        <div className="h-20 bg-zinc-700 rounded" />
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-zinc-400 text-xs font-medium flex items-center gap-1.5">
+                            <Icon icon="mdi:check-circle" className="text-emerald-500/80" />
+                            {t.landingDone}
+                          </span>
+                          <span className="text-zinc-500 text-xs bg-zinc-700/80 px-2 py-0.5 rounded-full">2</span>
+                        </div>
+                        <div className="space-y-1.5">
+                          <div className="flex items-center gap-1.5">
+                            <Icon icon="mdi:check" className="text-emerald-500/70 shrink-0 text-sm" />
+                            <div className="h-2.5 bg-zinc-700/80 rounded w-full" />
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <Icon icon="mdi:check" className="text-emerald-500/70 shrink-0 text-sm" />
+                            <div className="h-2.5 bg-zinc-700/80 rounded w-5/6" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className="flex items-center justify-center space-x-4 mt-6">
@@ -347,8 +386,13 @@ export default function LandingPage() {
               </div>
               <h3 className="text-2xl font-bold text-white mb-3">{t.landingFeatureFocusTitle}</h3>
               <p className="text-zinc-400 mb-6">{t.landingFeatureFocusDesc}</p>
-              <div className="bg-zinc-800 rounded-xl p-4 h-32 flex items-center justify-center border border-zinc-700">
-                <Icon icon="mdi:hourglass" className="text-4xl text-zinc-600" />
+              <div className="bg-zinc-800 rounded-xl p-4 h-32 flex flex-col items-center justify-center gap-2 border border-zinc-700">
+                <Icon icon="mdi:timer-outline" className="text-3xl text-[#0FA968]" />
+                <span className="text-2xl font-mono font-bold text-[#0FA968]">{(t as Record<string, string>).landingFeatureFocusMock ?? '25:00'}</span>
+                <span className="text-zinc-500 text-sm">{(t as Record<string, string>).landingFeatureFocusMockLabel ?? ''}</span>
+                <div className="w-full max-w-[120px] h-1.5 bg-zinc-700 rounded-full overflow-hidden mt-1">
+                  <div className="h-full bg-[#0FA968]/60 rounded-full w-3/4" />
+                </div>
               </div>
             </div>
 
@@ -359,8 +403,15 @@ export default function LandingPage() {
               </div>
               <h3 className="text-2xl font-bold text-white mb-3">{t.landingFeatureSkillTitle}</h3>
               <p className="text-zinc-400 mb-6">{t.landingFeatureSkillDesc}</p>
-              <div className="bg-zinc-800 rounded-xl p-4 h-32 flex items-center justify-center border border-zinc-700">
-                <Icon icon="mdi:sitemap" className="text-4xl text-zinc-600" />
+              <div className="bg-zinc-800 rounded-xl p-4 h-32 flex flex-col items-center justify-center gap-3 border border-zinc-700">
+                <div className="flex items-center gap-1.5 text-[#1F6FEB]/90 text-sm font-medium">
+                  <span className="px-2 py-1 bg-[#1F6FEB]/15 rounded">1</span>
+                  <Icon icon="mdi:arrow-right" className="text-zinc-500 text-xs" />
+                  <span className="px-2 py-1 bg-[#1F6FEB]/15 rounded">2</span>
+                  <Icon icon="mdi:arrow-right" className="text-zinc-500 text-xs" />
+                  <span className="px-2 py-1 bg-[#1F6FEB]/15 rounded">3</span>
+                </div>
+                <p className="text-zinc-400 text-xs text-center">{(t as Record<string, string>).landingFeatureSkillMock ?? ''}</p>
               </div>
             </div>
 
@@ -371,8 +422,15 @@ export default function LandingPage() {
               </div>
               <h3 className="text-2xl font-bold text-white mb-3">{t.landingFeatureAITitle}</h3>
               <p className="text-zinc-400 mb-6">{t.landingFeatureAIDesc}</p>
-              <div className="bg-zinc-800 rounded-xl p-4 h-32 flex items-center justify-center border border-zinc-700">
-                <Icon icon="mdi:chat" className="text-4xl text-zinc-600" />
+              <div className="bg-zinc-800 rounded-xl p-4 h-32 flex flex-col justify-center gap-2 border border-zinc-700">
+                <div className="flex items-start gap-2">
+                  <Icon icon="mdi:account-outline" className="text-zinc-500 shrink-0 mt-0.5 text-sm" />
+                  <p className="text-zinc-400 text-xs">{(t as Record<string, string>).landingFeatureAIMockYou ?? ''}</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Icon icon="mdi:robot-outline" className="text-purple-400 shrink-0 mt-0.5 text-sm" />
+                  <p className="text-purple-300/90 text-xs">{(t as Record<string, string>).landingFeatureAIMockAI ?? ''}</p>
+                </div>
               </div>
             </div>
 

@@ -13,6 +13,25 @@ declare global {
   }
 }
 
+/** Decode HTML entities (named + numeric + hex, including double-encode), loop until stable */
+function decodeHtmlEntities(text: string): string {
+  if (!text || typeof text !== 'string') return text;
+  let prev = '';
+  let s = text;
+  while (prev !== s) {
+    prev = s;
+    s = s
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'")
+      .replace(/&#(\d+);?/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
+      .replace(/&#x([0-9a-f]+);?/gi, (_, n) => String.fromCharCode(parseInt(n, 16)));
+  }
+  return s;
+}
+
 export default function ExampleDetailPage() {
   const router = useRouter();
   const params = useParams();
@@ -174,7 +193,7 @@ export default function ExampleDetailPage() {
       const editorLanguage = getEditorLanguage();
 
       const exampleEditor = window.monaco.editor.create(editorContainerRef.current, {
-        value: example.code || '',
+        value: decodeHtmlEntities(example.code || ''),
         language: editorLanguage,
         theme: 'vs-dark',
         fontSize: 14,
@@ -230,7 +249,7 @@ export default function ExampleDetailPage() {
     if (!example) return;
 
     if (editorRef.current) {
-      editorRef.current.setValue(example.code || '');
+      editorRef.current.setValue(decodeHtmlEntities(example.code || ''));
     }
     if (userEditorRef.current) {
       userEditorRef.current.setValue('');
@@ -412,7 +431,7 @@ export default function ExampleDetailPage() {
             <button
               onClick={() => {
                 if (example?.code && navigator.clipboard) {
-                  navigator.clipboard.writeText(example.code);
+                  navigator.clipboard.writeText(decodeHtmlEntities(example.code));
                   const copiedMsg = currentLang === 'ja' ? 'コードをコピーしました' : currentLang === 'en' ? 'Code copied' : 'Đã sao chép mã';
                   alert(copiedMsg);
                 }

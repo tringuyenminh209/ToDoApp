@@ -15,10 +15,11 @@ declare global {
 }
 
 function markdownToHtml(markdown: string): string {
-  const codeBlockRegex = /```(\w+)?\n?([\s\S]*?)```/g;
+  // 行頭の ``` のみ区切りにする（コード内の "```" 文字列で誤分割されないように）
+  const codeBlockRegex = /(?:^|\n)```(\w+)?\n?([\s\S]*?)\n?```/gm;
   const codeBlocks: Array<{ lang: string; code: string; placeholder: string }> = [];
   let placeholderIndex = 0;
-  
+
   let processedMarkdown = markdown.replace(codeBlockRegex, (match, lang, code) => {
     const placeholder = `__CODE_BLOCK_${placeholderIndex}__`;
     codeBlocks.push({
@@ -27,9 +28,10 @@ function markdownToHtml(markdown: string): string {
       placeholder,
     });
     placeholderIndex++;
-    return placeholder;
+    const keepNewline = match.startsWith('\n') ? '\n' : '';
+    return keepNewline + placeholder;
   });
-  
+
   let html = processedMarkdown
     .replace(/^### (.*$)/gim, '<h3>$1</h3>')
     .replace(/^## (.*$)/gim, '<h2>$1</h2>')
@@ -41,146 +43,224 @@ function markdownToHtml(markdown: string): string {
     .replace(/^- (.*$)/gim, '<li>$1</li>')
     .replace(/^\* (.*$)/gim, '<li>$1</li>')
     .replace(/\n/gim, '<br>');
-  
+
   html = html.replace(/(<li>.*?<\/li>(?:<br>)?)+/gim, (match) => {
     return '<ul>' + match.replace(/<br>/gim, '') + '</ul>';
   });
-  
+
   codeBlocks.forEach(({ lang, code, placeholder }) => {
     const highlightedCode = highlightCode(code, lang);
     html = html.replace(placeholder, highlightedCode);
   });
-  
+
   return html;
 }
 
+/** Giải mã HTML entities (named + numeric + hex, kể cả double-encode), lặp đến khi ổn định */
+function decodeHtmlEntities(text: string): string {
+  if (!text || typeof text !== 'string') return text;
+  let prev = '';
+  let s = text;
+  while (prev !== s) {
+    prev = s;
+    s = s
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'")
+      .replace(/&#(\d+);?/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
+      .replace(/&#x([0-9a-f]+);?/gi, (_, n) => String.fromCharCode(parseInt(n, 16)));
+  }
+  return s;
+}
+
 function highlightCode(code: string, language: string): string {
+  const raw = decodeHtmlEntities(code);
+
   const escapeHtml = (text: string) => {
     return text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+      .replace(/>/g, '&gt;');
   };
 
   const lang = language.toLowerCase();
-  
+
   const patterns: Record<string, Array<{ regex: RegExp; className: string }>> = {
     java: [
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
       { regex: /\/\/.*/g, className: 'comment' },
       { regex: /("(?:\\.|[^"\\])*")/g, className: 'string' },
-      { regex: /\b(public|private|protected|static|final|class|interface|extends|implements|new|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|throws|import|package|void|int|long|double|float|char|boolean|String|true|false|null|this|super)\b/g, className: 'keyword' },
+      { regex: /@\w+/g, className: 'comment' },
+      { regex: /\b(public|private|protected|static|final|class|interface|extends|implements|new|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|throws|import|package|void|volatile|synchronized|default|enum|assert|strictfp|transient|native)\b/g, className: 'keyword' },
+      { regex: /\b(int|long|double|float|char|boolean|byte|short)\b/g, className: 'keyword' },
+      { regex: /\b(String|Integer|Long|Double|Float|Boolean|Object|List|Map|Set|Optional|Arrays|Collections|BigInteger|BigDecimal)\b/g, className: 'class-name' },
       { regex: /\b[A-Z][a-zA-Z0-9]*\b/g, className: 'class-name' },
-      { regex: /\b\d+\.?\d*\b/g, className: 'number' },
-      { regex: /[-+*\/=<>!&|]+/g, className: 'operator' },
+      { regex: /\b\d+\.?\d*[fFdDlL]?\b/g, className: 'number' },
+      { regex: /0x[\da-fA-F]+/g, className: 'number' },
+      { regex: /::/g, className: 'operator' },
+      { regex: /[-+*\/=<>!&|?:]+/g, className: 'operator' },
     ],
     javascript: [
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
       { regex: /\/\/.*/g, className: 'comment' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, className: 'string' },
-      { regex: /\b(const|let|var|function|class|extends|implements|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|import|export|default|async|await|true|false|null|undefined|this|super|new)\b/g, className: 'keyword' },
+      { regex: /\b(const|let|var|function|class|extends|implements|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|import|export|default|async|await|true|false|null|undefined|this|super|new|of|in|instanceof|typeof)\b/g, className: 'keyword' },
+      { regex: /\b[A-Z][a-zA-Z0-9]*\b/g, className: 'class-name' },
       { regex: /\b\d+\.?\d*\b/g, className: 'number' },
-      { regex: /[-+*\/=<>!&|]+/g, className: 'operator' },
+      { regex: /0x[\da-fA-F]+|0o[0-7]+|0b[01]+/g, className: 'number' },
+      { regex: /\.\.\.|=>|\?\?|\?\./g, className: 'operator' },
+      { regex: /[-+*\/=<>!&|?:]+/g, className: 'operator' },
     ],
     python: [
       { regex: /#.*/g, className: 'comment' },
-      { regex: /("""[\s\S]*?"""|'''[\s\S]*?''')/g, className: 'comment' },
+      { regex: /("""[\s\S]*?"""|'''[\s\S]*?''')/g, className: 'string' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
-      { regex: /\b(def|class|if|else|elif|for|while|try|except|finally|raise|import|from|return|yield|lambda|and|or|not|in|is|True|False|None|self|pass|break|continue)\b/g, className: 'keyword' },
+      { regex: /@\w+/g, className: 'comment' },
+      { regex: /\b(def|class|if|else|elif|for|while|try|except|finally|raise|import|from|return|yield|lambda|and|or|not|in|is|True|False|None|self|pass|break|continue|with|async|await|global|nonlocal|as)\b/g, className: 'keyword' },
+      { regex: /\b[A-Z][a-zA-Z0-9]*\b/g, className: 'class-name' },
       { regex: /\b\d+\.?\d*\b/g, className: 'number' },
+      { regex: /0x[\da-fA-F]+|0o[0-7]+|0b[01]+/g, className: 'number' },
+      { regex: /\.\.\./g, className: 'operator' },
+      { regex: /->/g, className: 'operator' },
+      { regex: /[-+*\/=<>!&|]+/g, className: 'operator' },
+    ],
+    go: [
+      { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
+      { regex: /\/\/.*/g, className: 'comment' },
+      { regex: /("(?:\\.|[^"\\])*"|`[^`]*`)/g, className: 'string' },
+      { regex: /\b(package|import|func|var|const|type|struct|interface|return|if|else|for|range|switch|case|default|defer|go|select|chan|map|break|continue|fallthrough|goto|nil|true|false|make|len|cap|new|append|panic|recover)\b/g, className: 'keyword' },
+      { regex: /\b(int|int8|int16|int32|int64|uint|uint8|uint16|uint32|uint64|float32|float64|string|bool|byte|rune|error)\b/g, className: 'class-name' },
+      { regex: /\b[A-Z][a-zA-Z0-9]*\b/g, className: 'class-name' },
+      { regex: /\b\d+\.?\d*\b/g, className: 'number' },
+      { regex: /0x[\da-fA-F]+|0o[0-7]+|0b[01]+/g, className: 'number' },
+      { regex: /:=|\.\.\.|<-/g, className: 'operator' },
+      { regex: /[-+*\/=<>!&|]+/g, className: 'operator' },
+    ],
+    golang: [
+      { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
+      { regex: /\/\/.*/g, className: 'comment' },
+      { regex: /("(?:\\.|[^"\\])*"|`[^`]*`)/g, className: 'string' },
+      { regex: /\b(package|import|func|var|const|type|struct|interface|return|if|else|for|range|switch|case|default|defer|go|select|chan|map|break|continue|fallthrough|goto|nil|true|false|make|len|cap|new|append|panic|recover)\b/g, className: 'keyword' },
+      { regex: /\b(int|int8|int16|int32|int64|uint|uint8|uint16|uint32|uint64|float32|float64|string|bool|byte|rune|error)\b/g, className: 'class-name' },
+      { regex: /\b[A-Z][a-zA-Z0-9]*\b/g, className: 'class-name' },
+      { regex: /\b\d+\.?\d*\b/g, className: 'number' },
+      { regex: /0x[\da-fA-F]+|0o[0-7]+|0b[01]+/g, className: 'number' },
+      { regex: /:=|\.\.\.|<-/g, className: 'operator' },
       { regex: /[-+*\/=<>!&|]+/g, className: 'operator' },
     ],
     php: [
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
+      { regex: /#.*/g, className: 'comment' },
       { regex: /\/\/.*/g, className: 'comment' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
       { regex: /\b(echo|print|return|if|else|elseif|foreach|for|while|function|class|public|private|protected|static|const|new|extends|implements|namespace|use|try|catch|finally|throw|as|array|die|exit|include|require|true|false|null)\b/g, className: 'keyword' },
+      { regex: /\bPDO\b|\b(MySQLi|Exception|DateTime|DateTimeImmutable)\b/g, className: 'class-name' },
+      { regex: /::\s*\w+/g, className: 'class-name' },
       { regex: /\$[a-zA-Z_][a-zA-Z0-9_]*/g, className: 'variable' },
       { regex: /\b\d+\.?\d*\b/g, className: 'number' },
+      { regex: /->|::|\?\?|\?:/g, className: 'operator' },
       { regex: /[-+*\/=<>!&|]+/g, className: 'operator' },
     ],
     typescript: [
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
       { regex: /\/\/.*/g, className: 'comment' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, className: 'string' },
-      { regex: /\b(const|let|var|function|class|interface|type|extends|implements|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|import|export|default|async|await|true|false|null|undefined|this|super|new|public|private|protected|static|readonly)\b/g, className: 'keyword' },
+      { regex: /\b(const|let|var|function|class|interface|type|extends|implements|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|import|export|default|async|await|true|false|null|undefined|this|super|new|public|private|protected|static|readonly|enum|namespace|declare|keyof|typeof|in|instanceof|as|is|unknown|never|any)\b/g, className: 'keyword' },
+      { regex: /\b[A-Z][a-zA-Z0-9]*\b/g, className: 'class-name' },
       { regex: /\b\d+\.?\d*\b/g, className: 'number' },
-      { regex: /[-+*\/=<>!&|]+/g, className: 'operator' },
+      { regex: /\.\.\.|=>/g, className: 'operator' },
+      { regex: /[-+*\/=<>!&|?:]+/g, className: 'operator' },
     ],
     cpp: [
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
       { regex: /\/\/.*/g, className: 'comment' },
+      { regex: /#\s*include\s*[<"].*?[>"]/g, className: 'comment' },
+      { regex: /#\s*\w+/g, className: 'comment' },
       { regex: /("(?:\\.|[^"\\])*")/g, className: 'string' },
-      { regex: /\b(int|char|float|double|void|bool|class|struct|namespace|using|return|if|else|for|while|do|switch|case|break|continue|try|catch|throw|include|define|public|private|protected|static|const|new|delete|true|false|nullptr)\b/g, className: 'keyword' },
-      { regex: /\b\d+\.?\d*\b/g, className: 'number' },
+      { regex: /\b(int|char|float|double|void|bool|class|struct|namespace|using|return|if|else|for|while|do|switch|case|break|continue|try|catch|throw|include|define|public|private|protected|static|const|new|delete|virtual|override|enum|auto|template|typename|extern|inline|explicit|mutable|noexcept)\b/g, className: 'keyword' },
+      { regex: /\b(std|vector|string|map|set|array|optional|tuple)\b/g, className: 'class-name' },
+      { regex: /::\s*\w+/g, className: 'class-name' },
+      { regex: /\b\d+\.?\d*[uUlLfF]*\b/g, className: 'number' },
+      { regex: /0x[\da-fA-F]+/g, className: 'number' },
+      { regex: /::|->|\.\.\./g, className: 'operator' },
       { regex: /[-+*\/=<>!&|]+/g, className: 'operator' },
     ],
     c: [
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
       { regex: /\/\/.*/g, className: 'comment' },
+      { regex: /#\s*include\s*[<"].*?[>"]/g, className: 'comment' },
+      { regex: /#\s*\w+/g, className: 'comment' },
       { regex: /("(?:\\.|[^"\\])*")/g, className: 'string' },
-      { regex: /\b(int|char|float|double|void|struct|return|if|else|for|while|do|switch|case|break|continue|include|define|static|const|true|false|NULL)\b/g, className: 'keyword' },
-      { regex: /\b\d+\.?\d*\b/g, className: 'number' },
-      { regex: /[-+*\/=<>!&|]+/g, className: 'operator' },
+      { regex: /\b(int|char|float|double|void|struct|return|if|else|for|while|do|switch|case|break|continue|include|define|static|const|typedef|enum|sizeof|unsigned|signed|long|short)\b/g, className: 'keyword' },
+      { regex: /\b(NULL|true|false|TRUE|FALSE)\b/g, className: 'keyword' },
+      { regex: /\b\d+\.?\d*[uUlLfF]*\b/g, className: 'number' },
+      { regex: /0x[\da-fA-F]+/g, className: 'number' },
+      { regex: /->|[-+*\/=<>!&|]+/g, className: 'operator' },
     ],
     html: [
       { regex: /<!--[\s\S]*?-->/g, className: 'comment' },
+      { regex: /<!DOCTYPE[\s\S]*?>/gi, className: 'tag' },
       { regex: /<[^>]+>/g, className: 'tag' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
     ],
     css: [
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
+      { regex: /@(media|keyframes|import|charset|supports|font-face)\b/g, className: 'keyword' },
       { regex: /([a-zA-Z-]+)\s*:/g, className: 'property' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
-      { regex: /#[\da-fA-F]{3,6}/g, className: 'number' },
-      { regex: /\b\d+\.?\d*\b/g, className: 'number' },
+      { regex: /url\s*\([^)]+\)/g, className: 'string' },
+      { regex: /var\s*\([^)]+\)/g, className: 'variable' },
+      { regex: /#[a-fA-F0-9]{3,8}\b/g, className: 'number' },
+      { regex: /\b\d+\.?\d*(px|em|rem|%|deg|s|ms)?\b/g, className: 'number' },
+      { regex: /!important/g, className: 'keyword' },
     ],
     sql: [
       { regex: /--.*/g, className: 'comment' },
       { regex: /\/\*[\s\S]*?\*\//g, className: 'comment' },
       { regex: /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g, className: 'string' },
-      { regex: /\b(SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|TABLE|INDEX|PRIMARY|KEY|FOREIGN|REFERENCES|JOIN|INNER|LEFT|RIGHT|FULL|ON|GROUP|BY|ORDER|HAVING|AS|AND|OR|NOT|IN|LIKE|IS|NULL|DISTINCT|COUNT|SUM|AVG|MAX|MIN|UNION|ALL)\b/gi, className: 'keyword' },
+      { regex: /\b(SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|TABLE|INDEX|PRIMARY|KEY|FOREIGN|REFERENCES|JOIN|INNER|LEFT|RIGHT|FULL|ON|GROUP|BY|ORDER|HAVING|AS|AND|OR|NOT|IN|LIKE|IS|NULL|DISTINCT|COUNT|SUM|AVG|MAX|MIN|UNION|ALL|LIMIT|OFFSET|VALUES|SET|INTO|DEFAULT|CASE|WHEN|THEN|END|ELSE|BETWEEN|EXISTS|EXTRACT|DATE|COALESCE|NULLIF)\b/gi, className: 'keyword' },
+      { regex: /\b(VARCHAR|INT|BIGINT|DECIMAL|DATE|DATETIME|BOOLEAN|TEXT|BLOB)\b/gi, className: 'class-name' },
+      { regex: /@\w+/g, className: 'variable' },
       { regex: /\b\d+\.?\d*\b/g, className: 'number' },
     ],
   };
 
   const langPatterns = patterns[lang] || [];
-  
+
   if (langPatterns.length === 0) {
-    // No highlighting for unknown languages
-    return `<pre class="code-block"><code>${escapeHtml(code)}</code></pre>`;
+    return `<pre class="code-block"><code>${escapeHtml(raw)}</code></pre>`;
   }
 
-  let highlighted = escapeHtml(code);
-  
+  let highlighted = escapeHtml(raw);
+
   // Track positions that are already highlighted to avoid double highlighting
   const highlightedRanges: Array<{ start: number; end: number }> = [];
-  
+
   const allMatches: Array<{ match: string; index: number; className: string }> = [];
-  
+
   langPatterns.forEach(({ regex, className }) => {
     const regexCopy = new RegExp(regex.source, regex.flags);
     let match;
-    
+
     while ((match = regexCopy.exec(highlighted)) !== null) {
       const start = match.index;
       const end = start + match[0].length;
-      
+
       const overlaps = highlightedRanges.some(
         (range) => !(end <= range.start || start >= range.end)
       );
-      
+
       if (!overlaps) {
         allMatches.push({ match: match[0], index: start, className });
         highlightedRanges.push({ start, end });
       }
     }
   });
-  
+
   allMatches.sort((a, b) => b.index - a.index);
-  
+
   allMatches.forEach(({ match: matchText, index, className }) => {
     const before = highlighted.substring(0, index);
     const after = highlighted.substring(index + matchText.length);
@@ -215,15 +295,19 @@ export default function KnowledgeDetailPage() {
     router.push('/dashboard/knowledge');
   };
 
+  // item_type を正規化（API が "Code Snippet" / "code snippet" 等で返す場合に対応）
+  const normalizeItemType = (t: string | undefined): string =>
+    (t ?? '').toString().toLowerCase().replace(/\s+/g, '_').trim();
+
   // Enhanced markdown to HTML converter that handles code snippets
-  const convertContentToHtml = (content: string, itemType: string, codeLanguage?: string): string => {
-    // If it's a code snippet and no code blocks detected, wrap entire content as code
-    if (itemType === 'code_snippet' && !content.includes('```')) {
+  const convertContentToHtml = (content: string, itemType: string | undefined, codeLanguage?: string): string => {
+    const decoded = decodeHtmlEntities(content || '');
+    const normalized = normalizeItemType(itemType);
+    if (normalized === 'code_snippet' && decoded && !decoded.includes('```')) {
       const lang = codeLanguage || 'java';
-      return highlightCode(content, lang);
+      return highlightCode(decoded.trim(), lang);
     }
-    
-    return markdownToHtml(content);
+    return markdownToHtml(decoded);
   };
 
   const getMonacoLanguage = (itemType: string, codeLanguage?: string): string => {
@@ -234,6 +318,8 @@ export default function KnowledgeDetailPage() {
         'javascript': 'javascript',
         'typescript': 'typescript',
         'python': 'python',
+        'go': 'go',
+        'golang': 'go',
         'php': 'php',
         'cpp': 'cpp',
         'c': 'c',
@@ -291,7 +377,7 @@ export default function KnowledgeDetailPage() {
       if (!editorRef.current || monacoEditorRef.current) return;
 
       const language = getMonacoLanguage(itemType, knowledgeItem?.code_language);
-      
+
       monacoEditorRef.current = window.monaco.editor.create(editorRef.current, {
         value: content,
         language: language,
@@ -666,8 +752,8 @@ export default function KnowledgeDetailPage() {
       {/* Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Content */}
-        <div className="lg:col-span-2">
-          <div className="bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl">
+        <div className="lg:col-span-2 min-w-0">
+          <div className="bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl min-w-0 overflow-hidden">
             {isEditing ? (
               <div
                 ref={editorRef}
@@ -676,10 +762,14 @@ export default function KnowledgeDetailPage() {
               />
             ) : (
               <div
-                className="markdown-preview prose prose-invert max-w-none text-white"
+                className="markdown-preview prose prose-invert max-w-none text-white min-w-0 break-words overflow-x-auto"
                 dangerouslySetInnerHTML={{
                   __html: knowledgeItem.content
-                    ? convertContentToHtml(knowledgeItem.content, knowledgeItem.item_type, knowledgeItem.code_language)
+                    ? convertContentToHtml(
+                      knowledgeItem.content,
+                      knowledgeItem.item_type ?? (knowledgeItem as { type?: string }).type,
+                      knowledgeItem.code_language,
+                    )
                     : '<p class="text-white/50 italic">No content</p>',
                 }}
               />
@@ -700,18 +790,17 @@ export default function KnowledgeDetailPage() {
                 return (
                   <span
                     key={tag}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${
-                      color.bg.startsWith('#')
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${color.bg.startsWith('#')
                         ? `bg-[${color.bg}]/20 text-[${color.text}] border-[${color.bg}]/30`
                         : `bg-${color.bg}/20 text-${color.text} border-${color.bg}/30`
-                    }`}
+                      }`}
                     style={
                       color.bg.startsWith('#')
                         ? {
-                            backgroundColor: `${color.bg}20`,
-                            color: color.text,
-                            borderColor: `${color.bg}30`,
-                          }
+                          backgroundColor: `${color.bg}20`,
+                          color: color.text,
+                          borderColor: `${color.bg}30`,
+                        }
                         : undefined
                     }
                   >

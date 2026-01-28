@@ -12,7 +12,7 @@ function markdownToHtml(markdown: string): string {
   const codeBlockRegex = /```(\w+)?\n?([\s\S]*?)```/g;
   const codeBlocks: Array<{ lang: string; code: string; placeholder: string }> = [];
   let placeholderIndex = 0;
-  
+
   let processedMarkdown = markdown.replace(codeBlockRegex, (match, lang, code) => {
     const placeholder = `__CODE_BLOCK_${placeholderIndex}__`;
     codeBlocks.push({
@@ -23,7 +23,7 @@ function markdownToHtml(markdown: string): string {
     placeholderIndex++;
     return placeholder;
   });
-  
+
   let html = processedMarkdown
     .replace(/^### (.*$)/gim, '<h3>$1</h3>')
     .replace(/^## (.*$)/gim, '<h2>$1</h2>')
@@ -35,31 +35,50 @@ function markdownToHtml(markdown: string): string {
     .replace(/^- (.*$)/gim, '<li>$1</li>')
     .replace(/^\* (.*$)/gim, '<li>$1</li>')
     .replace(/\n/gim, '<br>');
-  
+
   html = html.replace(/(<li>.*?<\/li>(?:<br>)?)+/gim, (match) => {
     return '<ul>' + match.replace(/<br>/gim, '') + '</ul>';
   });
-  
+
   codeBlocks.forEach(({ lang, code, placeholder }) => {
     const highlightedCode = highlightCode(code, lang);
     html = html.replace(placeholder, highlightedCode);
   });
-  
+
   return html;
 }
 
+/** Decode HTML entities (named + numeric + hex, including double-encode), loop until stable */
+function decodeHtmlEntities(text: string): string {
+  if (!text || typeof text !== 'string') return text;
+  let prev = '';
+  let s = text;
+  while (prev !== s) {
+    prev = s;
+    s = s
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'")
+      .replace(/&#(\d+);?/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
+      .replace(/&#x([0-9a-f]+);?/gi, (_, n) => String.fromCharCode(parseInt(n, 16)));
+  }
+  return s;
+}
+
 function highlightCode(code: string, language: string): string {
+  const raw = decodeHtmlEntities(code);
+
   const escapeHtml = (text: string) => {
     return text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+      .replace(/>/g, '&gt;');
   };
 
   const lang = language.toLowerCase();
-  
+
   // Language-specific token patterns
   const patterns: Record<string, Array<{ regex: RegExp; className: string }>> = {
     java: [
@@ -142,14 +161,14 @@ function highlightCode(code: string, language: string): string {
   };
 
   const langPatterns = patterns[lang] || [];
-  
+
   if (langPatterns.length === 0) {
     // No highlighting for unknown languages
-    return `<pre class="code-block"><code>${escapeHtml(code)}</code></pre>`;
+    return `<pre class="code-block"><code>${escapeHtml(raw)}</code></pre>`;
   }
 
-  let highlighted = escapeHtml(code);
-  
+  let highlighted = escapeHtml(raw);
+
   // Apply patterns in order
   langPatterns.forEach(({ regex, className }) => {
     highlighted = highlighted.replace(regex, (match) => {
@@ -303,7 +322,7 @@ export default function KnowledgeEditorPage() {
 
     const newContent = content.substring(0, start) + replacement + content.substring(end);
     setContent(newContent);
-    
+
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(start + replacement.length, start + replacement.length);
@@ -318,7 +337,7 @@ export default function KnowledgeEditorPage() {
     const heading = '#'.repeat(level) + ' ';
     const newContent = content.substring(0, start) + heading + content.substring(start);
     setContent(newContent);
-    
+
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(start + heading.length, start + heading.length);
@@ -333,7 +352,7 @@ export default function KnowledgeEditorPage() {
     const listItem = '- ';
     const newContent = content.substring(0, start) + listItem + content.substring(start);
     setContent(newContent);
-    
+
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(start + listItem.length, start + listItem.length);
@@ -348,7 +367,7 @@ export default function KnowledgeEditorPage() {
     const link = `[${t.linkText || 'link text'}](https://example.com)`;
     const newContent = content.substring(0, start) + link + content.substring(start);
     setContent(newContent);
-    
+
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(start + link.length, start + link.length);
@@ -439,15 +458,14 @@ export default function KnowledgeEditorPage() {
       <div className="flex flex-1 overflow-hidden relative z-10">
         {/* Left Sidebar */}
         <aside
-          className={`${
-            isLeftSidebarCollapsed ? 'w-0 -ml-64 opacity-0' : 'w-64'
-          } bg-white/10 backdrop-blur-md border-r border-white/20 shadow-xl overflow-y-auto transition-all duration-300 ease-in-out flex-shrink-0`}
+          className={`${isLeftSidebarCollapsed ? 'w-0 -ml-64 opacity-0' : 'w-64'
+            } bg-white/10 backdrop-blur-md border-r border-white/20 shadow-xl overflow-y-auto transition-all duration-300 ease-in-out flex-shrink-0`}
         >
           <div className="p-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-white drop-shadow-md">{t.categories || 'CATEGORIES'}</h2>
               <button
-                onClick={() => {/* TODO: Create category */}}
+                onClick={() => {/* TODO: Create category */ }}
                 className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition"
                 title={t.createCategory || 'Create Category'}
               >
@@ -562,9 +580,8 @@ export default function KnowledgeEditorPage() {
 
         {/* Right Panel */}
         <aside
-          className={`${
-            isRightPanelCollapsed ? 'w-0 -mr-80 opacity-0' : 'w-80'
-          } bg-white/10 backdrop-blur-md border-l border-white/20 shadow-xl overflow-y-auto transition-all duration-300 ease-in-out flex-shrink-0`}
+          className={`${isRightPanelCollapsed ? 'w-0 -mr-80 opacity-0' : 'w-80'
+            } bg-white/10 backdrop-blur-md border-l border-white/20 shadow-xl overflow-y-auto transition-all duration-300 ease-in-out flex-shrink-0`}
         >
           <div className="p-4 space-y-6">
             {/* Document Info */}
@@ -653,18 +670,17 @@ export default function KnowledgeEditorPage() {
                   return (
                     <span
                       key={tag}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium border flex items-center space-x-2 ${
-                        color.bg.startsWith('#')
-                          ? `bg-[${color.bg}]/20 text-[${color.text}] border-[${color.bg}]/30`
-                          : `bg-${color.bg}/20 text-${color.text} border-${color.bg}/30`
-                      }`}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium border flex items-center space-x-2 ${color.bg.startsWith('#')
+                        ? `bg-[${color.bg}]/20 text-[${color.text}] border-[${color.bg}]/30`
+                        : `bg-${color.bg}/20 text-${color.text} border-${color.bg}/30`
+                        }`}
                       style={
                         color.bg.startsWith('#')
                           ? {
-                              backgroundColor: `${color.bg}20`,
-                              color: color.text,
-                              borderColor: `${color.bg}30`,
-                            }
+                            backgroundColor: `${color.bg}20`,
+                            color: color.text,
+                            borderColor: `${color.bg}30`,
+                          }
                           : undefined
                       }
                     >
