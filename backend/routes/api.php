@@ -38,8 +38,8 @@ Route::post('/register', [AuthController::class, 'register'])
     ->middleware('throttle:3,1'); // 1分あたり3リクエスト
 
 Route::post('/login', [AuthController::class, 'login'])
-    ->name('login')
-    ->middleware('throttle:5,1'); // 1分あたり5リクエスト
+    ->name('api.login')
+    ->middleware('throttle:5,1'); // 1分あたり5リクエスト（web の login は auth.php）
 
 // パスワードリセットルート（レート制限付き）
 Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword'])

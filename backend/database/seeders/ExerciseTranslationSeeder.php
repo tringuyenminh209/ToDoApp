@@ -6,18 +6,28 @@ use App\Models\CheatCodeLanguage;
 use App\Models\Exercise;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
+use Throwable;
 
 class ExerciseTranslationSeeder extends Seeder
 {
     /**
      * Seed translations for Exercises
-     * 
+     *
      * Đọc từ file JSON và tạo translations cho:
      * - Exercise: title, description, question
+     *
+     * ※ 実行前に php artisan migrate で cheat_code_languages / exercises が存在すること。
      */
     public function run(): void
     {
         $this->command->info('🌐 Bắt đầu seed bản dịch Exercises...');
+
+        if (!Schema::hasTable('cheat_code_languages') || !Schema::hasTable('exercises')) {
+            $this->command->warn('⚠️  Bỏ qua ExerciseTranslationSeeder: thiếu bảng cheat_code_languages hoặc exercises.');
+            $this->command->warn('   Chạy: php artisan migrate --force');
+            return;
+        }
 
         // Danh sách các languages có exercises
         $languages = [
@@ -60,8 +70,14 @@ class ExerciseTranslationSeeder extends Seeder
             return;
         }
 
-        // Get language
-        $language = CheatCodeLanguage::where('name', $langKey)->first();
+        // Get language (DB接続・テーブルエラー時はメッセージを出してスキップ)
+        try {
+            $language = CheatCodeLanguage::where('name', $langKey)->first();
+        } catch (Throwable $e) {
+            $this->command->error("❌ Lỗi DB khi lấy language '{$langKey}': " . $e->getMessage());
+            $this->command->warn('   Kiểm tra: php artisan migrate, .env (DB_*), quyền MySQL.');
+            return;
+        }
         if (!$language) {
             $this->command->warn("⚠️  Không tìm thấy language: {$langKey}");
             return;
