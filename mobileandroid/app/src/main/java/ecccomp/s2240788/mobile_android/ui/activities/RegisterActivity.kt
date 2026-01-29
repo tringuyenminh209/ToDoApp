@@ -9,7 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import ecccomp.s2240788.mobile_android.R
 import ecccomp.s2240788.mobile_android.databinding.ActivityRegisterBinding
 import ecccomp.s2240788.mobile_android.ui.viewmodels.RegisterViewModel
-import ecccomp.s2240788.mobile_android.utils.FCMTokenHelper
+// Firebaseは使用しないためコメントアウト
+// import ecccomp.s2240788.mobile_android.utils.FCMTokenHelper
 import ecccomp.s2240788.mobile_android.utils.LocaleHelper
 
 class RegisterActivity : BaseActivity() {
@@ -109,8 +110,9 @@ class RegisterActivity : BaseActivity() {
             if (success) {
                 Toast.makeText(this, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
                 
+                // Firebaseは使用しないためコメントアウト
                 // Send FCM token to backend after successful registration
-                FCMTokenHelper.sendTokenToServer(this)
+                // FCMTokenHelper.sendTokenToServer(this)
                 
                 // Navigate to MainActivity (user is now logged in with token saved)
                 val intent = Intent(this, MainActivity::class.java).apply {

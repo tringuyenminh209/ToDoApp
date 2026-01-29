@@ -138,17 +138,27 @@ object TokenManager {
      */
     fun init(context: Context) {
         if (encryptedPrefs == null) {
-            val masterKey = MasterKey.Builder(context)
-                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                .build()
+            try {
+                val masterKey = MasterKey.Builder(context)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build()
 
-            encryptedPrefs = EncryptedSharedPreferences.create(
-                context,
-                PREFS_NAME,
-                masterKey,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            )
+                encryptedPrefs = EncryptedSharedPreferences.create(
+                    context,
+                    PREFS_NAME,
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                )
+            } catch (e: Exception) {
+                // 暗号化キーの復号に失敗した場合（署名キーが変わった場合など）
+                // フォールバック: 通常のSharedPreferencesを使用
+                android.util.Log.e("TokenManager", "Failed to initialize EncryptedSharedPreferences: ${e.message}", e)
+                android.util.Log.w("TokenManager", "Falling back to regular SharedPreferences")
+                
+                // 通常のSharedPreferencesを使用（セキュリティは低いが、アプリは起動可能）
+                encryptedPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            }
         }
     }
 

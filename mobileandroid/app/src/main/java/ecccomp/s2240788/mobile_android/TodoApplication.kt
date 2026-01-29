@@ -4,7 +4,8 @@ import android.app.Application
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import ecccomp.s2240788.mobile_android.utils.FCMTokenHelper
+// Firebaseは使用しないためコメントアウト
+// import ecccomp.s2240788.mobile_android.utils.FCMTokenHelper
 import ecccomp.s2240788.mobile_android.utils.LocaleHelper
 import ecccomp.s2240788.mobile_android.utils.NetworkModule
 import ecccomp.s2240788.mobile_android.utils.NotificationHelper
@@ -33,8 +34,9 @@ class TodoApplication : Application() {
         // Initialize notification channels (Android 8.0+)
         NotificationHelper.createNotificationChannels(this)
 
+        // Firebaseは使用しないためコメントアウト
         // Initialize FCM and get token
-        initializeFCM()
+        // initializeFCM()
 
         // Schedule periodic notification sync worker (every 30 minutes)
         scheduleNotificationSyncWorker()
@@ -43,7 +45,9 @@ class TodoApplication : Application() {
     /**
      * Initialize Firebase Cloud Messaging
      * Get FCM token and send to backend if user is logged in
+     * Firebaseは使用しないためコメントアウト
      */
+    /*
     private fun initializeFCM() {
         // Send token to backend if user is already logged in
         // (e.g., app restarted with valid token)
@@ -51,6 +55,7 @@ class TodoApplication : Application() {
             FCMTokenHelper.sendTokenToServer(this)
         }
     }
+    */
 
     private fun scheduleNotificationSyncWorker() {
         val syncWorkRequest = PeriodicWorkRequestBuilder<NotificationSyncWorker>(

@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
-    id("com.google.gms.google-services")
+    // Firebaseは使用しないためコメントアウト
+    // id("com.google.gms.google-services")
 }
 
 android {
@@ -26,6 +27,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // デバッグキーで署名（開発・テスト用）
+            // 本番環境では適切なキーストアを使用してください
+            signingConfig = signingConfigs.getByName("debug")
+        }
+        debug {
+            // Debugビルドは自動的にデバッグキーで署名される
         }
     }
     compileOptions {
@@ -96,10 +103,11 @@ dependencies {
     // WorkManager for background tasks
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 
+    // Firebaseは使用しないためコメントアウト
     // Firebase Cloud Messaging (FCM) for push notifications
-    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
-    implementation("com.google.firebase:firebase-messaging")
-    implementation("com.google.firebase:firebase-analytics")
+    // implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
+    // implementation("com.google.firebase:firebase-messaging")
+    // implementation("com.google.firebase:firebase-analytics")
 
     // Testing
     testImplementation(libs.junit)
