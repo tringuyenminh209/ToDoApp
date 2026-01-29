@@ -1,13 +1,13 @@
 // frontend/components/dashboard/RightPanel.tsx
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Icon } from '@iconify/react';
 import { AiLogo } from '@/components/ui/AiLogo';
 import { translations, type Language } from '@/lib/i18n';
 import { aiService } from '@/lib/services/aiService';
 import { aiChatService, type ChatMessage } from '@/lib/services/aiChatService';
-import { statsService } from '@/lib/services/statsService';
+import { sessionService, type FocusSession } from '@/lib/services/sessionService';
 import { timetableService, TimetableClass, TimetableStudy } from '@/lib/services/timetableService';
 
 interface RightPanelProps {
@@ -37,10 +37,9 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyItems, setHistoryItems] = useState<any[]>([]);
-  const [todayStats, setTodayStats] = useState<{
-    total_minutes: number;
-    sessions_count: number;
-  } | null>(null);
+  const [todayFocusByTask, setTodayFocusByTask] = useState<Array<{ task_id: number; task_title: string; minutes: number }>>([]);
+  const [currentSession, setCurrentSession] = useState<FocusSession | null>(null);
+  const [panelTimerTick, setPanelTimerTick] = useState(0);
   const [schedule, setSchedule] = useState<(TimetableClass | TimetableStudy)[]>([]);
   const [loading, setLoading] = useState(true);
   const [showScheduleDetail, setShowScheduleDetail] = useState(false);
@@ -79,6 +78,45 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
     setShowScheduleDetail(false);
     setSelectedSchedule(null);
   };
+
+  const loadFocusByTask = useCallback(async () => {
+    try {
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const [sessionsRes, currentRes] = await Promise.all([
+        sessionService.getSessions({ date: todayStr, per_page: 100 }),
+        sessionService.getCurrentSession(),
+      ]);
+      const sessions = sessionsRes?.data?.data ?? [];
+      const list = Array.isArray(sessions) ? sessions : [];
+      const byTask = new Map<number, { task_title: string; minutes: number }>();
+      for (const s of list) {
+        const taskId = s.task_id;
+        const mins = s.status === 'active'
+          ? Math.max(0, Math.floor((Date.now() - new Date(s.started_at).getTime()) / 60000))
+          : (s.actual_minutes ?? s.duration_minutes ?? 0);
+        const title = s.task?.title ?? (currentLang === 'ja' ? 'タスク' : currentLang === 'en' ? 'Task' : 'Task');
+        if (byTask.has(taskId)) {
+          byTask.get(taskId)!.minutes += mins;
+        } else {
+          byTask.set(taskId, { task_title: title, minutes: mins });
+        }
+      }
+      setTodayFocusByTask(
+        Array.from(byTask.entries())
+          .map(([task_id, v]) => ({ task_id, task_title: v.task_title, minutes: v.minutes }))
+          .sort((a, b) => b.minutes - a.minutes)
+      );
+      if (currentRes?.data?.id && currentRes?.data?.status === 'active') {
+        setCurrentSession(currentRes.data as FocusSession);
+      } else {
+        setCurrentSession(null);
+      }
+    } catch (error) {
+      console.error('Failed to load focus by task:', error);
+      setTodayFocusByTask([]);
+      setCurrentSession(null);
+    }
+  }, [currentLang]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -131,24 +169,7 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
           }
         }
 
-        // 今日の統計取得
-        try {
-          const statsData = await statsService.getSessionStats();
-          if (statsData.success && statsData.data && statsData.data.today) {
-            setTodayStats({
-              total_minutes: statsData.data.today.total_minutes || 0,
-              sessions_count: statsData.data.today.sessions_count || 0,
-            });
-          } else if (statsData.data && statsData.data.today) {
-            setTodayStats({
-              total_minutes: statsData.data.today.total_minutes || 0,
-              sessions_count: statsData.data.today.sessions_count || 0,
-            });
-          }
-        } catch (error) {
-          console.error('Failed to load stats:', error);
-          setTodayStats({ total_minutes: 0, sessions_count: 0 });
-        }
+        await loadFocusByTask();
 
         // スケジュール取得
         try {
@@ -214,28 +235,11 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
 
     loadData();
 
-    // 定期的に統計を更新（5分ごと）- AIリクエストは含めない
+    // 定期的にフォーカス・スケジュールを更新（5分ごと）
     const interval = setInterval(() => {
-      // AIリクエストは別途制御するため、ここでは統計とスケジュールのみ更新
-      const updateStatsAndSchedule = async () => {
+      const updateFocusAndSchedule = async () => {
         try {
-          // 今日の統計取得
-          try {
-            const statsData = await statsService.getSessionStats();
-            if (statsData.success && statsData.data && statsData.data.today) {
-              setTodayStats({
-                total_minutes: statsData.data.today.total_minutes || 0,
-                sessions_count: statsData.data.today.sessions_count || 0,
-              });
-            } else if (statsData.data && statsData.data.today) {
-              setTodayStats({
-                total_minutes: statsData.data.today.total_minutes || 0,
-                sessions_count: statsData.data.today.sessions_count || 0,
-              });
-            }
-          } catch (error) {
-            console.error('Failed to load stats:', error);
-          }
+          await loadFocusByTask();
 
           // スケジュール取得
           try {
@@ -326,11 +330,24 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
           console.error('Failed to update stats and schedule:', error);
         }
       };
-      updateStatsAndSchedule();
+      updateFocusAndSchedule();
     }, 5 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [loadFocusByTask]);
+
+  useEffect(() => {
+    const onFocusSessionChanged = () => loadFocusByTask();
+    window.addEventListener('focusSessionChanged', onFocusSessionChanged);
+    return () => window.removeEventListener('focusSessionChanged', onFocusSessionChanged);
+  }, [loadFocusByTask]);
+
+  // セッション中は1秒ごとに再描画して「集中中」の経過時間を更新
+  useEffect(() => {
+    if (!currentSession) return;
+    const interval = setInterval(() => setPanelTimerTick((t) => t + 1), 1000);
+    return () => clearInterval(interval);
+  }, [currentSession]);
 
   useEffect(() => {
     const loadLatestConversation = async () => {
@@ -727,23 +744,43 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
           </div>
         )}
 
-        {/* Today Stats */}
+        {/* Focus by task (today) — タスク・サブタスクで開始したフォーカス時間を表示 */}
         <div className="bg-white/20 backdrop-blur-md rounded-2xl p-5 border border-white/20 shadow-xl">
           <h2 className="text-lg font-bold text-white mb-4 drop-shadow-md flex items-center">
-            <Icon icon="mdi:chart-line" className="mr-2" />
-            {t.todayStats}
+            <Icon icon="mdi:chart-box-outline" className="mr-2" />
+            {t.focusByTask}
           </h2>
-          <div className="space-y-4">
-            <div>
-              <div className="flex items-center justify-between text-sm text-white/90 mb-2">
-                <span>{t.focus}:</span>
-                <span className="font-semibold">
-                  {todayStats
-                    ? `${Math.floor(todayStats.total_minutes / 60)}h ${String(todayStats.total_minutes % 60).padStart(2, '0')}m`
-                    : '0h 00m'}
-                </span>
-              </div>
-            </div>
+          <div className="space-y-3">
+            {currentSession && (() => {
+              const startedAt = new Date(currentSession.started_at).getTime();
+              const elapsedSec = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
+              const h = Math.floor(elapsedSec / 3600);
+              const m = Math.floor((elapsedSec % 3600) / 60);
+              const s = elapsedSec % 60;
+              const elapsedStr = h > 0
+                ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+                : `${m}:${String(s).padStart(2, '0')}`;
+              return (
+                <div className="flex items-center justify-between text-sm bg-[#0FA968]/20 rounded-xl px-3 py-2 border border-[#0FA968]/30">
+                  <span className="text-white/90 truncate flex-1 mr-2">{t.currentFocus}: {currentSession.task?.title ?? (currentLang === 'ja' ? 'タスク' : currentLang === 'en' ? 'Task' : 'Task')}</span>
+                  <span className="font-semibold text-[#0FA968] whitespace-nowrap tabular-nums">{elapsedStr}</span>
+                </div>
+              );
+            })()}
+            {todayFocusByTask.length > 0 ? (
+              todayFocusByTask.map((item) => (
+                <div key={item.task_id} className="flex items-center justify-between text-sm text-white/90 py-1.5 border-b border-white/10 last:border-0">
+                  <span className="truncate flex-1 mr-2">{item.task_title}</span>
+                  <span className="font-semibold whitespace-nowrap">
+                    {Math.floor(item.minutes / 60) > 0
+                      ? `${Math.floor(item.minutes / 60)}h ${String(item.minutes % 60).padStart(2, '0')}m`
+                      : `${item.minutes}m`}
+                  </span>
+                </div>
+              ))
+            ) : !currentSession ? (
+              <div className="text-white/60 text-sm text-center py-4">{t.noFocusToday}</div>
+            ) : null}
           </div>
         </div>
 

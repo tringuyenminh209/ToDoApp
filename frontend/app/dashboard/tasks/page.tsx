@@ -47,6 +47,7 @@ export default function TasksPage() {
     energy_level: '',
   });
   const [draggedTask, setDraggedTask] = useState<Task | null>(null);
+  const [timerTick, setTimerTick] = useState(0);
 
   useEffect(() => {
     const loadLanguage = () => {
@@ -114,10 +115,9 @@ export default function TasksPage() {
   const loadCurrentSession = useCallback(async () => {
     try {
       const response = await sessionService.getCurrentSession();
-      if (response.data) {
-        setCurrentSession(response.data);
-      }
+      setCurrentSession(response?.data ?? null);
     } catch (error) {
+      setCurrentSession(null);
     }
   }, []);
 
@@ -138,6 +138,13 @@ export default function TasksPage() {
     loadCurrentSession();
     loadUserStats();
   }, [loadTasks, loadLearningPaths, loadCurrentSession, loadUserStats]);
+
+  // セッション中は1秒ごとに再描画してカウントダウンを更新
+  useEffect(() => {
+    if (!currentSession) return;
+    const interval = setInterval(() => setTimerTick((t) => t + 1), 1000);
+    return () => clearInterval(interval);
+  }, [currentSession]);
 
   const handleDragStart = (e: React.DragEvent, task: Task) => {
     setDraggedTask(task);
@@ -176,14 +183,16 @@ export default function TasksPage() {
     e.dataTransfer.dropEffect = 'move';
   };
 
-  const handleStartFocus = async (taskId: number) => {
+  const handleStartFocus = async (taskId: number, durationMinutes?: number) => {
     try {
+      const mins = durationMinutes ?? 25;
       await sessionService.startSession({
         task_id: taskId,
-        duration_minutes: 25,
+        duration_minutes: Math.min(120, Math.max(1, mins)),
         session_type: 'work',
       });
       await loadCurrentSession();
+      window.dispatchEvent(new Event('focusSessionChanged'));
     } catch (error) {
       console.error('Failed to start session:', error);
     }
@@ -249,13 +258,27 @@ export default function TasksPage() {
     return `${hours}:${String(mins).padStart(2, '0')}`;
   };
 
-  const getRemainingMinutes = (session: any) => {
-    if (!session?.duration_minutes) return 25;
-    if (!session?.started_at) return session.duration_minutes;
+  /** 残り秒数を返す（カウントダウン表示用） */
+  const getRemainingSeconds = (session: any): number => {
+    if (!session?.duration_minutes) return 25 * 60;
+    if (!session?.started_at) return session.duration_minutes * 60;
     const startedAt = new Date(session.started_at).getTime();
-    if (Number.isNaN(startedAt)) return session.duration_minutes;
-    const elapsedMinutes = Math.floor((Date.now() - startedAt) / 60000);
-    return Math.max(session.duration_minutes - elapsedMinutes, 0);
+    if (Number.isNaN(startedAt)) return session.duration_minutes * 60;
+    const elapsedSeconds = Math.floor((Date.now() - startedAt) / 1000);
+    const totalSeconds = session.duration_minutes * 60;
+    return Math.max(totalSeconds - elapsedSeconds, 0);
+  };
+
+  /** 秒を HH:MM:SS または MM:SS で表示（1秒ごとに更新） */
+  const formatTimeWithSeconds = (totalSeconds: number): string => {
+    const sec = Math.max(0, Math.floor(totalSeconds));
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    if (h > 0) {
+      return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+    return `${m}:${String(s).padStart(2, '0')}`;
   };
 
   const nextTask =
@@ -319,9 +342,9 @@ export default function TasksPage() {
               </div>
               <div className="flex items-center justify-between pt-4 border-t border-white/30">
                 <div className="flex items-center space-x-3">
-                  <div className="text-3xl font-bold text-white drop-shadow-lg flex items-center">
+                  <div className="text-3xl font-bold text-white drop-shadow-lg flex items-center tabular-nums">
                     <Icon icon="mdi:clock" className="mr-3 text-2xl" />
-                    <span>{formatMinutes(getRemainingMinutes(currentSession))}</span>
+                    <span>{formatTimeWithSeconds(getRemainingSeconds(currentSession))}</span>
                   </div>
                 </div>
                 <button
@@ -330,6 +353,7 @@ export default function TasksPage() {
                       await sessionService.stopSession(currentSession.id);
                       await loadCurrentSession();
                       await loadTasks();
+                      window.dispatchEvent(new Event('focusSessionChanged'));
                     } catch (error) {
                       console.error('Failed to stop session:', error);
                     }
@@ -357,16 +381,16 @@ export default function TasksPage() {
               </div>
               <div className="flex items-center justify-between pt-4 border-t border-white/30">
                 <div className="flex items-center space-x-3">
-                  <div className="text-3xl font-bold text-white drop-shadow-lg flex items-center">
+                  <div className="text-3xl font-bold text-white drop-shadow-lg flex items-center tabular-nums">
                     <Icon icon="mdi:clock" className="mr-3 text-2xl" />
-                    <span>{formatMinutes(nextTask?.estimated_minutes ?? 25)}</span>
+                    <span>{formatTimeWithSeconds((nextTask?.estimated_minutes ?? 25) * 60)}</span>
                   </div>
                 </div>
                 <button
                   onClick={async () => {
                     if (nextTask) {
                       try {
-                        await handleStartFocus(nextTask.id);
+                        await handleStartFocus(nextTask.id, nextTask.estimated_minutes ?? 25);
                       } catch (error) {
                         console.error('Failed to start focus:', error);
                       }
