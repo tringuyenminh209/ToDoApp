@@ -60,6 +60,9 @@ export const sessionService = {
     status?: string;
     date?: string;
     task_id?: number;
+    per_page?: number;
+    sort_by?: string;
+    sort_order?: string;
   }) => {
     const response = await apiClient.get('/sessions', { params });
     return response.data;
