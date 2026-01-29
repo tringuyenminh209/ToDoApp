@@ -80,6 +80,9 @@ class DatabaseSeeder extends Seeder
 
             // Exercise Translations (chạy sau khi đã có dữ liệu exercises)
             ExerciseTranslationSeeder::class,
+
+            // CheatCode Translations (chạy sau khi đã có cheat code data)
+            CheatCodeTranslationSeeder::class,
         ]);
     }
 }

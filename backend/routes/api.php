@@ -252,6 +252,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [LearningPathController::class, 'destroy']);
         Route::put('/{id}/complete', [LearningPathController::class, 'complete']);
 
+        // マイルストーンCRUDルート (Milestones CRUD routes)
+        Route::get('/{id}/milestones', [LearningPathController::class, 'getMilestones']);
+        Route::post('/{id}/milestones', [LearningPathController::class, 'storeMilestone']);
+        Route::put('/milestones/{milestoneId}', [LearningPathController::class, 'updateMilestone']);
+        Route::delete('/milestones/{milestoneId}', [LearningPathController::class, 'destroyMilestone']);
+        
+        // マイルストーンにタスクを追加 (Add task to milestone)
+        Route::post('/milestones/{milestoneId}/tasks', [LearningPathController::class, 'storeTaskToMilestone']);
+
         // 特定の学習パスの学習スケジュール
         Route::get('/{id}/study-schedules', [\App\Http\Controllers\StudyScheduleController::class, 'index']);
         Route::post('/{id}/study-schedules', [\App\Http\Controllers\StudyScheduleController::class, 'store']);

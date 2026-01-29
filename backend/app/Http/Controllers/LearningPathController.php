@@ -123,7 +123,8 @@ class LearningPathController extends Controller
     }
 
     /**
-     * Create a new learning path
+     * Create a new learning path with optional milestones, tasks, subtasks and knowledge items
+     * 新しい学習パスを作成（オプションでマイルストーン、タスク、サブタスク、ナレッジアイテムを含む）
      */
     public function store(Request $request)
     {
@@ -138,25 +139,58 @@ class LearningPathController extends Controller
                 'tags' => 'nullable|array',
                 'color' => 'nullable|string|max:20',
                 'icon' => 'nullable|string|max:50',
+                // Milestones array validation
+                'milestones' => 'nullable|array',
+                'milestones.*.title' => 'required_with:milestones|string|max:255',
+                'milestones.*.description' => 'nullable|string',
+                'milestones.*.estimated_hours' => 'nullable|integer|min:0',
+                'milestones.*.sort_order' => 'nullable|integer|min:0',
+                'milestones.*.position_x' => 'nullable|numeric|min:0|max:100',
+                'milestones.*.position_y' => 'nullable|numeric|min:0|max:100',
+                // Tasks under milestones
+                'milestones.*.tasks' => 'nullable|array',
+                'milestones.*.tasks.*.title' => 'required_with:milestones.*.tasks|string|max:255',
+                'milestones.*.tasks.*.description' => 'nullable|string',
+                'milestones.*.tasks.*.estimated_minutes' => 'nullable|integer|min:0',
+                'milestones.*.tasks.*.priority' => 'nullable|integer|min:1|max:5',
+                // Subtasks under tasks
+                'milestones.*.tasks.*.subtasks' => 'nullable|array',
+                'milestones.*.tasks.*.subtasks.*.title' => 'required_with:milestones.*.tasks.*.subtasks|string|max:255',
+                // Knowledge items under tasks
+                'milestones.*.tasks.*.knowledge_items' => 'nullable|array',
+                'milestones.*.tasks.*.knowledge_items.*.title' => 'required_with:milestones.*.tasks.*.knowledge_items|string|max:255',
+                'milestones.*.tasks.*.knowledge_items.*.content' => 'nullable|string',
+                'milestones.*.tasks.*.knowledge_items.*.item_type' => 'nullable|string|in:note,concept,code,link,reference',
             ]);
 
             $user = Auth::user();
 
-            $path = LearningPath::create([
-                'user_id' => $user->id,
-                'title' => $validated['title'],
-                'description' => $validated['description'] ?? null,
-                'goal_type' => $validated['goal_type'],
-                'target_start_date' => $validated['target_start_date'] ?? null,
-                'target_end_date' => $validated['target_end_date'] ?? null,
-                'estimated_hours_total' => $validated['estimated_hours_total'] ?? null,
-                'tags' => $validated['tags'] ?? null,
-                'color' => $validated['color'] ?? '#3B82F6',
-                'icon' => $validated['icon'] ?? 'code',
-                'status' => 'active',
-                'progress_percentage' => 0,
-                'is_ai_generated' => false,
-            ]);
+            // Use database transaction to ensure data integrity
+            $path = DB::transaction(function () use ($validated, $user) {
+                // Create the learning path
+                $path = \App\Models\LearningPath::create([
+                    'user_id' => $user->id,
+                    'title' => $validated['title'],
+                    'description' => $validated['description'] ?? null,
+                    'goal_type' => $validated['goal_type'],
+                    'target_start_date' => $validated['target_start_date'] ?? null,
+                    'target_end_date' => $validated['target_end_date'] ?? null,
+                    'estimated_hours_total' => $validated['estimated_hours_total'] ?? null,
+                    'tags' => $validated['tags'] ?? null,
+                    'color' => $validated['color'] ?? '#3B82F6',
+                    'icon' => $validated['icon'] ?? 'code',
+                    'status' => 'active',
+                    'progress_percentage' => 0,
+                    'is_ai_generated' => false,
+                ]);
+
+                // Create milestones with tasks, subtasks and knowledge items
+                if (!empty($validated['milestones'])) {
+                    $this->createMilestonesWithTasks($path, $user, $validated['milestones']);
+                }
+
+                return $path;
+            });
 
             // Auto-create Knowledge Category for this roadmap using CategoryService
             try {
@@ -173,11 +207,20 @@ class LearningPathController extends Controller
                 Log::warning('Failed to create knowledge category for roadmap: ' . $e->getMessage());
             }
 
+            // Load relationships for response
+            $path->load(['milestones.tasks.subtasks', 'milestones.tasks.knowledgeItems']);
+
             return response()->json([
                 'success' => true,
                 'data' => $path,
                 'message' => 'Learning path を作成しました'
             ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             Log::error('Error creating learning path: ' . $e->getMessage());
             return response()->json([
@@ -186,6 +229,67 @@ class LearningPathController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Create milestones with nested tasks, subtasks and knowledge items
+     * マイルストーンをネストされたタスク、サブタスク、ナレッジアイテムとともに作成
+     */
+    private function createMilestonesWithTasks($path, $user, array $milestonesData): void
+    {
+        foreach ($milestonesData as $index => $milestoneData) {
+            $milestone = $path->milestones()->create([
+                'title' => $milestoneData['title'],
+                'description' => $milestoneData['description'] ?? null,
+                'estimated_hours' => $milestoneData['estimated_hours'] ?? null,
+                'sort_order' => $milestoneData['sort_order'] ?? $index,
+                'status' => 'pending',
+                'progress_percentage' => 0,
+            ]);
+
+            // Create tasks for this milestone
+            if (!empty($milestoneData['tasks'])) {
+                foreach ($milestoneData['tasks'] as $taskIndex => $taskData) {
+                    $task = \App\Models\Task::create([
+                        'user_id' => $user->id,
+                        'learning_milestone_id' => $milestone->id,
+                        'title' => $taskData['title'],
+                        'description' => $taskData['description'] ?? null,
+                        'estimated_minutes' => $taskData['estimated_minutes'] ?? 30,
+                        'priority' => $taskData['priority'] ?? 3,
+                        'status' => 'pending',
+                        'energy_level' => 3,
+                    ]);
+
+                    // Create subtasks for this task
+                    if (!empty($taskData['subtasks'])) {
+                        foreach ($taskData['subtasks'] as $subtaskIndex => $subtaskData) {
+                            $task->subtasks()->create([
+                                'title' => $subtaskData['title'],
+                                'sort_order' => $subtaskIndex,
+                                'is_completed' => false,
+                            ]);
+                        }
+                    }
+
+                    // Create knowledge items for this task
+                    if (!empty($taskData['knowledge_items'])) {
+                        foreach ($taskData['knowledge_items'] as $knowledgeData) {
+                            \App\Models\KnowledgeItem::create([
+                                'user_id' => $user->id,
+                                'task_id' => $task->id,
+                                'learning_path_id' => $path->id,
+                                'title' => $knowledgeData['title'],
+                                'content' => $knowledgeData['content'] ?? '',
+                                'item_type' => $knowledgeData['item_type'] ?? 'note',
+                                'status' => 'active',
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * Update a learning path
@@ -320,6 +424,250 @@ class LearningPathController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Get milestones for a learning path
+     * GET /api/learning-paths/{id}/milestones
+     */
+    public function getMilestones($id)
+    {
+        try {
+            $user = Auth::user();
+            $path = LearningPath::where('user_id', $user->id)->findOrFail($id);
+            
+            $milestones = $path->milestones()
+                ->with(['tasks.subtasks', 'tasks.knowledgeItems'])
+                ->orderBy('sort_order')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $milestones
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error fetching milestones: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'マイルストーンの取得に失敗しました'
+            ], 500);
+        }
+    }
+
+    /**
+     * Create a new milestone for a learning path
+     * POST /api/learning-paths/{id}/milestones
+     */
+    public function storeMilestone(Request $request, $id)
+    {
+        try {
+            $user = Auth::user();
+            $path = LearningPath::where('user_id', $user->id)->findOrFail($id);
+
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'estimated_hours' => 'nullable|integer|min:0',
+                'sort_order' => 'nullable|integer|min:0',
+                'tasks' => 'nullable|array',
+                'tasks.*.title' => 'required_with:tasks|string|max:255',
+                'tasks.*.description' => 'nullable|string',
+                'tasks.*.estimated_minutes' => 'nullable|integer|min:0',
+                'tasks.*.priority' => 'nullable|integer|min:1|max:5',
+            ]);
+
+            $milestone = DB::transaction(function () use ($path, $user, $validated) {
+                $milestone = $path->milestones()->create([
+                    'title' => $validated['title'],
+                    'description' => $validated['description'] ?? null,
+                    'estimated_hours' => $validated['estimated_hours'] ?? null,
+                    'sort_order' => $validated['sort_order'] ?? $path->milestones()->count(),
+                    'status' => 'pending',
+                    'progress_percentage' => 0,
+                ]);
+
+                // Create tasks if provided
+                if (!empty($validated['tasks'])) {
+                    foreach ($validated['tasks'] as $taskData) {
+                        \App\Models\Task::create([
+                            'user_id' => $user->id,
+                            'learning_milestone_id' => $milestone->id,
+                            'title' => $taskData['title'],
+                            'description' => $taskData['description'] ?? null,
+                            'estimated_minutes' => $taskData['estimated_minutes'] ?? 30,
+                            'priority' => $taskData['priority'] ?? 3,
+                            'status' => 'pending',
+                            'energy_level' => 3,
+                        ]);
+                    }
+                }
+
+                return $milestone;
+            });
+
+            $milestone->load(['tasks.subtasks', 'tasks.knowledgeItems']);
+
+            return response()->json([
+                'success' => true,
+                'data' => $milestone,
+                'message' => 'マイルストーンを作成しました'
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error('Error creating milestone: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'マイルストーンの作成に失敗しました'
+            ], 500);
+        }
+    }
+
+    /**
+     * Update a milestone
+     * PUT /api/learning-paths/milestones/{milestoneId}
+     */
+    public function updateMilestone(Request $request, $milestoneId)
+    {
+        try {
+            $user = Auth::user();
+            
+            $milestone = \App\Models\LearningMilestone::whereHas('learningPath', function($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->findOrFail($milestoneId);
+
+            $validated = $request->validate([
+                'title' => 'sometimes|required|string|max:255',
+                'description' => 'nullable|string',
+                'estimated_hours' => 'nullable|integer|min:0',
+                'sort_order' => 'nullable|integer|min:0',
+                'status' => 'sometimes|in:pending,in_progress,completed,skipped',
+            ]);
+
+            $milestone->update($validated);
+
+            return response()->json([
+                'success' => true,
+                'data' => $milestone,
+                'message' => 'マイルストーンを更新しました'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error updating milestone: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'マイルストーンの更新に失敗しました'
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete a milestone
+     * DELETE /api/learning-paths/milestones/{milestoneId}
+     */
+    public function destroyMilestone($milestoneId)
+    {
+        try {
+            $user = Auth::user();
+            
+            $milestone = \App\Models\LearningMilestone::whereHas('learningPath', function($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->findOrFail($milestoneId);
+
+            $milestone->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'マイルストーンを削除しました'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error deleting milestone: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'マイルストーンの削除に失敗しました'
+            ], 500);
+        }
+    }
+
+    /**
+     * Add a task to a milestone
+     * POST /api/learning-paths/milestones/{milestoneId}/tasks
+     */
+    public function storeTaskToMilestone(Request $request, $milestoneId)
+    {
+        try {
+            $user = Auth::user();
+            
+            $milestone = \App\Models\LearningMilestone::whereHas('learningPath', function($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->findOrFail($milestoneId);
+
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'estimated_minutes' => 'nullable|integer|min:0',
+                'priority' => 'nullable|integer|min:1|max:5',
+                'subtasks' => 'nullable|array',
+                'subtasks.*.title' => 'required_with:subtasks|string|max:255',
+                'knowledge_items' => 'nullable|array',
+                'knowledge_items.*.title' => 'required_with:knowledge_items|string|max:255',
+                'knowledge_items.*.content' => 'nullable|string',
+                'knowledge_items.*.item_type' => 'nullable|string|in:note,concept,code,link,reference',
+            ]);
+
+            $task = DB::transaction(function () use ($user, $milestone, $validated) {
+                $task = \App\Models\Task::create([
+                    'user_id' => $user->id,
+                    'learning_milestone_id' => $milestone->id,
+                    'title' => $validated['title'],
+                    'description' => $validated['description'] ?? null,
+                    'estimated_minutes' => $validated['estimated_minutes'] ?? 30,
+                    'priority' => $validated['priority'] ?? 3,
+                    'status' => 'pending',
+                    'energy_level' => 3,
+                ]);
+
+                // Create subtasks if provided
+                if (!empty($validated['subtasks'])) {
+                    foreach ($validated['subtasks'] as $index => $subtaskData) {
+                        $task->subtasks()->create([
+                            'title' => $subtaskData['title'],
+                            'sort_order' => $index,
+                            'is_completed' => false,
+                        ]);
+                    }
+                }
+
+                // Create knowledge items if provided
+                if (!empty($validated['knowledge_items'])) {
+                    foreach ($validated['knowledge_items'] as $knowledgeData) {
+                        \App\Models\KnowledgeItem::create([
+                            'user_id' => $user->id,
+                            'task_id' => $task->id,
+                            'learning_path_id' => $milestone->learning_path_id,
+                            'title' => $knowledgeData['title'],
+                            'content' => $knowledgeData['content'] ?? '',
+                            'item_type' => $knowledgeData['item_type'] ?? 'note',
+                            'status' => 'active',
+                        ]);
+                    }
+                }
+
+                return $task;
+            });
+
+            $task->load(['subtasks', 'knowledgeItems']);
+
+            return response()->json([
+                'success' => true,
+                'data' => $task,
+                'message' => 'タスクを作成しました'
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error('Error creating task: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'タスクの作成に失敗しました'
+            ], 500);
+        }
+    }
+
 
     /**
      * Backfill icon/color from templates for existing paths.

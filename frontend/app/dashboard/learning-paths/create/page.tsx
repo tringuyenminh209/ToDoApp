@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@iconify/react';
 import { translations, type Language } from '@/lib/i18n';
-import { learningPathService, LearningPath, LearningMilestone } from '@/lib/services/learningPathService';
+import { learningPathService, CreateLearningPathData } from '@/lib/services/learningPathService';
 
 interface MindMapNode {
   id: string;
@@ -12,15 +12,18 @@ interface MindMapNode {
   title: string;
   description: string;
   estimatedHours: number;
+  estimatedMinutes?: number;
   color: string;
   position: { x: number; y: number };
+  parentId?: string;
+  priority?: number;
+  subtasks?: { title: string; completed?: boolean }[];
   milestoneId?: number;
 }
 
 export default function LearningPathCreatorPage() {
   const router = useRouter();
   const [currentLang, setCurrentLang] = useState<Language>('ja');
-  const [pathTitle, setPathTitle] = useState<string>('');
   const [goalType, setGoalType] = useState<'career' | 'skill' | 'certification' | 'hobby'>('skill');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
@@ -68,7 +71,7 @@ export default function LearningPathCreatorPage() {
       const rootNode: MindMapNode = {
         id: 'root',
         type: 'root',
-        title: pathTitle || t.learningPathCreator,
+        title: t.learningPathCreator,
         description: '',
         estimatedHours: 0,
         color: '#0FA968',
@@ -93,32 +96,33 @@ export default function LearningPathCreatorPage() {
     if (!rootNode) return;
 
     const canvasRect = canvasRef.current.getBoundingClientRect();
-    const rootElement = document.querySelector(`[data-node-id="${rootNode.id}"]`) as HTMLElement;
-    if (!rootElement) return;
 
-    const rootRect = rootElement.getBoundingClientRect();
-    const rootX = rootRect.left - canvasRect.left + rootRect.width / 2;
-    const rootY = rootRect.top - canvasRect.top + rootRect.height / 2;
+    const drawLine = (fromId: string, toId: string, stroke = 'rgba(255, 255, 255, 0.3)') => {
+      const fromEl = document.querySelector(`[data-node-id="${fromId}"]`) as HTMLElement;
+      const toEl = document.querySelector(`[data-node-id="${toId}"]`) as HTMLElement;
+      if (!fromEl || !toEl) return;
+      const fromRect = fromEl.getBoundingClientRect();
+      const toRect = toEl.getBoundingClientRect();
+      const x1 = fromRect.left - canvasRect.left + fromRect.width / 2;
+      const y1 = fromRect.top - canvasRect.top + fromRect.height / 2;
+      const x2 = toRect.left - canvasRect.left + toRect.width / 2;
+      const y2 = toRect.top - canvasRect.top + toRect.height / 2;
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', String(x1));
+      line.setAttribute('y1', String(y1));
+      line.setAttribute('x2', String(x2));
+      line.setAttribute('y2', String(y2));
+      line.setAttribute('stroke', stroke);
+      line.setAttribute('stroke-width', '2');
+      svg.appendChild(line);
+    };
 
-    nodes
-      .filter((n) => n.type !== 'root')
-      .forEach((milestone) => {
-        const milestoneElement = document.querySelector(`[data-node-id="${milestone.id}"]`) as HTMLElement;
-        if (!milestoneElement) return;
-
-        const milestoneRect = milestoneElement.getBoundingClientRect();
-        const milestoneX = milestoneRect.left - canvasRect.left + milestoneRect.width / 2;
-        const milestoneY = milestoneRect.top - canvasRect.top + milestoneRect.height / 2;
-
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', String(rootX));
-        line.setAttribute('y1', String(rootY));
-        line.setAttribute('x2', String(milestoneX));
-        line.setAttribute('y2', String(milestoneY));
-        line.setAttribute('stroke', 'rgba(255, 255, 255, 0.3)');
-        line.setAttribute('stroke-width', '2');
-        svg.appendChild(line);
-      });
+    // Root → Milestone
+    nodes.filter((n) => n.type === 'milestone').forEach((m) => drawLine(rootNode.id, m.id));
+    // Milestone → Task (task.parentId === milestone.id)
+    nodes.filter((n) => n.type === 'task' && n.parentId).forEach((task) => {
+      drawLine(task.parentId!, task.id, 'rgba(255, 184, 0, 0.5)');
+    });
   }, [nodes]);
 
   const handleNodeMouseDown = (e: React.MouseEvent, nodeId: string) => {
@@ -205,13 +209,55 @@ export default function LearningPathCreatorPage() {
     setSelectedNodeId(newNodeId);
   };
 
+  const addSubtaskToSelectedTask = () => {
+    if (!selectedNodeId || !selectedNode || selectedNode.type !== 'task') return;
+    const subs = selectedNode.subtasks ?? [];
+    updateNodeProperties(selectedNodeId, {
+      subtasks: [...subs, { title: '', completed: false }],
+    });
+  };
+
+  const addTask = () => {
+    if (!selectedNodeId || !selectedNode || selectedNode.type !== 'milestone') {
+      alert(t.selectMilestoneFirst);
+      return;
+    }
+    const newNodeId = `task-${Date.now()}`;
+    const milestonePos = selectedNode.position;
+    const siblingTasks = nodes.filter((n) => n.type === 'task' && n.parentId === selectedNodeId);
+    const offsetY = siblingTasks.length * 8;
+    const newNode: MindMapNode = {
+      id: newNodeId,
+      type: 'task',
+      title: t.task,
+      description: '',
+      estimatedHours: 0,
+      estimatedMinutes: 30,
+      color: '#FFB800',
+      position: {
+        x: Math.min(milestonePos.x + 15, 85),
+        y: Math.min(milestonePos.y + 10 + offsetY, 85),
+      },
+      parentId: selectedNodeId,
+      priority: 3,
+      subtasks: [],
+    };
+    setNodes((prev) => [...prev, newNode]);
+    setSelectedNodeId(newNodeId);
+  };
+
   const deleteSelected = () => {
     if (!selectedNodeId || selectedNodeId === 'root') {
       alert(t.delete + ' ' + t.milestone + '?');
       return;
     }
     if (confirm(t.delete + '?')) {
-      setNodes((prev) => prev.filter((n) => n.id !== selectedNodeId));
+      const removeIds = new Set([selectedNodeId]);
+      const sel = nodes.find((n) => n.id === selectedNodeId);
+      if (sel?.type === 'milestone') {
+        nodes.filter((n) => n.type === 'task' && n.parentId === selectedNodeId).forEach((t) => removeIds.add(t.id));
+      }
+      setNodes((prev) => prev.filter((n) => !removeIds.has(n.id)));
       setSelectedNodeId('root');
     }
   };
@@ -256,7 +302,8 @@ export default function LearningPathCreatorPage() {
   };
 
   const savePath = async () => {
-    if (!pathTitle.trim()) {
+    const pathTitle = (nodes.find((n) => n.type === 'root')?.title ?? '').trim();
+    if (!pathTitle) {
       alert(t.pathTitle + ' ' + t.required);
       return;
     }
@@ -265,20 +312,38 @@ export default function LearningPathCreatorPage() {
     try {
       const milestones = nodes
         .filter((n) => n.type === 'milestone')
-        .map((node, index) => ({
-          title: node.title,
-          description: node.description,
+        .map((milestone, index) => ({
+          title: milestone.title,
+          description: milestone.description,
           sort_order: index,
-          estimated_hours: node.estimatedHours || 0,
+          estimated_hours: milestone.estimatedHours || 0,
+          position_x: milestone.position.x,
+          position_y: milestone.position.y,
+          tasks: nodes
+            .filter((n) => n.type === 'task' && n.parentId === milestone.id)
+            .map((task, taskIndex) => ({
+              title: task.title,
+              description: task.description,
+              estimated_minutes: task.estimatedMinutes ?? 30,
+              priority: task.priority ?? 3,
+              subtasks: (task.subtasks ?? []).map((st) => ({ title: st.title })),
+            })),
         }));
 
-      const pathData: Partial<LearningPath> = {
+      const totalHours = nodes.reduce((sum, n) => sum + (n.estimatedHours || 0), 0);
+      const totalTaskMinutes = nodes
+        .filter((n) => n.type === 'task')
+        .reduce((sum, n) => sum + (n.estimatedMinutes ?? 30), 0);
+      const rootNode = nodes.find((n) => n.type === 'root');
+      const pathData: CreateLearningPathData = {
         title: pathTitle,
+        description: rootNode?.description?.trim() || undefined,
         goal_type: goalType,
         target_start_date: startDate || undefined,
         target_end_date: endDate || undefined,
-        estimated_hours_total: nodes.reduce((sum, n) => sum + (n.estimatedHours || 0), 0),
-        color: nodes.find((n) => n.type === 'root')?.color || '#0FA968',
+        estimated_hours_total: totalHours + Math.ceil(totalTaskMinutes / 60),
+        color: rootNode?.color || '#0FA968',
+        milestones,
       };
 
       const response = await learningPathService.createLearningPath(pathData);
@@ -295,6 +360,7 @@ export default function LearningPathCreatorPage() {
   };
 
   const exportPath = () => {
+    const pathTitle = nodes.find((n) => n.type === 'root')?.title ?? '';
     const data = {
       title: pathTitle,
       goalType,
@@ -306,8 +372,12 @@ export default function LearningPathCreatorPage() {
         title: node.title,
         description: node.description,
         estimatedHours: node.estimatedHours,
+        estimatedMinutes: node.estimatedMinutes,
         color: node.color,
         position: node.position,
+        parentId: node.parentId,
+        priority: node.priority,
+        subtasks: node.subtasks,
       })),
       exportedAt: new Date().toISOString(),
     };
@@ -332,12 +402,19 @@ export default function LearningPathCreatorPage() {
         reader.onload = (event) => {
           try {
             const data = JSON.parse(event.target?.result as string);
-            setPathTitle(data.title || '');
             setGoalType(data.goalType || 'skill');
             setStartDate(data.startDate || '');
             setEndDate(data.endDate || '');
             if (data.nodes && Array.isArray(data.nodes)) {
-              setNodes(data.nodes);
+              const normalized = data.nodes.map((n: MindMapNode) => ({
+                ...n,
+                estimatedMinutes: n.estimatedMinutes ?? (n.type === 'task' ? 30 : undefined),
+                priority: n.priority ?? (n.type === 'task' ? 3 : undefined),
+                subtasks: n.subtasks ?? (n.type === 'task' ? [] : undefined),
+              }));
+              const root = normalized.find((n: MindMapNode) => n.type === 'root');
+              if (root && data.title) root.title = data.title;
+              setNodes(normalized);
             }
             alert(t.import + ' ' + t.success);
           } catch (error) {
@@ -353,6 +430,30 @@ export default function LearningPathCreatorPage() {
   const selectedNode = nodes.find((n) => n.id === selectedNodeId);
   const totalMilestones = nodes.filter((n) => n.type === 'milestone').length;
   const totalTasks = nodes.filter((n) => n.type === 'task').length;
+
+  /** Format total minutes as "Xh Ym" or "Xm" */
+  const formatTimeTotal = (totalMinutes: number) => {
+    if (totalMinutes < 60) return `${totalMinutes}m`;
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    return m > 0 ? `${h}h ${m}m` : `${h}h`;
+  };
+
+  /** Total minutes per milestone (milestone hours + all its tasks' minutes) */
+  const getMilestoneTotalMinutes = (milestoneId: string) => {
+    const milestone = nodes.find((n) => n.id === milestoneId && n.type === 'milestone');
+    if (!milestone) return 0;
+    const taskMinutes = nodes
+      .filter((n) => n.type === 'task' && n.parentId === milestoneId)
+      .reduce((sum, t) => sum + (t.estimatedMinutes ?? 30), 0);
+    return (milestone.estimatedHours || 0) * 60 + taskMinutes;
+  };
+
+  /** Total path: all milestones' time + all tasks' time (tasks already counted in milestone) */
+  const totalPathMinutes =
+    nodes
+      .filter((n) => n.type === 'milestone')
+      .reduce((sum, m) => sum + getMilestoneTotalMinutes(m.id), 0);
   const totalHours = nodes.reduce((sum, n) => sum + (n.estimatedHours || 0), 0);
 
   return (
@@ -361,22 +462,10 @@ export default function LearningPathCreatorPage() {
       <header className="bg-white/10 backdrop-blur-md shadow-xl border-b border-white/20 relative z-10">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center">
               <div className="flex flex-col">
                 <h1 className="text-xl font-bold text-white drop-shadow-lg">{t.learningPathCreator}</h1>
                 <p className="text-xs text-white/70">{t.createLearningPath}</p>
-              </div>
-              <div className="flex-1 max-w-md">
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={pathTitle}
-                    onChange={(e) => setPathTitle(e.target.value)}
-                    placeholder={t.pathTitle}
-                    className="w-full pl-10 pr-4 py-2 bg-white/20 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/30"
-                  />
-                  <Icon icon="mdi:pencil" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60" />
-                </div>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -442,11 +531,20 @@ export default function LearningPathCreatorPage() {
                 <span>{t.addMilestone}</span>
               </button>
               <button
-                onClick={() => alert(t.addTask + ' (Coming soon)')}
+                onClick={addTask}
                 className="w-full flex items-center space-x-3 px-4 py-3 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-xl transition border border-white/20"
               >
                 <Icon icon="mdi:tasks" />
                 <span>{t.addTask}</span>
+              </button>
+              <button
+                onClick={addSubtaskToSelectedTask}
+                disabled={!selectedNode || selectedNode.type !== 'task'}
+                className="w-full flex items-center space-x-3 px-4 py-3 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-xl transition border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                title={selectedNode?.type === 'task' ? t.addSubtask : t.selectMilestoneFirst}
+              >
+                <Icon icon="mdi:format-list-checks" />
+                <span>{t.addSubtask}</span>
               </button>
               <button
                 onClick={() => alert(t.connect + ' (Coming soon)')}
@@ -490,17 +588,107 @@ export default function LearningPathCreatorPage() {
                     placeholder={t.nodeDescription}
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">{t.estimatedHours}</label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={selectedNode.estimatedHours || 0}
-                    onChange={(e) => updateNodeProperties(selectedNodeId!, { estimatedHours: parseInt(e.target.value) || 0 })}
-                    className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#0FA968]"
-                    placeholder="0"
-                  />
-                </div>
+                {selectedNode.type === 'task' ? (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-white/80 mb-2">{t.estimatedMinutes}</label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={selectedNode.estimatedMinutes ?? 30}
+                        onChange={(e) => updateNodeProperties(selectedNodeId!, { estimatedMinutes: parseInt(e.target.value) || 30 })}
+                        className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#0FA968]"
+                        placeholder="30"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-white/80 mb-2">{t.priority}</label>
+                      <select
+                        value={selectedNode.priority ?? 3}
+                        onChange={(e) => updateNodeProperties(selectedNodeId!, { priority: parseInt(e.target.value) })}
+                        className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-[#0FA968]"
+                        style={{ color: 'white' }}
+                        title={t.priority}
+                        aria-label={t.priority}
+                      >
+                        <option value={1} style={{ backgroundColor: '#1a1a1a' }}>1 - {t.lowPriority}</option>
+                        <option value={2} style={{ backgroundColor: '#1a1a1a' }}>2</option>
+                        <option value={3} style={{ backgroundColor: '#1a1a1a' }}>3 - {t.mediumPriority}</option>
+                        <option value={4} style={{ backgroundColor: '#1a1a1a' }}>4</option>
+                        <option value={5} style={{ backgroundColor: '#1a1a1a' }}>5 - {t.highPriority}</option>
+                      </select>
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block text-sm font-medium text-white/80">{t.subtask}</label>
+                        <button
+                          type="button"
+                          onClick={addSubtaskToSelectedTask}
+                          className="text-xs px-2 py-1 bg-[#0FA968]/30 text-white rounded-lg hover:bg-[#0FA968]/50"
+                        >
+                          + {t.addSubtask}
+                        </button>
+                      </div>
+                      <ul className="space-y-2 max-h-40 overflow-y-auto list-none">
+                        {(selectedNode.subtasks ?? []).length === 0 ? (
+                          <li className="text-xs text-white/50 py-2">{t.noSubtasksYet}</li>
+                        ) : (
+                          (selectedNode.subtasks ?? []).map((st, idx) => (
+                            <li key={idx} className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const subs = [...(selectedNode.subtasks ?? [])];
+                                  subs[idx] = { ...st, completed: !st.completed };
+                                  updateNodeProperties(selectedNodeId!, { subtasks: subs });
+                                }}
+                                className="flex-shrink-0 p-0.5 rounded text-white/70 hover:text-[#0FA968] focus:outline-none focus:ring-1 focus:ring-[#0FA968]"
+                                title={st.completed ? t.completed : t.active}
+                                aria-label={st.completed ? t.completed : t.active}
+                              >
+                                <Icon icon={st.completed ? 'mdi:checkbox-marked' : 'mdi:checkbox-blank-outline'} className="text-lg" />
+                              </button>
+                              <input
+                                type="text"
+                                value={st.title}
+                                onChange={(e) => {
+                                  const subs = [...(selectedNode.subtasks ?? [])];
+                                  subs[idx] = { ...st, title: e.target.value };
+                                  updateNodeProperties(selectedNodeId!, { subtasks: subs });
+                                }}
+                                className={`flex-1 px-3 py-1.5 bg-white/10 border border-white/20 rounded-lg text-white text-sm placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-[#0FA968] ${st.completed ? 'line-through opacity-70' : ''}`}
+                                placeholder={t.subtask}
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const subs = (selectedNode.subtasks ?? []).filter((_, i) => i !== idx);
+                                  updateNodeProperties(selectedNodeId!, { subtasks: subs });
+                                }}
+                                className="p-1 text-white/60 hover:text-red-400 flex-shrink-0"
+                                aria-label={t.delete}
+                              >
+                                <Icon icon="mdi:close" className="text-sm" />
+                              </button>
+                            </li>
+                          ))
+                        )}
+                      </ul>
+                    </div>
+                  </>
+                ) : (
+                  <div>
+                    <label className="block text-sm font-medium text-white/80 mb-2">{t.estimatedHours}</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={selectedNode.estimatedHours || 0}
+                      onChange={(e) => updateNodeProperties(selectedNodeId!, { estimatedHours: parseInt(e.target.value) || 0 })}
+                      className="w-full px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#0FA968]"
+                      placeholder="0"
+                    />
+                  </div>
+                )}
                 <div>
                   <label className="block text-sm font-medium text-white/80 mb-2">{t.color}</label>
                   <div className="flex items-center space-x-2">
@@ -691,15 +879,44 @@ export default function LearningPathCreatorPage() {
                 </div>
                 {node.description && <p className="text-white/70 text-sm mb-2">{node.description}</p>}
                 <div className="flex items-center space-x-2 text-xs text-white/60">
-                  <span>
-                    <Icon icon="mdi:clock" className="inline mr-1" />
-                    {node.estimatedHours || 0}h
-                  </span>
-                  {node.type === 'milestone' && (
-                    <span>
-                      <Icon icon="mdi:tasks" className="inline mr-1" />
-                      {node.milestoneId || 0} {t.tasks}
-                    </span>
+                  {node.type === 'task' ? (
+                    <>
+                      <span>
+                        <Icon icon="mdi:clock" className="inline mr-1" />
+                        {node.estimatedMinutes ?? 30}m
+                      </span>
+                      {node.priority != null && (
+                        <span>
+                          <Icon icon="mdi:flag" className="inline mr-1" />
+                          P{node.priority}
+                        </span>
+                      )}
+                      {(node.subtasks?.length ?? 0) > 0 && (
+                        <span>
+                          <Icon icon="mdi:format-list-checks" className="inline mr-1" />
+                          {node.subtasks!.length} {t.subtask}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <span>
+                        <Icon icon="mdi:clock" className="inline mr-1" />
+                        {node.estimatedHours || 0}h
+                      </span>
+                      {node.type === 'milestone' && (
+                        <>
+                          <span>
+                            <Icon icon="mdi:clock-outline" className="inline mr-1" />
+                            {formatTimeTotal(getMilestoneTotalMinutes(node.id))}
+                          </span>
+                          <span>
+                            <Icon icon="mdi:tasks" className="inline mr-1" />
+                            {nodes.filter((n) => n.type === 'task' && n.parentId === node.id).length} {t.tasks}
+                          </span>
+                        </>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
@@ -727,15 +944,22 @@ export default function LearningPathCreatorPage() {
                     selectedNodeId === node.id ? 'bg-white/20 border-[#0FA968]' : 'hover:bg-white/20'
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center space-x-2 min-w-0">
                       <div
-                        className="w-3 h-3 rounded-full"
+                        className="w-3 h-3 rounded-full flex-shrink-0"
                         style={{ backgroundColor: node.color }}
-                      ></div>
-                      <span className="text-white font-medium text-sm">{node.title}</span>
+                      />
+                      <span className="text-white font-medium text-sm truncate">{node.title}</span>
                     </div>
-                    <Icon icon="mdi:chevron-right" className="text-white/40 text-xs" />
+                    <div className="flex items-center gap-1.5 flex-shrink-0 text-xs text-white/60">
+                      {node.type === 'task' ? (
+                        <span>{node.estimatedMinutes ?? 30}m</span>
+                      ) : node.type === 'milestone' ? (
+                        <span>{formatTimeTotal(getMilestoneTotalMinutes(node.id))}</span>
+                      ) : null}
+                      <Icon icon="mdi:chevron-right" className="text-white/40 text-xs" />
+                    </div>
                   </div>
                 </div>
               ))}
@@ -757,7 +981,7 @@ export default function LearningPathCreatorPage() {
               <div className="flex items-center justify-between text-sm text-white/80">
                 <span>{t.estimatedTime}:</span>
                 <span className="font-semibold">
-                  {totalHours} {t.hours}
+                  {formatTimeTotal(totalPathMinutes)}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm text-white/80">

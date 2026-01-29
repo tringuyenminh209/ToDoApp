@@ -359,6 +359,16 @@ class CourseTranslationService
                         }
                     }
                 }
+                // task 内 knowledge_items を JSON から vi/en に置換
+                $taskKnowledge = $task['knowledge_items'] ?? [];
+                if (!empty($taskKnowledge)) {
+                    $task['knowledge_items'] = self::translateKnowledgeItemsForCreate(
+                        $taskKnowledge,
+                        $pathJaTitle,
+                        $taskJa,
+                        $locale
+                    );
+                }
             }
         }
         $pathData['milestones'] = $milestones;

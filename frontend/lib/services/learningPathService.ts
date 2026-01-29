@@ -38,6 +38,32 @@ export interface LearningMilestone {
   color?: string;
 }
 
+/** タスク作成用（API送信用） */
+export interface TaskInput {
+  title: string;
+  description?: string;
+  estimated_minutes?: number;
+  priority?: number;
+  subtasks?: { title: string }[];
+  knowledge_items?: { title: string; content?: string; item_type?: string }[];
+}
+
+/** マイルストーン作成用（API送信用） */
+export interface MilestoneInput {
+  title: string;
+  description?: string;
+  estimated_hours?: number;
+  sort_order?: number;
+  position_x?: number;
+  position_y?: number;
+  tasks?: TaskInput[];
+}
+
+/** 学習パス一括作成用（API送信時は milestones に MilestoneInput[] を渡す） */
+export interface CreateLearningPathData extends Omit<Partial<LearningPath>, 'milestones'> {
+  milestones?: MilestoneInput[];
+}
+
 export const learningPathService = {
   // 学習パス一覧取得
   getLearningPaths: async (params?: {
@@ -54,8 +80,8 @@ export const learningPathService = {
     return response.data;
   },
 
-  // 学習パス作成
-  createLearningPath: async (data: Partial<LearningPath>) => {
+  // 学習パス作成（milestones + tasks + subtasks を一括送信可能）
+  createLearningPath: async (data: CreateLearningPathData) => {
     const response = await apiClient.post('/learning-paths', data);
     return response.data;
   },
