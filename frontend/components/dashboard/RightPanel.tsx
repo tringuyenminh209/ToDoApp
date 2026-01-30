@@ -423,6 +423,7 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
       const conversationData = conversationDetail?.data;
       setConversationId(id);
       setChatMessages(normalizeMessages(conversationData?.messages || []));
+      setChatError(null);
     } catch (error) {
       console.error('Failed to load conversation:', error);
       setChatError(t.aiChatError);
@@ -472,6 +473,7 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
         if (conversation?.id) {
           setConversationId(conversation.id);
           setChatMessages(normalizeMessages(conversation.messages || []));
+          setChatError(null);
         } else {
           // conversationが返されない場合（instantReplyなど）、assistant_messageから取得
           const assistantMessage = created?.data?.assistant_message;
@@ -484,14 +486,15 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
                 created_at: assistantMessage.created_at,
               })
             );
-            // conversation_idも設定
             if (created?.data?.user_message?.conversation_id) {
               setConversationId(created.data.user_message.conversation_id);
             }
+            setChatError(null);
           } else {
             setChatMessages((prev) =>
               appendMessage(prev, { role: 'assistant', content: created?.message || t.aiChatFallback })
             );
+            setChatError(null);
           }
         }
       } else {
@@ -519,6 +522,7 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
             });
           },
           (fullMessage: string, messageId?: number) => {
+            setChatError(null);
             setChatMessages((prev) => {
               const updated = [...prev];
               const idx = updated.findIndex((m) => m.id === streamingAssistantMessage.id);

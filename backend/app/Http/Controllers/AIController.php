@@ -660,13 +660,13 @@ class AIController extends Controller
                         }
                     }
 
-                    // Add tags if provided
+                    // Add tags if provided（tags テーブルは user_id なし・name で一意）
                     if (!empty($taskData['tags'])) {
                         foreach ($taskData['tags'] as $tagName) {
-                            $tag = \App\Models\Tag::firstOrCreate([
-                                'user_id' => $request->user()->id,
-                                'name' => $tagName
-                            ]);
+                            $tag = \App\Models\Tag::firstOrCreate(
+                                ['name' => $tagName],
+                                ['color' => '#0FA968']
+                            );
                             $createdTask->tags()->attach($tag->id);
                         }
                     }
@@ -909,13 +909,13 @@ class AIController extends Controller
                         }
                     }
 
-                    // Add tags if provided
+                    // Add tags if provided（tags テーブルは user_id なし・name で一意）
                     if (!empty($taskData['tags'])) {
                         foreach ($taskData['tags'] as $tagName) {
-                            $tag = \App\Models\Tag::firstOrCreate([
-                                'user_id' => $request->user()->id,
-                                'name' => $tagName
-                            ]);
+                            $tag = \App\Models\Tag::firstOrCreate(
+                                ['name' => $tagName],
+                                ['color' => '#0FA968']
+                            );
                             $createdTask->tags()->attach($tag->id);
                         }
                     }
@@ -1296,13 +1296,13 @@ class AIController extends Controller
                         }
                     }
 
-                    // Add tags if provided
+                    // Add tags if provided（tags テーブルは user_id なし・name で一意）
                     if (!empty($taskData['tags'])) {
                         foreach ($taskData['tags'] as $tagName) {
-                            $tag = \App\Models\Tag::firstOrCreate([
-                                'user_id' => $user->id,
-                                'name' => $tagName
-                            ]);
+                            $tag = \App\Models\Tag::firstOrCreate(
+                                ['name' => $tagName],
+                                ['color' => '#0FA968']
+                            );
                             $createdTask->tags()->attach($tag->id);
                         }
                     }
