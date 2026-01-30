@@ -18,12 +18,12 @@ services:
       - ollama_data:/root/.ollama
     environment:
       - OLLAMA_GPU_MEMORY=0
-      # コンテキスト: 4096=会話の長さ。8GB なら 2–3B モデルで余裕
-      - OLLAMA_NUM_CTX=4096
+      # コンテキスト: 4096=会話の長さ。8GB なら 2048 が安全
+      - OLLAMA_NUM_CTX=2048
       # モデルを RAM に保持 (再ロード防止)
       - OLLAMA_KEEP_ALIVE=60m
-      # 同時リクエスト数 (2-3B なら 2 が安全)
-      - OLLAMA_NUM_PARALLEL=2
+      # 同時リクエスト数 (8GB なら 1 が推奨)
+      - OLLAMA_NUM_PARALLEL=1
       # 1 モデルのみロード (メモリ節約)
       - OLLAMA_MAX_LOADED_MODELS=1
     deploy:
@@ -35,7 +35,7 @@ services:
           cpus: '1'
           memory: 2G
     healthcheck:
-      test: ["CMD", "ollama", "list"]
+      test: [ "CMD", "ollama", "list" ]
       interval: 30s
       timeout: 15s
       retries: 3

@@ -42,8 +42,8 @@ class AIService
             $this->fallbackModel = $this->model;
             // Local provider: 最小 5分(300s)
             $this->timeout = max(300, (int)$this->timeout);
-            // トークン数を制限してレスポンス速度を向上
-            $this->maxTokens = min(500, $this->maxTokens);
+            // トークン数を制限してレスポンス速度を向上 (500 -> 300)
+            $this->maxTokens = min(300, $this->maxTokens);
         }
     }
 
