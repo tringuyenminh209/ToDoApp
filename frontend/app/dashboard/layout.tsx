@@ -7,6 +7,7 @@ import Sidebar from '@/components/dashboard/Sidebar';
 import Header from '@/components/dashboard/Header';
 import RightPanel from '@/components/dashboard/RightPanel';
 import { type Language } from '@/lib/i18n';
+import { subscribeFocusSession } from '@/lib/echo';
 
 export default function DashboardLayout({
   children,
@@ -14,7 +15,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { isAuthenticated, checkAuth, isLoading, hasHydrated } = useAuthStore();
+  const { isAuthenticated, checkAuth, isLoading, hasHydrated, user } = useAuthStore();
   const [currentLang, setCurrentLang] = useState<Language>('ja');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
@@ -62,6 +63,15 @@ export default function DashboardLayout({
       router.push('/auth/login');
     }
   }, [hasHydrated, isAuthenticated, isLoading, router]);
+
+  // リアルタイム: Reverb 有効時は WebSocket でフォーカスセッション同期（モバイル→Web）
+  useEffect(() => {
+    if (!user?.id) return;
+    const unsubscribe = subscribeFocusSession(user.id);
+    return () => {
+      unsubscribe?.();
+    };
+  }, [user?.id]);
 
   useEffect(() => {
     const container = sparkleContainerRef.current;

@@ -864,6 +864,7 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
   \"task\": {
     \"title\": \"タスクのタイトル\",
     \"description\": \"タスクの説明（オプション）\",
+    \"category\": \"study\" | \"work\" | \"personal\" | \"other\",
     \"estimated_minutes\": 推定時間（分）,
     \"priority\": \"high/medium/low\",
     \"deadline\": \"YYYY-MM-DD\" (オプション、期限が指定されている場合のみ),
@@ -877,6 +878,13 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
     ]
   }
 }
+
+**category の推論ルール（ユーザーが指定していればその値、なければ文脈から推論）:**
+- \"study\": 勉強・学習・授業・読書・英語・プログラミング学習など（例: 「studyに追加」「カテゴリはstudy」「勉強のタスク」）
+- \"work\": 仕事・業務・作業・会議・レポート業務など
+- \"personal\": 個人・プライベート・家事・運動など
+- \"other\": 上記に当てはまらない、または不明な場合
+- メッセージに「study」「勉強」「学習」等が含まれる場合は category を \"study\" にしてください。
 
 タスク作成の意図がない場合:
 {
@@ -985,8 +993,11 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
                     'content_preview' => mb_substr($content, 0, 200)
                 ]);
 
+                // LLM が ```json ... ``` で返す場合があるため、マークダウンを除去してからパース
+                $contentToParse = trim(preg_replace('/^```(?:json)?\s*\n?|\n?```\s*$/s', '', trim($content)));
+
                 // Parse JSON response
-                $parsedContent = json_decode($content, true);
+                $parsedContent = json_decode($contentToParse, true);
 
                 if (json_last_error() === JSON_ERROR_NONE) {
                     if (!empty($parsedContent['has_task_intent']) && $parsedContent['has_task_intent'] === true) {
@@ -1002,9 +1013,9 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
                     ]);
                 }
 
-                // Try to extract JSON from response
+                // Try to extract JSON from response (マークダウン除去後も失敗した場合)
                 $jsonMatch = [];
-                if (preg_match('/\{.*\}/s', $content, $jsonMatch)) {
+                if (preg_match('/\{.*\}/s', $contentToParse, $jsonMatch)) {
                     $parsedContent = json_decode($jsonMatch[0], true);
                     if (json_last_error() === JSON_ERROR_NONE && !empty($parsedContent['has_task_intent'])) {
                         if ($parsedContent['has_task_intent'] === true) {

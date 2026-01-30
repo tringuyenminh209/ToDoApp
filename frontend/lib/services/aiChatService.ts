@@ -34,7 +34,10 @@ export const aiChatService = {
   },
 
   createConversation: async (payload: { title?: string; message: string }) => {
-    const response = await apiClient.post('/ai/chat/conversations', payload);
+    // AI 応答が 90 秒以上かかることがあるためタイムアウト 5 分（Cloudflare 等は 100s で切る場合あり）
+    const response = await apiClient.post('/ai/chat/conversations', payload, {
+      timeout: 300000, // 5 min
+    });
     return response.data;
   },
 
@@ -42,7 +45,7 @@ export const aiChatService = {
     const endpoint = contextAware
       ? `/ai/chat/conversations/${id}/messages/context-aware`
       : `/ai/chat/conversations/${id}/messages`;
-    const response = await apiClient.post(endpoint, { message });
+    const response = await apiClient.post(endpoint, { message }, { timeout: 300000 });
     return response.data;
   },
 

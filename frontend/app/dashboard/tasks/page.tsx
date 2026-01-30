@@ -139,6 +139,21 @@ export default function TasksPage() {
     loadUserStats();
   }, [loadTasks, loadLearningPaths, loadCurrentSession, loadUserStats]);
 
+  // モバイルでセッション開始時にWebで検知するため、タブ表示中は5秒ごとに current を取得
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const poll = () => {
+      if (document.visibilityState === 'visible') loadCurrentSession();
+    };
+    const interval = setInterval(poll, 5000);
+    const onVisible = () => { loadCurrentSession(); };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [loadCurrentSession]);
+
   // セッション中は1秒ごとに再描画してカウントダウンを更新
   useEffect(() => {
     if (!currentSession) return;
@@ -192,6 +207,7 @@ export default function TasksPage() {
         session_type: 'work',
       });
       await loadCurrentSession();
+      await loadTasks();
       window.dispatchEvent(new Event('focusSessionChanged'));
     } catch (error) {
       console.error('Failed to start session:', error);

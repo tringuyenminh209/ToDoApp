@@ -342,6 +342,21 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
     return () => window.removeEventListener('focusSessionChanged', onFocusSessionChanged);
   }, [loadFocusByTask]);
 
+  // モバイルでセッション開始時に タスク別集中・集中ゾーン を同期するため、タブ表示中は5秒ごとに取得
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const poll = () => {
+      if (document.visibilityState === 'visible') loadFocusByTask();
+    };
+    const interval = setInterval(poll, 5000);
+    const onVisible = () => loadFocusByTask();
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [loadFocusByTask]);
+
   // セッション中は1秒ごとに再描画して「集中中」の経過時間を更新
   useEffect(() => {
     if (!currentSession) return;

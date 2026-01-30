@@ -89,9 +89,17 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-sk-dummy-key}
       - OPENAI_BASE_URL=${OLLAMA_BASE_URL}
       - OPENAI_MODEL=${OPENAI_MODEL:-qwen2.5:3b}
-      # CORS: フロントのOrigin（EC2例: http://52.21.89.124:8088 / ドメイン: https://todokizamu.me）
+      # CORS: フロントのOrigin（ドメイン: https://todokizamu.me / IP: http://52.90.59.136:8088）
       - FRONTEND_URL=${FRONTEND_URL:-https://todokizamu.me}
       - FRONTEND_URL_WWW=${FRONTEND_URL_WWW}
+      # リアルタイム: Reverb WebSocket（モバイル→Web フォーカス同期）
+      - BROADCAST_CONNECTION=${BROADCAST_CONNECTION:-reverb}
+      - REVERB_APP_ID=${REVERB_APP_ID:-todokizamu}
+      - REVERB_APP_KEY=${REVERB_APP_KEY:-todokizamu-key}
+      - REVERB_APP_SECRET=${REVERB_APP_SECRET:-todokizamu-secret}
+      - REVERB_HOST=reverb
+      - REVERB_PORT=8080
+      - REVERB_SCHEME=http
     networks:
       - todo-network
     depends_on:
@@ -99,6 +107,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      reverb:
+        condition: service_started
       # ollama は別サーバー化のため削除
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:80/health || exit 1"]
@@ -115,14 +125,50 @@ services:
           cpus: '0.25'
           memory: 512M
 
+  # Laravel Reverb（リアルタイム WebSocket: モバイル→Web フォーカス同期）
+  # Nginx/ALB で wss://<APIドメイン> を reverb:8080 にプロキシすること
+  reverb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todo-reverb-prod
+    restart: always
+    working_dir: /var/www
+    ports:
+      - "127.0.0.1:8081:8080"
+    environment:
+      - APP_ENV=production
+      - REVERB_APP_ID=${REVERB_APP_ID:-todokizamu}
+      - REVERB_APP_KEY=${REVERB_APP_KEY:-todokizamu-key}
+      - REVERB_APP_SECRET=${REVERB_APP_SECRET:-todokizamu-secret}
+      - REVERB_HOST=0.0.0.0
+      - REVERB_PORT=8080
+      - REVERB_SCHEME=http
+    command: ["php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080"]
+    networks:
+      - todo-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
   # Next.js Frontend
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
       args:
-        # ビルド時に必須: ブラウザがBackend APIを呼ぶURL（EC2例: http://52.21.89.124:8080/api）
+        # ビルド時に必須: API URL（ドメイン: https://api.todokizamu.me/api / IP: http://52.90.59.136:8080/api）
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        # リアルタイム: WebSocket（ドメイン時は .env.prod で NEXT_PUBLIC_REVERB_HOST=api.todokizamu.me, PORT=443, SCHEME=https）
+        NEXT_PUBLIC_REVERB_APP_KEY: ${REVERB_APP_KEY:-todokizamu-key}
+        NEXT_PUBLIC_REVERB_HOST: ${NEXT_PUBLIC_REVERB_HOST:-localhost}
+        NEXT_PUBLIC_REVERB_PORT: ${NEXT_PUBLIC_REVERB_PORT:-8081}
+        NEXT_PUBLIC_REVERB_SCHEME: ${NEXT_PUBLIC_REVERB_SCHEME:-http}
     container_name: todo-app-frontend-prod
     restart: always
     ports:

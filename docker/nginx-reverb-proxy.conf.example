@@ -1,0 +1,24 @@
+# 本番用: Reverb WebSocket プロキシの例
+# サーバー上の Nginx で API ドメインにこの location を追加し、
+# 同一ホストの reverb コンテナ (127.0.0.1:8081) にプロキシする。
+#
+# 例: https://api.todokizamu.me で API を提供している場合、
+#     wss://api.todokizamu.me/app/... を reverb に転送する。
+#
+# server {
+#     listen 443 ssl http2;
+#     server_name api.todokizamu.me;
+#     # ... ssl, root, php など ...
+#
+#     location /app {
+#         proxy_pass http://127.0.0.1:8081;
+#         proxy_http_version 1.1;
+#         proxy_set_header Upgrade $http_upgrade;
+#         proxy_set_header Connection "upgrade";
+#         proxy_set_header Host $host;
+#         proxy_set_header X-Real-IP $remote_addr;
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#         proxy_set_header X-Forwarded-Proto $scheme;
+#         proxy_read_timeout 86400;
+#     }
+# }

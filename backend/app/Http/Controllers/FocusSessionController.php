@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Events\FocusSessionUpdated;
 use Carbon\Carbon;
 
 class FocusSessionController extends Controller
@@ -53,6 +54,8 @@ class FocusSessionController extends Controller
             DB::commit();
 
             $session->load('task');
+
+            event(new FocusSessionUpdated($request->user()->id, 'started', $session->toArray()));
 
             return response()->json([
                 'success' => true,
@@ -299,6 +302,8 @@ class FocusSessionController extends Controller
                 'estimated_minutes' => $task->estimated_minutes,
             ]);
 
+            event(new FocusSessionUpdated($request->user()->id, 'stopped', $session->toArray()));
+
             return response()->json([
                 'success' => true,
                 'data' => $session,
@@ -502,6 +507,8 @@ class FocusSessionController extends Controller
 
             $session->load('task');
 
+            event(new FocusSessionUpdated($request->user()->id, 'paused', $session->toArray()));
+
             return response()->json([
                 'success' => true,
                 'data' => $session,
@@ -537,6 +544,8 @@ class FocusSessionController extends Controller
             $session->update(['status' => 'active']);
 
             $session->load('task');
+
+            event(new FocusSessionUpdated($request->user()->id, 'resumed', $session->toArray()));
 
             return response()->json([
                 'success' => true,

@@ -636,10 +636,12 @@ class AIController extends Controller
                     }
                     $deadline = $deadline ?? now()->format('Y-m-d');
 
+                    $category = $this->normalizeTaskCategory($taskData['category'] ?? null);
                     $createdTask = Task::create([
                         'user_id' => $request->user()->id,
                         'title' => $taskData['title'],
                         'description' => $taskData['description'] ?? null,
+                        'category' => $category,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
                         'deadline' => $deadline,
@@ -883,10 +885,12 @@ class AIController extends Controller
                     }
                     $deadline = $deadline ?? now()->format('Y-m-d');
 
+                    $category = $this->normalizeTaskCategory($taskData['category'] ?? null);
                     $createdTask = Task::create([
                         'user_id' => $request->user()->id,
                         'title' => $taskData['title'],
                         'description' => $taskData['description'] ?? null,
+                        'category' => $category,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
                         'deadline' => $deadline,
@@ -1268,10 +1272,12 @@ class AIController extends Controller
                     }
                     $deadline = $deadline ?? now()->format('Y-m-d');
 
+                    $category = $this->normalizeTaskCategory($taskData['category'] ?? null);
                     $createdTask = Task::create([
                         'user_id' => $user->id,
                         'title' => $taskData['title'],
                         'description' => $taskData['description'] ?? null,
+                        'category' => $category,
                         'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
                         'priority' => $priorityInt,
                         'deadline' => $deadline,
@@ -2584,6 +2590,19 @@ class AIController extends Controller
     }
 
     /**
+     * Normalize category to allowed enum: study, work, personal, other
+     */
+    private function normalizeTaskCategory(?string $category): string
+    {
+        $allowed = ['study', 'work', 'personal', 'other'];
+        if ($category === null || $category === '') {
+            return 'other';
+        }
+        $normalized = strtolower(trim($category));
+        return in_array($normalized, $allowed, true) ? $normalized : 'other';
+    }
+
+    /**
      * Extract task information from message using simple pattern matching
      * Fallback when parseTaskIntent times out
      */
@@ -2660,9 +2679,24 @@ class AIController extends Controller
             ]);
         }
 
+        // カテゴリ推論: メッセージから study/work/personal を判定、なければ other
+        $category = 'other';
+        $normalized = mb_strtolower($message);
+        if (preg_match('/\b(study|勉強|学習|授業|読書|英語|プログラミング)\b/u', $normalized)
+            || preg_match('/カテゴリは\s*[『「\"]?(study|勉強)[』」\"]?/u', $message)) {
+            $category = 'study';
+        } elseif (preg_match('/\b(work|仕事|業務|作業|会議|レポート)\b/u', $normalized)
+            || preg_match('/カテゴリは\s*[『「\"]?work[』」\"]?/u', $message)) {
+            $category = 'work';
+        } elseif (preg_match('/\b(personal|個人|プライベート|家事|運動)\b/u', $normalized)
+            || preg_match('/カテゴリは\s*[『「\"]?personal[』」\"]?/u', $message)) {
+            $category = 'personal';
+        }
+
         return [
             'title' => $title,
             'description' => $description,
+            'category' => $category,
             'estimated_minutes' => $estimatedMinutes,
             'priority' => 'medium',
             'deadline' => $deadline,

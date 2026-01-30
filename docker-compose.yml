@@ -33,9 +33,18 @@ services:
       # リモート Ollama (52.203.35.157) 使用。ローカル ollama は不要
       - OPENAI_BASE_URL=http://52.203.35.157:11434/v1
       - OPENAI_MODEL=qwen2.5:3b
+      # リアルタイム: Reverb WebSocket（モバイル→Web フォーカス同期）
+      - BROADCAST_CONNECTION=${BROADCAST_CONNECTION:-reverb}
+      - REVERB_APP_ID=${REVERB_APP_ID:-todokizamu}
+      - REVERB_APP_KEY=${REVERB_APP_KEY:-todokizamu-key}
+      - REVERB_APP_SECRET=${REVERB_APP_SECRET:-todokizamu-secret}
+      - REVERB_HOST=reverb
+      - REVERB_PORT=8080
+      - REVERB_SCHEME=http
     depends_on:
       - mysql
       - redis
+      - reverb
     networks:
       - todo-network
     deploy:
@@ -46,6 +55,35 @@ services:
         reservations:
           cpus: '1.0'
           memory: 1G
+
+  # Laravel Reverb（リアルタイム WebSocket: モバイル→Web フォーカス同期）
+  reverb:
+    build: .
+    container_name: todo-reverb
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+    ports:
+      - "8081:8080"
+    env_file:
+      - ./backend/.env
+    environment:
+      - APP_ENV=${APP_ENV:-local}
+      - REVERB_APP_ID=${REVERB_APP_ID:-todokizamu}
+      - REVERB_APP_KEY=${REVERB_APP_KEY:-todokizamu-key}
+      - REVERB_APP_SECRET=${REVERB_APP_SECRET:-todokizamu-secret}
+      - REVERB_HOST=0.0.0.0
+      - REVERB_PORT=8080
+      - REVERB_SCHEME=http
+    command: ["php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080"]
+    networks:
+      - todo-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
 
   # MySQL Database
   mysql:
@@ -114,6 +152,11 @@ services:
       - NEXT_PUBLIC_BACKEND_URL=http://app:80
       - HOSTNAME=0.0.0.0
       - PORT=3000
+      # リアルタイム: ブラウザから Reverb WebSocket へ接続（ホスト側ポート 8081）
+      - NEXT_PUBLIC_REVERB_APP_KEY=${REVERB_APP_KEY:-todokizamu-key}
+      - NEXT_PUBLIC_REVERB_HOST=localhost
+      - NEXT_PUBLIC_REVERB_PORT=8081
+      - NEXT_PUBLIC_REVERB_SCHEME=http
     depends_on:
       - app
     networks:

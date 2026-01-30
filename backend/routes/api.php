@@ -22,6 +22,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TaskTrackingController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 
@@ -81,6 +82,9 @@ Route::prefix('roadmaps')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    // リアルタイム: プライベートチャンネル購読の認証（Echo / Reverb）
+    Broadcast::routes();
+
     // メール認証
     Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])
         ->middleware('throttle:6,1'); // 1分あたり6リクエスト
