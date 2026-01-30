@@ -1194,6 +1194,14 @@ class AIController extends Controller
                         'data' => $taskData
                     ]);
 
+                    // タスク作成意図が明確なのに parseTaskIntent が null の場合（LLMがJSONを返さない等）はパターン抽出でフォールバック
+                    if ($taskData === null && $shouldParseTask && $this->hasTaskCreationKeywords($message)) {
+                        $taskData = $this->extractTaskFromMessage($message);
+                        if ($taskData) {
+                            Log::info('AIController: Using extractTaskFromMessage fallback', ['task' => $taskData]);
+                        }
+                    }
+
                     $knowledgeQueryData = $shouldParseKnowledgeQuery
                         ? $this->aiService->parseKnowledgeQueryIntent($message, $historyForParsing)
                         : null;
@@ -1203,6 +1211,14 @@ class AIController extends Controller
                     ]);
 
                     $hasKnowledgeCreation = $shouldParseKnowledgeCreation;
+                }
+            }
+
+            // quickParse/parseTaskIntent で task が取れなかったがタスク作成キーワードがある場合はパターン抽出でフォールバック
+            if ($taskData === null && $shouldParseTask && $this->hasTaskCreationKeywords($message)) {
+                $taskData = $this->extractTaskFromMessage($message);
+                if ($taskData) {
+                    Log::info('AIController: Using extractTaskFromMessage fallback (post-parse)', ['task' => $taskData]);
                 }
             }
 
@@ -2374,9 +2390,30 @@ class AIController extends Controller
         return (bool)preg_match('/^(hi|hello|hey|xin chào|xin chao|chào|chao|こんにちは|こんばんは|おはよう|やあ|もしもし)[!！。.\s]*$/u', $normalized);
     }
 
-    private function buildGreetingResponse(): string
+    /**
+     * 挨拶に応じた返答（ユーザーの挨拶文言・時間帯を考慮）
+     */
+    private function buildGreetingResponse(string $message = ''): string
     {
-        return 'こんにちは！今日は何をお手伝いしましょうか？';
+        $normalized = trim(mb_strtolower($message));
+        $hour = (int) now()->format('G');
+
+        // ユーザーが「こんばんは」と言った場合は夜の返答
+        if (preg_match('/こんばんは/u', $normalized)) {
+            return 'こんばんは！今日は何をお手伝いしましょうか？';
+        }
+        // ユーザーが「おはよう」と言った場合は朝の返答
+        if (preg_match('/おはよう/u', $normalized)) {
+            return 'おはようございます！今日は何をお手伝いしましょうか？';
+        }
+        // 時間帯: 5〜10→朝, 11〜16→昼, 17〜4→夜
+        if ($hour >= 5 && $hour < 11) {
+            return 'おはようございます！今日は何をお手伝いしましょうか？';
+        }
+        if ($hour >= 11 && $hour < 17) {
+            return 'こんにちは！今日は何をお手伝いしましょうか？';
+        }
+        return 'こんばんは！今日は何をお手伝いしましょうか？';
     }
 
     private function getInstantReplyResponse(string $message): ?string
@@ -2393,7 +2430,7 @@ class AIController extends Controller
         }
 
         if ($this->isSimpleGreeting($message)) {
-            return $this->buildGreetingResponse();
+            return $this->buildGreetingResponse($message);
         }
 
         if (preg_match('/^(help|ヘルプ|使い方|どう使う|使い方を教えて|hướng dẫn|huong dan)$/u', $normalized)) {
@@ -2411,8 +2448,8 @@ class AIController extends Controller
             return '今日は ' . now()->format('Y-m-d') . ' です。';
         }
 
-        if (preg_match('/(あなたは誰|あなたはだれ|who are you|ban la ai|bạn là ai)/u', $normalized)) {
-            return '私はあなたの学習とタスク管理を手伝うアシスタントです。';
+        if (preg_match('/(あなたは誰|あなたはだれ|君はなに|きみはなに|who are you|ban la ai|bạn là ai)/u', $normalized)) {
+            return '私はあなたの学習とタスク管理を手伝うアシスタントです。タスク作成・時間割・ノート検索などができます。';
         }
 
         if (preg_match('/(できること|何ができる|chức năng|tính năng|what can you do)/u', $normalized)) {
@@ -2567,25 +2604,38 @@ class AIController extends Controller
             $estimatedMinutes = (int)$matches[1];
         }
 
-        // Extract task title (remove time/duration keywords)
-        $title = $message;
-        $title = preg_replace('/来週の/', '', $title);
-        $title = preg_replace('/月曜日|火曜日|水曜日|木曜日|金曜日|土曜日|日曜日/', '', $title);
-        $title = preg_replace('/\d+時/', '', $title);
-        $title = preg_replace('/\d+時間/', '', $title);
-        $title = preg_replace('/\d+分/', '', $title);
-        $title = preg_replace('/タスクを.*?つくって/', '', $title);
-        $title = preg_replace('/タスクを.*?作って/', '', $title);
-        $title = preg_replace('/タスクを.*?作成/', '', $title);
-        $title = preg_replace('/ください/', '', $title);
-        $title = trim($title);
-        // 日付・時刻パターン除去後の残り「の」(例: 水曜日の)、「に」(例: 10時に) を先頭から削除
-        $title = preg_replace('/^[のに\s]+/u', '', $title);
-        $title = trim($title);
+        // 明示的タイトル指定（タイトルは『study』にしてください / タイトルは「AWS学習」）
+        $title = null;
+        if (preg_match('/タイトルは[『「\"]([^』」\"]+)[』」\"]/u', $message, $m)) {
+            $title = trim($m[1]);
+        }
 
-        // If title is too short or empty, use original message
-        if (mb_strlen($title) < 3) {
+        // 内容・説明（内容はEC2サーバー作成の実習で）
+        $description = null;
+        if (preg_match('/内容は([^。、]+)/u', $message, $m)) {
+            $description = trim($m[1]);
+        }
+
+        if ($title === null || $title === '') {
+            // Extract task title by removing time/duration keywords
             $title = $message;
+            $title = preg_replace('/来週の|今週の/', '', $title);
+            $title = preg_replace('/月曜日|火曜日|水曜日|木曜日|金曜日|土曜日|日曜日/', '', $title);
+            $title = preg_replace('/\d+時/', '', $title);
+            $title = preg_replace('/\d+時間/', '', $title);
+            $title = preg_replace('/\d+分/', '', $title);
+            $title = preg_replace('/タスクを.*?つくって/', '', $title);
+            $title = preg_replace('/タスクを.*?作って/', '', $title);
+            $title = preg_replace('/タスクを.*?作成/', '', $title);
+            $title = preg_replace('/ください/', '', $title);
+            $title = preg_replace('/タイトルは[^。]+/', '', $title);
+            $title = trim($title);
+            $title = preg_replace('/^[のに、\s]+/u', '', $title);
+            $title = trim($title);
+        }
+
+        if (mb_strlen($title) < 2) {
+            $title = '新規タスク';
         }
 
         // Extract deadline using the same logic as inferDeadlineFromMessage for consistency
@@ -2612,7 +2662,7 @@ class AIController extends Controller
 
         return [
             'title' => $title,
-            'description' => null,
+            'description' => $description,
             'estimated_minutes' => $estimatedMinutes,
             'priority' => 'medium',
             'deadline' => $deadline,

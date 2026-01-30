@@ -1,11 +1,16 @@
 # Ollama 専用サーバー用 (t3.large 8GB RAM 想定)
-# 用途: App と別 EC2（例: 52.203.35.157）で Ollama のみ稼働。
-#       .env.prod の OLLAMA_BASE_URL=http://<このサーバーのIP>:11434/v1 で App から参照。
+# 用途: App と別 EC2 で Ollama のみ稼働。App サーバー側 .env で OLLAMA_BASE_URL を指定して参照。
 # 同一 EC2 に載せる場合は docker-compose.prod の ollama サービスを使用。
 #
 # 起動: docker compose -f docker-compose.ollama.yml up -d
 # モデル取得: docker exec ollama ollama pull qwen2.5:3b
+# 軽量モデル: docker exec ollama ollama pull qwen2.5:1.5b
 # 疎通確認: curl -s http://localhost:11434/api/tags
+#
+# App サーバー (Laravel) の .env に設定する例:
+#   OLLAMA_BASE_URL=http://<このOllamaサーバーのIP>:11434/v1
+#   OPENAI_MODEL=qwen2.5:1.5b
+#   OPENAI_TIMEOUT=300
 
 services:
   ollama:
