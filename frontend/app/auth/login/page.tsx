@@ -18,6 +18,7 @@ export default function LoginPage() {
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -281,14 +282,22 @@ export default function LoginPage() {
                     <Icon icon="mdi:lock" className="text-gray-400" />
                   </div>
                   <Input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     id="password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-200 focus:border-[#0FA968] transition h-12 text-base"
+                    className="w-full pl-12 pr-12 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-200 focus:border-[#0FA968] transition h-12 text-base"
                     placeholder={t.passwordPlaceholder}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-10 p-1 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition"
+                    aria-label={showPassword ? t.hidePasswordLabel : t.showPasswordLabel}
+                  >
+                    <Icon icon={showPassword ? 'mdi:eye-off' : 'mdi:eye'} className="text-xl" />
+                  </button>
                 </div>
               </div>
 

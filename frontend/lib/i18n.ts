@@ -20,6 +20,8 @@ export const translations = {
     feature3: 'Phân tích tiến độ chi tiết',
     emailPlaceholder: 'Email của bạn',
     passwordPlaceholder: 'Mật khẩu',
+    showPasswordLabel: 'Hiện mật khẩu',
+    hidePasswordLabel: 'Ẩn mật khẩu',
     errorMessage: 'Email hoặc mật khẩu chưa đúng',
     errorPasswordStrength: 'Mật khẩu cần có ít nhất 1 chữ hoa, 1 chữ thường và 1 chữ số',
     // 登録ページ用の翻訳を追加
@@ -515,6 +517,8 @@ export const translations = {
     feature3: 'Detailed progress analysis',
     emailPlaceholder: 'Your email',
     passwordPlaceholder: 'Your password',
+    showPasswordLabel: 'Show password',
+    hidePasswordLabel: 'Hide password',
     errorMessage: 'Email or password doesn\'t look right',
     errorPasswordStrength: 'Use at least 1 uppercase, 1 lowercase, and 1 number',
     // 登録ページ用の翻訳を追加
@@ -1010,6 +1014,8 @@ export const translations = {
     feature3: '詳細な進捗分析',
     emailPlaceholder: 'メールアドレス',
     passwordPlaceholder: 'パスワード',
+    showPasswordLabel: 'パスワードを表示',
+    hidePasswordLabel: 'パスワードを隠す',
     errorMessage: 'メールアドレスかパスワードが違うようです',
     errorPasswordStrength: '大文字・小文字・数字を1つずつ入れてね',
     // 登録ページ用の翻訳を追加
