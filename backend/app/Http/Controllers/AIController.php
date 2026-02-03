@@ -2694,11 +2694,13 @@ class AIController extends Controller
             $estimatedMinutes = (int)$matches[1];
         }
 
-        // 明示的タイトル指定（タイトルは「EC2を設計する」/ タイトルはEC2を設計する。カテゴリはstudy）
+        // 明示的タイトル指定（タイトルは「EC2を設計する」/ タイトルがEC2を設計する練習とカテゴリは/ タイトルはEC2を設計する。カテゴリはstudy）
         $title = null;
         if (preg_match('/タイトルは[『「\"]([^』」\"]+)[』」\"]/u', $message, $m)) {
             $title = trim($m[1]);
         } elseif (preg_match('/タイトルは([^。、]+)(?:[。、]|カテゴリ)/u', $message, $m)) {
+            $title = trim($m[1]);
+        } elseif (preg_match('/タイトルが([^。、]+?)(?:練習|とカテゴリ|として|。|、)/u', $message, $m)) {
             $title = trim($m[1]);
         }
 
@@ -2756,7 +2758,8 @@ class AIController extends Controller
         $category = 'other';
         $normalized = mb_strtolower($message);
         if (preg_match('/\b(study|勉強|学習|授業|読書|英語|プログラミング)\b/u', $normalized)
-            || preg_match('/カテゴリは\s*[『「\"]?(study|勉強)[』」\"]?/u', $message)) {
+            || preg_match('/カテゴリは\s*[『「\"]?(study|勉強)[』」\"]?/u', $message)
+            || preg_match('/カテゴリは\s*勉強/u', $message)) {
             $category = 'study';
         } elseif (preg_match('/\b(work|仕事|業務|作業|会議|レポート)\b/u', $normalized)
             || preg_match('/カテゴリは\s*[『「\"]?work[』」\"]?/u', $message)) {

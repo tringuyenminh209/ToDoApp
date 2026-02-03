@@ -942,8 +942,8 @@ If search: {\"knowledge_query\":{\"keywords\":[\"...\"]}}";
 - 疑わしい場合は false を返してください";
 
         try {
-            // Parse task intent: Ollama/別サーバー:11434 は 5分(300s)。Cloud は 10s
-            $parseTimeout = $this->isLocalProvider ? 300 : min(10, $this->timeout * 0.33);
+            // Parse task intent: Ollama は 25s で打ち切り→フォールバックへ。Cloud は 10s
+            $parseTimeout = $this->isLocalProvider ? 25 : min(10, $this->timeout * 0.33);
 
             // Determine which parameter to use based on model
             $useMaxCompletionTokens = in_array($this->fallbackModel, ['gpt-5', 'o1', 'o1-preview', 'o1-mini']);
