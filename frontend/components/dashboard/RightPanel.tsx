@@ -14,9 +14,11 @@ interface RightPanelProps {
   currentLang: Language;
   isCollapsed: boolean;
   onToggle?: () => void;
+  /** チャットでタスクが作成されたときに呼ばれる（タスク一覧の再取得など） */
+  onTaskCreated?: () => void;
 }
 
-export default function RightPanel({ currentLang, isCollapsed, onToggle }: RightPanelProps) {
+export default function RightPanel({ currentLang, isCollapsed, onToggle, onTaskCreated }: RightPanelProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [aiMessage, setAiMessage] = useState<string>('');
 
@@ -546,6 +548,9 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
               }
               return updated;
             });
+          },
+          (task) => {
+            if (task && onTaskCreated) onTaskCreated();
           }
         );
       }
@@ -636,8 +641,8 @@ export default function RightPanel({ currentLang, isCollapsed, onToggle }: Right
           )}
           {chatSending && (
             <div className="flex items-start space-x-2">
-              <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">
-                <AiLogo size={16} className="drop-shadow-sm" title={t.aiChatTitle} />
+              <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                <AiLogo size={26} className="drop-shadow-sm" title={t.aiChatTitle} />
               </div>
               <div className="bg-white/10 text-white/70 text-xs px-3 py-2 rounded-lg animate-pulse">
                 {t.aiChatTyping}

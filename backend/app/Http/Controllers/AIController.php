@@ -1835,8 +1835,68 @@ class AIController extends Controller
 
             DB::commit();
 
+            // Parse task intent and create task (streaming でも「タスクを作って」で実際に作成する)
+            $createdTask = null;
+            $taskData = $this->aiService->parseTaskIntent($request->message);
+            if (!$taskData && $this->hasTaskCreationKeywords($request->message)) {
+                $taskData = $this->extractTaskFromMessage($request->message);
+            }
+            if ($taskData) {
+                try {
+                    DB::beginTransaction();
+                    $priorityMap = ['low' => 2, 'medium' => 3, 'high' => 5];
+                    $priorityValue = $taskData['priority'] ?? 'medium';
+                    if (is_string($priorityValue)) {
+                        $priorityInt = $priorityMap[strtolower($priorityValue)] ?? 3;
+                    } else {
+                        $priorityInt = $priorityValue;
+                    }
+                    $deadline = $taskData['deadline'] ?? null;
+                    if (!$deadline) {
+                        $deadline = $this->inferDeadlineFromMessage($request->message, now());
+                    }
+                    $deadline = $deadline ?? now()->format('Y-m-d');
+                    $category = $this->normalizeTaskCategory($taskData['category'] ?? null);
+                    $createdTask = Task::create([
+                        'user_id' => $user->id,
+                        'title' => $taskData['title'],
+                        'description' => $taskData['description'] ?? null,
+                        'category' => $category,
+                        'estimated_minutes' => $taskData['estimated_minutes'] ?? null,
+                        'priority' => $priorityInt,
+                        'deadline' => $deadline,
+                        'scheduled_time' => $taskData['scheduled_time'] ?? null,
+                        'status' => 'pending',
+                    ]);
+                    if (!empty($taskData['subtasks'])) {
+                        foreach ($taskData['subtasks'] as $index => $subtaskData) {
+                            $createdTask->subtasks()->create([
+                                'title' => $subtaskData['title'],
+                                'estimated_minutes' => $subtaskData['estimated_minutes'] ?? null,
+                                'sort_order' => $index + 1,
+                            ]);
+                        }
+                    }
+                    if (!empty($taskData['tags'])) {
+                        foreach ($taskData['tags'] as $tagName) {
+                            $tag = \App\Models\Tag::firstOrCreate(
+                                ['name' => $tagName],
+                                ['color' => '#0FA968']
+                            );
+                            $createdTask->tags()->attach($tag->id);
+                        }
+                    }
+                    $createdTask->load(['subtasks', 'tags']);
+                    DB::commit();
+                    Log::info('Task created from stream chat', ['task_id' => $createdTask->id, 'title' => $createdTask->title]);
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    Log::error('Failed to create task from stream chat: ' . $e->getMessage());
+                }
+            }
+
             // Set headers for Server-Sent Events
-            return response()->stream(function() use ($conversation, $user, $userMessage, $history) {
+            return response()->stream(function() use ($conversation, $user, $userMessage, $history, $createdTask) {
                 $fullContent = '';
                 $hasError = false;
 
@@ -1874,6 +1934,11 @@ class AIController extends Controller
                         }
                     }
 
+                    // タスク作成済みなら応答の先頭に確認文を付与
+                    if ($createdTask && !$hasError) {
+                        $fullContent = "✅ タスクを作成しました: 「{$createdTask->title}」\n\n" . $fullContent;
+                    }
+
                     // Save assistant message to database
                     if (!$hasError && !empty($fullContent)) {
                         try {
@@ -1892,6 +1957,12 @@ class AIController extends Controller
                             $conversation->updateStats();
                             DB::commit();
 
+                            if ($createdTask) {
+                                echo "data: " . json_encode([
+                                    'type' => 'created_task',
+                                    'task' => $createdTask->toArray(),
+                                ]) . "\n\n";
+                            }
                             echo "data: " . json_encode([
                                 'type' => 'done',
                                 'message_id' => $assistantMessage->id,
@@ -2623,9 +2694,11 @@ class AIController extends Controller
             $estimatedMinutes = (int)$matches[1];
         }
 
-        // 明示的タイトル指定（タイトルは『study』にしてください / タイトルは「AWS学習」）
+        // 明示的タイトル指定（タイトルは「EC2を設計する」/ タイトルはEC2を設計する。カテゴリはstudy）
         $title = null;
         if (preg_match('/タイトルは[『「\"]([^』」\"]+)[』」\"]/u', $message, $m)) {
+            $title = trim($m[1]);
+        } elseif (preg_match('/タイトルは([^。、]+)(?:[。、]|カテゴリ)/u', $message, $m)) {
             $title = trim($m[1]);
         }
 

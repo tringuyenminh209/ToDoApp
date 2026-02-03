@@ -56,13 +56,15 @@ export const aiChatService = {
    * @param onChunk Callback for each chunk received
    * @param onDone Callback when streaming is complete
    * @param onError Callback for errors
+   * @param onCreatedTask Callback when backend created a task from intent (optional)
    */
   sendMessageStream: async (
     id: number | string,
     message: string,
     onChunk: (chunk: string) => void,
     onDone: (fullMessage: string, messageId?: number) => void,
-    onError: (error: string) => void
+    onError: (error: string) => void,
+    onCreatedTask?: (task: Record<string, unknown>) => void
   ) => {
     try {
       // Get API base URL from apiClient
@@ -120,6 +122,8 @@ export const aiChatService = {
               if (data.type === 'chunk') {
                 fullMessage += data.content;
                 onChunk(data.content);
+              } else if (data.type === 'created_task' && data.task && onCreatedTask) {
+                onCreatedTask(data.task as Record<string, unknown>);
               } else if (data.type === 'done') {
                 if (data.full_content) {
                   fullMessage = data.full_content;
